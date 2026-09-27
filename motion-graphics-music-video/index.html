@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Motion Graphics Music Video：Claude Code 音乐视频 Skill — makevoid（中文镜像）</title>
+  <meta name="description" content="makevoid 的 Claude Code 插件：自包含音乐视频 skill + Ruby 工具包。Fal 生成、p5 动效、Python 分析/抠像/混音、Swift Core Image VFX；审核波次 2→3–4→4–8→6–10。" />
+  <meta property="og:title" content="Motion Graphics Music Video — makevoid 中文镜像" />
+  <meta property="og:image" content="images/icon.png" />
+  <meta property="og:description" content="歌曲 + 创意提示 → 调研 → 角色/场景计划审批 → 分波次子代理生成。MIT。" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 920px; --code-bg: #f3f4f6; --accent: #e85d04;
+      --card: #fff;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta {
+      margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
+    }
+    .brand img {
+      width: 88px; height: 88px; border-radius: 16px;
+      border: 1px solid var(--border); background: #fff;
+    }
+    h1 {
+      font-size: 1.55rem; line-height: 1.35; font-weight: 700; margin: 0;
+      letter-spacing: -0.02em;
+    }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    .cta {
+      display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1.1rem 0 0;
+    }
+    .cta a {
+      display: inline-block; padding: 0.55rem 1rem; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    }
+    .cta a.primary { background: var(--accent); color: #fff; }
+    .cta a.secondary { background: #fff; color: var(--fg); border: 1px solid var(--border); }
+    .cta a:hover { filter: brightness(0.95); }
+    article h2 {
+      font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700;
+      scroll-margin-top: 1rem;
+    }
+    article h3 {
+      font-size: 1.08rem; line-height: 1.4; margin: 1.5rem 0 0.55rem; font-weight: 650;
+    }
+    article > p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc {
+      background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1.1rem; margin: 0 0 1.5rem;
+    }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.25rem 0; padding: 0; }
+    figure img {
+      display: block; width: 100%; height: auto; border-radius: 8px;
+      background: #fff; border: 1px solid var(--border);
+    }
+    figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; }
+    blockquote {
+      margin: 0 0 1.15rem; padding: 0.65rem 1rem;
+      border-left: 3px solid var(--accent); background: #fff6f0; color: #333;
+    }
+    table.guides {
+      width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem;
+    }
+    table.guides th, table.guides td {
+      border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; vertical-align: top;
+    }
+    table.guides th { background: #f3f4f6; }
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem;
+      font-size: 0.88rem; line-height: 1.55;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    p code, li code, td code {
+      background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem; margin: 0 0 0.5rem;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    .card .frame { display: block; line-height: 0; }
+    .card img { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+    .card-body { padding: 0.85rem 0.95rem 1rem; flex: 1; display: flex; flex-direction: column; }
+    .card .meta { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.5rem; }
+    .card .links { margin: 0; font-size: 0.88rem; }
+    .warn {
+      background: #fff8e6; border: 1px solid #f0d78c; border-radius: 8px;
+      padding: 0.85rem 1rem; margin: 0 0 1.15rem; font-size: 0.95rem;
+    }
+    footer.note {
+      margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+      font-size: 0.88rem; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="meta">
+      <div class="brand">
+        <img src="images/icon.png" width="88" height="88" alt="插件图标：橙色玻璃气泡、时间线播放钮与音符" />
+        <div>
+          <h1>Motion Graphics Music Video<br />Claude Code 音乐视频 Skill</h1>
+        </div>
+      </div>
+      <p class="source">仓库：<a href="https://github.com/makevoid/motion-graphics-music-video-skill">https://github.com/makevoid/motion-graphics-music-video-skill</a></p>
+      <p class="source">Skill 说明：<a href="https://github.com/makevoid/motion-graphics-music-video-skill/blob/main/.claude/skills/motion-graphics-music-video/SKILL.md">SKILL.md</a></p>
+      <p class="meta-line">作者：makevoid · 语言：Ruby · 版本：0.2.0 · Stars ≈ 6 · MIT · 默认分支 main · 非官方中文阅读镜像</p>
+      <div class="cta">
+        <a class="primary" href="https://github.com/makevoid/motion-graphics-music-video-skill" target="_blank" rel="noopener">GitHub 仓库</a>
+        <a class="secondary" href="#examples">示例成片（YouTube）</a>
+        <a class="secondary" href="#quickstart">快速开始</a>
+      </div>
+    </header>
+    <article>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#about">这是什么</a></li>
+<li><a href="#quickstart">快速开始</a></li>
+<li><a href="#usage">用法与依赖</a></li>
+<li><a href="#fal">Fal API 密钥</a></li>
+<li><a href="#workflow">工作流与审核波次</a></li>
+<li><a href="#toolkit">工具包命令</a></li>
+<li><a href="#examples">示例成片</a></li>
+<li><a href="#license">许可与外部数据共享</a></li>
+</ol></nav>
+
+<h2 id="about">这是什么</h2>
+<p><strong>motion-graphics-music-video</strong> 是 <a href="https://github.com/makevoid">makevoid</a> 发布的 <strong>Claude Code 插件</strong>：内含自包含的音乐视频 skill，以及从 P(doom)、wife/boyfriend 等成片工作流抽取出的 <strong>Ruby 工具包</strong>。</p>
+<p>技术栈覆盖：</p>
+<ul>
+  <li><strong>Fal</strong>：图像 / 视频 / 音频适配器（角色板、关键帧、H3 动画、转录、分轨、SFX 等）</li>
+  <li><strong>p5</strong>：定时动效、镜头、文字与透明精灵合成</li>
+  <li><strong>Python</strong>：节拍/能量分析、抠像、追踪、音频混合</li>
+  <li><strong>Swift Core Image</strong>：按 cue 的最终 VFX（需 macOS）</li>
+  <li><strong>RSpec</strong>：本地行为与模拟 Fal 集成测试（付费 live 测试需显式 opt-in）</li>
+</ul>
+<blockquote>准备一首歌 + 创意提示。Agent 先调研并写角色/场景计划请你审批，再按审核波次用子代理生成：2 → 3–4 → 4–8 → 6–10，反复直到成片。</blockquote>
+<p>默认可读焦点主体、有节奏的相机切换与「有意为之的混乱」动画；更安静的 brief 会覆盖该默认。病毒式传播是目标，<strong>不是承诺</strong>。</p>
+
+<h2 id="quickstart">快速开始</h2>
+<p>安装命令保持上游英文原文：</p>
+<pre><code>claude plugin marketplace add makevoid/motion-graphics-music-video-skill
+claude plugin install motion-graphics-music-video@makevoid-music-video --scope user</code></pre>
+<ol>
+  <li>在终端启动 <code>claude</code>，配置 Fal 密钥：
+<pre><code>/plugin configure motion-graphics-music-video</code></pre>
+    在 <strong>Fal API key</strong> 字段填入你自己的 Fal AI 密钥（勿把真实密钥写进聊天或仓库）。
+  </li>
+  <li>打开 Claude Desktop，选 <strong>Code</strong>，新建可访问文件夹的代码会话。</li>
+  <li>运行 skill，再提供歌曲与创意提示：
+<pre><code>/motion-graphics-music-video:motion-graphics-music-video</code></pre>
+  </li>
+</ol>
+<p>插件的 <code>music-video</code> MCP 服务器用你的密钥跑所有 Fal 任务。Claude Code 把密钥放在安全凭据存储，只传给该服务器，会话本身看不到密钥。</p>
+<h3>更新插件</h3>
+<pre><code>claude plugin marketplace update makevoid-music-video
+claude plugin update motion-graphics-music-video@makevoid-music-video --scope user</code></pre>
+<p>更新后重启 Claude Code。已有视频工程保留各自拷贝的工具包；插件更新主要影响之后新初始化的项目。</p>
+
+<h2 id="usage">用法与依赖</h2>
+<h3>系统依赖</h3>
+<p>生成视频前安装：<strong>Ruby 3.2+</strong>（含 Bundler）、<strong>Node.js 22+</strong>、<strong>Python 3</strong>、<strong>Chrome</strong>、<strong>FFmpeg</strong>（含 ffprobe）、<strong>ImageMagick</strong>。Swift VFX 与完整测试套件需要 <strong>macOS 14+</strong> 与 Swift 5.9+ / Xcode 命令行工具。</p>
+<h3>运行 skill</h3>
+<p>在 Claude Desktop <strong>Code</strong> 会话（有文件夹权限）或工作目录下的 <code>claude</code> 终端会话中调用：</p>
+<pre><code>/motion-graphics-music-video:motion-graphics-music-video</code></pre>
+<p>提供歌曲附件或本地路径，以及创意提示。Skill 会创建独立的视频项目，在该项目里跑 <code>setup</code>（装 Ruby gems、npm、本地 Python 环境）与 <code>doctor</code>（检查依赖）。在发起新的<strong>付费生成</strong>前，会请你审批计划与预算。依赖与成片文件留在视频项目内，不写回插件安装目录。</p>
+<p><code>doctor</code> 以 JSON 布尔值报告依赖检查结果。插件会话应通过 MCP 跑 doctor 以包含已配置密钥；直接 Bash 调用看不到插件的敏感选项。</p>
+<h3>本地开发 / 软链安装（可选）</h3>
+<pre><code>git clone https://github.com/makevoid/motion-graphics-music-video-skill.git
+cd motion-graphics-music-video-skill
+claude plugin validate .claude-plugin/plugin.json --strict
+claude plugin validate .claude-plugin/marketplace.json --strict</code></pre>
+<p>会话级加载：<code>claude --plugin-dir /absolute/path/to/motion-graphics-music-video-skill</code>。</p>
+<p>跨项目手动软链（macOS / Linux，从仓库根目录）：</p>
+<pre><code>mkdir -p ~/.claude/skills
+ln -s "$PWD/.claude/skills/motion-graphics-music-video" \
+  ~/.claude/skills/motion-graphics-music-video</code></pre>
+
+<h2 id="fal">Fal API 密钥</h2>
+<div class="warn">
+  <strong>说明：</strong>本镜像<strong>不会</strong>提供、编造或嵌入任何 API 密钥或价格数字。密钥由你在 Fal 账号自行申请，并通过插件配置或环境变量注入。旧的 <code>FAL_KEY</code> 与家目录密钥文件已不再使用。
+</div>
+<ul>
+  <li>推荐：<code>/plugin configure motion-graphics-music-video</code>，填写敏感选项 <code>FAL_AI_API_KEY</code>。Claude Code 会遮罩并安全存储；插件经环境变量交给内置 Ruby MCP 服务器。</li>
+  <li>选项为可选：未设置时服务器回退到启动 Claude Code 时 shell 中的 <code>FAL_AI_API_KEY</code>；两者皆无则 <code>credential_status</code> 报告 <code>configured: false</code>。</li>
+  <li>独立开发时：
+<pre><code>export FAL_AI_API_KEY='your-fal-api-key'</code></pre>
+  </li>
+  <li>切勿把真实密钥放进聊天、源码、命令参数或 git 提交。改密钥后重启 / 重连 MCP 服务器。</li>
+</ul>
+<p>详见上游 <a href="https://github.com/makevoid/motion-graphics-music-video-skill/blob/main/.claude/skills/motion-graphics-music-video/references/credentials.md">credentials.md</a>。</p>
+
+<h2 id="workflow">工作流与审核波次</h2>
+<p>执行契约：对 agent 与每个子代理，<strong>Ruby（<code>scripts/mv.rb</code>）是唯一媒体执行入口</strong>；不直接 curl Fal、不绕过 Ruby 调 FFmpeg / p5 / Swift。</p>
+<ol>
+  <li><strong>接入与分析</strong> — 收集歌曲与创意提示（可选：参考片、必须保留的角色、画幅、受众、预算）。默认 16:9、24fps、1080p。初始化独立项目 → <code>setup</code> → <code>doctor</code> → 本地节拍/能量分析；用网络搜索写 <code>docs/RESEARCH.md</code>。</li>
+  <li><strong>计划并审批</strong> — 写完整可审阅的 <code>docs/PLAN.md</code>（角色/场景提示、风格、成本粗估与重试额度等）。新方向须用户审批角色提示、场景提示与整体 vibe，<strong>审批前不做付费生成</strong>。批准后用 <code>plan:approve</code> 记录计划哈希。</li>
+  <li><strong>分波次子代理生成</strong> — 协调者拥有配置与终装；工人各自占用不同 RUN/资源。波次规模（资产任务数，不是帧数）：
+    <table class="guides">
+      <thead><tr><th>波次</th><th>规模（上游约定）</th></tr></thead>
+      <tbody>
+        <tr><td>首波试点</td><td>先 2 个资产</td></tr>
+        <tr><td>随后</td><td>3–4 → 4–8 → 6–10，并重复 6–10 直到完成</td></tr>
+      </tbody>
+    </table>
+    每波结束后必须目视/听审、写 review、修理失败并用 <code>work:accept</code> 接受，才能进入下一波。开场与主高潮应尽早排进试点。
+  </li>
+  <li><strong>动画、合成与收尾</strong> — H3 负责角色表演与口型；p5 负责图形/相机/文字；Python 负责抠像/分析/混音；Swift 负责最终 VFX。对照完整原曲拼接；交付成片、干净版、contact sheet、计划/调研、角色参考与修订摘要。完成 = 每个计划场景与结尾都已组装审阅，而不是只有开场试点。</li>
+</ol>
+<p>两条历史路径（均不依赖旧项目文件）：P(doom) 偏参考片分析；wife/boyfriend 偏歌曲 + 创意提示 + 网络调研。</p>
+
+<h2 id="toolkit">工具包命令</h2>
+<p>在仓库根目录（或已 <code>init</code> 的项目内）常用入口：</p>
+<pre><code>ruby .claude/skills/motion-graphics-music-video/scripts/mv.rb --help
+ruby .claude/skills/motion-graphics-music-video/scripts/mv.rb setup
+ruby .claude/skills/motion-graphics-music-video/scripts/mv.rb test</code></pre>
+<p><code>rake test</code> 是对同一 Ruby 入口的薄封装。常规测试均为本地，不发起付费 Fal 调用。完整本地套件需要 macOS（Swift VFX）、Chrome、FFmpeg、ImageMagick、Node、Python 与 Ruby。仓库<strong>不</strong>捆绑原项目成片、歌曲、密钥或已生成角色；字体保留各自许可证文件。</p>
+<p>插件侧：对 Fal 相关配方用 MCP 的 <code>run_task</code> / <code>task_status</code>（可并发至约 10 个本地 worker）；本地初始化、setup、计划审批与本地媒体任务仍走 Ruby CLI。</p>
+
+<h2 id="examples">示例成片</h2>
+<p>以下三支由该 skill 制作。缩略图<strong>自托管</strong>于本页；完整视频请点缩略图或链接到 <strong>YouTube</strong>（本镜像不托管视频文件）。</p>
+<div class="grid">
+  <article class="card">
+    <a class="frame" href="https://youtu.be/b70F1bWZlwE" target="_blank" rel="noopener" title="在 YouTube 观看">
+      <img src="images/you-knew-how-to-fork-take-2.jpg" alt="You knew how to fork — take 2" width="480" height="270" loading="lazy" />
+    </a>
+    <div class="card-body">
+      <h3>You knew how to fork — take 2</h3>
+      <p class="meta">@joshcirre · 1:26</p>
+      <p class="links"><a href="https://youtu.be/b70F1bWZlwE" target="_blank" rel="noopener">▶ YouTube</a></p>
+    </div>
+  </article>
+  <article class="card">
+    <a class="frame" href="https://youtu.be/Nxhg23_fheY" target="_blank" rel="noopener" title="在 YouTube 观看">
+      <img src="images/you-knew-how-to-fork.jpg" alt="You knew how to fork" width="480" height="270" loading="lazy" />
+    </a>
+    <div class="card-body">
+      <h3>You knew how to fork</h3>
+      <p class="meta">@joshcirre · 1:26</p>
+      <p class="links"><a href="https://youtu.be/Nxhg23_fheY" target="_blank" rel="noopener">▶ YouTube</a></p>
+    </div>
+  </article>
+  <article class="card">
+    <a class="frame" href="https://youtu.be/s8PmK6zD5RY" target="_blank" rel="noopener" title="在 YouTube 观看">
+      <img src="images/upping-my-p-doom-remix-2.jpg" alt="Upping my P(doom) — remix #2" width="480" height="270" loading="lazy" />
+    </a>
+    <div class="card-body">
+      <h3>Upping my P(doom) — remix #2</h3>
+      <p class="meta">Remix of donaldjewkes's video remix · 2:22 · Opus 5.5 (et al.)</p>
+      <p class="links"><a href="https://youtu.be/s8PmK6zD5RY" target="_blank" rel="noopener">▶ YouTube</a></p>
+    </div>
+  </article>
+</div>
+
+<h2 id="license">许可与外部数据共享</h2>
+<h3>许可</h3>
+<ul>
+  <li>插件原创代码与文档：<a href="https://github.com/makevoid/motion-graphics-music-video-skill/blob/main/LICENSE">MIT</a></li>
+  <li>捆绑字体：保留各自 SIL Open Font License 或 Apache 2.0</li>
+  <li>图标生成记录见上游 <code>docs/icon-generation.md</code>（Nano Banana 2 高思考图像及其 PNG/SVG）</li>
+</ul>
+<h3>外部服务与数据共享（摘要）</h3>
+<p>本地 MCP / 独立 CLI 会向外部服务发送数据；以下摘自上游 README，非本站额外收集：</p>
+<ul>
+  <li><strong>Fal API 与存储</strong>（如 <code>queue.fal.run</code>、<code>rest.alpha.fal.ai</code>、提供商返回的 URL）：认证、提示词、歌词、设置，以及用于生成/转录/分轨的选定音视频。媒体 URL 可能被持有链接者访问；远端资产不会自动删除。参见 <a href="https://fal.ai/legal/privacy-policy" target="_blank" rel="noopener">Fal 隐私政策</a>。</li>
+  <li><strong>Fal schemas</strong>：模型标识符查询。</li>
+  <li><strong>网络调研</strong>：创意简报搜索与参考 URL 会到达 Claude 配置的搜索提供商与访问站点。</li>
+  <li><strong>依赖与更新</strong>：setup 联系 RubyGems / npm / PyPI（或镜像）；插件安装更新联系 GitHub。</li>
+  <li><strong>本地处理</strong>：分析、渲染、剪辑与导出在本地完成。无维护者遥测、无自动社交发布。仍适用常规 Claude 对话与工具结果处理。</li>
+</ul>
+
+    </article>
+    <footer class="note">
+      <p>本页为 BreakDimbo / Woo jack 维护的非官方中文阅读镜像，便于对照 wiki 与中文笔记。内容依据上游 README 与 SKILL/references 整理；安装命令保持英文原文。成片仅外链 YouTube，缩略图与图标自托管。</p>
+      <p><a href="../">← 返回中文博文镜像索引</a> · 上游：<a href="https://github.com/makevoid/motion-graphics-music-video-skill">makevoid/motion-graphics-music-video-skill</a></p>
+    </footer>
+  </div>
+</body>
+</html>
