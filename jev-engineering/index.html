@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jev 工程：从零搭建并使用「AI 新大脑」的完整 10 步路线图 — 0xCodila（中文镜像）</title>
+  <meta name="description" content="0xCodila：Jev 工程 10 步路线图中文镜像。TypeSafe System One 决策模型：从 Playground 到本地路由器，再到浏览器/分类/收件箱/模型路由四类实战。" />
+  <meta property="og:title" content="Jev 工程：从零搭建并使用「AI 新大脑」的完整 10 步路线图" />
+  <meta property="og:image" content="images/og.jpg" />
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #1a1a1a;
+      --muted: #666;
+      --border: #e8e8e8;
+      --link: #0b57d0;
+      --max: 760px;
+      --code-bg: #f3f4f6;
+      --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+    }
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+    header.meta {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 1.75rem;
+      line-height: 1.35;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 {
+      font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700;
+    }
+    article h3 {
+      font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650;
+    }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc {
+      background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1.1rem; margin: 0 0 1.5rem;
+    }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img {
+      display: block; width: 100%; height: auto; border-radius: 6px;
+      background: #fff; border: 1px solid var(--border);
+    }
+    img.cover { border-radius: 8px; }
+    blockquote {
+      margin: 0 0 1.15rem; padding: 0.65rem 1rem;
+      border-left: 3px solid var(--accent); background: #f6f3ff; color: #333;
+    }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem;
+      font-size: 0.88rem; line-height: 1.55;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    p code, li code {
+      background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    footer.note {
+      margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+      font-size: 0.88rem; color: var(--muted);
+    }
+    footer.note code { font-size: 0.85em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="meta">
+      <h1>Jev 工程：从零搭建并使用「AI 新大脑」的完整 10 步路线图</h1>
+      <p class="source">原文：<a href="https://x.com/0xCodila/status/2100984487802708306">https://x.com/0xCodila/status/2100984487802708306</a></p>
+      <p class="meta-line">作者：0xCodila（codila） · 发布：2026-09-18 · 非官方中文镜像</p>
+    </header>
+    <article>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#step-01">01. 找出智能体里 Jev 能接手的那一段</a></li>
+<li><a href="#step-02">02. 在 Playground 里先做一次决策</a></li>
+<li><a href="#step-03">03. 一次性接通 API</a></li>
+<li><a href="#step-04">04. 把请求变成一份已保存的交接件</a></li>
+<li><a href="#step-05">05. 提出能落到行动的问题</a></li>
+<li><a href="#step-06">06. 偷师 Browser Use 的最佳点子：重建菜单</a></li>
+<li><a href="#step-07">07. 别再为「问题互相等待」付钱</a></li>
+<li><a href="#step-08">08. 给通宵工作一个停点</a></li>
+<li><a href="#step-09">09. 看清标价真正买到什么</a></li>
+<li><a href="#step-10">10. 用法示例</a></li>
+<li><a href="#the-shift">范式转移</a></li>
+</ol></nav>
+<figure class="cover-fig"><img class="cover" src="images/cover.jpg" alt="封面" /></figure>
+<p><strong>杰文斯悖论</strong>（图中人像即杰文斯）说的是：提高某种资源的使用效率，并不会降低其总消耗，反而会推高整体用量。</p>
+<ul>
+<li>这正是 AI 的全局困境：LLM 与智能体</li>
+</ul>
+<p>而 <a href="https://x.com/typesafeai" rel="noopener">@typesafeai</a> 的 <strong>Jev</strong>，被设计成能帮你省下 101% 的钱与时间，并提升你用 AI 的效率。</p>
+<p>所以相信我——这是你现在就该装上的 2030 配置。</p>
+<p>动手前，先订我的 Substack 拿更新信息： <a href="https://substack.com/@0xcodila" rel="noopener">https://substack.com/@0xcodila</a></p>
+<hr />
+<figure><img src="images/fig01.jpg" alt="" loading="lazy" /></figure>
+<p>「Browser Use 把 Jev 塞进一个智能体里，用 7 秒、花 $0.0039 就找到了航班。」</p>
+<blockquote>嵌入帖：https://x.com/i/status/2100411066966749359</blockquote>
+<p>当你回头看「幕僚长」一天在干什么，这就变得有意思了：选一个工人、检查结果、决定要不要继续。每一次分叉，都可能在真正有用的工作开始之前，再烧一次模型调用。</p>
+<blockquote>Jev 给这些决策配上了专属模型<br />
+<br /><br />
+你的写作智能体继续写；你的研究智能体继续查。夹在中间的那些小判断，变成一个你可以检查、计价、替换的独立组件。</blockquote>
+<p>先从一个独立的任务路由器开始：输入一份工作，让 Jev 选目的地，并把交接件存到本机。</p>
+<p>然后再跑 Browser Use 的完整浏览器智能体。（前者只需要一把 API key；浏览器项目需要两把。）</p>
+<hr />
+<h2 id="step-01">01. 找出智能体里 Jev 能接手的那一段</h2>
+<p>Jev 是 TypeSafe AI 的 System One 模型：你提供信息与预定义问题，它返回带概率的类型化答案。它不会写简报、不会生成代码，也不会用散文解释推理过程。<a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" rel="noopener">TypeSafe 发布长文</a></p>
+<p>从一个这样的任务开始：</p>
+<blockquote>研究三款新的 AI 智能体工具，并起草明天的简报。把草稿存好，等我审阅。</blockquote>
+<p>这个任务里藏着若干决策：资料够不够？下一个工人是谁？草稿能不能送审？</p>
+<p>这些才是 Jev 的候选。抓取来源、写段落、存文件，仍归你的工具与生成式模型。像「十步之后强制停下」这种硬规则，则属于代码。</p>
+<p>对一个 GrokBot 风格的幕僚长来说，保存好的交接件可以喂给现有工人。把工人接上，放在下面的独立搭建之后；第一次跑通甚至不需要一整支智能体团队。</p>
+<figure><img src="images/fig02.png" alt="" loading="lazy" /></figure>
+<hr />
+<h2 id="step-02">02. 在 Playground 里先做一次决策</h2>
+<ul>
+<li>打开 <a href="https://console.typesafe.ai/playground" rel="noopener">TypeSafe Playground</a>。如账户需要，先登录并完成开通。</li>
+</ul>
+<p>用下面这段作为 state：</p>
+<pre><code>Goal: Compare three AI-agent tools in a morning briefing.
+Completed work: No sources collected yet.
+Available workers: Researcher, Writer.
+Constraint: Save drafts for review. Do not publish.</code></pre>
+<p>加一个 Choice 问题：「下一个该哪个工人行动？」</p>
+<p>定义三个选项：<code>research</code>（证据还不够）、<code>write</code>（证据充分，可以起草）、<code>review</code>（请求不清或工作已完成）。</p>
+<p>跑一遍。然后把「已完成工作」字段换成真实研究笔记，再对比决策变化。这就是<a href="https://docs.typesafe.ai/introduction/quickstart" rel="noopener">官方 Quickstart</a> 描述的基本交互。</p>
+<hr />
+<h2 id="step-03">03. 一次性接通 API</h2>
+<p>你需要一个已开通 API 的 TypeSafe 账户，以及来自<a href="https://console.typesafe.ai/settings/keys" rel="noopener">密钥设置</a>的 key。调用记在该账户账单上。</p>
+<p>安装 <a href="https://www.python.org/downloads/" rel="noopener">Python</a> 3.12 或更新版本，然后在 macOS/Linux 打开 Terminal，或在 Windows 打开 PowerShell。</p>
+<p>macOS / Linux：</p>
+<pre><code>mkdir jev-starter
+cd jev-starter
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade typesafe-sdk</code></pre>
+<p>Windows PowerShell：</p>
+<pre><code>mkdir jev-starter
+cd jev-starter
+py -3 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade typesafe-sdk</code></pre>
+<p>这些命令会创建隔离环境，并安装<a href="https://docs.typesafe.ai/sdk/python" rel="noopener">官方 Python SDK</a>。把密钥放在源码之外；下面的脚本会私下询问。</p>
+<figure><img src="images/fig03.jpg" alt="" loading="lazy" /></figure>
+<p>在用编程智能体？若已安装 Node.js/npm，可加上 TypeSafe 官方 skill：</p>
+<pre><code>npx skills add typesafe-ai/skills --skill typesafe-ai</code></pre>
+<p>按提示选择你支持的智能体。skill 提供集成说明；Jev 本身仍通过 API 运行。<a href="https://github.com/typesafe-ai/skills" rel="noopener">官方仓库</a></p>
+<figure><img src="images/fig04.jpg" alt="" loading="lazy" /></figure>
+<hr />
+<h2 id="step-04">04. 把请求变成一份已保存的交接件</h2>
+<p>在 <code>jev-starter</code> 里、<code>.venv</code> 之外创建 <code>chief.py</code>。用纯文本编辑器，保存成准确文件名，不要变成 <code>chief.py.txt</code>。</p>
+<pre><code>import json
+import os
+from getpass import getpass
+from pathlib import Path
+from uuid import uuid4
+from typesafe_sdk import Choice, TypeSafeAPIError, TypeSafeClient
+
+if not os.environ.get(&quot;TYPESAFE_API_KEY&quot;):
+    os.environ[&quot;TYPESAFE_API_KEY&quot;] = getpass(&quot;TypeSafe API key: &quot;).strip()
+
+goal = input(&quot;Goal: &quot;).strip()
+if not goal:
+    raise SystemExit(&quot;Enter a goal.&quot;)
+notes = input(&quot;Completed work: &quot;).strip() or &quot;Nothing yet.&quot;
+state = {&quot;goal&quot;: goal, &quot;completed_work&quot;: notes}
+
+try:
+    with TypeSafeClient(model=&quot;jev-1.13.0&quot;) as client:
+        result = client.system_one(
+            state=state,
+            questions={
+                &quot;next_worker&quot;: Choice(
+                    instructions=&quot;Choose the next step for a research briefing.&quot;,
+                    criteria={
+                        &quot;research&quot;: &quot;Collect evidence still needed for the goal.&quot;,
+                        &quot;write&quot;: &quot;Draft the briefing from sufficient evidence.&quot;,
+                        &quot;review&quot;: &quot;Goal unclear, outside scope, or work complete.&quot;,
+                    },
+                )
+            },
+        )
+except TypeSafeAPIError as error:
+    raise SystemExit(f&quot;API error {error.status}; see Step 8.&quot;)
+
+answer = result.choices[&quot;next_worker&quot;]
+destination = &quot;review&quot;
+if answer.choice in {&quot;research&quot;, &quot;write&quot;} and answer.confidence &gt;= 0.85:
+    destination = answer.choice
+
+folder = Path(__file__).resolve().parent / &quot;queue&quot; / destination
+folder.mkdir(parents=True, exist_ok=True)
+job = folder / f&quot;{uuid4().hex}.json&quot;
+payload = dict(state, choice=answer.choice, confidence=answer.confidence,
+               destination=destination, status=&quot;queued&quot;)
+job.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding=&quot;utf-8&quot;)
+print(&quot;Saved handoff:&quot;, job)</code></pre>
+<p>macOS/Linux 运行：</p>
+<pre><code>.venv/bin/python chief.py</code></pre>
+<p>Windows 运行：</p>
+<pre><code>.\.venv\Scripts\python.exe chief.py</code></pre>
+<p>按提示粘贴 API key——终端会隐藏输入。</p>
+<p>Goal 填：<code>Compare three AI-agent tools for tomorrow's briefing</code>。Completed work 填：<code>No sources collected yet</code>。</p>
+<p>结果：一条带完整路径的 <code>Saved handoff:</code> 消息。打开那个 JSON：里面有请求、进度、Jev 的选择、置信度与目的地。</p>
+<p>每次运行都会在 <code>queue/research</code>、<code>queue/write</code> 或 <code>queue/review</code> 下新建文件。这些是本地任务队列；保存的任务等待工人来消费。</p>
+<p>API 调用与错误处理遵循 <a href="https://docs.typesafe.ai/sdk/python/usage" rel="noopener">SDK 用法指南</a>。我把初始送审阈值设为 0.85——请用你工作流里的标注样例再调。置信度不是准确率百分比。<a href="https://docs.typesafe.ai/confidence" rel="noopener">置信度说明</a></p>
+<hr />
+<h2 id="step-05">05. 提出能落到行动的问题</h2>
+<p>三种答案类型覆盖不同工作：</p>
+<p>Jev 提供三种问题类型，各自对应一类决策：</p>
+<ul>
+<li><strong>Choice</strong> 从列表中选一项。适合：「下一个谁干？」返回所选选项、概率分布与置信度。</li>
+<li><strong>Score</strong> 按你定义的量表评估。适合：「这条来源有多相关？」返回量表上的值，以及概率与置信度。</li>
+<li><strong>Noul</strong> 回答是否题。适合：「这个请求需要发布吗？」返回「是」的概率，范围 0 到 1。</li>
+</ul>
+<p>定义一个相关性 Score，三段描述：无关、部分相关、直接回答问题。数值结果从 0 到 2，可含小数。Noul 接近 0.5 表示对是否不确定。<a href="https://docs.typesafe.ai/primitives/score" rel="noopener">Score</a> · <a href="https://docs.typesafe.ai/primitives/noul" rel="noopener">Noul</a></p>
+<figure><img src="images/fig05.jpg" alt="" loading="lazy" /></figure>
+<p>一个有用细节：Jev <strong>看不到</strong>你的问题 ID。把字段命名成 <code>safe_to_publish</code> 不会贡献任何指令。把真正要求写进问题，并把每个选项说清楚。<a href="https://docs.typesafe.ai/primitives/choice" rel="noopener">Choice 文档</a></p>
+<p>还要提供证据。「研究员做完了」远不如把来源、发现与剩余缺口写清楚。这些字段与原始请求分开。<a href="https://docs.typesafe.ai/concepts/state" rel="noopener">State 文档</a></p>
+<figure><img src="images/fig06.jpg" alt="" loading="lazy" /></figure>
+<hr />
+<h2 id="step-06">06. 偷师 Browser Use 的最佳点子：重建菜单</h2>
+<p>浏览器里，可用动作在每次点击后都会变。Browser Use 会根据观察到的控件重建一份新鲜列表，再让 Jev 从中选择。需要填输入框时，才用小 LLM 生成文本。<a href="https://github.com/browser-use/jev-ultrafast/blob/main/jev_ultrafast/model.py" rel="noopener">决策实现</a></p>
+<p>把同一设计用到你的幕僚长上：选项只来自<strong>当前存在且可用</strong>的工人。选研究材料时带上当前来源 ID。工具改了状态之后，刷新选项。</p>
+<ul>
+<li>否则你的决策模型还在点昨天的菜单。</li>
+</ul>
+<figure><img src="images/fig07.jpg" alt="" loading="lazy" /></figure>
+<p>候选很多时：先在代码里滤掉明显不匹配的，给剩余项打分，再在短名单里选。Choice 最多支持 255 个选项；TypeSafe 在<a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" rel="noopener">发布示例</a>里描述了这种「先打分再选择」的做法。</p>
+<figure><img src="images/fig08.png" alt="" loading="lazy" /></figure>
+<hr />
+<h2 id="step-07">07. 别再为「问题互相等待」付钱</h2>
+<p>你的调度器可能同时需要：选工人、紧急度分数、批准检查。</p>
+<p>若三者都能查看同一份 state，就把它们一起发出去。</p>
+<p>TypeSafe 支持并行问题与推测性分支：先问多种可能的下一步，再只用与所选分支相关的答案。</p>
+<p>问题之间<strong>读不到</strong>彼此的答案。若决策依赖一次新搜索，先做搜索。<a href="https://docs.typesafe.ai/patterns/fan-out" rel="noopener">并行评估模式</a></p>
+<p>浏览器例子还暴露了另一个瓶颈。优化后的运行时把浏览器协议调用的中位数从 1,092 降到 101，三组配对任务的中位耗时下降 25%。两边用的是同一批模型。</p>
+<p>改动包括：一次读齐页面状态，以及不对无关动画反复做新预测。先检查重复工具调用，再考虑为更快模型买单。<a href="https://github.com/browser-use/jev-ultrafast/blob/main/docs/performance.md" rel="noopener">性能报告</a></p>
+<figure><img src="images/fig09.jpg" alt="" loading="lazy" /></figure>
+<hr />
+<h2 id="step-08">08. 给通宵工作一个停点</h2>
+<p>做早间简报时，我会允许采集来源与写草稿，然后停在审阅。发布应另做权限检查。</p>
+<p>应用还需要：动作上限、花费上限、以及已保存进度。</p>
+<p>中断之后，应先检查最后一次完成的动作，再决定是否重做。一个高置信度答案，并不能证明文件已保存或消息已发出。</p>
+<p>Browser Use 在 Jev 选出 DONE 之后，会独立核对结果。把这种分离借到你自己的完成检查上。<a href="https://github.com/browser-use/jev-ultrafast/blob/main/jev_ultrafast/agent.py" rel="noopener">Agent loop</a></p>
+<figure><img src="images/fig10.jpg" alt="" loading="lazy" /></figure>
+<p>本地路由器跑通后，用这段简报去接现有智能体：</p>
+<blockquote>阅读 TypeSafe skill，并检查我的工人接口。把 chief.py 的 JSON 队列接到现有研究与写作处理器。防止重复处理。每步动作后保存进度。加上调用与花费上限、不确定时送审、以及「草稿已存在」的完成检查。发布仍需批准。明确标出缺失的连接器。</blockquote>
+<p>若起步失败，按错误选修复：</p>
+<ul>
+<li>Python 命令缺失：完成 Python 安装并重开终端。</li>
+<li>模块缺失：用同一个 <code>.venv</code> 解释器重装 SDK。</li>
+<li>401：更换 API key 再跑。</li>
+<li>422：对照粘贴代码检查命名的请求字段。</li>
+<li>429 / 529：允许退避；若限流或过载持续，稍后再试。</li>
+</ul>
+<p>SDK 自带重试；若 API 错误仍在，脚本会停下。<a href="https://docs.typesafe.ai/api" rel="noopener">API 参考</a></p>
+<hr />
+<h2 id="step-09">09. 看清标价真正买到什么</h2>
+<p>Jev 1.13 定价为每百万输入 token <strong>$0.042</strong>，<strong>不收</strong>输出 token 费。若每次决策计费约 1,000 输入 token，则 10,000 次决策的 Jev 推理费约 <strong>$0.42</strong>。<a href="https://docs.typesafe.ai/models" rel="noopener">定价</a></p>
+<figure><img src="images/fig11.jpg" alt="" loading="lazy" /></figure>
+<p>航班演示报出的 $0.0039，对得上记录的 90,558 个 Jev 输入 token，再加上文本助手那部分费用。</p>
+<p>浏览器成本不在该计算内。约七秒的计时从初始页面观察之后开始，且不含跑完后的重新核验。</p>
+<ul>
+<li>所以它找的是航班结果，并不订票。<a href="https://github.com/browser-use/jev-ultrafast/blob/main/docs/performance.md" rel="noopener">运行测量</a></li>
+</ul>
+<p>另一类负载上，Vercel 的 fx 团队报告相对 GPT-5.6-luna，安全分类大约快 5–18×，准确率也更好。</p>
+<p>该对比针对的是分类器，不是整个智能体跑完的时长。<a href="https://x.com/fazxes/status/2100300097695232164" rel="noopener">原始基准帖</a></p>
+<figure><img src="images/fig12.jpg" alt="" loading="lazy" /></figure>
+<p>按<strong>完成的任务</strong>记账。一次便宜却把工人送进错误分支的决策，可能比决策本身更贵。</p>
+<hr />
+<h2 id="step-10">10. 用法示例</h2>
+<p>基础搭建完成后，Jev 已经能读任务状态，并在预定义选项间做选择。你只需要决定：自动化哪一个反复出现的决策。</p>
+<h3 id="1-控制浏览器">1. 控制浏览器</h3>
+<p>Browser Use 用 Jev 选择下一步动作与正确页面元素。智能体用 7 秒、$0.0039 找到航班。</p>
+<blockquote>嵌入帖：https://x.com/i/status/2100411066966749359</blockquote>
+<p><a href="https://github.com/browser-use/jev-ultrafast" rel="noopener">打开代码</a></p>
+<p>如何复现：跑官方项目，填入 TypeSafe 与 OpenRouter 密钥，再给智能体一个网站与目标。Jev 选动作与目标，浏览器执行决策。</p>
+<h3 id="2-给研究分类">2. 给研究分类</h3>
+<p>Hassan 用 Jev 给 1,018 篇 AI 论文分类。整次分类花 <strong>$0.08</strong>，每篇端到端中位延迟 256ms。</p>
+<blockquote>嵌入帖：https://x.com/i/status/2100426999546184123</blockquote>
+<p>如何复现：把每篇的标题与摘要送给 Jev，把主题定义为 Choice 选项。保存所选类别，把最强论文交给写作智能体。</p>
+<h3 id="3-分拣收件箱">3. 分拣收件箱</h3>
+<p>Riley Brown 演示了如何用 Jev 给来信分类，并决定下一步该做什么。</p>
+<blockquote>嵌入帖：https://x.com/i/status/2100404532119269426</blockquote>
+<p>如何复现：把每封邮件作为 state，加上 reply / research / wait / review 等 Choice 选项。把每个答案接到对应文件夹或邮件智能体。</p>
+<h3 id="4-在模型之间路由任务">4. 在模型之间路由任务</h3>
+<p>LangChain 用 Jev 按任务在更便宜与更强的模型之间做选择。</p>
+<figure><img src="images/fig13.jpg" alt="" loading="lazy" /></figure>
+<p><a href="https://www.langchain.com/blog/building-a-harness-with-jev" rel="noopener">打开 LangChain 指南</a></p>
+<p>如何复现：接上多个模型，描述各自擅长什么，把进来的请求交给 Jev。简单任务走便宜模型，复杂任务走推理模型。</p>
+<p>以及其他案例：</p>
+<blockquote>嵌入帖：https://x.com/i/status/2100739055923425589</blockquote>
+<blockquote>嵌入帖：https://x.com/i/status/2100694549362553153</blockquote>
+<hr />
+<h2 id="the-shift">范式转移</h2>
+<blockquote>LLM 负责创造工作 → Jev 决定下一步发生什么。</blockquote>
+<p>Jev 不是又一个聊天机器人。</p>
+<p>它是一个快速决策层：读取系统当前状态，并在你定义的选项之间做选择。</p>
+<p>真正的 alpha 也不是那次 7 秒航班演示，或 $0.08 的论文分类。</p>
+<p>真正的 alpha 是意识到：智能体里有多少昂贵的 LLM 调用，其实根本不需要「生成」：</p>
+<ul>
+<li>让 LLM 去研究、规划、写作</li>
+<li>让 Jev 去路由、打分、批准或升级</li>
+<li>让代码去执行决策</li>
+</ul>
+<p>这种拆分会改写整条智能体技术栈。</p>
+<p>你现在有了搭建步骤、可工作的决策路由器，以及四种真实部署方式。从一个反复出现的决策开始。测量它。然后再替换下一个。</p>
+<p>多数构建者会继续把前沿模型的 token，花在每一次是/否、路由与打分上。</p>
+<p>少数把「思考」与「决策」分开的人，会以一小部分成本，造出更快的智能体。</p>
+<blockquote>下次做智能体之前，先收藏这份手册 → <a href="https://x.com/0xCodila" rel="noopener">@0xCodila</a></blockquote>
+
+    </article>
+    <footer class="note">
+      <p>非官方中文镜像 · 配图为 X Article 原图本地副本（JPEG/PNG，非 Astro SVG）· 代码块保留英文原文 · 链接指向 TypeSafe / GitHub 官方文档。</p>
+      <p>工作副本：<code>/workspace/jev-engineering-blog/</code> · 部署树：<code>/workspace/zh-blogs-pages/jev-engineering/</code></p>
+    </footer>
+  </div>
+</body>
+</html>
