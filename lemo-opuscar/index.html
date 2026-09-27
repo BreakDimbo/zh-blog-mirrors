@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片 — Lemomo（中文镜像）</title>
+  <meta name="description" content="Lemomo / LemoLab：39 种可复用影片风格提示词 + Claude Opus 5.5 纯代码样片。中文阅读页与风格索引；官方图鉴可观看成片。" />
+  <meta property="og:title" content="Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片" />
+  <meta property="og:image" content="images/cover.jpg" />
+  <meta property="og:description" content="选一个风格，带上你的故事，让编程 agent 当导演。代码 MIT；指南与成片 CC BY 4.0。" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 920px; --code-bg: #f3f4f6; --accent: #c45c26;
+      --card: #fff;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta {
+      margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 1.7rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    .cta {
+      display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1.1rem 0 0;
+    }
+    .cta a {
+      display: inline-block; padding: 0.55rem 1rem; border-radius: 8px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    }
+    .cta a.primary { background: var(--accent); color: #fff; }
+    .cta a.secondary { background: #fff; color: var(--fg); border: 1px solid var(--border); }
+    .cta a:hover { filter: brightness(0.95); }
+    article h2 {
+      font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700;
+      scroll-margin-top: 1rem;
+    }
+    article h3 {
+      font-size: 1.05rem; line-height: 1.4; margin: 0 0 0.35rem; font-weight: 650;
+    }
+    article > p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc {
+      background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1.1rem; margin: 0 0 1.5rem;
+    }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure img {
+      display: block; width: 100%; height: auto; border-radius: 8px;
+      background: #fff; border: 1px solid var(--border);
+    }
+    figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; }
+    blockquote {
+      margin: 0 0 1.15rem; padding: 0.65rem 1rem;
+      border-left: 3px solid var(--accent); background: #fff6f0; color: #333;
+    }
+    table.guides {
+      width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem;
+    }
+    table.guides th, table.guides td {
+      border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; vertical-align: top;
+    }
+    table.guides th { background: #f3f4f6; }
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem;
+      font-size: 0.88rem; line-height: 1.55;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    p code, li code, td code {
+      background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem; margin: 0 0 0.5rem;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    .card .frame { display: block; line-height: 0; }
+    .card img { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+    .card-body { padding: 0.85rem 0.95rem 1rem; flex: 1; display: flex; flex-direction: column; }
+    .card .en { font-size: 0.82rem; color: var(--muted); margin: 0 0 0.4rem; }
+    .card .film { margin: 0 0 0.35rem; font-size: 0.95rem; }
+    .card .syn { margin: 0 0 0.65rem; font-size: 0.9rem; color: #333; flex: 1; }
+    .card .links { margin: 0; font-size: 0.85rem; }
+    footer.note {
+      margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+      font-size: 0.88rem; color: var(--muted);
+    }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="meta">
+      <h1>Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片</h1>
+      <p class="source">仓库：<a href="https://github.com/lemomo-ai/lemo-opuscar">https://github.com/lemomo-ai/lemo-opuscar</a></p>
+      <p class="source">官方图鉴：<a href="https://lemomo-ai.github.io/lemo-opuscar/">https://lemomo-ai.github.io/lemo-opuscar/</a></p>
+      <p class="meta-line">作者：Lemomo（@lemomo-ai / LemoLab） · 语言：JavaScript · Stars ≈ 191 · 默认分支 main · 非官方中文阅读镜像</p>
+      <div class="cta">
+        <a class="primary" href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 看官方图鉴（成片）</a>
+        <a class="secondary" href="https://github.com/lemomo-ai/lemo-opuscar" target="_blank" rel="noopener">GitHub 仓库</a>
+        <a class="secondary" href="#styles">跳到 39 风格索引</a>
+      </div>
+    </header>
+    <article>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#about">这是什么</a></li>
+<li><a href="#how">怎么用</a></li>
+<li><a href="#workflow">Agent 工作流</a></li>
+<li><a href="#styles">39 种风格索引</a>
+  <ol><li><a href="#cat-1">手绘与绘画</a>（7）</li><li><a href="#cat-2">东方传统</a>（4）</li><li><a href="#cat-3">印刷与版画</a>（3）</li><li><a href="#cat-4">图形与排版</a>（7）</li><li><a href="#cat-5">信息与发布</a>（4）</li><li><a href="#cat-6">卡通与动画</a>（3）</li><li><a href="#cat-7">游戏</a>（4）</li><li><a href="#cat-8">电影与时代</a>（2）</li><li><a href="#cat-9">材质与 3D</a>（5）</li></ol>
+</li>
+<li><a href="#credits">署名与授权</a></li>
+</ol></nav>
+
+<figure class="cover-fig">
+  <img class="cover" src="images/cover.jpg" alt="全部 39 个风格封面拼图" width="1200" height="675" />
+  <figcaption>全部 39 个风格一览（本地自托管封面；成片请到官方图鉴观看）</figcaption>
+</figure>
+
+<h2 id="about">这是什么</h2>
+<p><strong>Lemo-Opuscar</strong> 不是 awesome 合集：39 种影片风格，每一种都配有可复用的风格提示词（<code>STYLE.md</code>），以及一支由 <strong>Claude Opus 5.5</strong> 完全用代码做出来的短片样片。作者是 <a href="https://github.com/lemomo-ai">Lemomo</a>（LemoLab）。风格按 Opus 5.5 调校；换成其他模型不保证同样效果。</p>
+<p>每一支片子都是 AI agent <strong>写代码</strong>完成导演、作画、配乐、混音：Canvas / WebGL 页面逐帧渲染，免费采样库写原创配乐，本地 TTS 配音。<strong>不用视频生成，也不用素材库画面。</strong></p>
+<blockquote>选一个风格，带上你自己的故事，让你的编程 agent 来当导演。</blockquote>
+
+<h2 id="how">怎么用</h2>
+<p>两种入口，推荐装成 Claude Code skill。</p>
+<h3>方式一：装成 skill（推荐）</h3>
+<pre><code>claude plugin marketplace add lemomo-ai/lemo-opuscar
+claude plugin install lemo-opuscar@lemolab</code></pre>
+<p>之后在任何目录都能用。第一次使用会把指南、工具和风格提示词（约 60 MB）下载到 <code>~/lemo-opuscar</code>，所有片子共用；每支片子的工程（源码到成片）放在你发起时所在的文件夹。其他 agent 可以把仓库里的 <code>plugin/skills/lemo-opuscar/</code> 复制到各自 skills 目录。</p>
+<h3>方式二：clone 仓库</h3>
+<pre><code>git clone https://github.com/lemomo-ai/lemo-opuscar.git
+cd lemo-opuscar
+claude</code></pre>
+<p>片子做到仓库里的 <code>films/&lt;名字&gt;/</code>。</p>
+<h3>然后直接说</h3>
+<blockquote>用<strong>油画厚涂</strong>风格做一支 30 秒的片子，讲我家那只每天在窗台等我下班的橘猫。</blockquote>
+<p>风格用英文名或中文名都行。开工前 agent 只问一次：主题里它定不了的事、你有没有自己的<strong>配音 / 音乐 / 素材</strong>、要不要先看<strong>分镜故事板</strong>。要看会停一次展示关键镜头；不看就直接做完成片。</p>
+<p><strong>提前知道：</strong>一支片子大约要 agent 工作 30–60 分钟，token 用量不小。需要 Node 20+、ffmpeg、Python 3.11+；依赖与无头浏览器由 agent 安装；配音模型、采样库等大文件用到时再下载。</p>
+
+<h2 id="workflow">Agent 工作流：三份指南</h2>
+<p>Agent 会读三份指南，像一个小工作室开工：</p>
+<table class="guides">
+  <thead><tr><th>文件</th><th>给 agent 的东西</th></tr></thead>
+  <tbody>
+    <tr><td><code>DIRECTOR.md</code>（<a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/docs/zh-CN/DIRECTOR.md">中文</a>）</td><td>怎么导：故事、声音、节奏、镜头、表演、自检</td></tr>
+    <tr><td><code>TECHNIQUE.md</code>（<a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/docs/zh-CN/TECHNIQUE.md">中文</a>）</td><td>怎么做：逐帧渲染、配音、配乐、混音</td></tr>
+    <tr><td><code>styles/&lt;style&gt;/STYLE.md</code></td><td>这个风格长什么样、听起来什么样，以及样片怎么做的</td></tr>
+  </tbody>
+</table>
+<p><strong>导演方法要点：</strong>你是导演，不是在做技术演示；评判顺序是音效、节奏、镜头、导演能力。开工前只问一次；默认 30–60 秒、1920×1080、24 fps、−14 LUFS。先找对标，再写 <code>TREATMENT.md</code>（故事弧、镜头表、cue map、声音设计）。一个主体、一个目标、一次转折；开场 3 秒抓人；至少一个「原生招式」。</p>
+<p><strong>技术管线要点：</strong>时间线是唯一数据来源——画面是 <code>render(t)</code> 的确定性函数，无头 Chrome 逐帧截图；TTS + ASR 校对；按同一时间线写谱与拟音；字幕 <code>.srt</code> + 烧录；ffmpeg 两遍 loudnorm 到 −14 LUFS。不用视频生成模型。</p>
+
+<h2 id="styles">39 种风格索引</h2>
+<p>下列卡片使用本页自托管帧图。要点击观看成片，请前往 <a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">官方图鉴</a>（本镜像不托管视频）。</p>
+<h2 id="cat-1">手绘与绘画</h2>
+<div class="grid">
+<article class="card" id="style-crayon-book">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/crayon-book.jpg" alt="蜡笔儿童绘本" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>蜡笔儿童绘本</h3>
+    <p class="en">Crayon Picture Book · <code>crayon-book</code></p>
+    <p class="film"><i>月亮睡不着</i></p>
+    <p class="syn">月亮失眠了，小女孩爬上屋顶给它唱摇篮曲。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/crayon-book/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-watercolor">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/watercolor.jpg" alt="水彩笔刷" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>水彩笔刷</h3>
+    <p class="en">Watercolor Brush · <code>watercolor</code></p>
+    <p class="film"><i>跟着雨走</i></p>
+    <p class="syn">跟着降雨从澳洲红色腹地一路画到绿色海岸，一镜到底。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/watercolor/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-ink-wash">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/ink-wash.jpg" alt="中国水墨" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>中国水墨</h3>
+    <p class="en">Chinese Ink Wash · <code>ink-wash</code></p>
+    <p class="film"><i>侠客与江</i></p>
+    <p class="syn">侠客踏水过江，一剑断流。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/ink-wash/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-impasto">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/impasto.jpg" alt="油画厚涂" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>油画厚涂</h3>
+    <p class="en">Impasto Oil Painting · <code>impasto</code></p>
+    <p class="film"><i>雨的颜色</i></p>
+    <p class="syn">灰色雨中广场，第一把红伞撑开，圆舞曲把整个广场刷上颜色。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/impasto/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-one-line">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/one-line.jpg" alt="一笔画" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>一笔画</h3>
+    <p class="en">One-line Drawing · <code>one-line</code></p>
+    <p class="film"><i>永不抬笔的线</i></p>
+    <p class="syn">一根不离纸的线画完一个人的一生，再把笔交给孩子。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/one-line/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-whiteboard">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/whiteboard.jpg" alt="白板讲解" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>白板讲解</h3>
+    <p class="en">Whiteboard Explainer · <code>whiteboard</code></p>
+    <p class="film"><i>口袋里的爱因斯坦</i></p>
+    <p class="syn">手机怎么知道你在哪：GPS、原子钟，和相对论每天多出的 38 微秒。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/whiteboard/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-urban-sketch">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/urban-sketch.jpg" alt="钢笔淡彩" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>钢笔淡彩</h3>
+    <p class="en">Urban Sketch · Pen & Wash · <code>urban-sketch</code></p>
+    <p class="film"><i>风去了哪里</i></p>
+    <p class="syn">公园只是一张钢笔速写，风把草帽吹到哪里，哪里才有颜色。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/urban-sketch/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-2">东方传统</h2>
+<div class="grid">
+<article class="card" id="style-shadow-puppet">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/shadow-puppet.jpg" alt="皮影戏" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>皮影戏</h3>
+    <p class="en">Shadow Puppetry · <code>shadow-puppet</code></p>
+    <p class="film"><i>后羿射日</i></p>
+    <p class="syn">十日炙烤大地，后羿张弓射日。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/shadow-puppet/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-ukiyoe">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/ukiyoe.jpg" alt="浮世绘" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>浮世绘</h3>
+    <p class="en">Ukiyo-e · <code>ukiyoe</code></p>
+    <p class="film"><i>向山而行</i></p>
+    <p class="syn">旅人走向远山，每个镜头都是一幅版画，最后迎来一道巨浪。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/ukiyoe/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-papercut-red">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/papercut-red.jpg" alt="红色窗花剪纸" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>红色窗花剪纸</h3>
+    <p class="en">Red Paper-cut · <code>papercut-red</code></p>
+    <p class="film"><i>年兽进村</i></p>
+    <p class="syn">除夕年兽进村，小女孩剪出的大窗花照亮全村，把它吓跑。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/papercut-red/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-paper-lantern">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/paper-lantern.jpg" alt="纸雕灯影" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>纸雕灯影</h3>
+    <p class="en">Paper-cut Lightbox · <code>paper-lantern</code></p>
+    <p class="film"><i>月饼的思念</i></p>
+    <p class="syn">一枚月饼讲中秋的团圆与思念，纸雕灯箱层层透光。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/paper-lantern/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-3">印刷与版画</h2>
+<div class="grid">
+<article class="card" id="style-risograph">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/risograph.jpg" alt="Risograph 丝网印刷" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>Risograph 丝网印刷</h3>
+    <p class="en">Risograph Print · <code>risograph</code></p>
+    <p class="film"><i>周日骑行</i></p>
+    <p class="syn">周日早晨骑车穿过城市：面包店、公园、河边。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/risograph/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-halftone-dossier">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/halftone-dossier.jpg" alt="复古半调案卷" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>复古半调案卷</h3>
+    <p class="en">Halftone Dossier · <code>halftone-dossier</code></p>
+    <p class="film"><i>案件：胖橘</i></p>
+    <p class="syn">橘猫胖橘被立案审查：测试重力、凌晨跑酷，最后无罪释放。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/halftone-dossier/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-woodcut">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/woodcut.jpg" alt="木刻版画" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>木刻版画</h3>
+    <p class="en">Woodcut Print · <code>woodcut</code></p>
+    <p class="film"><i>铸钟人</i></p>
+    <p class="syn">村子用一整个冬天铸一口钟，钟声第一次响起，雪停了。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/woodcut/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-4">图形与排版</h2>
+<div class="grid">
+<article class="card" id="style-swiss-motion">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/swiss-motion.jpg" alt="瑞士动态排版" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>瑞士动态排版</h3>
+    <p class="en">Swiss Motion Graphics · <code>swiss-motion</code></p>
+    <p class="film"><i>海报五条规则</i></p>
+    <p class="syn">一张音乐会海报按瑞士设计的五条规则自己排版，第五条是只打破一条。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/swiss-motion/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-spy-titles">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/spy-titles.jpg" alt="60s 间谍片头" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>60s 间谍片头</h3>
+    <p class="en">60s Spy Title Sequence · <code>spy-titles</code></p>
+    <p class="film"><i>天鹅绒密码</i></p>
+    <p class="syn">虚构 1964 年间谍片的片头：追一把被偷的钥匙，几何碎片最后拼成片名。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/spy-titles/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-art-deco">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/art-deco.jpg" alt="装饰艺术" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>装饰艺术</h3>
+    <p class="en">Art Deco · <code>art-deco</code></p>
+    <p class="film"><i>星光酒店午夜</i></p>
+    <p class="syn">1930 年的大饭店，门童赶在午夜前把一封信送上顶楼。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/art-deco/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-blueprint">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/blueprint.jpg" alt="蓝图 / 工程制图" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>蓝图 / 工程制图</h3>
+    <p class="en">Blueprint · <code>blueprint</code></p>
+    <p class="film"><i>专利待批：接云机</i></p>
+    <p class="syn">发明家的蓝图自己画出一台接云机器，修订云线变成了真的雨云。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/blueprint/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-stained-glass">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/stained-glass.jpg" alt="彩色玻璃窗" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>彩色玻璃窗</h3>
+    <p class="en">Stained Glass · <code>stained-glass</code></p>
+    <p class="film"><i>东窗之龙</i></p>
+    <p class="syn">阳光从清晨移到黄昏，照到哪一格花窗，哪一格的故事就动起来。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/stained-glass/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-pictogram-motion">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/pictogram-motion.jpg" alt="象形运动图形" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>象形运动图形</h3>
+    <p class="en">Pictogram Motion · <code>pictogram-motion</code></p>
+    <p class="film"><i>爱知·名古屋 2026 — 全部 43 项</i></p>
+    <p class="syn">2026 亚运会 43 个大项，几何象形人卡着节拍快闪。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/pictogram-motion/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-ascii-crt">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/ascii-crt.jpg" alt="ASCII / CRT 终端" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>ASCII / CRT 终端</h3>
+    <p class="en">ASCII / CRT Terminal · <code>ascii-crt</code></p>
+    <p class="film"><i>Tranquility.log</i></p>
+    <p class="syn">月球基地的 AI 沉睡 40 年后被唤醒，用字符画出「家」来回复。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/ascii-crt/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-5">信息与发布</h2>
+<div class="grid">
+<article class="card" id="style-dataviz">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/dataviz.jpg" alt="数据叙事" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>数据叙事</h3>
+    <p class="en">Data Storytelling · <code>dataviz</code></p>
+    <p class="film"><i>一百个夏天</i></p>
+    <p class="syn">一百年的夏季气温，图表本身就是故事。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/dataviz/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-iso-infographic">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/iso-infographic.jpg" alt="等距信息图" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>等距信息图</h3>
+    <p class="en">Isometric Infographic · <code>iso-infographic</code></p>
+    <p class="film"><i>从豆到杯</i></p>
+    <p class="syn">一杯咖啡从种植园到你手里的旅程。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/iso-infographic/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-dark-keynote">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/dark-keynote.jpg" alt="暗色科技发布" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>暗色科技发布</h3>
+    <p class="en">Dark Tech Keynote · <code>dark-keynote</code></p>
+    <p class="film"><i>留给思考的空间</i></p>
+    <p class="syn">虚构 app Tidy 的发布片：被埋掉的光标一键把几百个窗口归位。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/dark-keynote/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-living-screencast">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/living-screencast.jpg" alt="活体实机录屏" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>活体实机录屏</h3>
+    <p class="en">Living Screencast · <code>living-screencast</code></p>
+    <p class="film"><i>Clawd 搬进来了</i></p>
+    <p class="syn">像素小人 Clawd 跳出终端、搬进 Claude 应用，在一镜到底的录屏里演示 Plan 模式、diff 评论和自检。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/living-screencast/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-6">卡通与动画</h2>
+<div class="grid">
+<article class="card" id="style-rubber-hose">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/rubber-hose.jpg" alt="1930s 橡皮管卡通" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>1930s 橡皮管卡通</h3>
+    <p class="en">1930s Rubber Hose Cartoon · <code>rubber-hose</code></p>
+    <p class="film"><i>咖啡杯追逐战</i></p>
+    <p class="syn">一只咖啡杯满厨房追一块逃跑的方糖。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/rubber-hose/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-cel-anime-80s">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/cel-anime-80s.jpg" alt="80 年代赛璐璐动画" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>80 年代赛璐璐动画</h3>
+    <p class="en">80s Cel Anime · <code>cel-anime-80s</code></p>
+    <p class="film"><i>城市之光，1987</i></p>
+    <p class="syn">快递少女骑车穿过雨后霓虹都市，赶在黎明发射前送到一盘磁带。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/cel-anime-80s/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-scifi-toon">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/scifi-toon.jpg" alt="科幻情景喜剧卡通" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>科幻情景喜剧卡通</h3>
+    <p class="en">Sci-Fi Sitcom Toon · <code>scifi-toon</code></p>
+    <p class="film"><i>买咖啡</i></p>
+    <p class="syn">厌世天才开传送门只想买杯咖啡，却穿过越来越离谱的平行宇宙。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/scifi-toon/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-7">游戏</h2>
+<div class="grid">
+<article class="card" id="style-pixel-rpg">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/pixel-rpg.jpg" alt="16-bit 像素 RPG" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>16-bit 像素 RPG</h3>
+    <p class="en">16-bit Pixel RPG · <code>pixel-rpg</code></p>
+    <p class="film"><i>最后的存档点</i></p>
+    <p class="syn">勇士在最终 Boss 门前存档，存档画面闪回一路冒险。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/pixel-rpg/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-hd-2d">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/hd-2d.jpg" alt="HD-2D" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>HD-2D</h3>
+    <p class="en">HD-2D · <code>hd-2d</code></p>
+    <p class="film"><i>提灯人</i></p>
+    <p class="syn">灯塔熄灭，孙女提着最后一簇火穿过夜林、爬上风暴悬崖。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/hd-2d/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-microgame">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/microgame.jpg" alt="微游戏快闪（瓦里奥制造式）" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>微游戏快闪（瓦里奥制造式）</h3>
+    <p class="en">Microgame Frenzy · <code>microgame</code></p>
+    <p class="film"><i>五秒宇航员</i></p>
+    <p class="syn">见习宇航员闯五秒训练营，越来越快，Boss 关亲手降落回地球。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/microgame/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-game-show">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/game-show.jpg" alt="综艺节奏扁平" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>综艺节奏扁平</h3>
+    <p class="en">Game Show Flat · <code>game-show</code></p>
+    <p class="film"><i>AI 的节拍，1997 → 2026</i></p>
+    <p class="syn">把 AI 发展史做成一局节奏游戏，模型踩着拍登场，最后发成绩单。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/game-show/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-8">电影与时代</h2>
+<div class="grid">
+<article class="card" id="style-silent-film">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/silent-film.jpg" alt="1920s 默片" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>1920s 默片</h3>
+    <p class="en">1920s Silent Film · <code>silent-film</code></p>
+    <p class="film"><i>逃跑的面包</i></p>
+    <p class="syn">面包店学徒追一个滚走的面包，最后掰成两半分给饿肚子的小女孩。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/silent-film/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-backrooms">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/backrooms.jpg" alt="后室 / 新怪谈" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>后室 / 新怪谈</h3>
+    <p class="en">Liminal Found Footage · <code>backrooms</code></p>
+    <p class="film"><i>夜班入职须知</i></p>
+    <p class="syn">新夜班员工拍下入职第一晚：无尽的黄色办公空间，和墙上的员工守则。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/backrooms/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div><h2 id="cat-9">材质与 3D</h2>
+<div class="grid">
+<article class="card" id="style-brick-toy">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/brick-toy.jpg" alt="积木玩具" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>积木玩具</h3>
+    <p class="en">Brick Toy · <code>brick-toy</code></p>
+    <p class="film"><i>零件拼火箭</i></p>
+    <p class="syn">积木宇航员用零件拼出火箭，飞向积木月亮。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/brick-toy/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-paper-popup">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/paper-popup.jpg" alt="纸片立体书" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>纸片立体书</h3>
+    <p class="en">Paper Pop-up Book · <code>paper-popup</code></p>
+    <p class="film"><i>Pip 的纸片冒险</i></p>
+    <p class="syn">立体书在书桌上打开，小精灵 Pip 在纸片世界冒险，最后跳出书外。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/paper-popup/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-tilt-shift">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/tilt-shift.jpg" alt="移轴微缩" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>移轴微缩</h3>
+    <p class="en">Tilt-Shift Miniature · <code>tilt-shift</code></p>
+    <p class="film"><i>玩具城早高峰</i></p>
+    <p class="syn">玩具城的早高峰，一切都像模型。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/tilt-shift/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-lowpoly-island">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/lowpoly-island.jpg" alt="低多边形等距" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>低多边形等距</h3>
+    <p class="en">Low-poly Isometric Island · <code>lowpoly-island</code></p>
+    <p class="film"><i>长出来的岛</i></p>
+    <p class="syn">空海里一格格长出小岛和村庄，每放一块响一个音符，直到星空。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/lowpoly-island/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+<article class="card" id="style-glass-product">
+  <a class="frame" href="https://lemomo-ai.github.io/lemo-opuscar/" title="在官方图鉴观看" target="_blank" rel="noopener">
+    <img src="images/frames/glass-product.jpg" alt="玻璃质感产品" loading="lazy" width="640" height="360" />
+  </a>
+  <div class="card-body">
+    <h3>玻璃质感产品</h3>
+    <p class="en">Glass Product Render · <code>glass-product</code></p>
+    <p class="film"><i>Aura — 听见光</i></p>
+    <p class="syn">虚构玻璃耳机 Aura 的开箱与特写。</p>
+    <p class="links"><a href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 观看样片</a> · <a href="https://github.com/lemomo-ai/lemo-opuscar/blob/main/styles/glass-product/STYLE.md" target="_blank" rel="noopener">STYLE.md</a></p>
+  </div>
+</article>
+</div>
+
+<hr />
+<h2 id="credits">署名与授权</h2>
+<p>由 <strong>LemoLab × Claude Opus 5.5</strong> 出品。</p>
+<ul>
+  <li><strong>代码</strong>：MIT License（Copyright © 2026 LemoLab）</li>
+  <li><strong>指南、</strong><code>STYLE.md</code><strong>、成片</strong>：<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
+  <li>第三方采样、字体、音乐沿用各自授权（CC0、CC BY、OFL），列在每个样片的 <code>CREDITS</code> 里</li>
+</ul>
+<p>本页为非官方中文阅读镜像与风格索引，方便中文读者浏览；成片与最新内容以官方仓库与图鉴为准。上游 README 本身已英中双语。</p>
+
+    </article>
+    <footer class="note">
+      <p>镜像托管：<a href="https://breakdimbo.github.io/zh-blog-mirrors/">中文博文镜像</a> · 源仓库 <a href="https://github.com/lemomo-ai/lemo-opuscar">lemomo-ai/lemo-opuscar</a> · 图鉴 <a href="https://lemomo-ai.github.io/lemo-opuscar/">lemomo-ai.github.io/lemo-opuscar</a></p>
+      <p>帧图与封面自托管于 <code>images/</code>；▶ 观看链接指向官方图鉴。</p>
+    </footer>
+  </div>
+</body>
+</html>
