@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jev + Opus 5.5：值得从思考模型上卸下来的四个分叉 — Hanako（中文镜像）</title>
+  <meta name="description" content="Hanako 2026 Working Note 中文镜像：Jev + Opus 5.5 四个分叉——笔记打分、更快 worker、恢复路径、聚焦检查。推文附图即论文；非 TypeSafe 官方 arXiv。" />
+  <meta property="og:title" content="Jev + Opus 5.5：值得从思考模型上卸下来的四个分叉" />
+  <meta property="og:image" content="images/tweet-img.jpg" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
+    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+    img.cover { border-radius: 8px; }
+    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; font-weight: 650; }
+    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="meta">
+      <h1>Jev + Opus 5.5：值得从思考模型上卸下来的四个分叉</h1>
+      <p class="source">原文推文：<a href="https://x.com/hanakoxbt/status/2104575390773645712">https://x.com/hanakoxbt/status/2104575390773645712</a></p>
+      <p class="meta-line">作者：hanako（@hanakoxbt） · 2026 Working Note · September 2026 · 非官方中文镜像</p>
+      <p class="meta-line">课程：<a href="https://jev-engineering.site">https://jev-engineering.site</a> · 相关完整指南镜像：<a href="../hanako-jev-engineering/">hanako-jev-engineering/</a></p>
+    </header>
+    <article>
+<div class="related-guide"><strong>重要说明：</strong>推文「Read the paper」所指即本页所附截图（Hanako 本人的 2026 Working Note），<strong>不是</strong> TypeSafe 官方 arXiv 论文。TypeSafe 尚未发布架构/RLCD 正式论文。正文由截图 OCR/视觉重建；价格数字仅引原文。</div>
+<ul>
+<li><strong>2026 年 Jev 工程实践工作笔记（Working Note）</strong></li>
+<li>作者：<a href="https://x.com/hanakoxbt">hanako</a>（@hanakoxbt）· <a href="https://jev-engineering.site">jev-engineering.site</a></li>
+<li>日期：2026 年 9 月</li>
+<li>源推文：<a href="https://x.com/hanakoxbt/status/2104575390773645712">https://x.com/hanakoxbt/status/2104575390773645712</a></li>
+<li>相关完整指南（前一篇）：<a href="https://x.com/hanakoxbt/status/2101709924828934222">https://x.com/hanakoxbt/status/2101709924828934222</a> · 中文镜像：<a href="https://breakdimbo.github.io/zh-blog-mirrors/hanako-jev-engineering/">https://breakdimbo.github.io/zh-blog-mirrors/hanako-jev-engineering/</a></li>
+</ul>
+<blockquote>
+<p><strong>镜像说明。</strong> 推文写「Read the paper」。所附图片<strong>就是</strong>这篇「论文」：一页 <strong>2026 Working Note</strong>。它<strong>不是</strong> TypeSafe 官方 arXiv 架构/RLCD 论文（TypeSafe 尚未发布此类论文）。下文由该截图的视觉/OCR 重建；OCR 不确定处宁短勿编。完整截图作为主图自托管。</p>
+</blockquote>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#fig1">图 1 — 一层决策，一个思考模型</a></li>
+<li><a href="#i-split">I. 拆分（The Split）</a></li>
+<li><a href="#ii-score-notes">II. 在 Opus 读笔记之前先打分</a></li>
+<li><a href="#iii-faster-worker">III. 把步骤交给更快的 worker</a></li>
+<li><a href="#iv-escalate-split">IV. 只把「分裂」升级给 Opus</a></li>
+<li><a href="#v-recovery">V. 选择一条恢复路径</a></li>
+<li><a href="#vi-focused-checks">VI. 先跑聚焦检查</a></li>
+<li><a href="#vii-layers">VII. 每一层各自拥有什么</a></li>
+<li><a href="#related">相关链接</a></li>
+</ol></nav>
+<figure class="cover-fig"><img class="cover" src="images/tweet-img.jpg" alt="工作笔记完整截图" /></figure>
+<hr />
+<h2 id="fig1">图 1 — 一层决策，一个思考模型</h2>
+<p><strong>中心：</strong> JEV — 一次调用，四个答案。</p>
+<p><strong>环绕 Jev 的四个分叉：</strong></p>
+<table>
+<tr><th>分叉</th><th>问题</th></tr>
+<tr><td>项目笔记（Project Notes）</td><td>加载哪些？</td></tr>
+<tr><td>恢复路径（Recovery Path）</td><td>工具失败之后怎么办？</td></tr>
+<tr><td>聚焦检查（Focused Checks）</td><td>先跑哪些测试？</td></tr>
+<tr><td>更快的 worker（Faster Worker）</td><td>这一步谁来做？</td></tr>
+</table>
+<p><strong>外侧：</strong> Opus 5.5 — 只处理「分裂」的答案。</p>
+<p>Opus 5.5 负责规划、写作，以及阅读不熟悉的代码。环绕它的四个分叉——加载哪些笔记、谁来执行这一步、失败后做什么、先跑哪些测试——答案列表都很短，且在每项任务上形状相同，因此可以完全放在模型之外。</p>
+<p><em>思考的模型保持不变；环绕它的分叉从它身上卸下来。</em></p>
+<hr />
+<h2 id="i-split">I. 拆分（The Split）</h2>
+<p>Opus 负责困难推理。Jev 从 harness 预先准备并校验好的选项中挑选。harness 拥有选项列表、阈值与预算。Jev 从不发明工具，也从不给自己授权。它只做选择；你的代码决定这个数字允许什么。</p>
+<hr />
+<h2 id="ii-score-notes">II. 在 Opus 读笔记之前先打分</h2>
+<p>改一个文件，并不需要加载仓库里的每一份笔记。对照任务给每份笔记打分，只加载幸存者——因为这里加载的每个 token，在后续每一轮都会被重新阅读。</p>
+<pre><code>forks = client.system_one(state=turn, questions={
+    &quot;note&quot;:    Score(instructions=f&quot;How much does this note matter for: {task}?&quot;),
+    &quot;worker&quot;:  Choice(criteria={&quot;fast&quot;: ..., &quot;opus&quot;: ...}),
+    &quot;recover&quot;: Choice(criteria={&quot;retry&quot;: ..., &quot;other_tool&quot;: ..., &quot;ask&quot;: ...}),
+})</code></pre>
+<hr />
+<h2 id="iii-faster-worker">III. 把步骤交给更快的 worker</h2>
+<p>重命名或 bump 依赖，不需要 100 万 token 的上下文。在档位之间做一次 Choice，就能覆盖这个范围。</p>
+<hr />
+<h2 id="iv-escalate-split">IV. 只把「分裂」升级给 Opus</h2>
+<p>尖锐的答案由代码分支直接执行，Opus 根本看不到。分裂的分布——例如 0.52 对 0.46——才是「这个分叉需要推理」的信号；也只有这类分叉，才值得付钱让 Opus 思考。</p>
+<hr />
+<h2 id="v-recovery">V. 选择一条恢复路径</h2>
+<p>对因结构性原因失败的工具盲目重试，只会烧预算并返回同样的错误。改为询问：重试一次、换工具，还是停下问人。计数器放在代码里，这样循环就不会永远跑下去。</p>
+<hr />
+<h2 id="vi-focused-checks">VI. 先跑聚焦检查</h2>
+<p>给「触及已改文件」的测试打分，先跑这些。聚焦通过是证据，不是证明；合并前仍要跑完整测试套件。</p>
+<hr />
+<h2 id="vii-layers">VII. 每一层各自拥有什么</h2>
+<h3>表 I — 边界</h3>
+<table>
+<tr><th>层</th><th>拥有</th></tr>
+<tr><td>opus 5.5</td><td>规划、写作、阅读不熟悉的代码</td></tr>
+<tr><td>jev</td><td>在交给它的选项中挑选</td></tr>
+<tr><td>harness</td><td>选项列表、阈值、预算</td></tr>
+<tr><td>verifier</td><td>再次阅读 diff 与测试输出</td></tr>
+</table>
+<h3>表 II — 一万次分叉，一天，公开标价</h3>
+<table>
+<tr><th>询问对象</th><th>每次分叉</th><th>一天</th></tr>
+<tr><td>仅 opus 5.5</td><td>$0.011</td><td>$110.00</td></tr>
+<tr><td>jev，全部分叉</td><td>$0.000042</td><td>$0.42</td></tr>
+<tr><td>opus，分裂约 100 次</td><td>$0.038</td><td>$3.80</td></tr>
+<tr><td><strong>jev + opus 5.5（合计）</strong></td><td></td><td><strong>$4.22</strong></td></tr>
+</table>
+<p>与推文叙述对齐：仅分叉一项，从约 <strong>$110/天</strong> 降到有 Jev 接手后约 <strong>$4</strong>。</p>
+<hr />
+<h2 id="related">相关链接（不是推文里的「那篇论文」）</h2>
+<ul>
+<li>Hanako 前一篇完整指南：<a href="https://x.com/hanakoxbt/status/2101709924828934222">https://x.com/hanakoxbt/status/2101709924828934222</a></li>
+<li>TypeSafe 官方发布：<a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">https://typesafe.ai/blog/introducing-system-one-models-and-jev</a></li>
+<li>课程 / 营销站：<a href="https://jev-engineering.site">https://jev-engineering.site</a></li>
+<li>社区 arXiv（安全/评测向；可选；<strong>不是</strong>推文所指论文）— <a href="https://arxiv.org/abs/2609.29429">Just Ask Jev（RLCDAlignBench）</a></li>
+<li>社区 arXiv — <a href="https://arxiv.org/abs/2609.31142">JevAdvBench</a></li>
+<li>社区 arXiv — <a href="https://arxiv.org/abs/2609.28613">Decision Hijacking</a></li>
+</ul>
+    </article>
+    <footer class="note">
+      <p>非官方中文镜像。源推文附图即「论文」；课程站正文路径 404 / 需登录。相关指南：<a href="../hanako-jev-engineering/">Jev 工程完整课程</a>。Hub：<a href="../">中文博文镜像</a>。</p>
+      <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p>
+    </footer>
+  </div>
+</body>
+</html>
