@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jev 工程：如何停止用前沿模型做「是/否」决策（完整课程） — Hanako（中文镜像）</title>
+  <meta name="description" content="Hanako：Jev 工程完整课程中文镜像。TypeSafe System One 决策模型：停止用前沿模型做是/否决策；Choice/Score/Noul、ship/return/escalate 闸门、并行问题与成本。" />
+  <meta property="og:title" content="Jev 工程：如何停止用前沿模型做「是/否」决策（完整课程）" />
+  <meta property="og:image" content="images/og.jpg" />
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #1a1a1a;
+      --muted: #666;
+      --border: #e8e8e8;
+      --link: #0b57d0;
+      --max: 760px;
+      --code-bg: #f3f4f6;
+      --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+    }
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+    header.meta {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 1.75rem;
+      line-height: 1.35;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 {
+      font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700;
+    }
+    article h3 {
+      font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650;
+    }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc {
+      background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1.1rem; margin: 0 0 1.5rem;
+    }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img {
+      display: block; width: 100%; height: auto; border-radius: 6px;
+      background: #fff; border: 1px solid var(--border);
+    }
+    img.cover { border-radius: 8px; }
+    blockquote {
+      margin: 0 0 1.15rem; padding: 0.65rem 1rem;
+      border-left: 3px solid var(--accent); background: #f6f3ff; color: #333;
+    }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem;
+      font-size: 0.88rem; line-height: 1.55;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    p code, li code {
+      background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    footer.note {
+      margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
+      font-size: 0.88rem; color: var(--muted);
+    }
+    footer.note code { font-size: 0.85em; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="meta">
+      <h1>Jev 工程：如何停止用前沿模型做「是/否」决策（完整课程）</h1>
+      <p class="source">原文：<a href="https://x.com/hanakoxbt/status/2101709924828934222">https://x.com/hanakoxbt/status/2101709924828934222</a></p>
+<p class="meta-line">作者：Hanako（@hanakoxbt） · 发布：2026-09-20 · 非官方中文镜像</p>
+<p class="meta-line">课程：<a href="https://jev-engineering.site">https://jev-engineering.site</a> · Telegram：<a href="https://t.me/+75nMf005jRpjMDU1">https://t.me/+75nMf005jRpjMDU1</a></p>
+    </header>
+    <article>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#jevons-paradox">杰文斯悖论，以及为什么你的账单降不下来</a></li>
+<li><a href="#step-01">01. 拆分——找决策，不要找文本</a></li>
+<li><a href="#step-02">02. Playground——写任何代码之前，先测一个问题</a></li>
+<li><a href="#what-jev-is">Jev 究竟是什么</a></li>
+<li><a href="#step-03">03. SDK——安装并接通 API</a></li>
+<li><a href="#step-04">04. State——在代码里建快照，不要丢给模型</a></li>
+<li><a href="#step-05">05. Questions——Choice、Score 与 Noul</a></li>
+<li><a href="#step-06">06. 闸门——一次调用、三个答案、你的阈值</a></li>
+<li><a href="#probabilities">概率才是产品</a></li>
+<li><a href="#step-07">07. 并行——把问题批进同一次调用</a></li>
+<li><a href="#step-08">08. 动态菜单——每一轮重建选项</a></li>
+<li><a href="#step-09">09. 护栏——harness 才是差异所在</a></li>
+<li><a href="#step-10">10. 成本——四分钱每一百万到底买到什么</a></li>
+<li><a href="#hallucination">「不会幻觉」这句话需要一次纠正</a></li>
+<li><a href="#where-not">它不该出现的地方</a></li>
+<li><a href="#rollout">上线——别制造新的失败模式</a></li>
+<li><a href="#what-changed">真正改变了什么</a></li>
+</ol></nav>
+<figure class="cover-fig"><img class="cover" src="images/cover.jpg" alt="封面" /></figure>
+<p>打开任意一个你已经上线的智能体 trace，数一数里面的调用。</p>
+<p>模型挑选下一个工具。模型判断结果好不好。模型决定任务是否完成。模型检查命令是否危险。模型给检索到的段落打分，看值不值得留下。</p>
+<p><strong>五次调用。其中四次，根本不会产出你以后会去读的文本。</strong></p>
+<p>你用「生成」的价格，买了一次路由决策。你等了三到三十秒，只为拿到一个最终会被代码变成分支的词。你还为这段响应写了 parser、validator 和重试——而它从头到尾只可能是三个值里的一个。</p>
+<p>2026 年 9 月 15 日，TypeSafe AI 结束两年潜伏，以 DCVC 领投的 4000 万美元融资亮相，并发布了一款专为那四次调用而生的模型。它叫 Jev，<strong>不会写句子</strong>。</p>
+<p>这个限制，就是整个产品。</p>
+<p>我花了将近一周把它拆开，并做成了一整门课。如果你想要端到端的搭建而不是摘要，在这里：</p>
+<blockquote>
+https://jev-engineering.site
+</blockquote>
+<p>下面是可动手的版本。十个步骤、真实代码，以及发布帖里没写清的部分。</p>
+<hr />
+<h2 id="jevons-paradox">杰文斯悖论，以及为什么你的账单降不下来</h2>
+<p>Jev 的名字，来自 1865 年的一条经济学规律。</p>
+<p>William Stanley Jevons 注意到：当蒸汽机烧煤更高效之后，英国并没有少烧煤，反而烧得远更多。效率让煤在以前不值得用的地方也变得合算，总消耗爆炸式增长。</p>
+<p><strong>Token 每个季度都在变便宜。你的账单却没有。</strong></p>
+<p>每一次降价，都会打开一个新的「可以塞模型调用」的位置，而调用次数的增长，比价格下跌还快。去年只跑三次模型的循环，现在会跑十一次——因为每一次都已经便宜到「值得」。</p>
+<p>TypeSafe 的赌注是：出路不是用更便宜的模型做同样的事，而是用另一种模型，去做第一种模型从未被设计去做的事。</p>
+<hr />
+<h2 id="step-01">01. 拆分——找决策，不要找文本</h2>
+<p>每个智能体循环都由三类操作构成，而几乎所有技术栈都会把其中两类揉成一类。</p>
+<figure><img src="images/fig01.jpg" alt="" loading="lazy" /></figure>
+<p><strong>生成（Generation）</strong>：做出尚不存在的东西。调研、散文、代码、对一次失败的解释。这需要前沿 LLM，而且以后也还会需要。</p>
+<p><strong>执行（Execution）</strong>：把事做掉。调工具、写文件、十步后停下、守住花费上限。这是代码，免费，而且从不会改主意。</p>
+<p><strong>决策（Decision）</strong>：夹在中间。下一个工人是谁。这次改动有多危险。要不要让人看一眼。答案空间在你提问之前就已知，而答案会直接进入一条 if。</p>
+<p>贯穿本文，我会搭同一件事：一道闸门——读一次代码改动，再决定它该 <strong>ship（放行）</strong>、<strong>return（打回）</strong>，还是需要人类。我选它，是因为每个团队都已经有这个决策，而几乎所有人要么手工做，要么烧掉一次前沿模型调用。</p>
+<p>拆分的规则只有一条，一句话就够：如果操作在<strong>创造文本</strong>，留给 LLM；如果在<strong>选选项、打分，或答是/否</strong>，交给 Jev。</p>
+<p>这就是 Jev 工程。下面全是怎么接线。</p>
+<hr />
+<h2 id="step-02">02. Playground——写任何代码之前，先测一个问题</h2>
+<p>打开 TypeSafe Playground 并登录。访问走 waitlist，目前当天就能批，但别在没确认前就把排期押在上面。</p>
+<p><strong>把下面这段贴成你的 state：</strong></p>
+<pre><code>{
+  &quot;files_touched&quot;: [&quot;api/auth.py&quot;, &quot;api/session.py&quot;],
+  &quot;lines&quot;: {&quot;added&quot;: 34, &quot;removed&quot;: 9},
+  &quot;tests&quot;: &quot;12 passed, 0 failed&quot;,
+  &quot;migrations&quot;: false,
+  &quot;plan_said&quot;: &quot;refactor token refresh only&quot;
+}</code></pre>
+<p>加一个 Choice 问题：这次改动该怎样处理？定义三个选项。测试通过且 diff 与计划一致 → ship；diff 超出计划描述 → return；改动不可逆，或碰到计划从未提及的东西 → escalate。</p>
+<p>跑一遍。然后把 <code>migrations</code> 翻成 <code>true</code>，其它一概不动，再跑一次。</p>
+<p>盯着分布怎么移动。这就是全部交互；在这里花五分钟，比读文档更管用。</p>
+<hr />
+<h2 id="what-jev-is">Jev 究竟是什么</h2>
+<p>TypeSafe 称它为 System One 模型，借用 Kahneman 对「快直觉判断」与「慢深思」的划分。最短且准确的描述是：<strong>语义决策引擎</strong>。</p>
+<p>你发送两样东西。</p>
+<p><strong>State</strong> — 描述当前局面的文本或 JSON。一份 diff 摘要。一张支持工单。一份订单簿快照。凡是你的代码内存里已经有的。</p>
+<p><strong>Questions</strong> — 你希望针对该 state 做出的决策；每一个都事先声明答案形状。</p>
+<p>返回的是带概率的类型化答案。没有散文。没有要修的 JSON。没有模型因为「感觉像」而发明的第四个选项。</p>
+<figure><img src="images/fig02.png" alt="" loading="lazy" /></figure>
+<p>我在读过的每篇写照里都站住了的心智模型是：LLM 把 state 映射成文本；Jev 把 state 映射成决策分布。普通代码在它<strong>算得出</strong>的值上分支；Jev 在它<strong>算不出</strong>的值上分支。</p>
+<p><code>if (diff.lines_added &gt; 400)</code> 是计算机能检查的。</p>
+<p><code>if (this change goes beyond what the plan described)</code> 不是——而这道缝，正是你一直在租聊天模型的原因。</p>
+<hr />
+<h2 id="step-03">03. SDK——安装并接通 API</h2>
+<p>你需要一个已开通 API 的账户，以及来自 dashboard 的 key。调用记在该账户账单上。</p>
+<p>安装 Python 3.12 或更新版本，然后打开终端。</p>
+<pre><code>python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade typesafe-sdk
+</code></pre>
+<p>在 Windows 上，两行分别是 <code>py -3 -m venv .venv</code> 与 <code>.\.venv\Scripts\python.exe -m pip install --upgrade typesafe-sdk</code>。</p>
+<p><strong>把 key 放进环境变量，不要写进源码：</strong></p>
+<pre><code>export TYPESAFE_API_KEY=&quot;your-key&quot;</code></pre>
+<p><strong>如果你用编程智能体，加上官方 skill，好让它写出正确的调用：</strong></p>
+<pre><code>npx skills add typesafe-ai/skills --skill typesafe-ai</code></pre>
+<p>按提示选择你的智能体。skill 提供集成说明；Jev 本身仍通过 API 运行。</p>
+<hr />
+<h2 id="step-04">04. State——在代码里建快照，不要丢给模型</h2>
+<p>我第一小时犯过的最大错误，就是把原始 diff 扔给 Jev，然后指望它自己搞定。</p>
+<p>凡是可计算的，都留在代码里。行数、文件路径、测试退出码、是否存在 migration 文件、diff 是否越出计划路径。这些都不需要模型；花钱让模型去数数，最后会变成「便宜模型比贵模型还贵」。</p>
+<pre><code>def snapshot(diff, plan, test_exit):
+    planned = set(plan[&quot;paths&quot;])
+    touched = set(diff.files)
+    return {
+        &quot;files_touched&quot;: sorted(touched),
+        &quot;outside_plan&quot;: sorted(touched - planned),
+        &quot;lines&quot;: {&quot;added&quot;: diff.added, &quot;removed&quot;: diff.removed},
+        &quot;tests&quot;: &quot;passed&quot; if test_exit == 0 else &quot;failed&quot;,
+        &quot;migrations&quot;: any(f.startswith(&quot;migrations/&quot;) for f in touched),
+        &quot;plan_said&quot;: plan[&quot;summary&quot;],
+    }</code></pre>
+<p>六个字段，全部确定性，不到 200 token。这就是全部输入。</p>
+<p>保持稠密，保持诚实。你加的每个字段每次调用都会被读；无关上下文会<strong>降低</strong>准确率，而不是提高。</p>
+<hr />
+<h2 id="step-05">05. Questions——Choice、Score 与 Noul</h2>
+<p>问题类型恰好三种。这就是完整的 API 表面。</p>
+<figure><img src="images/fig05.jpg" alt="" loading="lazy" /></figure>
+<p><strong>Choice</strong> 从你定义的列表里选一项，最多 255 个，并为每个选项返回概率，外加一个 confidence。</p>
+<p><strong>Score</strong> 把 state 放在你定义的有序刻度上。定义三档，结果在 0 到 2 之间，可含小数。</p>
+<p><strong>Noul</strong> 回答是/否问题，返回「为真」的概率。名字怪；要紧的是你得到一个 0 到 1 之间、代码能直接用的数。</p>
+<p><strong>三者可以混在同一次请求里：</strong></p>
+<pre><code>from typesafe_sdk import Choice, Noul, Score, TypeSafeClient
+
+QUESTIONS = {
+    &quot;verdict&quot;: Choice(
+        instructions=&quot;What should happen to this change?&quot;,
+        criteria={
+            &quot;ship&quot;: &quot;tests pass and the diff stays inside the plan&quot;,
+            &quot;return&quot;: &quot;the diff goes beyond what the plan described&quot;,
+            &quot;escalate&quot;: &quot;irreversible, or touches something unplanned&quot;,
+        },
+    ),
+    &quot;blast_radius&quot;: Score(
+        instructions=&quot;How hard would this be to undo?&quot;,
+        legend={&quot;0&quot;: &quot;one file, revert it&quot;, &quot;1&quot;: &quot;several files&quot;,
+                &quot;2&quot;: &quot;data or schema, cannot revert cleanly&quot;},
+    ),
+    &quot;needs_human&quot;: Noul(
+        instructions=&quot;Should a person read this before it merges?&quot;,
+    ),
+}</code></pre>
+<p>有两个细节能省你一周。</p>
+<p>Jev <strong>看不见</strong>你的 question ID。字段名叫 <code>needs_human</code> 完全无贡献。要求写进 instructions，以及每个选项的描述，而不是变量名。</p>
+<p>并且要给<strong>证据</strong>，不要给摘要。「测试跑过了」远不如：哪些文件动了、计划怎么说、两者在哪里不一致。</p>
+<hr />
+<h2 id="step-06">06. 闸门——一次调用、三个答案、你的阈值</h2>
+<p><strong>整段决策如下，比 state builder 还短：</strong></p>
+<pre><code>with TypeSafeClient(model=&quot;jev-1.13.0&quot;) as client:
+    r = client.system_one(state=snapshot(diff, plan, test_exit),
+                          questions=QUESTIONS)
+
+v = r.choices[&quot;verdict&quot;]
+radius = r.scores[&quot;blast_radius&quot;].score
+human = r.nouls[&quot;needs_human&quot;].p
+
+if radius &gt;= 1.5 or human &gt;= 0.70:
+    decision = &quot;escalate&quot;
+elif v.choice == &quot;ship&quot; and v.confidence &gt;= 0.88:
+    decision = &quot;ship&quot;
+else:
+    decision = &quot;return&quot;</code></pre>
+<p>仔细读底部那段，因为人们最容易在这里栽。</p>
+<p><strong>硬规则先胜。</strong> blast radius 永远压过 verdict，无论 verdict 多自信。模型对「不可逆的东西能不能过」没有投票权。</p>
+<p>然后是自信路径。其余全部落到 return——这是便宜的失败。</p>
+<p>阈值写在这里、写在代码里，这样你可以在 pull request 里审。按「做错的代价」为每个动作各写一条。ship 上的 0.88 只是占位，直到你有自己的标注样本；confidence <strong>不是</strong>准确率百分比，把它当准确率，是最快做出坏闸门的办法。</p>
+<hr />
+<h2 id="probabilities">概率才是产品</h2>
+<p>类型化答案解决了一半问题。分布解决另一半。</p>
+<p><strong>实际返回长这样：</strong></p>
+<pre><code>{
+  &quot;verdict&quot;: {
+    &quot;choice&quot;: &quot;ship&quot;,
+    &quot;probabilities&quot;: {&quot;ship&quot;: 0.52, &quot;return&quot;: 0.46, &quot;escalate&quot;: 0.02},
+    &quot;confidence&quot;: 0.18
+  },
+  &quot;blast_radius&quot;: {&quot;score&quot;: 0.4, &quot;confidence&quot;: 0.81},
+  &quot;needs_human&quot;: {&quot;p&quot;: 0.31, &quot;confidence&quot;: 0.77}
+}</code></pre>
+<p>ship 赢了。相对 return 只多六个百分点，confidence 是 0.18。</p>
+<p>自动合并会很鲁莽——而如果只看标签，你永远不会知道。LLM 会用一句自信的「看起来可以 ship」告诉你，却绝口不提这场比赛有多接近。</p>
+<p>于是你得到一个可以写一次、到处复用的模式：</p>
+<ul>
+<li>高置信、小后果：自动执行</li>
+<li>中置信：确认，或升级到更强模型</li>
+<li>低置信：交给人，或先去收集更多 state</li>
+</ul>
+<p>Jev 用 <strong>Reinforcement Learning for Calibrated Decisions（RLCD，面向校准决策的强化学习）</strong> 训练，用真实结果而非人类偏好去优化概率。意图是：在大量预测上，标成 90% 的答案大约有 90% 是对的。</p>
+<p>在你自己的数据上验证之后再依赖它。校准是跨组度量的；它从不承诺<strong>某一个</strong>答案一定正确。</p>
+<hr />
+<h2 id="step-07">07. 并行——把问题批进同一次调用</h2>
+<p>这是会改变你如何设计循环的部分，也是大多数人第一次读时错过的部分。</p>
+<p>System One 模型在一次请求里<strong>并行且隔离</strong>地评估每一个问题。加第六个问题几乎不动时钟。成本只是那个问题的 token，别无其它。</p>
+<figure><img src="images/fig06.png" alt="" loading="lazy" /></figure>
+<p>所以别再问一个、等一等、再决定下一个问什么。</p>
+<p>我的闸门问三个。同样的墙钟时间里它可以问八个：是否碰到 auth、是否加了依赖、改动行上的测试覆盖是否真实、commit message 是否匹配 diff。</p>
+<p>已经有人把同样形状的东西接到 feed 而不是 diff 上：每帖八个问题，三天的帖子，整轮大约两秒、七毛钱（美分）量级。它剥掉诱饵与未披露广告，并把 like/reply/repost 比率与正文并排权衡，而不是单独信任任一信号。</p>
+<blockquote>
+嵌入帖：https://x.com/i/status/2101074194260000982
+</blockquote>
+<p>八个问题 ≠ 八倍工作量。这正是该原语存在的全部理由，也是为什么你该围绕<strong>批次</strong>而不是单个问题来设计。</p>
+<p>一个问题是演示。一次调用打满一整套，才是专业模式；批处理的经济学也强烈奖励它。</p>
+<p>值得背下来的约束：问题<strong>读不到</strong>彼此的答案。若某决策依赖一次新鲜搜索结果，先跑搜索，再在第二次请求里问。隔离，正是并行的代价与收益。</p>
+<p>到这里，多数人会想要一个已经接好的路由器，而不是片段。那是课程的第三模块，队列、阈值与 shadow-mode 已经接好：</p>
+<blockquote>
+https://jev-engineering.site/
+</blockquote>
+<hr />
+<h2 id="step-08">08. 动态菜单——每一轮重建选项</h2>
+<p>浏览器可用动作在每次点击后都会变。Browser Use 会根据<strong>此刻真正看得见</strong>的控件建一份新鲜列表，再让 Jev 从中选。小型 LLM 只在某个字段需要键入文本时介入。</p>
+<p>把这套设计用到你自己的路由器上。</p>
+<p>从<strong>此刻存在</strong>的东西建 choices。若闸门能路由到三位审阅者，只送当前在线的两位。若在检索段落中选择，送你手里现有的 ID，而不是上一轮的。</p>
+<p>否则，你的决策模型是在选昨天的菜单——它会一直点已经离职的审阅者，或一小时前删掉的来源。</p>
+<p>候选列表很大时，先在代码里滤掉明显不匹配的，对剩余打分，再在短名单里选。Choice 最多支持 255 个选项，但最便宜的选项永远是你<strong>从未发送</strong>的那个。</p>
+<hr />
+<h2 id="step-09">09. 护栏——harness 才是差异所在</h2>
+<p>TypeSafe 材料里有一句值得坐下来想的话：在同一模型上，harness 是 78% 与 42% 的差异。相同权重，不同的循环工程。</p>
+<figure><img src="images/fig04.jpg" alt="" loading="lazy" /></figure>
+<p>编程 harness 已经以某种形式交付过一阵子。Claude Code、Codex 与 Cursor 都会在执行前对危险动作分类。这个分类器步骤，是人们开始信任智能体的很大一部分原因；而在此之前，它住在这些产品的封闭部分里。</p>
+<p>现在这个模式对所有人可用了——因为存在一个便宜且够用的分类器。</p>
+<p>LangChain 的 middleware 用四行展示形状：</p>
+<pre><code>from langchain.agents import create_agent
+from langchain_typesafe.experimental.middleware import AutoModeMiddleware
+
+guardrail = AutoModeMiddleware(tools=[&quot;bash&quot;])
+agent = create_agent(&quot;openai:gpt-5.6-luna&quot;, middleware=[guardrail])</code></pre>
+<p>每次工具调用在执行前被检查。危险的拦下，安全的放行，检查本身烧掉零生成 token。</p>
+<p>同样的想法也可以跑在栈的另一端，做成<strong>模型路由器</strong>。Jev 读请求，挑最便宜且可能完成的模型；昂贵模型只为真正需要它的工作醒来。</p>
+<p>这两层都不写一个字。也都不加你能感觉到的延迟。</p>
+<p>再往上，应用仍需要那些无聊的部分。动作上限。花费上限。已保存进度。中断之后，应先检查上次已完成的动作再重复任何事——因为一个自信的答案，并不能证明文件已经写入或分支已经合并。Browser Use 在 Jev 返回 DONE 之后，会<strong>独立</strong>检查结果；这份分离值得照抄。</p>
+<hr />
+<h2 id="step-10">10. 成本——四分钱每一百万到底买到什么</h2>
+<figure><img src="images/fig07.jpg" alt="" loading="lazy" /></figure>
+<p><strong>Jev 输入价为每百万 token $0.042。输出 token 免费。</strong></p>
+<p>按大约每次决策计费 1,000 输入 token 算，一万次决策的推理费是 $0.42。同样一万次分叉若用前沿模型、按每次三分钱计，是 $300。</p>
+<p>这是算术，不是基准测试，也是推销话术里诚实的那一版。</p>
+<p>基准数字更软，你该这样对待它们。在 TypeSafe 自己的四工作流评测上，Jev 与前沿共识的一致率大约 68%，接近中档 LLM，成本却只是零头。宣传里的「快 200×、便宜 400×」来自厂商自己的评测，处在有利的一端。把它们当天花板，而不是承诺。</p>
+<p>前 72 小时里人们真正上线的东西，比评测表更有说服力。</p>
+<p>Browser Use 把 Jev 接到浏览器智能体里，用 7 秒、$0.0039 找到航班。值得读细字：计时从第一次页面观察之后开始，而且智能体是找结果，不是订票。</p>
+<p>Hassan 分类了 1,018 篇 AI 研究论文，总共 $0.08，中位每篇 256ms。</p>
+<p>Riley Brown 用三秒半美分量级分类了 500 封邮件。</p>
+<p>Alex Volkov 把它做成 Claude 插件，给工具调用打相关性分，把一次会话从近 1M token 压到 86K，耗时一秒。那不是摘要。那是以 Jev 速度跑的相关性过滤器。</p>
+<p>这些都是单次运行。把算术变成业务数字的，是一家机构：SEO 审计以前大约每单 $250。同样的客户、同样的交付物，账单大约降了九成。</p>
+<blockquote>
+嵌入帖：https://x.com/i/status/2101090579127951694
+</blockquote>
+<p>逐行读他们的拆解：九项加速里，没有一项是生成。读分析、检查什么被引用、排序哪类页面会被挑中、跨数千页做缺口分析。每一项都是在已知选项上做决策，而每一项此前都在悄悄按前沿价格计费。</p>
+<p>按<strong>完成的任务</strong>记账，而不是按调用。一次便宜决策若无缘无故打回一次本来不错的改动，会换来一轮人类往返——那比本文里任何一次模型调用都贵。</p>
+<hr />
+<h2 id="hallucination">「不会幻觉」这句话需要一次纠正</h2>
+<p>TypeSafe 说 Jev 不会幻觉。这只在一个狭窄定义下成立，而这个狭窄定义很重要。</p>
+<p>Jev <strong>不能</strong>返回你 schema 之外的选项。你定义了 ship / return / escalate，它就不能发明 revert。它也不能在你的代码期望标签的地方，交回一段畸形散文。</p>
+<p>它<strong>完全可以</strong>在自信的情况下，选错一个仍然合法的选项。</p>
+<p>类型安全防止非法形状。它不保证判断正确。一个 schema 合法的错误，仍然会合并进破坏生产的改动。</p>
+<p>准确的句子是：Jev 不能破坏已声明的输出 schema，但它仍然可能错。</p>
+<p>谁卖给你更短的那一版，谁就还没把这东西送进生产。</p>
+<hr />
+<h2 id="where-not">它不该出现的地方</h2>
+<figure><img src="images/fig03.jpg" alt="" loading="lazy" /></figure>
+<p>答案空间一旦不再已知，Jev 就立刻不再有用。</p>
+<p>它不能写、不能摘要、不能生成代码、也不能自我解释。算术、计数、日期比较与精确字符串操作上不可靠——所以那些继续放在代码里，那里本来就更快更便宜。当决策需要若干隐藏推理步骤时它会吃力，于是把判断拆成更小的问题，或换用推理模型。它不能抽取未知值；先找出候选，再让它从中选。</p>
+<p>无关上下文会降低准确率——这与我们在 LLM 上养成的直觉相反。只发送问题真正需要的 state。</p>
+<p>而压过所有其它规则的一条：若确定性代码已经正确解决，就留着代码。我的闸门不会问 Jev「测试过了没」。它读退出码。</p>
+<p>再加一条诚实的 caveat。闭源权重、早期访问、仅文本输入、尚无独立校准数据。太早谈盲目信任。</p>
+<hr />
+<h2 id="rollout">上线——别制造新的失败模式</h2>
+<p>便宜模型仍然可以很贵：如果它的错误制造重试、人工审阅或事故。度量整个工作流，而不是 token 单价。</p>
+<p><strong>管用的顺序：</strong></p>
+<ul>
+<li>挑一个有界、低风险、你能叫出可能答案的决策</li>
+<li>在调用模型之前写好 rubric，并定义每个选项属于什么</li>
+<li>收集带期望答案的真实样本，包括模糊与对抗样本</li>
+<li>在现有逻辑旁跑 shadow mode，什么都不改</li>
+<li>画出准确率对 confidence 的曲线，从那条曲线设阈值，而不是从一篇博文</li>
+<li>先自动化最安全的分支，不确定的留给人或更强模型</li>
+<li>钉住模型版本，并记录问题、准则与阈值，使任何改动可回放</li>
+</ul>
+<p>最后一条是多数团队会跳过的纪律。你的问题是程序的一部分。给它们做版本、做审阅，并在模型或 rubric 变更时重跑评估集。</p>
+<p>我让闸门在 shadow mode 里跑了两天，才允许它拦截任何东西。它与我分歧了十一次。其中九次是我的阈值问题，不是它的判断——演示里永远发现不了这一点。</p>
+<hr />
+<h2 id="what-changed">真正改变了什么</h2>
+<p>Jev 有趣，不是因为它比 LLM 更会写。它是<strong>拒绝写</strong>。</p>
+<p>它贡献的是一个更像软件、而不是更像对话的模型接口：固定答案类型、显式不确定性、并行问题，以及留在你代码里、可被审阅的分支。</p>
+<p>真正的发现不是 7 秒航班 demo，也不是 $0.08 的分类跑。而是：你的智能体内部，有多少昂贵调用<strong>从未需要生成</strong>。</p>
+<p>让 LLM 调研、规划、写作。</p>
+<p>让 Jev 路由、打分、批准、升级。</p>
+<p>让代码执行决策。</p>
+<p>这份拆分会改写整个栈，并且在最终取代 Jev 的模型出现之后仍然成立。</p>
+<p>多数构建者会继续把前沿 token 花在每一个是、否、路由和打分上——因为能跑，而且没人审计 trace。</p>
+<p>把「思考」与「决策」分开的人，会用账单的零头，交付更快的智能体。</p>
+<p>上面是地图。课程是带路：从空白终端到带真实阈值的决策层，十步走完，外加已经上线的五种生产模式：</p>
+<blockquote>
+https://jev-engineering.site/
+</blockquote>
+<p>从一个决策开始。给它最少的 state。把它的概率记在你今天已有做法旁边，让它先挣到一个分支，再把整个循环交给它。</p>
+<p>你这周付给前沿模型的钱，多半不是在买思考。是在买选择。</p>
+<hr />
+<p><strong>别忘了关注我，并订阅我的 Telegram 频道：</strong></p>
+<p>https://t.me/+75nMf005jRpjMDU1</p>
+    </article>
+    <footer class="note">
+      <p>非官方中文镜像，供阅读。原文与配图版权归作者 Hanako（@hanakoxbt）与 TypeSafe 相关方所有。</p>
+      <p>代码块保留英文；价格与数字以原文为准（输入 $0.042/M，输出免费等）。嵌入推文以链接形式保留。</p>
+      <p>镜像仓库：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a> · slug：<code>hanako-jev-engineering/</code></p>
+    </footer>
+  </div>
+</body>
+</html>
