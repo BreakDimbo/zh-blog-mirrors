@@ -1,7 +1,150 @@
 {
- "updated": "2026-10-08T17:24:45.095584+08:00",
+ "updated": "2026-10-08T18:05:00.419416+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "subgtm.com",
+   "url": "https://subgtm.com/",
+   "title": "SubGTM",
+   "description": "Sub builds digital products and consults for US startups. Currently building PropertyPixel, AI photo editing for real estate.",
+   "shared_by": "@SubGtm",
+   "reply": "https://x.com/SubGtm/status/2108133894738546707",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "lifeos.vip",
+   "url": "https://lifeos.vip/about",
+   "title": "Leyang - AI Automation & PKM",
+   "description": "Leyang - Chief Vibe Officer at Midscene and builder of Vibelet, Aino, Tabbit, Pawgic, Vibekey, LifeOS, Calendar Pro, DeepAsk, Remosidian, Doubao Say, and Scripit. Focused on UI Automation and PKM, dedicated to maximizing productivity across work and life with AI.",
+   "shared_by": "@quanruzhuoxiu",
+   "reply": "https://x.com/quanruzhuoxiu/status/2108133449680953764",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "cjjohnsonjr.com",
+   "url": "https://www.cjjohnsonjr.com/",
+   "title": "CJ Johnson | Brand Strategist, Keynote Speaker & Author",
+   "description": "Official website of CJ Johnson Jr., also known as CJ Johnson and Clarence Johnson Jr. Founder of Rogue Dynamics, keynote speaker and author of The Maguire Method.",
+   "shared_by": "@cjjohnsonjr",
+   "reply": "https://x.com/cjjohnsonjr/status/2108132381521829971",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "envibagus.com",
+   "url": "https://envibagus.com/",
+   "title": "Envi Bagus",
+   "description": "Product designer and design engineer based in Bali. 5+ years across SaaS, fintech, healthcare, and Web3, from research to production code.",
+   "shared_by": "@envibgs",
+   "reply": "https://x.com/envibgs/status/2108132176206430712",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "jay-portfolio.jay-bhavsar-dev.workers.dev",
+   "url": "https://jay-portfolio.jay-bhavsar-dev.workers.dev/",
+   "title": "Jay Bhavsar | Jay Padmakar Bhavsar — Flutter, Full-Stack & AI Engineer | Mumbai",
+   "description": "Jay Bhavsar (Jay Padmakar Bhavsar) — Flutter, Full-Stack & AI engineer in Mumbai. Founder of Ringloom (AI voice ops). Hire for Flutter/Dart, FastAPI, React/Next.js, RAG, LangGraph, and Cloudflare Workers.",
+   "shared_by": "@jaybhavsar629",
+   "reply": "https://x.com/jaybhavsar629/status/2108130576918298853",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "cristian-vatca.ro",
+   "url": "https://cristian-vatca.ro/",
+   "title": "Home — Cristian Vatca",
+   "description": "Cyberpunk portfolio of Cristian Vatca",
+   "shared_by": "@cvatca",
+   "reply": "https://x.com/cvatca/status/2108130436102680952",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "ashfaqjani.me",
+   "url": "https://ashfaqjani.me/",
+   "title": "Ashfaq Jani",
+   "description": "Personal porfolio of Ashfaq Jani",
+   "shared_by": "@ashfaq_jani21",
+   "reply": "https://x.com/ashfaq_jani21/status/2108129348352184751",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "linxzhou.dev",
+   "url": "https://linxzhou.dev/",
+   "title": null,
+   "description": null,
+   "shared_by": "@shuizhuyu",
+   "reply": "https://x.com/shuizhuyu/status/2108128785644052577",
+   "recommended": false,
+   "owner": null,
+   "status": "error"
+  },
+  {
+   "domain": "hakimsaoudi.dev",
+   "url": "https://hakimsaoudi.dev/",
+   "title": "Accueil | Hakim Saoudi",
+   "description": "Portfolio de Hakim Saoudi. Exploration, projets web, architectures et design d'interfaces.",
+   "shared_by": "@hakim__saoudi",
+   "reply": "https://x.com/hakim__saoudi/status/2108128036784943479",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "vascodegraaff.com",
+   "url": "https://vascodegraaff.com/",
+   "title": "Vasco de Graaff",
+   "description": "A personal home screen for Vasco de Graaff — apps, experiments, and useful things in the making.",
+   "shared_by": "@vascodegraaff",
+   "reply": "https://x.com/vascodegraaff/status/2108126900451258522",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "elliothu.me",
+   "url": "https://elliothu.me/",
+   "title": "Elliot Hu — Software Engineer, AI & Cloud Infrastructure",
+   "description": "Software engineer focused on AI and cloud infrastructure.",
+   "shared_by": "@elliothux",
+   "reply": "https://x.com/elliothux/status/2108126541083521026",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "tarat.space",
+   "url": "https://tarat.space/",
+   "title": "Tarat's Garden",
+   "description": "Tarat's digital garden: AI and robotics projects, experiment logs, writings, books, and a timeline of things built and learned.",
+   "shared_by": "@tarat_211",
+   "reply": "https://x.com/tarat_211/status/2108126057928737128",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "adeniyi-richard.netlify.app",
+   "url": "https://adeniyi-richard.netlify.app/",
+   "title": "Adeniyi Richard Adedokun — Full Stack Developer & Cybersecurity Analyst",
+   "description": "Adeniyi Richard Adedokun — full stack developer and cybersecurity analyst building scalable, secure web applications with .NET, React and SQL Server.",
+   "shared_by": "@favouritecapguy",
+   "reply": "https://x.com/favouritecapguy/status/2108125700670812478",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "april-zhu.com",
    "url": "https://april-zhu.com/",
@@ -86,6 +229,17 @@
    "description": "Aishwarya Ashok's home for product thinking, AI, technology essays, creative writing, poetry, art, photography, and reflective field notes.",
    "shared_by": "@aishashok14",
    "reply": "https://x.com/aishashok14/status/2108120161261941133",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "nikkhielseath.com",
+   "url": "https://nikkhielseath.com/",
+   "title": "Nikkhiel Seath – Human, Voracious Reader, Biker, Programmer, Gastronome",
+   "description": "Human, Voracious Reader, Biker, Programmer, Gastronome",
+   "shared_by": "@nikkhielseath",
+   "reply": "https://x.com/nikkhielseath/status/2108119814602678688",
    "recommended": false,
    "owner": null,
    "status": "ok"
