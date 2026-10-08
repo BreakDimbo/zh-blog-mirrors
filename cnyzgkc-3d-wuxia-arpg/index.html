@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程 — 木马人（中文镜像）</title>
+  <meta name="description" content="木马人（@cnyzgkc）X 长帖整理：用 Tripo Smart Mesh P2.0 解决 AI 建模拓扑/绑骨问题，再用 Claude Opus 5.5 + Three.js 做出类《黑神话：悟空》的 3D 武侠 ARPG，制作分四步。附视频关键帧与字幕。" />
+  <meta property="og:title" content="一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程" />
+  <meta property="og:image" content="images/cover.jpg" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
+    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+    img.cover { border-radius: 8px; }
+    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; font-weight: 650; }
+    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
+      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
+    .grid2 figure { margin: 0; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    ol.subs li { margin: 0.15rem 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="meta">
+      <h1>一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程</h1>
+      <p class="source">原文推文：<a href="https://x.com/cnyzgkc/status/2108159853533466672">https://x.com/cnyzgkc/status/2108159853533466672</a></p>
+      <p class="meta-line">作者：木马人（<a href="https://x.com/cnyzgkc">@cnyzgkc</a>） · 2026-10-08 19:37（UTC+8） · X 长帖 + 59 秒演示视频 · 非官方中文整理镜像</p>
+    </header>
+    <article>
+<div class="related-guide"><strong>镜像说明：</strong>原帖即为中文，本页保留作者原文措辞，仅做分段、加标题与格式整理；未增补任何事实或数字。视频未转存，以下为抽取的关键帧与按画面字幕整理的旁白文字（逐秒抽帧识别，可能有个别遗漏）。完整视频请到<a href="https://x.com/cnyzgkc/status/2108159853533466672/video/1">原帖</a>观看。</div>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#intro">缘起：3D 游戏真的有市场</a></li>
+<li><a href="#pitfall">踩坑：静态好看，一动就崩</a></li>
+<li><a href="#solution">解法：Tripo Smart Mesh P2.0 + Claude Opus 5.5</a></li>
+<li><a href="#steps">制作过程四步</a></li>
+<li><a href="#video">视频演示：关键帧与旁白字幕</a></li>
+<li><a href="#replies">作者在评论区的补充</a></li>
+</ol></nav>
+<figure class="cover-fig"><img class="cover" src="images/cover.jpg" alt="视频封面：青岚山场景俯瞰" /><figcaption>视频封面：游戏场景「青岚山」俯瞰</figcaption></figure>
+<hr />
+<h2 id="intro">缘起：3D 游戏真的有市场</h2>
+<p>兄弟们，做 3D 游戏真的有市场啊，而且真能挣钱啊~</p>
+<p>最近做的 3D 版大富翁那条视频火了，好多私信问我怎么做的，还有付费要买游戏的🤣🤣🤣</p>
+<p>所以趁着假期，我搞了个类似《黑神话：悟空》的 3D 武侠 ARPG，准备发到小红书，看能不能卖掉~</p>
+<p>整个过程比我想的复杂，遇到了很多坑~ 所以我把制作过程分享出来，避免大家踩坑，建议收藏~</p>
+<hr />
+<h2 id="pitfall">踩坑：静态好看，一动就崩</h2>
+<p>开始设定的场景很简单：一个武侠人物在小院练功、山贼围攻、飞剑御敌，再深入山洞跟拿巨斧的头目打一架。</p>
+<p>我以为很简单，但说实话，我还是高估了自己，<strong>光找合适的建模方案就花了 2 天</strong>。</p>
+<p>搞过 3D 游戏的都知道，静态角色和动态完全是两码事，静态预览再精致，人物一动就崩了~</p>
+<blockquote><p>AI 建模工具生成的模型，拓扑布线太乱，绑定骨骼后直接废了。</p></blockquote>
+<p>我尝试了好几个建模工具，静态模型效果都挺好，可一绑定动作就暴露问题：角色抬腿时，大腿网格被拉扯成三角形；出拳时，手臂扭曲变形。</p>
+<hr />
+<h2 id="solution">解法：Tripo Smart Mesh P2.0 + Claude Opus 5.5</h2>
+<p>后来无意发现 <strong>Tripo 的 Smart Mesh P2.0</strong> 能直接生成<strong>原生四边形拓扑</strong>，不需要人工重拓扑，配合 UV 展开、自动绑骨骼和预设动画，做出来的角色终于能丝滑地做动作了。</p>
+<p>建模问题解决后，我用 <strong>Claude Opus 5.5</strong> 完成了剩余部分，同时调整操作和设计玩法。</p>
+<hr />
+<h2 id="steps">制作过程四步</h2>
+<p>整个游戏的制作过程我也分享给大家，分为四步：</p>
+<h3>第一步：先设定好游戏规则，列出场景的素材清单</h3>
+<p>人物、建筑、武器和半身立绘保持统一风格，基础操作、技能和装备系统也提前告诉 AI，让它规划代码，省得后面加东西又得大改。</p>
+<h3>第二步：用 Tripo 制作资产，再交给 Claude 接入游戏</h3>
+<p>角色绑定骨骼、选好动作后，导出 <code>GLB</code> 文件，让 Claude + Three.js 加载到网页，并把动画绑定到操作上。</p>
+<p>素材交付时说明每个模型的用途和动作对应关系，AI 会更容易准确接入。</p>
+<h3>第三步：通过试玩优化操作和战斗</h3>
+<p>玩的时候发现问题，尽量说具体点。</p>
+<p>比如「攻击结束后恢复移动太慢」，就比一句「手感不好」好多了。</p>
+<h3>第四步：往游戏里加新东西，让玩家有得玩</h3>
+<p>基础操作做顺了，就可以加入技能、新场景和不同的敌人。</p>
+<p>比如从拳脚到御剑，再去山洞挑战巨斧头目，让玩家一路有新东西可学、有新挑战可打。</p>
+<p>后面也可以扩展其他法术、不同职业，或者加入钓鱼这样的生活玩法。</p>
+<p>已有的模型和代码能复用就复用，先挑一个最想玩的做好，再继续往里加。</p>
+<hr />
+<p>如果感兴趣，我后面再把模型制作、动作绑定的坑单独拆成一篇详细教程。</p>
+<p>具体视频演示👇</p>
+<h2 id="video">视频演示：关键帧与旁白字幕</h2>
+<p>原视频 59.5 秒（2120×1080），前半段为游戏实机画面，后半段为 Tripo 内建模、绑骨与选动作的录屏。</p>
+<div class="grid2">
+<figure><img src="images/frame-01.jpg" alt="实时战斗：走位躲避敌人攻击（约 0:06）" loading="lazy" /><figcaption>实时战斗：走位躲避敌人攻击（约 0:06）</figcaption></figure>
+<figure><img src="images/frame-02.jpg" alt="第一章：村庄遭遇劫匪（约 0:11）" loading="lazy" /><figcaption>第一章：村庄遭遇劫匪（约 0:11）</figcaption></figure>
+<figure><img src="images/frame-03.jpg" alt="山洞场景（约 0:16）" loading="lazy" /><figcaption>山洞场景（约 0:16）</figcaption></figure>
+<figure><img src="images/frame-04.jpg" alt="山洞中与敌人缠斗（约 0:21）" loading="lazy" /><figcaption>山洞中与敌人缠斗（约 0:21）</figcaption></figure>
+<figure><img src="images/frame-05.jpg" alt="素材模型预览窗口（约 0:31，字幕：「以及飞剑巨斧等武器」）" loading="lazy" /><figcaption>素材模型预览窗口（约 0:31，字幕：「以及飞剑巨斧等武器」）</figcaption></figure>
+<figure><img src="images/frame-06.jpg" alt="Tripo 中的游戏 3D 建模素材一览：角色、山贼、巨斧、飞剑、木桩、建筑（约 0:42）" loading="lazy" /><figcaption>Tripo 中的游戏 3D 建模素材一览：角色、山贼、巨斧、飞剑、木桩、建筑（约 0:42）</figcaption></figure>
+<figure><img src="images/frame-07.jpg" alt="Tripo：一张参考图生成 3D 模型（约 0:46）" loading="lazy" /><figcaption>Tripo：一张参考图生成 3D 模型（约 0:46）</figcaption></figure>
+<figure><img src="images/frame-08.jpg" alt="Tripo：带纹理的角色模型（约 0:51）" loading="lazy" /><figcaption>Tripo：带纹理的角色模型（约 0:51）</figcaption></figure>
+</div>
+<figure><img src="images/frame-09.jpg" alt="Tripo：为绑好骨骼的角色选择对应动作（约 0:56）" loading="lazy" /><figcaption>Tripo：为绑好骨骼的角色选择对应动作（约 0:56）</figcaption></figure>
+<h3>旁白字幕（按画面整理）</h3>
+<ol class="subs">
+<li>这是我一个人用 AI 做的 3D 武侠 ARPG 类的游戏。</li>
+<li>战斗机制是实时的，需要玩家靠操作走位躲避敌人的攻击，然后找准时间对敌方发起进攻。</li>
+<li>游戏的第一章就从村庄遭遇劫匪，到主角去剿灭山匪，跟 boss 决战。</li>
+<li>像这种实时 ARPG，最难做的其实是建模与动作。</li>
+<li>一个能动能打的角色，光是可操作的地方就有一堆，同时还要给加上适配的动作，像跑步、翻滚、闪躲、攻击、死亡等，每一个操作背后都绑定了（动作）。</li>
+<li>而且要把游戏做的精细，还需要更多的建模素材，比如不同场景的造景，以及飞剑巨斧等武器。</li>
+<li>放以前这得凑齐一个团队，策划、程序、美术一个都不能少，但现在我一个人靠 AI 就做出来了。</li>
+<li>用到的只是 Opus 5.5 + Tripo3d。</li>
+<li>游戏中的 3D 建模都是在 Tripo3d 里制作的，只要一张参考图或者输入一句话，就能生成一个 3D 模型，根据三视图生成纹理。</li>
+<li>并且在 Tripo3d 里还可以直接给人物角色绑定骨骼，然后根据需要给人物选择对应的动作即可。</li>
+<li>游戏里看到的每次移动攻击，都是这么完成的。</li>
+</ol>
+<h2 id="replies">作者在评论区的补充</h2>
+<p>以下为作者本人在该帖下的部分回复（截至抓取时，2026-10-08 约 22:30 UTC+8）：</p>
+<ul>
+<li>被问到难点：「主要建模难」「建模好是关键」「是的，我就建模弄了半天，太心累了」。</li>
+<li>被问到在 Tripo 上要花多少钱：「可以先用送的积分体验下，好的话有个 6 折优惠码」。</li>
+<li>被问到烧了多少 token：「几个亿吧🤣」。</li>
+<li>发布渠道：「我准备发小红书了」「我发了抖音不知道有没有流量」。</li>
+<li>对行业：「门槛低了很多」「4399 很多游戏感觉现在都能复刻了」。</li>
+</ul>
+    </article>
+    <footer class="note">
+      <p>非官方中文整理镜像。原帖为中文长帖（note tweet）+ 演示视频；本页图片为视频封面与关键帧（自托管 JPG）。Hub：<a href="../">中文博文镜像</a>。</p>
+      <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p>
+    </footer>
+  </div>
+</body>
+</html>
