@@ -1,7 +1,84 @@
 {
- "updated": "2026-10-09T14:06:44.691527+08:00",
+ "updated": "2026-10-09T17:58:39.896749+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "dyyportfolio.com",
+   "url": "https://www.dyyportfolio.com/",
+   "title": "Portfolio",
+   "description": "Minimalist professional portfolio with Swiss style",
+   "shared_by": "@EZZ37709770",
+   "reply": "https://x.com/EZZ37709770/status/2108459657601896754",
+   "recommended": false,
+   "owner": null,
+   "status": "error"
+  },
+  {
+   "domain": "haoqi.design",
+   "url": "https://haoqi.design/",
+   "title": "HAOQI©2026",
+   "description": "Digital Product Designer & Builder © 2026",
+   "shared_by": "@JGuli49724",
+   "reply": "https://x.com/JGuli49724/status/2108457696060141689",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "rustrum.com",
+   "url": "https://rustrum.com/",
+   "title": "Chelsea Rustrum — Community Builder, Armchair Economist, Author",
+   "description": "Shouldn",
+   "shared_by": "@chelsearustrum",
+   "reply": "https://x.com/chelsearustrum/status/2108451751036899426",
+   "recommended": false,
+   "owner": null,
+   "status": "og-image"
+  },
+  {
+   "domain": "arbatov.dev",
+   "url": "https://arbatov.dev/",
+   "title": "Vlad Arbatov",
+   "description": "Vlad Arbatov — CTO and AI engineer. 20 years shipping; ex-Yandex, Mapbox; founding engineer at Loyal.",
+   "shared_by": "@vladzima",
+   "reply": "https://x.com/vladzima/status/2108449073078395264",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "ondesign.tech",
+   "url": "https://www.ondesign.tech/learn.html",
+   "title": "ONDesign · 不止于灵感，更进一步",
+   "description": "ONDesign：看真实参考，拆字体、颜色、组件和设计规则，再交给 AI Coding 去做。",
+   "shared_by": "@JGuli49724",
+   "reply": "https://x.com/JGuli49724/status/2108447369356583362",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "weirdweb.fun",
+   "url": "https://www.weirdweb.fun/",
+   "title": "weirdweb.fun — Get Lost Online",
+   "description": "Explore strange corners of the internet, one click at a time. Tap the ring to enter.",
+   "shared_by": "@weirdwebfun",
+   "reply": "https://x.com/weirdwebfun/status/2108445863823712461",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "marcozc19.github.io",
+   "url": "https://marcozc19.github.io/intro/",
+   "title": "Marco Zhuang",
+   "description": "Marco Zhuang — Product Manager at TikTok. An island of where I",
+   "shared_by": "@m_arcozhuang",
+   "reply": "https://x.com/m_arcozhuang/status/2108441511516070274",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "vnil.site",
    "url": "https://vnil.site/",
