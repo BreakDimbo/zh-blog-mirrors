@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MiniMax-H3 Prompt Rewriter for ComfyUI：一句话扩写成 H3 分镜脚本（中文导读）</title>
+  <meta name="description" content="pytraveler/MiniMax-H3-Prompt-Rewriter-ComfyUI 中文导读：基于 LightX2V 提示词重写 LoRA 的 ComfyUI 节点包，把一句短提示词本地扩写成 MiniMax-H3 的结构化分镜音视频描述；27B / 8B / Omni 三个 LoRA 加通用写作节点，13 GB / 9 GB / 5 GB 显存档位。推荐自 @AndyL5cc。" />
+  <meta property="og:title" content="MiniMax-H3 Prompt Rewriter for ComfyUI 中文导读" />
+  <meta property="og:image" content="images/node-preview.png" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
+    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+    img.cover { border-radius: 8px; }
+    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; font-weight: 650; }
+    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
+      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
+    .grid2 figure { margin: 0; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    ol.subs li { margin: 0.15rem 0; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+<header class="meta">
+  <h1>MiniMax-H3 Prompt Rewriter for ComfyUI：一句话扩写成 H3 分镜脚本，本地离线运行</h1>
+  <p class="source">原帖：<a href="https://x.com/AndyL5cc/status/2108087519472726416">https://x.com/AndyL5cc/status/2108087519472726416</a></p>
+  <p class="source">项目仓库：<a href="https://github.com/pytraveler/MiniMax-H3-Prompt-Rewriter-ComfyUI">https://github.com/pytraveler/MiniMax-H3-Prompt-Rewriter-ComfyUI</a></p>
+  <p class="meta-line">推荐人：Andy L（<a href="https://x.com/AndyL5cc">@AndyL5cc</a>） · 2026-10-08 14:50（UTC+8） · 项目作者：pytraveler · 许可证 MIT（仅覆盖 ComfyUI 集成代码，模型权重各有许可） · 非官方中文导读镜像</p>
+</header>
+<article>
+<div class="related-guide"><strong>镜像说明：</strong>原帖是一条中文短推，主要是在推荐一个 GitHub 项目，所以本页以该项目的 README 为正文。仓库自带的<a href="https://github.com/pytraveler/MiniMax-H3-Prompt-Rewriter-ComfyUI/blob/main/README_ZH.md">中文 README</a>有 2600 多行，作者说明它是由 AI 从英文版机翻的，两版有出入时以英文版为准。本页从中摘取核心内容：定位、四条路线对比、硬件要求、安装、示例工作流、节点速览和注意事项，并做了文字整理，没有增补任何事实或数字。完整参数说明请看原仓库。图片取自仓库 <code>docs/</code> 与 <code>example_workflows/</code>（MIT，本地托管 PNG/JPG）。依据的版本是仓库 main 分支最新提交 <code>14c0712</code>（2026-09-29 21:16，UTC+8）。</div>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#post">原帖</a></li>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#routes">四条路线怎么选</a></li>
+<li><a href="#req">硬件与依赖要求</a></li>
+<li><a href="#install">安装</a></li>
+<li><a href="#workflows">七个示例工作流</a></li>
+<li><a href="#nodes">节点速览</a></li>
+<li><a href="#gguf">权重存放位置与 GGUF 路线</a></li>
+<li><a href="#notes">注意事项</a></li>
+<li><a href="#credits">致谢与许可证</a></li>
+</ol></nav>
+
+<h2 id="post">原帖</h2>
+<blockquote>
+<p>做 MiniMax H3 的兄弟有福了！</p>
+<p>H3 专用提示词 LoRA 来了。</p>
+<p>一句话就能自动扩写成分镜脚本，支持本地离线运行，不用 API、不花 Token。</p>
+<p>13G+ 显存跑 27B，9G 跑 8B / Omni，低显存用 Writer。</p>
+<p>github.com/pytraveler/MiniMax-H3-Prompt-Rewriter-ComfyUI</p>
+<p>—— Andy L（@AndyL5cc），2026-10-08</p>
+</blockquote>
+<p><strong>核对：</strong>帖子里的显存数字和 README 对得上。27B 路线的“最小可用配置”约 13 GB 显存（GGUF，约 10 GB 下载）；8B 和 Omni 用 Q4_K_M 时都是约 9 GB；写作节点（Writer）最低约 5 GB（2.6 GB 下载）。要注意，27B 如果走 Transformers 默认的 <code>nf4</code> 量化，需要约 16 GB 显存，GGUF 按量化档位不同在 13–19 GB 之间。</p>
+
+<h2 id="what">这是什么</h2>
+<p>这是一套 ComfyUI 节点，服务于 <a href="https://huggingface.co/lightx2v/MiniMax-H3-Prompt-Rewriter-LoRA">LightX2V MiniMax-H3 T2VA Prompt Rewriter LoRA</a>。你输入一句简短的提示词，它输出一段结构化、可以直接拿去生产的音视频描述，交给 <a href="https://huggingface.co/MiniMaxAI/MiniMax-H3">MiniMax-H3</a> 使用，全程在本地完成。</p>
+<figure class="cover-fig"><img class="cover" src="images/node-preview.png" alt="ComfyUI 中的重写器节点" /><figcaption>重写器节点：左边是一句简短的提示词（示例用俄语），右边是结构化的分镜描述，以及声景、配乐字段</figcaption></figure>
+<p>提示词可以用底座模型读得懂的任何语言写，但重写结果一律是英文，因为 MiniMax-H3 要的就是英文。</p>
+<pre><code>"A red fox walks through a snowy forest at dawn."  +  16:9  +  15s
+                              │
+                              ▼
+              Qwen3.6-27B + Prompt Rewriter LoRA
+                              │
+                              ▼
+   integrated_multimodal_description: [Shot 1] ... [Shot 2] 0:06 ...
+   overall_soundscape: ...
+   non_diegetic_music: ...
+                              │
+                              ▼
+              MiniMax-H3：视频 + 同步音频</code></pre>
+<p>输出分成三个字段：<code>integrated_multimodal_description</code>（逐镜头的画面）、<code>overall_soundscape</code>（画内声音）、<code>non_diegetic_music</code>（配乐）。<code>rewritten_prompt</code> 是完整结果，可以直接粘进 MiniMax-H3 的文本输入。</p>
+
+<h2 id="routes">四条路线怎么选</h2>
+<p>要得到这样的输出有四条路，节点包都提供了：</p>
+<table>
+<tr><th></th><th>重写器（27B）</th><th>重写器 8B</th><th>重写器 Omni</th><th>写作节点（Writer）</th></tr>
+<tr><td>格式从哪来</td><td>LoRA：一个 27B 模型，训练到不用任何提示也会输出 H3 格式</td><td>第二个 LoRA，底座能“看”</td><td>第三个 LoRA，底座能“听”</td><td>MiniMax 官方写作指南，放在系统提示词里</td></tr>
+<tr><td>模型</td><td>只能是 Qwen3.6-27B</td><td>只能是 Qwen3-VL-8B-Instruct</td><td>只能是 Qwen2.5-Omni-7B</td><td>任何能跟随指令的 GGUF</td></tr>
+<tr><td>最小可用配置</td><td>约 10 GB 下载，约 13 GB 显存</td><td>约 6.1 GB 下载，约 9 GB 显存</td><td>约 6.2 GB 下载，约 9 GB 显存</td><td><strong>2.6 GB 下载，约 5 GB 显存</strong></td></tr>
+<tr><td>任务</td><td>T2VA</td><td>T2VA、I2VA、FL2VA、L2VA</td><td>T2VA、I2VA、FL2VA、L2VA、<strong>Ref2VA</strong></td><td>T2VA、I2VA、FL2VA、L2VA、Ref2VA</td></tr>
+<tr><td>参考帧</td><td>需要用文字描述给它</td><td><strong>自己看</strong></td><td><strong>自己看</strong></td><td>需要用文字描述给它</td></tr>
+<tr><td>片段和声音</td><td>需要用文字描述给它</td><td>需要用文字描述给它</td><td><strong>自己看、自己听</strong></td><td>需要用文字描述给它</td></tr>
+<tr><td>质量</td><td>基准</td><td>同一套训练格式，下载量只有三分之一；对齐行没那么稳</td><td>唯一能听的；Ref2VA 下输出六个字段</td><td>很接近，而且能在 LoRA 带不动的硬件上跑</td></tr>
+</table>
+<p>前三列可以合成一个节点 <strong>Universal Rewriter</strong>，切换标签页就换适配器，其他设置保持不动。README 的建议是：<strong>显卡只有 8 GB，就直接用写作节点。</strong></p>
+<p>此外，<strong>Prompt Presets</strong> 节点内置一千条现成的 MiniMax-H3 提示词，可以按画面风格和主题筛选。它不加载模型，也不下载任何东西。</p>
+
+<h2 id="req">硬件与依赖要求</h2>
+<p>走 LoRA 路线，面对的是一个 270 亿参数的语言模型。适配器只绑定特定的底座模型，所以下面这些要求绕不过去（<strong>写作节点不受这些限制</strong>）：</p>
+<table>
+<tr><th>资源</th><th>要求</th></tr>
+<tr><td>磁盘</td><td><code>Qwen/Qwen3.6-27B</code> 约 52 GB，适配器另需约 3.5 GB；走 GGUF 路线总共约 10–16 GB</td></tr>
+<tr><td>显存（<code>nf4</code>，默认）</td><td>约 16 GB</td></tr>
+<tr><td>显存（<code>int8</code>）</td><td>约 28 GB</td></tr>
+<tr><td>显存（<code>bfloat16</code>）</td><td>约 54 GB，会通过 accelerate 溢出到系统内存</td></tr>
+<tr><td>显存（GGUF）</td><td>约 13–19 GB，取决于量化等级；少卸载几层到 GPU，占用还能更低</td></tr>
+<tr><td>软件包</td><td><code>transformers</code>、<code>peft</code>、<code>accelerate</code>；<code>nf4</code>/<code>int8</code> 还需要 <code>bitsandbytes</code>。<strong>GGUF 路线什么都不用装</strong>：有 <code>llama-cpp-python</code> 就用它，没有就自动下载 llama.cpp 官方二进制</td></tr>
+</table>
+<blockquote><strong>MiniMax-H3 自带的文本编码器不能拿来做这件事。</strong>它和 LoRA 的底座是两个不同的模型（Qwen3-VL-32B，词表 151936；底座是 Qwen3.6-27B，词表 248320）。它没有适配器要挂载的线性注意力 <code>in_proj_*</code> 模块，被截断到 64 层中的前 50 层，也没有 <code>lm_head</code> 和最后的归一化层，所以根本无法生成文本，只为 DiT 产出隐藏状态。</blockquote>
+<p>想省下载量的话，README 推荐用 Qwen3.6-27B 的 <code>bitsandbytes</code> nf4 重打包：约 17 GB 下载、约 16 GB 显存，不需要额外依赖。但这些重打包来自第三方。节点会核验 <code>config.json</code>，那只能证明架构形状对，不能证明上传者可信。<code>compressed-tensors</code> 和 <code>modelopt</code>（NVFP4）格式挂不上 LoRA，节点会在下载前报错。</p>
+
+<h2 id="install">安装</h2>
+<p>克隆到 <code>ComfyUI/custom_nodes/</code>，再把依赖装进 ComfyUI 实际使用的 Python 环境：</p>
+<pre><code>cd ComfyUI/custom_nodes
+git clone https://github.com/pytraveler/MiniMax-H3-Prompt-Rewriter-ComfyUI</code></pre>
+<p>Windows 便携版：</p>
+<pre><code>python_embeded\python.exe -m pip install -r ComfyUI\custom_nodes\MiniMax-H3-Prompt-Rewriter-ComfyUI\requirements.txt</code></pre>
+<p>也可以用 ComfyUI-Manager 从 Comfy Registry 安装。节点包不会擅自往你的环境里 pip 安装任何东西。缺包时，它会给出适用于你当前 ComfyUI 解释器的安装命令。</p>
+
+<h2 id="workflows">七个示例工作流</h2>
+<p>安装后，这些工作流会出现在 ComfyUI 的模板浏览器里（<em>Workflow → Browse Templates</em>）。每个都能独立运行，并附有一张 “Read me first” 说明。</p>
+<table>
+<tr><th>#</th><th>模板</th><th>需要什么</th></tr>
+<tr><td>1</td><td><strong>Write a prompt</strong>：输入一句想法，输出完整的 H3 音视频描述</td><td>一个 2.6 GB 的 GGUF</td></tr>
+<tr><td>2</td><td><strong>Rewrite a prompt with the 27B LoRA</strong>：用 LightX2V 的适配器</td><td>一个 15.7 GB 的 GGUF</td></tr>
+<tr><td>3</td><td><strong>Write a prompt from references</strong>：先描述你的图片，再照着内容写</td><td>两个 GGUF，合计 6 GB</td></tr>
+<tr><td>4</td><td><strong>Ready-made prompts</strong>：一千条现成提示词，连同画面一起挑</td><td>什么都不需要</td></tr>
+<tr><td>5</td><td><strong>Prompt to video</strong>：ComfyUI 自带的文生视频模板，前面接写作节点</td><td>MiniMax-H3 权重</td></tr>
+<tr><td>6</td><td><strong>References to video</strong>：换成 Ref2VA，图片按素材条顺序送进生成器</td><td>MiniMax-H3 的 ref2va 权重</td></tr>
+<tr><td>7</td><td><strong>LoRA triggers and effects</strong>：把适配器的触发词和 MiniMax 的十个特效放进写好的提示词</td><td>什么都不需要</td></tr>
+</table>
+<p>只有 5 和 6 会加载 MiniMax-H3 检查点，其余工作流都只生成文本。3 和 6 的图像加载器<strong>故意留空</strong>，需要先选你自己的图片。</p>
+<div class="grid2">
+<figure><img src="images/workflow-1.jpg" alt="工作流 1" /><figcaption>1 · Write a prompt：想法 → 写作节点 → 提示词检查 → H3 提示词（一个 2.6 GB 语言模型，不需要视频权重）</figcaption></figure>
+<figure><img src="images/workflow-2.jpg" alt="工作流 2" /><figcaption>2 · Rewrite a prompt with the 27B LoRA</figcaption></figure>
+<figure><img src="images/workflow-3.jpg" alt="工作流 3" /><figcaption>3 · Write a prompt from references</figcaption></figure>
+<figure><img src="images/workflow-4.jpg" alt="工作流 4" /><figcaption>4 · Ready-made prompts</figcaption></figure>
+<figure><img src="images/workflow-5.jpg" alt="工作流 5" /><figcaption>5 · Prompt to video</figcaption></figure>
+<figure><img src="images/workflow-6.jpg" alt="工作流 6" /><figcaption>6 · References to video</figcaption></figure>
+</div>
+<figure><img src="images/workflow-7.jpg" alt="工作流 7" /><figcaption>7 · LoRA triggers and effects</figcaption></figure>
+<p>社区工作流：<a href="https://github.com/axiomgraph/ComfyUIWorkflow">axiomgraph 的工作流</a>把 Omni 重写器和 FL2VA 组合在一起（GPL-3.0，另外依赖几个其他节点包）。</p>
+
+<h2 id="nodes">节点速览</h2>
+<h3>Prompt Rewriter（27B，主力节点）</h3>
+<p>缺什么就下载什么，加载模型、生成，然后释放显存。主要输入如下：</p>
+<ul>
+<li><code>prompt</code>：要扩写的那句短提示词。</li>
+<li><code>model</code>：底座模型。会列出你的模型列表和硬盘上已有的 Qwen3.6-27B（前缀为 <code>on disk:</code>）。首次使用时下载，中断后可续传。</li>
+<li><code>resolution</code> / <code>duration</code>：要和交给 MiniMax-H3 的设置保持一致，否则镜头节奏会对不上。画幅从 <code>48:9</code> 到 <code>9:16</code>。</li>
+<li><code>aspect_ratio</code>：同一个设置的插槽版本，可以直接接 Resolution Selector 等节点的输出。</li>
+<li><code>quantization</code>：<code>nf4</code>（默认，约 16 GB）、<code>int8</code>（约 28 GB）、<code>bfloat16</code>/<code>float16</code>（约 54 GB）。</li>
+<li><code>greedy</code>：默认开启，输出是确定性的。</li>
+<li><code>keep_model_loaded</code>：<strong>默认关闭</strong>。重写一结束就释放 27B，好让同一块 GPU 接着跑 H3 视频生成。</li>
+</ul>
+
+<h3>Prompt Rewriter 8B：能看画面</h3>
+<p>LightX2V 的第二个适配器，训练在 Qwen3-VL-8B-Instruct 上。它能直接看到参考帧，并据此写出对齐行。它覆盖 T2VA、I2VA、FL2VA、L2VA 四个任务，输出和 27B 一样，下游可以互换。</p>
+<figure><img src="images/node-rewriter-8b.png" alt="8B 重写器节点" /><figcaption>8B 重写器（T2VA）：带 first_frame / last_frame 输入，输出包含编号镜头、(S1)/(S2) 说话人标识和 &lt;d&gt;[English] Hello.&lt;/d&gt; 对白标签</figcaption></figure>
+<table>
+<tr><th>8B 配置</th><th>下载</th><th>显存</th></tr>
+<tr><td>Q4_K_M 底座 + 投影器 + Q8_0 适配器</td><td>4.7 + 0.7 + 0.7 GB</td><td>约 9 GB</td></tr>
+<tr><td>Q8_0 底座 + 投影器 + F16 适配器</td><td>8.1 + 0.7 + 1.3 GB</td><td>约 13 GB</td></tr>
+<tr><td>safetensors 底座 + 适配器，<code>nf4</code></td><td>17.5 + 2.8 GB</td><td>约 8 GB</td></tr>
+<tr><td>safetensors 底座 + 适配器，<code>bfloat16</code></td><td>17.5 + 2.8 GB</td><td>约 20 GB</td></tr>
+</table>
+<p>局限：毕竟是 8B，对齐行里的时间戳有时会写成三位小数；在 FL2VA 上，最后一张图偶尔会被记到 Shot 1 上。27B 没有这些问题。粘贴前最好扫一眼。</p>
+
+<h3>Prompt Rewriter Omni：能看也能听</h3>
+<p>LightX2V 的第三个适配器，训练在 Qwen2.5-Omni-7B 上。图片、视频片段、声音都可以原样送给它。它也是三个重写器里唯一覆盖全参考任务 <strong>Ref2AV</strong> 的，这个任务输出六个字段：<code>subject_definitions</code>、<code>summary</code>、<code>retention_analysis</code>、<code>detailed_description</code>、<code>overall_soundscape</code>、<code>non_diegetic_music</code>。</p>
+<figure><img src="images/node-rewriter-omni.png" alt="Omni 重写器节点" /><figcaption>设为 REF2AV 的 Omni 重写器：四个参考插槽、可拖动排序的素材条（pic 1 / pic 2 / aud 1），右侧把 Ref2AV 的六个字段全部填满</figcaption></figure>
+<table>
+<tr><th>Omni 配置</th><th>下载</th><th>显存</th></tr>
+<tr><td>Q4_K_M 底座 + 投影器 + Q8_0 适配器</td><td>4.4 + 1.4 + 0.34 GB</td><td>约 9 GB</td></tr>
+<tr><td>Q8_0 底座 + 投影器 + F16 适配器</td><td>8.1 + 1.4 + 0.65 GB</td><td>约 13 GB</td></tr>
+<tr><td>safetensors 底座 + 适配器，<code>nf4</code></td><td>22.4 + 1.3 GB</td><td>约 9 GB</td></tr>
+<tr><td>safetensors 底座 + 适配器，<code>bfloat16</code></td><td>22.4 + 1.3 GB</td><td>约 20 GB</td></tr>
+</table>
+
+<h3>Prompt Writer（写作节点，低显存首选）</h3>
+<p>输出同样的三个字段，但不需要 LoRA，也不需要 27B。它把 MiniMax 官方的<a href="https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md">提示词写作指南</a>放进系统提示词，任何能跟随指令的 GGUF 都能照着写。README 称，一个 5.2 GB 的 Qwen3.5-9B 大约 20 秒就能填满三个字段。</p>
+<figure><img src="images/node-t2va.png" alt="T2VA 写作节点" /><figcaption>T2VA 写作节点（16:9，10 秒，本地 Qwen3.6-27B，11.2 秒）：俄语提示词进，H3 英文格式出，切点在提示词要求的 00:03.000，配乐为 N/A</figcaption></figure>
+<p>这里有个取舍：LoRA <strong>本身就是</strong>那个格式，而写作节点的格式靠约 4000 token 的指令撑着，所以 LoRA 写出的文字更密实、格式更可靠；写作节点的好处是能在 LoRA 跑不动的硬件上运行。做 I2VA/FL2VA/L2VA 时，写作节点<strong>只读文字、不读像素</strong>，需要手写参考帧描述，或者从 Reference Caption 节点接入。</p>
+<table>
+<tr><th>推荐的写作模型</th><th>下载</th><th>显存（指南进入上下文后）</th></tr>
+<tr><td>Qwen3.5-4B <code>Q4_K_M</code></td><td>2.6 GB</td><td>约 5 GB，8 GB 显卡从这个开始</td></tr>
+<tr><td>Qwen3.5-9B <code>Q4_K_M</code></td><td>5.3 GB</td><td>约 8 GB，每 GB 换来的文笔最好</td></tr>
+<tr><td>Qwen3.5-9B Uncensored (HauhauCS) <code>Q4_K_M</code></td><td>5.2 GB</td><td>约 8 GB，原版会拒绝的场景它不拒绝</td></tr>
+<tr><td>Gemma 3 12B Instruct <code>Q4_K_M</code></td><td>6.8 GB</td><td>约 10 GB，非 Qwen 的选择</td></tr>
+<tr><td>Mistral Small 3.2 24B Instruct <code>Q4_K_M</code></td><td>13.4 GB</td><td>约 17 GB，适合 16 GB 及以上的显卡</td></tr>
+</table>
+<p>在 <code>system_prompt</code> 里换掉指南，写作节点就能改为给 LTX、Krea、Wan 或你自己的风格写提示词。</p>
+
+<h3>其他节点</h3>
+<ul>
+<li><strong>Universal Rewriter</strong>：三个重写 LoRA 合在一个节点里，用标签页切换。</li>
+<li><strong>Universal Writer</strong>：一个节点完成一整个镜头，包括描述参考素材、调整素材顺序（可拖动）和写提示词，覆盖五个任务。</li>
+<li><strong>Reference Caption / Multi Reference Caption</strong>：把图片、声音、视频变成写作节点需要的文字。README 在 3.4 GB 的 Qwen2.5-Omni-3B 上实测：一帧画面 3 秒，一段声音 2 秒，一段视频 5 秒。</li>
+<li><strong>Guide Prompt (any LLM)</strong>：只拼出基于指南的 system/user 提示词，不跑模型，可以接到你已有的任何 LLM 节点（本地、API、远程均可）。</li>
+<li><strong>Prompt Check</strong>：按同一套规则检查任意来源的 H3 提示词并拆分字段，不加载模型。</li>
+<li><strong>Prompt Reducer / Reduce Prompt (any LLM)</strong>：反向操作，把写好的 H3 提示词还原成一句短句。</li>
+<li><strong>Effect Embeddings</strong>：把 MiniMax 随 H3 发布的十个特效嵌入（子弹时间、黑魔法、喷火等）放进提示词。</li>
+<li><strong>LoRA Triggers</strong>：把视频 LoRA 的触发词保存在节点上，放回写好的提示词。</li>
+<li><strong>Reference Adapter / Reference Slots</strong>：负责参考素材的拆分与编号对齐，保证提示词里的 <code>&lt;Picture 1&gt;</code> 和送进 <code>MiniMaxH3ReferenceToVideo</code> 的素材对应一致。</li>
+<li><strong>Prompt Presets</strong>：内置一千段现成提示词，带二十种拍摄风格、二十类主体等标签筛选，每条配一帧画面，共 6 MB，运行时不下载任何东西。</li>
+<li>另有<strong>提示词库</strong>（保存命名提示词）、<strong>重复上一次的答案</strong>、<strong>答案自检</strong>、<strong>模型列表</strong>编辑窗口（下载前可先 “Check it”），并支持复用 Ollama 已拉取的模型。</li>
+</ul>
+<figure><img src="images/node-universal-writer.png" alt="通用写作节点" /><figcaption>Universal Writer（Ref2VA）：参考输入、可拖动的彩色素材条（subj 1 / pic 1 / vid 1 / aud 1）、画幅方框、时长滑块，以及描述模型和写作模型两个下拉框</figcaption></figure>
+<figure><img src="images/node-prompt-presets.png" alt="提示词预设节点" /><figcaption>Prompt Presets：预设 000014（沙漠公路上的摩托快递员），画面和完整提示词直接显示在节点上，运行耗时 0.030 秒</figcaption></figure>
+
+<h2 id="gguf">权重存放位置与 GGUF 路线</h2>
+<pre><code>ComfyUI/models/LLM/
+├── Qwen3.6-27B/                          # 底座模型，约 52 GB
+├── MiniMax-H3-Prompt-Rewriter-LoRA/      # 适配器，约 3.5 GB
+├── Qwen3.5-9B-Q4_K_M.gguf                # 一个写作模型，一个文件
+└── Qwen2.5-Omni-3B/                      # 一个描述模型：模型和 mmproj 在一起
+
+ComfyUI/user/minimax_h3_rewriter/
+├── models.json                           # 你的模型列表
+├── guides/                               # 两份写作指南，40 KB
+└── runtime/                              # llama.cpp 二进制（如果下载过）</code></pre>
+<p>节点会先在 ComfyUI 登记的模型目录（含 <code>extra_model_paths.yaml</code>）和 Hugging Face 缓存里查找已有的 Qwen3.6-27B，找到就复用，不重复下载。</p>
+<p>在模型列表里选 <code>[gguf]</code> 条目，重写器就改由 llama.cpp 运行，<strong>不需要任何 pip 安装</strong>：有 <code>llama-cpp-python</code> 就用，没有就用本机已有的 llama.cpp，再没有就下载官方二进制。</p>
+<table>
+<tr><th><code>llama_backend</code></th><th>下载</th><th>说明</th></tr>
+<tr><td><code>auto</code></td><td>34 或 511 MB</td><td>选本机能跑的最快构建。Windows 上算力为 8.6/8.9/12.0/12.1 的 NVIDIA 显卡用 CUDA，其余用 Vulkan</td></tr>
+<tr><td><code>vulkan</code></td><td>34 MB</td><td>NVIDIA、AMD、Intel 通用，吞吐约为 CUDA 的一半</td></tr>
+<tr><td><code>cuda</code></td><td>511 MB</td><td>NVIDIA 上约快 2 倍，<strong>仅限 Windows</strong>（上游不发布 Linux CUDA 构建，需要自行编译）</td></tr>
+<tr><td><code>cpu</code></td><td>17 MB</td><td>完全没有 GPU 时使用</td></tr>
+</table>
+<p>GGUF 路线用的是<strong>转换过的</strong>适配器：<a href="https://huggingface.co/pytraveler/MiniMax-H3-Prompt-Rewriter-LoRA-GGUF">27B</a>、<a href="https://huggingface.co/pytraveler/MiniMax-H3-Prompt-Rewriter-LoRA-8B-GGUF">8B</a>、<a href="https://huggingface.co/pytraveler/MiniMax-H3-Prompt-Rewriter-LoRA-Omni-GGUF">Omni</a>。<strong>更新的 Qwen（例如 Qwen3.8-27B）不能替代</strong>：形状检查会放行，LoRA 也会被挂上去，但它从没在那些权重上训练过。节点会读取 GGUF 自带的名字，如果不是 Qwen3.6-27B 就发出警告。</p>
+
+<h2 id="notes">注意事项</h2>
+<ul>
+<li><strong>速度</strong>：Qwen3.6-27B 是混合模型，64 层中有 48 层是线性注意力。没装 <code>flash-linear-attention</code> 和 <code>causal-conv1d</code> 时，会退回更慢的纯 PyTorch 路径，结果正确但速度慢；这两个包在 Windows 上不好编译。</li>
+<li><strong>确定性</strong>：开启 <code>greedy</code> 后，同样的提示词、分辨率、时长和种子会得到同样的重写结果。</li>
+<li><strong>写作节点的格式是“被遵循的”，不是“被保证的”</strong>：建议保持 <code>greedy</code> 开启，小模型一采样就容易偏离格式。缺字段时，节点会返回已拿到的内容并标出缺口。</li>
+<li><strong>重写可能添加短提示词里没有的细节。</strong>身份、对白、时间点或构图必须精确时，先审一遍再生成。</li>
+<li>预设片段和截帧是 MiniMax-H3 的输出，<strong>不得用于训练模型</strong>（见下方致谢）。</li>
+</ul>
+
+<h2 id="credits">致谢与许可证</h2>
+<p>模型方面的工作都来自 <a href="https://github.com/ModelTC/LightX2V">LightX2V</a>，这个仓库只是把他们的适配器接入 ComfyUI。项目作者建议觉得有用的人去给 ModelTC/LightX2V 点星。</p>
+<table>
+<tr><th>组成部分</th><th>来源</th></tr>
+<tr><td>LoRA 适配器</td><td><a href="https://huggingface.co/lightx2v/MiniMax-H3-Prompt-Rewriter-LoRA">lightx2v/MiniMax-H3-Prompt-Rewriter-LoRA</a></td></tr>
+<tr><td>LoRA 适配器，8B</td><td><a href="https://huggingface.co/lightx2v/MiniMax-H3-Prompt-Rewriter-LoRA-8B">lightx2v/MiniMax-H3-Prompt-Rewriter-LoRA-8B</a></td></tr>
+<tr><td>底座语言模型</td><td><a href="https://huggingface.co/Qwen/Qwen3.6-27B">Qwen/Qwen3.6-27B</a> · <a href="https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct">Qwen/Qwen3-VL-8B-Instruct</a></td></tr>
+<tr><td>视频与音频生成器</td><td><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3">MiniMaxAI/MiniMax-H3</a></td></tr>
+<tr><td>提示词写作指南</td><td><a href="https://huggingface.co/MiniMaxAI/MiniMax-H3/tree/main/docs">MiniMaxAI/MiniMax-H3 docs/</a>（运行时下载）</td></tr>
+<tr><td>推理框架</td><td><a href="https://github.com/ModelTC/LightX2V">ModelTC/LightX2V</a></td></tr>
+<tr><td>内置提示词及其片段</td><td><a href="https://huggingface.co/datasets/ostris/minimax_h3_1k">ostris/minimax_h3_1k</a>：经作者许可使用；提示词实际上等同于 MIT，片段与截帧是 MiniMax-H3 的输出，不得用于训练模型</td></tr>
+<tr><td>拍摄风格与主体标签</td><td><a href="https://cohub.live/baize/video-altas/w/h3-atlas">H3 Atlas</a></td></tr>
+</table>
+<p>使用 MiniMax-H3 须遵守<a href="https://huggingface.co/MiniMaxAI/MiniMax-H3">官方仓库</a>的许可证和可接受使用条款。视频评测：<a href="https://www.youtube.com/watch?v=h3rZTIRB_G8">AxiomGraph（英文）</a>、<a href="https://www.youtube.com/watch?v=PZd9fWX15VA">ЭйАй Генератьон（俄文）</a>。</p>
+<p><strong>许可证</strong>：MIT，只覆盖 ComfyUI 集成部分的代码，模型权重各有许可证。</p>
+</article>
+<footer class="note">
+  <p>非官方中文导读镜像。正文整理自 pytraveler/MiniMax-H3-Prompt-Rewriter-ComfyUI 的 README（中文版为作者用 AI 机翻，以英文版为准），推荐来源为 Andy L（@AndyL5cc）的 X 帖子。图片来自仓库（MIT），本地托管。Hub：<a href="../">中文博文镜像</a>。</p>
+  <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p>
+</footer>
+</div>
+</body>
+</html>
