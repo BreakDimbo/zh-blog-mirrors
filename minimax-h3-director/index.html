@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MiniMax H3 Director 工作流：ComfyUI 里 5 种 H3 音视频玩法，拖进去就能用（中文整理）</title>
+  <meta name="description" content="huangserva/ComfyUI_MiniMaxH3_Director 中文整理：5 份可直接导入 ComfyUI 的 MiniMax H3 Director 工作流（T2V、FL2V/I2V、R2V、V2V、RV2V），分段运行与缓存，需 ComfyUI 0.30.0+；工作流来自 AIMixer 上游插件。推荐自 @bkdgiffug。" />
+  <meta property="og:title" content="MiniMax H3 Director 工作流（中文整理）" />
+  <meta property="og:image" content="images/readme-screenshot.png" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
+    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+    img.cover { border-radius: 8px; }
+    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; font-weight: 650; }
+    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
+      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
+    .grid2 figure { margin: 0; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    ol.subs li { margin: 0.15rem 0; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+<header class="meta">
+  <h1>MiniMax H3 Director 工作流：ComfyUI 里 5 种 H3 音视频玩法，拖进去就能用</h1>
+  <p class="source">原帖：<a href="https://x.com/bkdgiffug/status/2108340664878461041">https://x.com/bkdgiffug/status/2108340664878461041</a></p>
+  <p class="source">工作流仓库：<a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director">https://github.com/huangserva/ComfyUI_MiniMaxH3_Director</a></p>
+  <p class="source">上游插件：<a href="https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director">https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director</a></p>
+  <p class="meta-line">推荐人：lumxss（<a href="https://x.com/bkdgiffug">@bkdgiffug</a>） · 2026-10-09 07:36（UTC+8） · 仓库整理者：huangserva · 上游插件作者：AI搅拌手 / AIMixer · 许可证 Apache-2.0（模型权重各有许可） · 非官方中文整理镜像</p>
+</header>
+<article>
+<div class="related-guide"><strong>镜像说明：</strong>原帖是一条中文短推，主要是推荐一个 GitHub 仓库，所以本页以该仓库的中文 README 为正文。README 原文就是中文，本页保留原有措辞，只做了结构整理，没有增补事实或数字。该仓库只有 README、LICENSE 和 5 份工作流 JSON，本身<strong>不含节点代码</strong>，节点来自上游 AIMixer 插件，这部分背景放在“上游插件”一节。依据版本：huangserva 仓库 main 分支 <code>4aa1663</code>（2026-08-04 18:44，UTC+8）；上游 AIMixer 仓库 main 分支 <code>d59c5d7</code>（2026-10-09 10:47，UTC+8）。配图为原帖附图（README 截图），本地托管 PNG。另见相关导读：<a href="../minimax-h3-prompt-rewriter/">MiniMax-H3 Prompt Rewriter for ComfyUI</a>。</div>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#post">原帖</a></li>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#env">已验证环境</a></li>
+<li><a href="#workflows">5 份工作流</a></li>
+<li><a href="#install">安装</a></li>
+<li><a href="#models">模型要求</a></li>
+<li><a href="#rv2v">RV2V 视频换人</a></li>
+<li><a href="#notes">使用说明</a></li>
+<li><a href="#sage">SageAttention（可选）</a></li>
+<li><a href="#upstream">上游插件：MiniMaxH3Director 导演台</a></li>
+<li><a href="#credits">来源与许可</a></li>
+</ol></nav>
+
+<h2 id="post">原帖</h2>
+<blockquote>
+<p>还在 ComfyUI 里手搓 MiniMax H3 节点？有人已经把整套工作流搭好了。</p>
+<p>直接拖进去就能用，5 种玩法基本覆盖常见视频生成：</p>
+<p>① T2V：文生音视频<br />② FL2V / I2V：首尾帧、图生视频<br />③ R2V：图片、视频、音频做参考<br />④ V2V：按时间轴分段修改<br />⑤ RV2V：源视频 + 参考图进行换人测试</p>
+<p>比较实用的是分段运行 + 缓存，只改一段，不用整条视频重新跑。</p>
+<p>要求也简单：ComfyUI 0.30.0+。不过人物一致性没有硬锁，效果还是得自己检查。</p>
+<p>🔗 github.com/huangserva/ComfyUI_MiniMaxH3_Director</p>
+<p>—— lumxss（@bkdgiffug），2026-10-09</p>
+</blockquote>
+<figure class="cover-fig"><img class="cover" src="images/readme-screenshot.png" alt="MiniMax H3 Director 工作流 README 截图" /><figcaption>原帖附图：仓库 README 截图（已验证环境与 5 份工作流表格）</figcaption></figure>
+<p><strong>核对：</strong>帖子里的 5 种模式、ComfyUI 0.30.0+ 的版本要求、“分段运行 + 缓存”和“没有硬身份锁”都能在 README 中找到对应原文。需要补充一点：帖子说“有人已经把整套工作流搭好了”，而 README 写明这些工作流<strong>来自上游 AIMixer/ComfyUI_MiniMaxH3_Director</strong>，huangserva 仓库保存的是一份方便下载、复现和测试的副本。</p>
+
+<h2 id="what">这是什么</h2>
+<p>这个仓库保存 5 份可直接导入 ComfyUI 的 MiniMax H3 Director 工作流，覆盖文生视频、图生视频、首尾帧、参考素材生视频、视频编辑和参考素材改视频。</p>
+<p>工作流来自 <a href="https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director">AIMixer/ComfyUI_MiniMaxH3_Director</a>。这里保留一套方便下载、复现和测试的副本。</p>
+<p>（整理者注：5 份 JSON 结构相同，每份 11 个节点：<code>UNETLoader</code>、<code>CLIPLoader</code>、<code>VAELoader</code>、核心 <code>MiniMaxH3Director</code>，以及 <code>CreateVideo</code> / <code>SaveVideo</code> / <code>PreviewAny</code> 输出和一张 <code>MarkdownNote</code> 说明。）</p>
+
+<h2 id="env">已验证环境</h2>
+<ul>
+<li>NVIDIA RTX 4090 48GB</li>
+<li>ComfyUI 0.30.0</li>
+<li>PyTorch 2.11.0 + CUDA 12.8</li>
+<li>MiniMax H3 Ref2VA INT8</li>
+<li><code>MiniMaxH3Director</code> 节点已成功注册</li>
+</ul>
+
+<h2 id="workflows">5 份工作流</h2>
+<table>
+<tr><th>文件</th><th>模式</th><th>UNET</th><th>用途</th></tr>
+<tr><td><a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director/blob/main/example_workflows/minimax_h3_director_t2v.json">minimax_h3_director_t2v.json</a></td><td>T2V</td><td>fl2va</td><td>文生音视频</td></tr>
+<tr><td><a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director/blob/main/example_workflows/minimax_h3_director_fl2v.json">minimax_h3_director_fl2v.json</a></td><td>FL2V / I2V</td><td>fl2va</td><td>首尾帧；只放首帧时作为 I2V 使用</td></tr>
+<tr><td><a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director/blob/main/example_workflows/minimax_h3_director_r2v.json">minimax_h3_director_r2v.json</a></td><td>R2V</td><td>ref2va</td><td>图片、视频、音频参考生成</td></tr>
+<tr><td><a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director/blob/main/example_workflows/minimax_h3_director_v2v.json">minimax_h3_director_v2v.json</a></td><td>V2V</td><td>ref2va</td><td>按源视频时间轴逐段编辑</td></tr>
+<tr><td><a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director/blob/main/example_workflows/minimax_h3_director_rv2v.json">minimax_h3_director_rv2v.json</a></td><td>RV2V</td><td>ref2va</td><td>源视频加参考图或参考音频，适合测试视频换人</td></tr>
+</table>
+
+<h2 id="install">安装</h2>
+<p>需要 ComfyUI 0.30.0 或更高版本，并安装上游导演台节点：</p>
+<pre><code>cd ComfyUI/custom_nodes
+git clone https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director.git
+python -m pip install -r ComfyUI_MiniMaxH3_Director/requirements.txt</code></pre>
+<p>重启 ComfyUI，将 <code>example_workflows/</code> 里的 JSON 拖进页面。</p>
+
+<h2 id="models">模型要求</h2>
+<p>T2V、I2V、FL2V 使用：</p>
+<pre><code>models/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors</code></pre>
+<p>R2V、V2V、RV2V 使用：</p>
+<pre><code>models/diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors</code></pre>
+<p>共用组件：</p>
+<pre><code>models/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors
+models/vae/minimax_h3_video_vae_fp16.safetensors
+models/vae/minimax_h3_audio_vae_fp32.safetensors</code></pre>
+<p>CLIP Loader 的类型选择 <code>minimax</code>。</p>
+
+<h2 id="rv2v">RV2V 视频换人</h2>
+<ol>
+<li>导入 <a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director/blob/main/example_workflows/minimax_h3_director_rv2v.json">RV2V 工作流</a>。</li>
+<li>上传源视频，按镜头切分或使用智能分割。</li>
+<li>上传人物参考图；需要声音约束时再加参考音频。</li>
+<li>每段分别写提示词。源片段会绑定为 <code>&lt;Video 1&gt;</code>，参考素材使用 <code>&lt;Picture N&gt;</code>、<code>&lt;Audio J&gt;</code>。</li>
+<li>先生成 5 秒，检查脸部、服装、动作和镜头边界，再决定是否扩展。</li>
+</ol>
+<p>导演台支持逐段选择运行和缓存，改一段时不必重跑整条时间轴。音频可以选择模型生成、沿用原声或静音。</p>
+
+<h2 id="notes">使用说明</h2>
+<ul>
+<li>当前已验证的 4090 环境只有 Ref2VA，可直接运行 R2V、V2V、RV2V。</li>
+<li>T2V、I2V、FL2V 需要补齐 fl2va 权重。</li>
+<li>人物身份由模型和参考素材共同约束，导演台没有硬身份锁。</li>
+<li>段间引导采用上一段末帧到下一段首帧的交接，不能替代人物一致性检查。</li>
+<li>做 A/B 测试时固定源素材、提示词、seed、分辨率、帧数和 steps。</li>
+</ul>
+<blockquote>也就是说，README 里“已验证”的只有 Ref2VA 这一半（R2V / V2V / RV2V）；T2V、I2V、FL2V 三份工作流在作者的测试环境中没有跑过。</blockquote>
+
+<h2 id="sage">SageAttention（可选）</h2>
+<p>安装 SageAttention 后，可将补丁节点放在 UNETLoader 与 <code>MiniMaxH3Director</code> 的 <code>model</code> 输入之间。先确认输出质量一致，再记录速度变化。</p>
+
+<h2 id="upstream">上游插件：MiniMaxH3Director 导演台</h2>
+<p>真正干活的节点是上游 <a href="https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director">AIMixer/ComfyUI_MiniMaxH3_Director</a>（Apache-2.0）。以下摘自其中文 README，帮助理解 5 份工作流背后的节点：</p>
+<blockquote>基于 <strong>ComfyUI 官方 MiniMax-H3</strong> 的多段音视频导演台插件。……把分段计划、条件编码、采样解码和导出整合在一个节点里。底层走官方 <code>MiniMaxH3ImageToVideo</code> / <code>MiniMaxH3ReferenceToVideo</code> + <code>MiniMaxH3SigmaShift</code> + <code>KSampler</code> + AV 分离解码链路，原生输出立体声音频。</blockquote>
+<ul>
+<li><strong>多段时间轴</strong>：节点内上传视频，支持切分、均分、智能分镜分割（PySceneDetect）、追加，可视化预览每段范围与缩略图。</li>
+<li><strong>选择运行</strong>：只采样勾选的片段或素材组；未勾选的段可用缓存或源画面填充。分段缓存落在 <code>output/minimax_seg_cache/</code> 下。</li>
+<li><strong>段间引导</strong>：默认关闭；开启后把上一段生成结果的末尾运动（及音频）钉入下一段采样，上下文帧数可选 5 / 22 / 39 / 56，默认推荐 22。</li>
+<li><strong>默认采样参数</strong>：画布 0.4MP 16:9（864×480），5 秒 / 124 帧 @ 24 fps；25 steps，<code>res_multistep</code> + <code>simple</code>，CFG 1.0；Sigma shift video 12 / audio 3。</li>
+<li><strong>依赖</strong>：ComfyUI 升级到 v0.30.0 及以上（含官方 MiniMax H3 节点）；<code>scenedetect</code>、<code>opencv-python-headless</code>、<code>imageio-ffmpeg</code> 为可选依赖。</li>
+<li>另有外部多组接线、语义桥（Semantic Bridge）、渐进一采（SelfLift）、二采/放大（Refine）、导演包导入导出等进阶功能，详见上游 README。</li>
+</ul>
+<p><strong>版本差异提醒：</strong>huangserva 的副本停在 2026-08-04 的单次提交，上游一直在更新（本页抓取时最新提交为 2026-10-09）。上游 <code>example_workflows/</code> 现有 9 份工作流（多了外部多组 I2V / R2V、二采加速、加速版），同名的 5 份 JSON 也已经和副本不一样。想用新功能，建议直接从上游取工作流。上游 README 另附模型/工作流整合包（<a href="https://comfyit.cn/article/506">Comfyit 搅拌站 文章 506</a>）和 <a href="https://space.bilibili.com/1997403556/lists/8357740">B 站教程合集</a>，这两处是上游作者自己的站点和频道。</p>
+
+<h2 id="credits">来源与许可</h2>
+<ul>
+<li>上游插件：<a href="https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director">AIMixer/ComfyUI_MiniMaxH3_Director</a></li>
+<li>MiniMax H3 权重：<a href="https://huggingface.co/Comfy-Org/MiniMax-H3">Comfy-Org/MiniMax-H3</a></li>
+<li>ComfyUI 文档：<a href="https://docs.comfy.org/zh/tutorials/video/minimax/minimax-h3">MiniMax H3 工作流</a></li>
+</ul>
+<p>工作流与上游插件按 Apache-2.0 许可发布，详见 <a href="https://github.com/huangserva/ComfyUI_MiniMaxH3_Director/blob/main/LICENSE">LICENSE</a>。模型权重遵循各自的许可条款。</p>
+</article>
+<footer class="note">
+  <p>非官方中文整理镜像。正文为 huangserva/ComfyUI_MiniMaxH3_Director 的中文 README（结构整理，措辞保留），上游背景摘自 AIMixer/ComfyUI_MiniMaxH3_Director 的 README（Apache-2.0）；推荐来源为 lumxss（@bkdgiffug）的 X 帖子。本页未实际运行工作流。Hub：<a href="../">中文博文镜像</a>。</p>
+  <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p>
+</footer>
+</div>
+</body>
+</html>
