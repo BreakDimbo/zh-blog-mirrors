@@ -154,3 +154,30 @@ blockquote{margin:14px 0 0;padding:0 0 0 14px;border-left:2px solid var(--line-2
 .collage .c4{left:300px;top:128px;transform:rotate(-3.5deg);z-index:4}
 .collage .c:hover{transform:rotate(0) translateY(-8px) scale(1.06);z-index:9}
 @media (max-width:1240px){.collage{display:none}}
+
+/* ---------- share polish: attribution, bilingual, legal ---------- */
+.topline .about-link:hover{color:var(--accent)}
+.ask{grid-area:p;align-self:start}
+.ask .prompt{grid-area:auto}
+.credit{margin:16px 0 0;font-size:13px;line-height:1.7;color:var(--ink-2)}
+.credit a{border-bottom:1px solid var(--line-2)} .credit a:hover{color:var(--accent);border-color:var(--accent)}
+.credit [lang=en]{color:var(--muted)}
+.lede p{margin:0}
+.lede p.en{margin-top:12px;font-size:14.5px;line-height:1.7;color:var(--muted)}
+.chip .en-opt{opacity:.62;font-size:.88em}
+.credit-line{display:block;margin-top:8px;font-size:12px;line-height:1.55;color:var(--muted)}
+.credit-line a{color:var(--ink-2);border-bottom:1px solid var(--line-2)}
+.credit-line a:hover{color:var(--accent);border-color:var(--accent)}
+.credit-line.rec{color:var(--accent)}
+.credit-line .reply-link{white-space:nowrap}
+.colophon .en{color:var(--muted)}
+.legal{margin-top:44px;padding-top:26px;border-top:1px solid var(--line-2);scroll-margin-top:90px}
+.legal h2{margin:0 0 18px;font:700 26px/1.2 var(--zh)}
+.legal h2 em{font:italic 400 28px/1 var(--serif);color:var(--accent);margin-left:8px}
+.legal-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.legal ul{margin:0;padding:0 0 0 18px;font-size:13px;line-height:1.75;color:var(--ink-2)}
+.legal li{margin:0 0 8px}
+.legal li b{color:var(--ink);font-weight:600}
+.legal .copy{margin-top:22px;padding-top:16px;border-top:1px dashed var(--line-2);font:400 12px/1.7 var(--mono);color:var(--muted)}
+@media (max-width:860px){.legal-cols{grid-template-columns:1fr;gap:12px}}
+@media (max-width:560px){.en-opt{display:none}.topline .about-link{font-size:10.5px}}

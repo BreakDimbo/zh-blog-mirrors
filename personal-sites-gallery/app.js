@@ -10,7 +10,7 @@
       if(filter==='self')ok=ok&&c.dataset.rec==='0';
       c.hidden=!ok;if(ok)n++;
     });
-    count.textContent=n+' 个网站';empty.hidden=n>0;
+    count.textContent=n+' 个网站 · sites';empty.hidden=n>0;
   }
   function order(){
     var arr=cards.slice();
