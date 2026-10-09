@@ -181,3 +181,6 @@ blockquote{margin:14px 0 0;padding:0 0 0 14px;border-left:2px solid var(--line-2
 .legal .copy{margin-top:22px;padding-top:16px;border-top:1px dashed var(--line-2);font:400 12px/1.7 var(--mono);color:var(--muted)}
 @media (max-width:860px){.legal-cols{grid-template-columns:1fr;gap:12px}}
 @media (max-width:560px){.en-opt{display:none}.topline .about-link{font-size:10.5px}}
+.topline .hub,.topline .about-link{white-space:nowrap}
+.about-link .short{display:none}
+@media (max-width:560px){.about-link .full{display:none}.about-link .short{display:inline}}
