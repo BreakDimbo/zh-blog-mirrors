@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>评述：AI 打斗里“那一下”怎么写——读 Arvin wang《冲击帧与闪帧提示词实战》笔记</title>
+<meta name="description" content="对 Vibe Shot Club 免费课《AI打斗的关键一击：冲击帧与闪帧提示词实战》（Arvin wang）的独立评述与学习笔记，非镜像。" />
+<style>    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
+    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+    img.cover { border-radius: 8px; }
+    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; font-weight: 650; }
+    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
+      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
+    .grid2 figure { margin: 0; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    ol.subs li { margin: 0.15rem 0; }
+
+.notice{background:#fff7e6;border:1px solid #f0d9a8;border-radius:8px;padding:.8rem 1rem;font-size:.92rem;margin:0 0 1.5rem}
+blockquote{border-left:4px solid var(--accent);margin:1rem 0;padding:.3rem 1rem;color:#333;background:#f6f3ff}
+.tl{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:1rem 0 .4rem;font-size:.8rem;text-align:center}
+.tl div{padding:.9rem .2rem;border-radius:4px;background:#dde3ea}
+.tl .w{background:#fff;border:2px solid #f5b400} .tl .i{background:#222;color:#fff} .tl .k{background:#000;color:#888}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:0 0 1rem} td,th{border:1px solid var(--border);padding:.45rem .6rem;vertical-align:top}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);font-size:.88rem;color:var(--muted)}
+</style></head><body><div class="wrap">
+<header class="meta">
+<h1>评述：AI 打斗里“那一下”怎么写——读《冲击帧与闪帧提示词实战》</h1>
+<p class="source">原课：<a href="https://vibeshot.club/courses/db35b227-98ee-4992-8bce-5eeb0fff2291/learn?lesson=2a58bddc-1285-4ecd-b154-8cc0cac4c70e">AI打斗的关键一击：冲击帧与闪帧提示词实战</a>（作者 <strong>Arvin wang</strong>，VSC 认证；平台 <strong>Vibe Shot Club</strong>；2026-10-09 发布，免费）</p>
+<p class="meta-line">类型：评述 / 学习笔记（非镜像、非翻译） · 写于 2026-10-10</p>
+</header>
+<div class="notice">这是一篇<strong>独立评述</strong>，用我自己的话整理原课要点并加上看法，与作者及 Vibe Shot Club <strong>无任何关联</strong>。原课包含完整提示词、示范图与视频，<strong>请到 <a href="https://vibeshot.club/courses/db35b227-98ee-4992-8bce-5eeb0fff2291/learn?lesson=2a58bddc-1285-4ecd-b154-8cc0cac4c70e">Vibe Shot Club 原课页</a> 阅读和观看</strong>。如需更正或下架，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Correction%20request">提交 issue</a>。</div>
+<article>
+<h2>一、先说结论：特效是“重音”，不是“音量”</h2>
+<p>这节课最值钱的不是某个具体提示词，而是一种排序习惯：写打斗时先挑出整段里观众必须记住的那一次打击，再决定这一刻画面该怎么“变”。作者把这叫作视觉重音：</p>
+<blockquote>“先决定让观众注意哪一下，再去设计那一刻的画面变化。” ——Arvin wang</blockquote>
+<p>换句话说，一场打斗里大多数格挡、走位都应该保持平常画面；只有局势翻转的那一击（课里的例子是被压着打的一方闪身后反击腹部）才配得上闪光或风格跳变。全程加特效，等于全程没有重音。</p>
+
+<h2>二、技法拆解（按我的理解重组）</h2>
+<h3>1. 冲击帧：写清“留什么、去什么、线往哪走”</h3>
+<p>只写“画面变成黑白”模型很难给出可用结果。更有效的写法是分三层交代：</p>
+<ul><li><strong>必须保留</strong>：两人的轮廓要分得开、出击的肢体和接触点要能认出来。</li>
+<li><strong>可以拿掉</strong>：背景短暂消失，换成深底亮边或浅底暗剪影。</li>
+<li><strong>线条方向</strong>：从接触点向外放射、顺着动作方向、或贴着人物轮廓——三选一，别叠加。</li></ul>
+<h3>2. 三种闪帧怎么选</h3>
+<table><tr><th>类型</th><th>效果</th><th>适合 / 风险</th></tr>
+<tr><td>闪白</td><td>整体瞬间提亮，人物仍可见</td><td>想保留写实质感时首选；风险最低</td></tr>
+<tr><td>反相</td><td>明暗/颜色负片式翻转</td><td>风格冲击最强；持续稍长注意力就会被颜色抢走</td></tr>
+<tr><td>闪黑</td><td>接触后短暂黑场</td><td>要求黑场前后动作衔接准确，否则像剪辑断了</td></tr></table>
+<h3>3. 放在接触前、接触时还是接触后</h3>
+<p>同一种闪光放的位置不同，讲的是不同的事。下面是我画的示意（不是原课图片）：</p>
+<div class="tl"><div>蓄力</div><div class="w">接触前<br>闪白＝爆发</div><div class="i">接触时<br>冲击帧＝命中</div><div class="k">接触后<br>余波</div><div>恢复＋结果</div></div>
+<ul><li><strong>接触前</strong>：强调“要爆发了”，但不能替代“打中了”。</li>
+<li><strong>接触时</strong>：提示词要写成具体事件（例如“拳头碰到腹部的那一刻”），而不是笼统的“出拳时”。</li>
+<li><strong>接触后</strong>：重点转到后果——对手收身后退、兵器被荡开。</li></ul>
+<h3>4. 时机 → 持续 → 恢复：一个三步验收</h3>
+<p>生成出来先看变化是否卡在正确那一下；再看它是否足够短（课里给了参考：24fps 下两帧约 0.08 秒）；最后看画面是否回到原样、人物是否接着有反应与回防。要注意，提示词里写的“几帧”只是意图，模型并不保证照做。</p>
+<h3>5. 拼成完整提示词</h3>
+<p>原课给了一段约 10 秒、16:9、写实训练馆、侧面中全景固定机位的五段式打斗提示词，按时间顺序写清：压制与格挡 → 闪避 → 反击命中时的短暂变化 → 恢复原色 → 受击反应与收势；另附闪白版、反相版的替换段。这里不转载全文，<a href="https://vibeshot.club/courses/db35b227-98ee-4992-8bce-5eeb0fff2291/learn?lesson=2a58bddc-1285-4ecd-b154-8cc0cac4c70e">请看原课</a>。我认为它的核心写法可以概括为课尾那句公式：</p>
+<blockquote>“当什么发生时，画面怎样变化；变化结束以后，人物怎样继续行动。” ——Arvin wang</blockquote>
+<h3>6. 换成刀剑</h3>
+<p>不能只把“拳”替换成“刀”。触发事件（刃与刃相碰还是刃擦过身体）、画面焦点、表现手法、之后的动作这四件事要一起改。</p>
+<h3>7. 出问题时先查哪里</h3>
+<ul><li>闪得太早 → 把触发条件写成明确的接触事件。</li>
+<li>整段都变了风格 → 写成“正常—短暂变化—恢复原色”的连续过程。</li>
+<li>闪完人物位置乱了 → 固定机位、减少动作复杂度。</li>
+<li>效果很猛却没分量 → 问题多在动作本身，回去改动作。</li>
+<li>处处都抢眼 → 重新挑那唯一的重音。</li></ul>
+
+<h2>三、评述</h2>
+<p><strong>为什么有用。</strong>多数视频提示词教程停留在“加个炫酷特效”，这节课把特效挂在叙事节点上，并给出可检查的验收顺序，实用度高。思路和游戏里的 hit-stop / 受击闪白同源，做过动作游戏的人会很熟悉。</p>
+<p><strong>与视频提示词实践的关系。</strong>它本质上是“按时间轴分段写提示词”的一个专题：每段只承担一件事，变化要有起点和终点。用在多段时间轴生成或提示词扩写器上，这套“时机/持续/恢复”可以直接当成验收清单。</p>
+<p><strong>局限。</strong>原课没有注明示范视频用的是哪个模型，不同模型对“短暂”“两帧”的服从度差别很大；本文作者<strong>也没有实测复现</strong>这些提示词。帧级控制在当前多数生成模型中仍不可靠，实际可能需要后期剪辑补足。另外示例集中在单一拳击场景，复杂多人群战的情况没有覆盖。</p>
+</article>
+<footer>
+<p>原课作者：<strong>Arvin wang</strong> · 平台：<strong>Vibe Shot Club</strong> · 原文：<a href="https://vibeshot.club/courses/db35b227-98ee-4992-8bce-5eeb0fff2291/learn?lesson=2a58bddc-1285-4ecd-b154-8cc0cac4c70e">https://vibeshot.club/courses/db35b227-98ee-4992-8bce-5eeb0fff2291/learn?lesson=2a58bddc-1285-4ecd-b154-8cc0cac4c70e</a> —— 完整提示词与示范视频请到原课阅读/观看。</p>
+<p>本页为独立评述，仅引用两句短句并已标注出处，未使用原课任何图片或视频；与作者及平台无关联。更正或下架请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Correction%20request">提交 issue</a>。</p>
+<p><a href="../">← 返回目录</a></p>
+</footer></div></body></html>
