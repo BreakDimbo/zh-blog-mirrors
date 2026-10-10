@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>【评述/导读】OpenNana 提示词图库：GPT Image 2 / Nano Banana / Seedance 提示词案例站</title>
+  <meta name="description" content="OpenNana（opennana.com）AI 图片/视频提示词图库的中文导读：是什么、有哪些模型筛选、怎么用，附 8 条代表性提示词节选（注明作者）。独立评述，非镜像。" />
+  <style>
+    :root { --bg:#fafafa; --fg:#1a1a1a; --muted:#666; --border:#e8e8e8; --link:#0b57d0; --max:820px; --code-bg:#f3f4f6; --accent:#e5482d; }
+    * { box-sizing:border-box; }
+    html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei","Source Han Sans SC",system-ui,-apple-system,sans-serif; font-size:17px; line-height:1.75; letter-spacing:0.01em; }
+    .wrap { max-width:var(--max); margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom:1.75rem; padding-bottom:1.25rem; border-bottom:1px solid var(--border); }
+    h1 { font-size:1.75rem; line-height:1.35; font-weight:700; margin:0 0 0.75rem; letter-spacing:-0.02em; }
+    .source { font-size:0.9rem; color:var(--muted); margin:0 0 0.35rem; }
+    .source a, article a { color:var(--link); text-decoration:none; word-break:break-word; }
+    .source a:hover, article a:hover { text-decoration:underline; }
+    .meta-line { font-size:0.88rem; color:var(--muted); margin:0 0 0.6rem; }
+    article h2 { font-size:1.35rem; line-height:1.4; margin:2.75rem 0 1rem; font-weight:700; }
+    article h3 { font-size:1.12rem; line-height:1.45; margin:2.25rem 0 0.5rem; font-weight:650; }
+    article p { margin:0 0 1.05rem; }
+    article ul, article ol { margin:0 0 1.05rem; padding-left:1.35rem; }
+    article li { margin:0.35rem 0; }
+    nav.toc { background:#f3f4f6; border:1px solid var(--border); border-radius:8px; padding:0.85rem 1.1rem; margin:0 0 1.5rem; }
+    nav.toc ol { margin:0.4rem 0 0; padding-left:1.25rem; } nav.toc li { margin:0.25rem 0; font-size:0.95rem; }
+    figure { margin:1rem 0 1.25rem; padding:0; }
+    figure img { display:block; width:100%; height:auto; border-radius:6px; background:#fff; border:1px solid var(--border); }
+    figcaption { font-size:0.86rem; color:var(--muted); margin-top:0.45rem; text-align:center; }
+    blockquote { margin:0 0 1.15rem; padding:0.65rem 1rem; border-left:3px solid var(--accent); background:#fff4f1; color:#333; }
+    hr { border:0; border-top:1px solid var(--border); margin:2rem 0; }
+    pre { background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:0.9rem 1rem; overflow-x:auto; margin:0 0 1.15rem; font-size:0.85rem; line-height:1.55; white-space:pre-wrap; word-break:break-word; }
+    code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:0.92em; }
+    p code, li code, td code { background:var(--code-bg); padding:0.1em 0.35em; border-radius:4px; }
+    pre code { background:none; padding:0; font-size:inherit; }
+    details { margin:0 0 1rem; } details summary { cursor:pointer; color:var(--link); font-size:0.95rem; margin-bottom:0.5rem; }
+    table { width:100%; border-collapse:collapse; margin:0 0 1.25rem; font-size:0.92rem; }
+    th, td { border:1px solid var(--border); padding:0.45rem 0.65rem; text-align:left; vertical-align:top; }
+    th { background:#f3f4f6; font-weight:650; }
+    table.cat { font-size:0.82rem; } table.cat td { padding:0.3rem 0.5rem; }
+    .related-guide { background:#f0f7ff; border:1px solid #cfe0f5; border-radius:8px; padding:0.85rem 1.1rem; margin:0 0 1.5rem; font-size:0.95rem; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:1.25rem 0; } .grid2 figure { margin:0; }
+    @media (max-width:560px) { .grid2 { grid-template-columns:1fr; } }
+    footer.note { margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border); font-size:0.88rem; color:var(--muted); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+<header class="meta">
+  <h1>【评述/导读】OpenNana 提示词图库：GPT Image 2 / Nano Banana / Seedance 提示词案例站</h1>
+  <p class="source">原站：<a href="https://opennana.com/awesome-prompt-gallery">https://opennana.com/awesome-prompt-gallery</a></p>
+  <p class="meta-line">抓取时间：2026-10-11（UTC+8） · 本页为独立中文评述，不是镜像</p>
+</header>
+<article>
+<div class="related-guide"><strong>为什么是评述而不是镜像：</strong>OpenNana 是一个带会员计划、积分、「免费/付费提示词」区分和在线生图服务的商业站点；页面上没有找到开源仓库或 CC/MIT 等开放许可，示例图由社区作者/模型生成、权利归属不明。因此本页只做介绍与少量引用（每条提示词仅节选、注明 X 作者并链回原条目），不搬运图库或示例图片。完整内容请访问原站。</div>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#about">这是什么网站</a></li>
+<li><a href="#how">怎么用</a></li>
+<li><a href="#samples">8 条代表性提示词（节选）</a></li>
+<li><a href="#take">观察与建议</a></li>
+</ol></nav>
+
+<h2 id="about">这是什么网站</h2>
+<p>OpenNana（opennana.com）自称「OpenNana 提示词图库」，用于“浏览和搜索 GPT Image 2、Nano Banana 2/Pro、Seedance 2.0 等 AI 图片、视频提示词案例”。名字里的 “Nana” 指向 Google 的 Nano Banana 系列图像模型，但图库并不局限于它。</p>
+<ul>
+<li><strong>规模：</strong>抓取时列表页显示「共 23189 个提示词」（首屏渲染 20 条，其余滚动加载）。</li>
+<li><strong>模型筛选：</strong>Nano Banana Pro、Nano Banana 2、ChatGPT（🔥）、Grok、Seedance 2.0。</li>
+<li><strong>其他筛选：</strong>媒体类型（全部 / 图片 / 视频）；全部提示词 / 免费提示词 / 付费提示词。</li>
+<li><strong>附带功能：</strong>站内「AI 生图」「AI 生视频」、生成记录、会员计划、我的提示词、邀请有礼（邀请好友注册双方各得 10 积分）。</li>
+<li><strong>内容来源：</strong>每条提示词标注「来源：@某 X 账号」与「模型」，看起来是从 X 上收集社区作者公开分享的提示词，并配中文标题与示例图。</li>
+<li><strong>运营方 / 许可：</strong>页面未见公司主体、开源仓库或许可声明；/terms、/privacy 返回 404。robots.txt 允许抓取，仅禁止 /api/ 与 /dashboard-secure/。</li>
+</ul>
+
+<h2 id="how">怎么用</h2>
+<ol>
+<li>在列表页先按模型筛（例如只看 Nano Banana Pro），再按图片/视频筛。</li>
+<li>点进条目看示例图与提示词全文，可切换「English」，点「复制」或「去 AI 生图」直接在站内生成（需登录/积分）。</li>
+<li>多数优秀提示词都是<strong>模板</strong>：留有 <code>[SUBJECT]</code>、<code>{Character}</code> 之类占位符，替换后即可复用；不少需要“上传参考图”。</li>
+<li>引用时请顺着「来源」去 X 找原作者，给原作者署名。</li>
+</ol>
+
+<h2 id="samples">8 条代表性提示词（节选）</h2>
+<p>以下取自抓取当天列表首屏，均为节选（长提示词截断），版权归各自作者，点「原条目」看全文与示例图。</p>
+<h3>1. 电影感高级时尚九宫格叙事摄影</h3>
+<p class="meta-line">来源：<a href="https://x.com/0xkyne">@0xkyne</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/cinematic-high-fashion-3x3-narrative-photography">OpenNana 原条目</a></p>
+<p>以附图为唯一角色参考，生成同一人物的九宫格叙事时尚大片；核心是角色一致性约束。</p>
+<pre><code>Use the attached image as the sole reference for the same character and the same photography series. The character&#x27;s facial features, hairstyle, body type, clothing, skin texture, lighting texture, color tone, film feel, atmospheric feel, and the worldview as a photograph are all faithfully inherited from the attached image. However, it is not to reproduce the attached image itself. The composition, pose, camera …</code></pre>
+<h3>2. 极简卡通涂鸦微型人物动作链插画</h3>
+<p class="meta-line">来源：<a href="https://x.com/VoxcatAI">@VoxcatAI</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/minimalist-cartoon-doodle-micro-character-action-chain">OpenNana 原条目</a></p>
+<p>极简涂鸦 + 大面积留白（>65%）+ 微型人物动作链，可替换角色占位符。</p>
+<pre><code>[Character A / Character B / Character C / Character D], minimalist cartoon doodle illustration × huge negative space × micro character action chain. Pure white or extremely light-colored background, with more than 65% of the image area remaining blank. Character proportions are extremely small, retaining only hairstyle outlines, main colors, iconic accessories, and clothing color blocks, transformed into …</code></pre>
+<h3>3. 真实摄影与白色手绘线稿创意插画</h3>
+<p class="meta-line">来源：<a href="https://x.com/hann7712">@hann7712</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/photography-hand-drawn-doodle-mixed-media-illustration">OpenNana 原条目</a></p>
+<p>上传照片 + 在其上叠加白色手绘线稿涂鸦；要点是“尽量保留原照片”，只做叠加。</p>
+<pre><code>Create a creative illustration of Real Photography × Hand-drawn Doodle based on a photo I upload. Original photo part: Retain the real scene, main building, natural landscape, composition, shooting angle, perspective relationship, light and environment in the uploaded photo as completely as possible. Do not change locations at will, and do not redesign the main building, so that the core objects in the photo remain …</code></pre>
+<h3>4. 3D立体拍立得风格旅游纪念海报</h3>
+<p class="meta-line">来源：<a href="https://x.com/Goodmanprotocol">@Goodmanprotocol</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/premium-3d-polaroid-travel-collectible-poster">OpenNana 原条目</a></p>
+<p>纯文生图模板：把 [COUNTRY / CITY …] 换成目的地即可；分段写「核心概念 / 拍立得内 / 框外 / 字体 / 风格光照 / 负面约束」，是很典型的“结构化长提示词”。</p>
+<pre><code>Create a premium 3:4 vertical collectible travel poster for [COUNTRY / CITY / LOCATION / SUBJECT]. TEXT-TO-IMAGE ONLY — generate the entire artwork creatively from [COUNTRY / CITY / LOCATION / SUBJECT] alone. No reference image required. CORE CONCEPT Create a sophisticated 3D travel souvenir poster featuring a charming contemporary character sitting on the bottom edge of a large Polaroid-style photo frame, with one …</code></pre>
+<h3>5. 现代东方极简水墨对比海报</h3>
+<p class="meta-line">来源：<a href="https://x.com/Shorelyn_">@Shorelyn_</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/premium-vertical-editorial-ink-wash-poster">OpenNana 原条目</a></p>
+<p>需上传一张照片作参考：上半保留原照片，下半转成东方水墨，强调 1:1 精确分区。适合做对比海报。</p>
+<pre><code>Create a premium 3:4 vertical editorial poster using the uploaded photo as the sole reference. OVERALL FORMAT The image must use a strict 3:4 vertical composition divided horizontally into two equal regions with an exact 1:1 height ratio. Each region occupies exactly 50% of the total image height. UPPER REGION: ORIGINAL PHOTO Use the original uploaded photo directly as the upper 50% of the composition. Preserve the …</code></pre>
+<h3>6. 频闪多重曝光多阶段运动轨迹描述</h3>
+<p class="meta-line">来源：<a href="https://x.com/Gdgtify">@Gdgtify</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/stroboscopic-multi-exposure-sports-motion-trajectory-prompt">OpenNana 原条目</a></p>
+<p>伪代码式提示词（LAYOUT / INPUT / SEMANTIC_INFERENCE_CHAIN），用 5 个相位做频闪多重曝光的运动轨迹图。</p>
+<pre><code>1:1, inputs for sports and other viral topics LAYOUT: Stroboscopic multi-exposure along curved trajectory | 5 phases overlapping with transparency decay | Motion vectors mapped as tension lines INPUT: [DYNAMIC_PROCESS] :: [BIOMECHANICAL_OR_PHYSICAL_PRINCIPLE] :: [PERFORMANCE_CONTEXT] SEMANTIC_INFERENCE_CHAIN: INFER(phase_1 FROM [DYNAMIC_PROCESS].initiation_state) INFER(phase_3 FROM …</code></pre>
+<h3>7. 主体几何艺术数学解析科学图谱</h3>
+<p class="meta-line">来源：<a href="https://x.com/DeepBlueX0">@DeepBlueX0</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/subject-geometric-art-mathematical-principles-scientific-atlas">OpenNana 原条目</a></p>
+<p>超短“×”拼接式提示词：[主体] × 几何艺术 × 数学原理 × 科学图谱，适合快速试风格。</p>
+<pre><code>[Subject] × Geometric Art × Mathematical Principles × Mathematical Analytical Annotation × Minimalist Scientific Atlas</code></pre>
+<h3>8. 地下粉丝俱乐部自制刊物拼贴</h3>
+<p class="meta-line">来源：<a href="https://x.com/VoxcatAI">@VoxcatAI</a> · 模型标注：ChatGPT · <a href="https://opennana.com/awesome-prompt-gallery/underground-fan-club-zine-collage">OpenNana 原条目</a></p>
+<p>{Character} 占位符 + 地下粉丝自制刊物拼贴风（剪报、手写、票根）。</p>
+<pre><code>{Character}, becoming the central figure of an underground fan club&#x27;s self-made publication, a mix of candid shots, clippings, handwritten notes, ticket stubs, and photo collages, with a strong sense of personal collection.</code></pre>
+
+<h2 id="take">观察与建议</h2>
+<ul>
+<li><strong>结构化长提示词是主流：</strong>分段大写标题（CORE CONCEPT / STYLE &amp; LIGHTING / FORMAT）+ 明确负面约束，对 GPT Image 2 / Nano Banana 这类强指令跟随模型效果好。</li>
+<li><strong>参考图驱动：</strong>大量模板以“上传照片作为唯一参考”开头，玩法本质是风格迁移 + 版式约束。</li>
+<li><strong>“×”拼接短提示词</strong>适合快速探索风格，再扩写成长模板。</li>
+<li>与视频方向的 <a href="../prompt-motion/">Prompt Motion</a>、<a href="../vibeshot-ai-fight-impact-frames-notes/">AI 打斗冲击帧笔记</a> 可对照阅读。</li>
+</ul>
+</article>
+<footer class="note">
+<p>原站：<a href="https://opennana.com/awesome-prompt-gallery">OpenNana 提示词图库</a>。提示词版权归各 X 作者（已逐条署名）及原站。本页为独立评述，节选引用仅用于介绍。</p>
+<p>如原作者或站方希望移除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">← 返回目录</a></p>
+</footer>
+</div>
+</body>
+</html>
