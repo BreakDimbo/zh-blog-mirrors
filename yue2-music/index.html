@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YuE2：用符号规划做前沿音乐生成（项目页中文翻译）</title>
+  <meta name="description" content="YuE2 项目页中文翻译：在一个模型里统一符号（乐谱）与音频音乐生成，先写可编辑乐谱再生成人声与伴奏；附 MERT2、SheetSage2、WildSongBench 结果。原作者 M-A-P / HKUST 等。" />
+  <meta property="og:title" content="YuE2：用符号规划做前沿音乐生成（中文翻译）" />
+  <meta property="og:image" content="images/frontier-teaser.png" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
+    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+    img.cover { border-radius: 8px; }
+    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; font-weight: 650; }
+    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
+      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
+    .grid2 figure { margin: 0; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    ol.subs li { margin: 0.15rem 0; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+<header class="meta">
+  <h1>YuE2：前沿品质，带着“谱子”作曲的音乐生成模型</h1>
+  <p class="source">原文：<a href="https://map-yue2.github.io/">https://map-yue2.github.io/</a></p>
+  <p class="source">论文：<a href="https://arxiv.org/abs/2609.33757">arXiv:2609.33757</a> · 代码：<a href="https://github.com/multimodal-art-projection/YuE">multimodal-art-projection/YuE</a> · 模型：<a href="https://huggingface.co/m-a-p/YuE2-3B">m-a-p/YuE2-3B</a></p>
+  <p class="meta-line">作者：Ruibin Yuan 等（M-A-P、HKUST 等，详见引用） · 原页标注 2026 年 9 月 · 抓取于 2026-10-10（UTC+8） · 非官方中文翻译镜像</p>
+</header>
+<article>
+<div class="related-guide"><strong>镜像说明：</strong>本页是 YuE2 学术项目页静态文字的中文翻译，带署名，并链接回原页。原页的试听、乐谱播放、翻唱/编辑对话和曲风浏览都靠 JavaScript 加音频运行，本页<strong>不转载任何音频</strong>，想听请去<a href="https://map-yue2.github.io/">原页</a>。四张图是原页 SVG 图经本地渲染后的 PNG，数字都照原页抄录。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</div>
+<figure class="cover-fig"><img src="images/site-top.png" alt="YuE2 原页顶部截图" /><figcaption>原页顶部截图</figcaption></figure>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#intro">简介</a></li><li><a href="#demos">试听与演示（请前往原页）</a></li><li><a href="#results">模型与结果</a></li><li><a href="#arch">模型架构</a></li><li><a href="#mert2">MERT2：音乐表征</a></li><li><a href="#sheetsage2">SheetSage2：从音频到乐谱</a></li><li><a href="#data">训练数据</a></li><li><a href="#cite">引用</a></li></ol></nav>
+
+<h2 id="intro">简介</h2>
+<blockquote>前沿品质。音乐，有章可循（Music, with a plan）。</blockquote>
+<p>YuE2 把符号音乐生成和音频音乐生成合进了同一个模型，歌曲质量达到前沿水平，可以和 Suno v5/v6 一较高下。它靠符号规划工作：先写出一份可编辑的乐谱，再配上人声和伴奏，把这首作品唱奏出来。</p>
+<p>Hugging Face 上发布的模型与基准：</p>
+<ul>
+<li><strong>生成</strong>：<a href="https://huggingface.co/m-a-p/YuE2-3B">YuE2-3B</a>，另有 <a href="https://huggingface.co/m-a-p/YuE2-Vae">VAE</a> 和 <a href="https://huggingface.co/m-a-p/YuE2-Vae-legacy">VAE legacy</a></li>
+<li><strong>转谱</strong>：<a href="https://huggingface.co/m-a-p/SheetSage2">SheetSage2</a>（音频 → 乐谱）</li>
+<li><strong>表征</strong>：<a href="https://huggingface.co/m-a-p/MERT-v2-30s">MERT2</a>、<a href="https://huggingface.co/m-a-p/MERT-v2-FullSong">MERT2-FS</a></li>
+<li><strong>基准</strong>：<a href="https://huggingface.co/datasets/m-a-p/WildSongBench">WildSongBench</a>（提示词与评测）</li>
+</ul>
+<p>参与机构（按原页 logo）：HKUST、M·A·P、Tokenwave.AI、NYU、Stanford、MBZUAI、NOIZ、ACE STUDIO。原页另有 “Try YuE2” 入口，标注为免费、由 NOIZ 托管。</p>
+
+<h2 id="demos">试听与演示（请前往原页）</h2>
+<p>原页有好几个交互区，都要在浏览器里打开<a href="https://map-yue2.github.io/">原页</a>才能用：</p>
+<ul>
+<li><strong>从乐谱到歌曲</strong>：先听一首歌，再看它的符号规划里写了哪些旋律、节奏与和弦。每首都能看生成的歌曲、符号乐谱（ABC 记谱，可复制）、歌词、风格提示词，还有交互式乐谱，播放时红色音符会跟着走。</li>
+<li><strong>翻唱与编辑</strong>：一首熟悉的歌也能换个模样。可以听旋律、歌词、速度和编曲各自改动后的效果。“智能体式音乐编辑”一节则演示了一首歌如何在一来一回的对话里慢慢成形。</li>
+<li><strong>曲风浏览</strong>：横跨多种曲风和语言的试听合集，可以筛选“带符号规划”和“直接生成”两种结果。</li>
+</ul>
+
+<h2 id="results">模型与结果</h2>
+<p>在 WildSongBench（192 条提示词）上，YuE2（best-of-8）的 SongBench 得分为 6.9632，是 17 个评测设置里最高的平均分。同一对比中 Suno v5 得 6.8721，Suno v6 和 Suno v6 Wild 分别得 6.5562 和 6.4195。</p>
+<figure><img src="images/frontier-teaser.png" alt="WildSongBench 上的歌曲质量与文本对齐" /><figcaption>WildSongBench 上的歌曲质量与文本对齐。气泡面积代表 AudioBox PQ，黑色描边是两条坐标轴上的帕累托最优点。Bo8 = best-of-8。</figcaption></figure>
+<p><strong>怎么读这些结果。</strong>WildSongBench 包含 192 条提示词、17 个系统设置，用的是论文里的 9 项自动指标。SongBench 是 7 个维度的平均，SongEval 是 5 个维度的平均。音乐性（Musicality）另外按评测器分开报告。两种 YuE2 设置都用了“旋律 + 和弦”的符号规划。</p>
+<p><strong>候选挑选。</strong>YuE2、公开基线、Suno v6 和 v6 Wild 都是每条提示生成 2 个候选，每个候选做 4 次 ASR，取 PER 更低的那个。较早的闭源结果沿用交付时的候选规则。YuE2 best-of-8 是从 8 次生成里挑：先比 SongBench 音乐性，再比 Q3O Control，最后比 PER。所以各家的挑选预算并不一样。榜单更新于 2026 年 9 月 12 日，排名会随指标变化。完整榜单在原页可以交互查看和下载。</p>
+
+<h2 id="arch">模型架构：用符号作曲，用音频演奏</h2>
+<figure><img src="images/yue2-overview.png" alt="YuE2 架构图" /><figcaption>YuE2 架构总览</figcaption></figure>
+<p>一份可编辑的乐谱依次变成语义音乐 token、声学隐变量，最后变成整首歌的音频。模型约有 3.58B 参数、28 层，能做创作、翻唱和编辑。AR（自回归）专家和 NAR（非自回归）专家共用一次注意力计算，但归一化、投影和 MLP 各用各的。</p>
+
+<h2 id="mert2">MERT2：学到声音背后的结构</h2>
+<figure><img src="images/mert2-ssl.png" alt="MERT2 自监督训练示意" /><figcaption>MERT2 训练示意</figcaption></figure>
+<p>MERT2 给分析和生成两边都提供音乐表征。它用 ConvNeXt 前端加 24 层 Conformer，预测被遮盖的码，这些码由 MuQ 和 Qwen2-Audio 两种互补特征构建。全曲适配版为 SheetSage2 提供音乐上下文；另一条因果分支做成了 YuE2 的 25 Hz 语义 tokenizer。</p>
+<p><strong>MARBLE 上的 SOTA：</strong>和列出的外部基线相比，MERT2-30s 在 15 项 MARBLE 指标里拿下 14 项 SOTA，MERT2-FS（全曲版）有 13 项超过这些基线。在 GiantSteps 调性 refined accuracy 上，MERT2-FS 得 67.05（×100）。</p>
+<table><tr><th>基准 / 指标</th><th>最佳已发表基线</th><th>MERT2-30s</th><th>MERT2-FS</th></tr>
+<tr><td>MTT 标签 ROC-AUC</td><td>91.70 PupuJEPA-Large</td><td>91.91</td><td>91.74</td></tr>
+<tr><td>MTT 标签 AP</td><td>40.80 PupuJEPA-Large</td><td>41.29</td><td>41.20</td></tr>
+<tr><td>GiantSteps 调性 refined acc.</td><td>66.10 PupuJEPA-Large</td><td>66.97</td><td>67.05</td></tr>
+<tr><td>GTZAN 曲风准确率</td><td>86.90 PupuJEPA-Large</td><td>91.72</td><td>90.69</td></tr>
+<tr><td>GTZAN 节拍 F1</td><td>91.00 PupuJEPA-Large</td><td>90.59</td><td>90.57</td></tr>
+<tr><td>EmoMusic 效价 R²</td><td>62.50 PupuJEPA-Large</td><td>63.23</td><td>63.52</td></tr>
+<tr><td>EmoMusic 唤醒度 R²</td><td>78.50 PupuJEPA-Huge</td><td>80.01</td><td>78.14</td></tr>
+<tr><td>MTG-Jamendo 乐器 ROC-AUC</td><td>78.40 PupuJEPA-Large</td><td>80.27</td><td>80.27</td></tr>
+<tr><td>MTG-Jamendo 乐器 AP</td><td>21.20 PupuJEPA-Large</td><td>22.89</td><td>23.51</td></tr>
+<tr><td>MTG-Jamendo 情绪/主题 ROC-AUC</td><td>76.20 PupuJEPA-Large</td><td>79.44</td><td>78.74</td></tr>
+<tr><td>MTG-Jamendo 情绪/主题 AP</td><td>15.50 Dasheng-1.2B</td><td>16.68</td><td>15.74</td></tr>
+<tr><td>MTG-Jamendo 曲风 ROC-AUC</td><td>86.30 AudioMAE++</td><td>88.01</td><td>87.98</td></tr>
+<tr><td>MTG-Jamendo 曲风 AP</td><td>20.10 PupuJEPA-Large / Huge</td><td>21.22</td><td>20.66</td></tr>
+<tr><td>MTG-Jamendo Top 50 ROC-AUC</td><td>83.10 AudioMAE++ / PupuJEPA-Huge</td><td>84.18</td><td>84.13</td></tr>
+<tr><td>MTG-Jamendo Top 50 AP</td><td>31.10 AudioMAE++</td><td>32.17</td><td>31.62</td></tr></table>
+<p>分数均 ×100，越高越好。每个 MERT2 编码器分别和该指标上 9 个外部基线里最强的那个比，两个 MERT2 不互相当基线。两个编码器都是 632M 参数。MERT2-30s 用 30 秒片段训练；MERT2-FS 在 30–360 秒的完整录音上继续预训练。这些基准测的是双向表征，不是因果 tokenizer。原页注明：PupuJEPA 在论文首发后已改名为 PupuM2D，表中沿用旧名。</p>
+
+<h2 id="sheetsage2">SheetSage2：听一首歌，读出它的谱子</h2>
+<figure><img src="images/sheetsage2-overview.png" alt="SheetSage2 总览" /><figcaption>SheetSage2 总览</figcaption></figure>
+<p>SheetSage2 能把一段录音转成可编辑的 lead sheet（主旋律谱）。它用 LoRA 适配过的全曲 MERT2-FS 编码器，接一个 6 层自回归解码器。任务提示决定要转写哪一项：节拍、段落、调性、和弦还是旋律。所有结果落在同一条事件时间线上，再转成 ABC 记谱，人声和器乐旋律各占一个声部。YuE2 的符号训练目标就是这些乐谱。</p>
+<p>在展示的对比里，SheetSage2 在 15 项指标中拿下 12 项 SOTA。它只用一个自回归模型（SheetSage2-AR），就能做节拍、强拍、调性、和弦、结构和旋律六类转写。RWC-Pop 人声旋律音级 F1 为 82.51，osu2017 和弦 Maj/min 为 90.08（均 ×100）。</p>
+<table><tr><th>基准</th><th>任务 / 指标</th><th>最佳对比</th><th>SheetSage2-AR</th></tr>
+<tr><td>GTZAN</td><td>节拍 F1</td><td>89.01 Beat This!</td><td>86.27</td></tr>
+<tr><td>osu2017</td><td>节拍 F1</td><td>91.80 Madmom</td><td>93.01</td></tr>
+<tr><td>GTZAN</td><td>强拍 F1</td><td>78.28 Beat This!</td><td>80.45</td></tr>
+<tr><td>osu2017</td><td>强拍 F1</td><td>85.90 Beat This!</td><td>92.90</td></tr>
+<tr><td>GiantSteps</td><td>调性 加权分</td><td>74.62 Madmom</td><td>77.73</td></tr>
+<tr><td>GTZAN</td><td>调性 加权分</td><td>74.43 S-KEY</td><td>75.77</td></tr>
+<tr><td>osu2017</td><td>和弦 Maj/min</td><td>86.55 ChordFormer</td><td>90.08</td></tr>
+<tr><td>Chords1217</td><td>和弦 Maj/min</td><td>83.94 ChordFormer</td><td>83.81</td></tr>
+<tr><td>JAAH</td><td>和弦 Maj/min</td><td>59.45 ChordFormer</td><td>64.50</td></tr>
+<tr><td>HarmonixSet</td><td>结构 准确率</td><td>80.03 SongFormer</td><td>80.51</td></tr>
+<tr><td>HarmonixSet</td><td>结构边界 F1 · 0.5 s</td><td>70.63 SongFormer</td><td>67.96</td></tr>
+<tr><td>HarmonixSet</td><td>结构边界 F1 · 3 s</td><td>79.50 SongFormer</td><td>82.86</td></tr>
+<tr><td>RWC-Pop</td><td>人声旋律音级 F1</td><td>62.71 SheetSage1</td><td>82.51</td></tr>
+<tr><td>RWC-Pop</td><td>完整旋律音级 F1</td><td>64.02 SheetSage1</td><td>75.29</td></tr>
+<tr><td>Rock Corpus</td><td>人声旋律音级 F1</td><td>49.19 SheetSage1</td><td>67.08</td></tr></table>
+<p>SOTA 计数是和 SheetSage1、Madmom 以及各任务专用系统比出来的。SheetSage2-AR 是按验证损失选出的单个模型。Beat This! 的分数是三个公开训练种子的平均。旋律 F1 按音级算，起音容差 50 ms，不看结束点；结构 F1 按标注容差算段落边界。Chords1217 上，ChordFormer 每首曲子用一个留出折模型，其逐曲召回按参考时长加权，以对齐其他模型的计分方式；SheetSage1 和 SheetSage2-AR 都用同一个固定模型跑全部 1,217 首。Madmom 的和弦训练数据里含有 Chords1217。JAAH 用全部 113 首录音，参考标注与每段音频的时间范围取交集。Rock Corpus 是全部 200 首录音的平均，其中 6 首参考为空，按 0 分计。</p>
+
+<h2 id="data">训练数据</h2>
+<p>这些模型主要用 CC0 音乐和合成数据训练，大部分合成训练数据由 Tokenwave.AI 授权提供。团队表示会以合乎伦理、负责任的方式使用数据。各模型的训练数据量：MERT2 70 万小时，SheetSage2 2.84 万小时，YuE2 34.6 万小时。</p>
+
+<h2 id="cite">引用</h2>
+<p>使用 YuE2、MERT2、SheetSage2 或 WildSongBench 时，请引用 arXiv 论文：</p>
+<pre><code>@article{yuan2026yue2,
+  title  = {{YuE2}: Unifying Symbolic and Audio Music Generation at Frontier Quality},
+  author = {Yuan, Ruibin and Pan, Jiahao and Jiang, Junyan and Wu, Zhiyue and Zhou, Ziya and Sun, Jiankai and Li, Yizhi and Zhang, Ge and Gu, Yicheng and Tian, Zeyue and Dai, Junyu and Lin, Hanfeng and Li, Kai and Wu, Shangda and Liu, Xuanjie and Wang, Jiaming and Liu, Zihan and Wang, Yue and Ma, Yinghao and Yin, Hanzhi and Chen, Kangrui and Zhang, Xinyue and Ma, Ziyang and Liao, Mengqi and Zhao, Hejia and Huang, Guowei and Yan, Chao and Ke, Lei and Yu, Jianwei and Liu, Bei and Guo, Joe and Xue, Liumeng and Xia, Gus and Xue, Wei and Guo, Yike},
+  journal = {arXiv preprint arXiv:2609.33757},
+  year   = {2026},
+  url    = {https://arxiv.org/abs/2609.33757}
+}</code></pre>
+</article>
+<footer class="note">
+  <p>非官方中文翻译镜像。原文版权归 YuE2 作者团队所有（<a href="https://map-yue2.github.io/">map-yue2.github.io</a>，网站源码见 <a href="https://github.com/map-yue2/map-yue2.github.io">map-yue2/map-yue2.github.io</a>；YuE 代码库为 Apache-2.0）。本页未转载音频，也没有实际运行模型。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
+  <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p>
+</footer>
+</div>
+</body>
+</html>
