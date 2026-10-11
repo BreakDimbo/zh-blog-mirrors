@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anatomy：说出一个想法，Claude 把它造成一台会动的机器（Claude Code Skill 中文翻译）</title>
+  <meta name="description" content="Anatomy 是一个 Claude Code / Agent Skill：把技术概念画成可交互的等轴测机器图（SVG、WebGL、3D）。README 与发布帖中文翻译，原作者 @wheresryan22，MIT 许可。" />
+  <meta property="og:title" content="Anatomy：Claude 造出解释想法的机器（中文翻译）" />
+  <meta property="og:image" content="images/raptor-engine-firing.webp" />
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
+      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
+      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
+    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
+    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
+    .source a:hover { text-decoration: underline; }
+    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
+    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
+    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
+    article p { margin: 0 0 1.05rem; }
+    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
+    article li { margin: 0.35rem 0; }
+    article a { color: var(--link); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
+    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
+    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
+    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
+    figure.cover-fig { margin-top: 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+    img.cover { border-radius: 8px; }
+    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: none; padding: 0; font-size: inherit; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: #f3f4f6; font-weight: 650; }
+    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
+    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
+      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
+    .grid2 figure { margin: 0; }
+    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+    ol.subs li { margin: 0.15rem 0; }
+  </style>
+<body>
+<div class="wrap">
+<header class="meta">
+  <h1>Anatomy：说出一个想法，Claude 把它造成一台会动的机器</h1>
+  <p class="source">原帖：<a href="https://x.com/wheresryan22/status/2108948624004526516">x.com/wheresryan22/status/2108948624004526516</a>（串内仓库帖：<a href="https://x.com/wheresryan22/status/2108948630011056355">2108948630011056355</a>）</p>
+  <p class="source">仓库：<a href="https://github.com/wheresryan22/anatomy">github.com/wheresryan22/anatomy</a> · 官网：<a href="https://skills.wheresryan.sh/anatomy">skills.wheresryan.sh/anatomy</a></p>
+  <p class="meta-line">作者：Ryan（R，@wheresryan22） · 发布于 2026-10-10 23:51（UTC+8） · 抓取于 2026-10-11（UTC+8），README 版本 dbf697a · 非官方中文翻译镜像</p>
+</header>
+<article>
+<div class="related-guide"><strong>镜像说明：</strong>本页翻译了作者的 X 发布帖和 Anatomy 仓库 README（MIT 许可）的主要内容，结构与原文对应，并带署名和原文链接。图片来自仓库 <code>.github/assets/</code>，还有发布视频的截帧。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</div>
+<figure class="cover-fig"><img src="images/raptor-engine-firing.webp" alt="Raptor 2 发动机试车台等轴测图" /><figcaption><code>examples/raptor-engine</code>，浅色主题，点火状态。发动机和试车台是 SVG，尾焰是同一等轴测相机里的 WebGL 着色器。</figcaption></figure>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#post">发布帖</a></li><li><a href="#quick">快速上手</a></li><li><a href="#gallery">图库</a></li><li><a href="#kinds">能做什么</a></li><li><a href="#install">安装</a></li><li><a href="#usage">用法</a></li><li><a href="#examples">示例</a></li><li><a href="#how">工作原理</a></li><li><a href="#req">环境要求</a></li><li><a href="#limits">局限</a></li></ol></nav>
+
+<h2 id="post">发布帖</h2>
+<blockquote>隆重介绍 Anatomy<br>用一句话描述一台机器，Claude 就让它活过来。<br>· 可交互的等轴测线框图，能旋转、细看、探索<br>· 用 WebGL 着色器画火焰、水、等离子体等<br>· 真正的 3D 运动，单个零件可以转动、移动<br>以 Agent Skill 形式安装。完全开源。</blockquote>
+<p>帖子附一段约 39 秒的演示视频。下面是视频截帧：输入 <code>/anatomy explain how a big airliner turbofan engine like the A380's makes thrust, interactive</code>，Claude 画出“涡扇发动机地面试车”图，拖动就能推油门，读数随之变化。</p>
+<figure><img src="images/video-prompt.jpg" alt="视频截帧：输入提示词" /><figcaption>视频截帧：一句话提示词</figcaption></figure>
+<figure><img src="images/video-turbofan.jpg" alt="视频截帧：涡扇发动机" /><figcaption>视频截帧：可交互的涡扇发动机试车图</figcaption></figure>
+<figure><img src="images/video-end.jpg" alt="视频截帧：结尾" /><figcaption>视频结尾：npx skills add wheresryan22/anatomy</figcaption></figure>
+
+<h2>Anatomy 是什么</h2>
+<p><strong>这个 Claude Skill 解释一个想法的办法，是把它造成一件真实、能运转的物体。</strong>它画的是精心制作、可交互的等轴测图，由许多精确的小零件组成，输出为 SVG、WebGL 和 3D。</p>
+<p>你让 Claude 画一张解释某个技术概念的图，Anatomy 会让它发明一件实物，这件实物的运转方式<em>就是</em>这个概念。比如，“没变化时就跳过工作”的缓存键，变成一把只有所有弹子都对齐才能转动的弹子锁。一个 GPU 上下文服务多块画布，变成一台龙门绘图仪，唯一的打印头依次走访 16 个孔位。</p>
+<p>接着，Claude 用几十个小而实、有明暗的零件把这件东西搭出来，放进一张带标题、提示和实时读数的图卡，让它随指针和键盘平稳地动起来，再逐个放大每个接缝来检查自己的成果。图上显示的每个数字，都来自驱动零件运动的同一个小模型。</p>
+
+<h2 id="quick">快速上手</h2>
+<pre><code>npx skills add wheresryan22/anatomy -g -a claude-code</code></pre>
+<p>然后在 Claude Code 里输入：</p>
+<pre><code>/anatomy explain how a token bucket rate limiter works, interactive</code></pre>
+<p>就这么简单。不需要 API key，也不用 <code>npm install</code>：这套工具只用 Node 的内置模块。</p>
+
+<h2 id="gallery">图库</h2>
+<figure><img src="images/raptor-engine-apart.webp" alt="拆开的 Raptor 2 发动机" /><figcaption><b>raptor-engine</b>：鼠标悬停，它会拆成 11 个组件。审计会证明无论静止、拆开还是两者之间的每一帧，都没有管路穿过其他部件。</figcaption></figure>
+<figure><img src="images/ripple-tank.webp" alt="波纹水槽" /><figcaption><b>ripple-tank</b>：SVG 装置叠在两层 WebGL 上（纸上的灯光与焦散，水中的反射），由色散与光学模型驱动。</figcaption></figure>
+<figure><img src="images/turning-dial.webp" alt="转盘与机械手" /><figcaption><b>turning-dial</b>：3D 模式（beta）。拖动转盘时，约 90 个零件每帧都会重新投影、重新着色。</figcaption></figure>
+<figure><img src="images/dial-indicator.webp" alt="百分表" /><figcaption><b>dial-indicator</b>：最小的示例，约 300 行。悬停可推动滑台，指针依次读出每块量块。</figcaption></figure>
+<p>每张截图都是 <code>examples/</code> 里某个页面的浅色主题，用这个 Skill 自带的 <code>scripts/capture.mjs</code> 和 <code>scripts/drive.mjs</code> 截取。构建好的页面已经提交进仓库，打开 <code>examples/</code> 里任意 <code>.html</code> 就能试。</p>
+
+<h2 id="kinds">能做什么</h2>
+<p>三类图，共用一套工具、一个相机、一套工艺规则。</p>
+<table><thead><tr><th>类型</th><th>说明</th><th>示例</th></tr></thead><tbody>
+<tr><td><b>SVG</b></td><td>核心。四色调明暗的实心等轴测零件，从后往前绘制，放在带实时读数和缓动动画的图卡里。可以输出独立 HTML 页面、内嵌样式的单个 <code>.svg</code> 文件，或 React/Next.js 组件。</td><td>dial-indicator、desk-computer、arcade-cabinet、test-rig</td></tr>
+<tr><td><b>SVG + WebGL</b></td><td>用来画线条画不出的东西：火、尾气、水、焦散、灯光、辉光、蒸汽。着色器跑在前后两层 SVG 之间的 canvas 里，用的是图本身的等轴测相机，所以融在画面中。没有 WebGL 时，SVG 照样能看。</td><td>raptor-engine、ripple-tank</td></tr>
+<tr><td><b>3D</b>（beta）</td><td>能真正 3D 转动的零件：会转的表盘或转台、能弯的手指、断开后掉落的部件。运动零件每帧按工具的规则重新投影、着色，其余部分保持静态。</td><td>turning-dial</td></tr>
+</tbody></table>
+<p>每张图可以是浅色或深色。浅色是这个 Skill 优先设计的主题，着色器也一样。</p>
+
+<h2 id="install">安装</h2>
+<p>Anatomy 是标准的 Agent Skill：一个根目录下有 <code>SKILL.md</code> 的文件夹，这个仓库就是那个文件夹。安装方式任选一种：</p>
+<ul>
+<li><b>skills CLI，装给自己</b>：<code>npx skills add wheresryan22/anatomy -g -a claude-code</code> → <code>~/.claude/skills/anatomy</code></li>
+<li><b>skills CLI，装进单个项目</b>：<code>npx skills add wheresryan22/anatomy</code> → <code>.claude/skills/anatomy</code></li>
+<li><b>git，装给自己</b>：<code>git clone https://github.com/wheresryan22/anatomy.git ~/.claude/skills/anatomy</code></li>
+<li><b>git，装进单个项目</b>：<code>git clone https://github.com/wheresryan22/anatomy.git .claude/skills/anatomy</code></li>
+<li><b>直接下载</b>：下载 ZIP 解压，把 <code>anatomy-main</code> 改名为 <code>anatomy</code>，放进 <code>~/.claude/skills/</code></li>
+</ul>
+<p>skills CLI 会复制整个仓库，示例也在内（约 10 MB），而且要求较新的 Node.js：CLI 1.7.1 版需要 22.20 或更高。用 git 装进项目时，记得提交 <code>.claude/skills/anatomy</code>，团队成员就能一起用，以后在该目录里 <code>git pull</code> 即可更新。Claude Code 会在运行中的会话里识别新 Skill。如果会话开始时 <code>skills</code> 文件夹本身还不存在，运行 <code>/reload-skills</code>。</p>
+
+<h2 id="usage">用法</h2>
+<p>输入 <code>/anatomy</code>，再说明这张图要解释什么。不点名这个 Skill 也行：只要你要的是等轴测插图、文档/博客/落地页的解释图，或者交互式讲解，Claude 都会加载它。更多提示词示例（来自仓库的 evals）：</p>
+<pre><code>/anatomy a figure for our Next.js docs on database connection pooling: a pool of 10 connections, requests borrow one and give it back, and when all 10 are busy new requests wait in a queue. A React component plus a static HTML preview, dark theme.
+/anatomy an isometric SVG explaining how a CDN edge cache works, cache hit vs miss, TTL of 60 s, for a dark landing page. Just the SVG file and a PNG preview.
+/anatomy a Bunsen burner on a lab bench: opening the air collar turns the lazy yellow flame into a roaring blue cone. WebGL for the flame, one HTML file, dark theme.</code></pre>
+<p>想得到最好的图，有三个习惯：</p>
+<ol>
+<li><b>说出想法，而不是画法。</b>讲清楚要解释什么，并给出真实数字（尺寸、数量、速率、阈值）。发明那件实物是 Anatomy 的主要工作，它做得比“方框加箭头”式的描述更好。</li>
+<li><b>或者直接点名实物。</b>如果你心里已经有了那台机器（意式咖啡机、本生灯、锁），就直接说，并说明哪些部分要动。</li>
+<li><b>说清用在哪里。</b>独立 HTML 页面、单个 SVG 文件，还是 React/Next.js 组件；浅色还是深色。不同输出的构建方式不一样。</li>
+</ol>
+<p>交付的图是归你所有的源码：一个 Node 构建脚本和它生成的页面。如果是 React，则是几何模块、一个负责静态图的服务端组件，加一个负责动效的客户端组件。工具包会一并附上。</p>
+
+<h2 id="examples">示例</h2>
+<p>每个不依赖框架的示例都有 Node 构建脚本，在旁边生成独立页面，加 <code>--light</code> 就是浅色主题。</p>
+<ul>
+<li><b>dial-indicator</b>：支架上的百分表，下面是一排量块。最小的示例，约 300 行。</li>
+<li><b>desk-computer</b>：1984 年风格的台式电脑，键盘可以打字，字显示在机身正面平面里画出的 CRT 上；关机时画面收成一条线、再缩成一个点。约 85 个实体。</li>
+<li><b>arcade-cabinet</b>：拆掉侧板的街机柜。投进一枚硬币，它会滚下投币槽，经过投币开关线落进钱箱；一个脉冲沿线缆传到主板，CRT 预热后进入演示模式。约 240 个实体、15 根线缆。</li>
+<li><b>raptor-engine</b>：试车台上的 Raptor 2 发动机，可拆成 11 个组件；WebGL 尾焰、激波、溅射和蒸汽渲染在前后两层 SVG 之间。它是密集管路、平滑明暗、淡入淡出和审计的参考范例，构建要几分钟。</li>
+<li><b>ripple-tank</b>：立在高脚上的学校波纹水槽，下面是纸屏，从 44° 仰角观看。两层 WebGL 对齐到等轴测平面，由 <code>model.mjs</code> 里的纯模型驱动。</li>
+<li><b>test-rig</b>：来自某个 React/Next.js 站点的生产级图：弹簧滑台上的玻璃按钮、导轨上的手指探头、读出倾斜量的百分表。53 个实体。没有构建脚本，直接复制进 React 应用。</li>
+<li><b>spot-plate</b>：同一站点的第二张图：点滴板上六对玻璃液滴，随着一排塞尺张开融成一块玻璃。每对液滴由一个距离场绘出。没有构建脚本。</li>
+<li><b>turning-dial</b>：3D 模式。一个能真正 3D 转动的密码盘，上面有一只小机械手，还有能抬起的三关节手指和一个会断开、自由下落的部件。<code>stress.mjs</code> 是放在杂乱工作间里的 380 零件机械手，用来测性能。</li>
+</ul>
+<p>对 raptor-engine 和 arcade-cabinet 运行 <code>build.mjs --audit</code>、对 turning-dial 运行 <code>build.mjs --light --audit</code>，还会执行几何审计。3D 审计比较慢。</p>
+
+<h2 id="how">工作原理</h2>
+<ul>
+<li><b>SKILL.md</b> 是 Claude 读的文件。它规定了工作流：先收集真实数字，发明实物，写零件清单，规划场景，用工具包一次建好几何，从后往前绘制，加框，让它动起来，最后像评论家一样验收。它也收录了精简版工艺规则。</li>
+<li><b>kit/</b> 是绘图库：等轴测相机、实体与零件库（<code>iso-kit</code>）、任意轴的回转件（<code>lathe.mjs</code>）、管道与线缆（<code>tube.mjs</code>）、WebGL 层（<code>gl.mjs</code>）、3D 运行时（<code>turn*.mjs</code>）和 React 组件。除了 React 组件需要 React，没有其他依赖。</li>
+<li><b>references/</b> 是 Claude 按需打开的长篇指南：工艺、工具包 API、动效、React、验证、WebGL、设计演练和 3D 模式。</li>
+<li><b>验证</b>：<code>kit/audit.mjs</code> 证明几何正确，即没有东西互相穿插、每个端点都落在支点上、每处重叠都按深度顺序绘制。在无头 Chrome 里，<code>capture.mjs</code> 和 <code>drive.mjs</code> 负责截图、特写和慢放联系表，<code>lines.mjs</code> 揪出悬空结束的线，<code>turn-check.mjs</code> 检查 3D 图。Skill 要求 Claude 读一遍它生成的每张 PNG。</li>
+</ul>
+
+<h2 id="req">环境要求</h2>
+<ul>
+<li><b>Claude Code</b>：全部功能都需要，这个 Skill 就是为它写的。</li>
+<li><b>Node.js 20.10+</b>：构建、工具包和检查都要用。只用内置模块，无需 <code>npm install</code>。示例在 Node 20.19 和 22.11 上都逐字节重建过；在 Node 20 上，浏览器脚本会自动带 <code>--experimental-websocket</code> 重启。</li>
+<li><b>Chrome 或 Chromium</b>：检查脚本需要。会自动在 macOS/Linux/Windows 常见位置和 Playwright 缓存里找，其他路径用 <code>CHROME_PATH</code> 指定，以开启 WebGL 的无头模式运行。</li>
+<li><b>React 18+</b>：只在输出 React 时需要。</li>
+</ul>
+
+<h2 id="limits">局限</h2>
+<ul>
+<li><b>它不是图表库。</b>没有坐标轴、数据系列或数据图。数字只以两种形式出现：模型驱动的实时读数，以及零件的真实尺寸和数量。</li>
+<li><b>它画机器、仪器、工具和家具。</b>不画人，也不画精确地图。没有机械结构可造的想法，画出来效果会差一些。</li>
+<li><b>它故意很慢。</b>一张图要花很长时间：零件清单、几何、审计，以及两种主题下每个接缝的特写。Raptor 构建要几分钟，30 个零件的完整 3D 环绕审计要 15 到 20 分钟。</li>
+<li><b>着色器需要 WebGL。</b>没有 WebGL 时 SVG 照样能看；开启“减少动态效果”时，所有图都会静止。</li>
+</ul>
+<blockquote><b>3D 模式仍是 beta。</b>它只在自带示例和一张测试图上验证过，还没用于生产级图。小型 3D 图能跑 60 fps；380 零件的压力测试机械手在一台高负载机器上测得：1440 px 宽约 20 fps，限速手机配置下 13 到 15 fps。</blockquote>
+<p>欢迎提 Issue 和 PR，提交前请先读 CONTRIBUTING.md。其中的规矩包括：代码里不写注释；改动工具包时，所有现有示例的输出必须逐字节不变。许可证：MIT © 2026 Ryan · @wheresryan22。</p>
+</article>
+<footer class="note">
+  <p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
+  <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p>
+</footer>
+</div>
+</body>
+</html>
