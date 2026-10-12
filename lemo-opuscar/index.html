@@ -1,135 +1,55 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片 — Lemomo（中文镜像）</title>
   <meta name="description" content="Lemomo / LemoLab：39 种可复用影片风格提示词 + Claude Opus 5.5 纯代码样片。中文阅读页与风格索引；官方图鉴可观看成片。" />
   <meta property="og:title" content="Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片" />
   <meta property="og:image" content="images/cover.jpg" />
   <meta property="og:description" content="选一个风格，带上你的故事，让编程 agent 当导演。代码 MIT；指南与成片 CC BY 4.0。" />
-  <style>
-    :root {
-      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
-      --link: #0b57d0; --max: 920px; --code-bg: #f3f4f6; --accent: #c45c26;
-      --card: #fff;
-    }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body {
-      margin: 0; background: var(--bg); color: var(--fg);
-      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
-        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
-      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
-    }
-    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
-    header.meta {
-      margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border);
-    }
-    h1 {
-      font-size: 1.7rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem;
-      letter-spacing: -0.02em;
-    }
-    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
-    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
-    .source a:hover { text-decoration: underline; }
-    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
-    .cta {
-      display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1.1rem 0 0;
-    }
-    .cta a {
-      display: inline-block; padding: 0.55rem 1rem; border-radius: 8px;
-      text-decoration: none; font-weight: 600; font-size: 0.95rem;
-    }
-    .cta a.primary { background: var(--accent); color: #fff; }
-    .cta a.secondary { background: #fff; color: var(--fg); border: 1px solid var(--border); }
-    .cta a:hover { filter: brightness(0.95); }
-    article h2 {
-      font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700;
-      scroll-margin-top: 1rem;
-    }
-    article h3 {
-      font-size: 1.05rem; line-height: 1.4; margin: 0 0 0.35rem; font-weight: 650;
-    }
-    article > p { margin: 0 0 1.05rem; }
-    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
-    article li { margin: 0.35rem 0; }
-    article a { color: var(--link); text-decoration: none; }
-    article a:hover { text-decoration: underline; }
-    nav.toc {
-      background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.85rem 1.1rem; margin: 0 0 1.5rem;
-    }
-    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
-    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
-    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
-    figure img {
-      display: block; width: 100%; height: auto; border-radius: 8px;
-      background: #fff; border: 1px solid var(--border);
-    }
-    figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; }
-    blockquote {
-      margin: 0 0 1.15rem; padding: 0.65rem 1rem;
-      border-left: 3px solid var(--accent); background: #fff6f0; color: #333;
-    }
-    table.guides {
-      width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem;
-    }
-    table.guides th, table.guides td {
-      border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; vertical-align: top;
-    }
-    table.guides th { background: #f3f4f6; }
-    pre {
-      background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem;
-      font-size: 0.88rem; line-height: 1.55;
-    }
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 0.92em;
-    }
-    p code, li code, td code {
-      background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px;
-    }
-    pre code { background: none; padding: 0; font-size: inherit; }
-    .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem; margin: 0 0 0.5rem;
-    }
-    .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-      overflow: hidden; display: flex; flex-direction: column;
-    }
-    .card .frame { display: block; line-height: 0; }
-    .card img { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
-    .card-body { padding: 0.85rem 0.95rem 1rem; flex: 1; display: flex; flex-direction: column; }
-    .card .en { font-size: 0.82rem; color: var(--muted); margin: 0 0 0.4rem; }
-    .card .film { margin: 0 0 0.35rem; font-size: 0.95rem; }
-    .card .syn { margin: 0 0 0.65rem; font-size: 0.9rem; color: #333; flex: 1; }
-    .card .links { margin: 0; font-size: 0.85rem; }
-    footer.note {
-      margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border);
-      font-size: 0.88rem; color: var(--muted);
-    }
-    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
-  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.cta{display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1.1rem 0 0;}
+.cta a{display: inline-block; padding: 0.55rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem;}
+.cta a.primary{background: var(--accent); color: #fff;}
+.cta a.secondary{background: #fff; color: var(--fg); border: 1px solid var(--border);}
+.cta a:hover{filter: brightness(0.95);}
+.grid{display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin: 0 0 0.5rem;}
+.card{background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;}
+.card .frame{display: block; line-height: 0;}
+.card img{width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover;}
+.card-body{padding: 0.85rem 0.95rem 1rem; flex: 1; display: flex; flex-direction: column;}
+.card .en{font-size: 0.82rem; color: var(--muted); margin: 0 0 0.4rem;}
+.card .film{margin: 0 0 0.35rem; font-size: 0.95rem;}
+.card .syn{margin: 0 0 0.65rem; font-size: 0.9rem; color: #333; flex: 1;}
+.card .links{margin: 0; font-size: 0.85rem;}
+</style>
 <!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
 </head>
-<body>
+<body class="za">
 <!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
-  <div class="wrap">
-    <header class="meta">
-      <h1>Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片</h1>
-      <p class="source">仓库：<a href="https://github.com/lemomo-ai/lemo-opuscar">https://github.com/lemomo-ai/lemo-opuscar</a></p>
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-09-27">2026.09.27</time></p>
+<h1 class="za-title">Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · Lemomo / LemoLab</span><span>收录 · 2026-09-27</span><span><a href="https://github.com/lemomo-ai/lemo-opuscar" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/lemomo-ai/lemo-opuscar">https://github.com/lemomo-ai/lemo-opuscar</a></p>
       <p class="source">官方图鉴：<a href="https://lemomo-ai.github.io/lemo-opuscar/">https://lemomo-ai.github.io/lemo-opuscar/</a></p>
       <p class="meta-line">作者：Lemomo（@lemomo-ai / LemoLab） · 语言：JavaScript · Stars ≈ 191 · 默认分支 main · 非官方中文阅读镜像</p>
       <div class="cta">
         <a class="primary" href="https://lemomo-ai.github.io/lemo-opuscar/" target="_blank" rel="noopener">▶ 看官方图鉴（成片）</a>
         <a class="secondary" href="https://github.com/lemomo-ai/lemo-opuscar" target="_blank" rel="noopener">GitHub 仓库</a>
         <a class="secondary" href="#styles">跳到 39 风格索引</a>
-      </div>
-    </header>
-    <article>
+      </div></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
 <nav class="toc"><strong>目录</strong><ol>
 <li><a href="#about">这是什么</a></li>
 <li><a href="#how">怎么用</a></li>
@@ -679,11 +599,16 @@ claude</code></pre>
 </ul>
 <p>本页为非官方中文阅读镜像与风格索引，方便中文读者浏览；成片与最新内容以官方仓库与图鉴为准。上游 README 本身已英中双语。</p>
 
-    </article>
-    <footer class="note">
-      <p>镜像托管：<a href="https://breakdimbo.github.io/zh-blog-mirrors/">中文博文镜像</a> · 源仓库 <a href="https://github.com/lemomo-ai/lemo-opuscar">lemomo-ai/lemo-opuscar</a> · 图鉴 <a href="https://lemomo-ai.github.io/lemo-opuscar/">lemomo-ai.github.io/lemo-opuscar</a></p>
-      <p>帧图与封面自托管于 <code>images/</code>；▶ 观看链接指向官方图鉴。</p>
-    </footer>
-  </div>
+    </article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>镜像托管：<a href="https://breakdimbo.github.io/zh-blog-mirrors/">中文博文镜像</a> · 源仓库 <a href="https://github.com/lemomo-ai/lemo-opuscar">lemomo-ai/lemo-opuscar</a> · 图鉴 <a href="https://lemomo-ai.github.io/lemo-opuscar/">lemomo-ai.github.io/lemo-opuscar</a></p>
+      <p>帧图与封面自托管于 <code>images/</code>；▶ 观看链接指向官方图鉴。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/lemomo-ai/lemo-opuscar" rel="noopener">github.com/lemomo-ai/lemo-opuscar</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
 </body>
 </html>

@@ -1,73 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anatomy：说出一个想法，Claude 把它造成一台会动的机器（Claude Code Skill 中文翻译）</title>
   <meta name="description" content="Anatomy 是一个 Claude Code / Agent Skill：把技术概念画成可交互的等轴测机器图（SVG、WebGL、3D）。README 与发布帖中文翻译，原作者 @wheresryan22，MIT 许可。" />
   <meta property="og:title" content="Anatomy：Claude 造出解释想法的机器（中文翻译）" />
   <meta property="og:image" content="images/raptor-engine-firing.webp" />
-  <style>
-    :root {
-      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
-      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
-    }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body {
-      margin: 0; background: var(--bg); color: var(--fg);
-      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
-        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
-      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
-    }
-    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
-    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
-    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
-    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
-    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
-    .source a:hover { text-decoration: underline; }
-    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
-    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
-    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
-    article p { margin: 0 0 1.05rem; }
-    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
-    article li { margin: 0.35rem 0; }
-    article a { color: var(--link); text-decoration: none; }
-    article a:hover { text-decoration: underline; }
-    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
-    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
-    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
-    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
-    figure.cover-fig { margin-top: 0; }
-    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
-    img.cover { border-radius: 8px; }
-    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
-    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
-    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
-    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
-    pre code { background: none; padding: 0; font-size: inherit; }
-    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
-    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
-    th { background: #f3f4f6; font-weight: 650; }
-    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
-    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
-      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
-    .grid2 figure { margin: 0; }
-    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
-    ol.subs li { margin: 0.15rem 0; }
-  </style>
-<body>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
 <!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
-<div class="wrap">
-<header class="meta">
-  <h1>Anatomy：说出一个想法，Claude 把它造成一台会动的机器</h1>
-  <p class="source">原帖：<a href="https://x.com/wheresryan22/status/2108948624004526516">x.com/wheresryan22/status/2108948624004526516</a>（串内仓库帖：<a href="https://x.com/wheresryan22/status/2108948630011056355">2108948630011056355</a>）</p>
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-11">2026.10.11</time></p>
+<h1 class="za-title">Anatomy：说出一个想法，Claude 把它造成一台会动的机器</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · Ryan @wheresryan22 · MIT</span><span>收录 · 2026-10-11</span><span><a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/wheresryan22/status/2108948624004526516">x.com/wheresryan22/status/2108948624004526516</a>（串内仓库帖：<a href="https://x.com/wheresryan22/status/2108948630011056355">2108948630011056355</a>）</p>
   <p class="source">仓库：<a href="https://github.com/wheresryan22/anatomy">github.com/wheresryan22/anatomy</a> · 官网：<a href="https://skills.wheresryan.sh/anatomy">skills.wheresryan.sh/anatomy</a></p>
-  <p class="meta-line">作者：Ryan（R，@wheresryan22） · 发布于 2026-10-10 23:51（UTC+8） · 抓取于 2026-10-11（UTC+8），README 版本 dbf697a · 非官方中文翻译镜像</p>
+  <p class="meta-line">作者：Ryan（R，@wheresryan22） · 发布于 2026-10-10 23:51（UTC+8） · 抓取于 2026-10-11（UTC+8），README 版本 dbf697a · 非官方中文翻译镜像</p></div><!-- /za:origin -->
 </header>
-<article>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
 <div class="related-guide"><strong>镜像说明：</strong>本页翻译了作者的 X 发布帖和 Anatomy 仓库 README（MIT 许可）的主要内容，结构与原文对应，并带署名和原文链接。图片来自仓库 <code>.github/assets/</code>，还有发布视频的截帧。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</div>
 <figure class="cover-fig"><img src="images/raptor-engine-firing.webp" alt="Raptor 2 发动机试车台等轴测图" /><figcaption><code>examples/raptor-engine</code>，浅色主题，点火状态。发动机和试车台是 SVG，尾焰是同一等轴测相机里的 WebGL 着色器。</figcaption></figure>
 <nav class="toc"><strong>目录</strong><ol>
@@ -170,10 +130,15 @@
 </ul>
 <blockquote><b>3D 模式仍是 beta。</b>它只在自带示例和一张测试图上验证过，还没用于生产级图。小型 3D 图能跑 60 fps；380 零件的压力测试机械手在一台高负载机器上测得：1440 px 宽约 20 fps，限速手机配置下 13 到 15 fps。</blockquote>
 <p>欢迎提 Issue 和 PR，提交前请先读 CONTRIBUTING.md。其中的规矩包括：代码里不写注释；改动工具包时，所有现有示例的输出必须逐字节不变。许可证：MIT © 2026 Ryan · @wheresryan22。</p>
-</article>
-<footer class="note">
-  <p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
-  <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
+  <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">x.com/wheresryan22/status/2108948624004526516</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
 </footer>
 </div>
 </body>

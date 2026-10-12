@@ -1,61 +1,32 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）— 中文导读</title>
   <meta name="description" content="prompt-motion.com 中文导读：p4n（@p4nthera_）整理的 Claude Opus 5.5 动态图形视频画廊，每条视频都附上作者在 X 上公开的提示词或 skill。含站点结构、分类统计、精选提示词原文与中文解读、4 个 skill 与全部 233 条目录。" />
   <meta property="og:title" content="Prompt Motion：Claude Opus 5.5 动态视频画廊（中文导读）" />
   <meta property="og:image" content="images/site-home.jpg" />
-  <style>
-    :root { --bg:#fafafa; --fg:#1a1a1a; --muted:#666; --border:#e8e8e8; --link:#0b57d0; --max:820px; --code-bg:#f3f4f6; --accent:#e5482d; }
-    * { box-sizing:border-box; }
-    html { -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
-    body { margin:0; background:var(--bg); color:var(--fg); font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei","Source Han Sans SC",system-ui,-apple-system,sans-serif; font-size:17px; line-height:1.75; letter-spacing:0.01em; }
-    .wrap { max-width:var(--max); margin:0 auto; padding:2.5rem 1.25rem 4rem; }
-    header.meta { margin-bottom:1.75rem; padding-bottom:1.25rem; border-bottom:1px solid var(--border); }
-    h1 { font-size:1.75rem; line-height:1.35; font-weight:700; margin:0 0 0.75rem; letter-spacing:-0.02em; }
-    .source { font-size:0.9rem; color:var(--muted); margin:0 0 0.35rem; }
-    .source a, article a { color:var(--link); text-decoration:none; word-break:break-word; }
-    .source a:hover, article a:hover { text-decoration:underline; }
-    .meta-line { font-size:0.88rem; color:var(--muted); margin:0 0 0.6rem; }
-    article h2 { font-size:1.35rem; line-height:1.4; margin:2.75rem 0 1rem; font-weight:700; }
-    article h3 { font-size:1.12rem; line-height:1.45; margin:2.25rem 0 0.5rem; font-weight:650; }
-    article p { margin:0 0 1.05rem; }
-    article ul, article ol { margin:0 0 1.05rem; padding-left:1.35rem; }
-    article li { margin:0.35rem 0; }
-    nav.toc { background:#f3f4f6; border:1px solid var(--border); border-radius:8px; padding:0.85rem 1.1rem; margin:0 0 1.5rem; }
-    nav.toc ol { margin:0.4rem 0 0; padding-left:1.25rem; } nav.toc li { margin:0.25rem 0; font-size:0.95rem; }
-    figure { margin:1rem 0 1.25rem; padding:0; }
-    figure img { display:block; width:100%; height:auto; border-radius:6px; background:#fff; border:1px solid var(--border); }
-    figcaption { font-size:0.86rem; color:var(--muted); margin-top:0.45rem; text-align:center; }
-    blockquote { margin:0 0 1.15rem; padding:0.65rem 1rem; border-left:3px solid var(--accent); background:#fff4f1; color:#333; }
-    hr { border:0; border-top:1px solid var(--border); margin:2rem 0; }
-    pre { background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:0.9rem 1rem; overflow-x:auto; margin:0 0 1.15rem; font-size:0.85rem; line-height:1.55; white-space:pre-wrap; word-break:break-word; }
-    code { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:0.92em; }
-    p code, li code, td code { background:var(--code-bg); padding:0.1em 0.35em; border-radius:4px; }
-    pre code { background:none; padding:0; font-size:inherit; }
-    details { margin:0 0 1rem; } details summary { cursor:pointer; color:var(--link); font-size:0.95rem; margin-bottom:0.5rem; }
-    table { width:100%; border-collapse:collapse; margin:0 0 1.25rem; font-size:0.92rem; }
-    th, td { border:1px solid var(--border); padding:0.45rem 0.65rem; text-align:left; vertical-align:top; }
-    th { background:#f3f4f6; font-weight:650; }
-    table.cat { font-size:0.82rem; } table.cat td { padding:0.3rem 0.5rem; }
-    .related-guide { background:#f0f7ff; border:1px solid #cfe0f5; border-radius:8px; padding:0.85rem 1.1rem; margin:0 0 1.5rem; font-size:0.95rem; }
-    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:1.25rem 0; } .grid2 figure { margin:0; }
-    @media (max-width:560px) { .grid2 { grid-template-columns:1fr; } }
-    footer.note { margin-top:3rem; padding-top:1.25rem; border-top:1px solid var(--border); font-size:0.88rem; color:var(--muted); }
-  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
 <!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
 </head>
-<body>
+<body class="za">
 <!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
-<div class="wrap">
-<header class="meta">
-  <h1>Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）</h1>
-  <p class="source">原站：<a href="https://prompt-motion.com/">https://prompt-motion.com/</a></p>
-  <p class="meta-line">策展：p4n（<a href="https://x.com/p4nthera_">@p4nthera_</a>，自述 Creative + Design Engineer） · 发布帖：<a href="https://x.com/p4nthera_/status/2107175720086589633">2026-10-06 02:26（UTC+8）</a> · 本页抓取：2026-10-09 12:00（UTC+8），共 233 条 · 非官方中文导读镜像</p>
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-09">2026.10.09</time></p>
+<h1 class="za-title">Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · p4n @p4nthera_ 策展</span><span>收录 · 2026-10-09</span><span><a href="https://prompt-motion.com/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原站：<a href="https://prompt-motion.com/">https://prompt-motion.com/</a></p>
+  <p class="meta-line">策展：p4n（<a href="https://x.com/p4nthera_">@p4nthera_</a>，自述 Creative + Design Engineer） · 发布帖：<a href="https://x.com/p4nthera_/status/2107175720086589633">2026-10-06 02:26（UTC+8）</a> · 本页抓取：2026-10-09 12:00（UTC+8），共 233 条 · 非官方中文导读镜像</p></div><!-- /za:origin -->
 </header>
-<article>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
 <div class="related-guide"><strong>镜像说明：</strong>Prompt Motion 是一个视频画廊，正文主要是 233 条视频卡片与各自的提示词，不是一篇文章。本页按原站结构做中文导读：翻译站点界面文字、给出从原站数据统计的分类数量、挑选 18 条有代表性的提示词与全部 4 个 skill 做中文解读（提示词/命令保留原文），并附全部 233 条目录（标题保留英文，链接回原条目）。视频不在本站转载，请点「原条目」观看。<br/><strong>版权与性质：</strong>原站页脚写明「Videos and prompts belong to their creators, linked on each entry.」（视频和提示词归各自作者所有，每条均链接到作者）。站点免费浏览，有邮件订阅，<strong>未见定价或付费内容</strong>；策展人在 X 上表示提示词均为原帖作者自称使用的，「都不是我生成的」，且未逐一复现验证。站点 robots.txt 声明 <code>ai-train=no, use=reference</code>，本页仅作引用式导读。文中封面图与截帧来自原站媒体，版权归原作者。</div>
 
 <nav class="toc"><strong>目录</strong><ol>
@@ -375,10 +346,15 @@ extra notes:
 <li>此后陆续加入邮件订阅（10-07）和按标签筛选（10-09 凌晨，UTC+8）；策展人在回复中说自己「不是专家，只是想把在推特上看到的视频放在一处，没想到会火」，并提到在考虑为每条视频加入复现结果、过滤掉不靠谱的提示词。</li>
 <li>本站相关镜像：<a href="../lemo-opuscar/">Lemo-Opuscar（39 种影片风格 skill）</a>、<a href="../motion-graphics-music-video/">Motion Graphics Music Video skill</a>。</li>
 </ul>
-</article>
-<footer class="note">
-  <p>非官方中文导读镜像，仅供学习参考。原站：<a href="https://prompt-motion.com/">prompt-motion.com</a>（策展 <a href="https://x.com/p4nthera_">@p4nthera_</a>）。视频、提示词与封面图版权归各条目作者所有；站点数据与统计截至 2026-10-09 12:00（UTC+8）。</p>
-  <p><a href="../">← 返回中文镜像目录</a></p>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读镜像，仅供学习参考。原站：<a href="https://prompt-motion.com/">prompt-motion.com</a>（策展 <a href="https://x.com/p4nthera_">@p4nthera_</a>）。视频、提示词与封面图版权归各条目作者所有；站点数据与统计截至 2026-10-09 12:00（UTC+8）。</p>
+  <p><a href="../">← 返回中文镜像目录</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://prompt-motion.com/" rel="noopener">prompt-motion.com/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
 </footer>
 </div>
 </body>

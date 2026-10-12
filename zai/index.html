@@ -1,146 +1,36 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>走向递归自我改进：GLM 如何构建自己的推理基础设施</title>
   <meta name="description" content="GLM-5.3-Flash 与 Infra Agent：用密集反馈在国产加速器上构建生产级推理基础设施。" />
-  <style>
-    :root {
-      --bg: #fafafa;
-      --fg: #1a1a1a;
-      --muted: #666;
-      --border: #e8e8e8;
-      --link: #0b57d0;
-      --max: 720px;
-    }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
-        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
-      font-size: 17px;
-      line-height: 1.75;
-      letter-spacing: 0.01em;
-    }
-    .wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 2.5rem 1.25rem 4rem;
-    }
-    header.meta {
-      margin-bottom: 1.75rem;
-      padding-bottom: 1.25rem;
-      border-bottom: 1px solid var(--border);
-    }
-    h1 {
-      font-size: 1.75rem;
-      line-height: 1.35;
-      font-weight: 700;
-      margin: 0 0 0.75rem;
-      letter-spacing: -0.02em;
-    }
-    .source {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin: 0;
-    }
-    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
-    .source a:hover { text-decoration: underline; }
-    article h2 {
-      font-size: 1.35rem;
-      line-height: 1.4;
-      margin: 2.5rem 0 1rem;
-      font-weight: 700;
-    }
-    article h3 {
-      font-size: 1.15rem;
-      line-height: 1.45;
-      margin: 2rem 0 0.85rem;
-      font-weight: 650;
-    }
-    article p {
-      margin: 0 0 1.05rem;
-    }
-    article ul {
-      margin: 0 0 1.05rem;
-      padding-left: 1.35rem;
-    }
-    article li { margin: 0.35rem 0; }
-    .questions {
-      margin: 0.5rem 0 1.1rem;
-      padding-left: 1.2rem;
-    }
-    .questions li { margin: 0.55rem 0; }
-    .dense-list {
-      list-style: none;
-      padding-left: 0;
-      margin: 0.5rem 0 1rem;
-    }
-    .dense-list li {
-      margin: 0.4rem 0;
-      padding-left: 0;
-    }
-    figure {
-      margin: 1.5rem 0 1.75rem;
-      padding: 0;
-    }
-    figure img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 6px;
-      background: #fff;
-      border: 1px solid var(--border);
-    }
-    figcaption {
-      margin-top: 0.65rem;
-      font-size: 0.92rem;
-      color: var(--muted);
-      line-height: 1.55;
-      text-align: center;
-    }
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: 0.88em;
-      background: #f0f0f0;
-      padding: 0.12em 0.35em;
-      border-radius: 4px;
-      word-break: break-word;
-    }
-    .closer {
-      font-weight: 700;
-      font-size: 1.05rem;
-      margin: 1.75rem 0 1.1rem;
-      letter-spacing: 0.02em;
-    }
-    footer.note {
-      margin-top: 3rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-    @media (max-width: 520px) {
-      body { font-size: 16px; }
-      h1 { font-size: 1.45rem; }
-      .wrap { padding: 1.5rem 1rem 3rem; }
-    }
-  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.questions{margin: 0.5rem 0 1.1rem; padding-left: 1.2rem;}
+.questions li{margin: 0.55rem 0;}
+.dense-list{list-style: none; padding-left: 0; margin: 0.5rem 0 1rem;}
+.dense-list li{margin: 0.4rem 0; padding-left: 0;}
+.closer{font-weight: 700; font-size: 1.05rem; margin: 1.75rem 0 1.1rem; letter-spacing: 0.02em;}
+</style>
 <!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
 </head>
-<body>
+<body class="za">
 <!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
-  <div class="wrap">
-    <header class="meta">
-      <h1>走向递归自我改进：GLM 如何构建自己的推理基础设施</h1>
-      <p class="source">来源：<a href="https://z.ai/blog/glm-built-its-inference-infrastructure" rel="noopener noreferrer" target="_blank">https://z.ai/blog/glm-built-its-inference-infrastructure</a></p>
-    </header>
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-09-18">2026.09.18</time></p>
+<h1 class="za-title">走向递归自我改进：GLM 如何构建自己的推理基础设施</h1>
 
-    <article>
+<p class="za-meta" data-za-gen><span>来源 · Z.ai</span><span>收录 · 2026-09-18</span><span><a href="https://z.ai/blog/glm-built-its-inference-infrastructure" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">来源：<a href="https://z.ai/blog/glm-built-its-inference-infrastructure" rel="noopener noreferrer" target="_blank">https://z.ai/blog/glm-built-its-inference-infrastructure</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
       <figure>
         <img src="images/hero.jpeg" alt="封面图" width="1200" height="675" />
       </figure>
@@ -274,9 +164,15 @@
       <p class="closer">模型优化系统；系统运行模型。</p>
 
       <p>当然，我们尚未到达递归自我改进。选择目标、设定边界、评估风险，仍是人类的责任。我们相信，人类在很长一段时间里都应当守住这条线。但数字本身——两周、三倍吞吐、十万加速器——告诉我们：这条边界上的进展，不会因为我们希望它放慢而放慢。</p>
-    </article>
-
-    <footer class="note">中文镜像 · 结构对齐原文 · 仅供阅读</footer>
-  </div>
+    </article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig">中文镜像 · 结构对齐原文 · 仅供阅读</div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://z.ai/blog/glm-built-its-inference-infrastructure" rel="noopener">z.ai/blog/glm-built-its-inference-infrastructure</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
 </body>
 </html>

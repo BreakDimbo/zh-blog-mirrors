@@ -32,7 +32,7 @@ def process(path, check=False):
 def main():
     check = '--check' in sys.argv; n = 0
     for dp, dns, fns in os.walk(ROOT):
-        dns[:] = [d for d in dns if not d.startswith('.') and d not in ('assets', 'tools', 'node_modules')]
+        dns[:] = [d for d in dns if not d.startswith('.') and d not in ('assets', 'tools', 'templates', 'node_modules')]
         for f in fns:
             p = os.path.join(dp, f)
             if f.endswith('.html') and os.path.relpath(p, ROOT) != 'index.html':

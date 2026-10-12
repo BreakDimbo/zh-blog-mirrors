@@ -1,72 +1,31 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>flameox：给编程智能体的有界本地运行时证据（中文翻译）</title>
 <meta name="description" content="flameox README 中文全译：统一 profiler/基准/trace 的 MCP 服务器，为编程智能体提供带出处的运行时证据。MIT。" />
 <meta property="og:image" content="images/flameox-social-preview-v1.png" />
-<style>
-    :root {
-      --bg: #fafafa; --fg: #1a1a1a; --muted: #666; --border: #e8e8e8;
-      --link: #0b57d0; --max: 760px; --code-bg: #f3f4f6; --accent: #6b4ce6;
-    }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-    body {
-      margin: 0; background: var(--bg); color: var(--fg);
-      font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
-        "Source Han Sans SC", system-ui, -apple-system, sans-serif;
-      font-size: 17px; line-height: 1.75; letter-spacing: 0.01em;
-    }
-    .wrap { max-width: var(--max); margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
-    header.meta { margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
-    h1 { font-size: 1.75rem; line-height: 1.35; font-weight: 700; margin: 0 0 0.75rem; letter-spacing: -0.02em; }
-    .source { font-size: 0.9rem; color: var(--muted); margin: 0 0 0.35rem; }
-    .source a { color: var(--link); text-decoration: none; word-break: break-all; }
-    .source a:hover { text-decoration: underline; }
-    .meta-line { font-size: 0.88rem; color: var(--muted); margin: 0; }
-    article h2 { font-size: 1.35rem; line-height: 1.4; margin: 2.5rem 0 1rem; font-weight: 700; }
-    article h3 { font-size: 1.15rem; line-height: 1.45; margin: 2rem 0 0.85rem; font-weight: 650; }
-    article p { margin: 0 0 1.05rem; }
-    article ul, article ol { margin: 0 0 1.05rem; padding-left: 1.35rem; }
-    article li { margin: 0.35rem 0; }
-    article a { color: var(--link); text-decoration: none; }
-    article a:hover { text-decoration: underline; }
-    nav.toc { background: #f3f4f6; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; }
-    nav.toc ol { margin: 0.4rem 0 0; padding-left: 1.25rem; }
-    nav.toc li { margin: 0.25rem 0; font-size: 0.95rem; }
-    figure { margin: 1.5rem 0 1.25rem; padding: 0; }
-    figure.cover-fig { margin-top: 0; }
-    figure img { display: block; width: 100%; height: auto; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
-    img.cover { border-radius: 8px; }
-    blockquote { margin: 0 0 1.15rem; padding: 0.65rem 1rem; border-left: 3px solid var(--accent); background: #f6f3ff; color: #333; }
-    hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
-    pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; margin: 0 0 1.15rem; font-size: 0.88rem; line-height: 1.55; }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
-    p code, li code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; }
-    pre code { background: none; padding: 0; font-size: inherit; }
-    table { width: 100%; border-collapse: collapse; margin: 0 0 1.25rem; font-size: 0.95rem; }
-    th, td { border: 1px solid var(--border); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
-    th { background: #f3f4f6; font-weight: 650; }
-    footer.note { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--muted); }
-    .related-guide { background: #f0f7ff; border: 1px solid #cfe0f5; border-radius: 8px; padding: 0.85rem 1.1rem; margin: 0 0 1.5rem; font-size: 0.95rem; }
-      figcaption { font-size: 0.88rem; color: var(--muted); margin-top: 0.5rem; text-align: center; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin: 1.25rem 0; }
-    .grid2 figure { margin: 0; }
-    @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
-    ol.subs li { margin: 0.15rem 0; }
-  </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
 <!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
 </head>
-<body>
-<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav --><div class="wrap">
-<header class="meta">
-<h1>flameox：给编程智能体的「有界本地运行时证据」（README 中文全译）</h1>
-<p class="source">原项目：<a href="https://github.com/morluto/flameox">https://github.com/morluto/flameox</a> · 作者 morluto · MIT 许可证 · v0.2.9 · 约 169 ★（2026-10-12）</p>
-<p class="meta-line">README 中文全文翻译（MIT 许可，允许翻译与再分发）。以原文为准。下架请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交 issue</a>。</p>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-12">2026.10.12</time></p>
+<h1 class="za-title">flameox：给编程智能体的「有界本地运行时证据」（README 中文全译）</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · morluto/flameox（GitHub）</span><span>收录 · 2026-10-12</span><span><a href="https://github.com/morluto/flameox" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原项目：<a href="https://github.com/morluto/flameox">https://github.com/morluto/flameox</a> · 作者 morluto · MIT 许可证 · v0.2.9 · 约 169 ★（2026-10-12）</p>
+<p class="meta-line">README 中文全文翻译（MIT 许可，允许翻译与再分发）。以原文为准。下架请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交 issue</a>。</p></div><!-- /za:origin -->
 </header>
-<article>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
 <figure><img src="images/flameox-mascot-flamegraph.png" alt="flameox 吉祥物" style="max-width:420px;width:100%;display:block;margin:0 auto"></figure>
 <h2>导读：是什么 / 怎么用 / 亮点</h2>
 <ul>
@@ -122,4 +81,15 @@ uv run pytest -q</code></pre>
 <h2>许可与署名</h2>
 <p>原作 Copyright (c) 2026 morluto，MIT License，完整条款见 <a href="https://github.com/morluto/flameox/blob/main/LICENSE">LICENSE</a>。图片来自原仓库 <code>docs/assets/</code>。原仓库另有官方 <a href="https://github.com/morluto/flameox/blob/main/README.zh-CN.md">README.zh-CN.md</a>。</p>
 <p>下架请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交 issue</a></p>
-</article></div></body></html>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/morluto/flameox" rel="noopener">github.com/morluto/flameox</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
