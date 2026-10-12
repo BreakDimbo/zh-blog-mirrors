@@ -4,8 +4,8 @@ Usage: python3 tools/restyle_articles.py [slug ...]   (no args = all pages liste
 Then run tools/inject_nav.py (adds the back pill) and tools/build_hub.py.
 - Extracts: <head> extras (title/meta/og/scripts), header (h1 + source/meta lines/cover/CTA),
   body content (everything between header and footer), original footer notes.
-- Page <style> blocks: generic typography/layout rules are dropped; component rules (cards, grids,
-  slack mocks, etc.) are kept in <style data-za-legacy> so custom components keep working.
+- Page <style> blocks: generic rules AND components now provided by assets/article.css (cards, grids, CTA,
+  callouts, badges, slack/xpost mocks, timeline…) are dropped; any other unknown component rules are kept in <style data-za-legacy> so custom components keep working.
 - Kicker/meta come from entries.json (type, date, source, optional "subtitle" / "original_url").
 Special/interactive pages (SKIP) are never touched."""
 import html, json, os, re, sys
@@ -13,7 +13,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKIP = {'personal-sites-gallery'}  # app-like gallery with its own generator/template
 GENERIC = re.compile(r'''^(:root|\*|html|body|\.wrap|h[1-6]|a|a:hover|p|ul|ol|li|img|video|article\b.*|header\.meta\b.*|\.source\b.*|
  \.meta-line|figure\b.*|figcaption\b.*|p\.caption|blockquote\b.*|pre\b.*|code|p\ code|li\ code|td\ code|table\b.*|th|td|tr\b.*|hr|
- footer\b.*|nav\.toc\b.*|img\.cover|\.cover|\.related-guide|\.hub\b.*|summary|details\b.*|\.table-wrap|\.lede|ol\.subs\ li|\.grid2\b.*)$''', re.X)
+ footer\b.*|nav\.toc\b.*|img\.cover|\.cover|\.related-guide|\.hub\b.*|summary|details\b.*|\.table-wrap|\.lede|ol\.subs\ li|\.grid2\b.*|
+ \.slack\b.*|\.recreated|\.xpost\b.*|\.math-block|\.film|\.tag|\.cta\b.*|\.grid|\.card\b.*|\.card-body|\.brand\b.*|\.warn|\.notice|\.tl\b.*|\.questions\b.*|\.dense-list\b.*|\.closer)$''', re.X)
 def css_filter(css):
     css = re.sub(r'/\*.*?\*/', '', css, flags=re.S); out = []; i = 0
     while i < len(css):
