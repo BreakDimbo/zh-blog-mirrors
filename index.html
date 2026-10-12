@@ -1,40 +1,230 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>中文博文镜像</title>
-  <style>
-    body{font-family:system-ui,-apple-system,sans-serif;max-width:40rem;margin:3rem auto;padding:0 1.25rem;line-height:1.6;color:#111}
-    a{color:#0b57d0} li{margin:0.75rem 0}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中文镜像文库 · zh-blog-mirrors</title>
+<meta name="description" content="精选海外技术与创作长文的中文镜像、翻译、导读与评述，长期托管于 GitHub Pages。">
+<link rel="canonical" href="https://breakdimbo.github.io/zh-blog-mirrors/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="zh-blog-mirrors">
+<meta property="og:title" content="中文镜像文库"><meta property="og:description" content="精选海外技术与创作长文的中文镜像、翻译、导读与评述。">
+<meta property="og:url" content="https://breakdimbo.github.io/zh-blog-mirrors/"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#f6f3ee" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f3ee;--ink:#1d1c1a;--mute:#76716a;--rule:#d9d3c9;--soft:#ece7df;--acc:#8a6d3b;
+--serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong",Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;--latin:"Cormorant Garamond",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#151412;--ink:#ebe6de;--mute:#948e85;--rule:#33302b;--soft:#1e1d1a;--acc:#c9a96e}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+.top{display:flex;justify-content:space-between;align-items:baseline;padding:28px 0 0;font:italic 400 15px/1 var(--latin);color:var(--mute);letter-spacing:.02em}
+.top a:hover{color:var(--ink)}
+header.hero{padding:clamp(72px,12vw,140px) 0 clamp(48px,7vw,80px);border-bottom:1px solid var(--rule)}
+.eyebrow{font:500 12px/1 var(--sans);letter-spacing:.24em;color:var(--mute);margin:0 0 28px}
+h1{font:600 clamp(40px,7.2vw,84px)/1.08 var(--serif);letter-spacing:.02em;margin:0}
+h1 em{font:italic 400 .62em/1 var(--latin);color:var(--mute);letter-spacing:0;margin-left:.3em;white-space:nowrap}
+.intro{max-width:34em;margin:32px 0 0;font:400 clamp(16px,1.6vw,18px)/1.9 var(--serif);color:var(--mute)}
+.feature a{display:grid;grid-template-columns:1fr;gap:10px;padding:clamp(36px,5vw,56px) 0;border-bottom:1px solid var(--rule)}
+.feature .k{font:500 12px/1 var(--sans);letter-spacing:.2em;color:var(--acc)}
+.feature .ft{font:600 clamp(28px,4vw,44px)/1.25 var(--serif);transition:color .25s}
+.feature .fd{font:400 17px/1.8 var(--serif);color:var(--mute);max-width:36em}
+.feature .fm{font-size:13px;color:var(--mute)} .feature .go{color:var(--ink);transition:margin .25s}
+.feature a:hover .ft{color:var(--acc)} .feature a:hover .go{margin-left:4px}
+.bar{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between;padding:28px 0 12px;position:sticky;top:0;background:var(--bg);z-index:5}
+.chips{display:flex;flex-wrap:wrap;gap:6px 22px}
+.chips button{appearance:none;background:none;border:0;padding:4px 0;font:inherit;font-size:14px;color:var(--mute);cursor:pointer;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.chips button sup{font-size:10px;margin-left:2px;opacity:.7}
+.chips button:hover{color:var(--ink)} .chips button[aria-pressed=true]{color:var(--ink);border-color:var(--ink)}
+.search{flex:0 1 260px;display:flex;align-items:center;border-bottom:1px solid var(--rule);transition:border-color .2s}
+.search:focus-within{border-color:var(--ink)}
+.search input{width:100%;background:none;border:0;outline:0;padding:6px 0;font:inherit;font-size:14px;color:var(--ink)}
+.search input::placeholder{color:var(--mute)}
+ol.list{list-style:none;margin:0;padding:0}
+.entry a{display:grid;grid-template-columns:150px 1fr 24px;gap:28px;padding:30px 0;border-bottom:1px solid var(--rule);align-items:start}
+.meta{display:flex;flex-direction:column;gap:8px;padding-top:4px}
+.meta time{font:500 17px/1 var(--latin);letter-spacing:.04em;color:var(--mute);font-variant-numeric:tabular-nums}
+.tag{font-size:12px;letter-spacing:.12em;color:var(--acc)}
+.body{display:flex;flex-direction:column;gap:6px}
+.t{font:600 clamp(18px,1.9vw,21px)/1.5 var(--serif);transition:color .2s}
+.d{color:var(--mute);font-size:14.5px} .s{font-size:12.5px;color:var(--mute);letter-spacing:.02em} .s::before{content:"— "}
+.go{padding-top:4px;color:var(--mute);opacity:0;transform:translateX(-6px);transition:opacity .25s,transform .25s}
+.entry a:hover .t{color:var(--acc)} .entry a:hover .go{opacity:1;transform:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:4px}
+.empty{padding:48px 0;color:var(--mute);font-family:var(--serif)}
+footer{margin-top:96px;padding:40px 0 56px;border-top:1px solid var(--rule);font-size:12.5px;line-height:1.9;color:var(--mute);display:grid;grid-template-columns:1fr auto;gap:24px}
+footer a{border-bottom:1px solid var(--rule)} footer a:hover{color:var(--ink);border-color:var(--ink)}
+footer .mark{font:italic 400 18px/1 var(--latin)}
+@media (max-width:720px){.entry a{grid-template-columns:1fr;gap:10px;padding:24px 0}.meta{flex-direction:row;gap:14px;align-items:baseline}.go{display:none}
+ .bar{position:static}.search{flex:1 1 100%}footer{grid-template-columns:1fr}h1 em{display:block;margin:14px 0 0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
 </head>
 <body>
-  <h1>中文博文镜像</h1>
-  <p>长期托管于 GitHub Pages。</p>
-  <ul>
-    <li><a href="./zai/">走向递归自我改进：GLM 如何构建自己的推理基础设施</a>（Z.ai）</li>
-    <li><a href="./harness/">面向自我改进的 Harness 工程</a>（Lilian Weng）</li>
-    <li><a href="./jevs/">揭开 Jev 架构的面纱</a>（Archer Hume）</li>
-    <li><a href="./claude-faster/">我们如何在两周内把 claude.ai 提速约 3 倍</a>（claude.dev / Anthropic）</li>
-    <li><a href="./jev-engineering/">Jev 工程：从零搭建「AI 新大脑」的 10 步路线图</a>（0xCodila）</li>
-    <li><a href="./hanako-jev-engineering/">Jev 工程：如何停止用前沿模型做「是/否」决策（完整课程）</a>（Hanako）</li>
-    <li><a href="./hanako-jev-opus-forks/">Jev + Opus 5.5：值得从思考模型上卸下来的四个分叉</a>（Hanako Working Note）</li>
-    <li><a href="./lemo-opuscar-98-styles/">OPUSCAR 98：98 种奥斯卡最佳影片风格 + 提示词 + 导演编排全部公开（lemo-opuscar 更新）</a>（Lemomo @lemomo_ai，MIT）</li>
-    <li><a href="./lemo-opuscar/">Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片</a>（Lemomo / LemoLab）</li>
-    <li><a href="./motion-graphics-music-video/">Motion Graphics Music Video：Claude Code 音乐视频 Skill</a>（makevoid）</li>
-    <li><a href="./personal-sites-gallery/">个人网站画廊：@zarazhangrui 评论区里的个人网站合集</a>（X 评论区精选）</li>
-    <li><a href="./cnyzgkc-3d-wuxia-arpg/">一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程</a>（木马人 @cnyzgkc）</li>
-    <li><a href="./claude-opus-seo-course/">如何用 Claude Opus 5.5 做 SEO，好用到像在犯规（SEO + GEO 五部分课程）</a>（Nicholas Dulait / ChatSEO）</li>
-    <li><a href="./opennana-prompt-gallery/">【评述/导读】OpenNana 提示词图库：GPT Image 2 / Nano Banana / Seedance 提示词案例站</a>（opennana.com；独立评述，非镜像）</li>
-    <li><a href="./prompt-motion/">Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）中文导读</a>（p4n @p4nthera_ 策展）</li>
-    <li><a href="./minimax-h3-prompt-rewriter/">MiniMax-H3 Prompt Rewriter for ComfyUI：一句话扩写成 H3 分镜脚本，本地离线运行（中文导读）</a>（pytraveler 项目，Andy L @AndyL5cc 推荐）</li>
-    <li><a href="./minimax-h3-director/">MiniMax H3 Director 工作流：ComfyUI 里 5 种 H3 音视频玩法（T2V / FL2V / R2V / V2V / RV2V），拖进去就能用（中文整理）</a>（huangserva 整理、AIMixer 上游插件，lumxss @bkdgiffug 推荐）</li>
-    <li><a href="./vibeshot-ai-fight-impact-frames-notes/">【评述/笔记】AI 打斗的关键一击：冲击帧与闪帧提示词——读 Arvin wang 的 VSC 免费课</a>（原课：Vibe Shot Club，Arvin wang；独立评述，非镜像）</li>
-    <li><a href="./yue2-music/">YuE2：用符号规划做前沿音乐生成——先写可编辑乐谱，再唱奏成歌（项目页中文翻译）</a>（M-A-P / HKUST 等，arXiv:2609.33757）</li>
-    <li><a href="./anatomy-skill/">Anatomy：说出一个想法，Claude 把它造成一台会动的机器（Claude Code Skill 中文翻译）</a>（Ryan @wheresryan22，MIT）</li>
-    <li><a href="./huashu-qilixiang-mv/">两句提示词，用 Opus 5.5 + huashu-art-motion 给《七里香》做莫奈风 MV（中文整理）</a>（花叔 @AlchainHust）</li>
-    <li><a href="./tibo-x-growth-data/">发了 6000 条推、卖掉 1000 万美元增长工具后：Tibo 用自己的数据总结的 X 增长 8 条（含评论区交锋，中文解读）</a>（Tibo @tibo_maker）</li>
-  </ul>
+<div class="wrap">
+<div class="top"><span>zh-blog-mirrors</span><a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></div>
+<header class="hero">
+<p class="eyebrow">VOL. 01 &nbsp;·&nbsp; 22 篇收录</p>
+<h1>中文镜像文库<em>a reading room</em></h1>
+<p class="intro">把值得细读的海外长文、项目与讨论，译成中文、整理成篇，安静地放在这里——全文镜像、翻译、导读与评述，按时间倒序陈列。</p>
+</header>
+<section class="feature" aria-label="精选">
+  <a href="./personal-sites-gallery/">
+    <span class="k">精选 · 画廊</span>
+    <span class="ft">个人网站画廊</span>
+    <span class="fd">“谁的个人网站最酷？”——评论区数百个个人网站，逐一截图收录，中英双语。</span>
+    <span class="fm">X 评论区精选 &nbsp;·&nbsp; 2026.10.08 &nbsp;<span class="go">进入画廊 →</span></span>
+  </a></section>
+<div class="bar">
+<div class="chips" role="group" aria-label="按类型筛选"><button type="button" data-f="" aria-pressed="true">全部<sup>22</sup></button><button type="button" data-f="导读" aria-pressed="false">导读<sup>5</sup></button><button type="button" data-f="翻译" aria-pressed="false">翻译<sup>4</sup></button><button type="button" data-f="评述" aria-pressed="false">评述<sup>2</sup></button><button type="button" data-f="全文镜像" aria-pressed="false">全文镜像<sup>10</sup></button><button type="button" data-f="画廊" aria-pressed="false">画廊<sup>1</sup></button></div>
+<label class="search"><span class="sr" style="position:absolute;left:-9999px">搜索</span><input id="q" type="search" placeholder="搜索标题、作者、关键词" autocomplete="off"></label>
+</div>
+<main><ol class="list" id="list">
+<li class="entry" data-type="导读" data-text="发了 6000 条推、卖掉 1000 万美元增长工具后：tibo 用自己的数据总结的 x 增长 8 条 基于真实发帖数据的 x 增长 8 条规则，附评论区交锋与中文解读。 tibo @tibo_maker 导读">
+  <a href="./tibo-x-growth-data/">
+    <span class="meta"><time datetime="2026-10-12">2026.10.12</time><span class="tag">导读</span></span>
+    <span class="body"><span class="t">发了 6000 条推、卖掉 1000 万美元增长工具后：Tibo 用自己的数据总结的 X 增长 8 条</span><span class="d">基于真实发帖数据的 X 增长 8 条规则，附评论区交锋与中文解读。</span><span class="s">Tibo @tibo_maker</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="翻译" data-text="opuscar 98：98 种奥斯卡最佳影片风格 + 提示词 + 导演编排全部公开 lemo-opuscar 更新版：98 部最佳影片的视觉风格、提示词与导演编排。 lemomo @lemomo_ai · mit 翻译">
+  <a href="./lemo-opuscar-98-styles/">
+    <span class="meta"><time datetime="2026-10-12">2026.10.12</time><span class="tag">翻译</span></span>
+    <span class="body"><span class="t">OPUSCAR 98：98 种奥斯卡最佳影片风格 + 提示词 + 导演编排全部公开</span><span class="d">lemo-opuscar 更新版：98 部最佳影片的视觉风格、提示词与导演编排。</span><span class="s">Lemomo @lemomo_ai · MIT</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="导读" data-text="两句提示词，用 opus 5.5 + huashu-art-motion 给《七里香》做莫奈风 mv 两句提示词生成整支莫奈风音乐 mv 的完整过程与提示词整理。 花叔 @alchainhust 导读">
+  <a href="./huashu-qilixiang-mv/">
+    <span class="meta"><time datetime="2026-10-12">2026.10.12</time><span class="tag">导读</span></span>
+    <span class="body"><span class="t">两句提示词，用 Opus 5.5 + huashu-art-motion 给《七里香》做莫奈风 MV</span><span class="d">两句提示词生成整支莫奈风音乐 MV 的完整过程与提示词整理。</span><span class="s">花叔 @AlchainHust</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="评述" data-text="opennana 提示词图库：gpt image 2 / nano banana / seedance 提示词案例站 对 opennana 图像与视频提示词案例站的独立评述与使用导读（非镜像）。 opennana.com 评述">
+  <a href="./opennana-prompt-gallery/">
+    <span class="meta"><time datetime="2026-10-11">2026.10.11</time><span class="tag">评述</span></span>
+    <span class="body"><span class="t">OpenNana 提示词图库：GPT Image 2 / Nano Banana / Seedance 提示词案例站</span><span class="d">对 OpenNana 图像与视频提示词案例站的独立评述与使用导读（非镜像）。</span><span class="s">opennana.com</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="翻译" data-text="anatomy：说出一个想法，claude 把它造成一台会动的机器 一个把想法变成可交互机械动画的 claude code skill，中文翻译。 ryan @wheresryan22 · mit 翻译">
+  <a href="./anatomy-skill/">
+    <span class="meta"><time datetime="2026-10-11">2026.10.11</time><span class="tag">翻译</span></span>
+    <span class="body"><span class="t">Anatomy：说出一个想法，Claude 把它造成一台会动的机器</span><span class="d">一个把想法变成可交互机械动画的 Claude Code Skill，中文翻译。</span><span class="s">Ryan @wheresryan22 · MIT</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="翻译" data-text="yue2：用符号规划做前沿音乐生成 先写可编辑乐谱，再唱奏成歌——yue2 项目页中文翻译。 m-a-p / hkust 等 · arxiv:2609.33757 翻译">
+  <a href="./yue2-music/">
+    <span class="meta"><time datetime="2026-10-10">2026.10.10</time><span class="tag">翻译</span></span>
+    <span class="body"><span class="t">YuE2：用符号规划做前沿音乐生成</span><span class="d">先写可编辑乐谱，再唱奏成歌——YuE2 项目页中文翻译。</span><span class="s">M-A-P / HKUST 等 · arXiv:2609.33757</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="评述" data-text="ai 打斗的关键一击：冲击帧与闪帧提示词——读 arvin wang 的 vsc 免费课 关于 ai 打斗镜头中冲击帧、闪帧写法的学习笔记与评述（非镜像）。 原课：vibe shot club · arvin wang 评述">
+  <a href="./vibeshot-ai-fight-impact-frames-notes/">
+    <span class="meta"><time datetime="2026-10-10">2026.10.10</time><span class="tag">评述</span></span>
+    <span class="body"><span class="t">AI 打斗的关键一击：冲击帧与闪帧提示词——读 Arvin wang 的 VSC 免费课</span><span class="d">关于 AI 打斗镜头中冲击帧、闪帧写法的学习笔记与评述（非镜像）。</span><span class="s">原课：Vibe Shot Club · Arvin wang</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="导读" data-text="minimax h3 director 工作流：comfyui 里 5 种 h3 音视频玩法 t2v / fl2v / r2v / v2v / rv2v 五种工作流，拖进 comfyui 即可使用。 huangserva 整理 · aimixer 插件 导读">
+  <a href="./minimax-h3-director/">
+    <span class="meta"><time datetime="2026-10-10">2026.10.10</time><span class="tag">导读</span></span>
+    <span class="body"><span class="t">MiniMax H3 Director 工作流：ComfyUI 里 5 种 H3 音视频玩法</span><span class="d">T2V / FL2V / R2V / V2V / RV2V 五种工作流，拖进 ComfyUI 即可使用。</span><span class="s">huangserva 整理 · AIMixer 插件</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="导读" data-text="prompt motion：claude opus 5.5 动态视频画廊（附提示词与 skill） 纯代码生成的动态视频作品集，附提示词与 skill 的中文导读。 p4n @p4nthera_ 策展 导读">
+  <a href="./prompt-motion/">
+    <span class="meta"><time datetime="2026-10-09">2026.10.09</time><span class="tag">导读</span></span>
+    <span class="body"><span class="t">Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）</span><span class="d">纯代码生成的动态视频作品集，附提示词与 Skill 的中文导读。</span><span class="s">p4n @p4nthera_ 策展</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="导读" data-text="minimax-h3 prompt rewriter for comfyui：一句话扩写成 h3 分镜脚本 本地离线运行的提示词扩写节点，把一句话扩成完整分镜。 pytraveler · andy l @andyl5cc 推荐 导读">
+  <a href="./minimax-h3-prompt-rewriter/">
+    <span class="meta"><time datetime="2026-10-09">2026.10.09</time><span class="tag">导读</span></span>
+    <span class="body"><span class="t">MiniMax-H3 Prompt Rewriter for ComfyUI：一句话扩写成 H3 分镜脚本</span><span class="d">本地离线运行的提示词扩写节点，把一句话扩成完整分镜。</span><span class="s">pytraveler · Andy L @AndyL5cc 推荐</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="如何用 claude opus 5.5 做 seo，好用到像在犯规 seo + geo 五部分课程，覆盖关键词、内容生产与 ai 搜索优化。 nicholas dulait / chatseo 全文镜像">
+  <a href="./claude-opus-seo-course/">
+    <span class="meta"><time datetime="2026-10-09">2026.10.09</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">如何用 Claude Opus 5.5 做 SEO，好用到像在犯规</span><span class="d">SEO + GEO 五部分课程，覆盖关键词、内容生产与 AI 搜索优化。</span><span class="s">Nicholas Dulait / ChatSEO</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="画廊" data-text="个人网站画廊：@zarazhangrui 评论区里的个人网站合集 “谁的个人网站最酷？”——评论区数百个个人网站，逐一截图收录，中英双语。 x 评论区精选 画廊">
+  <a href="./personal-sites-gallery/">
+    <span class="meta"><time datetime="2026-10-08">2026.10.08</time><span class="tag">画廊</span></span>
+    <span class="body"><span class="t">个人网站画廊：@zarazhangrui 评论区里的个人网站合集</span><span class="d">“谁的个人网站最酷？”——评论区数百个个人网站，逐一截图收录，中英双语。</span><span class="s">X 评论区精选</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="一个人用 ai 做 3d 武侠 arpg：tripo + claude opus 5.5 制作全过程 独立开发者用 ai 建模与编码完成 3d 武侠动作游戏的全过程记录。 木马人 @cnyzgkc 全文镜像">
+  <a href="./cnyzgkc-3d-wuxia-arpg/">
+    <span class="meta"><time datetime="2026-10-08">2026.10.08</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程</span><span class="d">独立开发者用 AI 建模与编码完成 3D 武侠动作游戏的全过程记录。</span><span class="s">木马人 @cnyzgkc</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="jev + opus 5.5：值得从思考模型上卸下来的四个分叉 四类适合交给小模型处理的决策分叉，工作笔记。 hanako working note 全文镜像">
+  <a href="./hanako-jev-opus-forks/">
+    <span class="meta"><time datetime="2026-09-29">2026.09.29</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">Jev + Opus 5.5：值得从思考模型上卸下来的四个分叉</span><span class="d">四类适合交给小模型处理的决策分叉，工作笔记。</span><span class="s">Hanako Working Note</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="jev 工程：如何停止用前沿模型做「是/否」决策（完整课程） 把简单判断从昂贵模型上卸下来的完整课程。 hanako 全文镜像">
+  <a href="./hanako-jev-engineering/">
+    <span class="meta"><time datetime="2026-09-29">2026.09.29</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">Jev 工程：如何停止用前沿模型做「是/否」决策（完整课程）</span><span class="d">把简单判断从昂贵模型上卸下来的完整课程。</span><span class="s">Hanako</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="motion graphics music video：claude code 音乐视频 skill 用 claude code 生成动态图形音乐视频的 skill 说明。 makevoid 全文镜像">
+  <a href="./motion-graphics-music-video/">
+    <span class="meta"><time datetime="2026-09-27">2026.09.27</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">Motion Graphics Music Video：Claude Code 音乐视频 Skill</span><span class="d">用 Claude Code 生成动态图形音乐视频的 Skill 说明。</span><span class="s">makevoid</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="翻译" data-text="lemo-opuscar：39 种影片风格 · claude opus 5.5 纯代码短片 39 种电影风格的纯代码短片合集与创作说明。 lemomo / lemolab 翻译">
+  <a href="./lemo-opuscar/">
+    <span class="meta"><time datetime="2026-09-27">2026.09.27</time><span class="tag">翻译</span></span>
+    <span class="body"><span class="t">Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片</span><span class="d">39 种电影风格的纯代码短片合集与创作说明。</span><span class="s">Lemomo / LemoLab</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="jev 工程：从零搭建「ai 新大脑」的 10 步路线图 从零搭建并使用 jev 架构的 10 步实践路线。 0xcodila 全文镜像">
+  <a href="./jev-engineering/">
+    <span class="meta"><time datetime="2026-09-27">2026.09.27</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">Jev 工程：从零搭建「AI 新大脑」的 10 步路线图</span><span class="d">从零搭建并使用 Jev 架构的 10 步实践路线。</span><span class="s">0xCodila</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="我们如何在两周内把 claude.ai 提速约 3 倍 claude.ai 前端性能优化的工程复盘。 claude.dev / anthropic 全文镜像">
+  <a href="./claude-faster/">
+    <span class="meta"><time datetime="2026-09-24">2026.09.24</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">我们如何在两周内把 claude.ai 提速约 3 倍</span><span class="d">claude.ai 前端性能优化的工程复盘。</span><span class="s">claude.dev / Anthropic</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="揭开 jev 架构的面纱 jev 架构的设计思路与核心概念解析。 archer hume 全文镜像">
+  <a href="./jevs/">
+    <span class="meta"><time datetime="2026-09-23">2026.09.23</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">揭开 Jev 架构的面纱</span><span class="d">Jev 架构的设计思路与核心概念解析。</span><span class="s">Archer Hume</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="走向递归自我改进：glm 如何构建自己的推理基础设施 glm 团队如何让模型参与构建自身的推理基础设施。 z.ai 全文镜像">
+  <a href="./zai/">
+    <span class="meta"><time datetime="2026-09-18">2026.09.18</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">走向递归自我改进：GLM 如何构建自己的推理基础设施</span><span class="d">GLM 团队如何让模型参与构建自身的推理基础设施。</span><span class="s">Z.ai</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+<li class="entry" data-type="全文镜像" data-text="面向自我改进的 harness 工程 为自我改进型智能体设计 harness 的方法与思考。 lilian weng 全文镜像">
+  <a href="./harness/">
+    <span class="meta"><time datetime="2026-09-18">2026.09.18</time><span class="tag">全文镜像</span></span>
+    <span class="body"><span class="t">面向自我改进的 Harness 工程</span><span class="d">为自我改进型智能体设计 harness 的方法与思考。</span><span class="s">Lilian Weng</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a></li>
+</ol><p class="empty" id="empty" hidden>没有匹配的文章，换个关键词试试。</p></main>
+<footer>
+<div>本站内容为对公开文章的中文镜像、翻译或评述，版权归原作者及原发布方所有，各页均注明出处；仅供学习交流，非商业用途。<br>如你是原作者并希望更正或移除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>，我们会尽快处理。</div>
+<div class="mark">© 2026 zh-blog-mirrors</div>
+</footer>
+</div>
+<script>
+(function(){var q=document.getElementById('q'),bs=[].slice.call(document.querySelectorAll('.chips button')),items=[].slice.call(document.querySelectorAll('.entry')),em=document.getElementById('empty'),f='';
+function run(){var s=q.value.trim().toLowerCase(),n=0;items.forEach(function(li){var ok=(!f||li.dataset.type===f)&&(!s||li.dataset.text.indexOf(s)>-1);li.hidden=!ok;if(ok)n++;});em.hidden=n>0;}
+bs.forEach(function(b){b.addEventListener('click',function(){f=b.dataset.f;bs.forEach(function(x){x.setAttribute('aria-pressed',x===b)});run();});});
+q.addEventListener('input',run);})();
+</script>
 </body>
 </html>
