@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Motion2MixamoRig：一段真人视频，一键生成绑好骨骼的 Mixamo 角色</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-10-13">2026.10.13</time></p>
+<h1 class="za-title">Motion2MixamoRig：一段真人视频，一键生成绑好骨骼的 Mixamo 角色</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · AYi (@AYi_AInotes) / X</span><span>收录 · 2026-10-13</span><span><a href="https://x.com/ayi_ainotes/status/2109941015012352228" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p>作者：AYi（<a href="https://x.com/ayi_ainotes">@AYi_AInotes</a>）· 2026-10-13 · <a href="https://x.com/ayi_ainotes/status/2109941015012352228">原帖</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote><p><strong>导读：</strong>原帖为中文，以下全文照录（含作者一楼补充），仅补小标题与链接。AYi 推荐的是开发者 MaxLiu（<a href="https://x.com/MaxLiu09/status/2109530569566744620">@MaxLiu09</a>）开源的 <a href="https://github.com/MaxLiu22/Motion2MixamoRig">Motion2MixamoRig</a>：把单人视频或单张全身照里的动作迁移到 Adobe Mixamo 绑骨角色上，输出可直接导入 Blender / Unity 的 glb。仓库自述仍标注为<em>实验性</em>（v0.1.0 命令行管线 + Blender 4.2+ 扩展）；“平替爆火付费工具”是推文作者的说法。</p></blockquote>
+<h2>主帖</h2>
+<p>卧槽，做 3D 动画和游戏开发的兄弟们速存，<br>国外那个爆火但卖的很贵的视频转 3D 动捕工具，<br>被这个开发老哥直接开源平替了，一段真人视频，一键生成绑好骨骼的 Mixamo 角色，</p>
+<p>老哥刚开源的这个 Motion2MixamoRig，支持把任何一段真人动作视频或者单张全身照片，一键提取出高精度的 3D 骨骼骨骼动画，并直接重定向绑定到 Adobe Mixamo 的 3D 角色上。</p>
+<figure><img src="frame-10.jpg" alt="Motion2MixamoRig 演示：左侧输入视频，中间骨骼提取，右侧 Mixamo 角色" loading="lazy"><figcaption>原帖视频关键帧（约 0:10）：输入视频 → 动作重定向 → Mixamo 角色</figcaption></figure>
+<p>以前想把一段真实视频里的动作做成 3D 角色动画，要么花大价钱买专业动捕设备，要么一帧一帧人肉修穿模和动捕噪点。</p>
+<p>这个开源工具把整个链路全部做通了，输出不仅有四宫格对比视频，还会直接生成带蒙皮骨骼的 glb 资产，拖进 Blender 或 Unity 就能直接在项目里用。</p>
+<p>核心能力和玩法非常干净：</p>
+<ul><li>单人视频或单张照片，直接提取人体 3D 动作与姿态</li><li>自动重定向到 Mixamo 骨骼体系，无缝适配海量现成 3D 角色</li><li>直接输出 glb 格式模型与工程动画，支持原生导入 Blender 4.2+ 与 Unity</li><li>提取出的骨骼数据可直接缓存复用，换不同角色重定向只要几十秒</li></ul>
+<p>最爽的是作者还顺手封装了一个 Blender 4.2+ 的原生扩展插件，美术和动效可以直接在 Blender 视图里一键跑通，不用在终端里折腾环境。</p>
+<figure><img src="frame-18.jpg" alt="原帖视频关键帧约 0:18" loading="lazy"><figcaption>原帖视频关键帧（约 0:18）</figcaption></figure>
+<p>本质上，AI 对 3D 和游戏行业的重塑，就是把过去只有工业级动捕棚才能交付的动作资产，彻底打成每个人点几下就能批量生成的白菜价。</p>
+<p>开源仓库地址、安装依赖指南和避坑指北放一楼了，做 3D 游戏和动效的建议先备上一份。</p>
+<h2>一楼：项目信息与避坑</h2>
+<ul><li>项目全称：Motion2MixamoRig</li><li>开源协议：Apache-2.0</li><li>开源地址：<a href="https://github.com/MaxLiu22/Motion2MixamoRig">github.com/MaxLiu22/Motion2MixamoRig</a></li></ul>
+<h3>核心工作链路</h3>
+<ul><li><strong>动捕提取：</strong>基于 SMPL-X / GVHMR 深度模型，从单人全身视频或单张照片中提取高保真 3D 骨骼轨迹</li><li><strong>自动重定向：</strong>无缝映射至 Adobe Mixamo 标准骨骼体系（如 Y_Bot 等角色），省去繁琐重拓扑</li><li><strong>工业级交付：</strong>自动生成包含 run.json、四宫格对比视频与可直接导入 Blender / Unity 的 mixamo_character.glb</li><li><strong>Blender 扩展：</strong>仓库自带 Blender 4.2+ 专用插件，支持在三维视口内直连 Python 环境运行</li></ul>
+<h3>核心避坑点</h3>
+<ul><li>视频素材必须保证单人且全程头脚入画无遮挡，多人画面会触发安全中断</li><li>首次运行会自动拉取约 5GB 模型权重，建议在稳定的网络环境下进行初始化</li><li>骨骼可利用 <code>--skeleton</code> 参数无限次复用，换不同模型绑定仅需数十秒</li></ul>
+<figure><img src="frame-28.jpg" alt="原帖视频关键帧约 0:28" loading="lazy"><figcaption>原帖视频关键帧（约 0:28）</figcaption></figure>
+<h2>补充：仓库 README 要点（镜像者整理）</h2>
+<ul><li>需 Python 3.10+；安装时 <code>chumpy==0.70</code> 要用 <code>--no-build-isolation</code> 先装，否则报 “No module named 'pip'”。</li><li>SMPL-X 模型、Mixamo 角色 FBX 需自行下载放入 <code>assets/</code>（仓库不附带，受各自许可约束）。</li><li>建议装 ffmpeg，否则输出视频无声且浏览器不可播放。</li></ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>本页为 AYi（@AYi_AInotes）原帖的中文全文镜像，版权归原作者；图片为原帖视频关键帧。原文：<a href="https://x.com/ayi_ainotes/status/2109941015012352228">x.com/ayi_ainotes/status/2109941015012352228</a>。如需删除请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/ayi_ainotes/status/2109941015012352228" rel="noopener">x.com/ayi_ainotes/status/2109941015012352228</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

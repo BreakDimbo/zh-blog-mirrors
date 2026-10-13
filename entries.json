@@ -1,28 +1,224 @@
 [
-{"slug":"vibe-knowledge-film","title":"vibe-knowledge-film：一键生成「Vibe 知识大赏」风格知识短片的 Agent Skill","desc":"拆解抖音爆款知识短片，夜曲/寓言两种画风，Canvas+JS 逐帧渲染出片的 skill，README 中文镜像。","source":"Dave-cc/vibe-knowledge-film（GitHub）· MIT","date":"2026-10-13","type":"全文镜像","original_url":"https://github.com/Dave-cc/vibe-knowledge-film"},
-{"slug":"hypit","title":"Hypit：让 AI 智能体一键克隆爆款视频","desc":"把视频变成智能体可读写的 SVML 工作流：一条命令，百个变体。附许可证要点与评述。","source":"Hypit.AI · hypit-ai/hypit","date":"2026-10-13","type":"导读","subtitle":"Clone any viral video with AI agents","original_url":"https://github.com/hypit-ai/hypit"},
-{"slug":"flameox","title":"flameox：给编程智能体的有界本地运行时证据（README 中文全译）","desc":"统一 profiler、基准与 trace 工具的 MCP 服务器/CLI，让 agent 拿到带出处的运行时证据去消灭热点。","source":"morluto/flameox（GitHub）","date":"2026-10-12","type":"翻译"},
-{"slug":"tibo-x-growth-data","title":"发了 6000 条推、卖掉 1000 万美元增长工具后：Tibo 用自己的数据总结的 X 增长 8 条","desc":"基于真实发帖数据的 X 增长 8 条规则，附评论区交锋与中文解读。","source":"Tibo @tibo_maker","date":"2026-10-12","type":"导读"},
-{"slug":"huashu-qilixiang-mv","title":"两句提示词，用 Opus 5.5 + huashu-art-motion 给《七里香》做莫奈风 MV","desc":"两句提示词生成整支莫奈风音乐 MV 的完整过程与提示词整理。","source":"花叔 @AlchainHust","date":"2026-10-12","type":"导读"},
-{"slug":"lemo-opuscar-98-styles","title":"OPUSCAR 98：98 种奥斯卡最佳影片风格 + 提示词 + 导演编排全部公开","desc":"lemo-opuscar 更新版：98 部最佳影片的视觉风格、提示词与导演编排。","source":"Lemomo @lemomo_ai · MIT","date":"2026-10-12","type":"翻译"},
-{"slug":"anatomy-skill","title":"Anatomy：说出一个想法，Claude 把它造成一台会动的机器","desc":"一个把想法变成可交互机械动画的 Claude Code Skill，中文翻译。","source":"Ryan @wheresryan22 · MIT","date":"2026-10-11","type":"翻译"},
-{"slug":"opennana-prompt-gallery","title":"OpenNana 提示词图库：GPT Image 2 / Nano Banana / Seedance 提示词案例站","desc":"对 OpenNana 图像与视频提示词案例站的独立评述与使用导读（非镜像）。","source":"opennana.com","date":"2026-10-11","type":"评述"},
-{"slug":"vibeshot-ai-fight-impact-frames-notes","title":"AI 打斗的关键一击：冲击帧与闪帧提示词——读 Arvin wang 的 VSC 免费课","desc":"关于 AI 打斗镜头中冲击帧、闪帧写法的学习笔记与评述（非镜像）。","source":"原课：Vibe Shot Club · Arvin wang","date":"2026-10-10","type":"评述"},
-{"slug":"minimax-h3-director","title":"MiniMax H3 Director 工作流：ComfyUI 里 5 种 H3 音视频玩法","desc":"T2V / FL2V / R2V / V2V / RV2V 五种工作流，拖进 ComfyUI 即可使用。","source":"huangserva 整理 · AIMixer 插件","date":"2026-10-10","type":"导读"},
-{"slug":"yue2-music","title":"YuE2：用符号规划做前沿音乐生成","desc":"先写可编辑乐谱，再唱奏成歌——YuE2 项目页中文翻译。","source":"M-A-P / HKUST 等 · arXiv:2609.33757","date":"2026-10-10","type":"翻译"},
-{"slug":"claude-opus-seo-course","title":"如何用 Claude Opus 5.5 做 SEO，好用到像在犯规","desc":"SEO + GEO 五部分课程，覆盖关键词、内容生产与 AI 搜索优化。","source":"Nicholas Dulait / ChatSEO","date":"2026-10-09","type":"全文镜像"},
-{"slug":"minimax-h3-prompt-rewriter","title":"MiniMax-H3 Prompt Rewriter for ComfyUI：一句话扩写成 H3 分镜脚本","desc":"本地离线运行的提示词扩写节点，把一句话扩成完整分镜。","source":"pytraveler · Andy L @AndyL5cc 推荐","date":"2026-10-09","type":"导读"},
-{"slug":"prompt-motion","title":"Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）","desc":"纯代码生成的动态视频作品集，附提示词与 Skill 的中文导读。","source":"p4n @p4nthera_ 策展","date":"2026-10-09","type":"导读"},
-{"slug":"cnyzgkc-3d-wuxia-arpg","title":"一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程","desc":"独立开发者用 AI 建模与编码完成 3D 武侠动作游戏的全过程记录。","source":"木马人 @cnyzgkc","date":"2026-10-08","type":"全文镜像"},
-{"slug":"personal-sites-gallery","title":"个人网站画廊：@zarazhangrui 评论区里的个人网站合集","desc":"“谁的个人网站最酷？”——评论区数百个个人网站，逐一截图收录，中英双语。","source":"X 评论区精选","date":"2026-10-08","type":"画廊","featured":true},
-{"slug":"hanako-jev-engineering","title":"Jev 工程：如何停止用前沿模型做「是/否」决策（完整课程）","desc":"把简单判断从昂贵模型上卸下来的完整课程。","source":"Hanako","date":"2026-09-29","type":"全文镜像"},
-{"slug":"hanako-jev-opus-forks","title":"Jev + Opus 5.5：值得从思考模型上卸下来的四个分叉","desc":"四类适合交给小模型处理的决策分叉，工作笔记。","source":"Hanako Working Note","date":"2026-09-29","type":"全文镜像"},
-{"slug":"jev-engineering","title":"Jev 工程：从零搭建「AI 新大脑」的 10 步路线图","desc":"从零搭建并使用 Jev 架构的 10 步实践路线。","source":"0xCodila","date":"2026-09-27","type":"全文镜像"},
-{"slug":"lemo-opuscar","title":"Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片","desc":"39 种电影风格的纯代码短片合集与创作说明。","source":"Lemomo / LemoLab","date":"2026-09-27","type":"翻译"},
-{"slug":"motion-graphics-music-video","title":"Motion Graphics Music Video：Claude Code 音乐视频 Skill","desc":"用 Claude Code 生成动态图形音乐视频的 Skill 说明。","source":"makevoid","date":"2026-09-27","type":"全文镜像"},
-{"slug":"claude-faster","title":"我们如何在两周内把 claude.ai 提速约 3 倍","desc":"claude.ai 前端性能优化的工程复盘。","source":"claude.dev / Anthropic","date":"2026-09-24","type":"全文镜像"},
-{"slug":"jevs","title":"揭开 Jev 架构的面纱","desc":"Jev 架构的设计思路与核心概念解析。","source":"Archer Hume","date":"2026-09-23","type":"全文镜像"},
-{"slug":"zai","title":"走向递归自我改进：GLM 如何构建自己的推理基础设施","desc":"GLM 团队如何让模型参与构建自身的推理基础设施。","source":"Z.ai","date":"2026-09-18","type":"全文镜像"},
-{"slug":"harness","title":"面向自我改进的 Harness 工程","desc":"为自我改进型智能体设计 harness 的方法与思考。","source":"Lilian Weng","date":"2026-09-18","type":"全文镜像"},
-{"slug":"anatomy-community","title":"Anatomy 社区作品展：30 台用 Claude 画出来的机器","desc":"Anatomy Skill 社区画廊中文导览：10 位作者、30 件可交互机器图，逐一署名并链接原作。","source":"wheresryan22 / Anatomy 社区","date":"2026-10-13","type":"画廊","original_url":"https://skills.wheresryan.sh/anatomy/community"}
+  {
+    "slug": "vibe-knowledge-film",
+    "title": "vibe-knowledge-film：一键生成「Vibe 知识大赏」风格知识短片的 Agent Skill",
+    "desc": "拆解抖音爆款知识短片，夜曲/寓言两种画风，Canvas+JS 逐帧渲染出片的 skill，README 中文镜像。",
+    "source": "Dave-cc/vibe-knowledge-film（GitHub）· MIT",
+    "date": "2026-10-13",
+    "type": "全文镜像",
+    "original_url": "https://github.com/Dave-cc/vibe-knowledge-film"
+  },
+  {
+    "slug": "hypit",
+    "title": "Hypit：让 AI 智能体一键克隆爆款视频",
+    "desc": "把视频变成智能体可读写的 SVML 工作流：一条命令，百个变体。附许可证要点与评述。",
+    "source": "Hypit.AI · hypit-ai/hypit",
+    "date": "2026-10-13",
+    "type": "导读",
+    "subtitle": "Clone any viral video with AI agents",
+    "original_url": "https://github.com/hypit-ai/hypit"
+  },
+  {
+    "slug": "flameox",
+    "title": "flameox：给编程智能体的有界本地运行时证据（README 中文全译）",
+    "desc": "统一 profiler、基准与 trace 工具的 MCP 服务器/CLI，让 agent 拿到带出处的运行时证据去消灭热点。",
+    "source": "morluto/flameox（GitHub）",
+    "date": "2026-10-12",
+    "type": "翻译"
+  },
+  {
+    "slug": "tibo-x-growth-data",
+    "title": "发了 6000 条推、卖掉 1000 万美元增长工具后：Tibo 用自己的数据总结的 X 增长 8 条",
+    "desc": "基于真实发帖数据的 X 增长 8 条规则，附评论区交锋与中文解读。",
+    "source": "Tibo @tibo_maker",
+    "date": "2026-10-12",
+    "type": "导读"
+  },
+  {
+    "slug": "huashu-qilixiang-mv",
+    "title": "两句提示词，用 Opus 5.5 + huashu-art-motion 给《七里香》做莫奈风 MV",
+    "desc": "两句提示词生成整支莫奈风音乐 MV 的完整过程与提示词整理。",
+    "source": "花叔 @AlchainHust",
+    "date": "2026-10-12",
+    "type": "导读"
+  },
+  {
+    "slug": "lemo-opuscar-98-styles",
+    "title": "OPUSCAR 98：98 种奥斯卡最佳影片风格 + 提示词 + 导演编排全部公开",
+    "desc": "lemo-opuscar 更新版：98 部最佳影片的视觉风格、提示词与导演编排。",
+    "source": "Lemomo @lemomo_ai · MIT",
+    "date": "2026-10-12",
+    "type": "翻译"
+  },
+  {
+    "slug": "anatomy-skill",
+    "title": "Anatomy：说出一个想法，Claude 把它造成一台会动的机器",
+    "desc": "一个把想法变成可交互机械动画的 Claude Code Skill，中文翻译。",
+    "source": "Ryan @wheresryan22 · MIT",
+    "date": "2026-10-11",
+    "type": "翻译"
+  },
+  {
+    "slug": "opennana-prompt-gallery",
+    "title": "OpenNana 提示词图库：GPT Image 2 / Nano Banana / Seedance 提示词案例站",
+    "desc": "对 OpenNana 图像与视频提示词案例站的独立评述与使用导读（非镜像）。",
+    "source": "opennana.com",
+    "date": "2026-10-11",
+    "type": "评述"
+  },
+  {
+    "slug": "vibeshot-ai-fight-impact-frames-notes",
+    "title": "AI 打斗的关键一击：冲击帧与闪帧提示词——读 Arvin wang 的 VSC 免费课",
+    "desc": "关于 AI 打斗镜头中冲击帧、闪帧写法的学习笔记与评述（非镜像）。",
+    "source": "原课：Vibe Shot Club · Arvin wang",
+    "date": "2026-10-10",
+    "type": "评述"
+  },
+  {
+    "slug": "minimax-h3-director",
+    "title": "MiniMax H3 Director 工作流：ComfyUI 里 5 种 H3 音视频玩法",
+    "desc": "T2V / FL2V / R2V / V2V / RV2V 五种工作流，拖进 ComfyUI 即可使用。",
+    "source": "huangserva 整理 · AIMixer 插件",
+    "date": "2026-10-10",
+    "type": "导读"
+  },
+  {
+    "slug": "yue2-music",
+    "title": "YuE2：用符号规划做前沿音乐生成",
+    "desc": "先写可编辑乐谱，再唱奏成歌——YuE2 项目页中文翻译。",
+    "source": "M-A-P / HKUST 等 · arXiv:2609.33757",
+    "date": "2026-10-10",
+    "type": "翻译"
+  },
+  {
+    "slug": "claude-opus-seo-course",
+    "title": "如何用 Claude Opus 5.5 做 SEO，好用到像在犯规",
+    "desc": "SEO + GEO 五部分课程，覆盖关键词、内容生产与 AI 搜索优化。",
+    "source": "Nicholas Dulait / ChatSEO",
+    "date": "2026-10-09",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "minimax-h3-prompt-rewriter",
+    "title": "MiniMax-H3 Prompt Rewriter for ComfyUI：一句话扩写成 H3 分镜脚本",
+    "desc": "本地离线运行的提示词扩写节点，把一句话扩成完整分镜。",
+    "source": "pytraveler · Andy L @AndyL5cc 推荐",
+    "date": "2026-10-09",
+    "type": "导读"
+  },
+  {
+    "slug": "prompt-motion",
+    "title": "Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）",
+    "desc": "纯代码生成的动态视频作品集，附提示词与 Skill 的中文导读。",
+    "source": "p4n @p4nthera_ 策展",
+    "date": "2026-10-09",
+    "type": "导读"
+  },
+  {
+    "slug": "cnyzgkc-3d-wuxia-arpg",
+    "title": "一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程",
+    "desc": "独立开发者用 AI 建模与编码完成 3D 武侠动作游戏的全过程记录。",
+    "source": "木马人 @cnyzgkc",
+    "date": "2026-10-08",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "personal-sites-gallery",
+    "title": "个人网站画廊：@zarazhangrui 评论区里的个人网站合集",
+    "desc": "“谁的个人网站最酷？”——评论区数百个个人网站，逐一截图收录，中英双语。",
+    "source": "X 评论区精选",
+    "date": "2026-10-08",
+    "type": "画廊",
+    "featured": true
+  },
+  {
+    "slug": "hanako-jev-engineering",
+    "title": "Jev 工程：如何停止用前沿模型做「是/否」决策（完整课程）",
+    "desc": "把简单判断从昂贵模型上卸下来的完整课程。",
+    "source": "Hanako",
+    "date": "2026-09-29",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "hanako-jev-opus-forks",
+    "title": "Jev + Opus 5.5：值得从思考模型上卸下来的四个分叉",
+    "desc": "四类适合交给小模型处理的决策分叉，工作笔记。",
+    "source": "Hanako Working Note",
+    "date": "2026-09-29",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "jev-engineering",
+    "title": "Jev 工程：从零搭建「AI 新大脑」的 10 步路线图",
+    "desc": "从零搭建并使用 Jev 架构的 10 步实践路线。",
+    "source": "0xCodila",
+    "date": "2026-09-27",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "lemo-opuscar",
+    "title": "Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片",
+    "desc": "39 种电影风格的纯代码短片合集与创作说明。",
+    "source": "Lemomo / LemoLab",
+    "date": "2026-09-27",
+    "type": "翻译"
+  },
+  {
+    "slug": "motion-graphics-music-video",
+    "title": "Motion Graphics Music Video：Claude Code 音乐视频 Skill",
+    "desc": "用 Claude Code 生成动态图形音乐视频的 Skill 说明。",
+    "source": "makevoid",
+    "date": "2026-09-27",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "claude-faster",
+    "title": "我们如何在两周内把 claude.ai 提速约 3 倍",
+    "desc": "claude.ai 前端性能优化的工程复盘。",
+    "source": "claude.dev / Anthropic",
+    "date": "2026-09-24",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "jevs",
+    "title": "揭开 Jev 架构的面纱",
+    "desc": "Jev 架构的设计思路与核心概念解析。",
+    "source": "Archer Hume",
+    "date": "2026-09-23",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "zai",
+    "title": "走向递归自我改进：GLM 如何构建自己的推理基础设施",
+    "desc": "GLM 团队如何让模型参与构建自身的推理基础设施。",
+    "source": "Z.ai",
+    "date": "2026-09-18",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "harness",
+    "title": "面向自我改进的 Harness 工程",
+    "desc": "为自我改进型智能体设计 harness 的方法与思考。",
+    "source": "Lilian Weng",
+    "date": "2026-09-18",
+    "type": "全文镜像"
+  },
+  {
+    "slug": "anatomy-community",
+    "title": "Anatomy 社区作品展：30 台用 Claude 画出来的机器",
+    "desc": "Anatomy Skill 社区画廊中文导览：10 位作者、30 件可交互机器图，逐一署名并链接原作。",
+    "source": "wheresryan22 / Anatomy 社区",
+    "date": "2026-10-13",
+    "type": "画廊",
+    "original_url": "https://skills.wheresryan.sh/anatomy/community"
+  },
+  {
+    "slug": "motion2mixamorig",
+    "title": "Motion2MixamoRig：一段真人视频，一键生成绑好骨骼的 Mixamo 角色",
+    "desc": "AYi 推荐的开源视频转 3D 动捕工具：单人视频/照片 → Mixamo 绑骨 glb，含 Blender 4.2+ 扩展与避坑。",
+    "source": "AYi (@AYi_AInotes) / X",
+    "date": "2026-10-13",
+    "type": "全文镜像",
+    "original_url": "https://x.com/ayi_ainotes/status/2109941015012352228"
+  }
 ]
