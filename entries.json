@@ -220,5 +220,15 @@
     "date": "2026-10-13",
     "type": "全文镜像",
     "original_url": "https://x.com/ayi_ainotes/status/2109941015012352228"
+  },
+  {
+    "slug": "anthropic-source-control",
+    "title": "Anthropic 重新设计源码管理：Scion 详细导读",
+    "desc": "日合并从 2.5k 涨到 3 万+，git 撑不住：Anthropic 7 人 5 个月自研 Scion——服务端计算、内容寻址分层缓存、派生数据、对 Claude 说“不”。",
+    "source": "Anthropic Engineering · Nick G. 与源码管理团队",
+    "date": "2026-10-14",
+    "type": "导读",
+    "subtitle": "Redesigning source control at Anthropic",
+    "original_url": "https://www.anthropic.com/engineering/redesigning-source-control"
   }
 ]
