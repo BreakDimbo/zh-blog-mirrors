@@ -23,5 +23,6 @@
 {"slug":"claude-faster","title":"我们如何在两周内把 claude.ai 提速约 3 倍","desc":"claude.ai 前端性能优化的工程复盘。","source":"claude.dev / Anthropic","date":"2026-09-24","type":"全文镜像"},
 {"slug":"jevs","title":"揭开 Jev 架构的面纱","desc":"Jev 架构的设计思路与核心概念解析。","source":"Archer Hume","date":"2026-09-23","type":"全文镜像"},
 {"slug":"zai","title":"走向递归自我改进：GLM 如何构建自己的推理基础设施","desc":"GLM 团队如何让模型参与构建自身的推理基础设施。","source":"Z.ai","date":"2026-09-18","type":"全文镜像"},
-{"slug":"harness","title":"面向自我改进的 Harness 工程","desc":"为自我改进型智能体设计 harness 的方法与思考。","source":"Lilian Weng","date":"2026-09-18","type":"全文镜像"}
+{"slug":"harness","title":"面向自我改进的 Harness 工程","desc":"为自我改进型智能体设计 harness 的方法与思考。","source":"Lilian Weng","date":"2026-09-18","type":"全文镜像"},
+{"slug":"anatomy-community","title":"Anatomy 社区作品展：30 台用 Claude 画出来的机器","desc":"Anatomy Skill 社区画廊中文导览：10 位作者、30 件可交互机器图，逐一署名并链接原作。","source":"wheresryan22 / Anatomy 社区","date":"2026-10-13","type":"画廊","original_url":"https://skills.wheresryan.sh/anatomy/community"}
 ]
