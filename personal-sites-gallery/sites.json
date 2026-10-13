@@ -1,7 +1,29 @@
 {
- "updated": "2026-10-13T14:03:55.847575+08:00",
+ "updated": "2026-10-13T18:07:17.441787+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "bobostudio.vip",
+   "url": "https://bobostudio.vip/",
+   "title": "AI 工程实践与独立开发 · 波若谷博客",
+   "description": "记录工程实践、项目复盘与日常观察",
+   "shared_by": "@bobostudio1995",
+   "reply": "https://x.com/bobostudio1995/status/2109932242923565392",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "habiai.cn",
+   "url": "https://habiai.cn/",
+   "title": "Habi 哈比 · AI 产品经理的作品集",
+   "description": "把零散的知识，沉淀成随时能调用的工具：Agent AI 视频工作台、手把手教你 coding 的 MCP、AI-native SDLC 规范、公众号自动化。",
+   "shared_by": "@li_yang66537",
+   "reply": "https://x.com/li_yang66537/status/2109914512686289352",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "zixuandong.com",
    "url": "https://zixuandong.com/",
