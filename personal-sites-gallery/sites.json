@@ -1,7 +1,18 @@
 {
- "updated": "2026-10-12T18:05:33.907422+08:00",
+ "updated": "2026-10-13T10:04:46.077496+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "yulrikim.com",
+   "url": "https://yulrikim.com/",
+   "title": "yulrikim",
+   "description": "cargo.site",
+   "shared_by": "@lora9903",
+   "reply": "https://x.com/lora9903/status/2109808599367393631",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "krisby.in",
    "url": "https://krisby.in/",
