@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Hypit：让 AI 智能体一键克隆爆款视频（中文导读）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-13">2026.10.13</time></p>
+<h1 class="za-title">Hypit：让 AI 智能体一键克隆爆款视频</h1>
+<p class="za-sub" lang="en" data-za-gen>Clone any viral video with AI agents</p>
+<p class="za-meta" data-za-gen><span>来源 · Hypit.AI · hypit-ai/hypit</span><span>收录 · 2026-10-13</span><span><a href="https://github.com/hypit-ai/hypit" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p>来源：<a href="https://github.com/hypit-ai/hypit">hypit-ai/hypit</a>（Hypit.AI）· GitHub 约 2.16 万星 · 许可：Apache-2.0 修改版（附商业限制条款）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>镜像说明：</strong>Hypit 的许可证是在 Apache-2.0 基础上<strong>附加限制条件</strong>的修改版（限制多租户托管与商业再分发），不属于标准宽松许可，所以本页<strong>不做 README 全文翻译</strong>，而是按 README 的结构写成中文导读和评述，只引用少量原文短句。依据版本：main 分支 <code>85e01c7</code>（2026-10-10 02:03，UTC+8）。配图取自仓库：Logo 由 SVG 转成 PNG，演示图取自 README 动图中的一帧（JPG），都托管在本站。官方另有简体中文 README：<a href="https://github.com/hypit-ai/hypit/blob/main/README.zh-CN.md">README.zh-CN.md</a>。</div>
+<figure><img src="images/hypit-logo.png" alt="Hypit Logo"></figure>
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#intro">是什么 / 怎么用 / 亮点</a></li>
+<li><a href="#hypit">Hypit</a></li>
+<li><a href="#install">一次安装</a></li>
+<li><a href="#examples">示例</a></li>
+<li><a href="#skill">使用 /hypit 技能</a></li>
+<li><a href="#why">为什么选 Hypit</a></li>
+<li><a href="#build">能做什么</a></li>
+<li><a href="#contribute">参与贡献与合作伙伴</a></li>
+<li><a href="#license">许可证要点</a></li>
+<li><a href="#comment">评述</a></li>
+</ol></nav>
+
+<h2 id="intro">是什么 / 怎么用 / 亮点</h2>
+<ul>
+<li><strong>是什么：</strong>Hypit 是一套给编码智能体（Claude Code、Codex 等）用的视频制作语言和运行系统。丢进去一条参考视频，智能体会把它“克隆”成一套完整、可编辑、可以重复运行的工作流，包括素材、字幕、B-roll 和特效。</li>
+<li><strong>怎么用：</strong>先运行 <code>npx skills add hypit-ai/hypit -g</code> 安装 Skill，再在任意项目目录里对智能体说 <code>/hypit 克隆这个视频……</code>，或者直接描述你想要的视频。</li>
+<li><strong>亮点：</strong>时间轴以“词”而不是“秒”为锚点（SVML 源码）；同一套工作流可以批量生成上百个变体；组件可插拔；不调用生成模型也能用代码渲染出成片。Hypit 本身免费，只有你选用的模型服务需要付费。</li>
+</ul>
+
+<h2 id="hypit">Hypit</h2>
+<p>README 的标语是 <em>“Clone any viral video with AI agents”</em>，副标语是 <em>“1 command, 100 variants, 100M views.”</em> 它的核心思路是把视频变成智能体能读写的“源码”，也就是 SVML。脚本里的每个词都可以挂接主持人画面、B-roll、排行榜条目等组件，改一句台词，时间会自动重新排布。</p>
+<p>README 也特别说明，克隆视频只是“最快的入口”，不是唯一用法。你也可以从模板起步，或者让智能体从零写工作流。生成模型同样是可选的：只用字幕、动态图形和代码渲染画面，也能编出成片。</p>
+<figure><img src="images/svml-preview.jpg" alt="SVML 源码与实时视频预览"><figcaption>左边是 SVML 源码，右边是对应视频的实时渲染（取自 README 动图的一帧）</figcaption></figure>
+
+<h2 id="install">一次安装</h2>
+<pre><code>npx skills add hypit-ai/hypit -g</code></pre>
+<p>这条命令安装的是 Skill。第一次使用时，智能体会检查有没有 Hypit 可执行文件，缺的话会协助你准备，视频项目放在哪个目录都可以。模型服务方面，官方推荐托管服务 HypiHub，也支持你自己的 API 或本地模型：把服务名和 API 文档告诉智能体，它就能接上。详见 <a href="https://github.com/hypit-ai/hypit/blob/main/docs/guide/agents.md">智能体环境</a> 与 <a href="https://github.com/hypit-ai/hypit/blob/main/docs/guide/service-partners.md">模型与部署服务</a>。</p>
+
+<h2 id="examples">示例</h2>
+<p>README 给了三组“参考视频 → 三个克隆版本”的示例，每组都附上 <code>reference.svml</code> 源文件和制作笔记（视频托管在 GitHub，请到原仓库观看）：</p>
+<table>
+<thead><tr><th>类型</th><th>内容</th><th>克隆变体</th><th>总成本</th></tr></thead>
+<tbody>
+<tr><td>UGC</td><td>“GOAT DEBATE”：20 秒足球梯队榜单，Seedance 2 Mini 生成 A-roll，GPT Image 2 生成配图，WhisperX 做词级对齐，64 个无头 Chromium 并发渲染</td><td>换成香蕉猫解说 / 排名反转 / 球员全换成科技公司创始人</td><td>$1.15</td></tr>
+<tr><td>播客</td><td>“DAILY CREATINE”：18 秒播客片段，分屏访谈版式，按说话人区分的卡拉 OK 字幕</td><td>Pepe 与 Doge / 换成视黄醇护肤 / 换成 App 推广</td><td>$1.07</td></tr>
+<tr><td>街头采访</td><td>“NICE RIDE”：26 秒街采，字幕根据人脸框跟随头部，配音效同步的 emoji 揭示板</td><td>Wojak 与 Chad / 西班牙语版 / 跑车换成 F1</td><td>$1.09</td></tr>
+</tbody></table>
+
+<h2 id="skill">使用 /hypit 技能</h2>
+<p>在任意空目录或现有项目里开一个会话，直接下指令即可，例如：</p>
+<pre><code>/hypit Clone this video: /path/to/video.mp4, and replace the ranking content with ...
+/hypit Make a ranking video that puts Hypit in S tier.</code></pre>
+<p>接下来，智能体会检查环境、申请这条视频需要的凭据、生成素材，最后拼装出完整成片。</p>
+
+<h2 id="why">为什么选 Hypit</h2>
+<ul>
+<li><strong>克隆任意视频：</strong>得到的是完整工作流，不只是脚本拆解。</li>
+<li><strong>一套工作流，上百个变体：</strong>复用版式和已有素材，只重新生成要变的部分。</li>
+<li><strong>组件可插拔：</strong>换掉主持人，字幕不用动。</li>
+<li><strong>开源：</strong>没有按席位或按渲染次数的收费，也不加水印，只有模型服务按你选用的服务计费。</li>
+</ul>
+
+<h2 id="build">能做什么</h2>
+<p>README 列出的场景包括：付费社交广告（克隆投放效果好的广告，同一天出几十个开头变体）、爆款短视频模板化、TikTok Shop 和带货视频、AI UGC 与口播、播客和访谈切片、纯代码渲染视频，以及多语言本地化版本。</p>
+
+<h2 id="contribute">参与贡献与合作伙伴</h2>
+<p>项目欢迎 PR，文档、示例和翻译都算贡献，具体流程见 <a href="https://github.com/hypit-ai/hypit/blob/main/CONTRIBUTING.zh-CN.md">CONTRIBUTING.zh-CN.md</a>。组件一般留在拥有它的视频项目里，也可以打成 tarball 或发布到 npm 分享。README 还列了一批首发合作伙伴（Watcha、TokenDance、AutoClaw、OpenAgents、Monid、HiAPI、Pollo API、BeatAPI 等），以及 Star 历史和贡献者墙。</p>
+
+<h2 id="license">许可证要点</h2>
+<ul>
+<li>基础是 Apache-2.0，另外附加了条件。自用、企业内部使用、为客户做商业项目、单租户部署，都<strong>不需要</strong>商业授权。</li>
+<li>以下情况<strong>需要</strong>商业授权：搭建多租户或 SaaS 服务（一个 workspace 算一个租户），或者把 Hypit 及其衍生作品卖出去、捆绑分发以获利。允许 fork 和修改，但发布时必须沿用同一许可证，而且不能用来牟利。</li>
+<li>不得移除 CLI、运行报告等面向用户界面里的名称、LOGO 和版权信息。</li>
+<li>生成的视频等产出物归用户所有，可以商用，但还要遵守第三方模型服务的条款。</li>
+</ul>
+
+<h2 id="comment">评述</h2>
+<p>Hypit 的特别之处在于把“视频剪辑”变成了“代码工程”：SVML 以词为时间锚点，智能体可以像改代码一样 diff、复用、批量变体。对投放团队来说，最有价值的是“结构不变、只换变量”这套模式。不过，README 宣传的单条约 $1 成本依赖具体模型的报价；“100M views”是营销口号，不是可以核验的指标。打算基于它做对外服务的团队，一定要先读清楚多租户和商业再分发这两条限制。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/hypit-ai/hypit" rel="noopener">github.com/hypit-ai/hypit</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
