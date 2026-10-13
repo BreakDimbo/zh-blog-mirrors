@@ -1,4 +1,5 @@
 [
+{"slug":"vibe-knowledge-film","title":"vibe-knowledge-film：一键生成「Vibe 知识大赏」风格知识短片的 Agent Skill","desc":"拆解抖音爆款知识短片，夜曲/寓言两种画风，Canvas+JS 逐帧渲染出片的 skill，README 中文镜像。","source":"Dave-cc/vibe-knowledge-film（GitHub）· MIT","date":"2026-10-13","type":"全文镜像","original_url":"https://github.com/Dave-cc/vibe-knowledge-film"},
 {"slug":"hypit","title":"Hypit：让 AI 智能体一键克隆爆款视频","desc":"把视频变成智能体可读写的 SVML 工作流：一条命令，百个变体。附许可证要点与评述。","source":"Hypit.AI · hypit-ai/hypit","date":"2026-10-13","type":"导读","subtitle":"Clone any viral video with AI agents","original_url":"https://github.com/hypit-ai/hypit"},
 {"slug":"flameox","title":"flameox：给编程智能体的有界本地运行时证据（README 中文全译）","desc":"统一 profiler、基准与 trace 工具的 MCP 服务器/CLI，让 agent 拿到带出处的运行时证据去消灭热点。","source":"morluto/flameox（GitHub）","date":"2026-10-12","type":"翻译"},
 {"slug":"tibo-x-growth-data","title":"发了 6000 条推、卖掉 1000 万美元增长工具后：Tibo 用自己的数据总结的 X 增长 8 条","desc":"基于真实发帖数据的 X 增长 8 条规则，附评论区交锋与中文解读。","source":"Tibo @tibo_maker","date":"2026-10-12","type":"导读"},

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>vibe-knowledge-film：一键生成「Vibe 知识大赏」风格知识短片的 Agent Skill（README 中文镜像）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-10-13">2026.10.13</time></p>
+<h1 class="za-title">vibe-knowledge-film：一键生成「Vibe 知识大赏」风格知识短片的 Agent Skill（README 中文镜像）</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · Dave-cc/vibe-knowledge-film（GitHub）· MIT</span><span>收录 · 2026-10-13</span><span><a href="https://github.com/Dave-cc/vibe-knowledge-film" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原项目：<a href="https://github.com/Dave-cc/vibe-knowledge-film">Dave-cc/vibe-knowledge-film</a>（GitHub，作者 Dave-cc，约 143 ★）· 引擎/脚本/方法文档为 MIT 许可 · 原文即中文，本页为 README 全文镜像 + 导读</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
+<h2>导读：是什么 / 怎么用 / 亮点</h2>
+<ul>
+<li><strong>是什么：</strong>一个给 Claude Code 等编程 Agent 用的 skill，拆解抖音爆款「Vibe 知识大赏」类知识短片，复刻两种热门画风，自动写字幕稿、排分镜表、建代码工程、配音效并渲染出片。</li>
+<li><strong>怎么用：</strong>放进 <code>~/.claude/skills/vibe-knowledge-film</code>，装好 Playwright、Chrome、ffmpeg 和开源字体，把文案或选题交给 Agent；它先出约 30 秒样片，确认后再做全片。</li>
+<li><strong>亮点：</strong>两套「世界」——C「夜曲」讲硬核知识、B「寓言」演心理行为；纯 Canvas + JavaScript 逐帧绘制、浏览器截图压视频再混音；SKILL.md 里有「八条规矩」、九步流程与截图自查终检。</li>
+</ul>
+<h2>vibe-knowledge-film</h2>
+<p>你一定见过这种视频。最近抖音上爆火的 Vibe 知识大赏，看完收获满满。</p>
+<p>这种视频到底怎么做？我做了一个 skill，可以一键生成这种类型的视频。成片在下面。</p>
+<p>这个 skill 有两种模式。一个叫「夜曲」，适合讲底层、难懂的知识。另一个叫「寓言」，适合把心理、行为这类逻辑，直观地演给观众看。这两种是我拆了市面上几条爆款之后，总结出来的两种热门画风。</p>
+<p>用的时候，直接把写好的文案或者一个选题丢给它。内容确认之后再生成视频。它会自己选对应的画风，写字幕稿，排分镜表，最后建对应的代码工程。先给你一段 30 秒左右的样片，确认清楚才做全片。音效它会配上，BGM 可以自己加。</p>
+<p>原理不复杂。用 Canvas 和 JavaScript 把每一帧画出来，驱动浏览器一帧一帧截图，压成视频，再混上声音。字体都是开源的。说白了，就是用代码做这样一条视频。</p>
+<h2>夜曲：《折叠》</h2>
+<p>题目是蛋白质折叠，2024 年诺贝尔化学奖。这里是开头 33 秒。</p>
+<figure><img src="images/fold_C-keyframes.jpg" alt="《折叠》关键帧"><figcaption>原 README 为 GIF 动图（约 17 MB），此处取 6 张关键帧拼图。</figcaption></figure>
+<h2>寓言：《鸽子的迷信》</h2>
+<p>一只鸽子怎么变得迷信。这里是开头 33 秒。</p>
+<figure><img src="images/pigeon_B-keyframes.jpg" alt="《鸽子的迷信》关键帧"><figcaption>原 README 为 GIF 动图（约 30 MB），此处取 6 张关键帧拼图。</figcaption></figure>
+<h2>安装</h2>
+<p>把这个目录放到 Agent 的 skill 目录，文件夹名保持 <code>vibe-knowledge-film</code>。Claude Code 的常见位置是 <code>~/.claude/skills/vibe-knowledge-film</code>。交给 Agent 的流程在 <code>SKILL.md</code>。</p>
+<pre><code>pip install -r requirements.txt
+python -m playwright install
+python engine/get_fonts.py</code></pre>
+<p>还需要本机已经安装的 Google Chrome 和 ffmpeg。渲染脚本打开的是本机 Chrome。字体是 SIL Open Font License，不放进仓库，所以要先跑一次 <code>get_fonts.py</code>。</p>
+<p>在你自己的项目里建工程，不要建在这个 skill 目录里。</p>
+<pre><code>python scripts/new_film.py &lt;工程目录&gt; --world C
+python engine/render.py &lt;工程目录&gt; --serve</code></pre>
+<p><code>--world</code> 用 <code>C</code>（夜曲）或 <code>B</code>（寓言）。命令和写法见 <code>references/engine.md</code>。</p>
+<h2>许可</h2>
+<p>引擎、脚本和文档里的方法说明使用 MIT 许可，见 <code>LICENSE</code>。</p>
+<p><code>references/analysis.md</code>、<code>references/prompts.md</code> 里按成片填好的 brief，以及 <code>examples/stim_B</code>、<code>info_C</code>，字幕和画面设计来自他人的短片，版权属于原作者。这两段是学习对照，不要当成自己的作品发布。</p>
+<h2>友情链接</h2>
+<p><a href="https://linux.do/">https://linux.do/</a></p>
+<h2>附：仓库结构与示例（编者整理）</h2>
+<ul>
+<li><code>SKILL.md</code>：交给 Agent 的主流程——「配图不是讲解」「八条规矩」「改到自己满意为止」，以及 0–9 步：看清素材 → 立题与事实表 → 找形象 → 文案与分镜表同写 → 选外观 → 建工程先做最难一镜 → 前 30 秒 → 铺全片 → 声音 → 终检。</li>
+<li><code>engine/</code>：<code>vk.js</code> / <code>vk-kit.js</code> 绘制引擎、<code>render.py</code>（Playwright 逐帧截图 + ffmpeg）、<code>audio.py</code>（按事件表合成音效）、<code>get_fonts.py</code>。</li>
+<li><code>references/</code>：engine、visual-grammar、visualization、worlds、script、prompts、analysis 等写法说明。</li>
+<li><code>examples/</code>：两段自有题目样片（<code>fold_C</code>、<code>pigeon_B</code>）、两段学习用复刻（<code>stim_B</code>、<code>info_C</code>，版权属原作者，本页不转载其画面）和组件货架 <code>kit_gallery</code>。</li>
+</ul>
+<figure><img src="images/look_fold_C.jpg" alt="fold_C 拼图"><figcaption>《折叠》开头九镜拼图（look_fold_C.jpg）</figcaption></figure>
+<figure><img src="images/look_pigeon_B.jpg" alt="pigeon_B 拼图"><figcaption>《鸽子的迷信》拼图（look_pigeon_B.jpg）</figcaption></figure>
+<figure><img src="images/fold_old_vs_new.jpg" alt="新旧两版对照"><figcaption>同一段内容两版对照：上排为早期版本（星点折线），下排为重做版本（见 references/visualization.md 第〇、七节）</figcaption></figure>
+<figure><img src="images/look_kit_gallery.jpg" alt="kit_gallery"><figcaption>vk-kit.js 组件货架（look_kit_gallery.jpg）</figcaption></figure>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>来源：<a href="https://github.com/Dave-cc/vibe-knowledge-film">github.com/Dave-cc/vibe-knowledge-film</a>，作者 Dave-cc。引擎、脚本与方法文档按 MIT 许可（Copyright (c) 2026）转载；参考片相关内容（stim_B、info_C 及 analysis/prompts 中的 brief）不在 MIT 范围内，本页未转载其画面。GIF 已转为关键帧 JPG。如需删除请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/Dave-cc/vibe-knowledge-film" rel="noopener">github.com/Dave-cc/vibe-knowledge-film</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
