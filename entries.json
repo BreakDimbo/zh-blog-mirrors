@@ -230,5 +230,15 @@
     "type": "导读",
     "subtitle": "Redesigning source control at Anthropic",
     "original_url": "https://www.anthropic.com/engineering/redesigning-source-control"
+  },
+  {
+    "slug": "felix-ambitious",
+    "title": "如何更有野心：给“带着模型的人”的教程（导读）",
+    "desc": "Felix Rieseberg 把用 AI 的野心拆成速度/高度/深度/广度，以 QBR 为例给出可操作提问法，并用“自我效能感”解释为何我们不敢想。",
+    "source": "Felix Rieseberg 个人博客",
+    "date": "2026-10-13",
+    "type": "导读",
+    "subtitle": "How to be more ambitious: A tutorial for humans with models",
+    "original_url": "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models"
   }
 ]

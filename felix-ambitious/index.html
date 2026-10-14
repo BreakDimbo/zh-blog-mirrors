@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>如何更有野心：给“带着模型的人”的教程 · 中文导读</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-13">2026.10.13</time></p>
+<h1 class="za-title">如何更有野心：给“带着模型的人”的教程（中文导读）</h1>
+<p class="za-sub" lang="en" data-za-gen>How to be more ambitious: A tutorial for humans with models</p>
+<p class="za-meta" data-za-gen><span>来源 · Felix Rieseberg 个人博客</span><span>收录 · 2026-10-13</span><span><a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p>原文：<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models">How to be more ambitious: A tutorial for humans with models</a> · 作者 Felix Rieseberg（Anthropic 工程经理）· 2026-10-13</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><figure><img src="goya-modo-de-volar.jpg" alt="戈雅版画《飞行之法》"><figcaption>原文题图：Francisco Goya《Modo de volar》（A Way of Flying，公有领域）</figcaption></figure>
+<blockquote><p>本页为中文导读与要点整理，并非全文翻译；引文仅为简短摘录。原文未标注开放许可，版权归原作者所有，请阅读原文。如需移除请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交请求</a>。</p></blockquote>
+<h2>导读</h2>
+<p>做 AI 产品的人常说“我们还不够有野心”，但这句口号很难照做。作者把“野心”拆成四个维度——<strong>速度、高度、深度、广度</strong>——并以一个虚构公司 Acme 的季度业务回顾（QBR）为贯穿例子，给出可操作的提问方式；最后用心理学的“自我效能感”解释：真正限制我们的往往是“相信什么可能”。</p>
+<h2>四种野心</h2>
+<ul><li><strong>速度</strong>：同样的活更快做完，是 AI 经济价值的基本盘，作者略过不谈。</li>
+<li><strong>高度（Altitude）</strong>：从单个任务上升到结果。</li>
+<li><strong>深度（Depth）</strong>：像领域顶尖专家那样做，往下触及原始数据、工具与问题。</li>
+<li><strong>广度（Range）</strong>：调用表面上用不到的多个领域的知识与手段。</li></ul>
+<h2>高度：问“目标之后的目标”</h2>
+<p>作者自己的例子：从让 Claude 修单个崩溃，到让它“保持应用零崩溃”。QBR 例子分三级递进：① 给模型尽量多的数据，让它说明本季度变了什么、为什么、该怎么办；② 让它找出最紧迫的三项决策并列出正反论证；③ 追问 QBR 存在的目的（让管理层早发现问题、调配钱和人），让模型设计比季度幻灯片更好的机制、用历史证明它能更早发现问题，并与现行流程并跑一个季度。</p>
+<p>适用信号：如果这件事需要开会讨论，就适合往高处走；对创意类工作效果较弱，“Claude，去赚钱”目前还不行。高度也意味着改造工作流——为了零崩溃，他先让模型能拉取崩溃报告、对应版本与提交、并在三大操作系统上独立复现验证。</p>
+<h2>深度：让专家也能学到东西</h2>
+<ul><li><strong>坚持行业顶尖的工具</strong>：模型被要求“像专家”时常只换词汇不换方法；别用 markdown 表格，坚持数据库和统计模型。</li>
+<li><strong>定离谱的目标并说它很合理</strong>：要 5 秒加载？要 200ms。模型觉得不可能时，告诉它可解，继续。</li>
+<li><strong>挑战已知</strong>：让模型从原始数据对抗性地复核假设（如“流失是新手引导问题”）。</li>
+<li><strong>产生新知识</strong>：用日志构建客户模拟，找出尚未知的最早流失信号，并在未见数据上验证预测力。</li>
+<li><strong>外部裁判</strong>：不要让模型自评；最好有它能直接运行的验证工具。</li></ul>
+<p>作者附了一个元提示词，思路是：要“更深”而不是“更大”——先说出顶尖从业者会做而你没要求的事、他们会从哪种最原始的材料起步、用什么方法工具、什么外部证据能证明结果正确，再据此重写提示词。</p>
+<h2>广度：组一支“劫案电影”团队</h2>
+<ul><li><strong>把名词换成动词</strong>（出自 Tom Kelley《创新的艺术》）：QBR 不是“一份幻灯片”，而是让忙碌的人在半小时内相信一个因果故事并在不确定中做决定——动词帮助发现哪些领域有用。</li>
+<li><strong>组建团队</strong>：分析师、记者、编辑、动效与音频设计师，加上做空者和法务会计当红队。但要避免流于角色扮演——不是让模型“扮演”做空者，而是去做做空者做的研究。</li></ul>
+<p>前提：模型需要一台能装软件的电脑和各类数据接入（如 MCP 连接器）。</p>
+<h2>我们以前也经历过：自我效能感</h2>
+<p>米开朗基罗起初不愿画西斯廷礼拜堂——他认为自己是雕塑家。心理学称之为“自我效能感”：越相信自己能做到，就做得越多。作者列举的证据与“破解”方法：</p>
+<ul><li>Locke 与 Latham 总结 35 年研究：具体且困难的目标优于“尽力而为”；Patrick Collison 的“Fast”清单。</li>
+<li><strong>相信它可能</strong>：Dantzig 迟到误把两道未解难题当作业解出。</li>
+<li><strong>看别人做到</strong>：四分钟一英里、以及今年伦敦马拉松首次正式跑进两小时。</li>
+<li><strong>允许自己失败</strong>：《网球的内心游戏》；Linux 最初“只是个爱好”。</li></ul>
+<p>结论：能力每隔几周就跃升一次的时代，我们需要能让自己去做“原本不敢想”的事的方法。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>中文导读整理：zh-blog-mirrors。原文 © Felix Rieseberg，<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models">阅读原文</a>。移除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">GitHub Issue</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models" rel="noopener">felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-h</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
