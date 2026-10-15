@@ -249,5 +249,14 @@
     "type": "导读",
     "subtitle": "How to be more ambitious: A tutorial for humans with models",
     "original_url": "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models"
+  },
+  {
+    "slug": "saccc-little-prince-3d",
+    "title": "手把手教你用 Opus 5.5 / Astra + Tripo 制作 3D 游戏",
+    "desc": "Sac 公开《小王子》3D 游戏的 AI 制作流程：GPT Image 2.5 出图、Tripo 生成资产、Opus 5.5 经 Blender/Unity MCP 搭场景与代码、Auto-Rig Pro + Mixamo 做角色动作，附提示词。",
+    "source": "Sac @Saccc_c（X 长文）",
+    "date": "2026-10-15",
+    "type": "全文镜像",
+    "original_url": "https://x.com/Saccc_c/status/2110694725640474759"
   }
 ]
