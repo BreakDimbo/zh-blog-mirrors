@@ -1,5 +1,14 @@
 [
   {
+    "slug": "jobs-eight-storytelling",
+    "title": "乔布斯讲故事的八种手法",
+    "desc": "玉伯 X 长文：从 1978 年紧张到想吐的电视首秀到 2007 年 iPhone 发布会，归纳乔布斯八种讲故事手法（类比、具象化……），中英对照原话。",
+    "source": "Frank Wang 玉伯（@lifesinger）· X 长文",
+    "date": "2026-10-15",
+    "type": "全文镜像",
+    "original_url": "https://x.com/lifesinger/status/2110326307502633396"
+  },
+  {
     "slug": "vibe-knowledge-film",
     "title": "vibe-knowledge-film：一键生成「Vibe 知识大赏」风格知识短片的 Agent Skill",
     "desc": "拆解抖音爆款知识短片，夜曲/寓言两种画风，Canvas+JS 逐帧渲染出片的 skill，README 中文镜像。",
