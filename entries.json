@@ -286,5 +286,14 @@
     "type": "评述",
     "subtitle": "Neural Networks Are Already Clean",
     "original_url": "https://already-clean.goodfire.com/"
+  },
+  {
+    "slug": "slashui-motion-prompt",
+    "title": "Motion Prompt：把动画术语整理成喂给 AI 的动效库",
+    "desc": "洛克船长推荐日本开发者大滝昇平的 Motion Prompt（MIT）：动态图形、镜头、UI、网站演出、照片五类动效“名字”配可动示例，作为 skill 装进 Claude Code/Codex，挑选后交给 AI 实现。",
+    "source": "洛克船长 @slashui",
+    "date": "2026-10-16",
+    "type": "全文镜像",
+    "original_url": "https://x.com/slashui/status/2110860240271048834"
   }
 ]

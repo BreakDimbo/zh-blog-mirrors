@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Motion Prompt：把动画术语整理成喂给 AI 的动效库（洛克船长推荐）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-10-16">2026.10.16</time></p>
+<h1 class="za-title">Motion Prompt：把动画术语整理成喂给 AI 的动效库</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · 洛克船长 @slashui</span><span>收录 · 2026-10-16</span><span><a href="https://x.com/slashui/status/2110860240271048834" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><article><p class="source">作者：洛克船长（<a href="https://x.com/slashui">@slashui</a>）· 2026-10-16 · 原帖：<a href="https://x.com/slashui/status/2110860240271048834">x.com/slashui/status/2110860240271048834</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h2>导读</h2>
+<p>洛克船长推荐日本开发者大滝昇平（<a href="https://x.com/showheyohtaki">@showheyohtaki</a>）的开源项目 <a href="https://showheyohtaki.github.io/motion-prompt/">Motion Prompt</a>（MIT）：把动效设计里的专业"名字"连同可动的示例整理成一个库，让你不用费力描述动画，直接"指给 AI 看"。核心思路：<strong>给 AI 一个有名字的参考，比堆形容词更准</strong>。</p>
+<h2>原帖全文</h2>
+<figure><a href="https://x.com/slashui/status/2110860240271048834"><img src="img/poster.jpg" alt="原帖演示视频封面（点击到 X 观看视频）" loading="lazy"></a><figcaption>原帖附 32 秒演示视频（此处为封面帧，点击前往 X 观看）</figcaption></figure>
+<blockquote>
+<p>对动画的理解，还得是日本人。</p>
+<p>一位日本开发者把动画设计中常用的专业术语，整理成了一个可以直接喂给 AI 的资源库。</p>
+<p>涵盖镜头语言、UI 组件、动态图形等 5 大领域，足足 120 个动态效果案例，而且每个都有直观的动画演示。</p>
+<p>使用方法也特别简单：</p>
+<p>直接把这个 GitHub 项目扔给 Claude Code 或 Codex，让 AI 浏览动效库，挑选你喜欢的效果，再告诉它用在哪里。</p>
+<p>以前需要绞尽脑汁描述半天的动画，现在只需要给 AI 一个参考，它就知道你想要什么。</p>
+<p>那些默默努力，把人类已有的知识整理好、再交给 AI 的人，值得我们永远尊敬。</p>
+<p>地址，⬇️ ⬇️ ⬇️</p>
+</blockquote>
+<p>作者自回复：项目地址 <a href="https://showheyohtaki.github.io/motion-prompt/">showheyohtaki.github.io/motion-prompt</a>。评论区里作者补充：<q>所以他把这些功效全都列出来，可以看效果有精准的词汇，所以这个库是非常有用的</q>。</p>
+<h2>项目要点（据项目主页整理）</h2>
+<ul>
+<li><strong>五类"名字"</strong>：动态图形、镜头运动（カメラワーク）、UI 部件、LP/网站演出、照片表现，每条都配可动示例。</li>
+<li><strong>两种导入</strong>：作为 skill 安装 <code>npx skills add showheyohtaki/motion-prompt</code>；或把 GitHub 仓库链接贴给 Claude Code / Codex，让它自行安装。</li>
+<li><strong>三步用法</strong>：让 AI"打开 motion-prompt 的库"→ 在浏览器画廊里点「选ぶ」挑选并写一句备注 →「AIに渡す」交回 AI，再说"把这段视频开头改成这种感觉"。也可直接按编号，如"用 #012 和 #045"。</li>
+<li><strong>参考实装</strong>：示例全部是 Canvas 2D、无外部库、<q>時刻だけで絵が決まる関数</q>（画面只由时间决定的函数），可逐帧渲染导出视频；另提供 catalog.json / catalog.tsv。</li>
+<li>作者还附了"用自己领域、自己语言做一份"的方法与提示词（make-your-own）。</li>
+</ul>
+<p>注：原帖称"120 个案例"，以项目主页实际数量为准。</p>
+
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原帖版权归 @slashui 所有，此处为中文全文存档；项目内容归大滝昇平（MIT License）。原文：<a href="https://x.com/slashui/status/2110860240271048834">X 原帖</a> · <a href="https://showheyohtaki.github.io/motion-prompt/">Motion Prompt</a>。如需删除请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/slashui/status/2110860240271048834" rel="noopener">x.com/slashui/status/2110860240271048834</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
