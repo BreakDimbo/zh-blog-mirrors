@@ -258,5 +258,15 @@
     "date": "2026-10-15",
     "type": "全文镜像",
     "original_url": "https://x.com/Saccc_c/status/2110694725640474759"
+  },
+  {
+    "slug": "flxrnc-opus-motion-lab",
+    "title": "Opus 5.5 动效实验室：让 Claude 像工作室一样做动画",
+    "desc": "Florence X 长文：三段 Opus 5.5 代码动画附全部提示词与追加修改，讲清形容词→数字、渲染契约、提示词模板、缓动/弹簧/节拍速查、引擎选型与 X 导出。",
+    "source": "Florence（@flxrnc）· X 长文",
+    "date": "2026-10-16",
+    "type": "全文镜像",
+    "subtitle": "Opus 5.5 Motion Lab: Make Claude Animate Like a Studio",
+    "original_url": "https://x.com/flxrnc/status/2105311836190978392"
   }
 ]
