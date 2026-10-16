@@ -1,4 +1,4 @@
-/* motion-gallery · tokens mirror zh-blogs-pages/assets/article.css (hub editorial style) */
+/* design-resources · tokens mirror zh-blogs-pages/assets/article.css (hub editorial style) */
 :root{--bg:#f6f3ee;--ink:#1d1c1a;--mute:#76716a;--rule:#d9d3c9;--soft:#ece7df;--paper:#fbf9f5;--acc:#8a6d3b;
 --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong",Georgia,serif;
 --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
@@ -31,7 +31,7 @@ h1 [data-l=en]{font-family:var(--latin);font-style:italic}
 .controls button.on{color:var(--ink);border-color:var(--ink)}
 .count{font:12.5px var(--mono);color:var(--mute)}
 main{max-width:1180px;margin:0 auto;padding:36px clamp(20px,5vw,56px) 40px}
-.grid{columns:2 420px;column-gap:36px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:48px 36px}
 .card{break-inside:avoid;margin:0 0 44px;display:block}
 .card[hidden]{display:none}
 .poster{all:unset;cursor:pointer;display:block;position:relative;border-radius:var(--r);overflow:hidden;background:var(--soft);outline-offset:3px}
@@ -70,3 +70,29 @@ dialog::backdrop{background:rgba(15,14,12,.78)}
 .lb-foot{text-align:right;margin:10px 0 0;font-size:13.5px}
 @media (max-width:640px){.grid{columns:1}.facts div{padding-right:0;margin-right:22px}.credit{display:block}.st{display:block}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.controls .chips{flex-basis:100%}
+.controls button small{color:var(--mute);font-size:11px;margin-left:2px}
+.card{margin:0}
+.shot{display:block;text-decoration:none}
+.frame{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;background:var(--paper);transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .3s}
+.shot:hover .frame{transform:translateY(-2px);border-color:var(--mute)}
+.bar{display:flex;align-items:center;gap:5px;padding:7px 10px;border-bottom:1px solid var(--rule);font:11px var(--mono);color:var(--mute)}
+.bar i{width:7px;height:7px;border-radius:50%;background:var(--rule)}.bar span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frame img{display:block;width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top}
+.ph{aspect-ratio:8/5;display:grid;place-content:center;text-align:center;font:20px var(--serif);color:var(--mute)}
+.badge{font:11.5px/1 var(--sans);letter-spacing:.04em;color:var(--acc);border:1px solid currentColor;padding:3px 7px;border-radius:999px}
+.badge.price{color:var(--mute)}
+.row1{align-items:center}
+.card h2 a{text-decoration:none}
+.domain{display:inline-block;font:12.5px var(--mono);color:var(--mute);text-decoration:none;margin-bottom:8px}
+.intro{font-size:14.5px}
+.md{font-size:12.5px!important;color:var(--mute)!important;font-style:italic}
+blockquote{margin:0 0 10px;padding-left:12px;border-left:1px solid var(--rule);font:14px/1.7 var(--serif);color:var(--mute)}
+.credit{font-size:13px;color:var(--mute);display:block}
+.frompost{margin-top:64px;border-top:1px solid var(--rule);padding-top:22px}
+.frompost h2{font:400 24px/1.3 var(--serif);margin:0 0 6px}.frompost>p{color:var(--mute);font-size:14px;margin:0 0 16px}
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,320px));gap:20px}
+.vid{all:unset;cursor:pointer;position:relative;display:block;border-radius:var(--r);overflow:hidden;background:var(--soft)}
+.vid img{display:block;width:100%;height:auto}.vid:focus-visible{outline:2px solid var(--acc)}
+.vid .play{width:42px;height:42px;margin:-21px 0 0 -21px}

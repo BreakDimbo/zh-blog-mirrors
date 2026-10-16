@@ -1,7 +1,7 @@
 (function(){
   var root=document.documentElement,q=document.getElementById('q'),grid=document.getElementById('grid'),cnt=document.getElementById('count'),empty=document.getElementById('empty');
-  var cards=[].slice.call(document.querySelectorAll('.card')),filter='',sort='date',shown=cards.length;
-  var T={zh:function(n){return n+' 件作品';},en:function(n){return n+(n===1?' work':' works');}};
+  var cards=[].slice.call(document.querySelectorAll('.card')),filter='',sort='n',shown=cards.length;
+  var T={zh:function(n){return n+' 个站点';},en:function(n){return n+(n===1?' site':' sites');}};
   function lang(){return root.dataset.lang==='en'?'en':'zh';}
   function setLang(l,persist){
     root.dataset.lang=l;root.lang=l==='zh'?'zh-CN':'en';
@@ -15,14 +15,13 @@
     var terms=(q.value||'').trim().toLowerCase().split(/\s+/).filter(Boolean),n=0;
     cards.forEach(function(c){
       var ok=terms.every(function(t){return c.dataset.search.indexOf(t)>-1;});
-      if(filter.indexOf('type:')===0)ok=ok&&c.dataset.type===filter.slice(5);
-      if(filter.indexOf('tool:')===0)ok=ok&&('|'+c.dataset.tools+'|').indexOf('|'+filter.slice(5)+'|')>-1;
+      if(filter)ok=ok&&c.dataset.cat===filter;
       c.hidden=!ok;if(ok)n++;
     });
     shown=n;cnt.textContent=T[lang()](n);empty.hidden=n>0;
   }
   function order(){
-    cards.slice().sort(function(a,b){return sort==='likes'?(b.dataset.likes-a.dataset.likes)||(b.dataset.date-a.dataset.date):b.dataset.date-a.dataset.date;})
+    cards.slice().sort(function(a,b){return sort==='likes'?(b.dataset.likes-a.dataset.likes)||(a.dataset.n-b.dataset.n):a.dataset.n-b.dataset.n;})
       .forEach(function(c){grid.appendChild(c);});
   }
   q.addEventListener('input',apply);
@@ -36,7 +35,7 @@
   // lightbox: embed the original X post (video plays from X; nothing re-hosted)
   var lb=document.getElementById('lb'),body=document.getElementById('lbb'),open=document.getElementById('lbo'),wjs=false;
   function isDark(){return root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;}
-  cards.forEach(function(c){c.querySelector('.poster').addEventListener('click',function(){
+  [].forEach.call(document.querySelectorAll('.vid'),function(c){c.addEventListener('click',function(){
     var url=c.dataset.url.replace('https://x.com/','https://twitter.com/'),img=c.querySelector('img');
     body.innerHTML='';var bq=document.createElement('blockquote');bq.className='twitter-tweet';bq.setAttribute('data-theme',isDark()?'dark':'light');
     bq.setAttribute('data-dnt','true');bq.setAttribute('data-conversation','none');bq.setAttribute('data-lang',lang()==='zh'?'zh-cn':'en');
