@@ -276,5 +276,15 @@
     "source": "X 帖子精选",
     "date": "2026-10-16",
     "type": "画廊"
+  },
+  {
+    "slug": "goodfire-already-clean",
+    "title": "神经网络本来就是干净的：Goodfire 长文详述",
+    "desc": "Nick Cammarata 的工作假说：经典多义性证据（猫+车神经元、InceptionV1 末层）源于工具误差、架构缺陷与“递归泛化”，而非叠加；Qwen3-32B 约 90% 神经元只有一个主要职责，并给出 Kimi K3 纯神经元归因图。",
+    "source": "Nick Cammarata · Goodfire",
+    "date": "2026-10-16",
+    "type": "评述",
+    "subtitle": "Neural Networks Are Already Clean",
+    "original_url": "https://already-clean.goodfire.com/"
   }
 ]
