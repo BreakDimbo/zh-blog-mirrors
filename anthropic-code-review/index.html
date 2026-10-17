@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Claude Code 团队怎么做代码评审：详细导读</title>
+<meta name="description" content="Claude Code 团队在约 90% 代码由 Claude 写的情况下，如何用七层检查、风险分级审批与快速回滚，把人的评审时间降到最少而不增加回滚。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-17">2026.10.17</time></p>
+<h1 class="za-title">Claude Code 团队怎么做代码评审：详细导读</h1>
+<p class="za-sub" lang="en" data-za-gen>How the Claude Code team does code review</p>
+<p class="za-meta" data-za-gen><span>来源 · claude.dev Blog · Addy Osmani、Morgan Westlee Lunt、Qing Wang</span><span>收录 · 2026-10-17</span><span><a href="https://claude.dev/blog/solving-code-review-at-anthropic/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>原文版权归 Anthropic PBC 所有，页面上没有开放许可。所以本页<strong>不是翻译</strong>，是按原文结构写的中文导读和评述：用我们自己的话概括各节的论点、数字和做法，只摘几句很短的英文原句并附中文。原文的 5 张示意图（FIG A–E）没有转载，“七层检查”示意是本站用共享组件重画的简化版。完整内容请读<a href="https://claude.dev/blog/solving-code-review-at-anthropic/">原文</a>。姊妹篇：<a href="../anthropic-source-control/">Anthropic 重新设计源码管理：Scion 详细导读</a>。</div>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">是什么</a></li>
+<li><a href="#core">核心观点</a></li>
+<li><a href="#purpose">重新想清楚评审是干什么的</a></li>
+<li><a href="#scarce">稀缺资源：人的时间和注意力</a></li>
+<li><a href="#layers">一次变更的旅程：七层检查</a></li>
+<li><a href="#better">让 AI 评审越来越好</a></li>
+<li><a href="#humans">人留在哪里</a></li>
+<li><a href="#context">团队怎么共享上下文</a></li>
+<li><a href="#own">“谁合入，谁负责”与及时转向</a></li>
+<li><a href="#adopt">怎么照着做 & 往哪走</a></li>
+<li><a href="#takeaways">对我们的启发</a></li>
+</ol></nav>
+
+<h2 id="what">是什么</h2>
+<p>claude.dev 博客 2026-10-15 发表的工程文章，作者 Addy Osmani、Morgan Westlee Lunt、Qing Wang。文章讲 Claude Code 团队在“约 90% 代码由 Claude 写”的情况下怎么做代码评审：大部分“阅读”交给机器，人的时间只花在机器不擅长的判断上，同时大力投资“犯错后能快速撤回”。</p>
+<p>结果：2026 年 6 月到 9 月，合入 Claude Code 代码库的 PR 数量翻了一倍多，需要回滚的比例却下降了 40% 以上。</p>
+
+<h2 id="core">核心观点</h2>
+<ul>
+<li><strong>评审没有取消，变的是位置和分工：</strong>评审从流程末尾的一道“闸门”，变成写代码过程中持续运行的检查，作者用“拼写检查”来比喻。</li>
+<li><strong>“有没有人读过代码”只是个粗糙的替代指标。</strong>真正要问的是：这次变更可能出什么错，哪一种检查（自动的还是人工的）最适合拦住它？</li>
+<li><strong>优化目标是人的总时间：</strong>评审花的时间加上修复坏代码花的时间。回滚率和事故率是护栏，这两项上升就说明时间没省下来，只是挪了地方。</li>
+<li><strong>多层而不是单闸：</strong>每层都会漏，叠起来就很少有问题能全部穿过，剩下的交给快速回滚。</li>
+<li><strong>人的角色变了：</strong>不再逐个读 diff，而是判断方向、守高风险代码、把关架构、读证据，并对结果负责。</li>
+</ul>
+
+<h2 id="purpose">重新想清楚评审是干什么的</h2>
+<p>智能体写代码会让变更数量暴涨：Anthropic monorepo 每天落地的变更从 5 月约 2,500 个涨到 9 月 3 万多个（与<a href="../anthropic-source-control/">源码管理那篇</a>用的是同一组数字）。Claude Code 虽然在独立仓库里，压力同样很大，逐行人工评审基本做不到。</p>
+<p>作者把代码评审拆成两项工作：① 在上线前发现并修复问题；② 在团队里建立对代码库的共同理解。全文主要讲第一项，第二项放在后面专门讨论。</p>
+<p>观念上的关键转变是：大多数变更在请人看之前，已经被 Claude 至少审查并修过一轮，常规错误在这一步就被拦下，团队注意力留给更高层次的问题。</p>
+
+<h2 id="scarce">稀缺资源：人的时间和注意力</h2>
+<p>目标写得很具体：Claude Code 的各个仓库（CLI、桌面和 Web 应用、移动应用）里，大多数 PR 最多只需<strong>一位</strong>人类参与即可合入（这个人可以就是作者），同时回滚和事故不增加。</p>
+<p>怎么度量人的时间：每个 PR 的人工批准数（中位数和 P95）、人工评论数、PR 等人的时长。回滚率和事故率是护栏。</p>
+
+<h2 id="layers">一次变更的旅程：七层检查</h2>
+<p>原文 FIG A 画的是一次变更从作者电脑（或 Slack 里的 Claude 会话）一路到用户手里的路径，FIG B 是“多层而非单闸”的示意（<a href="https://claude.dev/blog/solving-code-review-at-anthropic/">见原文</a>）。下面是本站的简化重画：</p>
+<div class="tl">
+<div class="w">① 提 PR 前<br>先自证</div>
+<div>② 每个 PR<br>AI 评审</div>
+<div>③ 可阻断的<br>安全评审</div>
+<div>④ CI 自动检查<br>（阻断）</div>
+<div>⑤ 按风险分级<br>人工批准</div>
+</div>
+<div class="tl">
+<div>⑥ 合并队列<br>+ 开关 + 灰度</div>
+<div class="i">⑦ 快速发现<br>快速回滚</div>
+<div class="k">兜底：<br>回滚</div>
+<div class="k">事故复盘：<br>哪层该拦住？</div>
+<div class="k">事故 → eval</div>
+</div>
+<p class="recreated">本站重画的简化示意：每层都会漏掉一些问题，叠加后很少能全部穿过，剩下的靠回滚。</p>
+
+<h3>① 别人看之前，先自证</h3>
+<ul>
+<li>大部分评审现在发生在 PR 出现之前。给 Claude 一个能实际运行的验证手段（测试、构建、和设计稿对比的截图），要它<strong>拿出输出</strong>，而不是只说“做完了”。然后用一个上下文全新的子智能体审 diff。</li>
+<li>提 PR 前，很多人还会跑几个内部 skill：找 bug、精简 diff、端到端检查行为；UI 改动还要对照设计规范。</li>
+<li>Claude Code 作者 Boris Cherny 认为，给 Claude 一个验证自身工作的手段大概是拿到好结果最重要的一件事，估计能让最终结果好 2–3 倍。他也说验证方式因领域而异，可能只是一条 bash 命令、一套测试，或者在浏览器、手机模拟器里试用。</li>
+<li>自动评审反复标出同一类问题时，就从源头修：改 skill、加 lint 规则，或者更新说明文件：
+<ul>
+<li><code>CLAUDE.md</code>：说明项目是什么（技术栈、约定、目标和非目标）。每次评审都会加载，所以大仓库里要写短，细节链接到其他文档。评审器也会标出违反其中约定的代码，以及让其中某行变得过时的改动。</li>
+<li><code>REVIEW.md</code>：由代码 owner 写，告诉评审器这块代码里什么最重要；团队还会单独检查评审器有没有真的照做。好的 REVIEW.md 都很短：写明这个仓库里“失败”长什么样（文档的失败是 <em>“it lies”</em>，即内容不实；配置的失败是 <em>“it misroutes”</em>，即路由出错），限制 nit 数量，列出跳过的路径，要求给出文件和行号作证据，而不是看名字就猜；总结要以问题数量开头，没问题时直接说没问题。</li>
+</ul></li>
+</ul>
+
+<h3>② 每个 PR 都有 AI 评审</h3>
+<ul>
+<li>人看之前，Claude 先审：结合整个仓库和 PR 声明的意图读 diff，判断它是否解决了问题、是否契合系统、会不会弄坏别处。修 bug 的 PR，还会追查根因。</li>
+<li>对外版本 Code Review for Claude Code 已在 Team / Enterprise 计划正式可用，本地可以用 <code>/code-review</code> 跑轻量版。</li>
+<li>研究预览上线后，内部 PR 中收到<strong>实质性评审意见</strong>的比例从 16% 升到 54%。超过 1,000 行的 PR 多数会有发现，小 PR 多数没问题。管理员可以给每个仓库选 Quick / Standard / Deep 三档；漏掉一个 bug 的代价高于多花的评审时间时，Deep 档才值得。</li>
+<li><strong>发现要先经智能体验证：</strong>多个智能体并行找 bug，再由另一组智能体对每条发现投票，足够多的票认为是真问题才发出来；只涉及风格、诊断或清理的发现会被丢弃。这些过滤规则都在自家 PR 上做过 A/B 测试。留下的发现按严重度排序，以行内评论呈现，标为 Important / Nit / Pre-existing，这样不是本 PR 引入的旧 bug 不会算到作者头上。</li>
+<li><strong>每条发现都必须回应：</strong>要么修，要么写明理由后关闭线程。修复经常由智能体在夜里接手，作者第二天回来时 PR 已经又过了一轮。</li>
+</ul>
+
+<h3>③ 可以阻断合并的安全评审</h3>
+<p>安全有单独的自动评审。只要 bug 评审或安全评审还有未关闭的发现，PR 就不能合并。处理误报的方式是写一句简短理由关闭线程；后续提交修好了问题，对应发现会自动消失。外部可以用开源的 security review GitHub Action 或 <code>/security-review</code> 命令搭出同样的流程。</p>
+
+<h3>④ 阻断式自动检查</h3>
+<p>常规检查：lint、类型检查、全平台测试、构建（扩展 CI 的做法另有文章）。一个典型的 CLI PR，在人看之前可能已经跑了几十项检查。PR 模板要求写明“怎么测的”和“怎么撤回”。这部分 Claude 可以代填，但由提出这个变更的人签字确认。</p>
+
+<h3>⑤ 按风险分级的人工批准</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>风险</th><th>典型例子</th><th>需要几位人类批准</th></tr></thead>
+<tbody>
+<tr><td>低</td><td>文档、文案、仅内部可用的功能、放在 flag 后面的增量改动</td><td>自动评审和安全检查全绿后，无需人工</td></tr>
+<tr><td>中</td><td>普通产品改动；缓存、自动更新器、系统提示词等敏感区域</td><td>1 人</td></tr>
+<tr><td>高</td><td>风险最高的代码，以及少数始终要求两人的路径</td><td>2 人</td></tr>
+</tbody></table></div>
+<ul>
+<li><strong>档位由变更决定，不由作者决定：</strong>一个分类器读变更、定档；另一个分类器判断“虽然档位说不需要，但这次是否仍该加一个人”。owner 标为敏感的路径和所有 CI workflow 文件，始终需要人。</li>
+<li><strong>轻量通道只给受信任的作者</strong>（仓库信任名单上的人，主要是负责该仓库的团队），其他人一律要第二个人批准。智能体的批准永远不能顶替人的批准名额。</li>
+<li><strong>谁发起 prompt，谁负责：</strong>智能体写的 PR，指挥它的那个人算作必需评审人之一，就像代码是他亲手敲的一样。</li>
+<li><strong>批准只针对某一个具体 commit：</strong>之后出现系统无法担保的新提交（比如智能体的推送、手工解决的合并冲突），就要重新批准。</li>
+</ul>
+
+<h3>⑥ 合并队列、功能开关、渐进发布</h3>
+<p>合并队列会在应用了本次变更的 main 上重跑全部检查，防止两个各自通过的 PR 合在一起把 main 弄坏。新行为通常先放在 flag 后面给 Anthropic 员工用，内部的重度使用常常比用户更早暴露回归。公开发布先进 <code>latest</code> 渠道，<code>stable</code> 渠道随后跟进。</p>
+
+<h3>⑦ 快速发现、快速回滚</h3>
+<p>总会有错误漏过去，所以最后一层追求“发现快、撤回快”：关开关不用重新部署；Claude Code 有每周轮换的 on-call；事故复盘会问“本该由哪一层拦住”。作者也承认短板：发现坏合并仍然依赖作者、on-call 和回滚/事故看板，<strong>还没有</strong>在这些指标变化时自动收紧审批的“熔断器”，工程师希望先有它，再让更多代码走零人工合并。一位同事的看法是：放慢速度确实能降低错误率，但主要是因为你什么都做得少了。团队宁可提高发现和修复问题的速度。</p>
+
+<h2 id="better">让 AI 评审越来越好</h2>
+<ul>
+<li><strong>事故就是 eval：</strong>收集过去引发事故的 PR，连同后续的修复和回滚，请熟悉那块代码的工程师确认每个 bug 及其位置。评审器每天在这个集合上跑一遍；每出一次事故集合就变大，评审器的每次改动都用全集打分（原文 FIG C）。</li>
+<li><strong>用人的反应度量噪声：</strong>只要不在乎误报，多抓 bug 很容易，所以要有制衡。评审器的每条评论都按 PR 上的人怎么回应来分类：修了、说它错了、说这是有意为之、觉得无关紧要。另外在已知干净的 PR 上运行评审器，统计它有多少次报出“会诱导人做出有害改动”的问题。写下来的优先级是：先抓真 bug，其次减少评审轮数。</li>
+<li><strong>作者是智能体时，噪声代价更高：</strong>人几秒钟就能忽略一个 nit，智能体却会去改，于是多一次提交、多一轮评审。</li>
+<li><strong>评审必须收敛：</strong>智能体作者和智能体评审可以无限地互相“喂活”。有个 CLI PR 一夜之间来回了 50 多轮，直到作者叫停。对评审器反复标记的内容做 git blame，发现约 59% 是评审器第一轮时就已存在的代码，也就是说它很少发现新 bug，只是每轮多挖出几个旧的。作者也承认这是自己造成的：大家习惯默认跑好几轮，因为每轮都能多抓到一点。风险高的变更值得这样做，但不是每个 PR 都值得。</li>
+<li><strong>改进措施</strong>（同时跟踪 recall 和“几轮通过”）：
+<ul>
+<li>轮数上限：3 轮后，评审器请作者退一步，重新考虑方案。</li>
+<li>前几轮之后只审新增 diff。</li>
+<li>标出 bug 的<em>类别</em>，让作者把同类问题全部修掉，而不是只修一行。</li>
+<li>已经发过的发现不重复发。</li>
+</ul></li>
+<li>评审智能体还会每晚扫描存量代码，在旧 bug 冒出来之前抓住它们。原文 FIG D 显示，收敛改动之后，内部 PR 的平均评审轮数明显下降。</li>
+</ul>
+
+<h2 id="humans">人留在哪里</h2>
+<p>把资深工程师从深度工作里拉出来抓一个常规错误，代价比一次自动评审高得多。原文 FIG E 总结了留给人的五类决定：</p>
+<ol>
+<li><strong>到底该不该做：</strong>方向、品味、范围。有个团队宣布自己的评审瓶颈已经解决，但仍对团队外部来的改动保留人工评审，好让有人问一句 <em>“should we even do this?”</em>（这件事我们真的该做吗？）</li>
+<li><strong>高风险代码：</strong>计费、自动更新器、CI workflow。</li>
+<li><strong>会被别人照抄的架构模式。</strong></li>
+<li><strong>读证据：</strong>测试输出、实际跑的命令及其返回、截图、评审器的发现。如果你说不出这些检查会漏掉什么，就该要求一次真正的评审，而不是随手批准。</li>
+<li><strong>对结果负责：</strong>每个上线的变更都有一个人为它负责，不管是谁敲的代码。</li>
+</ol>
+
+<h2 id="context">团队怎么共享上下文</h2>
+<p>评审的第二项工作是传播对代码库的理解。机器读了大部分代码之后，人从哪里学？作者坦言没有正式流程，也没人在脑子里装着 Claude Code 的完整模型，他们认为也不需要。想了解哪一块，就让 Claude 针对那一块写一份讲解，几分钟就好，而且反映的是代码当下的样子。有人更进一步，让 Claude 做一个小型可视化 artifact，按自己喜欢的方式来讲解这块代码。</p>
+<p>作者的论证是：一行文案改动几乎教不了你什么，而为你即将修改的模块写一份讲解，能教你很多。再加上团队默认在公开 Slack 频道里工作，别人在做什么，大家边做边看得到。</p>
+
+<h2 id="own">“谁合入，谁负责”与及时转向</h2>
+<p>合入的中小改动出了问题，按团队惯例通常由作者自己修。以下几点让这条惯例不至于变得残酷：</p>
+<ul>
+<li>变更粒度小，所以好审、好调试、好回滚；</li>
+<li>一切可逆：开关、回滚和分阶段发布，几分钟内就能撤销大多数错误；</li>
+<li>按影响范围（blast radius）定门槛：代价高的代码配更多人、更多检查；</li>
+<li>遥测和内部使用让回归很快暴露；</li>
+<li>不追责：由作者修是因为他上下文最多，事故复盘看的是系统。</li>
+</ul>
+<p>所有权也是共享的：在公开频道里，任何人都能看到别人在做什么，接过一个话头，或者指派一个 Claude 去补缺口，不负责这块代码的人也会给反馈。作者认为，这种开放是不给每一行都设闸门、质量仍然能保持很高的重要原因。</p>
+<p><strong>转向：</strong>智能体让“开个头”变得很便宜，所以有些工作本来就不该合入。通常是频道里有人问为什么、指出之前的某个决定，或者提出更简单的路线，作者就关掉或改造这个 PR。代码写得快，关掉 PR 也不觉得可惜。诀窍是尽早在讨论串里提出不同方向，而不是等 PR 写完了再留一条阻断式评论。</p>
+
+<h2 id="adopt">怎么照着做 &amp; 往哪走</h2>
+<p>原文最后给了一份分阶段清单，大意如下：</p>
+<ul>
+<li><strong>提 PR 前：</strong>在简短的 <code>CLAUDE.md</code> 里列出智能体能跑的检查，配好跑格式化和 lint 的 hooks；本地跑 <code>/code-review</code>、<code>/security-review</code>，或者让一个全新上下文的子智能体来审；加一份 <code>REVIEW.md</code>，把反复出现的评审意见沉淀进去。</li>
+<li><strong>每个 PR：</strong>强制 CI，PR 模板加上 Testing / Risk / How to revert；先在一个仓库接入 AI 评审，调几周 REVIEW.md 再推广；加自动安全评审，并要求所有评审线程关闭后才能合并；评审力度和风险匹配（Quick / Standard / Deep）；限制轮数，前几轮之后只审新 diff。</li>
+<li><strong>批准：</strong>把风险分级写下来，由变更而不是作者决定档位，先严后松、凭证据放宽；轻量通道只留给受信任的作者；用 CODEOWNERS 和分支保护，让鉴权、计费、CI/发布 workflow 和安装器始终需要人；机器人的批准永远不能替代必需的人工批准，有新提交就作废旧批准。</li>
+<li><strong>合并及之后：</strong>合并队列、功能开关、内部先用、分阶段发布、一键回滚；把事故和回滚做成 eval 集，评审器的 prompt、工具或模型一变就重新打分；度量人的时间，以回滚率和事故率为护栏。</li>
+</ul>
+<p><strong>往哪走：</strong>Code Review 产品对外仍然坚持“批准 PR 是人的事”，产品只发发现，不发批准。Anthropic 自己的仓库走得更远：由 owner 决定哪些低风险改动可以只靠自动检查合入，而且这条线还在移动。评审漏了东西时，他们会问模型当时缺了什么信息，再把修补写进 <code>CLAUDE.md</code>、某个 skill 或一项新检查。目标不变：每个变更花更少的人类时间，回滚不比以前多。</p>
+
+<h2 id="takeaways">对我们的启发</h2>
+<ul>
+<li><strong>先定义优化目标和护栏：</strong>“人的总时间”配“回滚率 / 事故率”这对指标，可以直接拿来用。不定护栏的“提效”，往往只是把成本挪到了事后修复上。</li>
+<li><strong>验证优先于评审：</strong>让智能体拿出可运行的证据（测试输出、截图），再加一个全新上下文的子智能体复审。这一步成本最低、收益最大。</li>
+<li><strong>把评审意见沉淀成文件：</strong>短的 <code>CLAUDE.md</code> 加上按目录写的 <code>REVIEW.md</code>，写清“这里的失败长什么样”和“要给文件行号作证据”。同一条意见出现两次，就该写进文件或者变成 lint。</li>
+<li><strong>多智能体投票降噪：</strong>并行找 bug、独立投票、丢弃风格类发现、标出 Pre-existing。智能体作者对噪声更敏感，降噪比提高召回更重要。</li>
+<li><strong>给智能体之间的循环设上限：</strong>3 轮上限、只审增量 diff、按 bug 类别修。这条也适用于任何“智能体互评”的流水线（比如我们自己的 harness）。</li>
+<li><strong>风险分级看变更本身，人的名额不可替代：</strong>谁发起 prompt 谁算评审人，批准绑定具体 commit。这几条规则成本很低，值得照搬。</li>
+<li><strong>可逆性是放权的前提：</strong>开关、合并队列、灰度、一键回滚越成熟，能交给自动化的就越多。作者也坦白还缺“指标恶化就自动收紧”的熔断器，这正是值得补的一环。</li>
+<li><strong>和<a href="../anthropic-source-control/">源码管理那篇</a>合起来读：</strong>那篇讲基础设施怎么扛住每天 3 万次合并，这篇讲流程和人怎么扛住。两篇的共同主题都是把系统按“智能体规模”重新设计。</li>
+</ul>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://claude.dev/blog/solving-code-review-at-anthropic/" rel="noopener">claude.dev/blog/solving-code-review-at-anthropic/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
