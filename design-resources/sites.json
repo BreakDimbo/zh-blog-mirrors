@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-16T10:23:08.915385+08:00",
+ "updated": "2026-10-17T10:28:44.179440+08:00",
  "post": "https://x.com/amananimates/status/2110584646794887669",
  "sites": [
   {
@@ -137,6 +137,14 @@
    "price": "mixed",
    "recommended_by": "@builtatlight",
    "post": "https://x.com/builtatlight/status/2110907005020119418"
+  },
+  {
+   "url": "https://www.linkoch.app",
+   "title": "Linkoch",
+   "category": "curate",
+   "price": null,
+   "recommended_by": "@Hebel07",
+   "post": "https://x.com/Hebel07/status/2111017229852553429"
   }
  ]
 }
