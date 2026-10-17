@@ -333,5 +333,15 @@
     "type": "翻译",
     "subtitle": "Give Opus 5.5 one URL and it can search 5.2 million free audio files",
     "original_url": "https://x.com/Voxyz_ai/status/2111140116572049485"
+  },
+  {
+    "slug": "skillry-opus-5-5-videos",
+    "title": "Opus 5.5 视频大赏：418 支爆款代码视频与背后的提示词",
+    "desc": "Skillry 画廊 418 支 Claude Opus 5.5 代码视频逐条中文导读（缩略图+作者+看点+提示词技巧），附 awesome-opus5-5-videos（MIT）README 全译、285 条额外提示词索引与六个规律。",
+    "source": "Skillry · yihui-dev/awesome-opus5-5-videos（MIT）",
+    "date": "2026-10-17",
+    "type": "画廊",
+    "subtitle": "Viral Opus 5.5 videos, with their prompts",
+    "original_url": "https://skillry.dev/ai-videos/opus-5-5#videos"
   }
 ]
