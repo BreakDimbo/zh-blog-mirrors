@@ -313,5 +313,15 @@
     "date": "2026-10-16",
     "type": "全文镜像",
     "original_url": "https://x.com/yanliudreamer/status/2110649301257060368"
+  },
+  {
+    "slug": "voxyz-openverse-sfx",
+    "title": "给 Opus 5.5 一个网址，剪视频时就能搜 520 万条免费音频",
+    "desc": "Openverse API 免 Key、$0：一句提示词让 AI 缺音效时自动检索 CC0/CC BY 音效、下载并写署名；附前作「声音设计」六步提示词全文翻译与 API 实测。",
+    "source": "Vox @Voxyz_ai",
+    "date": "2026-10-17",
+    "type": "翻译",
+    "subtitle": "Give Opus 5.5 one URL and it can search 5.2 million free audio files",
+    "original_url": "https://x.com/Voxyz_ai/status/2111140116572049485"
   }
 ]
