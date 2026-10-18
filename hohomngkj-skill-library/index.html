@@ -23,7 +23,7 @@
 <!-- za:origin --><div class="za-origin"></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>推文是作者自己写的中文，下面全文照录。推文推荐的 <a href="https://www.gonghaosnail.com/skill-library">Skill 风格库</a>是作者本人工作室（龚浩 Snail 工作室）的网站，没有开放许可，使用须知里也写了“不公开转发受限素材的访问链接或资源包”。所以站点部分只做<strong>导读</strong>：介绍结构、统计公开的元数据，只摘很短的原句，不转载样片和风格包。下面两张图是推文自带的截图（已压缩）。相关阅读：<a href="../opennana-prompt-gallery/">OpenNana 提示词图库</a>、<a href="../lemo-opuscar-98-styles/">OPUSCAR 98 种影片风格</a>。</div>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>推文是作者自己写的中文，下面全文照录。推文推荐的 <a href="https://www.gonghaosnail.com/skill-library">Skill 风格库</a>是作者本人工作室（龚浩 Snail 工作室）的网站，没有开放许可，使用须知里也写了“不公开转发受限素材的访问链接或资源包”。所以站点部分只做<strong>导读</strong>：介绍结构和公开页面上能看到的信息，只摘很短的原句，不转载样片和风格包。下面两张图是推文自带的截图（已压缩）。相关阅读：<a href="../opennana-prompt-gallery/">OpenNana 提示词图库</a>、<a href="../lemo-opuscar-98-styles/">OPUSCAR 98 种影片风格</a>。</div>
 
 <nav class="toc"><strong>目录</strong><ol>
 <li><a href="#post">推文全文</a></li>
@@ -58,23 +58,14 @@
 <h2 id="points">要点</h2>
 <ul>
 <li><strong>93 套风格包，分 10 类：</strong>人物华服 20、情绪叙事 13、神话仙境 11、建筑空间 10、武侠江湖 9、古典雅居 8、科幻未来 8、梦境奇想 8、田园乡野 4、旷野西部 2。</li>
-<li><strong>每套的结构基本一致：</strong>原始参考图 → 视觉分析 → 核心/可变规则 → 提示词模板 → 系列创作规则 → 偏差修正。多数页面展示 4 张 16:9 样片，全站一共 370 张。</li>
-<li><strong>一半以上是“电影/剧集风格提炼”：</strong>52 套的名字里带“××式”或“××启发”，比如王家卫、侯孝贤、小津、库布里克、维伦纽瓦《沙丘》、87 版《红楼梦》、《长安十二时辰》。其余是工作室原创的人像风格，比如“赭壁青巷·暖影肖像”“银帘烛影·玄白绣境”。</li>
+<li><strong>每套的结构基本一致：</strong>原始参考图 → 视觉分析 → 核心/可变规则 → 提示词模板 → 系列创作规则 → 偏差修正。列表页上多数风格卡片标着“4 张样片”，介绍里写的是 16:9 横版。</li>
+<li><strong>有电影风格提炼，也有原创人像：</strong>有的名字直接写成“××式”，比如列表第 1 页的“马力克《生命之树》式·广角贴近与流动自然光”；更多是工作室原创的人像风格，比如“赭壁青巷·暖影肖像”“银帘烛影·玄白绣境”。</li>
 <li><strong>短片板块：</strong>9 部剧情短片，每部 4–16 张分镜、6–36 条提示词。原话是“资料包含分镜与提示词，成片可在详情页下载”。</li>
-<li><strong>需要开通：</strong>完整提示词和 ZIP 包要走微信开通或登录账号。公开 API 返回 <code>canUseSkills: false</code>，样本提示词字段也是空的。</li>
+<li><strong>需要开通：</strong>完整提示词和 ZIP 包要走微信开通或登录账号，卡片上的按钮就是“微信咨询开通”和“已有权限？登录账号”。</li>
 </ul>
 
 <h2 id="library">风格库里有什么</h2>
-<p>站点前端调用一个公开的列表接口，返回 93 条风格的元数据：标题、英文名、分类、描述、标签、适用平台、产出物、文件大小和上传时间。我们按这些数据做了统计，下表是摘要（不含任何付费内容）：</p>
-<div class="table-wrap"><table>
-<thead><tr><th>维度</th><th>情况</th></tr></thead>
-<tbody>
-<tr><td>上传时间</td><td>2026-10-03 至 10-16（UTC+8）。10-04 集中上了一大批电影风格，10-12 以后主要是原创人像</td></tr>
-<tr><td>标注的适用平台</td><td>Midjourney 81 套、ImageGen 系 80+ 套、Codex 18 套。<strong>没有一套写 ComfyUI</strong></td></tr>
-<tr><td>产出物</td><td>58 套写的是“中文图像提示词 / 英文图像提示词 / 同风格静帧组图方案 / 风格偏移修正建议”，其余多是“图像提示词 + 单张/系列创作”</td></tr>
-<tr><td>资源包大小</td><td>中位数约 2.4 MB；最大约 83 MB（侯麦式田园）；有 4 套不到 150 KB，大概只有文本</td></tr>
-<tr><td>资源类型</td><td>Skill 安装包 91 套、提示词文档 1 套、创作规范合集 1 套</td></tr>
-</tbody></table></div>
+<p>列表页每页 20 套、共 5 页。每张卡片标出分类、样片数、资源类型（第 1 页都是“Skill 安装包 ZIP”）和文件大小，下面是一段风格描述、几个标签和版本信息。完整内容要开通后才能看到，本文不涉及任何付费内容。</p>
 <p>描述的写法很统一，都是“材质 + 光线 + 色彩 + 景深”。例如：“以赭米旧墙与青灰虚化街巷分隔冷暖空间，暖侧光穿过细发……”。有几套还写得比较老实，比如“风格由参考画面提炼，非原作者提示词；已在 ImageGen 试图，跨模型效果需另行验证”。</p>
 
 <h2 id="films">剧情短片开源分享</h2>
@@ -95,7 +86,7 @@
 
 <h2 id="check">我们核实到的情况</h2>
 <div class="notice">
-<p><strong>“专为 ComfyUI 准备”：</strong>站点元数据里每套风格的适用平台都是 Midjourney、ImageGen 或 Codex，全站没有出现 ComfyUI。更准确的说法是：这是一套“风格→提示词”的规则包，可以在 ComfyUI 里用，但站内没有看到 ComfyUI 工作流或节点。作者另有<a href="https://www.gonghaosnail.com/workflow">工作流</a>栏目，本文没有展开。</p>
+<p><strong>“专为 ComfyUI 准备”：</strong>列表页第 1 页的风格介绍里没有提到 ComfyUI，有一套还写着“已在 ImageGen 试图”。更准确的说法是：这是一套“风格→提示词”的规则包，可以在 ComfyUI 里用，但我们在公开页面上没有看到 ComfyUI 工作流或节点。作者另有<a href="https://www.gonghaosnail.com/workflow">工作流</a>栏目，本文没有展开。</p>
 <p><strong>“直接装就能用”：</strong>要先通过微信开通或登录。我们没有拿到任何资源包，所以“风格一致性很高”无法验证。</p>
 <p><strong>“开源短片”：</strong>页面写的是“开源分享”，但没有看到许可证。“开源”在这里的意思是公开制作资料，不是 OSI 意义上的开源许可。</p>
 <p><strong>版权提示：</strong>“××式 / ××启发”的风格提炼和经典片段重演，用在商业项目前请自行评估肖像、IP 和风格模仿的风险。</p>
@@ -111,7 +102,7 @@
 </ul></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p>推文原文 © 龚浩 Snail（@hohomngkj148497），站点内容 © 龚浩 Snail 工作室。站点统计来自 2026-10-18 21:20（UTC+8）抓取的公开列表接口和页面，之后可能有变化。</p></div><!-- /za:foot -->
+<!-- za:foot --><div class="za-foot-orig"><p>推文原文 © 龚浩 Snail（@hohomngkj148497），站点内容 © 龚浩 Snail 工作室。站点信息来自 2026-10-18 21:20（UTC+8）浏览的公开页面，之后可能有变化。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/hohomngkj148497/status/2111458644898574786" rel="noopener">x.com/hohomngkj148497/status/2111458644898574786</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
 <p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
