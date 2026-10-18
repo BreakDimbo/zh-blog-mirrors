@@ -1,5 +1,15 @@
 [
   {
+    "slug": "felix-site",
+    "title": "Felix Rieseberg 的个人网站：从 Electron 到 Claude（导读）",
+    "desc": "Anthropic 工程经理、Electron 共同维护者 Felix Rieseberg 的个人站导读：经历与项目（Clippy、Language Model Builder、windows95…）、42 篇文章分主题目录，精选 5 篇（60 个 Claude 线程重做主页、如何更有野心、Electron 误解、JS 指令计数实验、定制贺卡）与启发。",
+    "source": "Felix Rieseberg 个人网站",
+    "date": "2026-10-18",
+    "type": "导读",
+    "subtitle": "felixrieseberg.com — Felix Rieseberg’s personal site & posts",
+    "original_url": "https://felixrieseberg.com/"
+  },
+  {
     "slug": "huashu-motion",
     "title": "Huashu-motion 正式发布：让 coding agent 一键直出商业级产品宣传片",
     "desc": "花叔开源 huashu-motion（MIT）：读产品→三个方向→节奏单→作曲配乐→浏览器里指着画面改；规则来自量 21 支真实发布片。X 长文原文全文 + 要点、仓库核对与启发。",

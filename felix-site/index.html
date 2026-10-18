@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Felix Rieseberg 个人网站导读：Claude、Electron 与 42 篇文章 · 中文导读</title>
+<meta name="description" content="Felix Rieseberg（Anthropic、Electron 共同维护者）个人网站中文导读：经历、项目、42 篇文章分类目录与精选。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-18">2026.10.18</time></p>
+<h1 class="za-title">Felix Rieseberg 的个人网站：从 Electron 到 Claude（中文导读）</h1>
+<p class="za-sub" lang="en" data-za-gen>felixrieseberg.com — Felix Rieseberg’s personal site &amp; posts</p>
+<p class="za-meta" data-za-gen><span>来源 · Felix Rieseberg 个人网站</span><span>收录 · 2026-10-18</span><span><a href="https://felixrieseberg.com/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p>原站：<a href="https://felixrieseberg.com/">felixrieseberg.com</a> · 作者 Felix Rieseberg（Anthropic 工程经理、Electron 共同维护者）· 本页依据 2026-10-18 抓取的公开页面整理</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>本页是 <a href="https://felixrieseberg.com/">felixrieseberg.com</a> 的中文导读：介绍作者自述的身份与经历、项目，以及站上全部 42 篇文章的分类目录（每篇一两句中文摘要），并挑 5 篇写较长的导读。原站没有标注开放许可，所以这里<strong>不转载全文和图片</strong>，只摘很短的英文原句并附中文。想读全文请点每篇的原文链接。如需移除请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交请求</a>。相关阅读：<a href="../felix-ambitious/">《如何更有野心》导读</a>、<a href="../anthropic-source-control/">Anthropic 重做源码管理（Scion）</a>、<a href="../anthropic-code-review/">Claude Code 团队怎么做代码评审</a>、<a href="../personal-sites-gallery/">个人网站画廊</a>。</div>
+
+<h2>他是谁（按他自己网站的说法）</h2>
+<p>首页一句话自我介绍：<em lang="en">“I work on Claude at Anthropic. Electron co-maintainer. Maintainer of too many little open source projects.”</em>（我在 Anthropic 做 Claude；Electron 共同维护者；维护着太多小开源项目。）</p>
+<p>About 页和首页的“Work”栏给出的经历：</p>
+<ul>
+<li><strong>Anthropic（2025 至今）</strong>：做“一切能让人用 AI 变得高效的事”，目前已先后负责 Claude.ai、Cowork 和 Claude Code Desktop 的工程。文章署名里他称自己是 Anthropic 的工程经理（EM）。</li>
+<li><strong>Notion（2023–2025）</strong>：负责 Web 基础设施与桌面应用团队（Mac/Windows 客户端）。</li>
+<li><strong>Stripe（2021–2023）</strong>：带 Payments Integration Experience 团队，做核心支付 API。</li>
+<li><strong>Slack（2016–2021）</strong>：高级主任工程师（Senior Staff Engineer）兼工程经理，负责 Slack 的 macOS/Windows/Linux 桌面端，并支持一支做 Electron 的 C++ 团队；期间为 O’Reilly 写了《Introducing Electron》。</li>
+<li><strong>Microsoft（2011–2016）</strong>：先在柏林和旧金山湾区做面向初创公司的开发者布道师，后来做开源工程师，主要让 <code>npm install</code> 在 Windows 上能用（windows-build-tools、npm-windows-upgrade）；还一个人写过一款超过百万玩家的小游戏 Awesome Zombie Sniper。</li>
+<li><strong>更早</strong>：2007–2011 年任德国苹果媒体 Apfeltalk.de 执行主编（自述月访问量 1000 万）；牛津大学互联网研究院硕士，此前就读杜塞尔多夫大学。</li>
+</ul>
+<p>他还组织过 1000 多人的 Electron Meetup 和 CovalenceConf，2011–2018 年在 dotJS、NodeSummit、Microsoft //build 等二十多场会议演讲（见 <a href="https://felixrieseberg.com/speaking/">Speaking</a> 页）。2026 年的播客访谈有 5 期：Latent Space（3 月）、The MAD Podcast（4 月）、How I AI（5 月）、Summation（7 月）、Hanselminutes（8 月，聊 Language Model Builder）。</p>
+<p>网站本身也是作品：默认是一个可交互的 3D 房间，90 年代德国电影里记者的书桌、录像带当作品集，设备不合适时自动切到“静态版”。他在页面上写道，个人网站是互联网上“为数不多仍有创意和乐趣的地方”。这个房间怎么做出来的，见下文精选第 1 篇。</p>
+
+<h2>他在做什么：项目</h2>
+<p>首页“Projects”栏列了 6 个，About 页另提到 MCPB：</p>
+<table><thead><tr><th>项目</th><th>年份</th><th>一句话</th></tr></thead><tbody>
+<tr><td><a href="https://www.electronjs.org">Electron</a></td><td>2016–</td><td>用 Web 技术写跨平台桌面应用的框架，他自 2016 年起参与维护（VS Code、Slack、Claude 等都基于它）。</td></tr>
+<tr><td><a href="https://www.electronjs.org/fiddle">Electron Fiddle</a></td><td>2018–</td><td>零配置试 Electron 的小实验场，可切换任意版本。</td></tr>
+<tr><td><a href="https://felixrieseberg.github.io/clippy/">Clippy</a></td><td>2025–</td><td>把 Office 97 的“大眼夹”搬回桌面，在本机运行语言模型。</td></tr>
+<tr><td><a href="https://languagemodelbuilder.com">Language Model Builder</a></td><td>2026–</td><td>免费 Mac 应用：先讲清语言模型怎么工作，再让你自己训练一个小模型。</td></tr>
+<tr><td><a href="https://github.com/felixrieseberg/windows95">windows95</a></td><td>2018–</td><td>装在 Electron 里的完整 Windows 95，模拟靠 v86。</td></tr>
+<tr><td><a href="https://github.com/felixrieseberg/macintosh.js">macintosh.js</a></td><td>2020</td><td>Electron 里装一台跑 Mac OS 8 的 1991 年 Macintosh Quadra，模拟靠 Basilisk II。</td></tr>
+<tr><td><a href="https://github.com/modelcontextprotocol/mcpb">MCPB</a></td><td>—</td><td>About 页列为他最自豪的项目之一（Model Context Protocol 组织下的 MCP 打包格式仓库）。</td></tr>
+</tbody></table>
+<p>他自嘲 <em lang="en">“an uncurable addiction to building things I find fun and cute”</em>（无可救药地爱做好玩又可爱的东西），所以货架上大多是 Electron 应用。</p>
+
+<h2>精选 5 篇（AI / 智能体 / 工具 / 手艺）</h2>
+
+<h3>1. Made by mechanical means（2026-09-27）</h3>
+<p><a href="https://felixrieseberg.com/made-by-mechanical-means/">原文 ↗</a> · 约 13 分钟 · 标签 claude、Workflow</p>
+<p>大家问他最多的不是功能需求，而是“你自己怎么用 Claude”。这篇用重做个人主页做示范：<strong>不碰代码、不在本地运行、不开 GitHub、也没用传统意义上的 Claude Code</strong>，全程 Opus 5.5。</p>
+<ul>
+<li><strong>结构</strong>：一个 Claude Project 负责整件事，下面分出约 60 个线程，很多并行。每个线程有自己的云端电脑，自己装 Blender、FFmpeg、Playwright，用无头浏览器截图自查，再发布私有预览页。所有线程共享一个文件夹和一份记忆；Claude 会把他做过的决定写进记忆，新线程自动遵守。他说现在和 Claude 谈的“更多是目标，而不是怎么做”。</li>
+<li><strong>发散</strong>：像对设计团队一样丢一堆灵感（90 年代锐舞海报、电影、广告），10 个线程并行出方向，喜欢的就“再给五个变体”，共 25 个草案。Claude 提出“每件作品是一盘录像带”，和他想要的“90 年代德国电影里记者的房间”合在一起；第二稿在第一次需求后 39 分钟就到了，最终迭代约 60 轮。</li>
+<li><strong>房间</strong>：约 3000 行 Python 把 Blender 当库来驱动（录像带、90 年代书桌、米色老 PC、身后半个房间各一个脚本）；纹理也是程序噪声。为了柔和的反弹光，用 Cycles 路径追踪把光照烘焙进贴图，电视光单独一层，由当前录像带的颜色染色。窗外是一张 CC BY 照片，用 Depth Anything V2 生成 50 KB 深度图做视差和火车遮挡。</li>
+<li><strong>内容</strong>：仿拍 Herzog 纪录片里“虚无主义企鹅”的 CGI 版（逐镜头跟踪机位，渲染 2787 帧），再加上公司旗帜等梗；三首配乐由 Claude 先写谱、再写合成器，用 Python 合成。他只给“Rick Rubin 式”的反馈：喜欢 / 再少一点兴奋。</li>
+<li><strong>质量</strong>：<em lang="en">“I’m not reading the code.”</em>（我不读代码。）他用当工程经理的办法保证质量：严格流程与测量，加上专门找茬的对抗式 QA 线程（写了约 3000 行问题记录，协调线程把问题派回负责的线程）。<em lang="en">“A single Claude thread doesn’t write perfect code, a fleet of Claudes holding each other accountable meet my bar.”</em>（单个线程写不出完美代码，互相问责的一群 Claude 能达到我的标准。）</li>
+<li><strong>性能</strong>：<em lang="en">“Models are very good at hillclimbing.”</em> 给线程定帧率、draw call 等目标；用多角度截图逐像素比对，确认提速不是靠降画质换来的。</li>
+<li><strong>结尾</strong>：他承认会有人觉得没学过 3D 的人不该自称做 3D。他引了波德莱尔 1859 年对摄影进入沙龙的刻薄评论，标题“机械手段制成”就出自这里。</li>
+</ul>
+
+<h3>2. How to be more ambitious: A tutorial for humans with models（2026-10-13）</h3>
+<p><a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/">原文 ↗</a> · 本站完整导读：<a href="../felix-ambitious/">如何更有野心（导读）</a></p>
+<p>上一篇讲“怎么做”，这篇讲“敢想多大”。他把用 AI 的野心分成四维：<strong>速度</strong>（略过）、<strong>高度</strong>（问“目标之后的目标”，例如从修一个崩溃变成保持零崩溃，并改造工作流让模型能拿到崩溃报告、自己复现验证）、<strong>深度</strong>（坚持顶尖工具、定离谱目标、让模型对抗式复核假设、产生新知识、找外部裁判）、<strong>广度</strong>（把名词换成动词，组一支“劫案团队”，但不要变成角色扮演）。根因是心理学的<strong>自我效能感</strong>：限制我们的往往是相信什么可能。</p>
+
+<h3>3. Things people get wrong about Electron（2025-01-21）</h3>
+<p><a href="https://felixrieseberg.com/things-people-get-wrong-about-electron/">原文 ↗</a> · 约 5 分钟</p>
+<p>维护 Electron 十年后，他第一次系统写下“为什么用 Web 技术写界面、为什么要捆绑 Chromium”（另见 Electron 官网的 Why Electron 文档），并逐条反驳网上的误解：</p>
+<ul>
+<li><strong>“JS 对抗原生”</strong>：Electron 的本意是混搭，Web UI 可以配任意多的 C++/Objective-C/Rust，1Password 的主体就是 Rust。他为此做了 SwiftUI、GTK、Win32 版的示例仓库。</li>
+<li><strong>“Web 应用都不好”</strong>：市场不这么看；NASA 任务控制、彭博终端、SpaceX 龙飞船的界面都用 Web 技术。</li>
+<li><strong>“系统 WebView 更快”</strong>：Slack 早期用 MacGap（系统 WebView），用户反而觉得比 Chrome 慢；他没见过证明系统 WebView 更快的数据。捆绑引擎的首要理由其实是<strong>让开发者自己掌控稳定性、安全性和可靠性</strong>，而不是性能。</li>
+<li><strong>“包体太大”</strong>：Electron 应用多在 100–300 MB，但用户实际并不在乎，对比一小时 4K Netflix 约 7 GB。</li>
+</ul>
+<p>结尾呼应 2018 年的《Defeating Electron》：<em lang="en">“Electron isn’t here to compete with anyone.”</em> 谁做出更好的平台，维护者会握手道谢。</p>
+
+<h3>4. Adventures in Measuring JavaScript（2023-11-08）</h3>
+<p><a href="https://felixrieseberg.com/adventures-in-measuring-javascript/">原文 ↗</a> · 约 7 分钟</p>
+<p>一篇诚实的失败记录（写于 Notion 时期）。目标：像包体积那样，每个 PR 都告诉开发者“你让 JS 的 CPU 开销变大还是变小了”。计时行不通：约 15 MB 的 JS，本地多次运行的变异系数约 30%，上云更差。开发者凭直觉也看不出来，比如 VS Code 曾因 CSS 动画光标吃掉 20% CPU。</p>
+<p>他改数 <strong>CPU 指令数</strong>：在物理机 Linux（含 WSL2）上用 perf，加上 Chrome 曾有、2022 年被移除的线程指令计数（只能用 Chrome 101）。小样本的变异系数从计时的约 5% 降到 0.0022%。但它最后没落地：异步工作（fetch、setTimeout）不计入；测的代码越多，GC 等噪声越大，整个应用启动的 CV 又涨到 15% 以上；依赖旧版 Chrome；只能跑在物理机上，进不了云端 CI。结论原话：<em lang="en">“We still don’t know how to tell developers when their JavaScript got a little better or worse.”</em></p>
+
+<h3>5. The Fanciest eCards（2025-02-28）</h3>
+<p><a href="https://felixrieseberg.com/the-fanciest-ecards/">原文 ↗</a> · 约 4 分钟 · 标签 management</p>
+<p>从 Stripe 时期的经理 Jeff Chan 那里学来的习惯：同事周年、生日时，不用 Kudoboard，而是收集大家的祝福，做一个专门为这个人定制的“过度工程”网站，比如给前 Gmail 负责人做的仿 Gmail 界面，以及他自己做的“Buch Fashion Week”“MajaBnb”。他推荐给工程经理的两点好处：一是真正“看见”这个人，避免公司式庆祝的尴尬；二是借机写代码、试新框架和托管服务。时间从哪来？他引了费曼黑板上的 <em lang="en">“What I cannot create, I do not understand”</em>，意思是保持动手本来就是他的硬性要求，贺卡只是把两件本来就要做的事合在一起。</p>
+
+<h2>全部文章目录（42 篇，按主题分组）</h2>
+<p>日期取自原站首页列表。链接均指向原文。</p>
+<h3>AI、Claude 与“带着模型工作”（2026）（2 篇）</h3>
+<table><thead><tr><th>日期</th><th>标题与摘要</th></tr></thead><tbody>
+<tr><td style="white-space:nowrap">2026-10-13</td><td><a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/" lang="en">How to be more ambitious: A tutorial for humans with models</a><br>把用 AI 的野心拆成速度/高度/深度/广度四维，以季度业务回顾（QBR）为例给出提问法，并用“自我效能感”解释我们为何不敢想。本站另有<a href="../felix-ambitious/">单篇导读</a>。</td></tr>
+<tr><td style="white-space:nowrap">2026-09-27</td><td><a href="https://felixrieseberg.com/made-by-mechanical-means/" lang="en">Made by mechanical means</a><br>不打开 GitHub、不在本地跑代码，用一个 Claude Project 指挥约 60 个云端线程重做个人主页：Blender 建模烘焙光照、复刻 Herzog 企鹅镜头、代码合成配乐、对抗式 QA。</td></tr>
+</tbody></table>
+<h3>工程管理与团队（1 篇）</h3>
+<table><thead><tr><th>日期</th><th>标题与摘要</th></tr></thead><tbody>
+<tr><td style="white-space:nowrap">2025-02-28</td><td><a href="https://felixrieseberg.com/the-fanciest-ecards/" lang="en">The Fanciest eCards</a><br>给同事做“过度工程”的定制贺卡网站：既能真正“看见”被庆祝的人，又让工程经理借机动手试新技术。</td></tr>
+</tbody></table>
+<h3>Electron 与桌面应用（12 篇）</h3>
+<table><thead><tr><th>日期</th><th>标题与摘要</th></tr></thead><tbody>
+<tr><td style="white-space:nowrap">2025-01-21</td><td><a href="https://felixrieseberg.com/things-people-get-wrong-about-electron/" lang="en">Things people get wrong about Electron</a><br>逐条回应对 Electron 的常见误解：它不是 JS 对抗原生、系统 WebView 未必更快、用户其实不在乎包体大小；捆绑引擎的首要理由是可控。</td></tr>
+<tr><td style="white-space:nowrap">2023-08-18</td><td><a href="https://felixrieseberg.com/debugging-native-node-js-addons-with-electron/" lang="en">Debugging native Node.js addons with Electron on macOS</a><br>用 lldb 与 Xcode 调试 Electron 应用里的原生 Node.js 插件（如 sqlite3）的进阶技巧。</td></tr>
+<tr><td style="white-space:nowrap">2020-02-03</td><td><a href="https://felixrieseberg.com/on-running-an-electron-contributor-training/" lang="en">On Running an Electron Contributor Training</a><br>维护者为培养 Electron 贡献者办的两天工作坊复盘：为什么办、怎么教、学到了什么。</td></tr>
+<tr><td style="white-space:nowrap">2019-12-01</td><td><a href="https://felixrieseberg.com/codesigning-electron-apps-in-ci/" lang="en">Code-signing Electron Apps in CI</a><br>代码签名相当于应用的 https；讲解如何在 AppVeyor/Circle/Travis 等 CI 中为 macOS 与 Windows 版 Electron 应用签名，这样用手机改个文件也能发布签好名的版本。</td></tr>
+<tr><td style="white-space:nowrap">2019-05-29</td><td><a href="https://felixrieseberg.com/debugging-electron-apps-on-windows/" lang="en">Debugging Native Crashes in Electron Apps on Windows</a><br>从用户机器上的一次崩溃一路追到出错的那行 C++：Windows 上排查 Electron 原生崩溃的教程。</td></tr>
+<tr><td style="white-space:nowrap">2019-04-08</td><td><a href="https://felixrieseberg.com/progressive-web-apps-electron/" lang="en">Progressive Web Apps &amp; Electron</a><br>解释 PWA 是什么、与 Electron 各自适合什么场景，帮开发者在两者之间做选择。</td></tr>
+<tr><td style="white-space:nowrap">2018-08-10</td><td><a href="https://felixrieseberg.com/introducing-electron-fiddle/" lang="en">Introducing Electron Fiddle</a><br>发布 Electron Fiddle：像 JSFiddle/CodePen 一样，零配置地跑小实验、切换任意 Electron 版本。</td></tr>
+<tr><td style="white-space:nowrap">2018-07-12</td><td><a href="https://felixrieseberg.com/defeating-electron/" lang="en">Defeating Electron</a><br>与其在 Hacker News 上抱怨，不如看看 Electron 为何赢：开发效率、Web UI 生态等；想打败它就得把这个空缺填得更好。</td></tr>
+<tr><td style="white-space:nowrap">2017-12-18</td><td><a href="https://felixrieseberg.com/introducing-electron/" lang="en">A Guide to Electron</a><br>介绍作者为 O’Reilly 写的 55 页 Electron 入门指南，汇集在 Microsoft、Slack、Ghost 做桌面应用的经验。</td></tr>
+<tr><td style="white-space:nowrap">2017-04-10</td><td><a href="https://felixrieseberg.com/ember-electron-2/" lang="en">Ember-Electron 2: Building Desktop Apps with Ember and Electron</a><br>Ember-Electron 2 发布：把 Ember 应用打包、编译并制作各平台安装包的工作流统一起来。</td></tr>
+<tr><td style="white-space:nowrap">2017-01-09</td><td><a href="https://felixrieseberg.com/using-native-windows-features-from-electron/" lang="en">Using Native Windows Features from Electron</a><br>面向习惯 Mac 的开发者，介绍 Electron 应用如何调用 Windows 原生能力。</td></tr>
+<tr><td style="white-space:nowrap">2014-11-19</td><td><a href="https://felixrieseberg.com/building-standalone-node-js-apps/" lang="en">Building Standalone Node.js Apps with Node Webkit</a><br>Electron 之前的尝试：用 node-webkit 把 Node 应用、依赖和浏览器打成单个可执行文件。</td></tr>
+</tbody></table>
+<h3>Web 性能、图形与 JavaScript（3 篇）</h3>
+<table><thead><tr><th>日期</th><th>标题与摘要</th></tr></thead><tbody>
+<tr><td style="white-space:nowrap">2024-09-21</td><td><a href="https://felixrieseberg.com/using-webgl-shadertoy-shaders-in-three-js/" lang="en">Using WebGL Shadertoy Shaders in Three.js</a><br>把 Shadertoy 着色器移植进 Three.js（react-three-fiber）场景的步骤；作者说当时主流 LLM 和搜索都答不上来。</td></tr>
+<tr><td style="white-space:nowrap">2023-11-08</td><td><a href="https://felixrieseberg.com/adventures-in-measuring-javascript/" lang="en">Adventures in Measuring JavaScript</a><br>想用 CPU 指令计数替代计时来逐 PR 衡量 JS 开销：方差从约 5% 降到 0.0022%，但异步不计、规模一大就失效、无法上云，最终没有落地。</td></tr>
+<tr><td style="white-space:nowrap">2015-01-15</td><td><a href="https://felixrieseberg.com/ecmascript6-introduction/" lang="en">ECMAScript 6: A Quick Intro to the Future of JavaScript</a><br>ES6（Harmony）新特性速览。</td></tr>
+</tbody></table>
+<h3>Git 与开发工作流（4 篇）</h3>
+<table><thead><tr><th>日期</th><th>标题与摘要</th></tr></thead><tbody>
+<tr><td style="white-space:nowrap">2021-09-01</td><td><a href="https://felixrieseberg.com/better-rebasing/" lang="en">Avoid Git Merge Conflicts During a Big Rebase</a><br>分支落后主干太多、rebase 冲突满屏时，用 <code>git merge --squash</code> 把改动收拾成一个干净的提交。</td></tr>
+<tr><td style="white-space:nowrap">2019-04-17</td><td><a href="https://felixrieseberg.com/managing-node_modules-and-branches/" lang="en">Dependencies and Git branches</a><br>每次切分支都要重装 node_modules？推荐用 <code>git worktree</code> 让每个分支有自己的工作目录和依赖。</td></tr>
+<tr><td style="white-space:nowrap">2015-07-23</td><td><a href="https://felixrieseberg.com/a-peer-review-bot-for-github/" lang="en">A Peer Review Bot for GitHub</a><br>微软开源团队用 Node.js 机器人追踪博客 PR 的同行评审是否达标。</td></tr>
+<tr><td style="white-space:nowrap">2014-07-17</td><td><a href="https://felixrieseberg.com/the-windows-dev-environment/" lang="en">The Small Windows Dev Environment</a><br>面向 Unix 背景开发者的 Windows 工具清单（PowerShell、Chocolatey 等）。</td></tr>
+</tbody></table>
+<h3>开源与职业（3 篇）</h3>
+<table><thead><tr><th>日期</th><th>标题与摘要</th></tr></thead><tbody>
+<tr><td style="white-space:nowrap">2015-03-09</td><td><a href="https://felixrieseberg.com/open-source-newcomers/" lang="en">Open Source: A Small Guide for Newcomers</a><br>新手参与开源的 101：约定、规则与沟通方式。</td></tr>
+<tr><td style="white-space:nowrap">2015-02-05</td><td><a href="https://felixrieseberg.com/open-source-engineer-microsoft/" lang="en">What is a Microsoft Open Source Engineer, anyway?</a><br>解释“微软开源工程师”这个当年听来矛盾的职位到底做什么。</td></tr>
+<tr><td style="white-space:nowrap">2013-11-11</td><td><a href="https://felixrieseberg.com/node-mayhem-an-open-source-node-js-html5-multiplayer-shooter/" lang="en">Node Mayhem: An Open-Source Node.js HTML5 Multiplayer Shooter</a><br>Node Knockout 黑客松上做的 HTML5 多人射击小游戏，开源供人参考。</td></tr>
+</tbody></table>
+<h3>微软时期：Azure、Windows 与 Node 部署（2012–2016）（17 篇）</h3>
+<table><thead><tr><th>日期</th><th>标题与摘要</th></tr></thead><tbody>
+<tr><td style="white-space:nowrap">2016-01-29</td><td><a href="https://felixrieseberg.com/running-your-own-parse-with-azure-and-docker/" lang="en">Running your own Parse with Azure and Docker</a><br>Parse 关停后，用 Docker 镜像 + Azure 模板几分钟自建 Parse 服务。</td></tr>
+<tr><td style="white-space:nowrap">2015-09-02</td><td><a href="https://felixrieseberg.com/using-travis-to-deploy-apps-to-azure/" lang="en">Using Travis to Deploy Apps to Azure</a><br>用 Travis CI 的部署引擎把应用自动发布到 Azure。</td></tr>
+<tr><td style="white-space:nowrap">2015-08-18</td><td><a href="https://felixrieseberg.com/flynn-azure/" lang="en">Deploying Flynn Clusters on Azure</a><br>在 Azure 上部署 Flynn PaaS 集群。</td></tr>
+<tr><td style="white-space:nowrap">2015-08-14</td><td><a href="https://felixrieseberg.com/deploy-jekyll-pages-using-git-and-travis-ci/" lang="en">Deploy Jekyll Pages using Git and Travis CI</a><br>不搭 Ruby 服务器，用 Travis 构建 Jekyll 站点并推送到自控主机。</td></tr>
+<tr><td style="white-space:nowrap">2015-06-26</td><td><a href="https://felixrieseberg.com/npm-v3-is-out-and-its-a-really-big-deal-for-windows/" lang="en">npm@3 is here and it's a huge deal for Windows</a><br>npm@3 扁平化依赖、修掉安装竞态，解决 Windows 路径过长等老问题。</td></tr>
+<tr><td style="white-space:nowrap">2015-06-17</td><td><a href="https://felixrieseberg.com/wicked-cool-excel-functions-with-blockspring/" lang="en">Wicked Cool Excel Functions with Blockspring</a><br>介绍 YC 公司 Blockspring：用多种语言写可在表格里调用的云函数。</td></tr>
+<tr><td style="white-space:nowrap">2015-04-12</td><td><a href="https://felixrieseberg.com/twitter-clone-azure-mobile-services/" lang="en">Building a Android Twitter Clone with Azure Mobile Services</a><br>用 Azure Mobile Services 做一个安卓版 Twitter 克隆的教程。</td></tr>
+<tr><td style="white-space:nowrap">2015-04-08</td><td><a href="https://felixrieseberg.com/installing-ghost-on-azure/" lang="en">Installing Ghost on Azure</a><br>一键把 Ghost 博客部署到 Azure。</td></tr>
+<tr><td style="white-space:nowrap">2015-03-11</td><td><a href="https://felixrieseberg.com/improved-ember-cli-performance-with-windows/" lang="en">Improved Ember Cli Performance with Windows</a><br>调整 Windows Defender 与搜索索引，显著加快 Ember CLI 构建。</td></tr>
+<tr><td style="white-space:nowrap">2015-02-27</td><td><a href="https://felixrieseberg.com/deis-azure-coreos/" lang="en">Host your own Heroku-style platform with Deis and Azure</a><br>用 Deis + CoreOS 在 Azure 上自建 Heroku 式平台。</td></tr>
+<tr><td style="white-space:nowrap">2015-02-21</td><td><a href="https://felixrieseberg.com/deploying-ember-cli-to-azure-websites/" lang="en">Deploying Ember Cli to Azure Websites</a><br>一个让 Azure Websites 自动编译并部署 Ember CLI 应用的 npm 模块。</td></tr>
+<tr><td style="white-space:nowrap">2015-02-17</td><td><a href="https://felixrieseberg.com/deploying-sailsjs-apps-in-seconds/" lang="en">Deploying SailsJS Apps in Seconds</a><br>和 Sails 作者一起实现 <code>sails deploy</code> 一键部署。</td></tr>
+<tr><td style="white-space:nowrap">2015-02-06</td><td><a href="https://felixrieseberg.com/node-0-12-stable-and-azure-websites/" lang="en">Node 0.12 (Stable) and Azure Websites</a><br>Node 0.12 发布当天在 Azure Websites 上的支持说明。</td></tr>
+<tr><td style="white-space:nowrap">2015-01-19</td><td><a href="https://felixrieseberg.com/iojs-on-azure-websites/" lang="en">Azure Websites and io.js</a><br>一个让 Azure Websites 自动下载并使用 io.js 的部署脚本。</td></tr>
+<tr><td style="white-space:nowrap">2014-10-21</td><td><a href="https://felixrieseberg.com/the-ghost-updater-for-azure-websites/" lang="en">The Ghost Updater for Azure Websites</a><br>为 Azure 上的 Ghost 博客做的一键升级桌面工具。</td></tr>
+<tr><td style="white-space:nowrap">2012-12-23</td><td><a href="https://felixrieseberg.com/mapping-skydrive-as-a-folder-on-windows-rt/" lang="en">Mapping SkyDrive as a folder on Windows RT</a><br>在 Windows RT 上把 SkyDrive 映射为网络驱动器。</td></tr>
+<tr><td style="white-space:nowrap">2012-12-22</td><td><a href="https://felixrieseberg.com/windows-8-displaying-a-clock-on-live-tiles/" lang="en">Windows 8: Displaying a clock on Live Tiles</a><br>在 Windows 8 应用生命周期限制下，让动态磁贴显示时钟的做法。</td></tr>
+</tbody></table>
+
+<h2>反复出现的主题</h2>
+<ul>
+<li><strong>Web 技术做桌面 / 跨平台。</strong>从 2014 年的 node-webkit 到 Electron、Fiddle、windows95，再到他在 Slack、Notion、Anthropic 负责的桌面客户端，十几年一条主线。</li>
+<li><strong>开发者体验与“让东西能跑起来”。</strong>微软时期大量“一键部署到 Azure”“让 npm 在 Windows 上能用”的文章；后来是代码签名、崩溃调试、贡献者培训。</li>
+<li><strong>测量优先于直觉。</strong>从 JS 指令计数实验，到用像素差验证性能提升、给线程设帧率目标，他一直在找“可测的裁判”。</li>
+<li><strong>工程经理的视角。</strong>不逐行审查也能保证质量：靠流程、测量和对抗者。这套办法后来直接搬去管理一群 Claude。</li>
+<li><strong>好玩的东西也值得认真做。</strong>Clippy、复古模拟器、定制贺卡、3D 房间主页。他把“有趣”当作学新技术的入口。</li>
+<li><strong>2026 年转向“带着模型工作”。</strong>最新两篇都在讲：目标比做法重要，大胆提要求，用一群模型互相检查。</li>
+</ul>
+
+<h2>对我们的启发</h2>
+<ul>
+<li><strong>把“一个助手”换成“一个负责人 + 一群线程”。</strong>项目级共享文件夹和记忆、每个线程有自己的电脑、每轮都发可点的预览页，这比在一个对话里反复改更接近真实团队。本库的翻译/上站流水线也可以这样拆。</li>
+<li><strong>质量靠机制，不靠通读。</strong>对抗式 QA 线程、问题派回负责人、多轮收敛，和 <a href="../anthropic-code-review/">Claude Code 团队的代码评审</a>是同一思路；规模再上去，就会碰到 <a href="../anthropic-source-control/">Scion</a> 讲的基础设施瓶颈。</li>
+<li><strong>先找到可靠的裁判，再让模型爬坡。</strong>JS 指令计数那篇说明，测量本身可能比优化更难。给智能体定目标前，先确认指标稳定、能防作弊（比如用像素差防止拿画质换速度）。可参考本库的 <a href="../flameox/">flameox</a>。</li>
+<li><strong>“不会”不再是不做的理由。</strong>他不会 Blender、不懂作曲，靠描述加反馈做成了 3D 场景和配乐。代码驱动 Blender、代码合成音乐，和 <a href="../huashu-motion/">Huashu-motion</a>、<a href="../saccc-little-prince-3d/">小王子 3D</a> 等页的做法相通。</li>
+<li><strong>野心是可以练的。</strong>配合<a href="../felix-ambitious/">《如何更有野心》</a>读：每次布置任务前，先问一句“目标之后的目标是什么”。</li>
+<li><strong>个人网站可以是作品本身。</strong>可以和本库的<a href="../personal-sites-gallery/">个人网站画廊</a>对照着看。</li>
+</ul>
+
+<h2>说明与缺口</h2>
+<ul>
+<li>信息来源：首页（静态版）、About、Interviews、Speaking 页，sitemap 与 42 篇文章的公开页面，均为 2026-10-18 抓取；只读公开页面、sitemap 与 RSS，未调用任何接口。</li>
+<li>首页列表日期与文章页、sitemap 的修改时间偶有出入（例如 sitemap 显示《Adventures in Measuring JavaScript》在 2026-10-17 更新过），本页按首页日期。</li>
+<li>未收听播客，未下载或核实 GitHub 项目内容；“自述”数据（如 Apfeltalk 访问量、游戏玩家数）未独立核实。</li>
+<li>站上还有一个 2019 年的 <a href="https://felixrieseberg.com/js-course/">js-course</a> 页面，未收录。</li>
+</ul>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>中文导读整理：zh-blog-mirrors。原站与文章 © Felix Rieseberg，未标注开放许可；本页只做导读与简短引用，请<a href="https://felixrieseberg.com/">访问原站</a>阅读全文。移除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">GitHub Issue</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://felixrieseberg.com/" rel="noopener">felixrieseberg.com/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
