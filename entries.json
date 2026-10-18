@@ -371,5 +371,15 @@
     "date": "2026-10-18",
     "type": "导读",
     "original_url": "https://x.com/hohomngkj148497/status/2111458644898574786"
+  },
+  {
+    "slug": "mg-styles-15",
+    "title": "15 种 MG 动态设计风格：每种一支 10 秒代码成片 + 完整提示词 + 全部源码",
+    "desc": "Vincentwei1021/mg-styles-15（MIT）：Claude Opus 5.5 纯代码写出的 15 支 10 秒 MG 短片（画面+配乐都是代码）。15 张风格卡（中文名/样子/适用/关键参数/封面帧）、提示词通用骨架与 15 份风格专属段全译、评审 rubric 全译、README 中文全文与启发。",
+    "source": "Vincentwei1021/mg-styles-15（MIT）",
+    "date": "2026-10-19",
+    "type": "翻译",
+    "subtitle": "15 Motion Design Styles — one 10-second film each, made by Claude Opus 5.5 writing code",
+    "original_url": "https://github.com/Vincentwei1021/mg-styles-15"
   }
 ]
