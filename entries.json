@@ -1,5 +1,15 @@
 [
   {
+    "slug": "h3-motion-context",
+    "title": "ComfyUI-H3-Motion-Context",
+    "desc": "让 MiniMax H3 片段首尾无缝续接的 ComfyUI 节点包：把上一段末 22 帧画面与声音从 latent 直接钉进下一段开头。项目导读 + README 中文全译（GPL-3.0）。",
+    "source": "NikoDemon80/ComfyUI-H3-Motion-Context（GitHub）· 烁皓 @eternityspring 推荐",
+    "date": "2026-10-19",
+    "type": "导读",
+    "subtitle": "Clip chaining for MiniMax H3 in ComfyUI",
+    "original_url": "https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context"
+  },
+  {
     "slug": "felix-site",
     "title": "Felix Rieseberg 的个人网站：从 Electron 到 Claude（导读）",
     "desc": "Anthropic 工程经理、Electron 共同维护者 Felix Rieseberg 的个人站导读：经历与项目（Clippy、Language Model Builder、windows95…）、42 篇文章分主题目录，精选 5 篇（60 个 Claude 线程重做主页、如何更有野心、Electron 误解、JS 指令计数实验、定制贺卡）与启发。",

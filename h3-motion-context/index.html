@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ComfyUI-H3-Motion-Context：MiniMax H3 片段无缝续接（项目导读 + README 中文全译）</title>
+<meta name="description" content="ComfyUI-H3-Motion-Context 项目导读：把上一段的末尾帧与声音直接从 latent 钉进下一段开头，让 MiniMax H3 的 15 秒片段首尾续接。GPL-3.0，附 README 中文全译。" />
+<meta property="og:image" content="images/repo-page.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-19">2026.10.19</time></p>
+<h1 class="za-title">ComfyUI-H3-Motion-Context：让 MiniMax H3 片段首尾无缝续接</h1>
+<p class="za-sub" lang="en" data-za-gen>Clip chaining for MiniMax H3 in ComfyUI</p>
+<p class="za-meta" data-za-gen><span>来源 · NikoDemon80/ComfyUI-H3-Motion-Context（GitHub）· 烁皓 @eternityspring 推荐</span><span>收录 · 2026-10-19</span><span><a href="https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context" rel="noopener">github.com/NikoDemon80/ComfyUI-H3-Motion-Context</a> · 作者 NikoDemon80 · 推荐：烁皓 <a href="https://x.com/eternityspring/status/2106011333775032522" rel="noopener">@eternityspring</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>MiniMax H3 一次最多生成 15 秒。这个 ComfyUI 节点包把上一段的最后 22 帧画面和末尾那一段声音，直接从 latent 里切出来钉在下一段开头，所以下一段是<em>接着</em>上一段往下演，不是看着一张截图重新猜。</div>
+
+<p><span class="tag">★ 1,275 stars</span> <span class="tag">139 forks</span> <span class="tag">GPL-3.0</span> <span class="tag">Python + JS</span> <span class="tag">v0.7.1 · 2026-10-18</span> <span class="tag">ComfyUI ≥ 0.34.0</span></p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-19 13:45（UTC+8）。仓库创建于 2026-08-07，共 11 个 release、20 个提交、3 位贡献者，最后一次推送在 2026-10-18 12:25（UTC+8）。</p>
+
+<figure><img src="images/repo-page.webp" alt="ComfyUI-H3-Motion-Context 的 GitHub 仓库页截图" loading="lazy"><figcaption>GitHub 仓库页（2026-10-19 截图）</figcaption></figure>
+
+<h2 id="what">它解决什么问题</h2>
+<p>用 MiniMax H3 做短剧、MV 或长镜头，单次生成的长度不够用，只能一段一段拼。常见做法是把上一段的最后一帧当首帧，再做一次图生视频。问题在于一张静止图片不带运动信息：人物刚才往哪个方向走、走多快，模型只能猜，所以接缝处容易卡一下，或者动作突然变了。声音更麻烦，新一段的音轨往往只是“听起来像”，并不是同一段录音接着放下去。</p>
+<p>按 README 的说法，ComfyUI 自带的 <code>Add Guide for MiniMax H3</code> 已经能在任意帧上锚定图片或短片。如果只需要锚帧，用自带节点就够了。这个包专门处理串接时还没人解决的两件事：</p>
+<ul>
+<li><strong>画面不再每接一次就过一遍像素。</strong>Add Guide 的输入是图片，所以每接一次都要解码、缩放、再编码，颜色漂移和画面变软就是这么累积出来的。本包直接从上一段的 latent 里切出尾部，钉住的帧在数值上和原来逐位相同。</li>
+<li><strong>声音是接着放，不是重新开始。</strong>Add Guide 锚定的音频从某一帧开始往后延伸。要真正接上一条音轨，钉住的窗口必须<em>止于</em>接缝，并向前覆盖已经播过的那段声音。</li>
+</ul>
+
+<h2 id="features">核心能力</h2>
+<div class="grid">
+<div class="card"><div class="card-body"><h3>Motion Context 主节点</h3><p class="syn">把上一段末尾的 5、22、39 或 56 帧（推荐 22 帧，约 0.92 秒）钉在下一段开头，采样的每一步都不改动这些帧。</p><p class="meta">输出 conditioning + trim_frames</p></div></div>
+<div class="card"><div class="card-body"><h3>反向音频窗口</h3><p class="syn">钉住的声音窗口止于接缝，向前回溯（推荐 18 帧），放在新片段自己的时间轴上，节拍不再错位，也不会再出现“翻唱乐队”式的相似音。</p><p class="meta">audio_context_length</p></div></div>
+<div class="card"><div class="card-body"><h3>Trim 剪头</h3><p class="syn">把新片段开头被钉住的帧连同对应声音一起剪掉，前后两段直接首尾拼接，不需要转场；<code>match_tail</code> 修正每段约 8ms 的音频取整误差。</p><p class="meta">Motion Context Trim</p></div></div>
+<div class="card"><div class="card-body"><h3>Save / Load Latent</h3><p class="syn">通过文件把上一段的音视频 latent 带到下一次运行，避开 ComfyUI 的循环连接限制，全程不经过像素。按 <code>clip_00002.safetensors</code> 这样的规则编号。</p><p class="meta">支持 stock_format 与 input 文件夹</p></div></div>
+<div class="card"><div class="card-body"><h3>Chain 一键接龙</h3><p class="syn">Run/Re-roll、Approve、Chain、Reset、Clear latents 五个按钮；<code>segments</code> 设定连续生成几段，设为 0 就一直生成，直到点 Stop。</p><p class="meta">需要与 Load/Save 放在同一个 canvas group</p></div></div>
+<div class="card"><div class="card-body"><h3>布局自检</h3><p class="syn">不修改 ComfyUI，也不改磁盘上的任何文件。首次渲染前会对照当前运行的 ComfyUI 代码校验锚点算法，一旦假设不成立就拒绝运行，并说明哪里变了。</p><p class="meta">layout_contract.py</p></div></div>
+<div class="card"><div class="card-body"><h3>接缝测量</h3><p class="syn">Seam Probe 节点和三个命令行脚本，分别测时序（是真续接还是相似音）、响度/底噪是否跳变、画面是否冻结。</p><p class="meta">seam_probe / level_step / freeze_detect</p></div></div>
+<div class="card"><div class="card-body"><h3>抑制漂移（实验）</h3><p class="syn">v0.7 新增 Refine Blend（一步精修后混入）、Join Match（消除接缝处亮度、对比度和细节的跳变）、Sigmas Tail（减轻最后一步过度锐化）。</p><p class="meta">行为与默认值后续可能会改</p></div></div>
+</div>
+
+<h2 id="how">工作原理</h2>
+<div class="tl">
+<div>片段 A<br>已生成，latent 存盘</div>
+<div class="w">A 末 22 帧画面<br>+ 末尾声音</div>
+<div class="i">钉在 B 开头<br>采样时保持不变</div>
+<div>Trim 剪掉<br>B 的头 22 帧</div>
+<div class="w">A ＋ B<br>直接首尾拼接</div>
+</div>
+<p class="caption">示意：钉住的帧是“真实的运动”，模型不用从一张截图去猜方向和速度。</p>
+<p>按 README 的解释，关键不在“喂什么”，而在<strong>时间坐标</strong>。早期版本把钉住的音频当作 reference 送进去，模型就把它理解成“另一段听起来像这样的片段”，结果接缝处总有一下“咔哒”，像节拍短暂地快了、错拍了。作者用互相关对比每段开头和上一段结尾，发现两边乐器一样、律动一样，却从来不是同一段录音。修正办法和视频一样：模型看到的数据行内容不变，只是把钉住的音频放到新片段自己的时间轴上，并让它与钉住的视频在同一时刻结束。这样，时间坐标表达的就是“本片段更早的部分”，而不再是“另一个片段”。</p>
+<pre><code>MiniMaxH3ImageToVideo / MiniMaxH3ReferenceToVideo（或 t2v 路径）
+  -&gt; H3 Motion Context      &lt;- 上一段的 latent（画面 + 声音）
+  -&gt; guider / sampler
+  ...
+  解码得到的 IMAGE + AUDIO
+  -&gt; H3 Motion Context Trim         &lt;- 接入 trim_frames
+  -&gt; Create Video / 保存
+
+本次运行：SamplerCustomAdvanced -&gt; H3 Motion Context Save Latent
+下次运行：H3 Motion Context Load Latent -&gt; context_latent</code></pre>
+
+<h2 id="quickstart">快速上手</h2>
+<p><strong>1. 安装：</strong>要求 ComfyUI 0.34.0 或更新版本（旧版请用本包 v0.3.1）。把仓库放进 <code>custom_nodes</code>，然后重启 ComfyUI。也可以通过 ComfyUI Manager 安装（发布者 ID 为 <code>nikodemon80</code>）。注意只装一份，改过文件夹名的备份同样会被加载。</p>
+<pre><code>cd ComfyUI/custom_nodes
+git clone https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context
+# 重启 ComfyUI，启动日志应出现：
+# h3_motion_context: nodes registered. ComfyUI is not modified; ...</code></pre>
+<p><strong>2. 载入示例工作流：</strong><code>example_workflows/H3-Motion-Context-v0.7.json</code>（Ref2VA 参考生视频路径），附带角色参考图 <code>character.png</code>、示例提示词和写 Ref2VA 提示词用的系统提示词。所有新节点都已按推荐参数接好。</p>
+<p><strong>3. 推荐配置（README 里所有“能用”指的都是这一套）：</strong></p>
+<pre><code>context_length        22     # 约 0.92 秒画面
+audio_context_length  18     # 3 的倍数可正好落在 40 Hz 音频网格上
+context_latent        经 Save/Load Latent 接入
+Trim                  画面与声音都接上，match_tail 打开
+Spectrum              关闭（Turbo LoRA 同样会损失音质）</code></pre>
+<p><strong>4. 生成：</strong>第一段设为 Load 0 / Save 1，点 Chain 节点上的 <em>Run/Re-roll</em>；结果满意就点 <em>Approve</em>（索引变为 1/2 并生成下一段），或者设好 <code>segments</code> 后点 <em>Chain</em> 自动接龙。不要用 ComfyUI 的 run on change 来推进链条。</p>
+<p><strong>5. 自测（不需要 ComfyUI，也不需要 GPU）：</strong></p>
+<pre><code>python tests/_mock_harness.py
+python tests/_node_smoke_test.py
+python tests/seam_probe.py A.flac B_untrimmed.flac
+python tests/level_step.py clip*.flac
+python tests/freeze_detect.py clip*.mp4</code></pre>
+
+<h2 id="examples">示例素材</h2>
+<figure><img src="images/character.webp" alt="示例工作流附带的角色三视图参考图" loading="lazy"><figcaption>仓库示例工作流附带的角色参考图 <code>example_workflows/character.png</code>（已压缩）</figcaption></figure>
+<p>示例工作流共有 7 个分组：Model Loading、Character Reference、Prompting、Motion Context、Sampling、Full Motion Context、Decode &amp; View。节点包括 <code>MiniMaxH3ReferenceToVideo</code>、本包的 7 个节点，以及若干第三方节点（如 <code>VedaSparseAttention</code>、<code>ResolutionSelectorLive</code>、<code>VideoOasisPreview</code>），所以载入后可能需要另外安装缺失的节点。</p>
+<p>README 的提示词章节来自作者的一次实测：用本包串接 16 段，生成了一集 4 分 34 秒的多机位情景喜剧，分辨率 736×576，显卡 5070 Ti，耗时约两小时。同一批数据中，只续接画面时接缝响度跳变的中位数是 0.905，连同音频一起续接后降到 0.16。</p>
+
+<h2 id="structure">项目结构</h2>
+<table>
+<tr><th>文件</th><th>作用</th></tr>
+<tr><td><code>nodes.py</code></td><td>核心节点：Motion Context、Trim、Save/Load Latent、Chain（约 60KB）</td></tr>
+<tr><td><code>layout_contract.py</code></td><td>首次渲染前校验 ComfyUI H3 布局，不做任何修改</td></tr>
+<tr><td><code>probe_node.py</code></td><td>Seam Probe：在工作流内部测量接缝</td></tr>
+<tr><td><code>refine_blend.py</code> / <code>join_match.py</code> / <code>sigma_tools.py</code></td><td>v0.7 的三个实验性抗漂移节点</td></tr>
+<tr><td><code>csrf_guard.py</code></td><td>确认对 Chain 路由的请求来自 ComfyUI 自己的页面</td></tr>
+<tr><td><code>web/h3_motion_context.js</code></td><td>Chain 按钮，以及让 Load/Save/Refine Blend 的索引保持同步</td></tr>
+<tr><td><code>tests/</code></td><td>6 个脚本：3 个依赖 numpy 的单元/冒烟测试，3 个测量脚本</td></tr>
+<tr><td><code>example_workflows/</code></td><td>v0.7 示例工作流 + 角色参考图</td></tr>
+<tr><td><code>CHANGELOG.md</code></td><td>各版本变更，以及适配哪一版 ComfyUI H3 布局</td></tr>
+</table>
+
+<h2 id="limits">局限与注意</h2>
+<ul>
+<li><strong>链条越长，质量越差，音频尤其明显。</strong>每一段都由上一段的输出生成，像复印件再复印，高频最先丢失。节拍能保持住，但几段之后声音会发闷。画面要稳得多。</li>
+<li><strong>H3 输出的音频是 32 kHz，不是 48 kHz。</strong>如果拼接脚本里写死了 48000，长片尾部可能悄无声息地变成静音。</li>
+<li><strong>Turbo LoRA 和 Spectrum 这类跳步优化都会损失音质</strong>，同时用影响会叠加。用本包时建议关掉 Spectrum。</li>
+<li><strong>链条中途不能改分辨率</strong>（latent 无法缩放，节点会拒绝运行）。</li>
+<li><strong>写提示词要下功夫：</strong>模型会把相互矛盾的描述“全都画出来”。建议用“气闸”写法：下一段先保持上一段的收尾构图约两秒，不加台词，但要有呼吸、重心转移之类的小动作，再切到新剧情。</li>
+<li><strong>测试面窄：</strong>作者只在一台 Windows 机器上、用一种分辨率和一个采样器验证过，听感结论来自他一个人的渲染结果。</li>
+<li><strong>许可：</strong>代码为 GPL-3.0。README 提醒，据称 H3 社区许可目前不覆盖欧盟、英国、韩国和美国，商用前请自行核实。</li>
+<li>节点的 widget 改过。旧工作流载入后数值可能错位，需要删掉节点重新添加、重新连线。</li>
+</ul>
+
+<h2 id="audience">适合谁</h2>
+<ul>
+<li>用 ComfyUI + MiniMax H3 做短剧、MV、长镜头，需要超过 15 秒连续画面的创作者；</li>
+<li>对音画同步、节拍连续性要求高的音乐类内容（README 的验证素材正是节奏密集的电子乐和人声朗读）；</li>
+<li>想研究“视频模型续写”原理的开发者：代码里有完整的布局校验和接缝测量工具，可以直接拿来做实验。</li>
+</ul>
+
+<h2 id="takeaways">对我们的启发</h2>
+<ul>
+<li><strong>续写要给模型真实的运动，不能只给一张图。</strong>不只是视频，凡是要“接着生成”的场景（音频、长文、动作序列），重叠一段真实上下文都比只给最后一个状态可靠。</li>
+<li><strong>别在压缩空间外来回转换。</strong>保持在 latent 里操作，省掉解码再编码的往返，长链路上的漂移会少很多。这个思路适用于任何多轮生成管线。</li>
+<li><strong>宁可出错时停下来，也不要悄悄输出坏结果。</strong>依赖上游的内部实现时，先用契约测试做自检，不成立就拒绝运行并报出原因。这比事后排查一段坏渲染便宜得多。</li>
+<li><strong>用数字评估接缝。</strong>用互相关、响度跳变、冻结检测把“听起来像”和“真的接上了”区分开，作者也明确说“数字比夸奖更有用”。</li>
+<li><strong>提示词也要接得上。</strong>技术把运动带过了接缝，剧情怎么接仍然靠写法：先描述上一段怎么结束的，再写新的内容。</li>
+</ul>
+
+<h2 id="post">推荐者怎么说</h2>
+<div class="xpost">
+<p>有朋友问：MiniMax H3 一次最多生成 15 秒，做短剧的话，段和段之间怎么接才不突兀？</p>
+<p>我推荐用 ComfyUI-H3-Motion-Context 的方案，项目中有直接可用的工作流示例。</p>
+<p>常见做法是拿上一段的最后一帧去做图生视频。问题是一张静态图里没有运动信息，模型只能猜：人刚才往哪走、多快，全靠猜，所以接缝处经常卡一下或者动作突变。</p>
+<p>Motion Context 的做法是：把上一段最后 22 帧（0.92 秒）原样钉在下一段开头，每一步采样都不动它们。模型看到的是真实的运动，不用从一张图去猜。</p>
+<p>画面和声音都是直接从上一段的 latent 里切出来的，不用先解码成视频再编码回去，所以不会每接一次就损失一点画质。</p>
+<p>生成完，用 Trim 节点把开头这 22 帧剪掉，两段直接首尾拼接，不需要做转场。我逐帧看了接缝前后，角色的姿势、位置、表情都对得上。</p>
+<p>最关键的是提示词：下一段开头要先描述上一段是怎么结束的。同一个角色、同样的景别、同样的动作，保持一两秒，再写新的剧情。</p>
+<p>项目地址：github.com/NikoDemon80/ComfyUI-H3-Motion-Context</p>
+<p>我不说的话，谁能看出这30s的功夫熊猫是两段生成的？</p>
+<p class="meta">烁皓（@eternityspring）· 2026-10-02 21:20（UTC+8）· <a href="https://x.com/eternityspring/status/2106011333775032522" rel="noopener">原帖</a>（附 29 秒视频）</p>
+</div>
+<figure><img src="images/post-poster.webp" alt="原帖视频封面：功夫熊猫场景" loading="lazy"><figcaption>原帖视频的封面帧（只用封面，未下载视频）。视频请到 <a href="https://x.com/eternityspring/status/2106011333775032522" rel="noopener">X 原帖</a>观看。</figcaption></figure>
+<p>同一条串里，作者回复别人时说，这个方案刚出来时他就分享过，也早就记在了自己的群文档里。（他在回复里把它称作“lora”，但它实际上是一个 ComfyUI 自定义节点包，不是 LoRA 模型。）帖子里的 22 帧 / 0.92 秒、latent 直切、Trim 拼接和提示词建议，README 中都有对应原文。</p>
+
+<h2 id="related">相关页面</h2>
+<ul>
+<li><a href="../minimax-h3-director/">MiniMax H3 Director 工作流：ComfyUI 里 5 种 H3 音视频玩法</a>：涵盖 FL2V 首尾帧、V2V 分段修改等其他 H3 工作流</li>
+<li><a href="../minimax-h3-prompt-rewriter/">MiniMax-H3 Prompt Rewriter for ComfyUI</a>：把一句话扩写成 H3 分镜脚本，可以配合本页的“气闸”写法</li>
+</ul>
+
+<h2 id="appendix">附录：README 中文全译</h2>
+<p class="caption">译自仓库 README.md（main 分支，v0.7.1，2026-10-19 获取）。原作者 NikoDemon80，许可 GPL-3.0。译文保留原有结构，代码和日志保持原样。</p>
+
+<h3>H3 Motion Context</h3>
+<p>把 MiniMax H3 的片段串起来，让运动和声音跨过剪切点继续下去。</p>
+<p>生成片段 A，把它的最后几帧和音频送进这个节点，再生成片段 B。B 会从 A 停下的地方接着走：同样的运动、同样的速度、同样的方向，声音也是同一段继续放下去，而不是一段听起来相似的新录音。可以无限重复。</p>
+<p>磁盘上的东西不会被修改，ComfyUI 本身也不会被修改。首次渲染前，节点会对照当前运行的 ComfyUI 代码检查自己的计算；如果某次更新打破了某个前提，节点会拒绝运行，并说明哪里变了。大声失败，好过一段你没注意到的坏渲染。</p>
+<p>需要 ComfyUI 0.34.0 或更新版本，H3 从这一版起支持任意关键帧锚点。本包 0.3.1 版可在这一版及所有更旧的版本上运行，见 CHANGELOG.md。</p>
+
+<h3>为什么要做这个</h3>
+<p>ComfyUI 可以用 Add Guide for MiniMax H3 节点，把一张静图或一段短片锚定到 H3 生成中的任意一帧。如果你只需要这个，用它就行，不需要本包。</p>
+<p>串接是另一个问题，其中有两部分至今没有别的方案解决。</p>
+<p><strong>画面每接一次就要出到像素再回来。</strong>Add Guide 接收图像并对其编码。用它串接，每个接缝都要付出一次解码、一次缩放、一次重新编码。长链条上的颜色漂移和画面变软，就出在这个往返上。本包直接从上一段的 latent 里切出尾部，所以钉住的帧数值不变，逐位相同。</p>
+<p><strong>声音是重新开始，而不是继续。</strong>Add Guide 锚定的音频从某一帧开始向后延伸。要真正延续一条音轨，钉住的窗口必须<em>止于</em>接缝，并向前回溯到已经播过的声音。这就是“模型继续你的音轨”和“模型写一段听起来像它的东西”之间的区别；只要素材有节拍，你立刻就能听出来。</p>
+<p>其余的一切都从这两点推出来：从交付片段中去掉钉住头部的 Trim 节点；不碰像素、把片段带过去的 Save/Load Latent 一对节点；以及测量接缝究竟是真续接还是逼真模仿的 Seam Probe。</p>
+<p>音频是更难的一半，也是更有用的一半，因为 H3 是同时生成画面和声音的。想知道怎么做到的，见下文“为什么音频要下功夫”。</p>
+
+<h3>安装</h3>
+<p>把文件夹放进 <code>ComfyUI/custom_nodes/</code> 并重启。启动时你只会看到：</p>
+<pre><code>h3_motion_context: nodes registered. ComfyUI is not modified; the layout
+checks run on the first use of a Motion Context node.</code></pre>
+<p>装了这个包，对你其他的 H3 工作流毫无影响；在你真正串接片段之前什么都不会运行。第一次串接时你会看到：</p>
+<pre><code>h3_motion_context: ComfyUI H3 layout checks passed, anchors and pinned audio will land where intended</code></pre>
+<p>如果不是这条，节点就拒绝运行，原因会写进日志。</p>
+<p>在 ComfyUI 0.33.4 或更旧版本上，节点会如实告知，并指引你使用可同时运行于两者的 0.3.1 版。这是从布局代码本身读出来的，而不是看版本号，所以 nightly 版或分叉也能得到正确答案。</p>
+
+<h3>接线</h3>
+<pre><code>MiniMaxH3ImageToVideo / MiniMaxH3ReferenceToVideo (or the t2v path)
+  -&gt; H3 Motion Context      &lt;- previous clip's latent (picture + sound)
+  -&gt; guider / sampler
+  ...
+  decoded IMAGE + AUDIO
+  -&gt; H3 Motion Context Trim         &lt;- wire trim_frames across
+  -&gt; Create Video / save</code></pre>
+<p>把 <code>trim_frames</code> 接到 Trim 节点。钉住的帧会出现在新片段的开头，拼接前必须去掉，画面和声音一起去掉。</p>
+
+<h4>把上一段带过来</h4>
+<p>上一段以 latent 的形式进入节点，但你不能把采样器直接接到 <code>context_latent</code>。ComfyUI 会报循环连接，而且它说得对：你要的 latent 来自上一次运行，而不是这一次。两个辅助节点像你的帧和音频那样，经由文件把它带到下一次运行：</p>
+<pre><code>this run:   SamplerCustomAdvanced -&gt; H3 Motion Context Save Latent
+next run:   H3 Motion Context Load Latent -&gt; context_latent</code></pre>
+<p>两者都有 <code>clip_index</code>，数字就是字面意思。在 Load 上，是你<em>从哪段</em>继续；在 Save 上，是这一段<em>本身</em>是第几段。第一段：Load 0、Save 1。用第 1 段生成第 2 段：Load 1、Save 2。</p>
+<p>Load 0 不读取任何文件。此时 Motion Context 会把传入的 conditioning 原样透传，并报告 <code>trim_frames</code> 为 0，所以第一段时可以让节点保持启用。不要静音它。</p>
+<p>不要用队列的 <strong>run on change</strong> 来推进链条。每次索引变化都是一次独立的图编辑，两个 widget 同时递增会排两次队并跳过槽位。请用 <strong>H3 Motion Context Chain</strong> 代替 ComfyUI 的 Run 按钮。</p>
+<p><strong>只有当三者处于同一个 canvas group</strong>（你在节点周围画的那种彩色框）<strong>时，Chain 节点才能看到 Load 和 Save。</strong>如果没有分在一组，所有按钮都不起作用。选中 Load、Save 和 Chain，然后 Group Selected（或者把 Chain 拖进现有的 Motion Context 组）。</p>
+<ul>
+<li><strong>Run/Re-roll</strong> 就是这个图的 Run 按钮。它按当前 Load/Save 索引排队，不推进索引。第一段：保持 Load 0 / Save 1 点它。不满意？再点一次，重试会覆盖该槽位。</li>
+<li><strong>Approve</strong> 把两个索引各推进一格，然后为下一段排一次队。</li>
+<li><strong>Chain</strong> 就是循环执行的 Approve。每完成一段，它就推进 Load/Save 并继续，所以你已经做好的 0/1 片段会变成 1/2，而不是重新抽一次。例外是 Load 0 / Save 1 且磁盘上还没有第 1 段：它会先生成第一段，再自动 Approve。<strong>segments</strong> 是这个循环跑几段：5 表示跑五段后停止，0 表示一直跑，直到你点 <strong>Stop</strong>。</li>
+<li><strong>Reset</strong> 设为 Load 0 / Save 1。它不排队，也不删除文件。</li>
+<li><strong>Clear latents</strong> 删除 Load 文件夹中带编号的链条槽位（<code>clip_00001.safetensors</code> 等）。你改过名的文件不受影响。索引保持不变。</li>
+</ul>
+<p>文件按最直观的方式命名，<code>clip_00002.safetensors</code> 就是第 2 段。</p>
+<p>自动保存的文件（Save 为 0 时）末尾带下划线（<code>clip_00002_.safetensors</code>），因为它们按运行次数编号而不是按片段编号，按索引加载时会特意跳过它们。</p>
+<p>当 <code>clip_index</code> 大于 0 时，你也可以让加载器指向某个具体文件；此时加载该文件，忽略索引。索引 0 永远不读文件。latent 路径必须位于 ComfyUI 的 output 文件夹内。</p>
+<p>默认情况下，加载器的输出只给 <code>context_latent</code> 用，不要接到解码节点上。如果你想要一个原生节点能接受的标准 H3 latent，打开 <code>stock_format</code>。原生的 Save/Load Latent 在这里不能用，它处理不了 H3 成对的视频/音频 latent。</p>
+<p>latent 同时携带两路流，所以接上它之后完全不必加载上一段的视频。钉住的帧是直接从中切出来的，而不是解码成像素再编码回去，所以它们就是模型生成的原样，而非重建品。没有任何东西会让颜色或对比度偏移，因此看不到接缝，速度也更快。</p>
+<p>这一切都无需设置。<code>context_frames</code> 保持不接即可。片段之间分辨率必须一致，因为 latent 无法缩放；如果不一致，节点会拒绝并报出两边的分辨率，而不是悄悄退回有损路径。</p>
+
+<h4>可移植的 latent</h4>
+<p>latent 文件也可以通过 ComfyUI 的 HTTP API 传递，供远程驱动 ComfyUI、并自行保存每一段副本的工具使用。</p>
+<ul>
+<li><strong>Save</strong> 会像原生 Save Latent 那样在本次运行的 history 中报告其文件（<code>outputs.&lt;node&gt;.latents</code>：<code>filename</code>、<code>subfolder</code>、<code>type: "output"</code>），客户端可用 <code>GET /view</code> 获取。</li>
+<li><strong>Load</strong> 有一个可选的 <code>folder</code> widget：<code>output</code>（默认，即上文的链条行为）或 <code>input</code>。选 <code>input</code> 时，<code>latent_path</code> 指定 ComfyUI input 文件夹中的一个文件，例如用 <code>POST /upload/image</code> 上传的文件。索引 0 仍然不加载任何东西；大于 0 时加载该文件。离开 input 文件夹的路径会被拒绝。</li>
+</ul>
+<p>在 <code>folder</code> 出现之前保存的工作流加载后不变，继续从 output 读取。</p>
+<p>对于没有 latent 的图，还有一条老路径：把上一段的帧接到 <code>context_frames</code>，解码后的音频接到 <code>context_audio</code>，H3 音频 VAE 接到 <code>audio_vae</code>。它能用，但每个接缝在两路流上都要付出一次有损往返，可见的接缝就来自这里。除非有理由，否则请用 latent。</p>
+
+<h4>参考模式</h4>
+<p>把本节点放在 <code>MiniMaxH3ReferenceToVideo</code> 之后，按上面的方式接线。你的参考块（图像、视频、带音频的视频、音频）完全不受影响：钉住的声音作为关键帧传入，而不是作为参考，所以两种机制不再共用同一个列表。</p>
+<p>无需配置。之所以提一句，是因为 0.2.0 之前的版本会覆盖那个列表，于是打开串接就会悄悄丢掉你的参考；而直到 0.3.1，钉住的音频都是加进那个列表的。</p>
+<p>参考仍会把目标时间线向后推，钉住的帧跟着走。这现在是 ComfyUI 自己的计算，而不是本包的。</p>
+
+<h4>与 Add Guide 并用</h4>
+<p>用 Add Guide for MiniMax H3 随意锚定，再把本节点放在它之后。两者都会保留：钉住的头部决定片段如何开始，guide 决定你放置的位置发生什么。带音频的 guide 保持自己的放置方式（从锚点帧向后），而钉住的声音保持其向前回溯的窗口。</p>
+<p>锚在钉住头部之内的 guide 会被丢弃并给出警告，理由与 <code>first_frame</code> 锚点相同。</p>
+
+<h4>保留尾帧目标</h4>
+<p>照常在原生 conditioning 节点上接 <code>last_frame</code>，再把本节点放在它之后。该锚点会被保留，并与头部一起钉住：钉住的那段决定片段如何开始，你的图像决定它在哪里结束。它保持 ComfyUI 给的坐标，包括参考带来的偏移，所以无论图里还有什么，它都待在原位。</p>
+<p><code>first_frame</code> 锚点会被丢弃并给出警告。那些帧归钉住的头部所有，在同一时刻再钉一个内容不同的块会与之打架。旧版本会悄悄替换两个锚点，所以如果此前某个串接图带有尾帧目标，它从来没有到达模型。</p>
+
+<h3>设置</h3>
+<p>只有两个，因为其余每一项都只有一个正确答案。</p>
+<p><strong>context_length</strong>：从上一段画面带过来的帧数。可选 5、22、39 或 56。只有这些长度恰好是整数个 latent 步，所以不提供其他值。5 勉强算流畅，22 几乎无缝。更长的窗口钉住更多运动，但它们会从交付片段的开头被剪掉，所以 56 意味着每次渲染要花 2.3 秒生成你会扔掉的帧。<strong>用 22。</strong></p>
+<p><strong>audio_context_length</strong>：要钉住的尾部音频帧数，独立于画面窗口。它与钉住的视频在同一时刻结束，所以这个值只控制声音向前回溯多远。0 表示跟随 context_length。<strong>用 18。</strong>更长的窗口让声音更贴近上一段，但每过一个接缝都会更闷一点、更轻一点；到 24 时几段之内就能听出来。更短的窗口保持音量、接缝干净，但音乐在段与段之间漂得更远。18 是目前在音乐链条上找到的最佳平衡。任何长度下都还有一些高频损失。任何 3 的倍数都恰好落在模型 40 Hz 的音频网格上（一帧等于 5/3 个音频步），所以窗口会按你要求的宽度精确钉住。不在网格上的值会被扩到最近的整数步。</p>
+<p>其余全部固定：钉住的那段在一次 VAE 调用中完成编码，它位于片段头部、由 Trim 节点去掉，钉住的音频放在本片段自己的时间线上。其他备选方案存在的意义只是复现它们自己的失败，所以现在它们是 <code>nodes.py</code> 顶部的常量。如果你想看看它们做了什么，改那里即可。</p>
+<p>Trim 节点上的 <code>match_tail</code> 仍是一个设置，因为那个节点不知道另一个节点做了什么。保持开启。H3 会把音频网格四舍五入到最近的步，所以每段都多出或少了约 8ms 的声音，而这个误差会在每个接缝处累积。</p>
+
+<h3>减少漂移（实验性）</h3>
+<p>长链条会漂移。脸会变得光滑或变老，细节会堆积，颜色和对比度在每个接缝处都会偏一点。三个实验性节点处理这个问题。它们减少漂移，但不能消除；效果取决于场景。它们的行为和默认值在后续版本中可能会改变。</p>
+<ul>
+<li><strong>H3 Refine Blend</strong> 给每段一次轻量的二次处理，让它重新读取你的参考，而不只是复制上一段。钉住的帧严格保持采样结果，所以接缝保持闭合，精修版本在它们之后混入。把它放进与 Load、Save、Chain 相同的 canvas group；Chain 节点会让它保持同步。</li>
+<li><strong>H3 Join Match</strong> 消除上一段最后几帧与本段最初新帧之间在亮度、对比度和细节上的小跳变。镜头和场景静止时效果最好。对运动镜头，它基本不动片段。</li>
+<li><strong>H3 Sigmas Tail</strong> 重塑调度的最后几个噪声级，让最后一步少加一些额外锐度。可选；效果随场景变化比另外两个更大。</li>
+</ul>
+<p>Join Match 默认 <code>tuning: auto</code>，它读取每一段，分辨固定机位与运动镜头，并替你选择设置。<code>manual</code> 则按 widget 的设定使用。</p>
+<pre><code>BasicScheduler -&gt; H3 Sigmas Tail (optional) -&gt; main sampler, sigmas
+
+main sampler ─┬────────────────────────────────&gt; Refine Blend (original)
+              └─&gt; refine sampler, one step ────&gt; Refine Blend (refined)
+
+Refine Blend -&gt; H3 Join Match -&gt; Save Latent, VAE Decode, VAE Decode Audio
+Motion Context trim_frames -&gt; Join Match context_length
+Load Latent -&gt; Join Match context_latent</code></pre>
+<p>精修采样器只走一步：在 BasicScheduler 的输出上（任何 Sigmas Tail 之前）做 Split Sigmas，8 步调度时取第 7 步，把其 <code>low_sigmas</code> 接入第二个采样器。给它普通的 Reference to Video conditioning，而不是 Motion Context 的输出，并给它自己的随机种子。</p>
+<p>Save Latent 和两个解码都接 Join Match 的输出，这样你保留的视频与下一段继续所用的 latent 一致。</p>
+
+<h3>为链条写提示词</h3>
+<p>设置负责把运动和声音带过接缝。下一段发生什么取决于你，这里有几个陷阱。</p>
+<p><strong>模型会把矛盾渲染成并集。</strong>第 N 段以 A 的特写结束，第 N+1 段的提示词开头写“B 和 C 的双人镜头”，模型不会二选一，你会得到全部三个人。钉住的帧不是建议，所以描述另一种人物布局的提示词，会被理解为对它们的补充，而不是替换。</p>
+<p><strong>气闸。</strong>不要在同一时刻同时要求变化和延续。让第 N+1 段开头保持第 N 段完全相同的收尾构图，不加台词，约两秒，然后再切到新的布置。这样做的接缝测出来比普通的逐帧剪切还紧；跳过这一步的接缝，测出来像两个不同房间拼在一起。</p>
+<p><strong>让保持的那段有事可做。</strong>保持构图却什么都不发生，会渲染成真正的定格，两秒一动不动的演员看起来就像视频卡住了。写进一次呼吸、一次重心转移、一次视线变化。镜头不动，演员要动。<code>tests/freeze_detect.py</code> 能找出这类问题。</p>
+<p><strong>在时间码里预留钉住的头部。</strong>在 <code>head</code> 模式下，片段输出会比采样时短 <code>context_length</code> 帧。22 帧就是 0.92 秒。你提示词中的时间点对应的是采样版本，而它早开始 0.92 秒，所以你写在 4.0 秒的节拍，在文件里会出现在 3.08 秒。</p>
+
+<h3>为什么音频要下功夫</h3>
+<p>第一个版本把钉住的音频走 H3 的参考机制，那是音频条件通常走的地方。每个接缝都有一下轻微的“咔哒”，像音频短暂加速并错拍。看波形没发现问题，接缝两侧各自都很平滑。</p>
+<p>把每段的开头与上一段的结尾做互相关（就是 <code>tests/seam_probe.py</code>），才看清实际情况：新片段的音频与旧片段<em>相似</em>。同样的乐器、同样的律动，却从来不是同一段录音。像一支翻唱乐队。模型把参考理解为“一段听起来像这样的独立片段”，这正是参考的用途，而对续接来说恰恰错了。</p>
+<p>修正办法和视频那边已经奏效的一样。模型看到的数据行两种方式下完全相同，不同的是它们的时间坐标，而坐标正是表达“独立片段”还是“本片段更早部分”的东西。所以钉住的音频被放在新片段自己的时间线上，恰好与钉住的视频同时结束。时序锁定为一个不随接缝增长的固定偏移，“咔哒”消失了。</p>
+<p>它还不是完美的延续。在 latent 中测量，模型仍会重新生成一部分钉住的声音，而不是全部原样带过去，链条中的高频损失就来自这里。节拍保持住了，接缝也不再听起来像拼接，但声音是一部分延续、一部分重画。</p>
+
+<h3>局限</h3>
+<p><strong>沿着链条质量会下降。</strong>这是最大的问题，而且主要在音频。每段都由上一段的输出生成，而上一段又来自再上一段。损失像复印件再复印一样累积，在音频中最先丢的是高频。时序和速度保持锁定，但几段之后声音会变钝、变闷。画面保持得好得多。</p>
+<p>每个接缝叠加两样东西：模型自身的平滑，以及一次出到像素再回来的往返。<code>context_latent</code> 为两路流都去掉了第二样。对画面来说，这是“看得见接缝”与“根本没有接缝”的区别。对声音有帮助，但模型自身的平滑依然存在。长链条值得仔细听，重新开始最好落在自然的音乐转折处。画面方面见上文“减少漂移（实验性）”。</p>
+<p><strong>一个很小的音频偏移，现在认为已修复。</strong>串接的片段过去会晚约 8ms。原因是算术：一帧等于 5/3 个音频步，所以除非钉住窗口的长度恰好是整数步，否则它会落在模型正在填充的步之间。现在窗口会吸附到网格上。这个偏移是恒定的，远低于口型同步误差能被察觉的水平，也不会沿链条增长，所以这是整理而不是抢救。想在自己的素材上核查，<code>tests/seam_probe.py</code> 会以毫秒报告延迟。</p>
+<p><strong>H3 输出 32 kHz 音频，不是 48 kHz。</strong>在任何重新封装或拼接的脚本里，都要从片段上读取采样率。流复制式拼接无法中途改采样率，所以写死 48000 会让长剧集的结尾悄悄变成空白，而每一项时长检查仍然通过。<code>tests/level_step.py</code> 会打印每段的采样率并标出不匹配。</p>
+<p><strong>Turbo LoRA 和 Spectrum 都会损失音频。</strong>Turbo LoRA 用很少的步数达到结果，而细节正是那最后几步的用途。它让声音变厚、画面变软。ComfyUI-Spectrum-MiniMax-H3 这类跳步优化器对音频也有同样影响，对画面影响较小，而且它们会错误预测那些永远不变的钉住行。两者一起用，影响叠加。如果链条听起来比预期更钝、更近，先试着关掉它们，再去怪串接。<strong>这些图请关闭 Spectrum。</strong></p>
+<p><strong>使用 <code>context_latent</code> 时，分辨率不能在链条中途改变。</strong>latent 无法缩放，所以节点会拒绝。用新分辨率重新生成上一段，或在那里开一条新链。</p>
+<p><strong>为链条写提示词需要功夫</strong>，参考模式下尤其如此。每个参考都作用于整段；无法表达“这个从第二秒开始”。时序只能来自镜头结构和描述。见上文“为链条写提示词”。</p>
+<p><strong>测试范围窄。</strong>接缝验证过的素材有：节拍密集的电子音乐（时序误差最容易听出来），以及走 latent 路径的人声朗读（没有任何东西能掩盖接缝）。一台 Windows 机器、一种分辨率、一个采样器。数学部分每次启动自检。感知层面的结果是一个人的渲染。</p>
+<p><strong>ComfyUI 的 H3 支持还很年轻。</strong>本包不再给它打任何补丁，但仍依赖布局放置东西的方式，而其中一项依赖在上游没有测试：钉住的音频窗口用一个分数的、负数的锚点索引来定位。在布局中这是合法的算术，但没有任何原生节点能产生它，所以上游没有任何东西覆盖它。<code>layout_contract.py</code> 在首次渲染前检查它，一旦不再成立就拒绝运行。</p>
+<p>因此 ComfyUI 更新后的失败模式是“节点不运行”，而不是糟糕的输出。有个现成的例子：布局构造函数改变时，本包 0.3.0 拒绝运行，直到 0.3.1 跟上。烦人，但另一种结果是接缝落在错误的时刻而没有任何提示。</p>
+<p><strong>许可。</strong>据称 H3 社区许可目前不覆盖欧盟、英国、韩国或美国。在以它为基础发布任何东西之前，请自行核实。</p>
+
+<h3>推荐起点</h3>
+<p><code>context_length 22</code>，<code>audio_context_length 18</code>，<code>context_latent</code> 通过 Save/Load Latent 一对节点接入，Trim 节点同时接画面和声音并打开 <code>match_tail</code>，Spectrum 关闭。本 README 中每一处“能用”都指这套配置。</p>
+
+<h3>测试</h3>
+<p>六个脚本，都无需 ComfyUI 或 GPU 即可运行。</p>
+<pre><code>python tests/_mock_harness.py        # the layout checks against a fake stock model
+python tests/_node_smoke_test.py     # the node end to end, refs + save/load
+python tests/_probe_node_test.py     # the seam probe node, joins with known answers
+python tests/seam_probe.py A.flac B_untrimmed.flac    # is the join real continuation?
+python tests/level_step.py clip*.flac                 # does the level or room tone jump?
+python tests/freeze_detect.py clip*.mp4               # did a held shot render as a still?</code></pre>
+<p>前三个打印各自的检查，并以一行通过信息结束。后三个测量真实输出；<code>level_step</code> 和 <code>freeze_detect</code> 接受 <code>--self-test</code>，先在虚构数据上检查自身数学，而 <code>seam_probe</code> 的数学由 <code>_probe_node_test.py</code> 覆盖。</p>
+<p>三个测量脚本问的是不同的问题，一个接缝可能单独在其中任何一项上失败。<code>seam_probe</code> 关于时序：音频是同一段波形的延续，还是相似音。<code>level_step</code> 关于音量：响度或其下的底噪在剪切点是否跳变。<code>freeze_detect</code> 关于画面：这个镜头里有没有东西在动。</p>
+<p>对 <code>seam_probe</code> 和 <code>level_step</code>，请给它们新片段<em>未剪切</em>的音频。把音频解码分支到 Trim 旁边的第二个 Save Audio 节点。</p>
+
+<h4>在图内测量接缝</h4>
+<p>H3 Motion Context Seam Probe 节点在图内执行同样的测量。在图内，接缝位置是精确已知的，而不是从文件末端推断的（命令行探针那个虚幻的约 8ms 延迟正是来自这种推断）。把它串接在音频 VAE 解码与 Trim 节点之间：</p>
+<pre><code>clip_a_latent     the same latent wired into context_latent
+audio_vae         the same audio VAE
+clip_b_untrimmed  this clip's audio off the VAE decode, before the trim
+trim_frames       from the Motion Context node, same value the Trim gets</code></pre>
+<p>音频输出就是原样的输入，所以它能插进现有链条而不改变渲染。报告送到 Preview Text 节点：延迟、相关度、宽带与底噪跳变，按命令行脚本文档中的同一套阈值判断。</p>
+
+<h3>升级</h3>
+<p>CHANGELOG.md 列出每个版本的改动以及它适用的 ComfyUI H3 布局。在提 issue 或开分叉之前值得一看：有几项被人从头重做的修复，其实早在之前的版本里就有了。</p>
+<p>节点的 widget 变了。ComfyUI 按位置存储 widget 值，所以在旧版本下保存的工作流会把数字加载到错误的槽位。删除 Motion Context 节点，重新添加并重新接线。一分钟就够，好过用错乱的设置渲染。</p>
+<p><strong>只装一次。</strong>本仓库的分叉、与 Manager 安装并存的手动克隆、或者仍留在 <code>custom_nodes</code> 里的改名备份，都会被加载。给文件夹改名并不能阻止 ComfyUI 加载它。</p>
+<p>本包的旧版本以及其他 H3 包会在运行时给 ComfyUI 的布局代码打补丁。本包不会，所以它不再争夺那段代码，可以与它们并存运行。如果它发现布局被包装过，会说明是谁包装的，然后检查锚点是否仍落在正确位置，若是则继续。只装一个 H3 串接包仍然是最省心的。</p>
+
+<h3>致谢</h3>
+<p>Ref2VA 多参考支持由 <strong>seitanism</strong> 在 Banodoco 的 MiniMax H3 无缝扩展讨论串中摸索出来，并最先在 <strong>ethanfel</strong> 的本仓库分叉中实现。这里的代码是独立编写的，但想法是他们的，他们先到。</p>
+<p>提示词一节来自一集 16 段、4 分 34 秒的多机位情景喜剧，用本包在 5070 Ti 上以 736x576 串接，约两小时生成。气闸、定格警告、32 kHz 陷阱和时间码预留，都是那次构建的发现。同一次运行测得：仅视频的链条接缝响度跳变中位数为 0.905，带上音频后降至 0.16。</p>
+<p><strong>javawock7618</strong> 和 <strong>azra1l</strong> 报告了导致 0.3.0 失效的布局变更，并把范围缩小到具体提交，把一场搜寻变成了一次 diff。<strong>ChimeraWerks</strong> 发现并修复了音频网格溢出问题。</p>
+<p>如果你用它做了很长的东西，数字比夸奖更有用。开个 issue 吧。</p>
+
+<h3>文件</h3>
+<table>
+<tr><th>文件</th><th>作用</th></tr>
+<tr><td><code>layout_contract.py</code></td><td>在首次渲染前一次性证明 ComfyUI 仍把锚点和钉住的音频放在本包需要的位置。不修改任何东西。</td></tr>
+<tr><td><code>nodes.py</code></td><td>核心节点：Motion Context、Trim、latent Save/Load 一对，以及 Chain。</td></tr>
+<tr><td><code>csrf_guard.py</code></td><td>确保发往 Chain 节点路由的请求来自 ComfyUI 自己的页面。</td></tr>
+<tr><td><code>probe_node.py</code></td><td>Seam Probe 节点：在图内测量接缝，接缝位于已知采样点，而不是从文件末端推断。</td></tr>
+<tr><td><code>refine_blend.py</code></td><td>H3 Refine Blend（实验性）：保持钉住的帧，并混入片段其余部分的精修版本。</td></tr>
+<tr><td><code>join_match.py</code></td><td>H3 Join Match（实验性）：消除每个接缝处亮度、对比度和细节的跳变。</td></tr>
+<tr><td><code>sigma_tools.py</code></td><td>H3 Sigmas Tail（实验性）：重塑调度的最后几个噪声级。</td></tr>
+<tr><td><code>web/h3_motion_context.js</code></td><td>Chain 节点的按钮，以及让 Load、Save 和 Refine Blend 的索引保持同步。</td></tr>
+<tr><td><code>tests/seam_probe.py</code></td><td>接缝的音频是真延续、相似音，还是在漂移。</td></tr>
+<tr><td><code>tests/level_step.py</code></td><td>每个接缝处的音量与底噪连续性。也能捕捉采样率不匹配。</td></tr>
+<tr><td><code>tests/freeze_detect.py</code></td><td>画面停止运动的片段。</td></tr>
+<tr><td><code>tests/_mock_harness.py</code>、<code>tests/_node_smoke_test.py</code>、<code>tests/_probe_node_test.py</code></td><td>布局、节点和探针测试，只依赖 numpy。</td></tr>
+<tr><td><code>CHANGELOG.md</code></td><td>每个版本改了什么，以及适用哪种 ComfyUI H3 布局。</td></tr>
+</table></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context" rel="noopener">ComfyUI-H3-Motion-Context</a>，作者 NikoDemon80（GitHub），许可 <a href="https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context/blob/main/LICENSE" rel="noopener">GNU GPL v3.0</a>。README 译文是 GPL-3.0 作品的衍生文本，同样按 GPL-3.0 提供，原作者保留全部版权。推荐帖：烁皓 <a href="https://x.com/eternityspring/status/2106011333775032522" rel="noopener">@eternityspring</a>，2026-10-02，全文照录用于介绍与评述，视频只引用封面帧。仓库截图与统计数据取自公开页面和公开 GitHub API（2026-10-19）。导读与“对我们的启发”为本站整理。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context" rel="noopener">github.com/NikoDemon80/ComfyUI-H3-Motion-Context</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
