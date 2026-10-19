@@ -390,5 +390,15 @@
     "date": "2026-10-19",
     "type": "导读",
     "original_url": "https://x.com/NFT_Chen/status/2111873617084756390"
+  },
+  {
+    "slug": "lex-qiaomu",
+    "title": "lex.qiaomu.ai：向阳乔木的 Lex Fridman 播客中文站（导读）",
+    "desc": "向阳乔木做的非官方 Lex Fridman 播客中文站导读：506 期全目录、494 篇 AI 中文精读、官方音视频直链与三类英文文稿；怎么用、站点结构、34 期精选目录（AI/编程/科学/历史）、纯标准库静态构建与精读批产管线、AI 友好（llms.txt/Markdown 版/全文 RSS）与报纸式版面，以及对我们的启发。",
+    "source": "向阳乔木 @vista8 · lex.qiaomu.ai",
+    "date": "2026-10-19",
+    "type": "导读",
+    "subtitle": "lex.qiaomu.ai — Chinese companion to the Lex Fridman Podcast",
+    "original_url": "https://lex.qiaomu.ai/"
   }
 ]

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lex.qiaomu.ai：向阳乔木的 Lex Fridman 播客中文站（导读）</title>
+<meta name="description" content="向阳乔木（@vista8）做的非官方 Lex Fridman 播客中文站导读：506 期全目录、494 篇 AI 中文精读、官方音视频直链、三类英文文稿；怎么用、站点结构、精选单集目录、构建与设计亮点、对我们的启发。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.ep-list{list-style:none;padding-left:0}
+.ep-list li{margin:0 0 .9em;padding-left:.9em;border-left:2px solid var(--za-rule,rgba(128,128,128,.3))}
+.ep-list .en{font-style:italic;opacity:.72;font-size:.92em}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-19">2026.10.19</time></p>
+<h1 class="za-title">lex.qiaomu.ai：向阳乔木的 Lex Fridman 播客中文站（导读）</h1>
+<p class="za-sub" lang="en" data-za-gen>lex.qiaomu.ai — Chinese companion to the Lex Fridman Podcast</p>
+<p class="za-meta" data-za-gen><span>来源 · 向阳乔木 @vista8 · lex.qiaomu.ai</span><span>收录 · 2026-10-19</span><span><a href="https://lex.qiaomu.ai/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原站：<a href="https://lex.qiaomu.ai/">lex.qiaomu.ai</a> · 作者：向阳乔木（<a href="https://x.com/vista8">@vista8</a> / GitHub <a href="https://github.com/joeseesun">joeseesun</a>）· 代码 <a href="https://github.com/joeseesun/lexfridman-cn">joeseesun/lexfridman-cn</a>（MIT，仅代码）· 访问于 2026-10-19</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>本页是 <a href="https://lex.qiaomu.ai/">lex.qiaomu.ai</a> 的中文导读和评述，不是镜像。仓库的 MIT 许可<strong>只管代码</strong>。中文精读是站方用 AI 生成的二次创作，作者要求转载时署名并附原页链接。音频、视频和英文文稿的版权属于 Lex Fridman、嘉宾和节目方。所以本页<strong>不转载任何精读正文</strong>，只放目录、链接、站方写的一句话简介和很短的引用。如需移除请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交请求</a>。相关阅读：<a href="../felix-site/">Felix Rieseberg 个人网站导读</a>、<a href="../opennana-prompt-gallery/">OpenNana 提示词图库评述</a>、<a href="../skillry-opus-5-5-videos/">Skillry Opus 5.5 视频大赏</a>、<a href="../personal-sites-gallery/">个人网站画廊</a>、<a href="../anthropic-code-review/">Claude Code 团队怎么做代码评审</a>。</div>
+
+<figure><img src="home.jpg" alt="lex.qiaomu.ai 首页截图：报头式标题“Lex Fridman 播客全访谈”，统计行“506 期深度访谈 · 494 篇中文精读 · 2018 年至今”，下面是搜索框、筛选和最新精读 #502" loading="lazy" width="1100"><figcaption>lex.qiaomu.ai 首页（2026-10-19 截图，浅色主题）。截图版权归原站。</figcaption></figure>
+
+<h2>这是什么</h2>
+<p>这是 <a href="https://lexfridman.com/podcast/">Lex Fridman Podcast</a> 的<strong>非官方中文导航站</strong>。作者是向阳乔木，一个人做，没有广告也不收费。页脚写明它与 Lex Fridman 和节目方没有隶属关系。首页的一句话是：<em>「把世界上最好的长访谈，用中文认真读一遍。」</em></p>
+<p>Lex 的节目每期动辄三五个小时。中文读者面对的问题有两个：英文听力门槛高，几百期里也不知道该听哪期。这个站做了三件事：</p>
+<ul>
+<li><strong>每期一页</strong>：每期有固定网址，页面上有官方音频播放器、YouTube 视频（点击才加载）、中英双语标题、嘉宾简介和英文文稿。</li>
+<li><strong>中文精读</strong>：AI 读完整场访谈后改写的中文长文。按免责声明的说法，它是「二次创作，并非官方翻译」，像有人替你先听了一遍再讲给你。以 #494 黄仁勋为例，精读约 1.5 万字，阅读约 34 分钟，分成近 30 个小标题。</li>
+<li><strong>找得到</strong>：支持全文搜索，按年份列出目录，也提供 RSS 全文订阅。</li>
+</ul>
+
+<h2>规模（2026-10-19 实测）</h2>
+<ul>
+<li><strong>506 期</strong>，从 2018 年第 1 期到 2026 年 9 月的 #502。sitemap 有 509 个网址：首页、目录页、免责声明页加 506 个单集页。</li>
+<li><strong>494 篇中文精读</strong>。首页统计和目录页的「精读」标记都是 494。仓库 README 写的「463+」是旧数字，还没更新。</li>
+<li>各年期数（取自目录页）：2018 年 12 期，2019 年 50，2020 年 89，2021 年 104，2022 年 97，2023 年 57，2024 年 50，2025 年 33，2026 年 14。</li>
+<li>仓库建于 2026-10-18 晚，到 10-19 上午已有 57 星、8 个 fork。</li>
+</ul>
+
+<h2>怎么用</h2>
+<ol>
+<li><strong>先看最新或筛选</strong>：首页按「最新」排序，可以切到「中文精读」，只看有精读的单集。顶部的搜索框可按嘉宾、话题或期数查找，按 <code>/</code> 或 <code>⌘K</code> 就能调出来。搜索结果有对应网址，可以直接分享。</li>
+<li><strong>按年份浏览</strong>：<a href="https://lex.qiaomu.ai/archive/">单集目录</a>按年份列出全部 506 期，有精读的标着「精读」。</li>
+<li><strong>读单集</strong>：单集页上方是播放器，支持倍速记忆、±15 秒跳转和断点续听。下面分「中文精读 / 英文文稿」两个标签。文稿注明来源：官方 Transcript、Kaggle 公开数据集存档或机器转写。点时间戳可以跳到音频对应位置。宽屏时有目录侧栏，还可以调字体和字号。</li>
+<li><strong>机器可读</strong>：每篇精读都有纯 Markdown 版，在单集网址后面加 <code>index.md</code> 就行，例如 <a href="https://lex.qiaomu.ai/ep/jensen-huang/index.md">/ep/jensen-huang/index.md</a>。<a href="https://lex.qiaomu.ai/llms.txt">llms.txt</a> 列出了全部单集和简介。</li>
+<li><strong>订阅</strong>：<a href="https://lex.qiaomu.ai/feed.xml">RSS</a> 推送最新 20 篇精读的全文。站点也能「添加到主屏幕」当作应用打开，读过的文章离线也能看。</li>
+</ol>
+
+<h2>站点结构</h2>
+<table><thead><tr><th>路径</th><th>内容</th></tr></thead><tbody>
+<tr><td><code>/</code></td><td>报头、统计、搜索和筛选，头条是最新一篇精读，下面是全部单集卡片</td></tr>
+<tr><td><code>/archive/</code></td><td>506 期按年份排列的目录</td></tr>
+<tr><td><code>/ep/&lt;slug&gt;/</code></td><td>单集页：播放器、视频、精读、文稿、上一期和下一期</td></tr>
+<tr><td><code>/ep/&lt;slug&gt;/index.md</code></td><td>精读的 Markdown 版</td></tr>
+<tr><td><code>/disclaimer/</code></td><td>免责声明：版权、精读性质、三类文稿来源、非商业用途</td></tr>
+<tr><td><code>/feed.xml</code> · <code>/sitemap.xml</code> · <code>/llms.txt</code> · <code>/robots.txt</code></td><td>订阅、索引和面向 AI 的入口。robots.txt 写着「欢迎搜索引擎与 AI 检索 / 问答引擎抓取」，并逐个放行 GPTBot、ClaudeBot、PerplexityBot 等</td></tr>
+</tbody></table>
+
+<h2>精选单集目录（34 期）</h2>
+<p>每条是站内单集的链接，加英文原题和站方的一句话简介。挑选偏向 AI、编程和工程，兼顾科学与历史。全部 506 期见原站的<a href="https://lex.qiaomu.ai/archive/">单集目录</a>。</p>
+<h3>AI 与前沿模型</h3>
+<ul class="ep-list">
+<li><a href="https://lex.qiaomu.ai/ep/jensen-huang/">#494 黄仁勋：英伟达——市值四万亿美元的公司与 AI 革命</a><br><span lang="en" class="en">Jensen Huang: NVIDIA – The $4 Trillion Company &amp; the AI Revolution</span><br>黄仁勋谈英伟达如何从图形芯片公司成长为四万亿美元巨头，以及 AI 革命的算力根基。</li>
+<li><a href="https://lex.qiaomu.ai/ep/peter-steinberger/">#491 OpenClaw：席卷互联网的爆红 AI 智能体——彼得·斯坦伯格</a><br><span lang="en" class="en">OpenClaw: The Viral AI Agent that Broke the Internet – Peter Steinberger</span><br>彼得·斯坦伯格讲 OpenClaw 如何一夜走红，以及 AI 智能体开发的实践、乐趣与风险。</li>
+<li><a href="https://lex.qiaomu.ai/ep/ai-sota-2026/">#490 2026 年 AI 现状：大模型、编程、扩展定律、中国、智能体、GPU、AGI</a><br><span lang="en" class="en">State of AI in 2026: LLMs, Coding, Scaling Laws, China, Agents, GPUs, AGI</span><br>纵览 2026 年 AI 格局，从大模型与扩展定律到编程、智能体、GPU 算力、中国竞争与 AGI。</li>
+<li><a href="https://lex.qiaomu.ai/ep/demis-hassabis-2/">#475 戴密斯·哈萨比斯：AI 的未来、模拟现实、物理与电子游戏</a><br><span lang="en" class="en">Demis Hassabis: Future of AI, Simulating Reality, Physics and Video Games</span><br>DeepMind 负责人谈通向通用人工智能的路径、用 AI 模拟现实与物理，以及游戏对他思维方式的影响。</li>
+<li><a href="https://lex.qiaomu.ai/ep/deepseek-dylan-patel-nathan-lambert/">#459 DeepSeek、中国、OpenAI、NVIDIA、xAI、台积电、星际之门与 AI 超级集群</a><br><span lang="en" class="en">DeepSeek, China, OpenAI, NVIDIA, xAI, TSMC, Stargate, and AI Megaclusters</span><br>两位嘉宾解析 DeepSeek 的模型路线、芯片与算力供应链，以及中美 AI 竞争的整体格局。</li>
+<li><a href="https://lex.qiaomu.ai/ep/dario-amodei/">#452 达里奥·阿莫代伊：Anthropic CEO 谈 Claude、AGI 与 AI 及人类的未来</a><br><span lang="en" class="en">Dario Amodei: Anthropic CEO on Claude, AGI &amp; the Future of AI &amp; Humanity</span><br>Anthropic 首席执行官谈 Claude 的研发、通用人工智能的实现路径及其对人类未来的影响。</li>
+<li><a href="https://lex.qiaomu.ai/ep/sam-altman-2/">#419 山姆·奥特曼：OpenAI、GPT-5、Sora、董事会风波、埃隆·马斯克、伊利亚、权力与 AGI</a><br><span lang="en" class="en">Sam Altman: OpenAI, GPT-5, Sora, Board Saga, Elon Musk, Ilya, Power &amp; AGI</span><br>OpenAI 首席执行官山姆·奥特曼谈 GPT-5 与 Sora 的进展、董事会解雇风波、与马斯克和伊利亚的分歧及 AGI 与权力。</li>
+<li><a href="https://lex.qiaomu.ai/ep/yann-lecun-3/">#416 杨立昆：Meta AI、开源、大语言模型的局限、AGI 与 AI 的未来</a><br><span lang="en" class="en">Yann Lecun: Meta AI, Open Source, Limits of LLMs, AGI &amp; the Future of AI</span><br>图灵奖得主杨立昆谈 Meta 的 AI 研究、开源路线之争、大语言模型的能力边界，以及通向 AGI 的可能路径。</li>
+<li><a href="https://lex.qiaomu.ai/ep/eliezer-yudkowsky/">#368 埃利泽·尤德科夫斯基：AI 的危险与人类文明的终结</a><br><span lang="en" class="en">Eliezer Yudkowsky: Dangers of AI and the End of Human Civilization</span><br>AI 安全研究者解释为何认为不受控的超级智能可能终结人类文明，以及他主张的紧急应对措施。</li>
+<li><a href="https://lex.qiaomu.ai/ep/andrej-karpathy/">#333 安德烈·卡帕西：特斯拉 AI、自动驾驶、Optimus、外星人与 AGI</a><br><span lang="en" class="en">Andrej Karpathy: Tesla AI, Self-Driving, Optimus, Aliens, and AGI</span><br>前特斯拉 AI 负责人谈自动驾驶的技术路线、人形机器人与通用人工智能。</li>
+<li><a href="https://lex.qiaomu.ai/ep/ilya-sutskever/">#94 伊利亚·苏茨克维：深度学习</a><br><span lang="en" class="en">Ilya Sutskever: Deep Learning</span><br>OpenAI 首席科学家谈深度学习的进展与局限，神经网络为何奏效，以及通向通用智能的可能路径。</li>
+<li><a href="https://lex.qiaomu.ai/ep/david-silver/">#86 大卫·西尔弗：AlphaGo、AlphaZero 与深度强化学习</a><br><span lang="en" class="en">David Silver: AlphaGo, AlphaZero, and Deep Reinforcement Learning</span><br>DeepMind 研究者回顾 AlphaGo 与 AlphaZero 的诞生，讲解自我对弈与强化学习背后的关键思想。</li>
+</ul>
+<h3>编程与工程</h3>
+<ul class="ep-list">
+<li><a href="https://lex.qiaomu.ai/ep/dhh-2/">#501 DHH：编程的未来、AI、智能体工程、氛围编程与 Linux</a><br><span lang="en" class="en">DHH: Future of Programming, AI, Agentic Engineering, Vibe Coding &amp; Linux</span><br>DHH 谈编程的未来、AI 与智能体工程，氛围编程的争议，以及他为何转向 Linux 与开源。</li>
+<li><a href="https://lex.qiaomu.ai/ep/ffmpeg/">#496 FFmpeg：互联网视频背后的惊人技术</a><br><span lang="en" class="en">FFmpeg: The Incredible Technology Behind Video on the Internet</span><br>FFmpeg 如何支撑互联网上的视频编码、转码与播放，以及这套开源工具背后的工程哲学。</li>
+<li><a href="https://lex.qiaomu.ai/ep/cursor-team/">#447 Cursor 团队：AI 时代的编程未来</a><br><span lang="en" class="en">Cursor Team: Future of Programming with AI</span><br>AI 编程工具 Cursor 的团队谈代码模型的训练思路、开发者工作流的变化与编程的未来。</li>
+<li><a href="https://lex.qiaomu.ai/ep/pieter-levels/">#440 彼得·莱维尔斯：编程、爆红的 AI 创业与数字游民生活</a><br><span lang="en" class="en">Pieter Levels: Programming, Viral AI Startups, and Digital Nomad Life</span><br>独立开发者谈独自做产品与 AI 创业的经验、流量增长，以及长期数字游民的生活方式。</li>
+<li><a href="https://lex.qiaomu.ai/ep/theprimeagen/">#461 ThePrimeagen：编程、AI、ADHD、效率、成瘾与上帝</a><br><span lang="en" class="en">ThePrimeagen: Programming, AI, ADHD, Productivity, Addiction, and God</span><br>程序员主播聊编程职业与 AI 对写代码的冲击，也谈注意力缺陷、成瘾和效率的自我管理。</li>
+<li><a href="https://lex.qiaomu.ai/ep/chris-lattner-3/">#381 克里斯·拉特纳：编程与 AI 的未来</a><br><span lang="en" class="en">Chris Lattner: Future of Programming and AI</span><br>LLVM 与 Swift 的创造者谈编程语言的演进、编译器技术，以及 AI 将如何改变写代码的方式。</li>
+<li><a href="https://lex.qiaomu.ai/ep/guido-van-rossum-2/">#341 吉多·范罗苏姆：Python 与编程的未来</a><br><span lang="en" class="en">Guido van Rossum: Python and the Future of Programming</span><br>Python 之父回顾这门语言的设计初衷，并讨论编程语言与开发者工具的未来走向。</li>
+<li><a href="https://lex.qiaomu.ai/ep/john-carmack/">#309 约翰·卡马克：Doom、Quake、VR、AGI、编程、电子游戏与火箭</a><br><span lang="en" class="en">John Carmack: Doom, Quake, VR, AGI, Programming, Video Games, and Rockets</span><br>id Software 创始人回顾《Doom》《Quake》的开发历程，聊编程、VR 头显、AGI 与火箭事业。</li>
+<li><a href="https://lex.qiaomu.ai/ep/donald-knuth-2/">#219 唐纳德·克努特：编程、算法、难题与生命游戏</a><br><span lang="en" class="en">Donald Knuth: Programming, Algorithms, Hard Problems &amp; the Game of Life</span><br>计算机科学泰斗谈《计算机程序设计艺术》的写作、算法之美、攻克难题的乐趣与生命游戏。</li>
+<li><a href="https://lex.qiaomu.ai/ep/brendan-eich/">#160 布兰登·艾克：JavaScript、Firefox、Mozilla 与 Brave</a><br><span lang="en" class="en">Brendan Eich: JavaScript, Firefox, Mozilla, and Brave</span><br>JavaScript 之父回顾语言的诞生、Firefox 与 Mozilla 的历史，以及 Brave 对隐私的探索。</li>
+<li><a href="https://lex.qiaomu.ai/ep/brian-kernighan/">#109 布莱恩·克尼汉：UNIX、C、AWK、AMPL 与 Go 编程</a><br><span lang="en" class="en">Brian Kernighan: UNIX, C, AWK, AMPL, and Go Programming</span><br>亲历者讲述 UNIX 与 C 语言的诞生，以及 AWK、AMPL 和 Go 背后的设计思想与工程文化。</li>
+</ul>
+<h3>科学与数学</h3>
+<ul class="ep-list">
+<li><a href="https://lex.qiaomu.ai/ep/terence-tao/">#472 陶哲轩：数学与物理中最难的问题，以及 AI 的未来</a><br><span lang="en" class="en">Terence Tao: Hardest Problems in Mathematics, Physics &amp; the Future of AI</span><br>数学家陶哲轩谈当下最棘手的数学与物理难题，以及 AI 会如何改变数学研究与证明的方式。</li>
+<li><a href="https://lex.qiaomu.ai/ep/joel-david-hamkins/">#488 无穷、击溃数学的悖论、哥德尔不完备性与多重宇宙——乔尔·戴维·汉姆金斯</a><br><span lang="en" class="en">Infinity, Paradoxes that Broke Mathematics, Gödel Incompleteness &amp; the Multiverse – Joel David Hamkins</span><br>数学逻辑学家汉姆金斯谈无穷的层级、击溃数学的悖论、哥德尔不完备性与多重宇宙。</li>
+<li><a href="https://lex.qiaomu.ai/ep/michael-levin-2/">#486 迈克尔·莱文：异种智能与生物生命的隐秘现实</a><br><span lang="en" class="en">Michael Levin: Hidden Reality of Alien Intelligence &amp; Biological Life</span><br>生物学家迈克尔·莱文谈细胞智能、再生与异种智能的可能性，重新理解生命如何认知、记忆与决策。</li>
+<li><a href="https://lex.qiaomu.ai/ep/david-kirtley/">#485 大卫·柯特利：核聚变、等离子体物理与能源的未来</a><br><span lang="en" class="en">David Kirtley: Nuclear Fusion, Plasma Physics, and the Future of Energy</span><br>聚变公司创始人讲等离子体物理与聚变装置的工程落地路径，以及它可能如何改变未来能源格局。</li>
+<li><a href="https://lex.qiaomu.ai/ep/don-lincoln/">#497 物理学最大的谜团：反物质、暗能量与万有理论——唐·林肯</a><br><span lang="en" class="en">Biggest Mysteries in Physics: Antimatter, Dark Energy &amp; ToE – Don Lincoln</span><br>物理学家唐·林肯谈反物质、暗能量与万有理论，梳理当代物理学尚未解开的谜题。</li>
+</ul>
+<h3>历史、商业与人物</h3>
+<ul class="ep-list">
+<li><a href="https://lex.qiaomu.ai/ep/andrew-scull/">#502 精神病学、疯人院、精神疾病、电休克疗法、脑白质切除术、弗洛伊德与荣格</a><br><span lang="en" class="en">Psychiatry, Insane Asylums, Mental Illness, ECT, Lobotomies, Freud &amp; Jung</span><br>精神科医生安德鲁·斯卡尔回顾精神病学的黑暗历史，从疯人院与电休克疗法到弗洛伊德和荣格的传承。</li>
+<li><a href="https://lex.qiaomu.ai/ep/anthony-kaldellis/">#498 安东尼·卡尔德利斯：罗马帝国、拜占庭帝国、帝国的兴衰</a><br><span lang="en" class="en">Anthony Kaldellis: Roman Empire, Byzantine Empire, Rise &amp; Fall of Empires</span><br>拜占庭史学者卡尔德利斯谈罗马与拜占庭帝国的延续关系，以及帝国兴衰背后的结构。</li>
+<li><a href="https://lex.qiaomu.ai/ep/jeff-bezos/">#405 杰夫·贝索斯：亚马逊与蓝色起源</a><br><span lang="en" class="en">Jeff Bezos: Amazon and Blue Origin</span><br>贝索斯回顾创办亚马逊的历程与长期经营的取舍，并谈蓝色起源的太空愿景和对人类未来的设想。</li>
+<li><a href="https://lex.qiaomu.ai/ep/walter-isaacson/">#395 沃尔特·艾萨克森：埃隆·马斯克、史蒂夫·乔布斯、爱因斯坦、达芬奇与富兰克林</a><br><span lang="en" class="en">Walter Isaacson: Elon Musk, Steve Jobs, Einstein, Da Vinci &amp; Ben Franklin</span><br>传记作家艾萨克森谈他笔下的马斯克、乔布斯、爱因斯坦、达芬奇与富兰克林，探讨创造力的来源。</li>
+<li><a href="https://lex.qiaomu.ai/ep/tony-fadell/">#294 托尼·法德尔：iPhone、iPod 与 Nest</a><br><span lang="en" class="en">Tony Fadell: iPhone, iPod, and Nest</span><br>iPhone 与 iPod 背后的硬件设计者讲述产品打磨、与乔布斯的合作以及创办 Nest 的历程。</li>
+<li><a href="https://lex.qiaomu.ai/ep/dan-carlin/">#136 丹·卡林：硬核历史</a><br><span lang="en" class="en">Dan Carlin: Hardcore History</span><br>历史播客作者谈如何讲述战争与灾难、历史叙事的魅力，以及从过去理解当下的人性。</li>
+</ul>
+
+<h2>构建与设计：值得注意的地方</h2>
+<ul>
+<li><strong>纯静态，构建只用 Python 标准库</strong>：<code>tools/build.py</code> 一条命令生成 506 个单集页、sitemap、llms.txt 和 RSS，没有第三方依赖。元数据（<code>lex-master.json</code>、<code>translations.json</code>）和精读全文（<code>site/zh/</code>）都提交在仓库里，clone 下来就能构建出完整的站。</li>
+<li><strong>每天自动追新</strong>：<code>sync_new.py</code> 每天和官方 RSS 对账。遇到新的一期，它会补元数据和 YouTube ID，翻译标题，补上文稿，然后构建并用 rsync 部署。文稿分三级来源，优先级为官方 Transcript > 本地 Whisper 转写（mlx-whisper）> 存档。</li>
+<li><strong>精读批量生成</strong>：<code>gen_zh.py --watch</code> 常驻运行，每 10 分钟扫描一次新文稿，每生成 30 篇自动部署一次。它会检查生成稿里有没有被禁止的翻译腔句式，不合格就带着反馈重写；多个模型按质量动态排序。默认通过作者自己的 Magpie LLM 网关调用，密钥存在 macOS 钥匙串里。</li>
+<li><strong>版权边界写进了设计</strong>：站点不托管任何媒体文件。音频在线播放官方播客 RSS 渠道（blubrry）的文件，视频和原始文稿都只给链接。英文文稿不进仓库，README 明确说不接受和托管媒体有关的改动。</li>
+<li><strong>对 SEO 和 AI 友好</strong>：页面带 JSON-LD（包括 SearchAction）。RSS 是全文，enclosure 长度是真实值，并支持 ETag/304。站点提供 llms.txt 和 Markdown 版正文，robots 主动欢迎 AI 抓取。这和很多中文内容站的做法相反，作者的目标显然是被检索、被引用。</li>
+<li><strong>报纸式版面</strong>：报头带日期线，标题用大号衬线字（Libre Caslon Text + Noto Serif SC），标题下有双线分隔，再往下是一行小字统计，中英标题上下排，英文用斜体。界面克制，以黑白为主，强调色只用于少量元素（如「最新精读」标签），也支持深色主题。字体走 <code>fonts.googleapis.cn</code> 镜像，照顾到国内访问。</li>
+<li><strong>阅读细节</strong>：会记住阅读进度和「继续收听」，视频要点击才加载，宽屏有目录侧栏，可调字体和字号，能装成 PWA 离线阅读。访问统计用作者自建的 umami。</li>
+</ul>
+
+<h2>对我们的启发</h2>
+<ul>
+<li><strong>「替你先听一遍」比逐字翻译更有用</strong>：三五小时的访谈，逐字翻译没人读。按主题改写的长文配上小标题，读者真的能读下去。我们做长文导读时可以学这个分寸：结构跟着论点走，引语要标出说话人，并且声明以原文为准。</li>
+<li><strong>先把版权边界想清楚，再写代码</strong>：媒体只链接不托管，文稿不进仓库，精读标明是 AI 二次创作，许可写清只管代码，再加一页免责声明和联系方式。这套做法可以直接拿来对照检查我们自己的镜像站。</li>
+<li><strong>同时为机器设计</strong>：每篇都有 Markdown 版、一份 llms.txt 全量索引、全文 RSS，robots 也明确放行。内容站在「被 AI 引用」的时代可以这样设计。我们的文库也可以考虑提供 <code>index.md</code> 和 llms.txt。</li>
+<li><strong>流水线做成常驻任务，并带自动质检</strong>：自动追新、三级文稿来源、禁用句式校验后带反馈重试、攒够一批再部署，这几样让一个人也能维护 500 期规模的内容。</li>
+<li><strong>一个人也能做出编辑级的设计</strong>：报头、双线、中英对照、克制的配色，没用花哨组件，靠字体和留白就有了「刊物感」。</li>
+</ul>
+
+<h2>说明与缺口</h2>
+<ul>
+<li>数字来自 2026-10-19 公开的首页、目录页、sitemap 和 llms.txt。精读还在持续生成，数字会变。</li>
+<li>本页只读了公开页面、robots.txt、sitemap、llms.txt 和 GitHub 仓库 README。没有调用任何接口，也没有下载音视频。</li>
+<li>精读由 AI 生成，可能有偏差，应以原访谈为准。站方的一句话简介原样引用，没有逐期核对。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>中文导读整理：zh-blog-mirrors。原站 © 2026 向阳乔木；中文精读为站方 AI 辅助二次创作（非 MIT）；节目音视频与原始文稿版权归 Lex Fridman、嘉宾及制作方。本页仅做导读与简短引用，请<a href="https://lex.qiaomu.ai/">访问原站</a>阅读。移除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">GitHub Issue</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://lex.qiaomu.ai/" rel="noopener">lex.qiaomu.ai/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
