@@ -1,5 +1,15 @@
 [
   {
+    "slug": "aipoch-open-science",
+    "title": "AIPOCH Open-Science：开源、本地优先的 AI 科研工作台（项目导读 + 推荐帖 + 中文 README）",
+    "desc": "Sac 推荐用 AIPOCH 开源的 Open-Science 辅助读论文、做前沿 AI 研究。项目导读：文献库读论文、Python/R 复现、产物溯源、独立 Reviewer、.science 研究包；推文全文照录 + 核实（arXiv 2610.17110 ✅、技能数口径不一、基准为自报）+ 启发；附官方简体中文 README 全文（Apache-2.0）。",
+    "source": "aipoch/open-science（GitHub）· Sac @Saccc_c 推荐",
+    "date": "2026-10-19",
+    "type": "导读",
+    "subtitle": "AI research workbench for reproducible science",
+    "original_url": "https://github.com/aipoch/open-science"
+  },
+  {
     "slug": "jokerliu-ai-wuda-physics",
     "title": "AI 武打一眼假？不是画面不行，是物理逻辑崩了——老泥鳅的武打动作引擎框架（全文照录 + 导读 + 核实）",
     "desc": "老泥鳅 X 长文全文照录+导读+核实：AI 视频武打戏像木偶互殴，根因是物理与空间逻辑崩了。核心顺序“剧情事实 > 武器力学 > 攻防因果 > 空间连续 > 人物设定 > 可生成性 > 镜头特效”；六步框架（战局初始化与 End/Start State 交接、兵器动作库、攻防因果链、三档距离、打击与收招、镜头与动作分离）、输出模板与十条避坑红线；附 Seedance 2.5 演示封面帧。",

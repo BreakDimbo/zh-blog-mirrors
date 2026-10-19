@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AIPOCH Open-Science：开源本地优先的 AI 科研工作台（项目导读 + README 中文全文）</title>
+<meta name="description" content="Sac 推荐用 AIPOCH 开源的 Open-Science 辅助读论文、做前沿 AI 研究。本页以项目为中心：推文全文照录、导读、核实、对我们的启发，附官方简体中文 README 全文（Apache-2.0）。" />
+<meta property="og:image" content="img/banner.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-19">2026.10.19</time></p>
+<h1 class="za-title">AIPOCH Open-Science：开源、本地优先的 AI 科研工作台</h1>
+<p class="za-sub" lang="en" data-za-gen>AI research workbench for reproducible science</p>
+<p class="za-meta" data-za-gen><span>来源 · aipoch/open-science（GitHub）· Sac @Saccc_c 推荐</span><span>收录 · 2026-10-19</span><span><a href="https://github.com/aipoch/open-science" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/aipoch/open-science" rel="noopener">github.com/aipoch/open-science</a> · 开发方 AIPOCH（<a href="https://x.com/aipoch_ai" rel="noopener">@aipoch_ai</a>）· 推荐：Sac <a href="https://x.com/Saccc_c/status/2112076203830218911" rel="noopener">@Saccc_c</a>（2026-10-19）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>Open-Science 是一个装在自己电脑上的“AI 科研工作台”：开项目，用大白话写研究目标，让智能体读文献、跑 Python/R、查科学数据库、出报告和图表，并且每个产物都能追溯到生成它的代码、输入和对话。Sac 推荐它的理由是：读论文是获取前沿 AI 信息最直接的渠道，这个工具能降低读懂论文的门槛。</div>
+
+<p><span class="tag">★ 5,247 stars</span> <span class="tag">522 forks</span> <span class="tag">Apache-2.0</span> <span class="tag">TypeScript · Electron</span> <span class="tag">v1.0.0 · 2026-10-14</span> <span class="tag">macOS / Windows / Linux</span></p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-19 20:05（UTC+8）。仓库创建于 2026-07-03，约 3,110 个提交；v1.0.0 发布于 2026-10-14 21:25（UTC+8），最后一次推送在 2026-10-19 19:51（UTC+8）。</p>
+
+<p>同一作者的上一篇：<a href="../saccc-little-prince-3d/">手把手教你用 Opus 5.5 / Astra + Tripo 制作 3D 游戏</a>（《小王子》3D 游戏的 AI 制作流程）。</p>
+
+<h2 id="post">推荐帖（全文照录）</h2>
+<blockquote>
+<p>读论文其实也是学习AI技巧、获取前沿AI信息的最直接方式之一，但很多人可能都会被难以理解的概念和技术方法所劝退</p>
+<p>我找到了一个帮你打通论文这条AI信息渠道的方法，就是利用@aipoch_ai 开源的Open-Science工具辅助进行前沿AI研究（GitHub🔗：<a href="https://github.com/aipoch/open-science" rel="noopener">https://github.com/aipoch/open-science</a>）</p>
+</blockquote>
+<p class="caption">Sac（@Saccc_c），2026-10-19 14:59（UTC+8），附 1 分 47 秒演示视频。截至 20:05（UTC+8）：9,056 次浏览、91 赞、95 收藏、6 转发、15 条回复。</p>
+<figure><img src="img/poster.webp" alt="演示视频封面：GitHub 上的 aipoch/open-science 仓库页，字幕“最近发现一个很实用的AI研究工作台”" loading="lazy"><figcaption>演示视频封面帧（视频未转载，请到<a href="https://x.com/Saccc_c/status/2112076203830218911" rel="noopener">原帖</a>观看）。画面中仓库还是 4.2k stars、v0.30 前后，说明视频录制时间早于发帖。</figcaption></figure>
+<p><strong>作者在评论区的两条回复：</strong></p>
+<ul>
+<li>@hungxun254458（文轩）：“封装成一个skill会更好吧，还是有点像Codex的感觉”<br>Sac：“我感觉如果是专门研究论文，它的整体设计和交互会更好”</li>
+<li>@tspy（yishan）：“已经招聘一个bot来负责此事”<br>Sac：“也可以”</li>
+</ul>
+
+<h2 id="guide">导读</h2>
+<p>推文只有两句话，真正的信息量在仓库里。按 README 的定位，Open-Science 不是一个“论文翻译器”，而是一个<strong>通用的科研智能体工作台</strong>：桌面应用（Electron）加一个可独立运行的 Node 后端，底层借用现成的编码智能体（Claude Code、OpenCode、Codex、CodeBuddy 四选一）当执行引擎，在外面包了一层科研专用的东西：文献库、科学数据连接器、Python/R Notebook、产物版本与溯源、独立的审查员（Reviewer），以及可以打包带走的 <code>.science</code> 研究包。</p>
+<p>评论区那句“有点像 Codex 的感觉”其实说中了结构：它的确是在编码智能体之上做的。区别在于外壳，项目、文献、数据源、证据链都替科研场景预先组织好了。Sac 的回应也是这个意思：如果专门研究论文，现成的设计和交互比自己封装一个 skill 更顺手。</p>
+<p>和“读 AI 论文”直接相关的是<strong>文献库（Literature Library）</strong>：导入参考文献和 PDF，按集合/标签管理，自动找开放获取全文，读 PDF 时抽取图和表，在对话里引用文献库来源做分析，导出 BibTeX/RIS。再配合 Notebook，可以让智能体按论文的方法把实验复现一遍，这是 README 产品导览里演示的主线（复现一篇已发表的差异表达分析）。</p>
+
+<h2 id="keypoints">要点</h2>
+<div class="grid">
+<div class="card"><div class="card-body"><h3>本地优先、模型无关</h3><p class="syn">项目数据、设置、产物版本都存在本机；API Key 优先进系统钥匙串。模型可以接 25 家预设服务商、自定义网关（含 Ollama / LM Studio / vLLM 本地端点），或直接复用 Claude / Codex 订阅登录，另有 xAI (Grok) OAuth。</p><p class="meta">Claude Code / OpenCode / Codex / CodeBuddy 后端</p></div></div>
+<div class="card"><div class="card-body"><h3>文献库</h3><p class="syn">导入 PDF 与参考文献、查重合并、找开放获取全文、抽取图表、PDF 批注；配置筛选模型后，“智能集合”按纳入/排除标准初筛文献，AI 判断与人工判断分开记录。</p><p class="meta">BibTeX / RIS 导出</p></div></div>
+<div class="card"><div class="card-body"><h3>技能 · 连接器 · 专家</h3><p class="syn">23 个内置技能 + 市场 525 个（README 数字）；36 个内置科学数据连接器，也能接自定义 MCP；10 个可安装的“专家”（Specialist）供主智能体委派。</p><p class="meta">市场投稿经审核后发布</p></div></div>
+<div class="card"><div class="card-body"><h3>产物溯源</h3><p class="syn">每个生成的报告、表格、图都是不可变、带校验和的版本；Provenance 视图列出生成代码、执行历史、输入、环境清单和所属对话分支。核实不了的证据标为“不可用”，不去推断。</p><p class="meta">可导出 RO-Crate 1.1</p></div></div>
+<div class="card"><div class="card-body"><h3>Reviewer 审查员</h3><p class="syn">可选的自动审查：在独立上下文里检查一轮回答、执行日志和相关文件证据，给出通过/警告/失败，并让主智能体在有限轮次内修正后再审。</p><p class="meta">只审该轮已有记录</p></div></div>
+<div class="card"><div class="card-body"><h3>.science 研究包</h3><p class="syn">把完成的研究会话导出为可移植文件：选中的对话分支、文件版本、Notebook 记录和核验证据。导入后只读，回放不执行代码、不调模型、不恢复凭据；要继续做实验需另建副本。</p><p class="meta">arXiv 2610.17110 的主题</p></div></div>
+<div class="card"><div class="card-body"><h3>算力与自动化</h3><p class="syn">本地 Python/R/Shell 后台执行；通过 SSH 或 Slurm 提交到远程主机 / HPC；无界面 CLI 与零依赖 Node SDK 共用同一个本地守护进程，可脚本化批量跑任务。</p><p class="meta">open-science run --wait --json</p></div></div>
+<div class="card"><div class="card-body"><h3>权限三档</h3><p class="syn">“请求批准 / 自动批准编辑 / 完全访问”，README 建议按任务选最窄的一档；并提醒模型请求、联网搜索、远程连接器都会把数据发到外部。</p><p class="meta">敏感数据先用“请求批准”</p></div></div>
+</div>
+
+<figure><img src="img/tour-execute.webp" alt="Open-Science 生物信息学分析界面：研究摘要、生成的图和捕获的生成代码并排显示" loading="lazy"><figcaption>产品导览：研究摘要、生成图与生成代码并排（图片来自仓库 README，Apache-2.0）</figcaption></figure>
+
+<h2 id="verify">核实</h2>
+<div class="table-wrap"><table>
+<tr><th>说法</th><th>结论</th><th>依据</th></tr>
+<tr><td>Open-Science 由 @aipoch_ai 开源（推文）</td><td>✅</td><td>GitHub 组织 aipoch 绑定的 X 账号为 @aipoch_ai；仓库许可 Apache-2.0，含完整源码与构建说明。</td></tr>
+<tr><td>可用来辅助读论文 / 做前沿 AI 研究（推文）</td><td>✅ 有，但⚠️ 定位更宽</td><td>文献库支持 PDF 阅读、图表抽取、开放全文查找与 AI 分析。但项目面向的是各学科的计算型科研，README 演示和基准都偏生物医学，没有专门为“读 AI 论文”设计的功能。</td></tr>
+<tr><td>有配套论文（README）</td><td>✅</td><td>arXiv <a href="https://arxiv.org/abs/2610.17110" rel="noopener">2610.17110</a> 存在，2026-10-12 提交，cs.SE / cs.AI，79 位作者，23 页；摘要聚焦 <code>.science</code> 包的交换契约与受控检验，<em>不是</em>性能评测论文。</td></tr>
+<tr><td>v1.0.0、三平台安装包（README）</td><td>✅</td><td>GitHub Releases：v1.0.0 于 2026-10-14 发布，含 macOS（arm64/x64）、Windows x64、Linux（x86_64/arm64）安装包。</td></tr>
+<tr><td>技能市场 525 个技能（README）</td><td>⚠️ 口径不一</td><td><a href="https://github.com/aipoch/openscience-skill-marketplace" rel="noopener">技能市场仓库</a>的 <code>skills/manifest.json</code> 列出 584 条，<code>publication-holds.json</code> 另有 32 条暂缓发布，都对不上 525；可能是统计时间或口径不同。</td></tr>
+<tr><td>三项基准“所列对照最高”（README）</td><td>⚠️ 自报</td><td>README 自己注明是 2026 年 8—10 月的历史内部结果，不是对 v1.0.0 的新评测，不代表官方榜单名次；原始报告在飞书（可能需要权限）。本站未复现。</td></tr>
+</table></div>
+<p class="caption">此外：发帖人简介列有商务合作方式，推文未标注是否为合作推广，本站无法判断。演示视频未转载、未逐帧核对。</p>
+
+<h2 id="takeaways">对我们的启发</h2>
+<ul>
+<li><strong>“外壳”比引擎更值钱。</strong>Open-Science 没有自己造智能体，而是把 Claude Code / Codex 这类现成引擎装进科研专用的外壳：项目、文献、数据源、权限、证据链。我们自己的流水线（抓取→翻译→核实→上站→入库）也可以这样想：引擎随便换，沉淀下来的是流程和证据格式。</li>
+<li><strong>证据链是一等公民。</strong>每个产物带生成代码、输入、环境和对话分支，核不到的就标“不可用”。这和我们页面里的“核实”表是同一种纪律，值得把“来源 / 抓取时间 / 方法”做成每篇固定字段，而不是只写在脚注里。</li>
+<li><strong>审查员独立上下文。</strong>Reviewer 在另一个上下文里查这一轮的日志和文件，与 <a href="../anthropic-code-review/">Claude Code 团队的代码评审</a>、<a href="../harness/">Harness 工程</a>里“生成与评估分离”的思路一致。</li>
+<li><strong>可移植的研究包。</strong><code>.science</code> 把“过程”而不仅是“结果”交给下一个人，导入只读、继续需分叉。我们的 wiki raw 层“只增不改”是同一种设计，可以借鉴它“显式标出被省略内容”的做法。</li>
+<li><strong>把自报数字当线索，不当结论。</strong>README 对基准成绩的限定写得很克制（历史结果、非官方名次、裁判不统一），转述时应保留这些限定，别只剩一个“第一”。</li>
+</ul>
+<p>相关阅读：<a href="../saccc-little-prince-3d/">Sac：《小王子》3D 游戏制作流程</a> · <a href="../harness/">面向自我改进的 Harness 工程</a> · <a href="../nftchen-harness2/">Google Harness²</a> · <a href="../flameox/">flameox：给编程智能体的运行时证据</a> · <a href="../anthropic-code-review/">Claude Code 团队怎么做代码评审</a> · <a href="../lex-qiaomu/">lex.qiaomu.ai：替你先听一遍的播客精读站</a></p>
+
+<h2 id="readme">README 中文全文</h2>
+<p class="caption">以下为 AIPOCH 官方提供的简体中文 README（<a href="https://github.com/aipoch/open-science/blob/main/docs/zh-Hans/README.md" rel="noopener">docs/zh-Hans/README.md</a>，2026-10-19 版本，已与英文原版核对内容一致），按 Apache-2.0 转载。本站改动：删去顶部徽章与目录，标题降级以适配本页，相对链接改为指向 GitHub，大部分截图改为链接（保留 3 张压缩图）。</p>
+<blockquote>
+<p>本文档是英文 <code>README.md</code> 的翻译。如内容存在差异，请以<a href="https://github.com/aipoch/open-science/blob/main/README.md">英文原文</a>为准。</p>
+</blockquote>
+<p>AIPOCH Open-Science 是面向科学家和研究人员的 AI 研究工作台，由 <a href="https://aipoch.com/open-science">AIPOCH</a> 开发，采用开源、本地优先、模型无关的设计。它通过科学 AI 智能体、Python 和 R 执行、科学数据连接器以及对 macOS、Windows 和 Linux 的跨平台支持，实现可复现、可检查的研究。在同一个工作区中，新建项目，用自然语言描述研究目标，然后让智能体读取文件、搜索网页、运行代码、查询科学数据源，并生成带有可追溯来源的报告、表格和图表。</p>
+<p>AIPOCH Open-Science 支持机器学习、统计学、生命科学、化学、材料科学、物理学和环境科学等领域的计算密集型与数据密集型研究。它覆盖从文献综述、假设构建到代码执行、数据分析、仿真、可视化以及生成可追溯研究成果的完整研究流程。</p>
+<p>已完成的研究会话还可以导出为可移植的 <code>.science</code> 包，用于审阅、交接和归档，并携带所选的对话分支、文件版本、Notebook 记录和验证证据。</p>
+<blockquote>
+<p>💡 <strong>AIPOCH Open-Science v1.0.0</strong> <em>（2026 年 10 月更新）</em>。这一里程碑汇集本地优先的科研工作区、科学智能体、Python/R Notebook 执行、文献工具和可移植的 <code>.science</code> 包。有关 v0.37.2 之后的改进及 CLI 升级变化，请查看 <a href="https://github.com/aipoch/open-science/blob/main/release-notes/1.0.0/zh-Hans.md">1.0.0 发行说明</a>。下载仍以<a href="https://github.com/aipoch/open-science/releases/latest">最新已发布版本</a>为准。</p>
+</blockquote>
+<figure><img src="img/banner.webp" alt="AIPOCH Open-Science 首屏横幅：Science, Open to All——开源、模型无关、可自托管的科学 AI 研究工作台" loading="lazy"></figure>
+
+<h3>🚀 快速开始</h3>
+<h4>1. 下载应用</h4>
+<p>打开<a href="https://aipoch.com/open-science/download">官方应用下载页面</a>，并选择适合你计算机的安装程序：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>你的计算机</th>
+<th>选择</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macOS 12+ — Apple 芯片（M1 或更新型号）</td>
+<td>适用于 Apple Silicon / ARM64 的 macOS DMG</td>
+</tr>
+<tr>
+<td>macOS 12+ — Intel</td>
+<td>适用于 Intel / x64 的 macOS DMG</td>
+</tr>
+<tr>
+<td>Windows x64</td>
+<td>Windows x64 安装程序（已代码签名）</td>
+</tr>
+<tr>
+<td>Linux x64</td>
+<td>Linux x64 AppImage 或 Debian 软件包</td>
+</tr>
+<tr>
+<td>Linux ARM64</td>
+<td>Linux ARM64 AppImage 或 Debian 软件包</td>
+</tr>
+</tbody>
+</table></div>
+<p>从<a href="https://aipoch.com/open-science/download">官方应用下载页面</a>下载安装包；如需校验，请参阅<a href="https://github.com/aipoch/open-science/blob/main/SECURITY.md#verifying-your-download">验证下载</a>。</p>
+<p>macOS 用户也可以通过 <a href="https://brew.sh">Homebrew</a> 安装：</p>
+<pre><code class="language-bash">brew install --cask open-science
+</code></pre>
+<p>macOS 或 Linux 的独立 CLI 使用单独的 <a href="https://github.com/aipoch/homebrew-tap">AIPOCH tap</a>：</p>
+<pre><code class="language-bash">brew install aipoch/tap/open-science
+</code></pre>
+<p>该 Formula 自带 Node，无需启动桌面应用；其版本可能与桌面 Cask 不同。前提条件与升级方式见<a href="https://github.com/aipoch/open-science/blob/main/docs/standalone-runtime.md">独立运行时指南</a>。</p>
+<p>Windows 重装会保留研究数据；如需彻底清理，请参阅<a href="https://github.com/aipoch/open-science/blob/main/scripts/windows-reset/README.md">数据重置工具</a>，确认后会永久删除本地数据。</p>
+<h4>2. 完成首次设置</h4>
+<p>按向导依次完成：<strong>环境 → 数据位置 → 智能体运行时 → 模型服务商 → Notebook 运行时</strong>。</p>
+<p>完成必需的环境和智能体运行时检查，并测试模型连接。Python/R Notebook 配置可选；Notebook 和数据位置都可稍后在设置中调整。</p>
+<div class="table-wrap"><table>
+  <tr>
+    <td><em class="imgnote">［原图：AIPOCH Open-Science 自动执行首次启动环境检查——见<a href="https://github.com/aipoch/open-science/blob/main/docs/images/readme/onboarding-environment.jpg" rel="noopener">仓库</a>］</em></td>
+    <td><em class="imgnote">［原图：AIPOCH Open-Science 首次启动模型服务商配置——见<a href="https://github.com/aipoch/open-science/blob/main/docs/images/readme/onboarding-model-provider.jpg" rel="noopener">仓库</a>］</em></td>
+  </tr>
+  <tr>
+    <td><sub>主机兼容性、存储和网络检查</sub></td>
+    <td><sub>服务商、API Key、端点和模型验证</sub></td>
+  </tr>
+</table></div>
+
+<h4>3. 开始研究项目</h4>
+<ol>
+<li>点击 <strong>New project</strong>，打开会话，说明研究目标、输入和期望输出。</li>
+<li>附加文件，选择模型与批准模式，然后发送任务；可用 <code>@</code> 引用项目文件，用 <code>/</code> 选择技能。</li>
+<li>查看工具活动并处理批准请求，预览结果，通过 <strong>Provenance</strong> 检查可用证据。</li>
+</ol>
+<blockquote>
+<p>本 README 中的截图用于说明工作流程。标签、目录和其他界面细节可能与所安装版本不同。</p>
+</blockquote>
+<h3>产品导览</h3>
+<h4>从研究请求到可追溯结果</h4>
+<p>以一个具有代表性的生物信息学任务为例：复现已发表的差异表达分析，将重新生成的结果与论文比较，并交付审阅所需的报告、表格和图像。以下截图来自已记录的 AIPOCH Open-Science 工作流，用于展示各个阶段，并非同一次连续会话。</p>
+<h5>1. 明确研究任务与证据</h5>
+<p>说明研究问题、来源论文与数据集、必需的方法或阈值、预期输出和验收标准。上传支持文件，或使用 <code>@</code> 引用已有项目产物，让智能体从明确的输入开始，而不是依赖隐藏上下文。</p>
+<p>
+  <em class="imgnote">［原图：AIPOCH Open-Science 论文复现任务，在同一工作区中显示研究结论、生成产物和来源比较——见<a href="https://github.com/aipoch/open-science/blob/main/docs/images/readme/product-tour-task.jpg" rel="noopener">仓库</a>］</em>
+</p>
+
+<h5>2. 使用可检查的科学工具执行</h5>
+<p>智能体可以在共享 Notebook 中组合科学技能、受权限控制的研究连接器、搜索、文件操作以及 Python 或 R 代码。生成图像可与研究摘要并排审阅，产物记录则提供已捕获的生成代码和执行证据供检查。</p>
+<figure><img src="img/tour-execute.webp" alt="AIPOCH Open-Science 生物信息学分析，并排显示研究摘要、生成图像和已捕获的生成代码" loading="lazy"></figure>
+
+<h5>3. 就地审阅报告、表格和图像</h5>
+<p>最终回答会概述哪些结果成功复现、哪些存在差异，以及需要关注的局限。生成的 Markdown 报告、CSV 表格、图像和其他研究产物会继续附属于会话，并汇集到项目文件库，可在对话旁预览，也可用于后续工作。</p>
+<p>
+  <em class="imgnote">［原图：AIPOCH Open-Science 复现结果，在智能体说明旁预览差异表达图像和生成文件——见<a href="https://github.com/aipoch/open-science/blob/main/docs/images/readme/product-tour-output.jpg" rel="noopener">仓库</a>］</em>
+</p>
+
+<h5>4. 将每个产物追溯到证据</h5>
+<p>每个生成产物都以不可变且带校验和的版本保存。其 <strong>Provenance</strong> 视图可显示生成代码与执行历史、引用的输入、观测到的环境清单、生成该产物的对话分支，以及限定到该版本的 Reviewer 结果。无法验证的证据会标记为不可用，而不会被推断补全。</p>
+<figure><img src="img/tour-provenance.webp" alt="AIPOCH Open-Science 研究产物预览，其中包含用于追溯生成结果的 Provenance 入口" loading="lazy"></figure>
+
+<h3>AIPOCH Open-Science <code>.science</code> 包</h3>
+<p>将已完成的研究会话导出为可移植的 <code>.science</code> 包，用于审阅、交接和归档。选择要纳入的对话分支、文件版本、Notebook 记录和验证证据，然后将包导入其他项目或计算机。</p>
+<p><strong>导出 → 传递 → 检查</strong></p>
+<ol>
+<li>导出已完成的会话，并选择要纳入的内容。</li>
+<li>将 <code>.science</code> 文件传递给协作者，或转移到另一台计算机。</li>
+<li>将它导入项目。右侧的 <strong>Research replay</strong> 展示记录过程，左侧对话可针对记录提问并引用固定步骤。</li>
+</ol>
+<p>导入记录保持只读；浏览回放不会执行代码、调用模型或恢复凭据。首次提问会创建关联的可写讨论；使用 <strong>Create a copy to continue research</strong> 创建副本后可继续研究。重新运行结果仍需要完整配方、必要输入和可用运行环境。</p>
+<p>Side Chat 对话、私人阅读书签和凭据不随包导出，所含文件取决于导出选择。收到的验证记录描述发送方执行过的检查，不代表接收计算机已重新运行。详见 <a href="https://aipoch.com/docs/guides/research-packages/"><code>.science</code> 包指南</a>。</p>
+<h3>AIPOCH Open-Science 论文与引用</h3>
+<p><strong><a href="https://arxiv.org/abs/2610.17110">AIPOCH Open-Science: An Open-Source AI Research Workbench with Reproducible .science Packages</a></strong></p>
+<p>arXiv 预印本 · <a href="https://arxiv.org/abs/2610.17110v1">v1</a> · 提交于 2026 年 10 月 12 日。</p>
+<p>我们的预印本介绍了 AIPOCH Open-Science：一个开源 AI 科研工作台，通过可移植的 <code>.science</code> 包共享研究上下文、产物版本和验证记录。阅读论文，了解包交换设计与受控评估。</p>
+<p>如果在研究中使用 AIPOCH Open-Science，可引用这篇预印本：</p>
+<details>
+<summary>BibTeX 引用</summary>
+
+
+<pre><code class="language-bibtex">@misc{ouyang2026aipochopenscienceopensourceai,
+      title={AIPOCH Open-Science: An Open-Source AI Research Workbench with Reproducible .science Packages},
+      author={Wen Ouyang and Bocheng Huang and Qianyu Yao and Fei Sun and Minying Deng and Haoyue Cheng and Wenwen Zhou and Lei Mou and Yusi Wei and Jiang Li and Kun Zhu and Lei Wang and Yi Feng and Jiaheng Dai and Ke Qian and Dan Wang and Yahui Wang and Chenyi Wang and Mingsheng Lyu and Yaqiang Zhang and Ping Zheng and Chunhua Tang and Xinge Ma and Xu Zhang and Youjia Fan and Can Lu and Zhijun Dai and Man Hu and Qiqi Xie and Beinan Liu and Yuanning Guo and Yunze Liu and Jinhong Jiang and Xianjun Fu and Mingwei Zhang and Yuanji Xu and Shilin Xia and Bowen Yang and Mingjun Yu and Jingdun Xie and Xuwei Chen and Xia Zou and Yuzhou Xue and Jianguo Zhou and Chunhao Cao and Donghao Tian and Lei Huang and Jinxiao Li and Shengrong Long and Zefeng Song and Honglin Li and Jiang Luo and Wenying Jiang and Shanshan Li and Lei Dai and Ning Jiang and Ying Cai and Chaohui Li and Chunyan Peng and Hetong Zhao and Angqing Li and Chunyan Yang and Chongyang Sun and Yong Li and Xinyu Shi and Wei Dai and Ming Peng and Chen Sang and Yuanyuan Han and Desong Qiu and Haixin Miao and Jian Xu and Yi Chen and Xiaoliang Shi and Tian Shen and Teng Hu and Shuhao Wang and Yingyong Hou and Huimei Wang},
+      year={2026},
+      eprint={2610.17110},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE},
+      url={https://arxiv.org/abs/2610.17110},
+}
+</code></pre>
+
+
+</details>
+
+<h3>基准测试表现</h3>
+<p>以下为 2026 年 8—10 月报告的历史成绩，不是针对 v1.0.0 进行的新评测。</p>
+<p>来源报告: <a href="https://hwtgofuh6ud.feishu.cn/wiki/Kl5cwupToi901BkEaQacM1V2n7e">9 月 29 日</a>, <a href="https://hwtgofuh6ud.feishu.cn/wiki/XZSbw7L87ibjQUk98qJcuqFUnKh">10 月 12 日</a> (可能需要访问权限).</p>
+<h4>🏆 AstaBench LitQA2-FullText-Search：10/10全部命中</h4>
+<p>AIPOCH Open-Science 使用 <strong>DeepSeek v4-flash（max）</strong>，结合文献检索专家与技能，在官方10题验证集上取得 <strong>100% recall@30</strong>：每道题所需的目标论文均出现在返回结果的前30篇中。该成绩高于报告所列的3条公开验证集成绩，较其中最高的 <strong>80%高20个百分点</strong>。本次报告记录了3次本地重复测试，展示了系统在这组科研问题中的文献定位能力。</p>
+<p><em>［原图：AIPOCH Open-Science 在 AstaBench LitQA2-FullText-Search 验证集上取得100% recall@30、10/10目标论文命中；图中test与validation使用不同题目——见<a href="https://github.com/aipoch/open-science/blob/main/docs/images/readme/astabench-litqa2.png">仓库</a>］</em></p>
+<p>图中同时列出test与validation记录，排序仅为数值对照；100%指论文检索命中率，不是科学问答正确率。</p>
+<h4>🏆 ASI-Bench B1–B4：四项测试成绩均居所列对照首位</h4>
+<p>AIPOCH Open-Science 使用 <strong>GPT-6（gpt-6-astra / xhigh）</strong>，结合领域专家与技能，在 ASI-Bench B1、B2、B3、B4 四项测试中分别取得 <strong>79.35、56.11、59.67和59.46分</strong>，均为报告所列对照中的最高展示分数。四个档位依次考察<strong>执行完整科研方案、组织研究流程、自主选择方法，以及在干扰信息下完成自主研究</strong>，覆盖从方法实现到自主科研执行的不同任务条件。</p>
+<p>同模型、同名推理强度的本地 Codex 对照分别为74.78、56.09、58.12和55.45分，我方数值分别高 <strong>4.57、0.02、1.55和4.01分</strong>。B1、B2报告完成3次本地重复测试；B3、B4均为每轮60题、3次本地测试的均值。</p>
+<p><em>［原图：AIPOCH Open-Science 的 ASI-Bench B1–B4 成绩分别为79.35、56.11、59.67和59.46分，图中区分本地结果与公开参照——见<a href="https://github.com/aipoch/open-science/blob/main/docs/images/readme/asi-bench-b1-b4.jpg">仓库</a>］</em></p>
+<p>本地测试采用seed31415；B1有效计分59项，1项因报告所述评分器异常排除。B3/B4采用v0.32.0及替代裁判。公开参照的任务实例、配置和裁判条件不同；B2的0.02分仅为数值差异。</p>
+<h4>🏆 BiomniBench-DA Public 50：所列对照第1，79.05分</h4>
+<p>AIPOCH Open-Science 使用 <strong>gpt-5.6-sol（xhigh）</strong>，在标记为 BiomniBench-DA Public 50 的50项生物医学数据分析任务内部评测中取得 <strong>79.05分</strong>，为所汇总对照中的最高展示分数。成绩由 Gemini 3.1 Pro 裁判的 <strong>81.04分</strong>与 DeepSeek v4-pro 裁判的 <strong>77.06分</strong>等权平均得到，反映该配置在生物医学数据分析过程中的综合表现。详见<a href="https://aipoch.com/blog/open-science-biomnibench-da">评测报告</a>。</p>
+<p><em>［原图：AIPOCH Open-Science 的 BiomniBench-DA Public 50 内部评测取得79.05双裁判均分，两位裁判分数分别为77.06与81.04——见<a href="https://github.com/aipoch/open-science/blob/main/docs/images/readme/biomnibench-public50-leaderboard.png">仓库</a>］</em></p>
+<p>该对照混合了不同裁判覆盖的记录，不能视为统一裁判条件下的正式排名。</p>
+<p><strong>评测说明：</strong>以上为自行报告的本地或内部成绩，所列对照首位不代表官方榜单第一名，也不代表已通过统计检验确认提升。</p>
+<h3>核心能力</h3>
+<p>AIPOCH Open-Science 在一个本地工作区中整合项目管理、多模型智能体执行、Python 和 R Notebook、科学数据连接器、带来源的不可变产物版本，以及受权限控制的人工参与机制。不断变化的目录、打包细节和新增选项应以已安装应用及<a href="https://github.com/aipoch/open-science/releases/latest">最新发行说明</a>为准。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>领域</th>
+<th>核心能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>科学技能</strong></td>
+<td>提供 <strong>23 个内置技能</strong>，并可从 <a href="https://github.com/aipoch/openscience-skill-marketplace">Skills Marketplace</a> 安装 <strong>525 个技能</strong>，支持一键安装与更新。可通过对话或已完成的工作创建技能，导入技能包及 GitHub 来源。市场投稿经审核后发布，本地导入不会自动上架。</td>
+</tr>
+<tr>
+<td><strong>连接器</strong></td>
+<td>通过 <strong>36 个内置连接器</strong> 访问科学资源，也可添加自定义本地或远程 MCP 连接器。支持工具级权限管理，以及连接器配置的导入和导出。</td>
+</tr>
+<tr>
+<td><strong>专家与委派</strong></td>
+<td>从 <a href="https://github.com/aipoch/openscience-specialist-marketplace">Specialist Marketplace</a> 安装 <strong>10 个专家</strong>，或创建和定制个人专家，由主智能体委派任务。专家包支持导入和导出；市场投稿经审核后发布，本地导入不会自动上架。</td>
+</tr>
+<tr>
+<td><strong>模型与智能体后端</strong></td>
+<td>连接云端模型、兼容的自定义网关，或使用 Claude、Codex 订阅登录。支持 Claude Code、OpenCode、Codex 和 CodeBuddy 四种智能体后端，并提供模型连接检查、图片输入和推理强度设置。</td>
+</tr>
+<tr>
+<td><strong>项目、会话与 <code>.science</code> 包</strong></td>
+<td>管理项目，支持会话置顶、消息分支、侧边对话和历史恢复。将会话导出为<strong>可移植的 <code>.science</code> 包</strong>，并导入其他项目或计算机，携带对话分支、所选文件版本、Notebook 记录和验证证据。导入结果为只读历史，不执行代码或恢复凭据；侧边对话和书签不随包导出，文件范围取决于导出选择。</td>
+</tr>
+<tr>
+<td><strong>审阅智能体</strong></td>
+<td>按需开启自动审阅，在独立上下文中核对智能体已完成轮次的回复、执行记录及相关文件证据。生成带依据的通过、警告或失败检查项，发现问题后可触发主智能体修正，并在有限轮次内复审。保留审阅日志与问题处理状态，审阅范围限于该轮可用记录。</td>
+</tr>
+<tr>
+<td><strong>Python、R、Notebook 与 HPC</strong></td>
+<td>使用托管环境或自配解释器，在本地运行 Python、R、Notebook 和 Shell 任务，支持后台执行与历史记录。也可通过 SSH 连接远程主机或使用 Slurm 提交作业；远程计算需具备下方 FAQ 所述的主机、软件、资源和权限。</td>
+</tr>
+<tr>
+<td><strong>文献库</strong></td>
+<td>导入和管理文献与 PDF，支持合集、标签、项目关联、笔记及重复条目合并。查找开放获取全文，阅读 PDF 并提取图表，在会话中调用库内文献辅助分析。按所选引用样式生成参考文献，并导出为 BibTeX 或 RIS。</td>
+</tr>
+<tr>
+<td><strong>科学文件与预览</strong></td>
+<td>单个上传文件最大 <strong>10 GiB</strong>，支持项目文件管理及科学数据、PDF、Office 文档、图像、代码和分子结构预览。这是上传大小限制，不代表模型可以读取全部内容；模型上下文、附件解析和预览各有限制。大文件通常需要通过代码分块读取或分析。</td>
+</tr>
+<tr>
+<td><strong>产物与溯源</strong></td>
+<td>保存不可变的产物版本及可用的生成代码、输入、执行历史、环境信息和审阅证据。在桌面端，可使用完整执行配方、必要输入和可用运行时重放符合条件的版本，比较输出并导出验证记录。证据缺失可能阻止验证，重放检查不证明科学结论有效。</td>
+</tr>
+</tbody>
+</table></div>
+<p>支持持久化 PDF 批注与文档笔记。配置筛选模型后，智能合集可按纳入／排除标准评估文献；AI 判断与人工判断分别记录，用于辅助人工审阅。</p>
+<p>桌面端还可将产物溯源导出为 RO-Crate 1.1。与版本绑定的环境包只有在捕获内容完整且兼容目标平台时，才能用于创建托管环境；这不等于完整计算机备份。</p>
+<h3>模型服务商</h3>
+<p>AIPOCH Open-Science 在产品层面不限定模型：可连接主要云端 LLM 服务商、自定义网关，或复用现有 Claude、Codex 订阅。当前可用服务商取决于所选智能体后端及其支持的 API 协议。可使用以下连接方式：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>服务商模式</th>
+<th>工作方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>内置云服务商</strong></td>
+<td>从已安装应用显示的服务商列表中选择，并使用要求的密钥进行认证。</td>
+</tr>
+<tr>
+<td><strong>自定义网关</strong></td>
+<td>提供 Base URL 和准确模型 ID，选择智能体后端支持的 API 协议（Messages、Chat Completions 或 Responses），然后执行连接测试。远程网关要求 HTTPS 和 API Key；<code>localhost</code>、<code>127.0.0.1</code> 或 <code>[::1]</code> 等回环端点可以使用 HTTP 并省略密钥。预设包括 Ollama、LM Studio、llama.cpp 和 vLLM。默认 API 格式不保证服务器或模型兼容。</td>
+</tr>
+<tr>
+<td><strong>Codex 订阅</strong></td>
+<td>选择 Codex 智能体框架，然后在服务商类型中选择 Codex 订阅。</td>
+</tr>
+<tr>
+<td><strong>Claude 订阅</strong></td>
+<td>通过两种模式登录 Claude 订阅：<strong>共享</strong>（浏览器登录，将凭据存入默认 <code>~/.claude</code> 配置）或<strong>隔离</strong>（应用在自有 <code>CLAUDE_CONFIG_DIR</code> 下管理 <code>claude setup-token</code>，与 <code>~/.claude/</code> 完全隔离，并提供浏览器流程和粘贴令牌的回退方式）。</td>
+</tr>
+<tr>
+<td><strong>xAI (Grok) OAuth</strong></td>
+<td>使用内置的 xAI (Grok) OAuth 设备登录。可用性取决于 xAI 账户权限和所选后端支持的协议，请在应用中验证连接。</td>
+</tr>
+</tbody>
+</table></div>
+<p>有 25 个预设服务商选项，包括 OpenAI、Anthropic、DeepSeek、NVIDIA Build 等；可用模型和地区端点取决于安装版本及所选智能体后端。请以应用中的服务商选择器和连接测试为准。</p>
+<h3>数据、权限与信任</h3>
+<p>AIPOCH Open-Science 将项目数据、设置、产物版本和来源证据存储在本地计算机上。API Key 保存在本地，并在操作系统支持时使用其安全凭据存储。日志保存在本地，不会自动上传。</p>
+<p>仍可能发生外部数据流，应对其进行审查：</p>
+<ul>
+<li>模型请求会将提示和必要上下文发送给所选模型服务商。</li>
+<li>网页搜索和远程连接器会将其显示的参数发送给外部服务。</li>
+<li>本地连接器可能会在计算机上执行受信任命令。</li>
+<li>应用也可能访问更新服务器、市场目录，以及运行时或模型下载服务。</li>
+<li>附件、<code>@</code> 引用、日志和生成报告可能包含敏感研究数据。</li>
+</ul>
+<p>选择能够满足任务需要的最小权限配置：</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>行为</th>
+<th>建议用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ask for approval</code></td>
+<td>对未被已有范围授权或可信应用工具策略覆盖的操作请求批准</td>
+<td>新工作流、敏感数据、不熟悉的脚本</td>
+</tr>
+<tr>
+<td><code>Auto-approve edits</code></td>
+<td>优先使用后端原生自动审查；否则仅自动批准明显低风险的工作区操作</td>
+<td>受信任的文件编辑工作，并控制外部访问</td>
+</tr>
+<tr>
+<td><code>Full access</code></td>
+<td>自动允许编辑、命令、网络和连接器</td>
+<td>范围清晰、完全受信任的无人值守工作</td>
+</tr>
+</tbody>
+</table></div>
+<p>实际权限模式取决于所选后端和已有授权。连接器、工具及计算网络策略同样适用；请查看应用显示的实际生效模式。</p>
+<p>批准前检查连接器参数和工具活动。切勿在截图或公开问题日志中包含 API Key、访问令牌、患者标识符、未公开数据或敏感本地路径。</p>
+<h3>开发与打包</h3>
+<p>AIPOCH Open-Science 由普通 Node 后端和 Electron 桌面客户端组成，使用 React、TypeScript、Prisma/SQLite 及基于 ACP 的智能体运行时。</p>
+<p>源代码开发前提条件：</p>
+<ul>
+<li>Node.js 24（参见 <a href="https://github.com/aipoch/open-science/blob/main/.nvmrc"><code>.nvmrc</code></a>）及 npm</li>
+<li>Git</li>
+<li>Notebook 执行为可选功能，可使用应用管理的 Python/R 环境或自行配置的兼容解释器。</li>
+</ul>
+<pre><code class="language-bash">git clone https://github.com/aipoch/open-science.git
+cd open-science
+npm install
+npm run dev
+</code></pre>
+<p>构建命令与开发流程见<a href="https://github.com/aipoch/open-science/blob/main/docs/zh-Hans/development-quick-reference.md">开发命令与打包参考</a>和<a href="https://github.com/aipoch/open-science/blob/main/CONTRIBUTING.md">贡献指南</a>。</p>
+<h4>Localhost Web 和无界面模式</h4>
+<p>Web 界面运行在普通 Node 后端上，无需 Electron 或图形显示。</p>
+<pre><code class="language-bash">npm run dev:web
+npm run pack:backend
+</code></pre>
+<p>Web 界面运行在普通 Node 后端上，无需 Electron 或图形显示。<code>npm run dev:web</code> 和 <code>npm run dev:headless</code> 会构建并启动后端及 Web 界面，不启动桌面或托盘。<code>OPEN_SCIENCE_WEB_PORT</code> 选择端口（默认 <code>44100</code>）；Ctrl+C 正常关闭前台服务。</p>
+<p>源码开发需要 Node.js 24。独立 npm 软件包需要 Node &gt;=22.13.0，轻量 CLI/SDK 需要 Node &gt;=22.5。Release 压缩包、Homebrew Formula 和桌面命令启动器自带运行时。</p>
+<p>桌面与浏览器共享同一服务。退出桌面只会停止它自行启动的后端；若连接的是 CLI 启动的服务，则只断开桌面连接。</p>
+<p><a href="https://github.com/aipoch/open-science/blob/main/packages/open-science/CLI.md">CLI</a> · <a href="https://github.com/aipoch/open-science/blob/main/docs/standalone-runtime.md">Node</a></p>
+<h4>移动端远程访问</h4>
+<p>可以通过 Remote.It 配对，从手机或平板电脑访问同一 localhost Web UI。使用六位 AIPOCH Open-Science 代码配对浏览器，并在桌面端批准一次；无需直接暴露回环服务器，工作区即可保持可访问。浏览器信任可撤销，模式变更或服务关闭会立即使活动远程会话失效。</p>
+<p>远程访问要求主机保持开机和联网，持续运行 AIPOCH Open-Science 与 Remote.It 代理，并已将主机添加到登录后的 Remote.It 账户。浏览器授权会到期，也可撤销；详见<a href="https://github.com/aipoch/open-science/blob/main/docs/remote-control.md">远程控制指南</a>。</p>
+<h4>无界面 CLI 和 SDK</h4>
+<p>无界面 CLI 和零依赖 Node.js SDK 与桌面及 Web 界面使用同一本地守护进程、项目、会话、凭据和权限。详细用法与可发布软件包保存在一起，因此只需维护一份命令参考：</p>
+<ul>
+<li><a href="https://github.com/aipoch/open-science/blob/main/packages/open-science/CLI.md">CLI 指南</a> — 安装、服务生命周期、任务自动化、产物、输出格式和退出码</li>
+<li><a href="https://github.com/aipoch/open-science/blob/main/packages/open-science/README.md">SDK 软件包概览</a> — Node.js 快速开始和软件包入口点</li>
+</ul>
+<h3>常见问题</h3>
+<h4>为什么模型连接测试失败？</h4>
+<p>答：检查 API Key 是否缺少字符或含有空格，验证 Base URL 和地区，使用服务商准确的模型 ID，并确认网络访问和账户余额。对于 Claude 订阅，根据所选模式重新尝试共享浏览器登录，或刷新隔离的 <code>claude setup-token</code> 凭据。</p>
+<h4>为什么设置期间 <code>Continue</code> 被禁用？</h4>
+<p>答：当前步骤尚未满足必需条件。根据活动步骤，修复标记为 <code>Action needed</code> 的环境行，安装或修复所选智能体运行时，或验证模型服务商。Notebook 设置是可选的，只影响 Notebook 执行。</p>
+<h4>如何在远程 HPC 集群上运行任务？</h4>
+<p>答：<strong>Remote Compute (SSH)</strong> 始终启用，无需在 Settings 中手动启用。先在 <strong>Settings → Compute</strong> 中注册 SSH 计算主机并使其对当前会话可用，然后通过自然语言或 <code>/remote-compute-ssh</code> 使用远程计算。你需要可访问的 SSH 主机、有效认证、所需目录的访问权限，以及任务所需的软件、依赖和计算资源。Direct SSH 不要求调度器；Slurm 模式要求可用的 Slurm 环境和作业提交权限。“始终启用”仅指该 Skill，不代表所有已注册主机始终可用。</p>
+<h4>是否提供命令行界面？</h4>
+<p>答：提供。启动独立后端需要安装独立 Node 软件包。通过 <strong>Settings → General → Command line tool → Install command</strong> 安装的命令用于控制已运行的桌面实例，此用途无需单独安装 Node.js。例外是 Debian 软件包自带的启动器，它可用自带的 Node 运行时启动自带后端。以下独立启动示例需要先安装独立软件包和普通 Node.js，再初始化本地配置并启动服务：</p>
+<pre><code class="language-bash"># 在后台启动服务
+open-science init
+open-science start --no-open
+
+# 新建项目，并按准确名称运行任务
+open-science project create &quot;Systematic review&quot;
+open-science run --project &quot;Systematic review&quot; \
+  --prompt-file ./task.md \
+  --approval-profile auto \
+  --skill literature-review \
+  --wait --json
+
+# 下载生成产物
+open-science artifacts list &lt;session-id&gt; --json
+open-science artifacts download &lt;artifact-id&gt; --output ./report.md
+</code></pre>
+<p>完整命令参考、JSON/JSONL 输出格式、退出码和无界面服务选项请查看 <a href="https://github.com/aipoch/open-science/blob/main/packages/open-science/CLI.md">CLI 指南</a>。</p>
+<h4>如何检查生成结果的来源？</h4>
+<p>答：打开生成产物并选择 <strong>Provenance</strong>。选择一个版本，以检查内容标识及可用的生成代码、执行历史、输入、环境清单、生成对话上下文和审查证据。AIPOCH Open-Science 无法验证的证据会标记为不可用。</p>
+<h4>能否修改较早的请求而不丢失后续对话？</h4>
+<p>答：可以。编辑已完成的用户消息并重新发送，从该位置新建分支。原有后续轮次仍然可用，消息旁的修订箭头可在不同路径之间切换。</p>
+<h3>参与项目</h3>
+<p>AIPOCH Open-Science 通过 GitHub、Discord、X 和 AIPOCH 网站接收缺陷报告、功能建议、设计讨论、社区问题和项目贡献。请选择最符合你目标的渠道，并在公开分享项目详情前查看相关贡献指南与公开发布安全提醒。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>渠道</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/aipoch/open-science/issues">GitHub Issues</a></td>
+<td>缺陷、可复现故障和具体功能建议</td>
+</tr>
+<tr>
+<td><a href="https://github.com/aipoch/open-science/discussions">GitHub Discussions</a></td>
+<td>设计问题、路线图提议和较长技术讨论</td>
+</tr>
+<tr>
+<td><a href="https://discord.gg/zxQAYjReRv">Discord</a></td>
+<td>社区帮助、贡献者协调和非正式讨论</td>
+</tr>
+<tr>
+<td><a href="https://x.com/aipoch_ai">X / @aipoch_ai</a></td>
+<td>版本公告和公开构建动态</td>
+</tr>
+<tr>
+<td><a href="https://aipoch.com/open-science">AIPOCH Open-Science 官网</a></td>
+<td>官方产品概览与下载</td>
+</tr>
+</tbody>
+</table></div>
+<p>提交公开问题前，从日志和截图中移除 API Key、令牌、私有文件路径、未公开数据、患者标识符和其他敏感材料。开发工作流请参阅<a href="https://github.com/aipoch/open-science/blob/main/CONTRIBUTING.md">贡献指南</a>。</p>
+<blockquote>
+<p>⭐ <strong>Star 仓库：</strong> 如果本项目对你有帮助，欢迎在 GitHub 上 Star。Star 仓库可以鼓励项目持续开发，只需片刻，却会对项目产生切实影响。</p>
+</blockquote>
+<p>已交付、部分实现和计划能力见<a href="https://github.com/aipoch/open-science/blob/main/docs/ROADMAP.md#capability-map">能力地图</a>。</p>
+<h3>许可证</h3>
+<p>Apache License 2.0 — 参阅 <a href="https://github.com/aipoch/open-science/blob/main/LICENSE">LICENSE</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/aipoch/open-science" rel="noopener">AIPOCH Open-Science</a>，开发方 AIPOCH，许可 <a href="https://github.com/aipoch/open-science/blob/main/LICENSE" rel="noopener">Apache License 2.0</a>。“README 中文全文”转载自官方简体中文 README，按 Apache-2.0 提供，改动已在该节开头说明，版权归原作者。推荐帖：Sac <a href="https://x.com/Saccc_c/status/2112076203830218911" rel="noopener">@Saccc_c</a>，2026-10-19，全文照录用于介绍与评述，视频只引用封面帧。仓库统计与核实数据取自公开 GitHub API、arxiv.org/abs 公开页（2026-10-19）。导读、要点、核实与“对我们的启发”为本站整理。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/aipoch/open-science" rel="noopener">github.com/aipoch/open-science</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
