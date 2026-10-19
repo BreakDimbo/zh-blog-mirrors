@@ -400,5 +400,14 @@
     "type": "导读",
     "subtitle": "lex.qiaomu.ai — Chinese companion to the Lex Fridman Podcast",
     "original_url": "https://lex.qiaomu.ai/"
+  },
+  {
+    "slug": "qingj-ai-shuorenhua",
+    "title": "怎么让你的 AI 说人话？情酱整理的一套“去 AI 腔”方案（全文照录 + 导读 + 核实）",
+    "desc": "情酱 X 长文全文照录+导读+核实：AI 腔如何在预训练、指令微调、偏好优化、评测四道工序中被奖励出来；日常对话要“管住”（提示词四件套、ASD-STE100、shuorenhua 先保信息），写作要“放开”（材料→说话位置→语气、七遍改稿、禁词表后置）。附 shuorenhua / human-writing README（MIT）正文。",
+    "source": "情酱 @qingj1314 · X 文章",
+    "date": "2026-10-19",
+    "type": "导读",
+    "original_url": "https://x.com/qingj1314/status/2111669870958190608"
   }
 ]
