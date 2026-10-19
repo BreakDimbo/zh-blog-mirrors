@@ -1,5 +1,14 @@
 [
   {
+    "slug": "jokerliu-ai-wuda-physics",
+    "title": "AI 武打一眼假？不是画面不行，是物理逻辑崩了——老泥鳅的武打动作引擎框架（全文照录 + 导读 + 核实）",
+    "desc": "老泥鳅 X 长文全文照录+导读+核实：AI 视频武打戏像木偶互殴，根因是物理与空间逻辑崩了。核心顺序“剧情事实 > 武器力学 > 攻防因果 > 空间连续 > 人物设定 > 可生成性 > 镜头特效”；六步框架（战局初始化与 End/Start State 交接、兵器动作库、攻防因果链、三档距离、打击与收招、镜头与动作分离）、输出模板与十条避坑红线；附 Seedance 2.5 演示封面帧。",
+    "source": "老泥鳅 @JokerLiu1119 · X 文章",
+    "date": "2026-10-19",
+    "type": "导读",
+    "original_url": "https://x.com/JokerLiu1119/status/2110702680977113428"
+  },
+  {
     "slug": "h3-motion-context",
     "title": "ComfyUI-H3-Motion-Context",
     "desc": "让 MiniMax H3 片段首尾无缝续接的 ComfyUI 节点包：把上一段末 22 帧画面与声音从 latent 直接钉进下一段开头。项目导读 + README 中文全译（GPL-3.0）。",

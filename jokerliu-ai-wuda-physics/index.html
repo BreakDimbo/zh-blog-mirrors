@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 武打一眼假？不是画面不行，是物理逻辑崩了——老泥鳅的武打动作引擎框架（全文照录 + 导读 + 核实）</title>
+<meta name="description" content="老泥鳅（@JokerLiu1119）X 长文全文照录：AI 视频武打戏像木偶互殴，根因是物理与空间逻辑崩了。核心顺序：剧情事实 > 武器力学 > 攻防因果 > 空间连续 > 人物设定 > 可生成性 > 镜头特效；六步框架、输出模板与避坑红线。附导读、要点、核实与 Seedance 2.5 演示。">
+<meta property="og:title" content="AI 武打一眼假？不是画面不行，是物理逻辑崩了——老泥鳅的武打动作引擎框架">
+<meta property="og:description" content="先把动作搞对，再把打斗连起来，最后才是运镜好看。老泥鳅 X 长文全文照录 + 导读 + 核实。">
+<meta property="og:image" content="cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-19">2026.10.19</time></p>
+<h1 class="za-title">AI 武打一眼假？不是画面不行，是物理逻辑崩了——老泥鳅的武打动作引擎框架（全文照录 + 导读 + 核实）</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · 老泥鳅 @JokerLiu1119 · X 文章</span><span>收录 · 2026-10-19</span><span><a href="https://x.com/JokerLiu1119/status/2110702680977113428" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖发布 · 2026-10-15 20:01（UTC+8）· X 文章《AI 武打一眼假？不是画面不行，是物理逻辑崩了》· 未编辑</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>这是作者老泥鳅（<a href="https://x.com/JokerLiu1119">@JokerLiu1119</a>）用中文写的 X 长文，下面<strong>全文照录</strong>，封面和 4 张配图按内容放回（图片已压缩）。前面加了导读、要点和我们的核实，后面附作者 10-19 引用本帖发的 Seedance 2.5 演示（只放封面帧，视频请到原帖看）。帖子没有附 GitHub 仓库或提示词文件，正文本身就是全部方法。同主题可对照 <a href="../vibeshot-ai-fight-impact-frames-notes/">AI 打斗的冲击帧与闪帧</a>。</div>
+
+<figure><img class="cover" src="cover.webp" alt="封面：AI 武打一眼假？物理逻辑崩了 / Why AI Fights Look Fake: It's the Physics, Not Pixels" loading="lazy"></figure>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#guide">导读</a></li>
+<li><a href="#points">要点</a></li>
+<li><a href="#check">我们核实到的情况</a></li>
+<li><a href="#post">推文全文</a></li>
+<li><a href="#article">X 长文全文</a></li>
+<li><a href="#demo">作者的演示与评论区</a></li>
+<li><a href="#related">相关页面</a></li>
+<li><a href="#takeaways">对我们的启发</a></li>
+</ol></nav>
+
+<h2 id="guide">导读</h2>
+<p class="lede">老泥鳅自述是前影视从业者，现在做 AI 内容。这篇短长文只回答一个问题：AI 视频里的武打戏为什么一眼假？</p>
+<p>他的回答是：不是画质问题，是<strong>物理逻辑和空间逻辑崩了</strong>。不管用 Seedance、Kling 还是 Veo，模型拿到一句“两人激烈打斗”，就会生成木偶互殴：拿枪当大刀劈、软鞭没有惯性、人物瞬移、一招打完不收势。他的办法是在写提示词之前先当一回武术指导，按一条不妥协的优先级排：剧情事实 &gt; 武器力学 &gt; 攻防因果 &gt; 空间连续 &gt; 人物设定 &gt; 可生成性 &gt; 镜头特效。镜头和特效排在最后。</p>
+<p>正文分六步：先锁定战局变量，并让上一镜的收招状态接成下一镜的起手状态；按兵器限定动作库；每段打斗写成“起手 → 意图 → 攻击 → 反应 → 空档 → 反击 → 位移 → 收招 → 结尾”的因果链；用远、中、近三档距离安排兵器，禁止瞬移；每次攻击之后必须有恢复动作；镜头单独设计，只在真实动作节点切镜。最后给一个三段式输出模板和十条“避坑红线”。四天后作者引用本帖发了一条 30 秒的 Seedance 2.5 演示，并补了一句：基础学会之后，剩下的才是镜头衔接、特效渲染和表演。</p>
+
+<h2 id="points">要点</h2>
+<ul>
+<li><strong>假的根源是物理，不是像素。</strong>武打戏的难点在力学和空间连续，画质再好也救不了。</li>
+<li><strong>优先级不能乱：</strong>剧情事实 &gt; 武器力学 &gt; 攻防因果 &gt; 空间连续 &gt; 人物设定 &gt; 可生成性 &gt; 镜头特效。不要为了炫技破坏武器结构、距离感和重心。</li>
+<li><strong>开打前锁变量：</strong>能力、体型、武器、目的、位置、距离、朝向、障碍、伤势、体力、优势方、总时长。</li>
+<li><strong>镜与镜之间交接状态：</strong>上一镜的 End State（位置、高度、朝向、武器在哪只手）就是下一镜的 Start State，全程维护。</li>
+<li><strong>武器决定动作：</strong>枪矛刺戳挑拨、不能当大刀劈；锤重击后要画恢复；软兵器要有惯性和回收；拳脚看支撑脚、腰胯和重心。</li>
+<li><strong>每招都要有战术目的</strong>（抢距离、封路线、逼退、制造空档、脱离），按因果链串起来，不堆孤立招式。</li>
+<li><strong>距离三档：</strong>远距离长枪和投射，中距离刀剑棍和拳腿，近距离短刀、肘膝和控制；换位必须拍出移动过程。</li>
+<li><strong>有打就得有收：</strong>回收、落地、换脚、回架、恢复重心、重新拉开距离。没有恢复动作就是假打。</li>
+<li><strong>镜头和动作分开设计：</strong>一镜到底用于换位、兵器轨迹和环境互动；快切用于近身爆发和打击反馈；只在真实动作节点切镜。</li>
+<li><strong>输出模板：</strong>【战局设定】→【武器力学】→【时间线推进】，每个时间段写目的、镜头、起手、意图、动作、反应、打击、收招、结尾、连续性和硬性锁定。</li>
+</ul>
+
+<h2 id="check">我们核实到的情况</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>文中说法</th><th>核实结果</th></tr></thead>
+<tbody>
+<tr><td>Seedance、Kling、Veo 都能生成 AI 视频，武打戏是共同难点</td><td><strong>前半句属实。</strong>三者分别是字节跳动、快手、Google 的视频生成模型。“武打戏最难”是作者的经验判断，没有给评测数据。</td></tr>
+<tr><td>作者 10-19 的演示用的是 “sd2.5”</td><td><strong>可信。</strong>字节 Seed 团队于 2026-07-31 发布 <a href="https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5">Seedance 2.5</a>，官方写明单次最长生成 30 秒。演示视频时长约 30.1 秒，与此相符。视频是否一次生成、有没有后期剪辑，帖子没说，我们无法判断。</td></tr>
+<tr><td>各兵器的动作库（枪刺戳挑拨、刀劈砍撩、剑刺点撩、棍扫戳挑……）</td><td><strong>与常见武术术语大体一致。</strong>例如传统枪法以拦、拿、扎为基本功，剑以刺、点、撩、劈为主要剑法。我们没有逐条对照武术套路教材；作者的分类是给 AI 写提示词用的简化版，不是武术规范。</td></tr>
+<tr><td>上一镜收招状态必须接成下一镜起手状态</td><td><strong>属于影视通行做法。</strong>对应剪辑里的动作衔接（match on action）和场记的连戏记录。它对 AI 视频尤其重要，因为模型分段生成时不会记住上一段的状态，参考本库 <a href="../h3-motion-context/">ComfyUI-H3-Motion-Context</a> 用 latent 续接片段要解决的也是这个问题。</td></tr>
+<tr><td>“本泥鳅自己跑通了一套武打动作引擎框架”</td><td><strong>无法独立核实。</strong>文中没有公开完整提示词、模板文件或对照实验；能看到的只有 10-19 那条演示视频。</td></tr>
+<tr><td>作者简介“前影视从业者”</td><td><strong>自述，无法核实。</strong></td></tr>
+<tr><td>传播数据</td><td>截至 2026-10-19 20:00（UTC+8）前后：约 2300 浏览、28 赞、24 收藏、3 引用、6 回复。3 条引用里 API 只返回了 2 条可见的（作者本人的演示和 @RJasonHA）。</td></tr>
+</tbody></table></div>
+
+<h2 id="post">推文全文</h2>
+<div class="xpost">
+<p>武打动作小技巧 <a href="https://x.com/JokerLiu1119/status/2110702680977113428">[X 文章]</a></p>
+<p class="meta">老泥鳅 <a href="https://x.com/JokerLiu1119">@JokerLiu1119</a> · 2026-10-15 20:01（UTC+8）· <a href="https://x.com/JokerLiu1119/status/2110702680977113428">原帖</a> · 截至 10-19 晚：约 2300 浏览、28 赞、24 收藏、3 引用、6 回复</p>
+</div>
+
+<h2 id="article">X 长文全文：AI 武打一眼假？不是画面不行，是物理逻辑崩了</h2>
+<p><em>Why AI Fights Look Fake: It's the Physics, Not the Pixels</em></p>
+<p>AI 武打一眼假？不是画面不行，是物理逻辑崩了。</p>
+<p>兄弟们，做 AI 视频（Seedance、Kling、Veo 都一样），最难的就是武打戏。</p>
+<p>很多兄弟生成出来像木偶互殴，根本原因就一个：物理逻辑和空间逻辑崩了。</p>
+<p>本泥鳅自己跑通了一套武打动作引擎框架，核心一句话：</p>
+<p><strong>先把动作搞对，再把打斗连起来，最后才是运镜好看。</strong></p>
+<p>我的核心顺序（绝不妥协）：</p>
+<p><strong>剧情事实 &gt; 武器力学 &gt; 攻防因果 &gt; 空间连续 &gt; 人物设定 &gt; 可生成性 &gt; 镜头特效</strong></p>
+<p>别为了炫技破坏武器结构、距离感和重心 —— 这是 AI 出片的大忌。</p>
+
+<h3 id="a-1">一、战局初始化：先定规矩</h3>
+<p>打斗前锁定这些变量：双方能力、体型、武器、目的、初始位置、距离、朝向、障碍、伤势、体力、优势方、总时长。</p>
+<p>关键点：上一镜的收招状态（End State）必须无缝接成下一镜的起手状态（Start State）—— 位置、高度、朝向、武器在哪个手，全程维护，绝对不能乱。</p>
+
+<h3 id="a-2">二、兵器物理法则：武器决定动作</h3>
+<p>AI 不能凭空瞎编，每种兵器只有自己的动作库：</p>
+<ul>
+<li>枪矛：刺、戳、点、挑、拨、架、压、扫杆 ——绝不能当大刀狂劈</li>
+<li>刀：劈、砍、斩、削、撩、格、拖切</li>
+<li>剑：刺、削、点、撩、格、压剑</li>
+<li>棍：扫、砸、戳、挑、架、拨</li>
+<li>锤：砸、抡、撞、压，重击后必须画恢复动作</li>
+<li>匕首：刺、割、挑、贴身控制</li>
+<li>软兵器：甩、抽、缠、套、拉，必须画出惯性和回收</li>
+<li>拳脚肘膝：距离要对、支撑脚要稳、腰胯发力要顺、重心变化要准</li>
+</ul>
+<figure><img src="weapons.webp" alt="作者配图：兵器各有动作库——刀·劈砍、棍·扫砸、软·甩缠、枪·刺挑、剑·刺削、匕·贴身；枪≠大刀" loading="lazy"><figcaption>作者配图：兵器各有动作库（刀·劈砍、棍·扫砸、软·甩缠、枪·刺挑、剑·刺削、匕·贴身；枪 ≠ 大刀）</figcaption></figure>
+
+<h3 id="a-3">三、攻防回合制：拒绝无效堆招</h3>
+<p>每段打斗都是一条完整因果链：起手 → 意图 → 攻击 → 对手反应 → 空档 → 反击 → 位移 → 收招 → 结尾。</p>
+<p>每个动作必须有战术目的（抢距离、封路线、逼退、制造空档、脱离）。</p>
+<p>最怕孤立招式乱堆，看着热闹，毫无逻辑。</p>
+<figure><img src="causal-chain.webp" alt="作者配图：起手→意图→攻击→反应→空档→反击→位移→收招→结尾，完整因果链·拒绝孤立堆招" loading="lazy"><figcaption>作者配图：完整因果链 · 拒绝孤立堆招（“每段都要有战术目的”）</figcaption></figure>
+
+<h3 id="a-4">四、距离与空间：换位必须有过程</h3>
+<p>第一回合就要建立位置、朝向、距离和动作轴线：</p>
+<ul>
+<li>远距离：上长枪、投射</li>
+<li>中距离：刀剑棍、拳腿</li>
+<li>近距离：短刀、肘膝、控制</li>
+</ul>
+<p><strong>绝对禁止瞬移、突然换手、状态重置。</strong> 所有换位必须拍出移动过程。</p>
+
+<h3 id="a-5">五、打击与恢复：有打就得有收</h3>
+<p>命中反馈要符合工具逻辑：刀剑看刃线和避让，枪矛看枪尖路径和偏转，棍锤看惯性和身体位移，拳脚看头躯偏转和失衡。</p>
+<p>最重要一条：<strong>攻击之后必须有收招</strong>—— 回收、落地、换脚、回架、恢复重心、重新建立距离。</p>
+<p>没有恢复动作的打斗，就是假打。</p>
+
+<h3 id="a-6">六、镜头语言：镜头与动作分离</h3>
+<p>镜头必须含：景别、机位、运镜、方向、速度、跟焦主体。</p>
+<ul>
+<li>一镜到底：用于空间换位、兵器轨迹、环境互动</li>
+<li>快切：用于近身爆发、打击反馈、高密度交换</li>
+</ul>
+<p>切镜只能依附真实动作节点，不能乱切。</p>
+
+<h3 id="a-template">📝 我的输出模板（直接抄）：</h3>
+<pre><code>【战局设定】→【武器力学】→【时间线推进】（目的 + 镜头 + 起手 + 意图 + 动作 + 反应 + 打击 + 收招 + 结尾 + 连续性 + 硬性锁定）</code></pre>
+
+<h3 id="a-hardlock">🚫 避坑红线（Hard Lock）：</h3>
+<p>武器功能错配 / 枪矛瞎挥砍 / 软兵器没惯性 / 拳脚没重心 / 腿法没支撑 / 投掷物数量变戏法 / 重武器连发无恢复 / 人物瞬移 / 孤立招式堆砌 / 无过程换手换位</p>
+<figure><img src="hard-lock.webp" alt="作者配图：避坑红线——无恢复、瞬移、软兵无惯性、枪劈砍、无重心；正确：有收招、有连续" loading="lazy"><figcaption>作者配图：避坑红线（无恢复、瞬移、软兵无惯性、枪劈砍、无重心；正确示范：有收招、有连续）</figcaption></figure>
+<p><strong>最终原则：先物理合理，再动作连贯，最后镜头好看。顺序一乱，AI 打戏全是塑料味。</strong></p>
+<figure><img src="follow.webp" alt="作者配图：结尾的关注转发图（老泥鳅与灰鸟）" loading="lazy"><figcaption>作者配图：文末的关注转发图</figcaption></figure>
+
+<h2 id="demo">作者的演示与评论区</h2>
+<div class="xpost">
+<p>这次下血本<br>sd2.5 给大家演示一条</p><p>基础学会了之后，剩下才是镜头衔接和特效渲染以及表演！</p>
+<p class="meta">老泥鳅 引用本帖 · 2026-10-19 16:38（UTC+8）· <a href="https://x.com/JokerLiu1119/status/2112101136564130285">原帖（含 30 秒视频）</a></p>
+</div>
+<figure><a href="https://x.com/JokerLiu1119/status/2112101136564130285"><img src="demo-poster.webp" alt="演示视频封面帧：石桥两端，两名剑客对峙，尘土飞扬，逆光" loading="lazy"></a><figcaption>演示视频封面帧（只取封面帧，未下载视频；点击到原帖观看）：石桥两端，两人对峙，尘土逆光。</figcaption></figure>
+<p>评论区里作者补了两句方法论：读者 @YunTechX 说“本质是 Prompt 当导演，模型当特技演员……不懂镜头语言照样拍成烂片”，作者回“是这样的，所以必须得有导演思维和逻辑能力”；对方再说“人人都是导演，但大多在导重灾区”，作者回“是啊，但导演思维肯定是最基础要有的，其次就是审美和语言组织能力”。另一条引用来自 @RJasonHA：“老泥鳅又开始教授焚决了，什么时候做个视频露一手”，四天后的演示可以看作对这句话的回应。</p>
+
+<h2 id="related">相关页面</h2>
+<ul>
+<li><a href="../vibeshot-ai-fight-impact-frames-notes/">AI 打斗的关键一击：冲击帧与闪帧提示词</a>：本文管“打得对”，那篇管“打中那一下好不好看”，正好是作者说的“剩下的特效渲染”。</li>
+<li><a href="../cnyzgkc-3d-wuxia-arpg/">一个人用 AI 做 3D 武侠 ARPG</a>：同样是武侠题材，游戏里的动作与兵器设定。</li>
+<li><a href="../h3-motion-context/">ComfyUI-H3-Motion-Context</a>：用 latent 续接片段，解决“上一镜 End State 接下一镜 Start State”的工程问题。</li>
+<li><a href="../minimax-h3-prompt-rewriter/">MiniMax-H3 Prompt Rewriter</a> 与 <a href="../minimax-h3-director/">MiniMax H3 Director</a>：把一句话扩写成分镜脚本，可以把本文的“时间线推进”模板放进去。</li>
+<li><a href="../slashui-motion-prompt/">Motion Prompt</a>：把动画术语整理成喂给 AI 的动效库，和本文“兵器动作库”是同一种做法。</li>
+<li><a href="../opennana-prompt-gallery/">OpenNana 提示词图库</a>：收录 Seedance 等视频提示词案例。</li>
+</ul>
+
+<h2 id="takeaways">对我们的启发</h2>
+<ul>
+<li><strong>先约束，后美化。</strong>“剧情事实 &gt; 武器力学 &gt; … &gt; 镜头特效”这种显式优先级，可以搬到任何生成任务里：先写不能违反的硬约束，再写风格。我们给 agent 写任务说明时也该这样排。</li>
+<li><strong>状态交接要写成字段。</strong>End State / Start State 的思路就是给每个片段写一份“交接单”（位置、朝向、手里拿什么）。分段生成视频、分步跑 agent，都会在交接处丢状态。</li>
+<li><strong>词表就是约束。</strong>给每种兵器限定动词，和给模型限定批准词、禁用词一样，比“动作要合理”这种泛泛要求好执行。</li>
+<li><strong>“红线”清单适合做自检。</strong>十条避坑红线可以直接当生成后的检查表，逐条过一遍再决定重抽。</li>
+<li><strong>方法要配演示看。</strong>文章本身没有对照实验，四天后的 30 秒演示是唯一的效果证据；转述这类经验帖时，要把“作者自述”和“可见结果”分开写。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>推文与 X 长文 © 老泥鳅（@JokerLiu1119），全文照录仅供阅读学习；封面与配图版权归原作者。演示视频只取封面帧，未下载视频。评论区内容为短引。数据于 2026-10-19 20:00（UTC+8）前后通过 X API 抓取。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/JokerLiu1119/status/2110702680977113428" rel="noopener">x.com/JokerLiu1119/status/2110702680977113428</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
