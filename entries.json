@@ -381,5 +381,14 @@
     "type": "翻译",
     "subtitle": "15 Motion Design Styles — one 10-second film each, made by Claude Opus 5.5 writing code",
     "original_url": "https://github.com/Vincentwei1021/mg-styles-15"
+  },
+  {
+    "slug": "nftchen-harness2",
+    "title": "模型不动、评分 +11.5：Google 开源 Harness²，让 Agent 递归优化自己的 harness",
+    "desc": "SuSu_酥酥推文全文照录+导读+核实：google-research/harness2 冻结权重，用 Propose–Probe–Compose 在无标准答案下改写提示词/记忆/技能等 8 个组件，并把经验沉淀为“改进 harness”；“+11.5”实为单步最高值。附 README（Apache-2.0）中文全译。",
+    "source": "SuSu_酥酥 @NFT_Chen · google-research/harness2（Apache-2.0）",
+    "date": "2026-10-19",
+    "type": "导读",
+    "original_url": "https://x.com/NFT_Chen/status/2111873617084756390"
   }
 ]

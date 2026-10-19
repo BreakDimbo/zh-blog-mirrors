@@ -28,7 +28,8 @@
       <p class="meta-line">作者：Lilian Weng · 2026 年 7 月 4 日 · 预计阅读 31 分钟 · 中文镜像</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><article>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>相关阅读：</strong>把“自我改进 harness”做成开源框架的例子：<a href="../nftchen-harness2/">Google 开源 Harness²：模型不动、让 Agent 递归优化自己的 harness</a>（推文导读 + README 中文全译）。</div>
+<article>
 <p>递归自我改进（recursive self-improvement，RSI）这一概念可追溯到 <a href="https://philpapers.org/rec/GOOSCT" rel="noopener noreferrer" target="_blank">I. J. Good（1965）</a>。他把「超智能机器」定义为能在一切智力活动上超越人类、并能设计出更好机器以改进自身的系统。<a href="https://www.lesswrong.com/posts/JBadX7rwdcRFzGuju/recursive-self-improvement" rel="noopener noreferrer" target="_blank">Yudkowsky（2008）</a> 则用「递归自我改进」特指一种反馈回路：AI 用当前智能去改进产生其智能的认知机制。</p>
 <p>在当代 AI 里，这条反馈回路既可以指模型直接改写自身权重，也可以更广义地理解为：模型改进训练流水线与部署系统，从而催生在有经济价值任务上表现更强的后继模型。前沿实验室的研究迭代速度已被证明在急剧加快（<a href="https://www.anthropic.com/institute/recursive-self-improvement" rel="noopener noreferrer" target="_blank">Anthropic</a>；<a href="https://openai.com/index/how-agents-are-transforming-work/" rel="noopener noreferrer" target="_blank">OpenAI</a>）。</p>
 <p>我特意点出「部署系统」，是因为原始模型与真实世界之间的那一层，似乎与模型的原始智力（例如预训练刚结束时的评测表现）同样重要。Harness 是 AI 部署的关键组成部分——Claude Code、Codex 等成功的编程智能体产品已经说明了这一点。所谓 harness，就是包在基座模型外围的系统：它编排执行，并决定模型如何思考与规划、如何调用工具与行动、如何感知与管理上下文、如何存储产物，以及如何评估结果。</p>

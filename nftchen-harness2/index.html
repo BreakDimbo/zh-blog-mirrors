@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>模型不动、评分 +11.5：Google 开源 Harness²，让 Agent 递归优化自己的 harness</title>
+<meta name="description" content="SuSu_酥酥（@NFT_Chen）推文全文照录 + 导读 + 核实：google-research/harness2 冻结模型权重，用 Propose–Probe–Compose 在无标准答案下改写提示词/工具/记忆/技能等 8 个组件，并把经验沉淀到“改进 harness”。附 README（Apache-2.0）中文全译。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-19">2026.10.19</time></p>
+<h1 class="za-title">模型不动、评分 +11.5：Google 开源 Harness²，让 Agent 递归优化自己的 harness</h1>
+
+<p class="za-meta" data-za-gen><span>来源 · SuSu_酥酥 @NFT_Chen · google-research/harness2（Apache-2.0）</span><span>收录 · 2026-10-19</span><span><a href="https://x.com/NFT_Chen/status/2111873617084756390" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">来源：SuSu_酥酥 @NFT_Chen · 2026-10-19 01:34（UTC+8）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>推文是作者自己写的中文，下面全文照录（作者发出后编辑过一次，这里用的是最终版本）。推文介绍的 <a href="https://github.com/google-research/harness2">google-research/harness2</a> 采用 <strong>Apache-2.0</strong> 许可，所以文末附上 README 的中文全译。论文与项目站只做导读、摘短句。推文配图 3 张，另有仓库里的 2 张示意图（Apache-2.0），都已压缩。相关阅读：<a href="../harness/">面向自我改进的 Harness 工程</a>、<a href="../zai/">走向递归自我改进：GLM 如何构建自己的推理基础设施</a>。</div>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#post">推文全文</a></li>
+<li><a href="#quoted">引用的前一条推文（Terminal-RSI）</a></li>
+<li><a href="#guide">导读</a></li>
+<li><a href="#points">要点</a></li>
+<li><a href="#check">我们核实到的情况</a></li>
+<li><a href="#readme">README 中文全译</a></li>
+<li><a href="#takeaways">对我们的启发</a></li>
+</ol></nav>
+
+<h2 id="post">推文全文</h2>
+<div class="xpost">
+<p>😱天呐！模型不动，性能评分却拉升 11.5 分！Google 开源 Harness² 让你的 Agent 进行RSI优化，越改越强！</p>
+<p>以前 Agent 一套配置用到死。现在 Google 开源了 Harness²，让 AI 自己优化提示词、工具、记忆和技能，模型权重完全不用动。</p>
+<p>两个最狠的点：<br>
+1️⃣自己改自己，还不用正确答案 面对新任务，Agent 自动出多个配置版本，跑一遍对比效果，直接合成更强的一套。全程不需要标准答案，也不需要人工打分。</p>
+<p>2️⃣越用越强，经验直接带走 做完一个任务，好用的配置和教训会留下来。下一个任务直接站在之前的基础上继续优化，越跑越聪明。</p>
+<p>办公、法律等真实任务测试中，一轮就能明显超过原版，多轮后最高涨 11.5 分。</p>
+<p>3 步上手：<br>
+1️⃣克隆：git clone <a href="https://github.com/google-research/harness2.git">https://github.com/google-research/harness2.git</a></p>
+<p>2️⃣安装：<code>uv venv --python 3.12 .venv &amp;&amp; source .venv/bin/activate &amp;&amp; uv pip install -e '.[render]'</code></p>
+<p>3️⃣跑演示：<code>harness2-demo --output runs/demo --k 2</code></p>
+<p>想让自己的 Agent 也能越用越强的，现在就能动手。</p>
+<p>仓库：<a href="https://github.com/google-research/harness2">https://github.com/google-research/harness2</a></p>
+<p>#AI #Agent #Google #OpenSource #Harness2 #LLM #AIAgents #WorkBuddy</p>
+<p class="meta">SuSu_酥酥👅 <a href="https://x.com/NFT_Chen">@NFT_Chen</a> · 2026-10-19 01:34（UTC+8） · <a href="https://x.com/NFT_Chen/status/2111873617084756390">原帖</a> · 截至 10-19 上午：约 2.8 万浏览、310 赞、416 收藏、37 转发、24 回复</p>
+</div>
+<div class="grid2">
+<figure><img src="shot1.webp" alt="推文配图：Harness² README 机翻截图，高亮“系统框架”“即插即用”“任务级递归”" loading="lazy"><figcaption>配图 1：README 开头的机翻截图（作者加了高亮）</figcaption></figure>
+<figure><img src="shot2.webp" alt="推文配图：流程图与 8 个组件图，高亮 WorkBuddy-Bench 最高提升 11.5 分" loading="lazy"><figcaption>配图 2：流程图、成绩段落与“8 个组件”</figcaption></figure>
+</div>
+<figure><img src="shot3.webp" alt="推文配图：GitHub 仓库 google-research/harness2 页面，Apache-2.0，约 4.8k star、432 fork" loading="lazy" style="max-width:420px"><figcaption>配图 3：仓库页截图（截图时约 4.8k star、432 fork，我们未独立核对）</figcaption></figure>
+<p>帖子下面作者只回了一条评论：“对，来个自我进化🧬”，没有补充自回复。</p>
+
+<h2 id="quoted">引用的前一条推文（Terminal-RSI）</h2>
+<p>这条推文引用了作者同一天早些时候（10-18 15:37，UTC+8）的另一条推文，也是作者自己写的中文，照录如下：</p>
+<div class="xpost">
+<p>🤯RSI突破！腾讯AI混元四步炼出终端Agent神器，Qwen3.8-27B性能直接从51.7%提升至86.5%，小模型硬刚一线！</p>
+<p>腾讯混元最新论文Terminal-RSI正式开源递归自我改进（RSI）打法：交替两轮“成功轨迹自重写 + 策略精炼”，让27B模型在终端任务上实现质变。</p>
+<p>要点速览：<br>
+🔹方法极简却狠：Base → RSR-1（验证成功轨迹Recursive Self-Rewrite做SFT）→ RPR-1（继承critic的RL精炼）→ RSR-2 → RPR-2，两轮闭环，前一轮模型直接生成下一轮训练数据。</p>
+<p>🔹成绩炸裂：Terminal-Bench 2.1从51.70%飙到86.52%（+34.82pp）；TB 4.0从0%→19.84%；TB Hard达79%；多基准平均大幅跃升约30个百分点。</p>
+<p>🔹长程也破防：Long-Horizon Terminal-Bench process reward 0.21→0.37，严格完成0/46→5/46；SWR100成功率直接翻倍。</p>
+<p>🔹技术硬核：验证轨迹重写 + critic权重继承校准 + TB-GAE信用分配 + Success-Prioritized Reward，把“部分进展”真正转化为“严格验证通过”。</p>
+<p>🔹意义拉满：延续T1/RSR系列，证明RSI在终端Agent上可稳定爬坡，27B小模型就能冲到86%+水平，逼近甚至超越部分更大模型。</p>
+<p>查看论文：<a href="https://arxiv.org/abs/2610.22192">https://arxiv.org/abs/2610.22192</a></p>
+<p>这不是概念炒作，是真正把验证过的成功经验反复炼成能力，终端Agent又要卷起来了！</p>
+<p>#RSI #递归自我改进 #腾讯混元 #Qwen #TerminalBench #AIAgent #大模型 #TerminalRSI #AgentRL #混元AI</p>
+<p class="meta"><a href="https://x.com/NFT_Chen/status/2111723258517098599">原帖</a> · 约 7.8 万浏览、1053 赞</p>
+</div>
+<p>两条放在一起看很有意思：Terminal-RSI 是<strong>改权重</strong>（SFT + RL 两轮循环），Harness² 是<strong>不动权重、只改 harness</strong>。两条都叫“RSI”，但改的对象不一样。（论文摘要核对：<a href="https://arxiv.org/abs/2610.22192">arXiv:2610.22192</a> 摘要中的 51.70%→86.52%、0/46→5/46、SWR100 3%→6% 与推文一致；作者署名里没有写单位，“腾讯混元”这一点我们没在摘要页上确认。）</p>
+
+<h2 id="guide">导读</h2>
+<p class="lede">一句话：Harness² 把“调 Agent 配置”这件事交给 Agent 自己做，而且是在<strong>没有标准答案</strong>的新任务上做。</p>
+<p>所谓 <strong>harness</strong>，是包在模型外面、让它能当 Agent 干活的那一圈东西：系统提示词、护栏、记忆、工具说明、子代理、技能、脚本、插件。过去这些基本是人写好后长期不动。Harness² 的做法分两层：</p>
+<ul>
+<li><strong>任务内（task-level）：</strong>先用基础 harness 跑一遍当参照；再分别提出“通用（invariant）”和“领域（domain）”两类修改，各跑一次当探针；最后由“组合器”比较几次执行的行为差异，合成一个更好的 harness，再执行交付。这就是 Propose–Probe–Compose，靠的是<em>行为对比</em>，不是对答案。</li>
+<li><strong>跨任务（harnessing-level）：</strong>每个任务结束后，反思器把采纳的 harness 和“有证据支持的教训”写进一个持续积累的<em>改进 harness</em>（项目站里是 harness 文件 + <code>EXPERIENCE.md</code>）。下一个任务仍从基础 harness H₀ 开始执行，但“怎么改”的经验会复用。</li>
+</ul>
+<p>作者在推文里把这两层概括成“自己改自己，还不用正确答案”和“越用越强，经验直接带走”，基本准确。需要补充的是：论文里 11.5 分是<strong>单步</strong>就能拿到的“最高”涨幅（WorkBuddy-Bench，某一模型-harness 配置），不是推文说的“多轮后”；另外，要跑真实基准需要 Vertex AI 等模型凭据并会产生 API 费用，只有本地 demo 是免凭据的。</p>
+<figure><img src="pipeline.webp" alt="Harness² 流程图：任务级递归（执行器→编辑器→候选探针→组合器）与 harness 级递归（经验反思→改进 harness）" loading="lazy"><figcaption>Harness² 流程图（来自仓库 assets，Apache-2.0）</figcaption></figure>
+
+<h2 id="points">要点</h2>
+<ul>
+<li><strong>模型权重冻结，只改 harness。</strong>可编辑的是 8 个组件：系统提示词、护栏、记忆、工具指导、子代理、技能、脚本、插件。</li>
+<li><strong>无需真值反馈。</strong>任务内用 Propose–Probe–Compose，通过对比几次执行的行为来决定保留哪些修改。</li>
+<li><strong>两种扩展方式。</strong>并行（<code>--mode parallel</code>）一次探 k 个通用 + k 个领域候选，再组合 k 次，“探得更广”；串行（<code>--mode sequential</code>）连续做 k 步，“改得更深”。</li>
+<li><strong>成绩（论文/README 原话）：</strong>单步即让 GLM-5、Gemini 3.5 Flash 超过各自基础 harness，WorkBuddy-Bench 最高 +11.5 分、JobBench 最高 +4.5 分、LAB 部分通过率最高 +11.8 个百分点；加大任务级递归预算还会继续涨。</li>
+<li><strong>支持：</strong>OpenCode（默认）与 Codex 两种执行器；JobBench（职业工作）、LAB（法律）、WorkBuddy-Bench（办公/网页/代码）三个基准。</li>
+<li><strong>上手：</strong>Linux + Python 3.12 + uv，<code>harness2-demo --output runs/demo --k 2</code> 是确定性编辑器 + 真实 Python 执行的本地演示，不需要模型凭据。</li>
+</ul>
+
+<h2 id="check">我们核实到的情况</h2>
+<div class="notice">
+<p><strong>“Google 开源”：</strong>基本成立。仓库在 <code>google-research</code> 组织下，<code>pyproject.toml</code> 作者写 “Google LLC”，许可 Apache-2.0。但 README 末尾声明 “This is not an officially supported Google product”。论文一作 Ruiyao Xu 来自 Northwestern University，其余作者来自 Google Cloud AI Research（据 <a href="https://harness2.github.io">项目站</a>）。</p>
+<p><strong>“性能评分拉升 11.5 分”：</strong>数字对得上，但有条件：是 WorkBuddy-Bench 上、某一模型-harness 配置下的<strong>最高</strong>涨幅，而且是<strong>单步</strong>（<a href="https://arxiv.org/abs/2610.14224">arXiv:2610.14224</a> 摘要：“a single step consistently improves … yielding gains of up to 11.5 points on WorkBuddy-Bench”）。推文“多轮后最高涨 11.5 分”的说法与原文不符。项目站展示的 Gemini 3.5 Flash / OpenCode 在 k=5 时三个子域分别 +7.4（代码）、+8.4（网页）、+9.4（办公）。</p>
+<p><strong>“不需要标准答案，也不需要人工打分”：</strong>前半句是论文的核心卖点（“without ground-truth verifiers”）。后半句 README 没有直接写，但流程里的编辑、组合、反思都由模型完成，确实不需要人工逐条打分；评测阶段仍有 <code>harness2-judge</code> 按基准评分标准打分。</p>
+<p><strong>“办公、法律等真实任务”：</strong>成立，对应 WorkBuddy-Bench 的 office 子集和 LAB（法律）。注意它们仍是基准任务，不是线上生产。</p>
+<p><strong>三步上手命令：</strong>与 README 的 Install 一节一致；<code>harness2-demo</code> 在 <code>pyproject.toml</code> 中注册为命令行入口。我们没有实际运行 demo。</p>
+<p><strong>安全提示（README 原文要点）：</strong>执行器网络访问不受限，Codex 运行时关闭沙箱；公开基准的评分标准可能在网上搜得到，评测前需要自己限制网络。推文没提这一点。</p>
+<p><strong>配图里的 star/fork 数</strong>（约 4.8k / 432）来自作者截图，我们没有独立核对。</p>
+</div>
+
+<h2 id="readme">README 中文全译</h2>
+<p class="caption">译自 <a href="https://github.com/google-research/harness2">google-research/harness2</a> 的 README.md（2026-10-19 抓取），原文 © Google LLC，Apache License 2.0。徽章、动图和视频未转载；链接指向原仓库。</p>
+<h3>Harness²：面向开放世界的递归 Agent Harness 优化</h3>
+<p>链接：<a href="https://arxiv.org/pdf/2610.14224">论文（arXiv）</a> · <a href="https://harness2.github.io">项目网站</a> · <a href="https://github.com/google-research/harness2/blob/main/docs/BENCHMARKS.md">基准指南</a> · 许可：Apache 2.0</p>
+<p><strong>Harness</strong> 是包在模型外面、使模型能够作为 Agent 行动的系统：提示词、工具、记忆、技能、编排等等。<strong>Harnessing</strong> 就是优化这个系统的过程。</p>
+<p>Harness² 是一个即插即用的框架，用于在开放世界中进行<strong>递归 Agent harness 优化</strong>：在开放世界里，Agent 会遇到 harness 设计阶段从未见过的任务。它在保持模型权重不变的前提下，连接了两个层级的递归：</p>
+<ul>
+<li><strong>任务级递归</strong>通过对比式的 <strong>Propose–Probe–Compose（提议–探测–组合）</strong>步骤改进当前任务的执行 harness：提出修改，在同一任务上探测这些修改的效果，再根据多次执行之间的行为对比组合出改进后的 harness，全程不需要真值反馈。</li>
+<li><strong>Harness 级递归</strong>用每个任务中被采纳的 harness 和有证据支持的经验教训，更新一个持久的<em>改进 harness</em>，用来指导之后的改进。</li>
+</ul>
+<p>在三个专业基准、四种模型–harness 配置上，单步 Harness² 就让 GLM-5 和 Gemini 3.5 Flash 超过了它们的基础 harness：WorkBuddy-Bench 最高提升 11.5 分，JobBench 最高提升 4.5 分，LAB 部分通过率最高提升 11.8 个百分点。增加任务级递归预算还能带来进一步的提升。</p>
+<p>本次发布支持<strong>并行与串行递归</strong>、<strong>OpenCode 与 Codex 执行器</strong>，以及 <strong>JobBench、LAB 和 WorkBuddy-Bench</strong>。</p>
+<h4>视频概览</h4>
+<p>见原仓库 README 内嵌视频（本页不转载视频）。</p>
+<h4>Harness 组件</h4>
+<p>Harness² 在模型周围开放了八个可编辑组件：<strong>系统提示词、护栏、记忆、工具指导、子代理、技能、脚本和插件</strong>。它们控制上下文的构建、工具接口、任务委派，以及工具循环内部的行为。</p>
+<figure><img src="components.webp" alt="八个 harness 组件按运行时角色分组：系统提示词、护栏、记忆、技能负责构建上下文；工具指导和脚本定义工具接口；子代理负责编排委派工作；插件控制中间件" loading="lazy"><figcaption>八个 harness 组件按运行时角色分组：系统提示词、护栏、记忆和技能构建上下文；工具指导和脚本定义工具接口；子代理编排委派的工作；插件控制中间件。</figcaption></figure>
+<h4>安装</h4>
+<p>请使用 <strong>Linux、Python 3.12 和 <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a></strong>。在仓库根目录执行：</p>
+<pre><code>uv venv --python 3.12 .venv
+source .venv/bin/activate
+uv pip install -e '.[render]'
+harness2-demo --output runs/demo --k 2</code></pre>
+<p>本地演示会用确定性的编辑器和真实的 Python 执行跑完两种递归模式，不需要任何模型凭据。</p>
+<p>要跑基于模型的基准，需要安装 <strong>Node.js 20+、Google Cloud CLI</strong> 以及<a href="https://github.com/google-research/harness2/blob/main/docs/SETUP.md#requirements">基准依赖</a>。LAB 需要 Pandoc 和 Poppler；WorkBuddy-Bench 需要 Docker。然后配置模型：</p>
+<pre><code>cp .env.example .env
+# 编辑 .env，填入你的 Vertex AI 项目和模型 ID。
+gcloud auth application-default login</code></pre>
+<p>模型设置、其他认证方式以及 <a href="https://github.com/google-research/harness2/blob/main/docs/SETUP.md#codex-executor">Codex 执行器</a>，见<a href="https://github.com/google-research/harness2/blob/main/docs/SETUP.md">安装指南</a>。</p>
+<h4>运行一个基准</h4>
+<p>下面的例子会安装 LAB 并运行一个任务，然后评测并报告结果。基于模型的运行会产生 API 费用，请先从少量任务开始。</p>
+<pre><code>harness2-setup lab
+harness2-check --bench lab
+harness2 --bench lab --k 1 --mode parallel \
+  --only-domains antitrust-competition --max-tasks 1
+harness2-judge --bench lab --k 1 --mode parallel
+harness2-report --bench lab --k 1 --mode parallel</code></pre>
+<p>串行递归用同样的命令，改成 <code>--mode sequential</code>。<code>--k</code> 是任务级递归预算，见“实验”一节。评测和报告必须使用与优化运行相同的基准、执行器、子集、<code>--k</code>、<code>--mode</code> 和随机种子。给 <code>harness2</code> 加上 <code>--dry-run</code> 可以只预览任务选择，不调用模型。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>基准</th><th>任务</th><th>安装</th><th>指南</th></tr></thead>
+<tbody>
+<tr><td>JobBench</td><td>职业工作</td><td><code>harness2-setup jb</code></td><td><a href="https://github.com/google-research/harness2/blob/main/docs/BENCHMARKS.md#jobbench">JobBench</a></td></tr>
+<tr><td>LAB</td><td>法律工作</td><td><code>harness2-setup lab</code></td><td><a href="https://github.com/google-research/harness2/blob/main/docs/BENCHMARKS.md#lab">LAB</a></td></tr>
+<tr><td>WorkBuddy-Bench</td><td>办公、网页与代码</td><td><code>harness2-setup wb</code></td><td><a href="https://github.com/google-research/harness2/blob/main/docs/BENCHMARKS.md#workbuddy-bench">WorkBuddy</a></td></tr>
+</tbody></table></div>
+<p>每条命令选一个基准。WorkBuddy 在安装之后的每条命令上还可以加 <code>--subset office</code>、<code>--subset web</code> 或 <code>--subset code</code>。<a href="https://github.com/google-research/harness2/blob/main/docs/BENCHMARKS.md">基准指南</a>介绍了每个基准的数据、领域和评分方式。</p>
+<h4>实验</h4>
+<p>任务级递归有两种扩展方式：<strong>并行递归</strong>探索多个候选 harness，并根据它们的执行证据组合出改进；<strong>串行递归</strong>让改进后的 harness 和累积的证据经过连续多次 Propose–Probe–Compose 步骤。</p>
+<p class="caption">（原文配图：两种扩展方式。并行：探测 k 个通用候选和 k 个领域候选 harness，再根据共享证据产出 k 个组合；串行：让改进后的 harness 和累积证据经过 k 次 Propose–Probe–Compose 步骤。并行探得更广，串行改得更深。）</p>
+<div class="table-wrap"><table>
+<thead><tr><th>选项</th><th>行为</th></tr></thead>
+<tbody>
+<tr><td><code>--k 1</code></td><td>一次 Propose–Probe–Compose 步骤</td></tr>
+<tr><td><code>--k K --mode parallel</code></td><td>探测 <code>K</code> 个通用候选和 <code>K</code> 个领域候选，然后产出 <code>K</code> 个组合</td></tr>
+<tr><td><code>--k K --mode sequential</code></td><td>通过 <code>K</code> 个连续步骤改进 harness</td></tr>
+<tr><td><code>--substrate cx</code></td><td>用 Codex 代替默认的 OpenCode 执行器</td></tr>
+</tbody></table></div>
+<p>每个任务结束后，harness 级递归会保留被采纳的 harness 和有证据支持的经验教训，用来指导之后的改进。任务选择、并发、可复现性和基线对比见<a href="https://github.com/google-research/harness2/blob/main/docs/EXPERIMENTS.md">实验指南</a>。</p>
+<h4>网络访问</h4>
+<p>执行器的网络访问不受限制，Codex 运行时其沙箱处于关闭状态。公开基准的评分标准可能在网上能查到。评测前，请配置<a href="https://github.com/google-research/harness2/blob/main/docs/EXPERIMENTS.md#web-access">网络限制</a>，防止访问基准答案和评分标准。</p>
+<h4>结果与续跑</h4>
+<p>结果保存在 <code>runs/</code> 下，按基准（以及适用时按子集）组织，包括任务摘要、交付物、被采纳的 harness、反思笔记和评测结果。</p>
+<p>重复同一条命令即可续跑。更换模型或任务选择时，请使用新的 <code>HARNESS2_RUNS_DIR</code>。详见<a href="https://github.com/google-research/harness2/blob/main/docs/EXPERIMENTS.md#results-and-resume">结果与续跑</a>；每条命令也都支持 <code>--help</code>。</p>
+<h4>引用</h4>
+<pre><code>@article{xu2026harness2,
+  title   = {Harness$^2$: Recursive Agent Harnessing for an Open World},
+  author  = {Xu, Ruiyao and Chen, Yanfei and CuiZhu, Zhongying and Dalvi Mishra, Bhavana and Ming, Yifei and Yu, Han and Han, Rujun and Lee, Chen-Yu and Pfister, Tomas},
+  journal = {arXiv preprint arXiv:2610.14224},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2610.14224}
+}</code></pre>
+<h4>贡献</h4>
+<p>见 <a href="https://github.com/google-research/harness2/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a>。</p>
+<h4>许可</h4>
+<p>Harness² 采用 <a href="https://github.com/google-research/harness2/blob/main/LICENSE">Apache 2.0</a> 许可。<code>third_party/</code> 下的第三方代码、各基准和数据集保留其上游许可，见第三方声明。</p>
+<h4>免责声明</h4>
+<p>这不是 Google 官方支持的产品。本项目不适用于 Google 开源软件漏洞奖励计划。</p>
+
+<h2 id="takeaways">对我们的启发</h2>
+<ul>
+<li><strong>先改 harness，再考虑改模型。</strong>同一个模型，换一套提示词/技能/护栏就能涨 5–11 分。这和 <a href="../harness/">面向自我改进的 Harness 工程</a> 的判断一致：Agent 能力 = 模型 + harness，后者便宜得多、迭代快得多。</li>
+<li><strong>没有标准答案时，用“对比执行”代替“对答案”。</strong>同一任务跑基础版和两个候选版，看行为差异再取舍。我们做评审和改提示词时也能这么做，思路接近 <a href="../anthropic-code-review/">Claude Code 团队的代码评审</a> 里的“先自证、多方对照”。</li>
+<li><strong>把经验写成文件。</strong>改进 harness 本质上是一份不断追加的 <code>EXPERIENCE.md</code> 加上被采纳的 harness 文件，和我们 wiki 的“raw 不改、pages 累积、hot 做路由”是同一种结构，也和 <a href="../jev-engineering/">Jev 工程</a>里“外置大脑”的做法相通。</li>
+<li><strong>区分两种 RSI。</strong>Harness² 改 harness，Terminal-RSI 改权重，<a href="../zai/">GLM 构建推理基础设施</a>则是让模型参与造工具链。读到“RSI”标题时，先问一句“它到底改了什么”。</li>
+<li><strong>标题里的数字要回原文核对。</strong>“+11.5 分”是单步、最高、特定配置；“Google 开源”同时写着“非官方支持产品”。转述时把条件带上。</li>
+<li><strong>评测要隔离网络。</strong>README 明确提醒执行器不受限、Codex 关沙箱、评分标准可能在网上。自己搭自我改进回路时，同样要防止 Agent 去“搜答案”。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>推文原文 © SuSu_酥酥（@NFT_Chen）；README 与示意图 © Google LLC，Apache-2.0，中文翻译同样以 Apache-2.0 提供；论文 © 原作者。数据于 2026-10-19 09:50（UTC+8）前后抓取，之后可能有变化。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/NFT_Chen/status/2111873617084756390" rel="noopener">x.com/NFT_Chen/status/2111873617084756390</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
