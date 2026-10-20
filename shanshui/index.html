@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shanshui：十幅全由代码画出、会呼吸的水墨山水（项目导读）</title>
+<meta name="description" content="Leonxlnx/shanshui 项目导读：不加载任何图片、纹理、字体和音频采样，用 WebGL2 着色器与 Canvas2D 笔触生成并驱动十幅中国水墨山水，剪成一分钟影片，配乐也逐采样合成。原理拆解（2.5D 视差卡片、inkify 墨韵、确定性 render(t)、转场与 80 BPM 统一时钟、Karplus-Strong 古筝）、快速上手、本站本地运行截图、与 LingDong shan-shui-inf 的对比、启发；MIT 许可，附 README 全文中文翻译。" />
+<meta property="og:image" content="images/s03.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.za-content .hero-tags .tag{margin-right:.35em}
+.za-content .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.za-content .shots figure{margin:0}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-20">2026.10.20</time></p>
+<h1 class="za-title">Shanshui：十幅全由代码画出、会呼吸的水墨山水</h1>
+<p class="za-sub" lang="en" data-za-gen>Ten Chinese ink-wash landscapes painted and animated entirely in code</p>
+<p class="za-meta" data-za-gen><span>来源 · Leonxlnx/shanshui（GitHub）</span><span>收录 · 2026-10-20</span><span><a href="https://github.com/Leonxlnx/shanshui" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/Leonxlnx/shanshui" rel="noopener">github.com/Leonxlnx/shanshui</a> · 作者 Leon Lin（<a href="https://github.com/Leonxlnx" rel="noopener">GitHub @Leonxlnx</a> / <a href="https://x.com/lexnlin" rel="noopener">X @lexnlin</a>）· 成片：<a href="https://github.com/Leonxlnx/shanshui/releases" rel="noopener">Releases（shanshui.mp4）</a> · MIT 许可</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><main>
+<div class="related-guide"><strong>一句话：</strong>不加载一张图片、一个字体、一段音频采样，用 WebGL2 着色器和 Canvas2D 笔触“画”出十幅中国水墨山水并让它们动起来，按 80 BPM 剪成一分钟影片，连古筝、箫、颂钵的配乐也是逐个采样算出来的。</div>
+
+<p class="hero-tags"><span class="tag">★ 16 stars</span> <span class="tag">1 fork</span> <span class="tag">JavaScript</span> <span class="tag">MIT</span> <span class="tag">WebGL2 + Canvas2D</span> <span class="tag">零图片资源</span> <span class="tag">3 个提交</span></p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-20 13:40（UTC+8）。仓库建于 2026-10-19 21:11（UTC+8），3 个提交（首版 → 两轮“quality round”），最后推送 2026-10-20 02:51（UTC+8）；Releases 有 v1–v3 三版成片（v3 约 125 MB，1920×1080/60 fps，本站未下载）。<code>src/</code> + <code>tools/</code> 约 2.5 万行 JS，运行时零第三方依赖（开发依赖仅 puppeteer-core 与 ws，用于离线渲染）。</p>
+
+<figure><img src="images/s03.webp" alt="代码生成的水墨夜景：满月悬在灰色云带间，月光在湖面拉出一条闪烁的光柱，左侧崖上有红色楼阁、红枫与松树，中右是雾中的花岗岩峰与林木小岛及其倒影" loading="lazy"><figcaption>s03「湖上月」：满月、云带、月光光柱、岛屿倒影全部是运行时生成的。本站在本地 <code>node tools/serve.mjs</code> 后用无头 Chrome（SwiftShader 软件 WebGL）打开 <code>?scene=s03&amp;t=3</code> 截图（2026-10-20），压缩为 WebP。</figcaption></figure>
+
+<h2 id="what">它是什么</h2>
+<p>“山水”（shan shui）即中国山水画。这个仓库做的不是“无限生成器”，而是一部<strong>导演过的短片</strong>：十幅画，每幅都对着一张参考画逐区域“临摹”，再让画面里的东西都动起来，比如云雾流动、瀑布落下、松竹摇摆、白鹤飞过、枫叶和雪飘落、湖面倒影起涟漪，然后用十种转场把它们串成 60 秒，最后盖上一方印章，画面“蒸发”回白纸。</p>
+<p>作者在 README 里的原话是：<q lang="en">No images, textures, fonts or audio samples are loaded anywhere.</q>（任何地方都不加载图片、纹理、字体或音频采样。）参考画只用于比对工具，不在仓库里，也从不参与渲染。</p>
+<table>
+<tr><th>时间</th><th>画</th><th>进场转场</th></tr>
+<tr><td>0:00</td><td>竹谷 bamboo valley</td><td>从白纸上“自己画出来”，最浓的墨先出现</td></tr>
+<tr><td>0:06</td><td>瀑上鹤 cranes over the falls</td><td>一层谷雾</td></tr>
+<tr><td>0:12</td><td>索桥 rope bridges</td><td>雾扫过群峰</td></tr>
+<tr><td>0:18</td><td>浮峰 floating peaks</td><td>镜头穿云上升</td></tr>
+<tr><td>0:24</td><td>红瀑 red cascade</td><td>推进穿过瀑布水雾</td></tr>
+<tr><td>0:30</td><td>秋墟 autumn ruins</td><td>一阵枫叶风</td></tr>
+<tr><td>0:36</td><td>金河 golden river</td><td>手卷展开，雾气衔接</td></tr>
+<tr><td>0:42</td><td>石桥红日 stone bridge, red sun</td><td>金色太阳滑到红日的位置</td></tr>
+<tr><td>0:48</td><td>湖上月 moon over the lake</td><td>夜色顺着湿纸渗下来</td></tr>
+<tr><td>0:54</td><td>雪寺 snow temple</td><td>湖上雪越下越密</td></tr>
+<tr><td>0:57</td><td>—</td><td>盖印，画面蒸发回纸</td></tr>
+</table>
+
+<h2 id="how">工作原理</h2>
+
+<h3>1. 2.5D 视差卡片：一幅画 = 一叠有深度的纸片</h3>
+<p>引擎（<code>src/engine/engine.js</code>）是一个 WebGL2 合成器。每幅画由“从后到前”的图层组成，每层是一张放在深度 <code>z</code> 处的平面卡片：<code>z = 1</code> 是画面最前景，2–4 是中景，6–15 是远山，<code>1e5</code> 是天空/纸面（永不移动）。摄像机只有平移、推拉（dolly）、变焦和滚转，投影公式写在文档里：</p>
+<pre><code>screen = C + ((P - C) * z - [x, y]) / (z - dolly) * zoom</code></pre>
+<p>于是镜头平移 x 像素，最前景卡片移动 x，<code>z = 4</code> 的卡片只移动 x/4，前景松树、中景山峰、远山之间就有了真实视差。代价是“超扫描”：近景卡片要比画框多画出 8–15%，转场会偏移镜头的地方（例如穿云上升时 y 方向 −260）还要再多留约 300 px。</p>
+
+<h3>2. 三种图层：一次烘焙的笔墨、每帧计算的着色器、每帧重画的 Canvas</h3>
+<ul>
+<li><strong><code>api.bakeCanvas</code></strong>：用 Canvas2D 把静态笔墨（崖石、松树、楼阁）画一次烘焙成纹理。</li>
+<li><strong><code>api.shader</code></strong>：每帧执行的 GLSL 程序卡片（雾、云、水面、瀑布），噪声坐标钉在“世界”里，所以随深度正确视差。</li>
+<li><strong><code>api.canvas</code></strong>：每帧重画的小 Canvas（鹤、落叶、雪），矩形要尽量紧，因为每帧都要上传。</li>
+</ul>
+<p>贴图卡片还能挂两种“物理”：<code>sway</code>（离锚点越远位移越大的风摆，松树典型值振幅 3–6 px、0.15–0.3 Hz）和 <code>reflect</code>（在水线下画一份镜像、加涟漪和亮条打断的倒影）。</p>
+
+<h3>3. 笔：有压力曲线的笔触与飞白</h3>
+<p><code>src/lib/brush.js</code> 是“画家的词汇”的底层：Catmull-Rom 平滑路径，沿路径按“压力曲线”变宽变窄，左右两侧加随机抖动后填成多边形。不同笔法就是不同的曲线：</p>
+<pre><code>export const PROFILE = {
+  brush: (s) =&gt; Math.pow(Math.max(0, Math.sin(Math.PI * (0.07 + 0.93 * s))), 0.5) * (1 - 0.2 * s),
+  needle: (s) =&gt; Math.pow(1 - s, 0.8) * Math.min(1, s * 8 + 0.4),
+  leaf: (s) =&gt; Math.pow(Math.sin(Math.PI * Math.pow(s, 0.75)), 0.9),
+  ...
+};</code></pre>
+<p><code>dryStroke</code> 把一笔拆成很多根“笔毛”，用噪声决定哪里断墨，而且<strong>笔锋两边先干</strong>（<code>dryEdge = Math.abs(off) * 2</code>），越往笔尾越干，这就是飞白。此外还有苔点 <code>dots</code>、带湿边的淡墨 <code>wash</code>、纸纹侵蚀 <code>granulate</code>。调色板是从参考画里实测的：纸色 <code>[239, 231, 220]</code>，暖黑墨 <code>[11, 9, 6]</code>，朱砂 <code>[178, 46, 32]</code>；用 <code>tone(v)</code> 在墨与纸之间取色，0 是焦墨，1 是纸。</p>
+
+<h3>4. 墨：inkify，让干净的矢量“洇进宣纸”</h3>
+<p>Canvas2D 画出来的笔画边缘太干净。<code>src/lib/inkfx.js</code> 在烘焙后跑一次 GPU 后处理：在像素周围两圈采样求模糊后的 alpha，据此做三件事：</p>
+<ul>
+<li><strong>湿边</strong>：边界内侧的像素压暗，模拟颜料在笔画边缘积聚；</li>
+<li><strong>颗粒</strong>：用多层 value noise 打散中间调的 alpha，模拟墨沉进纸纹；</li>
+<li><strong>晕染</strong>：笔画外侧加一圈淡淡的晕，模拟墨被纸吸开。</li>
+</ul>
+<pre><code>// wet edge: interior pixels near the boundary get darker (pigment pools at the rim)
+float rim = clamp((c.a - ab) * 2.5, 0.0, 1.0) * c.a;
+col *= 1.0 - uEdge * rim * 0.6;
+// granulation: pigment settles into paper tooth -&gt; alpha breaks up in mid-tones
+float mid = 4.0 * c.a * (1.0 - c.a);
+float a = c.a * (1.0 - uGran * (g - 0.35) * (0.6 + mid));</code></pre>
+<p>全片最后还有一道统一后期：屏幕空间的纸纤维纹理（墨越浓越明显）、调色、暗角，以及 TPDF 抖动，防止柔和雾气渐变出现色带。</p>
+
+<h3>5. 构图：把画论写成规则和数字</h3>
+<p><code>docs/STYLE.md</code> 是这个项目最值得抄的部分。它把山水画的经验写成了可检查的规则：</p>
+<ul>
+<li><strong>三远</strong>：近景一侧最黑最锐利，中景灰，远山淡且几乎无细节；每个深度层之间用雾（就是纸色）隔开，山脚化进白里。</li>
+<li><strong>空气透视的明度阶梯</strong>：近景到真黑（rgb≈10），中景顶部 35–55% 色调，远山 65–85%；而且“纸占主导”，画面中位亮度在 180–219。</li>
+<li><strong>边缘承担造型</strong>：山石顶部用略毛的干笔深轮廓，向下淡入雾中；内部是竖向皴笔、留白的受光面和沿脊线的苔点。</li>
+<li><strong>树是词汇不是噪声</strong>；<strong>红色要省</strong>（小于 2% 的像素）；“看起来假”的清单：干净矢量渐变、规则重复、满屏中灰、饱和色与辉光、没有笔法逻辑的 fbm 斑块。</li>
+<li><strong>运动也有数字</strong>：雾 5–25 px/s，松竹梢 1–5 px、0.15–0.35 Hz，瀑布 150–400 px/s，鹤振翅 0.8–1.1 Hz，镜头每幅推拉不超过约 0.08。</li>
+</ul>
+<p>每幅画还有一张按设计坐标（1920×1080）写的“元素地图”，例如 s03：月亮在 (1325, 225)、半径约 85，湖面从 y 640 开始，x≈1320 处一条长长的月光光柱。场景代码就照着这张图摆放元素，再用 <code>tools/still.mjs --compare / --side / --crop</code> 和参考画逐块对比。</p>
+
+<h3>6. 确定性：每一帧都是 t 的纯函数</h3>
+<p>场景契约规定：动画只能是场景本地时间 <code>t</code> 的纯函数，不允许跨帧保存状态，不允许 <code>Math.random</code> 和 <code>Date</code>，随机全部来自构建时的带种子 <code>api.rng(seed)</code>。因为转场会和前后场景重叠，每个场景必须在 <code>t ∈ [-3, 14]</code> 内都能正确、连续地渲染。这样任意一帧都能单独渲染，也才能做多采样运动模糊（<code>--samples</code>）。</p>
+<pre><code>export default {
+  id: 's03', title: 'Moon over the lake', ref: '03',
+  build(api) {                       // 只跑一次，可 async
+    const layers = [ /* back to front */ ];
+    return { layers, camera: (t) =&gt; ({ x: 0, y: 0, dolly: 0.02 * t, zoom: 1, roll: 0 }), grade: {...} };
+  },
+};</code></pre>
+
+<h3>7. 转场与统一时钟：画面和声音共用一个节拍器</h3>
+<p><code>src/timeline.js</code> 定下 80 BPM、4/4：一拍 0.75 s，一小节 3 s，每幅画两小节，每个转场都<strong>以小节线为中心</strong>。转场是 GLSL 片段，拿到前后两个场景 <code>sA</code> / <code>sB</code> 各自混合。比如开场的“墨晕”（bloom）：用画面暗度和到两个种子点的距离合成一个值，阈值随进度从 1.2 扫到 −0.05，于是<strong>最浓的墨先出现</strong>，带一道湿润的前沿向外漫开；结尾的“蒸发”反过来，淡墨先消失，焦墨最后。</p>
+<pre><code>float dark = 1.0 - smoothstep(0.08, 0.93, luma(b));   // 1 = black ink, 0 = paper
+float d = min(length(p - uC), length(p - uC2) * 1.1) + w;
+float v = mix(1.0 - d / 2200.0, dark, uK.w * 0.5) + dark * 0.35;
+float th = mix(1.2, -0.05, pow(uP, 0.9));             // threshold sweeps the value range</code></pre>
+<p>其余转场各有画面逻辑：“日匹配”让第七幅的金色太阳滑到第八幅红日的位置，再从太阳向外晕开；“喷雾”推进第四幅的瀑布，从第五幅的瀑布里出来；“手卷”横向平移，让第六幅和第七幅像同一卷画的前后两段。</p>
+
+<h3>8. 声音：从零合成的古筝、箫与颂钵</h3>
+<p><code>tools/audio.mjs</code> 用同一个时钟写配乐：可变延迟的 Karplus-Strong 古筝（推弦、揉弦、扫弦、泛音，外加拨弦瞬态和琴身共鸣）、带气声的箫、寺院颂钵、低音持续音和跟随画面的环境声（风、水），最后母带到 −14 LUFS、真峰值 −1.5 dBTP，输出 48 kHz/24-bit WAV。<code>CUE</code> 表把“落叶风起”（28.65 s）、“盖印”（56.7 s）这些时刻同时交给画面和声音。</p>
+
+<h3>9. 离线渲染：GPU 上转 YUV，直接灌进 ffmpeg</h3>
+<p><code>tools/render.mjs</code> 用 puppeteer-core 驱动无头 Chrome 在 GPU 上逐帧渲染，在着色器里转成 YUV 4:2:0，经 WebSocket 流给 ffmpeg（x264，BT.709）。除了最终 MP4，什么都不落盘。文档给的性能预算是：1080p 每帧小于 40 ms（目标显卡是 Radeon 780M 核显），每个场景构建小于 4 s。</p>
+
+<h2 id="quickstart">快速上手</h2>
+<p><strong>1. 浏览器里实时看</strong>（只需 Node 20+；实时查看器不依赖 npm 包，<code>npm install</code> 装的是离线渲染工具）：</p>
+<pre><code>git clone https://github.com/Leonxlnx/shanshui
+cd shanshui
+npm install
+npm run serve        # 或 node tools/serve.mjs --port 8080
+# 打开 http://127.0.0.1:8080/            整部影片实时播放
+#      http://127.0.0.1:8080/?scene=s03  单独一幅（s01..s10），&amp;t=3 指定起始时间，&amp;scale=1 全 1080p</code></pre>
+<p>快捷键：空格暂停，左右方向键切画，F 全屏，M 播放配乐（需先生成）。</p>
+<p><strong>2. 生成配乐并渲染成片</strong>（需要 Chrome/Edge 和 PATH 里的 ffmpeg）：</p>
+<pre><code>node tools/audio.mjs                       # -&gt; out/audio/soundtrack.wav
+node tools/render.mjs --out out/shanshui.mp4 --audio out/audio/soundtrack.wav --samples 2</code></pre>
+<p><strong>3. 单帧与对比</strong>：<code>node tools/still.mjs --scene s03 --t 2 --out out/s03/a.png</code>；<code>--sheet 0,2,4,6,8:out/sheet.png</code> 出时间轴接触表；<code>--scene lab/pine-01</code> 渲染 <code>src/lab/</code> 下的单元素实验场景。对比参数需要你自己把参考图放进 <code>ref/01.webp … ref/10.webp</code>。</p>
+<p class="caption">本站实测（2026-10-20）：没装任何依赖，直接 <code>node tools/serve.mjs</code> 起服务，再用无头 Chrome 的软件 WebGL（SwiftShader）打开单幅画面，每幅约 35 秒出图，效果和 README 描述一致。截图完成后已删除克隆目录与临时文件。</p>
+
+<h2 id="showcase">展示</h2>
+<div class="shots">
+<figure><img src="images/s01.webp" alt="瀑上鹤：左侧松枝与崖瀑，中右层层叠叠的雾中尖峰，湖面上小岛和倒影，大面积留白" loading="lazy"><figcaption>s01「瀑上鹤」：三远层次清楚，山脚都化进雾里（截图时刻鹤已飞出画框）。</figcaption></figure>
+<figure><img src="images/s08.webp" alt="红瀑：多级瀑布从左上崖顶倾泻而下，水雾弥漫，左侧崖壁上点缀朱红枫叶与松树，右侧雾中石柱峰" loading="lazy"><figcaption>s08「红瀑」：全片红色最多的一幅，朱红仍只点在枫叶上。</figcaption></figure>
+<figure><img src="images/s06.webp" alt="雪寺：积雪的松树和崖壁，红柱寺庙立于崖顶，冻结的瀑布，右侧云海中的雪峰" loading="lazy"><figcaption>s06「雪寺」：冷色纸、积雪松、冰瀑与云海。</figcaption></figure>
+</div>
+<p class="caption">以上均为本站本地运行项目后用无头 Chrome 自行截取（2026-10-20，<code>?scene=…&amp;t=3</code>，1280×720 WebP），软件 WebGL 渲染、未开运动模糊，细节可能略逊于作者的 GPU 成片。仓库自带的 <code>docs/stills.jpg</code> 和 Releases 里的视频本站未转载，请到<a href="https://github.com/Leonxlnx/shanshui" rel="noopener">原仓库</a>观看。</p>
+
+<h2 id="structure">项目结构</h2>
+<table>
+<tr><th>路径</th><th>体量</th><th>作用</th></tr>
+<tr><td><code>src/engine/</code></td><td>4 个文件</td><td><code>engine.js</code> 合成器（视差卡片、烘焙、倒影、风摆、调色、YUV 回读）、<code>gl.js</code>、<code>glsl.js</code>（共享噪声与墨函数）、<code>rng.js</code>（带种子随机数 + JS 噪声）</td></tr>
+<tr><td><code>src/lib/</code></td><td>约 460 KB</td><td>画家词汇：<code>brush</code> / <code>inkfx</code> / <code>pine</code> / <code>rock</code> / <code>peaks</code> / <code>atmos</code>（雾与云）/ <code>water</code>（水与瀑布）/ <code>architecture</code> / <code>fauna</code>（鹤、落叶、雪）/ <code>flora</code>（竹、枫）/ <code>seal</code></td></tr>
+<tr><td><code>src/scenes/</code></td><td>10 幅 + 注册表</td><td><code>s01-cranes-falls.js</code> … <code>s10-autumn-ruins.js</code>，每幅一个同名子目录放专属助手（如 <code>s09/peaks.js</code> 68 KB）</td></tr>
+<tr><td><code>src/transitions/</code></td><td>1 个文件</td><td>bloom、mist、cloudrise、spray、wind、scroll、sunmatch、dusk、snow、evaporate 共 10 种 GLSL 转场</td></tr>
+<tr><td><code>src/timeline.js</code> / <code>film.js</code></td><td>—</td><td>统一时钟与镜头表；转场、叠加层、子帧运动模糊</td></tr>
+<tr><td><code>src/lab/</code></td><td>43 个</td><td>单元素实验场景（松、石、峰、水、雾、建筑、动物），不注册进影片</td></tr>
+<tr><td><code>tools/</code></td><td>8 个</td><td><code>serve</code>、<code>still</code>（单帧/对比/接触表）、<code>daemon</code>（常驻渲染器，端口 7781）、<code>render</code>（成片）、<code>audio</code>（配乐）、<code>forensics</code>（帧取证）、<code>libdoc</code>（生成元素索引）</td></tr>
+<tr><td><code>docs/</code></td><td>4 篇</td><td><code>ENGINE.md</code>（API）、<code>STYLE.md</code>（调色与画法规则）、<code>FILM.md</code>（剪辑）、<code>LIBRARY.md</code>（元素索引）</td></tr>
+</table>
+<p class="caption">一个值得注意的细节：<code>ENGINE.md</code> 写着 <q lang="en">many agents can work at once without touching shared files</q>（多个 agent 可同时工作而不碰共享文件），还有 <q lang="en">Look at your outputs with the Read tool (it shows images)</q>（用 Read 工具看你的输出，它能显示图片）。这说明这些文档是写给编码 agent 看的工作手册。我们据此推测：这个项目很可能是人类导演、多个 agent 并行“对着参考画临摹”做出来的。仓库本身没有明说。</p>
+
+<h2 id="prior-art">与前作的关系</h2>
+<p>说到代码生成的山水，绕不开 LingDong（黄令东）2018 年的 <a href="https://github.com/LingDong-/shan-shui-inf" rel="noopener">shan-shui-inf</a>（MIT，约 6.4k stars）：用噪声和程序规则在 SVG 里生成一幅可以无限横向滚动的长卷，每次都不一样。<strong>本仓库没有在 README 或文档里提到它</strong>，代码也看不出复用关系；两者的路线几乎相反：</p>
+<table>
+<tr><th></th><th>shan-shui-inf（2018）</th><th>Shanshui（2026）</th></tr>
+<tr><td>目标</td><td>无限、随机、每次不同的长卷</td><td>十幅固定构图的“导演版”影片</td></tr>
+<tr><td>构图来源</td><td>程序规则 + 噪声</td><td>对着参考画逐区域临摹，按元素地图摆放</td></tr>
+<tr><td>渲染</td><td>浏览器 SVG 矢量线条</td><td>WebGL2 合成 + Canvas2D 笔墨烘焙 + GLSL 墨韵后处理</td></tr>
+<tr><td>时间</td><td>静态（滚动浏览）</td><td>t 的纯函数，60 fps 动画、转场、配乐，离线出片</td></tr>
+<tr><td>风格</td><td>线描为主，类似白描长卷</td><td>浓淡墨、湿边、颗粒、飞白、雾，接近写意设色小品</td></tr>
+</table>
+<p>可以这样理解：shan-shui-inf 回答“程序能不能生成山水”，Shanshui 回答“代码能不能拍出一部像样的水墨短片”。</p>
+
+<h2 id="inspire">对我们的启发</h2>
+<ul>
+<li><strong>代码即影片的完整样板。</strong>确定性 <code>render(t)</code>、统一 BPM 时钟、转场骑在小节线上、GPU 转 YUV 直灌 ffmpeg、代码合成配乐，和 <a href="../kerazcity-opus-motion-playbook/">Opus 5.5 动效手册</a>里的“渲染契约”一一对应。差别在于它是一部 60 秒、十场景的“长片”，证明这套方法能扩展到复杂美术。</li>
+<li><strong>把风格写成可检查的规则。</strong><code>STYLE.md</code> 的实测调色板、明度百分位、红色占比小于 2%、“看起来假”的清单和运动速度表，可以直接改写成我们的中国风<a href="../mg-styles-15/">MG 风格</a>条目或<a href="../hohomngkj-skill-library/">风格 skill</a>，让“水墨感”从形容词变成数字。</li>
+<li><strong>先建词汇库，再拼场景。</strong><code>src/lib</code> 是可复用的松、石、峰、雾、水、建筑、鹤，<code>src/lab</code> 是每个元素的单独测试场景，并行开发互不冲突。做系列片时，这比每个场景从头写更稳。</li>
+<li><strong>“临摹—比对”循环。</strong>有参考图时，用 <code>--compare</code> / <code>--crop</code> 在 1:1 裁切上对比，原话是 <q lang="en">that is where painterly quality is won or lost</q>（画意的成败就在这里）。这和让模型看自己渲染帧的评审循环是同一个思路，参考 <a href="../flxrnc-opus-motion-lab/">Opus 5.5 动效实验室</a>。</li>
+<li><strong>中国视觉风格的转场语言。</strong>墨晕、湿纸渗色、手卷平移、日匹配、盖印后蒸发，这些转场都来自媒介本身，不是通用的溶解或擦除，可以和 <a href="../huashu-qilixiang-mv/">七里香 MV</a> 这类中文审美作品对照着看。</li>
+<li><strong>和 ASCII 渲染对照。</strong><a href="../ascii-sharks/">ascii-sharks</a> 把连续几何“采样成字符”，这里把干净矢量“洇成墨”：都是先有几何，再加一层媒介化后处理。纹理都要钉在世界坐标或物体上，不能钉在屏幕上。</li>
+</ul>
+<p>相关阅读：<a href="../ascii-sharks/">ascii-sharks</a> · <a href="../mg-styles-15/">15 种 MG 风格</a> · <a href="../hohomngkj-skill-library/">hohomngkj skill 库</a> · <a href="../kerazcity-opus-motion-playbook/">Opus 5.5 动效手册</a> · <a href="../design-resources/">设计资源大赏</a> · <a href="../skillry-opus-5-5-videos/">Opus 5.5 视频大赏</a> · <a href="../prompt-motion/">Prompt Motion 画廊</a></p>
+
+<h2 id="appendix">附录：README 全文中文翻译</h2>
+<p class="caption">仓库采用 MIT 许可（Copyright (c) 2026 Leonxlnx），以下为 README.md 的全文翻译（截至提交 b5357c0）。原文中的配图 <code>docs/stills.jpg</code> 未转载，以文字说明代替。许可声明原文附在本节末尾。</p>
+<blockquote>
+<h3>Shanshui</h3>
+<p>十幅中国水墨山水（<em>shan shui</em>，“山与水”），完全用代码绘制并赋予动画，剪成一部一分钟的影片。</p>
+<p>［配图：十幅画的静帧，见原仓库 <code>docs/stills.jpg</code>］</p>
+<p>任何地方都不加载图片、纹理、字体或音频采样。每一根松针、每一面崖壁、每一片雾、每一只鹤、每一圈涟漪、每一片雪花，以及结尾的印章，都在运行时用 WebGL2 着色器和 Canvas2D 笔触生成。配乐（古筝、箫、颂钵、风声和水声）在 JavaScript 里逐个采样合成。</p>
+<p>影片附在 <a href="https://github.com/Leonxlnx/shanshui/releases" rel="noopener">releases</a> 中。</p>
+<h4>影片</h4>
+<p>一分钟，十幅画，一个时钟：80 BPM，每幅画两小节，每一道接缝都以小节线为中心。</p>
+<table>
+<tr><th></th><th>画</th><th>如何到来</th></tr>
+<tr><td>0:00</td><td>竹谷</td><td>从空白的纸上自己画出来，最浓的墨先出现</td></tr>
+<tr><td>0:06</td><td>瀑上鹤</td><td>一层谷中薄雾</td></tr>
+<tr><td>0:12</td><td>索桥</td><td>雾气扫过群峰</td></tr>
+<tr><td>0:18</td><td>浮峰</td><td>镜头穿过云层上升</td></tr>
+<tr><td>0:24</td><td>红瀑</td><td>推进穿过瀑布的水雾</td></tr>
+<tr><td>0:30</td><td>秋墟</td><td>一阵卷着枫叶的风</td></tr>
+<tr><td>0:36</td><td>金河</td><td>画卷展开，雾气相接</td></tr>
+<tr><td>0:42</td><td>石桥，红日</td><td>金色的太阳滑到红色的太阳上</td></tr>
+<tr><td>0:48</td><td>湖上月</td><td>夜色透过湿纸渗下来</td></tr>
+<tr><td>0:54</td><td>雪寺</td><td>湖上的雪越下越密</td></tr>
+<tr><td>0:57</td><td></td><td>印章落下；画面蒸发，回到纸上</td></tr>
+</table>
+<h4>实时观看</h4>
+<pre><code>npm install
+npm run serve</code></pre>
+<p>打开打印出的地址：影片在浏览器中实时播放（<code>?scene=s03</code> 只显示一幅画，<code>?scale=1</code> 以完整 1080p 渲染）。空格暂停，方向键在画之间跳转；生成配乐之后，按 M 播放配乐。</p>
+<h4>渲染成片</h4>
+<pre><code>node tools/audio.mjs                                                    # 配乐 -&gt; out/audio/soundtrack.wav
+node tools/render.mjs --out out/shanshui.mp4 --audio out/audio/soundtrack.wav --samples 2</code></pre>
+<p>帧由无头 Chrome 在 GPU 上渲染，在着色器中转换为 YUV 4:2:0，直接流入 ffmpeg（x264，BT.709）；除了最终的 MP4，没有任何东西写到磁盘上。需要 Node 20+、Chrome 或 Edge，以及 PATH 中的 ffmpeg。</p>
+<h4>它是怎么构建的</h4>
+<pre><code>src/engine/       WebGL2 合成器：2.5D 摄像机前的视差卡片、烘焙、倒影、风摆、调色、YUV 回读
+src/lib/          画家的词汇：笔触与墨效、松、石、峰、雾与云、
+                  水与瀑布、建筑、鹤、落叶与雪、竹与枫、印章
+src/scenes/       十幅画，每幅都有自己的辅助模块
+src/transitions/  画与画之间的接缝
+src/timeline.js   画面与声音共用的一个时钟
+src/film.js       镜头表、转场、叠加层、子帧运动模糊
+src/lab/          展示库中单个元素的小场景
+tools/            静帧与对比、接触表、常驻渲染守护进程、影片渲染器、配乐、帧取证
+docs/             ENGINE.md（API）、STYLE.md（调色板与绘画规则）、FILM.md（剪辑）、LIBRARY.md（元素索引）</code></pre>
+<p>每幅画都是一叠从后到前的图层，分别放在同一台摄像机前的不同深度上，因此缓慢的镜头运动会在前景松树、中景山峰和远处山脉之间产生真实的视差。静态笔墨只烘焙一次成纹理，再经过一道墨效处理：让颜料在边缘积聚，并沉入纸纹形成颗粒。雾、云、水、瀑布、雪、鹤和落叶每一帧都作为时间的纯函数绘制，因此任何一帧都可以单独、确定地渲染出来。</p>
+<p>这些画是逐区域对照一幅参考画构建出来的；参考图不在本仓库中，因此 <code>tools/still.mjs</code> 的对比选项（<code>--compare</code>、<code>--side</code>、<code>--crop</code>）需要你自己把图片放到 <code>ref/01.webp</code> … <code>ref/10.webp</code>。</p>
+<h4>许可</h4>
+<p>MIT</p>
+</blockquote>
+<details><summary>MIT 许可声明原文（LICENSE）</summary>
+<pre><code>MIT License
+
+Copyright (c) 2026 Leonxlnx
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre></details>
+</main></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/Leonxlnx/shanshui" rel="noopener">Leonxlnx/shanshui</a>，作者 Leon Lin（<a href="https://github.com/Leonxlnx" rel="noopener">GitHub @Leonxlnx</a> / <a href="https://x.com/lexnlin" rel="noopener">X @lexnlin</a>），MIT 许可，Copyright (c) 2026 Leonxlnx。README 译文与短代码片段依 MIT 许可转载并保留版权与许可声明。统计数据取自公开 GitHub API（2026-10-20）。截图为本站在本地运行该项目后自行截取（2026-10-20）；作者的 <code>docs/stills.jpg</code> 与成片视频未转载。导读、原理拆解、前作对比与“对我们的启发”为本站整理。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/Leonxlnx/shanshui" rel="noopener">github.com/Leonxlnx/shanshui</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
