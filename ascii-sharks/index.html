@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ascii-sharks：用字符画在网页里养一片会捕食的海（项目导读）</title>
+<meta name="description" content="stackedlol/ascii-sharks 项目导读：零依赖 TypeScript，用 Canvas 把鱼群 boids 与 8 种鲨鱼的追猎模拟逐格栅格化成 ASCII 字符动画。工作原理拆解、快速上手、本站本地运行截图与对代码即影片的启发。仓库未声明许可证，本页为导读与短引用。" />
+<meta property="og:image" content="images/demo-classic.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-20">2026.10.20</time></p>
+<h1 class="za-title">ascii-sharks：用字符画在网页里养一片会捕食的海</h1>
+<p class="za-sub" lang="en" data-za-gen>ASCII shark components in TypeScript</p>
+<p class="za-meta" data-za-gen><span>来源 · stackedlol/ascii-sharks（GitHub）</span><span>收录 · 2026-10-20</span><span><a href="https://github.com/stackedlol/ascii-sharks" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/stackedlol/ascii-sharks" rel="noopener">github.com/stackedlol/ascii-sharks</a> · 作者 stacked（<a href="https://github.com/stackedlol" rel="noopener">@stackedlol</a>，GitHub / X）· 演示帖：<a href="https://x.com/stackedlol/status/2112257760628986188" rel="noopener">x.com/stackedlol/status/2112257760628986188</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>零依赖的 TypeScript 小引擎，在网页 Canvas 上跑一套鱼群与鲨鱼的人工生命模拟，再把每一帧逐格“翻译”成等宽字符，所以你看到的是一片会游、会逃、会被吃掉的 ASCII 海洋。</div>
+
+<p><span class="tag">★ 58 stars</span> <span class="tag">4 forks</span> <span class="tag">TypeScript</span> <span class="tag">未声明许可证</span> <span class="tag">零运行时依赖</span> <span class="tag">Canvas 2D · 浏览器</span></p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-20 10:20（UTC+8）。仓库建于 2026-10-20 05:54（UTC+8），共 2 个提交（first commit / chill readme），最后推送 05:58（UTC+8）。作者 X 上的演示帖（2026-10-20 03:01 UTC+8）约 3,000 赞、1,400 收藏。</p>
+
+<figure><img src="images/demo-classic.webp" alt="ascii-sharks 默认场景：四条同种鲨鱼在黑色字符网格中游动，周围是由短横线组成的小鱼群" loading="lazy"><figcaption>默认场景：四条 classic 鲨鱼，大小不同代表远近；散落的短横线是鱼群。本站在本地 <code>vite build</code> 后用无头 Chrome 截图（2026-10-20）。</figcaption></figure>
+
+<h2 id="what">它是什么</h2>
+<p>README 只有一句介绍：<q lang="en">Fish and sharks drawn as ASCII on a canvas. Zero dependencies.</q>（用 ASCII 在 canvas 上画鱼和鲨鱼，零依赖。）展开看源码，它其实是三件事叠在一起：</p>
+<ul>
+<li><strong>一个人工生命模拟</strong>（<code>world.ts</code>）：几百条小鱼按物种结群巡游，几条鲨鱼饿了就去追落单的鱼，鱼被吃掉后会以新鱼群的形式从屏幕边缘游回来，数量保持稳定。</li>
+<li><strong>一个 ASCII 栅格化渲染器</strong>（<code>renderer.ts</code>）：把鲨鱼的连续形体按单元格采样，决定每一格用什么字符、什么灰度、什么底色；鱼只占一格，画成一个短横 <code>-</code>。</li>
+<li><strong>一个可嵌入的外壳</strong>（<code>engine.ts</code> / <code>react.tsx</code>）：固定步长循环、自适应尺寸、离屏暂停、鼠标惊鱼、点击“拍水”、尊重系统的“减少动态效果”设置。</li>
+</ul>
+<p>它跑在<strong>浏览器</strong>里，不是终端程序：字符是用 <code>ctx.fillText</code> 画到 Canvas 上的，字体取自 canvas 的 CSS <code>font-family</code>（演示页用 Geist Mono 600）。源码注释里多次出现 “the landing hero”“the sidebar”，看得出它原本是从某个产品落地页的首屏背景里抽出来的组件。作者在回复里说，做成仓库是因为<q lang="en">figured others would too</q>（觉得别人也会想要）；被问到做法时只答了一句<q lang="en">dither + ascii is the method</q>（抖动 + ASCII 就是方法）。</p>
+<p>可选 8 种鲨鱼：<code>classic</code>、<code>hammerhead</code>（双髻鲨）、<code>greathammer</code>（无沟双髻鲨）、<code>tiger</code>（虎鲨，带斑纹）、<code>zebra</code>（豹纹鲨，带斑点和飘带尾）、<code>mako</code>（尖吻鲭鲨）、<code>thresher</code>（长尾鲨，尾鞭和身长相当）、<code>nurse</code>（铰口鲨）。每种都有自己的体形曲线、鳍位和肤色。</p>
+
+<h2 id="how">工作原理</h2>
+
+<h3>1. 模拟与渲染分家，60 Hz 固定步长</h3>
+<p><code>OceanEngine</code> 只做调度：物理固定按 1/60 秒一步推进，一帧最多补 4 步，跟不上就丢掉积压，避免“死亡螺旋”；渲染每帧一次。画布滚出视口时 <code>IntersectionObserver</code> 停掉循环；用户开了 <code>prefers-reduced-motion</code>，就先把生态快进 240 步（4 秒）让鱼群成形，然后只画一张静帧。</p>
+<pre><code>while (this.acc &gt;= STEP &amp;&amp; steps &lt; MAX_STEPS) {
+  this.world.step(STEP);
+  this.acc -= STEP;
+  steps++;
+}
+if (steps === MAX_STEPS) this.acc = 0;
+this.renderer.render(this.world, dt);</code></pre>
+
+<h3>2. 鱼群：boids + Couzin 分区 + 恐慌传染</h3>
+<p>每条鱼是经典的 Reynolds boid（分离 / 对齐 / 聚合），邻居查询走空间哈希，桶的大小等于感知半径。在此之上作者加了不少行为学细节：</p>
+<ul>
+<li><strong>个人空间按字符格计。</strong>间距写成“几个单元格”（例如沙丁鱼 1.8×1.1 格），并且是横宽竖窄的椭圆，所以每条鱼基本能独占一格，不会两个短横叠在一起。</li>
+<li><strong>身后有盲区。</strong>朝向两侧约 127° 以内可见，正后方看不见。</li>
+<li><strong>恐慌会传。</strong>直接看到鲨鱼（或鼠标）的鱼 alarm 升高，邻居以 0.86 的衰减系数一跳一跳地接力，所以只有边缘看得见鲨鱼时，整群也会一起炸开（注释称之为 “wave of agitation”）；恐慌时间距放大到 2.8 倍、聚合减弱、速度上限提高。</li>
+<li><strong>喷泉效应。</strong>逃跑方向不是正对着远离，而是往鲨鱼行进路线的两侧散开，再在身后合拢。</li>
+<li><strong>物种参数决定群形。</strong>注释引用 Couzin 等人 2002 年的结论：对齐强就成“丝带”，对齐弱就成“蜂群”，加一个切向力就成旋转的“饵球”。</li>
+</ul>
+<table>
+<tr><th>物种</th><th>群大小</th><th>对齐 / 聚合</th><th>抖动</th><th>旋转（mill）</th><th>呈现</th></tr>
+<tr><td>sardine 沙丁鱼</td><td>18–28</td><td>1.6 / 1.6</td><td>40</td><td>70</td><td>旋转饵球</td></tr>
+<tr><td>anchovy 鳀鱼</td><td>20–32</td><td>3.2 / 0.45</td><td>30</td><td>0</td><td>长丝带</td></tr>
+<tr><td>silverside 银汉鱼</td><td>12–20</td><td>2.4 / 1.1</td><td>35</td><td>0</td><td>紧凑定向群</td></tr>
+<tr><td>mackerel 鲭鱼</td><td>5–9</td><td>2 / 0.9</td><td>25</td><td>0</td><td>小队</td></tr>
+<tr><td>goby 虾虎鱼</td><td>8–12</td><td>0.35 / 1.4</td><td>110</td><td>0</td><td>乱糟糟的一团</td></tr>
+</table>
+<p>环境里还有一股洋流：取一个缓慢漂移的流函数 ψ(x, y, t) 求旋度，得到无散度的速度场。它没有源和汇，所以只会推着鱼群绕圈，不会把它们都堆到某个角落。</p>
+<pre><code>// u = ∂ψ/∂y, v = -∂ψ/∂x with ψ = sin(a)cos(b) + 0.5 sin(c)
+out.x = (-K2 * Math.sin(a) * Math.sin(b) + 0.5 * K3 * Math.cos(c)) * CURRENT_SCALE;
+out.y = (-K1 * Math.cos(a) * Math.cos(b) - 0.5 * K3 * Math.cos(c)) * CURRENT_SCALE;</code></pre>
+
+<h3>3. 鲨鱼：转向行为 + 20 节“脊柱”</h3>
+<ul>
+<li><strong>游法。</strong>惯性 + 漫游（wander）+ 追击 + 与其他鲨鱼保持距离。追击时瞄准鱼 0.35 秒后的位置；不饿时绕屏幕中心慢慢巡逻。</li>
+<li><strong>饥饿与挑食。</strong>饥饿值随时间上涨，吃一条降 0.16。选猎物时只看前方锥形范围，并对“所在空间桶里鱼多”的目标加罚分。密集鱼群会迷惑捕食者，所以落单的鱼先被挑走。</li>
+<li><strong>转弯半径随速度变大。</strong>鲨鱼不能原地掉头；猎杀冲刺时会更灵活。</li>
+<li><strong>给标题留白。</strong>屏幕中央有一块椭圆形“软禁区”，巡逻时会绕开（这是落地页首屏背景的痕迹）；鼻尖出屏后会被拉回来，所以偶尔身子探出画外，但不会一去不回。</li>
+<li><strong>身体是一条跟随链。</strong>头节点按航向前进，后面 19 节依次跟上，每个关节最多弯 0.16 弧度，所以身体最多弯成 C 形，不会对折。</li>
+</ul>
+<pre><code>angle = prevAngle + clamp(angleDiff(prevAngle, angle), -maxBend, maxBend);
+nodes[k * 2] = px + Math.cos(angle) * seg;
+nodes[k * 2 + 1] = py + Math.sin(angle) * seg;</code></pre>
+
+<h3>4. 渲染：把连续形体“采样”成字符格</h3>
+<p>这是项目最值得看的部分。单元格宽度取画布宽 / 124（限制在 8–13 px），高度是宽度的 1.45 倍。每帧按图层顺序画：黑底网格 → 尾迹 → 鱼 → 鲨鱼。</p>
+<ol>
+<li><strong>游动波。</strong>在模拟脊柱上叠一条从头到尾振幅递增的正弦行波，得到“渲染脊柱”，尾巴摆得最厉害。</li>
+<li><strong>体坐标。</strong>对每个候选点求到脊柱的最近点，得到 s（0 鼻尖 → 1 尾尖）和 v（横向距离）。每种鲨鱼用一条分段函数 <code>halfWidth(s)</code> 描述半宽轮廓，胸鳍、腹鳍、尾鳍是体坐标里的三角形；镰刀形胸鳍再挖掉一个三角形凹口，双髻鲨的头翼单独判断。</li>
+<li><strong>超采样。</strong>每格测中心点加 4 个子采样点，覆盖率 ≥ 0.6 且中心命中就是“实心皮肤”格，否则是“边缘”格。边缘格只画 <code>.',`</code> 或 <code>:;</code> 这类轻字符，相当于用字符做抗锯齿。</li>
+<li><strong>打光。</strong>假设光从左上来：背中线亮，两侧按 1 − across² 衰减，再按法线朝向加减。第一背鳍格固定最亮，眼睛是 <code>o</code>，鳃裂把亮度压一半，虎鲨的条纹和豹纹鲨的斑点用程序化图案生成。</li>
+<li><strong>字符跟着明暗走。</strong>实心格先 <code>fillRect</code> 填一块灰色底（亮度 = 光照），再在上面用深色画字符。字符从下面这条渐变里取：亮处用稀疏字符，暗处用密集字符，让纹理顺着明暗走，而不是和明暗打架。</li>
+</ol>
+<pre><code>// Sparse glyphs on bright skin, dense glyphs in shadow, so the texture
+// reinforces the shading instead of fighting it.
+const SKIN_RAMP = ":;t%SX8#@";</code></pre>
+<ul>
+<li><strong>字符钉在皮肤上。</strong>每格的随机 key 由体坐标 (s, v) 和鲨鱼 id 哈希而来，而不是由屏幕坐标得来，所以鲨鱼游动时字符纹理跟着身体走，不会在原地闪烁。</li>
+<li><strong>受控的闪烁。</strong>颜色按错开的时钟每秒约 2.4 次重掷：约 9% 的格子换成 7 种强调色之一，约 4% 变白，于是皮肤会微微“闪”。远处（小）的鲨鱼整体压暗，先画，大鲨鱼从上面游过。</li>
+<li><strong>尾迹与事件。</strong>鱼和鲨鱼尾部往一张“能量场”里注入数值，每帧做一次 5 点模糊 + 指数衰减，超过阈值的格子亮起青色小点，像水波一样扩散后消失；鲨鱼吃鱼时留下一闪的红橙色 <code>*</code> / <code>·</code>；点击则在能量场上砸一个大圈。</li>
+<li><strong>性能小心思。</strong>鱼按 5 档亮度分桶，背景点用计数排序按颜色分桶，每个桶只设置一次 <code>fillStyle</code>；所有缓冲区都是预分配的 TypedArray，采样过程不分配对象。整个包构建后约 30 KB（gzip 约 12 KB）。</li>
+</ul>
+
+<h2 id="quickstart">快速上手</h2>
+<p><strong>1. 跑演示：</strong>需要 Node.js。仓库没有发布 npm 包，直接克隆即可。</p>
+<pre><code>git clone https://github.com/stackedlol/ascii-sharks
+cd ascii-sharks
+npm install &amp;&amp; npm run dev     # Vite 开发服务器
+# 打开终端里提示的地址，例如 http://localhost:5173/</code></pre>
+<p><strong>2. 换鲨鱼：</strong>演示页读取 URL 参数 <code>sharks</code>，第一种最大，后面每种依次缩小 10%；不带参数就是四条 classic。</p>
+<pre><code>http://localhost:5173/?sharks=thresher,hammerhead,mako,nurse</code></pre>
+<p><strong>3. 嵌入自己的页面</strong>（README 示例）：给 canvas（或它的父元素）设一个等宽字体，字符就从这个字体里取。</p>
+<pre><code>import { OceanEngine } from "./src";
+
+const engine = new OceanEngine(canvas, [{ kind: "hammerhead", size: 1 }]);
+// 卸载时：engine.destroy();</code></pre>
+<p><strong>4. React：</strong><code>src/react.tsx</code> 提供 <code>&lt;AsciiOcean sharks={…} /&gt;</code>，带 <code>"use client"</code>，可以直接用于 Next.js。注意它不在 <code>tsconfig</code> 的检查范围里，项目本身也没把 react 列为依赖，要在你自己的 React 工程里使用。</p>
+<p class="caption">本站实测（2026-10-20）：<code>npm install</code> 后 <code>tsc --noEmit</code> 通过，<code>vite build</code> 产出 29.8 KB JS。下面的截图就是这次本地构建的运行画面。</p>
+
+<h2 id="showcase">展示</h2>
+<figure><img src="images/demo-mixed.webp" alt="混合鲨鱼场景：无沟双髻鲨、虎鲨、豹纹鲨、尖吻鲭鲨在字符网格中游动，颜色从冷灰到暖棕" loading="lazy"><figcaption><code>?sharks=greathammer,tiger,zebra,mako</code>：不同物种的肤色（冷灰、暖棕、沙黄、靛蓝）和体形差别一眼可辨。本站本地截图。</figcaption></figure>
+<figure><img src="images/demo-closeup.webp" alt="字符特写：灰色方块底上的深色字符组成鲨鱼身体，零星的紫、青、红强调色，边缘是逗号和撇号" loading="lazy"><figcaption>2× 像素密度特写：实心格是“灰底 + 深色字符”，边缘是 <code>, ' . `</code> 这类轻字符，零星的彩色格是闪烁的强调色，<code>o</code> 是眼睛。本站本地截图。</figcaption></figure>
+<p>动起来的效果请看作者的<a href="https://x.com/stackedlol/status/2112257760628986188" rel="noopener">演示视频帖</a>（本站未转载视频）。作者另有一条<a href="https://x.com/stackedlol/status/2112233272398778645" rel="noopener">浅色模式的预览</a>，但当前仓库代码把背景写死为纯黑，没有浅色模式开关。</p>
+
+<h2 id="structure">项目结构</h2>
+<table>
+<tr><th>文件</th><th>行数级别</th><th>作用</th></tr>
+<tr><td><code>index.html</code> / <code>demo.ts</code></td><td>很小</td><td>全屏黑底演示页；从 URL 读 <code>?sharks=</code></td></tr>
+<tr><td><code>src/engine.ts</code></td><td>~140 行</td><td><code>OceanEngine</code>：固定步长循环、尺寸、指针输入、离屏暂停、减少动态效果</td></tr>
+<tr><td><code>src/world.ts</code></td><td>~660 行</td><td>人工生命模拟：鱼群 boids、恐慌传染、鲨鱼转向与脊柱、捕食、补员</td></tr>
+<tr><td><code>src/species.ts</code></td><td>~65 行</td><td>5 种饵鱼的速度、群大小、间距与行为权重</td></tr>
+<tr><td><code>src/renderer.ts</code></td><td>~930 行</td><td><code>AsciiRenderer</code>：8 种鲨鱼体形、超采样栅格化、打光、字符选择、尾迹场</td></tr>
+<tr><td><code>src/math.ts</code></td><td>~55 行</td><td>smoothstep、角度差、整数哈希、无散度洋流</td></tr>
+<tr><td><code>src/react.tsx</code></td><td>~25 行</td><td><code>&lt;AsciiOcean&gt;</code> React 包装</td></tr>
+<tr><td><code>src/index.ts</code></td><td>3 行</td><td>导出 <code>OceanEngine</code>、<code>AsciiRenderer</code>、<code>paintGrid</code>、<code>World</code> 及类型</td></tr>
+<tr><td><code>package.json</code></td><td>—</td><td>只有 typescript、vite 两个开发依赖；脚本 dev / build / typecheck</td></tr>
+</table>
+
+<h2 id="inspire">对我们的启发</h2>
+<ul>
+<li><strong>ASCII 是一层“渲染风格”，不是素材。</strong>它没有画任何字符画，而是先有连续的几何（脊柱 + 半宽曲线 + 鳍三角形），再逐格采样决定字符。我们做<a href="../mg-styles-15/">MG 风格样本</a>或代码短片时，可以照这个思路，在任何 SDF / 矢量场景上加一个“字符化”后处理：覆盖率决定实心还是边缘，亮度决定字符密度。</li>
+<li><strong>纹理要钉在物体上。</strong>随机数用体坐标哈希而不是屏幕坐标，这是字符动画不显“脏”的关键。逐帧导出时尤其重要，否则每帧的字符都在跳。</li>
+<li><strong>形容词换成参数。</strong>“丝带”“饵球”“蜂群”这些群形，落到代码里就是对齐、聚合、mill 三个数。这和<a href="../flxrnc-opus-motion-lab/">Opus 5.5 动效实验室</a>、<a href="../huashu-motion/">Huashu-motion</a> 的经验一致：给 agent 写动效提示词，最好写成可调的数值和行为规则。</li>
+<li><strong>拿去做“代码即影片”还差一步。</strong>它现在依赖 <code>Math.random()</code> 和实时 <code>requestAnimationFrame</code>，不是确定性的 <code>render(t)</code>。要逐帧导出视频，需要换成带种子的随机数，并按帧号固定步进（结构上已经是固定步长，改动不大），可参考 <a href="../prompt-motion/">Prompt Motion 画廊</a>里的 seek(t) 结构化模板，以及 <a href="../skillry-opus-5-5-videos/">Opus 5.5 视频大赏</a>中音画全部用代码生成的做法。</li>
+<li><strong>克制本身是设计。</strong>纯黑底、极淡的网格、一种主体灰阶，强调色只占几个百分点并且会闪。很适合做文章题图或片头背景；找类似的克制范例，可以翻翻<a href="../design-resources/">设计资源大赏</a>。</li>
+<li><strong>可访问性和性能是默认项。</strong>减少动态效果时只显示静帧、离屏暂停、按 fillStyle 分桶批量绘制，这三条可以直接写进我们动效 skill 的检查清单。</li>
+</ul>
+<p>相关阅读：<a href="../prompt-motion/">Prompt Motion 画廊</a> · <a href="../anatomy-skill/">Anatomy：会动的机器解释图</a> · <a href="../vibe-knowledge-film/">vibe-knowledge-film</a> · <a href="../mg-styles-15/">15 种 MG 风格</a></p>
+
+<h2 id="license">许可说明</h2>
+<p>截至 2026-10-20，仓库<strong>没有 LICENSE 文件</strong>，GitHub API 的 license 字段为空。按默认规则，这意味着作者保留全部权利：可以阅读和学习，但复制代码进自己的产品或再分发之前，应先征得作者同意。因此本页只做导读，正文中的英文短句和几段代码片段（每段不超过几行）仅为评述而引用，没有翻译或转载 README 全文和源码；配图是本站自己运行项目后截取的画面，没有转载作者的图片或视频。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/stackedlol/ascii-sharks" rel="noopener">stackedlol/ascii-sharks</a>，作者 stacked（<a href="https://github.com/stackedlol" rel="noopener">GitHub @stackedlol</a> / <a href="https://x.com/stackedlol" rel="noopener">X @stackedlol</a>），未声明开源许可证，版权归作者所有。统计数据取自公开 GitHub API（2026-10-20），X 帖子信息取自公开帖子。截图为本站在本地构建并运行该项目后自行截取（2026-10-20）。导读、原理拆解与“对我们的启发”为本站整理。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/stackedlol/ascii-sharks" rel="noopener">github.com/stackedlol/ascii-sharks</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

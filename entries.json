@@ -1,5 +1,15 @@
 [
   {
+    "slug": "ascii-sharks",
+    "title": "ascii-sharks",
+    "desc": "零依赖 TypeScript 小引擎：在网页 Canvas 上跑鱼群 boids 与 8 种鲨鱼的追猎模拟，再逐格栅格化成 ASCII 字符动画。项目导读：工作原理（恐慌传染、20 节脊柱、超采样+字符明暗渐变、钉在皮肤上的纹理）、快速上手、本站本地运行截图、对代码即影片的启发。仓库未声明许可证，仅导读与短引用。",
+    "source": "stackedlol/ascii-sharks（GitHub）",
+    "date": "2026-10-20",
+    "type": "导读",
+    "subtitle": "ASCII shark components in TypeScript",
+    "original_url": "https://github.com/stackedlol/ascii-sharks"
+  },
+  {
     "slug": "story2board-ai-storyboard",
     "title": "Story2Board：前字节团队做的 AI 分镜“副导演”（产品导读 + 范师傅推荐帖全文 + 核实）",
     "desc": "范师傅推荐的 AI 分镜 Agent Story2Board（网页产品，非开源）：一致性锚点层锁角色/场景/道具，逐节拍检索 27.5 万条电影镜头标注给出有出处的运镜建议，导出带景别/角度/运镜/台词的 PDF 分镜表（不耗点），$0.01=1 点按量充值不订阅。推文全文照录 + 工作原理 + 快速上手 + 核实（“前字节”官方自述 ✅、250 部 vs 快照 236 部 ⚠️、单模型自动标注无人工复核）+ 启发。",
