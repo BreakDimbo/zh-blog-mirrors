@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ascii-magic-art：634 段会动的 ASCII 字符画，一条 npx 命令浏览、一行标签上网页（项目导读）</title>
+<meta name="description" content="kailashsr38/ascii-magic-art（ASCII Magic）项目导读：634 段动画 ASCII 字符画、24 个分类，每段都是一个零依赖 ES 模块 create() → draw(t)。原理拆解（Grid 字符+颜色双层、确定性 PRNG/噪声、按字形墨量重绘的 looks、Canvas 半调点与 Bayer 抖动、validate 每帧 12 ms 预算）、快速上手（终端 / 网页组件 / npm）、本站本地运行截图、与 ascii-sharks、shanshui 对比、启发；MIT（两幅照片场景为 Unsplash 许可），附 README 全文中文翻译。" />
+<meta property="og:image" content="images/preview.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.hero-tags .tag{margin-right:.35em}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-20">2026.10.20</time></p>
+<h1 class="za-title">ascii-magic-art：634 段会动的 ASCII 字符画</h1>
+<p class="za-sub" lang="en" data-za-gen>634 animated ASCII art pieces for web pages, READMEs, wallpapers and terminals</p>
+<p class="za-meta" data-za-gen><span>来源 · kailashsr38/ascii-magic-art（GitHub）</span><span>收录 · 2026-10-20</span><span><a href="https://github.com/kailashsr38/ascii-magic-art" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/kailashsr38/ascii-magic-art" rel="noopener">github.com/kailashsr38/ascii-magic-art</a> · 作者 ASCII Magic（<a href="https://www.ascii-magic.com/ascii" rel="noopener">ascii-magic.com</a>，GitHub <a href="https://github.com/kailashsr38" rel="noopener">@kailashsr38</a>）· npm 包 <code>ascii-magic-art</code> · MIT 许可（ocean-sunset、starry-ridge 两幅照片场景为 Unsplash 许可）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><main>
+<div class="related-guide"><strong>一句话：</strong>一个 MIT 开源的“动画 ASCII 素材库”：634 段字符动画（风景、界面、图表、讲解图、3D 体、加载动画、小游戏、分隔线……共 24 类），每段都是一个几十行的零依赖 JS 模块，输入秒数、输出一帧文字；同一套代码既能在终端里播、也能用一个 <code>&lt;ascii-art&gt;</code> 标签放进网页，还能一键换成半调点、二进制、抖动等十种“字符风格”。</div>
+
+<p class="hero-tags"><span class="tag">★ 66 stars</span> <span class="tag">2 forks</span> <span class="tag">JavaScript</span> <span class="tag">MIT</span> <span class="tag">634 pieces</span> <span class="tag">24 类</span> <span class="tag">零依赖</span> <span class="tag">v1.0.2</span></p>
+<p class="caption">数据来自公开 GitHub API，获取于 2026-10-20 18:45（UTC+8）。仓库建于 2026-10-19 16:00（UTC+8），最后推送 2026-10-19 19:32（UTC+8）；topics：animation、ascii-art、cli、generative-art、web-components 等。仓库约 6.8 MB，其中 <code>pieces/</code> 634 个文件，核心运行时（<code>lib/</code> + <code>runtime/</code> + <code>bin/</code> + <code>scripts/</code>）合计约 1,660 行。</p>
+
+<figure><img src="images/preview.webp" alt="六段 ASCII 动画的静帧网格：月光海面、黑洞吸积盘、绿色字符雨、睡觉的橘猫、城市人口条形图竞赛、字符明暗的旋转圆环" loading="lazy"><figcaption>本站本地运行截图（2026-10-20）：克隆仓库后用其 <code>runtime/player.js</code> 在无头 Chrome 中各渲染一帧，从左上依次是 moonlit-sea、black-hole、matrix-rain、sleeping-cat、bar-chart-race、spinning-torus。实际都是循环动画。</figcaption></figure>
+
+<h2 id="what">它是什么</h2>
+<p>作者是做“把照片/Logo/视频转成动画 ASCII”商业服务的 ASCII Magic，这个仓库是他们开放出来的<strong>素材库与运行时</strong>。README 自述为：<q lang="en">634 animated ASCII art pieces for web pages, READMEs, wallpapers and terminals.</q>（634 段动画 ASCII 字符画，用于网页、README、壁纸和终端。）</p>
+<p>它面向三种人：</p>
+<ul>
+<li><strong>想给网站加点“字符感”装饰的人</strong>：在终端 <code>npx ascii-magic-art</code> 挑一段，回车就把一段“提示词”复制到剪贴板，粘给 Claude Code、Cursor 等编码代理，由它把作品加进你的站点（hero、加载态、空状态、404 页）。</li>
+<li><strong>想在终端里玩的人</strong>：直接播放某一段，或打印一帧静图当 MOTD / shell 启动画面。</li>
+<li><strong>想自己写的人</strong>：每段作品都是同一个极简接口，照着写一个新模块，跑校验脚本即可。</li>
+</ul>
+<p>24 个分类的名字本身就说明了覆盖面：Landscapes、UI、Live Data、Explainers、Lettering、Solids、Cosmos、Motion Lab、Weather &amp; Wild、Animals、Things、Algorithms、Demoscene、Arcade、Rules &amp; Frames、Occasions、Cities of the World、Mascots、Empty States、Retro Computing、Science、Music、Food、India。</p>
+
+<h2 id="how">工作原理</h2>
+
+<h3>1. 一段作品 = 一个纯函数 <code>draw(t)</code></h3>
+<p>每个 <code>pieces/*.js</code> 导出 <code>meta</code>（slug、名称、分类、标签、<code>cols × rows</code>、fps、可选调色板）和默认的 <code>create()</code>；<code>create()</code> 返回 <code>draw(t)</code>：给它“第几秒”，它返回这一帧。帧要么是纯字符串，要么是 <code>{ text, color }</code> 两层同形的文本。这意味着<strong>任意时刻可随机访问</strong>，不依赖上一帧的状态累积，所以同一模块可以被终端播放器、网页播放器、PNG/GIF/视频导出器以完全相同的方式驱动。</p>
+
+<h3>2. <code>lib/kit.js</code>：两百行的“字符画工具箱”</h3>
+<p>所有作品共用一个零依赖工具箱：</p>
+<ul>
+<li><strong>Grid</strong>：每格存一个字符 + 一个颜色键（单字符，索引 <code>meta.palette</code>，空格表示默认墨色）+ 一个 z 深度。提供 <code>text</code>、<code>block</code>、<code>box</code>（细/粗/双线/圆角）、Bresenham <code>line</code>、按 0.5 纵横比修正的 <code>circle</code>、逐格回调 <code>shade</code>，以及带深度测试的 <code>setZ</code>。</li>
+<li><strong>确定性随机</strong>：mulberry32 PRNG 与整数哈希的值噪声 <code>noise2</code>、分形噪声 <code>fbm</code>。注释写得直白：<q lang="en">Same seed, same art on every load.</q></li>
+<li><strong>3D</strong>：<code>rotX/Y/Z</code>、<code>project</code>（透视投影，考虑字符格约 2:1 的高宽比）、线框 <code>wire</code>。</li>
+<li><strong>颜色与字形</strong>：<code>hsl</code>、<code>gradient</code>、若干字符明暗梯度（classic、fine、dots、blocks……）、3×5 方块数字字体 <code>bigText</code>。</li>
+</ul>
+<p>例如 spinning-torus 就是经典的“甜甜圈”算法：两重角度循环扫过圆环表面，算法线与光照点积得亮度，透视后用 <code>setZ</code> 做 z-buffer，再把亮度映射到 <code> .,-~:;=!*#$@</code> 梯度上。下面是本站用 CLI 打印的一帧：</p>
+<pre class="ascii">                 @@@@@@@@@@@@@
+             $@@@$$$$$$$$$$$$$$$$$
+          $$$$$##*****!!*******###$$
+        *#$###******!!======!*!****###
+       *###*****!==;;:::::::;===!******
+      ******!!==;::~-,,...,,--~:;==!****
+     !*****!!=;::~-...........,-:;;=!!!!!
+     !!*!!!!=;:~-,.....  ......,-:;===!!!
+     !!!!!!==;:~,...        ...,~~;;==!!=;
+     =!!!!==;::~,..          ..-~:;======:
+     ===!!===;:~---          :~;;;=======~
+     ;;=========;=;;       !*!!!!!!!!===;
+     ~;;======!!!!**####$$$$$###**!!!==;-
+      -:;===!!!!**##$$@@@@@@@$$#**!!!;;-
+       ,:;;==!!!**##$$$@@@@$$##**!!=;:,
+        .-::;==!!****######******=;:-
+          .-~:;;==!!*********!!=;~-.
+             .,-~:;;==;;;;;;;:~,.
+                 ....,,,,....</pre>
+
+<h3>3. Looks：按“字形墨量 × 颜色亮度”重绘</h3>
+<p><code>runtime/glyphs.js</code> 内置一张表：每个安全字形在 Menlo 中实际覆盖了多少墨（预先在 canvas 中量好、打包成字符串）。重绘时，每格的“暗度” = 字形墨量 × 颜色亮度（Rec.709 加权），再按整帧的最小/最大值拉伸并做 gamma；目标字符集按墨量从浅到深排序，取最接近的那个。默认只重绘方块阴影字符（<code>░▒▓█</code> 与 <code>▁…█</code>），文字与线框保持原样；若整帧几乎全是梯度标点（如圆环、等离子），这些标点也被视为阴影。传 <code>all</code> 则全部重绘。于是同一段作品可以一键变成十种风格：dots、ascii、dense、numbers、binary、letters、blocks、squares、lines、dither。</p>
+<figure><img src="images/looks.webp" alt="同一段月光海面动画的三种字符风格：原始方块、半调圆点、0 和 1 组成的二进制" loading="lazy"><figcaption>同一帧 moonlit-sea 的三种 look：original / dots / binary（本站本地渲染，2026-10-20）。</figcaption></figure>
+
+<h3>4. 渲染：Canvas 字形图集 + 真正的半调点</h3>
+<p>网页端 <code>runtime/player.js</code> 并不逐帧改写 <code>&lt;pre&gt;</code>（那是“旧方法”，作为 <code>dom</code> 选项保留），而是在 <code>&lt;pre&gt;</code> 上叠一块 canvas：文字类 look 通过字形图集（GlyphAtlas）绘制，dots/squares 画按暗度缩放的真圆/方块，dither 用 8×8 Bayer 矩阵开关像素。<code>&lt;pre&gt;</code> 里保留预渲染文本，给屏幕阅读器、搜索引擎和不开 JS 的访客。播放器还会：只在元素可见时播放（IntersectionObserver）、尊重 <code>prefers-reduced-motion</code> 停在静帧、给每个播放器随机相位以免一页多个卡片同一帧集中重绘造成卡顿、每 500 ms 才读一次 <code>getComputedStyle</code>。</p>
+<p>网页组件 <code>runtime/ascii.js</code> 只有 65 行：定义 <code>&lt;ascii-art&gt;</code> 自定义元素，用 Shadow DOM 放一个 <code>&lt;pre&gt;</code>，按 <code>piece</code> 属性动态 <code>import()</code> 对应模块，再把 size、speed、look、chars、contrast、dot-size 等属性翻译成播放参数。</p>
+<p>终端端 <code>bin/cli.js</code> 处理颜色降级：支持真彩色的终端输出 24 位色，其他（尤其 macOS Terminal.app，会把 24 位色码误读成独立指令）用 “redmean” 加权距离就近映射到 256 色；管道输出或设了 <code>NO_COLOR</code> 时关闭颜色。</p>
+
+<h3>5. 照片场景与质量闸门</h3>
+<p><code>lib/image.js</code> 把“调色板键 + 0–7 级墨量”的图片网格画成 <code>▁▂▃▄▅▆▇█</code>（墨量按八分之一递增，任何 look 都能从中读回亮度），再叠加可选的确定性动效：斜向扫光、星点闪烁、水面涟漪、云层漂移、棕榈摇摆、飞鸟、流星。</p>
+<p>每段作品上线前要过 <code>scripts/validate.mjs</code>：meta 完整、slug 与文件名一致、每一帧尺寸严格等于 <code>cols × rows</code>、颜色层同形且键都在调色板中、只用在所有常见等宽字体里都是单格宽的字符（ASCII、制表/方块、盲文及少量符号）、6 秒内至少 3 帧不同（真的在动）、首帧不能几乎空白、文案不许出现破折号，以及<strong>平均每帧在 Node 中不超过 12 ms</strong>。<code>scripts/stress.mjs</code> 再在 0–60 秒多个时刻检查文字溢出边框、尺寸跳变、抛异常。本站在本机（Node 20）跑全量校验，结果 633/634 通过，唯一失败项是某段作品平均 12.3 ms/帧、略超预算，属于机器性能差异，功能正常。</p>
+
+<h2 id="quickstart">快速上手</h2>
+<pre><code># 终端里浏览全部作品（方向键切换，s 换风格，回车复制提示词）
+npx ascii-magic-art
+
+# 播放某一段 / 列表 / 3 秒后自动停 / 打印一帧静图
+npx ascii-magic-art moonlit-sea
+npx ascii-magic-art --list
+npx ascii-magic-art matrix-rain --seconds=3
+npx ascii-magic-art sleeping-cat --frame --look=dots</code></pre>
+<pre><code>&lt;!-- 网页：引一次脚本，放一个标签 --&gt;
+&lt;script type="module" src="https://www.ascii-magic.com/ascii/ascii.js"&gt;&lt;/script&gt;
+&lt;ascii-art piece="moonlit-sea" look="dots" size="10"&gt;&lt;/ascii-art&gt;</code></pre>
+<pre><code>// 代码里：npm install ascii-magic-art
+import create, { meta } from "ascii-magic-art/pieces/spinning-torus.js";
+const draw = create();
+const f = draw(1.5);
+console.log(f.text ?? f);</code></pre>
+<p>注意：网页组件默认从作者站点 <code>ascii-magic.com</code> 加载脚本与作品模块；若不想依赖第三方 CDN，可用 npm 包把 <code>runtime/</code> 和需要的 <code>pieces/</code> 自托管（MIT 允许）。</p>
+
+<h2 id="related">与本站相关页面的对比</h2>
+<ul>
+<li><a href="../ascii-sharks/">ascii-sharks</a>：同样是“字符动画”，但它是<strong>一个</strong>模拟（鱼群 boids + 鲨鱼追猎）先在连续空间里算，再超采样栅格化成字符；ascii-magic-art 则是<strong>634 个</strong>直接在字符网格上作画的小模块，重点在可复用、可嵌入、可换风格。</li>
+<li><a href="../shanshui/">shanshui</a>：与本项目共享“确定性 <code>render(t)</code> / <code>draw(t)</code>”这一核心思想，任意时刻可随机访问，因此能逐帧离线导出视频；不同在于 shanshui 用 WebGL2 着色器画水墨，这里只用字符和调色板。</li>
+</ul>
+
+<h2 id="takeaways">启发</h2>
+<ul>
+<li><strong>接口极简才能规模化</strong>：<code>create() → draw(t) → string | {text,color}</code> 让 634 段作品共享同一套播放器、导出器、校验器；新作品只需关心“这一秒画什么”。</li>
+<li><strong>风格与内容解耦</strong>：先用“墨量 × 亮度”把任意帧降成一张暗度图，再用任意字符集重新量化，等于给整个素材库加了一个全局“滤镜”层。</li>
+<li><strong>把质量规则写成脚本</strong>：帧尺寸、字符安全集、帧耗时预算、“必须在动”、甚至“不许破折号”都自动检查，适合 AI 批量生成内容后的把关。</li>
+<li><strong>为编码代理设计分发</strong>：终端里挑选 → 复制一段写好的提示词 → 交给代理落地，是“一句话装到你的项目里”的新式安装体验。</li>
+</ul>
+
+<h2 id="appendix">附录：README 全文中文翻译</h2>
+<p class="caption">依 MIT 许可翻译转载。原文：<a href="https://github.com/kailashsr38/ascii-magic-art/blob/main/README.md" rel="noopener">README.md</a>（提交 de88962，2026-10-19）。代码块保持原样。</p>
+<blockquote>
+<p>634 段动画 ASCII 字符画，用于网页、README、壁纸和终端。<br>场景、界面、图表、示意图、3D 形体、加载动画、游戏、分隔线等等，共 24 个分类。<br><a href="https://www.ascii-magic.com/ascii" rel="noopener">浏览素材库</a> · <a href="https://www.ascii-magic.com/ascii/docs" rel="noopener">文档</a> · <a href="https://www.ascii-magic.com/ascii/banner" rel="noopener">制作 README 横幅</a> · <a href="https://www.ascii-magic.com/ascii/use" rel="noopener">使用场景</a></p>
+
+<h3>一句提示词，把一段加进你的项目</h3>
+<pre><code>npx ascii-magic-art</code></pre>
+<p>在终端里实时浏览全部 634 段作品。方向键在作品和分类之间移动，<code>s</code> 切换外观（半调圆点、ASCII、二进制、抖动等），<code>a</code> 让文字和线条也一起重绘。按回车，这段作品在当前外观下的提示词就会复制到剪贴板：把它粘贴到 Claude Code、Cursor、Copilot 或任何编码代理中，它就会把这段作品加到你的网站上。或者跳过浏览：</p>
+<pre><code>npx ascii-magic-art prompt matrix-rain</code></pre>
+
+<h3>在终端里播放一段</h3>
+<pre><code>npx ascii-magic-art moonlit-sea
+npx ascii-magic-art --list
+npx ascii-magic-art matrix-rain --seconds=3    # stop on its own, for shell startup
+npx ascii-magic-art sleeping-cat --frame       # print one still frame, for a MOTD</code></pre>
+<p>按任意键停止。加上 <code>--look=dots</code>（或 <code>ascii</code>、<code>numbers</code>、<code>binary</code>……）或 <code>--chars=" .oO@"</code> 可以用其他字符重绘。输出被管道传递或设置了 <code>NO_COLOR</code> 时会关闭颜色。（注：代码注释意为“自行停止，用于 shell 启动”和“打印一帧静图，用于 MOTD”。）</p>
+
+<h3>放到网页上</h3>
+<pre><code>&lt;script type="module" src="https://www.ascii-magic.com/ascii/ascii.js"&gt;&lt;/script&gt;
+
+&lt;ascii-art piece="moonlit-sea"&gt;&lt;/ascii-art&gt;</code></pre>
+<p>属性：</p>
+<table>
+<tr><th>属性</th><th>作用</th></tr>
+<tr><td><code>piece</code></td><td>作品名，与其页面 URL 中的一致</td></tr>
+<tr><td><code>size</code></td><td>字号（px，默认 12）</td></tr>
+<tr><td><code>speed</code></td><td>播放速度，1 为正常</td></tr>
+<tr><td><code>still</code></td><td>只显示一帧，不播放动画</td></tr>
+<tr><td><code>bg</code></td><td>作品背后的背景色</td></tr>
+<tr><td><code>look</code></td><td>换一套字符重绘：<code>dots</code>、<code>ascii</code>、<code>dense</code>、<code>numbers</code>、<code>binary</code>、<code>letters</code>、<code>blocks</code>、<code>squares</code>、<code>lines</code>、<code>dither</code></td></tr>
+<tr><td><code>chars</code></td><td>用你自己的字符代替 look，例如 <code>chars=" .oO@"</code>（会自动按由浅到深排序）</td></tr>
+<tr><td><code>mono</code></td><td>单色，不用作品的调色板</td></tr>
+<tr><td><code>all</code></td><td>与 <code>look</code> 或 <code>chars</code> 合用时，文字和线条也一起重绘，而不只是明暗阴影</td></tr>
+<tr><td><code>contrast</code></td><td>0 到 100，默认 0</td></tr>
+<tr><td><code>dot-size</code></td><td><code>dots</code> 外观的半调点大小，25 到 120，默认 51</td></tr>
+<tr><td><code>density</code></td><td>半调点间距，40 到 250，默认 131（点更多，大小不变）</td></tr>
+<tr><td><code>steps</code></td><td>半调点的尺寸档位：<code>3</code>、<code>5</code>，或 <code>0</code> 表示平滑</td></tr>
+</table>
+<p>元素只在出现在屏幕上时播放，对偏好减少动态效果的访客则保持一帧静图。</p>
+
+<h3>在你自己的代码里使用</h3>
+<pre><code>npm install ascii-magic-art</code></pre>
+<p>每段作品都是一个小小的 ES 模块，除 <code>lib/kit.js</code> 外没有任何依赖。它导出 <code>meta</code> 和一个 <code>create()</code> 函数，后者返回 <code>draw(t)</code>：一个从秒数到一帧画面的函数：</p>
+<pre><code>import create, { meta } from "ascii-magic-art/pieces/spinning-torus.js";
+
+const draw = create();
+const frame = draw(1.5);            // a string, or { text, color }
+console.log(frame.text ?? frame);</code></pre>
+<p>带颜色的帧有一个与 <code>text</code> 形状相同的 <code>color</code> 层。其中每个字符都是 <code>meta.palette</code> 的键（空格表示默认墨色）。<code>runtime/player.js</code> 把它变成 HTML；<code>runtime/canvas.js</code> 把它画到 canvas 上，用于导出 PNG、GIF 和视频。</p>
+
+<h3>外观（Looks）</h3>
+<p>每段作品都能用另一套字符重绘。每个格子的暗度取决于其字形覆盖了多少墨以及颜色有多亮；外观的字符按墨量排序，取最接近的那个绘制。明暗阴影块会被重绘，文字和线条保持原样（传 <code>all: true</code> 则全部重绘）。</p>
+<pre><code>import { restyle, withLook } from "ascii-magic-art/runtime/glyphs.js";
+
+const frame = restyle(draw(1.5), meta.palette, { look: "dots" });
+const drawInNumbers = withLook(create(), meta.palette, { look: "numbers" });</code></pre>
+
+<h3>制作一段作品</h3>
+<pre><code>import { Grid } from "../lib/kit.js";
+
+export const meta = {
+  slug: "my-piece", name: "My Piece", category: "generative",
+  note: "One line about it.", tags: ["loop", "minimal"],
+  cols: 60, rows: 20, fps: 24,
+};
+
+export default function create() {
+  const g = new Grid(meta.cols, meta.rows);
+  return (t) =&gt; {
+    g.clear();
+    g.text(2, 2, "hello " + Math.floor(t));
+    return g.frame();
+  };
+}</code></pre>
+<p>然后检查它：</p>
+<pre><code>node scripts/validate.mjs my-piece</code></pre>
+<p>校验器会检查每一帧的尺寸、字符集、它是否在动，以及每帧绘制是否在 12 ms 以内。</p>
+
+<h3>许可</h3>
+<p>MIT。作品可用于任何地方，包括商业作品。欢迎附上回链，但不强制。两幅基于照片的场景 <code>ocean-sunset</code> 和 <code>starry-ridge</code> 沿用其来源照片的 Unsplash 许可；见 <a href="https://github.com/kailashsr38/ascii-magic-art/blob/main/NOTICE" rel="noopener">NOTICE</a>。</p>
+<p>想把你自己的照片、Logo 或视频做成动画 ASCII？这正是 <a href="https://www.ascii-magic.com" rel="noopener">ASCII Magic</a> 做的事。</p>
+</blockquote>
+
+<h3>MIT 许可原文</h3>
+<pre><code>MIT License
+
+Copyright (c) 2026 ASCII Magic (ascii-magic.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre>
+</main></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/kailashsr38/ascii-magic-art" rel="noopener">kailashsr38/ascii-magic-art</a>，作者 ASCII Magic（<a href="https://www.ascii-magic.com" rel="noopener">ascii-magic.com</a>，GitHub <a href="https://github.com/kailashsr38" rel="noopener">@kailashsr38</a>），MIT 许可，Copyright (c) 2026 ASCII Magic (ascii-magic.com)；其中 <code>pieces/ocean-sunset.js</code>、<code>pieces/starry-ridge.js</code> 的图像数据沿用 Unsplash License（照片作者 César Couto、Vincentiu Solomon），本页未转载这两幅。README 译文与短代码片段依 MIT 许可转载并保留版权与许可声明。统计数据取自公开 GitHub API（2026-10-20）。截图与 ASCII 帧为本站在本地运行该项目后自行渲染（2026-10-20）；作者的 banner.svg 未转载。导读、原理拆解、对比与“启发”为本站整理。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/kailashsr38/ascii-magic-art" rel="noopener">github.com/kailashsr38/ascii-magic-art</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

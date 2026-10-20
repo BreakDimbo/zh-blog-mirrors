@@ -1,5 +1,15 @@
 [
   {
+    "slug": "ascii-magic-art",
+    "title": "ascii-magic-art",
+    "desc": "kailashsr38/ascii-magic-art（ASCII Magic）项目导读：634 段动画 ASCII 字符画、24 个分类，每段都是一个零依赖 ES 模块 create() → draw(t)，终端 npx 浏览播放、网页 <ascii-art> 一个标签嵌入、npm 引用。原理拆解（Grid 字符+颜色双层与 z 深度、确定性 PRNG/噪声、按“字形墨量×颜色亮度”重绘的十种 looks、Canvas 字形图集与半调点/Bayer 抖动、终端 256 色降级、validate 每帧 12 ms 预算）、快速上手、本站本地运行截图、与 ascii-sharks / shanshui 对比、启发。MIT（两幅照片场景为 Unsplash 许可），附 README 全文中文翻译。",
+    "source": "kailashsr38/ascii-magic-art（GitHub）",
+    "date": "2026-10-20",
+    "type": "导读",
+    "subtitle": "634 animated ASCII art pieces for web pages, READMEs, wallpapers and terminals",
+    "original_url": "https://github.com/kailashsr38/ascii-magic-art"
+  },
+  {
     "slug": "shanshui",
     "title": "Shanshui",
     "desc": "Leonxlnx/shanshui 项目导读：不加载任何图片/字体/音频采样，用 WebGL2 着色器 + Canvas2D 笔触生成并驱动十幅中国水墨山水，按 80 BPM 剪成一分钟影片，配乐（Karplus-Strong 古筝、箫、颂钵）逐采样合成。原理拆解（2.5D 视差卡片、压力曲线笔触与飞白、inkify 湿边/颗粒/晕染、STYLE.md 画论规则化、确定性 render(t)、墨晕/日匹配等转场、GPU→YUV→ffmpeg）、快速上手、本站本地运行截图、与 LingDong shan-shui-inf 对比、启发。MIT，附 README 全文中文翻译。",
