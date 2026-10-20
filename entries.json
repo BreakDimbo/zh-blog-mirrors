@@ -1,5 +1,15 @@
 [
   {
+    "slug": "kerazcity-opus-motion-playbook",
+    "title": "Opus 5.5 动效手册：多数“一句提示词”视频其实不是一句话",
+    "desc": "kerazcity X 长文全文翻译：Opus 5.5 不出视频而是写 seek(t) 画帧程序；L1–L4 提示词阶梯、默认外观禁止清单与形容词→数字、渲染契约与 render.mjs、缓动/弹簧/节拍数字、让模型看自己帧的评审循环、代码合成音效、无缝循环与 X 导出、引擎选型、17 条故障对照、导演简报模板。附导读、要点、逐项核实（本站实跑示例页）与启发。",
+    "source": "kerazcity（@0xkerazcity）· X 长文",
+    "date": "2026-10-20",
+    "type": "翻译",
+    "subtitle": "Opus 5.5 Motion Design: The Complete Playbook",
+    "original_url": "https://x.com/0xkerazcity/status/2111079749342675440"
+  },
+  {
     "slug": "ascii-sharks",
     "title": "ascii-sharks",
     "desc": "零依赖 TypeScript 小引擎：在网页 Canvas 上跑鱼群 boids 与 8 种鲨鱼的追猎模拟，再逐格栅格化成 ASCII 字符动画。项目导读：工作原理（恐慌传染、20 节脊柱、超采样+字符明暗渐变、钉在皮肤上的纹理）、快速上手、本站本地运行截图、对代码即影片的启发。仓库未声明许可证，仅导读与短引用。",
