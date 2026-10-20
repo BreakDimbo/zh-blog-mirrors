@@ -1,5 +1,15 @@
 [
   {
+    "slug": "story2board-ai-storyboard",
+    "title": "Story2Board：前字节团队做的 AI 分镜“副导演”（产品导读 + 范师傅推荐帖全文 + 核实）",
+    "desc": "范师傅推荐的 AI 分镜 Agent Story2Board（网页产品，非开源）：一致性锚点层锁角色/场景/道具，逐节拍检索 27.5 万条电影镜头标注给出有出处的运镜建议，导出带景别/角度/运镜/台词的 PDF 分镜表（不耗点），$0.01=1 点按量充值不订阅。推文全文照录 + 工作原理 + 快速上手 + 核实（“前字节”官方自述 ✅、250 部 vs 快照 236 部 ⚠️、单模型自动标注无人工复核）+ 启发。",
+    "source": "story2board.com · 范师傅 @FanShifu 推荐",
+    "date": "2026-10-20",
+    "type": "导读",
+    "subtitle": "AI co-director for storyboards",
+    "original_url": "https://story2board.com/"
+  },
+  {
     "slug": "aipoch-open-science",
     "title": "AIPOCH Open-Science：开源、本地优先的 AI 科研工作台（项目导读 + 推荐帖 + 中文 README）",
     "desc": "Sac 推荐用 AIPOCH 开源的 Open-Science 辅助读论文、做前沿 AI 研究。项目导读：文献库读论文、Python/R 复现、产物溯源、独立 Reviewer、.science 研究包；推文全文照录 + 核实（arXiv 2610.17110 ✅、技能数口径不一、基准为自报）+ 启发；附官方简体中文 README 全文（Apache-2.0）。",

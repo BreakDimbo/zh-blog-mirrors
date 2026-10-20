@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Story2Board：前字节团队做的 AI 分镜“副导演”（产品导读 + 范师傅推荐帖全文 + 核实）</title>
+<meta name="description" content="范师傅推荐的 AI 分镜 Agent Story2Board：一致性锚点层、27.5 万条电影镜头标注库检索、带场记字段的 PDF 分镜表、按量充值不订阅。本页以产品为中心：做什么、怎么做、快速上手，推文全文照录与逐条核实。" />
+<meta property="og:image" content="img/poster.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-20">2026.10.20</time></p>
+<h1 class="za-title">Story2Board：前字节团队做的 AI 分镜“副导演”</h1>
+<p class="za-sub" lang="en" data-za-gen>AI co-director for storyboards</p>
+<p class="za-meta" data-za-gen><span>来源 · story2board.com · 范师傅 @FanShifu 推荐</span><span>收录 · 2026-10-20</span><span><a href="https://story2board.com/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">产品：<a href="https://story2board.com/" rel="noopener">story2board.com</a> · 运营方 Genkee (HK) Limited · 推荐：范师傅 <a href="https://x.com/FanShifu/status/2112131115964141790" rel="noopener">@FanShifu</a>（2026-10-19）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>Story2Board 是一个浏览器里用的 AI 分镜工具：你给一个想法或一份剧本，它像副导演一样陪你逐镜设计景别、角度和运镜，参考真实电影里的类似镜头讲清楚“为什么这么拍”，再生成画面，最后导出一份能直接发给摄影、灯光的 PDF 分镜表。范师傅（@FanShifu）的推文把它的卖点归成三条：角色和场景锁进一致性层、27 万镜头库撑腰的运镜建议、带场记数据的 PDF；最后也点了按量充值模式在商业上的短板。</div>
+
+<p><span class="tag">网页产品 · 无需安装</span> <span class="tag">闭源 / 商业服务</span> <span class="tag">新用户 300 点</span> <span class="tag">$0.01 = 1 点</span> <span class="tag">Nano Banana / 2 / Pro</span> <span class="tag">PDF 导出不耗点</span></p>
+<p class="caption">产品信息取自 story2board.com 公开页面（首页、AI Storyboard Generator、Film Knowledge Base、About、Open Source、Changelog、博客），抓取时间 2026-10-20 10:18（UTC+8）；抓取前已读取并遵守其 robots.txt。</p>
+
+<h2 id="post">推荐帖（全文照录）</h2>
+<blockquote>
+<p>前字节团队操刀，蒸馏 250 部影史名片，打造 27 万+ 电影分镜索引库，杀入影视行业。这就是专为独立导演和广告人打造的 AI 分镜 Agent —— Story2Board</p>
+<p>用大模型做分镜，最让人头大的莫过于两件事：</p>
+<p>1. 拿着剧本让 ChatGPT 跑九宫格分镜脚本，看着挺像那么回事，结果一镜换一张脸，三镜换掉整个剧组，人物一致性很难保证。</p>
+<p>2. 想微调某一镜给男主来个特写，整个场景的美术风格立刻原地重开，改一张图等于毁掉一整条片子。</p>
+<p>Story2Board 没有跟风去卷画质，而是把精力全砸在了影视工业最头疼的上下文连贯性和导演视听语言上。</p>
+<p>一、把剧组固定资产锁进独立图层<br>它在项目里搭了一层 Consistency Layer（一致性锚点）。角色长相、穿搭、标志性道具和场景，全被固化成可复用的对象。后面不管是切全景、特写还是背影，AI 都基于同一套资产底座进行生成，告别「薛定谔的男主角」。</p>
+<p>二、带脑子的 AI 副导演，而不是冰冷画图机器<br>很多人脑子里有故事，但不知道怎么切机位表达情绪。项目后台接入了 250 部影史经典里的 27 万个镜头标注数据。你用大白话描述剧情，它会像专业摄影指导一样反推景别、轴线、仰俯角度以及运镜方式，主动推荐：「这句对白建议用过肩镜头，下一秒再推近景烘托情绪」，把专业运镜逻辑拆解成能挑的选项，顺便帮你把为什么这么运镜的情绪动机讲清楚。真正的边干边学，大幅降低非科班导演的专业视听门槛。</p>
+<p>三、打工人最爱的交付形态：带场记数据的 PDF<br>聊完改完，一键导出的不是一堆散装网图，而是可以打印出来发给摄影师、灯光师的 PDF 分镜表（景别、角度、运镜动作、台词全对齐，且导出功能本身不消耗任何点数）。</p>
+<p>更有意思的是它的商业模式和技术实现：</p>
+<p>模型调用做成了按需调用，免费层用便宜模型给用户试水，正式交付才调动 Nano Banana Pro / 2，兼顾 4K 细节与快速预览成本。收费上没有搞订阅制的套路，直接按「1 美元 = 100 点」明码标价，纯按需充值，点数永不过期。</p>
+<p>我觉得它最大的价值是，允许创作者跳过规整的剧本撰写阶段，拿着零散的想法、分场大纲甚至 TikTok 下载来的短视频前两秒吸睛脚本，就能进行画面推演，上手路径更短平快。</p>
+<p>不过也存在一些问题，比如放弃订阅制，确实降低了尝鲜用户的付费门槛，但同时也牺牲了 LTV 和营收可预测性，在商业模式上是减分的。</p>
+<p>按需充值意味着只要用户完成了手头的提案或短视频拍摄，就可能陷入长达数月的沉寂期。相较于成熟 SaaS 稳定的 MRR ，这种付费模式对产品获客能力提出了更高要求，一旦推广获客成本上升，回本周期就会被无限拉长。</p>
+<p>这可能也是新项目的无奈之举吧！</p>
+</blockquote>
+<p class="caption">范师傅（@FanShifu），2026-10-19 18:37（UTC+8），附 33 秒演示视频。截至 2026-10-20 10:17（UTC+8）：62,235 次浏览、1,289 赞、1,618 收藏、249 转发、33 条回复、10 条引用。推文本身没有附产品链接。</p>
+<figure><img src="img/poster.webp" alt="演示视频封面：Story2Board 首页（浏览器机翻为中文，Logo 被译成“故事2B板”），标题“将你的故事逐帧绘制成分镜脚本”，下方是 48 秒演示视频入口和三格暗色城市分镜" loading="lazy"><figcaption>演示视频封面帧（视频未转载，请到<a href="https://x.com/FanShifu/status/2112131115964141790" rel="noopener">原帖</a>观看）。画面是经浏览器机翻的官网首页，Logo 被译成了“故事2B板”，评论区有人调侃“都写 2B 了”，作者回复“被你发现细节了”。</figcaption></figure>
+<p><strong>评论区里作者的几条回复：</strong></p>
+<ul>
+<li>@koldever（英文，大意）：“唯一的出路是开源，不然以现在的环境，迟早有人逆向出来自己开源。”<br>范师傅：“有道理，现在逆向太简单了😆”</li>
+<li>@marionoj5：2024 年自己花几个小时就做过类似产品，锁场景、锁美术，“完全是没有门槛的东西”。<br>范师傅：“谢谢提供经验。这条线上游有变现很成功的产品，@chunxiangai 赵总的 laper”</li>
+<li>@0xDucky1st：按需充值对独立导演友好，但对团队现金流是考验。<br>范师傅：“是的，先测试付费意愿吧”</li>
+<li>@UnderleveledDev 贴了开源的 <a href="https://github.com/UnderleveledBuilder/awesome-short-drama-skills" rel="noopener">awesome-short-drama-skills</a>。<br>范师傅：“好嘛 直接开源了是吧 😂”“这个收录集不错”</li>
+</ul>
+
+<h2 id="guide">导读</h2>
+<p>推文写的是一个<strong>商业网页产品</strong>，不是开源项目。GitHub 上同名的 <a href="https://github.com/DavidDinkevich/Story2Board" rel="noopener">DavidDinkevich/Story2Board</a>（MIT，约 270★）是 2025 年一篇“免训练分镜生成”论文的官方实现，和这里的 story2board.com 没有关系，别搞混。</p>
+<p>按官网的说法，Story2Board 想解决的不是“画得好不好看”，而是两件更实际的事：一是<strong>不会设计镜头</strong>（“I have the story. I just don’t know how to design the shots.”），二是<strong>通用模型出的九宫格改不动</strong>（“Looks like a board — until I try to change one shot.”）。它的回答是把分镜当成一个持续的项目，而不是一次性出图。</p>
+<p><strong>它怎么工作：</strong></p>
+<ol>
+<li><strong>先建项目锚点（一致性层）。</strong>开始设计镜头前，把角色、道具、场景、世界观、导演意图、美术风格、情绪基调整理成结构化记录；角色参考图、场景板、Project Vision 的风格图成为后续每一格的共同参照。推文里的 “Consistency Layer” 就是官网的 consistency layer。</li>
+<li><strong>逐个节拍检索真实电影镜头。</strong>副导演先把你的描述拆成需要取景的节拍（进门、环视、对视、反应……），每个节拍去镜头库里查“这种时刻在电影里一般怎么拍”。检索工具接受三种输入：文字描述、参考图（用图像向量找相似画面）、结构化过滤（如“单人构图”“低调光”）。它挑两三个最合适的参考，连同取景理由一起给你，你可以接受、换参考或往别的方向推。</li>
+<li><strong>批准后生成画面，单格可改。</strong>批准的方向变成按场次、镜号组织的分镜格；改某一格（新指令、参考图、换模型或画幅）时其余格不动；改剧本或换角色时，副导演会标出哪些地方不再对得上并给出修正。</li>
+<li><strong>导出 PDF 分镜表。</strong>前面是故事梗概和完整剧本，之后每个镜头一页：画面、动作、台词、运镜、景别、角度、时长和叙事目的。导出本身不扣点。</li>
+</ol>
+<p><strong>镜头库是怎么来的：</strong>官网 Film Knowledge Base 页公开了数据说明（不是数据集下载）：2026-09-16 快照共 275,346 条镜头记录、236 部电影、79 份导演风格档案，每条 48 个字段（其中 27 个是标注和文本字段，分镜头语言、运镜、场景、主体、叙事、文本六组），库体积 8.7 GB。流程是解码视频 → 神经网络切镜头 → 视觉语言模型（<code>qwen3-vl-flash</code>）按结构化字段标注关键帧 → 切片 → 运镜分析 → 挂上字幕和前后场景上下文 → 向量化 → 入库，检索时向量与关键词混合。官网自己写明了三条局限：标注只用一个模型、没有人工复核；文本向量只覆盖 42.6%；片单不公开。</p>
+<p>技术栈方面，官网 Open Source 页列出 Next.js、FastAPI、PostgreSQL、Redis、Transformers、BGE-M3 文本向量、RQ 任务队列，以及作为“导演方法论参考”的 Shanyin Director Master（MIT）。</p>
+
+<h2 id="quickstart">快速上手</h2>
+<ol>
+<li>打开 <a href="https://story2board.com/" rel="noopener">story2board.com</a> 注册，新用户送 300 点，不用绑卡；免费点数只能用 Nano Banana，Nano Banana 2 / Pro 要购买点数。</li>
+<li>新建项目，直接用大白话描述一个场景，或上传剧本 / brief（PDF、Word、纯文本都行）。</li>
+<li>先把主角、关键场景、美术风格定成项目锚点，再开始逐镜设计。这一步决定了后面能不能“换景别不换脸”。</li>
+<li>每个镜头看副导演给的两个左右方向、参考镜头和理由，选一个或提出修改；画面出来后可单格重做。</li>
+<li>导出 PDF 分镜表交给团队。官网称一格通常一分钟内出图（视模型和排队情况而定）；点数购买：1,000 点 $9.90、3,000 点 $29、9,000 点 $89、20,000 点 $199，永不过期，不可退款（法律另有规定除外）。</li>
+</ol>
+
+<h2 id="keypoints">要点</h2>
+<div class="grid">
+<div class="card"><div class="card-body"><h3>一致性靠“项目资产”，不靠提示词</h3><p class="syn">角色、场景、道具是可复用的结构化对象，参考图是视觉锚点；改一格不重做整板。这是它和“让 ChatGPT 出九宫格”的核心区别。</p></div></div>
+<div class="card"><div class="card-body"><h3>建议有出处</h3><p class="syn">运镜建议来自检索到的真实电影镜头，附取景理由，用户在选项里挑，而不是模型凭空生成一句“低角度广角”。</p></div></div>
+<div class="card"><div class="card-body"><h3>交付物是生产文档</h3><p class="syn">PDF 里画面与景别、角度、运镜、台词、时长、叙事目的对齐，能直接进拍摄准备，而不是一堆散图。</p></div></div>
+<div class="card"><div class="card-body"><h3>按量计费、不订阅</h3><p class="syn">对话和出图都扣点，运行前显示价格；作者认为这降低了尝鲜门槛，但牺牲 LTV 和收入可预测性。</p></div></div>
+<div class="card"><div class="card-body"><h3>数据说明写得很克制</h3><p class="syn">知识库页主动披露“计数不等于准确”“覆盖不等于可检索”，还拿 MovieNet 做了口径明确的对比，这比营销文案里的“27 万+”可信得多。</p></div></div>
+<div class="card"><div class="card-body"><h3>门槛之争</h3><p class="syn">评论区有人认为这类产品“没有门槛”、早晚被逆向开源；壁垒可能更多在镜头库和工作流打磨，而不在单个功能。</p></div></div>
+</div>
+
+<h2 id="verify">核实</h2>
+<div class="table-wrap"><table>
+<tr><th>说法（推文）</th><th>结论</th><th>依据</th></tr>
+<tr><td>前字节团队操刀</td><td>✅ 官方自述</td><td>About 页：现团队成员都曾在字节跳动工作；联合创始人 Kunhai Lin（工程）、Helena Cheng（产品）。运营主体 Genkee (HK) Limited（香港）。未独立核验个人履历。</td></tr>
+<tr><td>250 部影史名片、27 万+ 镜头</td><td>⚠️ 部分对得上</td><td>首页与生成器页写“270,000+ 镜头、250 部”；但知识库页 2026-09-16 快照是 <strong>275,346 条、236 部</strong>，且注明是团队自报、非独立审计。“27 万+”成立，“250 部”与最新快照不符。</td></tr>
+<tr><td>“蒸馏”名片 / 镜头标注数据</td><td>⚠️ 措辞夸张</td><td>实际是用单一视觉语言模型 qwen3-vl-flash 自动标注，无人工复核，文本向量仅覆盖 42.6%；片单不公开。说“标注库”准确，说“蒸馏”是比喻。</td></tr>
+<tr><td>Consistency Layer 锁住角色、道具、场景</td><td>✅</td><td>生成器页明确写有 consistency layer：角色、道具、场景、世界观、导演意图、美术风格、情绪基调的结构化记录与参考图锚点。实际一致性效果本站未测。</td></tr>
+<tr><td>反推景别、轴线、仰俯角、运镜，并解释动机</td><td>✅ 大体；⚠️“轴线”</td><td>镜头记录含 shot_size、camera_angle、camera_motion、narrative_purpose 等字段，副导演会给出参考与理由；公开字段里没有专门的“轴线 / 180 度规则”项。</td></tr>
+<tr><td>PDF 分镜表，导出不耗点</td><td>✅</td><td>生成器页：“The PDF export itself does not use credits.” PDF 每镜一页，含画面、动作、台词、运镜、景别、角度、时长、叙事目的。</td></tr>
+<tr><td>免费层用便宜模型，付费才用 Nano Banana Pro / 2</td><td>✅</td><td>FAQ：免费用户可用 Nano Banana，Nano Banana 2 / Pro 需购买点数。“兼顾 4K 细节”官网公开页未见说明 ⚠️。</td></tr>
+<tr><td>1 美元 = 100 点、不订阅、点数永不过期</td><td>✅</td><td>“$0.01 = 1 credit”“No subscription. Credits never expire.” 套餐有小折扣（1,000 点 $9.90）。注意：对话也扣点；Changelog 里 2025-12-07 的 v1.0.0（当时名为 Genkee AI）写过“会员订阅”，robots.txt 仍留有 membership 路径，可能早期有过订阅、后来改为纯充值（推测）。</td></tr>
+<tr><td>可从零散想法、分场大纲、短视频前两秒脚本起步</td><td>✅</td><td>官网支持从想法或剧本开始，用途列有 9:16 竖屏短视频（“前两秒决定一切”）。</td></tr>
+<tr><td>专为独立导演和广告人</td><td>✅ 大体</td><td>About 页定位“电影初学者和独立电影人”；用途里列有广告、MV、提案、动画、企业视频等。</td></tr>
+</table></div>
+<p class="caption">此外：推文未标注是否为合作推广，作者简介写“每天拆解海外一手商业案例”；本站无法判断是否有商业关系。演示视频未转载、未逐帧核对；本站没有注册试用，生成质量与一致性未实测。</p>
+
+<h2 id="takeaways">对我们的启发</h2>
+<ul>
+<li><strong>“项目状态”比单次生成重要。</strong>Story2Board 的核心不是更好的图，而是把角色、场景、风格存成项目里的结构化对象，再让每一次生成读它。我们做 AI 视频的流程（如 <a href="../minimax-h3-director/">H3 Director 逐段缓存</a>、<a href="../jokerliu-ai-wuda-physics/">老泥鳅的 End→Start 状态交接</a>）也是同一件事：先把状态外置，再谈一致性。</li>
+<li><strong>检索给出“有出处的建议”。</strong>与其让模型凭感觉说“建议过肩镜头”，不如检索真实镜头作证据，再让人挑。这和我们页面里“核实”表的思路一致：建议要能追溯到来源。<a href="../lemo-opuscar-98-styles/">OPUSCAR 98 风格</a>的分镜 JSON 也可以作为类似的结构化参考库。</li>
+<li><strong>数据说明可以学。</strong>知识库页主动写清“计数不等于准确”“覆盖率 42.6%”“片单不公开”，转述时保留这些限定，别只留下“27 万+”。</li>
+<li><strong>交付物要对齐下游。</strong>导出的是摄影、灯光能直接用的 PDF，而不是图。我们产出的东西也该先想清楚谁接手、需要什么字段。</li>
+<li><strong>小心营销口径漂移。</strong>首页“250 部”与数据页“236 部”并存，推文又写成“蒸馏 250 部”。同一个数字经过几次转述就会变形，核实时要回到最底层的数据页。</li>
+</ul>
+<p>相关阅读：<a href="../minimax-h3-director/">MiniMax H3 Director 工作流</a> · <a href="../jokerliu-ai-wuda-physics/">老泥鳅：AI 武打的物理逻辑</a> · <a href="../lemo-opuscar-98-styles/">OPUSCAR 98 风格与导演编排</a> · <a href="../hohomngkj-skill-library/">龚浩 Snail 风格库与分镜短片</a> · <a href="../vibeshot-ai-fight-impact-frames-notes/">AI 打斗冲击帧笔记</a></p>
+
+<h2 id="sources">参考的官网页面</h2>
+<ul>
+<li><a href="https://story2board.com/" rel="noopener">首页</a> · <a href="https://story2board.com/ai-storyboard-generator" rel="noopener">AI Storyboard Generator（工作流程与 FAQ）</a></li>
+<li><a href="https://story2board.com/film-knowledge-base" rel="noopener">Film Knowledge Base（镜头库数据说明）</a> · <a href="https://story2board.com/blog/ai-agent-reads-real-films-to-storyboard-yours" rel="noopener">How an AI Agent Reads Real Films to Storyboard Yours</a></li>
+<li><a href="https://story2board.com/about" rel="noopener">About</a> · <a href="https://story2board.com/open-source" rel="noopener">Open Source（依赖与参考）</a> · <a href="https://story2board.com/changelog" rel="noopener">Changelog</a></li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>推荐帖作者范师傅 <a href="https://x.com/FanShifu/status/2112131115964141790" rel="noopener">@FanShifu</a>，2026-10-19，中文原文全文照录用于介绍与评述，版权归作者。产品 Story2Board（<a href="https://story2board.com/" rel="noopener">story2board.com</a>），运营方 Genkee (HK) Limited；官网内容未采用开放许可，本页仅作导读与简短引用，不转载其页面全文。封面图为推文演示视频的封面帧。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://story2board.com/" rel="noopener">story2board.com/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
