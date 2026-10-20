@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>《一座城的年轮》：Claude 写代码渲染的 149 秒成都史短片（Eian 原帖照录 + 导读）</title>
+<meta name="description" content="Eian @EianLu 的《一座城的年轮》：3,573 帧、71,380 栋楼按 1:10000 白模缩小，画面全部由 Claude 写代码渲染，把成都从公元前 1250 年到 2022 年压进 149 秒。原帖与作者回复照录、数据来源（CMAB 清华大学 / OpenStreetMap）、制作信息、评论区观点与“AI 编程讲故事”的启发。" />
+<meta property="og:title" content="《一座城的年轮》：Claude 写代码渲染的 149 秒成都史短片" />
+<meta property="og:image" content="images/poster.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-21">2026.10.21</time></p>
+<h1 class="za-title">《一座城的年轮》：Claude 写代码渲染，3,271 年成都压进 149 秒</h1>
+<p class="za-sub" lang="en" data-za-gen>The Rings of a City — Chengdu, from Jinsha to the Third Ring</p>
+<p class="za-meta" data-za-gen><span>来源 · Eian @EianLu · X</span><span>收录 · 2026-10-21</span><span><a href="https://x.com/EianLu/status/2111662397278847478" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/EianLu/status/2111662397278847478">x.com/EianLu/status/2111662397278847478</a>（作者：Eian <a href="https://x.com/EianLu">@EianLu</a>，2026-10-18 11:35 SGT）</p>
+<p class="meta-line">原帖为中文，正文与作者回复照录原文；视频请在 X 原帖观看（本页不转载），下图仅为原视频封面帧。互动数据截至 2026-10-21 01:40 SGT：约 10.9 万次浏览、358 赞、489 收藏、40 转发、11 引用、56 回复。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
+<figure class="cover-fig"><a href="https://x.com/EianLu/status/2111662397278847478" rel="noopener"><img class="cover" src="images/poster.webp" alt="《一座城的年轮》封面帧：黑底上一块倾斜的白色成都城市模型，左侧标题与数据署名" /></a><figcaption>原视频封面帧（点击在 X 观看 149 秒成片）。封面署名：建筑 CMAB（清华大学）· 楼高 CTBUH、成都晚报；道路、水系、地标轮廓 © OpenStreetMap contributors；史实 维基百科、百度百科 · 太阳神鸟图案为示意。</figcaption></figure>
+
+<h2 id="post">原帖（照录）</h2>
+<blockquote>
+<p>《一座城的年轮》谨以此片，献给我的家乡。<br>
+3,573 帧，74 亿个像素，319 平方公里，71,380 栋楼，按 1:10000 等比缩小，画面全部由 Claude 写代码渲染完成。 从公元前 1250 年到 2022 年，3,271 年的历史压进 149 秒。<br>
+这就是我的家乡：成都。 如果喜欢，请多多支持，感谢！<br>
+数据来源：CMAB（清华大学）©OpenStreetMap contributors</p>
+</blockquote>
+<p class="caption">— Eian（<a href="https://x.com/EianLu">@EianLu</a>），<a href="https://x.com/EianLu/status/2111662397278847478">2026-10-18</a>。附视频 1920×1080、148.9 秒，<a href="https://x.com/EianLu/status/2111662397278847478">在 X 观看</a>。</p>
+
+<h2 id="what">这是什么</h2>
+<ul>
+<li><strong>一部“数据白模”城市史短片。</strong>英文副题 <em>The Rings of a City</em>，封面写“成都 · 从金沙到三环”“白模投影 · 1:10000”。镜头俯瞰一块白色的成都三环内城市模型（319 km²、71,380 栋楼），时间从公元前 1250 年（金沙）一路推到 2022 年，城市像树的年轮一样一圈圈长出来。</li>
+<li><strong>画面没有用视频生成模型。</strong>作者说每一帧都由 Claude 写的代码渲染；配音另用豆包语音大模型 2.0（作者回复）。</li>
+<li><strong>数字自洽。</strong>3,573 帧 ÷ 149 秒 ≈ 24 fps；74 亿像素 ÷ 3,573 帧 ≈ 207 万像素/帧 ＝ 1920×1080；公元前 1250 年到 2022 年（无公元 0 年）＝ 3,271 年 ✅。</li>
+</ul>
+
+<h2 id="how">怎么做的：作者回复照录</h2>
+<p>作者没有公开代码仓库或项目页，也尚未发教程。评论区里与制作方法相关的作者回复（照录，时间为 SGT）：</p>
+<div class="xpost"><p class="meta">回 @lemomo_ai「这是跑了多久啊」· 10-18 13:45</p><p>差不多4个小时哈哈哈</p></div>
+<div class="xpost"><p class="meta">回 @0xLuge「请问渲染了多久呢直接claude在服务器渲染的吗」· 10-19 13:19</p><p>差不多4个小时</p></div>
+<div class="xpost"><p class="meta">回 @savage2hook「这个得渲染多久啊？」· 10-19 20:38</p><p>差不多4个小时</p></div>
+<div class="xpost"><p class="meta">回 @zhishiai6「你可以分享你的提示对话吗？是说只是单纯的一句话生成？」· 10-19 16:49</p><p>还是有几轮交互的 但是交流很杂，反正总体把自家想要的感觉说清楚就行。</p></div>
+<div class="xpost"><p class="meta">回 @dongcidaci111「这是用的什么配音啊大佬」· 10-19 19:06</p><p>豆包语音大模型2.0便宜好用</p></div>
+<div class="xpost"><p class="meta">回 @pinganlaicai888（问视频成本）· 10-19 12:57 / 13:19</p><p>你说视频成本？<br>比想象的低很多</p></div>
+<div class="xpost"><p class="meta">回 @AGUI72678775（没有 Claude Pro、用 API 计费怕爆）· 10-19 20:58</p><p>API怕有点贵</p></div>
+<div class="xpost"><p class="meta">回 @0xDo0wee「严肃学习」/ @Chris62771610「教程」· 10-18 12:03 / 12:50</p><p>喜欢的人多的话后面会出一个制作方法🫡<br>后面出一个！</p></div>
+<div class="xpost"><p class="meta">回 @cfenghub（换成 DeepSeek 能否复刻）· 10-19 00:09</p><p>很快就会实现的</p></div>
+
+<h3 id="data">数据来源</h3>
+<ul>
+<li><strong>建筑：CMAB（清华大学）</strong>——Zhang, Zhao, Long 2025 年发表于 <em>Scientific Data</em> 的全国多属性建筑数据集：3,667 个城市、约 3,100 万栋建筑，每栋含屋顶轮廓、高度、功能、年代、结构、风格、质量；CC BY 4.0，<a href="https://doi.org/10.6084/m9.figshare.27992417.v2">Figshare</a> 按省/城市提供 shapefile（<a href="https://www.nature.com/articles/s41597-025-04730-5">论文</a>）。</li>
+<li><strong>楼高补充：</strong>CTBUH（世界高层建筑与都市人居学会）、《成都晚报》（封面署名）。</li>
+<li><strong>道路、水系、地标轮廓：</strong>© OpenStreetMap contributors。</li>
+<li><strong>史实：</strong>维基百科、百度百科；太阳神鸟图案为示意。</li>
+</ul>
+<p class="notice"><strong>核实提示：</strong>CMAB 的“年代”字段由 GAIA 不透水面数据（1985–2018）推得，只能区分约 1985 年以后的建成时间。所以片中 1985 年以前（金沙、秦城、明清三重城等）的段落应来自史料示意，而不是逐栋楼的历史数据——这正好回答了评论区 @Oscars_dou 的疑问。作者自己的回复是“挺牛的”，没有展开。</p>
+
+<h3 id="prompt">评论区的“复刻提示词”（非作者发布）</h3>
+<p>@divid_lu49394（larrymask）在回复里贴了一份长提示词，被收藏 148 次，是本帖最热的回复。开头是：“你是资深3D数据可视化与程序化动画工程师。请用Python（推荐Open3D / PyVista / 自定义Three.js离线渲染管线）编写完整可运行代码，生成一部149秒、约3573帧的成片《一座城的年轮》。”后面列了 CMAB + OSM 数据、按年代“生长”的时间节点（金沙→秦城→都江堰→锦官城→明清三重城→1958 年后环路外扩）、色调与镜头、实例化渲染等要求。<strong>这是网友的推测或重写，不是作者的原始提示词。</strong>作者只回了“牛皮哈哈👍👍👍”，没有确认。原文见 <a href="https://x.com/divid_lu49394/status/2111943432826679527">x.com/divid_lu49394/status/2111943432826679527</a>。</p>
+
+<h2 id="comments">评论区观点</h2>
+<ul>
+<li><strong>“比扩散模型更震撼”</strong>：@antmoch 说“这种程序化生成的数据叙事感比纯扩散模型生成的画面震撼太多了”。</li>
+<li><strong>“AI 编程最有温度的打开方式”</strong>：@cfenghub 这样评价，并问换成国产模型能否复刻；作者答“很快就会实现的”。</li>
+<li><strong>马上有人跟做</strong>：@TristanLi99“交作业，做了个北京城”（附约 2 分钟视频）；@Liguanqiju3q“我也做了成都”；不少人表示也想做自己的家乡。</li>
+<li><strong>问方法、问成本</strong>：大量回复在问教程、开源、渲染时长和 API 费用，也有人担心 Claude 账号风控。</li>
+<li><strong>不同意见</strong>：@cyborg_sex22304 觉得“一般般吧”，认为与“荷兰人搞的那个”差距明显。</li>
+<li><strong>下一步</strong>：@ChinaEyeViral 说“下一步就是比创意和审美了”，作者回“确实！！！”。</li>
+<li><strong>引用评论</strong>：@sunruichao（Richard）认为这给 AI 编程指了一个具体的创作方向：“把数据、地点和时间组织起来，讲述一座城市的故事”。他还建议围绕老街、地标加入老照片和居民记忆（<a href="https://x.com/sunruichao/status/2112159371774070915">原帖</a>）。</li>
+</ul>
+
+<h2 id="why">为什么值得记：AI 编程讲故事的样板</h2>
+<ol>
+<li><strong>素材是真实数据。</strong>每栋楼的轮廓和高度来自公开数据集，代码只负责编排；一个人用开放数据（CMAB CC BY 4.0、OSM ODbL）就能做出“纪录片级”的尺度感。</li>
+<li><strong>叙事由时间轴驱动。</strong>“3,271 年压进 149 秒”的关键是年份到帧的映射，建筑按年代出现，城市像年轮一样扩张。这和“代码成片”常用的 <code>render(t)</code> 渲染契约是同一个思路，只是把 t 换成了历史年份。</li>
+<li><strong>可信度靠署名。</strong>片头列出全部数据和史料来源，并注明图案为示意，把“哪些是数据、哪些是示意”交代清楚。这是“实证影像”类作品的基本功。</li>
+<li><strong>门槛：几轮对话加约 4 小时。</strong>按作者自述，不是一句话出片，而是几轮把“想要的感觉”说清楚；渲染约 4 小时，成本“比想象的低很多”。评论区当天就出现了北京版跟做，说明这个形式可以复制。</li>
+<li><strong>情感落点是家乡。</strong>家乡题材加真实城市数据，让技术演示变成了能引起共鸣的作品，这是转发和跟做的主要动力。</li>
+</ol>
+
+<h2 id="related">本站相关</h2>
+<ul>
+<li><a href="../shanshui/">Shanshui：十幅代码画出的水墨山水</a>：同样零素材、全代码出片，风格化而非数据化。</li>
+<li><a href="../skillry-opus-5-5-videos/">Opus 5.5 视频大赏：418 支代码视频</a>：代码视频的整体图谱，其中有不少“尺度跃迁”类作品。</li>
+<li><a href="../lemo-opuscar-evidence-films/">Lemo-Opuscar「实证影像」</a>：卫星、白模、档案等真实素材的解说风格，与本片路线最接近。</li>
+<li><a href="../h3-motion-context/">ComfyUI-H3-Motion-Context</a>：对照组，即扩散模型生成视频的长镜头路线。</li>
+<li><a href="../kerazcity-opus-motion-playbook/">kerazcity：Opus 5.5 动效手册</a>：渲染契约与评审循环。</li>
+</ul>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文镜像整理。原帖、视频与封面版权归 Eian（<a href="https://x.com/EianLu">@EianLu</a>）所有；作者正文与回复照录，他人回复仅作简短引用并署名。数据署名：CMAB（清华大学，CC BY 4.0）、© OpenStreetMap contributors、CTBUH、成都晚报。渲染时长、成本等为作者自述，未经验证。原文：<a href="https://x.com/EianLu/status/2111662397278847478">x.com/EianLu/status/2111662397278847478</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/EianLu/status/2111662397278847478" rel="noopener">x.com/EianLu/status/2111662397278847478</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

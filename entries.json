@@ -488,5 +488,15 @@
     "date": "2026-10-19",
     "type": "导读",
     "original_url": "https://x.com/qingj1314/status/2111669870958190608"
+  },
+  {
+    "slug": "eianlu-chengdu-rings",
+    "title": "《一座城的年轮》：Claude 写代码渲染，3,271 年成都压进 149 秒",
+    "desc": "Eian @EianLu 献给家乡的 149 秒成都史短片：3,573 帧、71,380 栋楼按 1:10000 白模缩小，画面全部由 Claude 写代码渲染，从金沙（前 1250）到三环（2022）。原帖与作者回复照录（几轮对话、渲染约 4 小时、豆包语音配音）、数据来源（CMAB 清华大学 / OpenStreetMap / CTBUH）、核实与评论区观点，以及“AI 编程讲故事”的启发。",
+    "source": "Eian @EianLu · X",
+    "date": "2026-10-21",
+    "type": "导读",
+    "subtitle": "The Rings of a City — Chengdu, from Jinsha to the Third Ring",
+    "original_url": "https://x.com/EianLu/status/2111662397278847478"
   }
 ]
