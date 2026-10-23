@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>用 Opus 5.5 做动效工程：做能卖钱的产品发布短片（beamnxw X 长文全文翻译 + 导读）</title>
+<meta name="description" content="beamnxw（@beamnxw）X 长文《Motion Engineering with Opus 5.5: Build Launch Videos You Can Sell》全文中文翻译：用 Claude Code + Remotion 把 20 秒产品发布短片拆成帧号驱动的工程流程——参考片分析与 REFERENCE.md、镜头事件时间线、BRIEF.md 简报模板、useCurrentFrame 可复现、三张静帧评审、四字段修改单、音效对齐、ffprobe 验收，以及 150 美元 Launch Clip 报价与找客户流程。附导读、要点、核实、评论区观点与启发。" />
+<meta property="og:image" content="img/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.embed-fig{margin:1.4em 0}
+.embed-fig img{max-width:min(100%,420px);border-radius:8px}
+.zhpair{margin:-.4em 0 1.4em}
+.zhpair summary{cursor:pointer;font-size:.9em;opacity:.8}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-23">2026.10.23</time></p>
+<h1 class="za-title">用 Opus 5.5 做动效工程：做能卖钱的产品发布短片</h1>
+<p class="za-sub" lang="en" data-za-gen>Motion Engineering with Opus 5.5: Build Launch Videos You Can Sell</p>
+<p class="za-meta" data-za-gen><span>来源 · beamnxw（@beamnxw）· X 长文</span><span>收录 · 2026-10-23</span><span><a href="https://x.com/beamnxw/status/2108616740846420354" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原文：beamnxw（<a href="https://x.com/beamnxw" rel="noopener">@beamnxw</a>）X 长文《Motion Engineering with Opus 5.5: Build Launch Videos You Can Sell》，2026-10-10 01:53（UTC+8）· <a href="https://x.com/beamnxw/status/2108616740846420354" rel="noopener">原帖</a></p>
+<img class="cover" src="img/cover.webp" alt="原文封面：Motion Engineering with Opus 5.5 封面"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>beamnxw 这篇 X 长文把“用 Claude Opus 5.5 + Remotion 做产品发布短片”拆成一套可复用的工程流程，并顺手把它包装成一门小生意：用参考片提炼决定、把镜头写成以帧号计的事件、把文案/素材/运动写进 <code>BRIEF.md</code>、让每一帧由 <code>useCurrentFrame()</code> 驱动可复现、用三张静帧和局部渲染评审、按“位置/问题/改动/不变项”四字段给智能体下修改单，最后以 150 美元试点价卖一支 20 秒 1080×1080 的 “Launch Clip”。</div>
+
+<h2 id="post">原帖（英文原文 + 译文）</h2>
+<blockquote>
+<p>Opus 5.5 can run a whole motion design studio</p>
+<p>Sell a 20-second launch clip built from real product screens</p>
+<p>Copy the motion engineering prompts and delivery process</p>
+<p>Build your offer before the next product launch ↓ <a href="https://x.com/i/article/2108585693232455681" rel="noopener">[X Article]</a></p>
+</blockquote>
+<blockquote>
+<p>Opus 5.5 能撑起一整间动效设计工作室。</p>
+<p>用真实的产品界面做一支 20 秒的发布短片，然后把它卖出去。</p>
+<p>动效工程提示词和交付流程，拿去直接用。</p>
+<p>在下一次产品发布之前，把你的报价准备好 ↓ [X 长文]</p>
+</blockquote>
+<p class="caption">beamnxw（<a href="https://x.com/beamnxw" rel="noopener">@beamnxw</a>，简介 “hyperfixation on AI | always dyor”），2026-10-10 01:53（UTC+8）。截至 2026-10-23 10:05（UTC+8）：472,449 次浏览、642 赞、1,605 收藏、70 转发、20 条回复、20 条引用。作者在帖下唯一的自我回复是 Substack 链接（“my substack :)”）。长文约 1.1 万字符、16 个代码块/提示词、15 张配图（8 张自绘信息图 + 7 张官方文档截图），并嵌入了 Claude 官方的 Opus 5.5 发布帖。</p>
+
+<h2 id="guide">导读</h2>
+<p>这不是介绍某个 GitHub 项目的帖子，而是作者本人的<strong>方法论 + 副业教程</strong>长文，所以本页以全文翻译为主体。它和本站已收录的几篇 Opus 5.5 动效文章不同之处在于：<strong>它不追求炫技画面，而是把一支 20 秒产品演示当作“可交付、可修改、可报价”的工程件。</strong>所有决定都落到帧号上——这是全文唯一的核心思想。</p>
+<p><strong>全文骨架：</strong></p>
+<ol>
+<li><strong>参考片只回答一个问题。</strong>按每秒 2 张抽帧，让 Claude Code 写 <code>REFERENCE.md</code>：入场/落位/停留/切换的帧号、包围盒、运动参数，并把“测量值、目测估计、创意提议”分开标注（因为模型的空间估计只是近似）。</li>
+<li><strong>镜头 = 事件。</strong>起始状态 → 光标到位 → 按下 → 揭示结果 → 停留到能读完文件名。示例时间线：第 195 帧按下、第 210 帧出文件、第 420 帧收尾（30 fps）。</li>
+<li><strong>简报写死五类决定。</strong>目标、交付与素材、布局（精确到像素和色值）、分场景帧区间、实现与评审关卡；先只做开场、交静帧、等批准。</li>
+<li><strong>可复现与有目的的运动。</strong>一切由 <code>useCurrentFrame()</code> + interpolate/spring 驱动，随机必须带种子；入场、停留、光标、转场各司其职；用朗读来校验阅读窗口（8 帧≈0.27 秒是不够的）。</li>
+<li><strong>评审与修改单。</strong>三张静帧（开场/结果/收尾）+ 边界区间局部渲染；修改单四字段，先修信息与可读性，再修时间，最后修细节；另开会话做独立评审，一次最多五条。</li>
+<li><strong>声音、工具、导出、长片。</strong>点击对齐按下帧、重音对齐揭示帧；<code>npx create-video</code> + <code>npx remotion skills add</code>；ffprobe 验收 1080×1080、30/1、约 20 秒；长片按场景边界状态拆分。</li>
+<li><strong>卖出去。</strong>一功能、一脚本、一支 20 秒视频、一张封面、一轮修改，150 美元试点价；先做样片、找有发布日期的开发者、反馈都用帧号、注意 Remotion 商业许可。</li>
+</ol>
+<p><strong>与本站已有页面的关系：</strong>同主题最接近的是 <a href="../kerazcity-opus-motion-playbook/">kerazcity《Opus 5.5 动效手册》</a>和 <a href="../flxrnc-opus-motion-lab/">Florence《Opus 5.5 动效实验室》</a>——它们讲“单 HTML + seek(t) 画帧”的通用工艺，本文则走 Remotion 框架路线，并且更聚焦“产品演示 + 交付流程”。现成的“产品宣传片” Skill 可对照 <a href="../huashu-motion/">huashu-motion</a>；动效术语可查 <a href="../slashui-motion-prompt/">Motion Prompt 动效名词库</a>；音效素材见 <a href="../voxyz-openverse-sfx/">Openverse 免费音效检索</a>；更多 Opus 5.5 成片与提示词见 <a href="../skillry-opus-5-5-videos/">Opus 5.5 视频大赏</a>、<a href="../prompt-motion/">Prompt Motion 画廊</a>和 <a href="../mg-styles-15/">15 种 MG 动态设计风格</a>。</p>
+
+<h2 id="keypoints">要点</h2>
+<div class="grid">
+<div class="card"><div class="card-body"><h3>一切决定落到帧号</h3><p class="syn">入场、揭示、阅读停留、光标动作各有帧号，才能单独修改。秒先写，再按帧率换算：0.6 秒 = 30 fps 下 18 帧；参考片的时间戳要标注它自己的帧率。</p></div></div>
+<div class="card"><div class="card-body"><h3>参考片是“决定”的来源，不是抄袭对象</h3><p class="syn">只为一件事选参考；输出 REFERENCE.md 并区分测量值/估计值/创意提议，再用自己的 logo、文案和界面做原创镜头。</p></div></div>
+<div class="card"><div class="card-body"><h3>BRIEF.md 是合同</h3><p class="syn">像素级布局、色值、帧区间、缓动类型、图层顺序、评审关卡都写进去；智能体先只交开场的 5 张静帧和预览，等批准再继续。</p></div></div>
+<div class="card"><div class="card-body"><h3>阅读窗口要“读出声”来验</h3><p class="syn">从文字可辨认那一刻起算；正常速度朗读，没读完就延长。最长版本的标题若折到三行，先停下改文案或版式。</p></div></div>
+<div class="card"><div class="card-body"><h3>修改单四字段 + 局部修复循环</h3><p class="syn">位置、观察到的问题、改动、保持不变的部分；缺陷 → 一处修改 → 受影响帧 → 相邻边界 → 正常速度回放。</p></div></div>
+<div class="card"><div class="card-body"><h3>小而明确的商品</h3><p class="syn">20 秒、1080×1080、一张封面、一轮修改、150 美元试点；脚本、素材、截止、付款、修改范围、使用权和作品集权利开工前谈定。</p></div></div>
+</div>
+
+<h2 id="verify">核实</h2>
+<p class="caption">核实时间 2026-10-23 10:06（UTC+8），仅做文档对照与算术校验，未在本站实际渲染。</p>
+<ul>
+<li><strong>项目创建命令属实：</strong>Remotion 官方 “Coding agents” 文档给出的正是 <code>npx create-video --yes --blank my-video</code> → <code>cd</code> → <code>npx remotion skills add</code> → <code>npm run dev</code>，再在另一个终端启动 <code>claude</code>，与原文一致（原文只是把目录名换成 <code>launch-video</code>）。</li>
+<li><strong>帧号算术自洽：</strong>30 fps 下 6.5 秒 = 第 195 帧、7.0 秒 = 210、7.8 秒 = 234、14.0 秒 = 420；600 帧 = 20 秒；<code>--frames=90-149</code> 共 60 帧 = 2 秒，跨过开场（0–119）与产品场景（120 起）的边界；局部第 30 帧 + 序列起点 120 = 全局 150。</li>
+<li><strong>需要读者自行确认的：</strong>“150 美元”作者明确说只是示意性试点价；Remotion 对公司/团队有商业许可要求，原文也提示“查看你所用版本的条款”。</li>
+</ul>
+
+<h2 id="comments">评论区观点</h2>
+<ul>
+<li><strong>交付流程比提示词更关键</strong>（@SG30520）：“被低估的是交付流程而不是提示词。先锁定客户真实的录屏和品牌色再生成，否则修改轮次会全耗在修模型臆造的 UI 上。”</li>
+<li><strong>阅读停留最被低估</strong>（@oleh_bernatskyi）：大多数发布短片标题闪得太快，没人读得完。</li>
+<li><strong>商务条款决定成败</strong>（@Slonski_rt）：脚本、截止日期、付款和修改范围比动画本身更能决定结果。</li>
+<li><strong>把“做个酷炫发布视频”变成智能体能执行的分镜表</strong>（@0xg4tsby），以及“一个工作流就是一整间工作室”（@shirosignal）、“Opus 要求创意总监头衔了”（@shikamarutsai）这类调侃。</li>
+<li><strong>质疑与追问：</strong>@0xbobaaa 问“你到底卖出去几支了？”（作者未回复）；@wyndomb 问想搭一套做动效视频的系统该怎么做。其余多为“好文/已收藏”。</li>
+</ul>
+
+<h2 id="takeaways">启发</h2>
+<ul>
+<li><strong>“帧号即接口”：</strong>人与智能体之间、你与客户之间的所有沟通都用帧号定位，这让修改可执行、可计费、可验收——这是从“玩具”走到“交付”的关键一步。</li>
+<li><strong>分阶段关卡防失控：</strong>先开场静帧 → 批准 → 其余场景，与 kerazcity 的“让模型看自己的帧”评审循环同源，但更偏项目管理。</li>
+<li><strong>评论提醒的风险：</strong>一定用客户真实界面素材，避免模型臆造 UI；样片要用自己的产品或已获授权的产品。</li>
+</ul>
+
+<h2 id="translation">全文翻译：用 Opus 5.5 做动效工程——做能卖钱的发布视频</h2>
+<figure><img src="img/cover.webp" alt="长文封面：Motion Engineering with Opus 5.5 — Build Launch Videos You Can Sell（参考分析 → 镜头简报 → 时间线 → 渲染 → 评审）" loading="lazy"><figcaption>长文封面：Motion Engineering with Opus 5.5 — Build Launch Videos You Can Sell（参考分析 → 镜头简报 → 时间线 → 渲染 → 评审）（原文配图）</figcaption></figure>
+
+<p>告诉 Opus：卡片什么时候落定，产品什么时候响应，标题要停留多久才读得完。</p>
+<p>给揭示、入场、阅读停留和光标动作分别分配帧号，这样每一项都能单独修改。</p>
+<p>如果是一支围绕单个产品操作的短片，就把文案、素材和运动决定都写进一份简报（brief）里。</p>
+
+<h3 id="s-reference">给参考片一个任务</h3>
+<figure><img src="img/reference.webp" alt="“给参考片一个任务”配图：卡片入场与受控落位、保持产品在画面中、让结果一目了然的光标动作；按每秒 2 张抽帧，写入 REFERENCE.md" loading="lazy"><figcaption>“给参考片一个任务”配图：卡片入场与受控落位、保持产品在画面中、让结果一目了然的光标动作；按每秒 2 张抽帧，写入 REFERENCE.md（原文配图）</figcaption></figure>
+<p>选一段参考片，只为弄懂其中一件事：</p>
+<ul>
+<li>一次有受控落位的卡片入场；</li>
+<li>一次让产品始终留在画面里的转场；</li>
+<li>一个让结果一目了然的光标动作。</li>
+</ul>
+<p>追踪主体从第一次出现到落位的全过程，记下这段运动揭示了什么。</p>
+<p>标出文字从什么时候开始可读，以及下一个事件什么时候把注意力拉走。</p>
+<p>你在收集的是能用到自己场景里的决定：</p>
+<ul>
+<li>这个镜头如何引出产品；</li>
+<li>什么先动；</li>
+<li>视线应该落在哪里；</li>
+<li>结果获得多少时间。</li>
+</ul>
+<p>用你自己的 logo、文案和产品界面去套用这段卡片入场。</p>
+<p>先按每秒两张抽帧做总览，再在重要事件前后检查连续的源帧和时间戳。</p>
+<p>把参考片命名为 <code>reference.mp4</code> 放好，然后把下面这段粘贴进 Claude Code：</p>
+<pre><code>Analyze the main product reveal in reference.mp4.
+First report its dimensions, frame rate, and duration using available tools.
+Extract overview images, then consecutive frames around the entrance and landing.
+Inspect the extracted images with image tools.
+
+Save REFERENCE.md with:
+Source timestamps and frame numbers for entrance, landing, hold, and cut.
+Object bounding boxes at start and landing, in source-image coordinates.
+Movement direction, duration, scale change, opacity change, and visible overshoot.
+The order in which product, headline, and supporting labels appear.
+The readable hold and the state carried into the next shot.
+
+Label measured values, visual estimates, and proposed creative choices separately.
+For an uncertain value, identify the frames needed to check it.
+
+Use our assets to propose one original export-demonstration shot.
+Specify its layout, focal point, entrance, product response, and reading hold.
+List missing assets and questions requiring approval.
+Return this shot plan before implementation.</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>分析 reference.mp4 中主要的产品揭示镜头。
+先用可用工具报告它的尺寸、帧率和时长。
+提取总览图，然后提取入场和落位前后的连续帧。
+用图像工具检查提取出的图片。
+
+保存 REFERENCE.md，内容包括：
+入场、落位、停留和切换的源时间戳与帧号。
+物体在起始和落位时的包围盒（源图像坐标）。
+运动方向、时长、缩放变化、不透明度变化和可见的过冲。
+产品、标题和辅助标签出现的顺序。
+可读停留时长，以及带入下一个镜头的状态。
+
+把测量值、目测估计和建议的创意选择分开标注。
+对不确定的数值，指出需要检查哪些帧。
+
+用我们的素材提出一个原创的“导出演示”镜头方案。
+写明它的布局、焦点、入场、产品响应和阅读停留。
+列出缺失的素材和需要审批的问题。
+在实现之前先返回这份镜头方案。</code></pre></details>
+<p>关键位置要对照提取出的图片核实，因为 Claude 的空间估计只是近似值。（<a href="https://platform.claude.com/docs/en/build-with-claude/vision#limitations" rel="noopener">Claude 视觉能力说明</a>）</p>
+<p>选一款可用的字体，参照参考片的字号比例，按你自己的文字调整。</p>
+
+<h3 id="s-event">把镜头写成一个事件</h3>
+<p>一个产品镜头应该有一件观众能跟得上的事：</p>
+<ol>
+<li>展示起始状态；</li>
+<li>把光标放到操作上；</li>
+<li>让按下生效；</li>
+<li>揭示结果。</li>
+</ol>
+<p>比如一段导出演示：从一份填好的报告开始，按下按钮，然后展示成品文件。</p>
+<p>让成品文件在屏幕上停留足够久，久到能读完文件名，再切下一个镜头。</p>
+<p>示例里的产品场景使用这条时间线：</p>
+<pre><code>4.0s    frame120    Report visible, card settled
+5.0s    frame150    Cursor approaches Export
+6.0s    frame180    Cursor reaches the button
+6.5s    frame195    Press registers
+7.0s    frame210    Finished file appears
+7.8s    frame234    Result label fully readable
+14.0s   frame420    Closing shot begins</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>4.0 秒    第 120 帧    报告可见，卡片已落定
+5.0 秒    第 150 帧    光标接近 Export（导出）按钮
+6.0 秒    第 180 帧    光标到达按钮
+6.5 秒    第 195 帧    按下生效
+7.0 秒    第 210 帧    成品文件出现
+7.8 秒    第 234 帧    结果标签完全可读
+14.0 秒   第 420 帧    收尾镜头开始</code></pre></details>
+<p>第一版预览先用这些数值，然后调整任何感觉仓促或空洞的区间。</p>
+<p>在每秒 30 帧下，6.5 秒处的按下落在第 195 帧；收尾镜头从第 420 帧开始。</p>
+<p>参考片的时间戳要标注它自己的源帧率。</p>
+<p>在每秒 30 帧下，半秒的运动占 15 帧；在每秒 60 帧的参考片里，它占 30 帧。</p>
+
+<h3 id="s-brief">五项决定属于简报</h3>
+<figure><img src="img/brief.webp" alt="BRIEF.md 配图：目标、交付与素材、布局、分场景时间线、实现与评审" loading="lazy"><figcaption>BRIEF.md 配图：目标、交付与素材、布局、分场景时间线、实现与评审（原文配图）</figcaption></figure>
+<p>把这个示例保存为 <code>BRIEF.md</code>，把方括号里的字段替换成真实的素材和文案。</p>
+<pre><code>GOAL
+Demonstrate how [product] exports a finished report.
+Viewer: [who uses this feature].
+Opening copy: [outcome, maximum eight words].
+Closing copy: [one next action and destination].
+
+DELIVERY AND ASSETS
+Composition: Launch, 1080 by 1080, 30 fps, 600 frames.
+All timeline numbers below are global, inclusive frame numbers.
+Assets under public/: [logo], [report screen], [exported-file screen], [font], [audio].
+Inspect asset dimensions and font loading before implementation.
+Request missing screens or illegible crops before proceeding.
+
+LAYOUT
+Coordinates use the canvas top-left as origin; units are pixels.
+Background #101318, primary text #F5F7FA, accent #8AD8B0.
+Keep essential content inside a 64-pixel outer margin.
+Headline box: x96, y112, width888; 64-pixel font, 1.1 line height, maximum two lines.
+Product card: x120, y350, width840, height480, corner radius24.
+Fit the supplied screen while keeping the export control readable.
+Record button and result anchors from the fitted screen.
+Layer order: background, card, product content, cursor, headline.
+
+OPENING: FRAMES 0 THROUGH 119
+Headline enters during 0 through 18: vertical offset24 to0, opacity0 to1.
+Card enters during 18 through 42: vertical offset60 to0, opacity0 to1.
+Use cubic ease-out with clamped endpoints for both entrances.
+Hold the settled layout during 42 through 119.
+
+PRODUCT: FRAMES 120 THROUGH 419
+Carry the card into frame120 at its exact settled position and scale.
+Move the cursor to the measured button anchor during 150 through 180.
+Choose a path clear of text and record its waypoints.
+Press at195; animate the cursor scale1 at192, to0.92 at195, back to1 at201.
+Show the button response at195 using supplied assets or an approved accent overlay.
+Move the cursor toward a clear resting point during 204 through 222.
+Show the supplied exported-file state at210; finish its reveal by234.
+Keep the result readable and stationary through419.
+
+CLOSING: FRAMES 420 THROUGH 599
+Cut to the supplied logo and closing copy at420.
+Fade the closing copy in during 420 through 438; hold through599.
+
+IMPLEMENTATION AND REVIEW
+Drive animated values from useCurrentFrame; expose timing and layout constants.
+Use fixed seeds for any variation; keep the camera stationary for this pass.
+If audio is supplied, align its audible click with195 and reveal hit with210.
+First build the opening and render frames0,18,42,60,119 plus its moving preview.
+Check text wrapping, margins, screen readability, and settled positions.
+Report changed files, outputs, and unresolved issues; wait for feedback.
+After approval, build the remaining scenes and inspect frames120,195,234,419,420,540,599.</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>目标
+演示 [产品] 如何导出一份完成的报告。
+观众：[使用这个功能的人]。
+开场文案：[结果，最多八个词]。
+收尾文案：[一个下一步行动及其去处]。
+
+交付与素材
+合成（Composition）：Launch，1080×1080，30 fps，600 帧。
+下文所有时间线数字均为全局帧号，首尾均包含。
+public/ 下的素材：[logo]、[报告界面]、[已导出文件界面]、[字体]、[音频]。
+实现前先检查素材尺寸和字体加载。
+缺少界面或裁切难以辨认时，先索取再继续。
+
+布局
+坐标以画布左上角为原点，单位为像素。
+背景 #101318，主文字 #F5F7FA，强调色 #8AD8B0。
+重要内容保持在 64 像素外边距以内。
+标题框：x96，y112，宽 888；64 像素字号，1.1 倍行高，最多两行。
+产品卡片：x120，y350，宽 840，高 480，圆角 24。
+适配所给界面，同时保证导出控件清晰可读。
+在适配后的界面上记录按钮和结果的锚点。
+图层顺序：背景、卡片、产品内容、光标、标题。
+
+开场：第 0–119 帧
+标题在 0–18 帧入场：垂直偏移 24→0，不透明度 0→1。
+卡片在 18–42 帧入场：垂直偏移 60→0，不透明度 0→1。
+两段入场都用端点钳制的三次缓出（cubic ease-out）。
+42–119 帧保持落定后的布局。
+
+产品：第 120–419 帧
+卡片以完全相同的落定位置和缩放带入第 120 帧。
+150–180 帧把光标移到测得的按钮锚点。
+选一条避开文字的路径并记录其途经点。
+195 帧按下；光标缩放 192 帧为 1，195 帧为 0.92，201 帧回到 1。
+195 帧用所给素材或经批准的强调色叠层显示按钮响应。
+204–222 帧把光标移向一个空旷的停靠点。
+210 帧显示所给的已导出文件状态；234 帧前完成揭示。
+直到 419 帧，结果保持可读且静止。
+
+收尾：第 420–599 帧
+420 帧切到所给 logo 和收尾文案。
+420–438 帧淡入收尾文案；保持到 599 帧。
+
+实现与评审
+所有动画值都由 useCurrentFrame 驱动；把时间和布局常量暴露出来。
+任何变化都用固定种子；本轮镜头保持静止。
+如提供音频，让可听见的点击对齐 195 帧，揭示的重音对齐 210 帧。
+先只做开场，渲染第 0、18、42、60、119 帧以及它的动态预览。
+检查文字换行、边距、界面可读性和落定位置。
+报告改动的文件、输出和未解决的问题；等待反馈。
+获批后再做其余场景，并检查第 120、195、234、419、420、540、599 帧。</code></pre></details>
+<p>坐标、颜色和时间只是这次练习的起点，请对照你自己的产品界面审视它们。</p>
+<p>开场用一句短文案，让产品演示去承担解释。</p>
+<p>需要好几句话才能讲清的说明，移到单独的场景里。</p>
+
+<h3 id="s-copy">用最长版本的文案做检查</h3>
+<p>检查开场布局时，用你预计会复用的最长标题。</p>
+<p>如果它折成了三行，就暂停动效这一轮：缩短文案、加宽文本框，或者把辅助信息挪到另一个镜头。</p>
+<p>把布局限制和样式记录在一起：</p>
+<ul>
+<li>标题可用宽度；</li>
+<li>最大行数；</li>
+<li>为 logo 预留的空间；</li>
+<li>文字和产品卡片的最终位置。</li>
+</ul>
+<p>只在确实能改善预期阅读效果的地方保留手动换行。</p>
+<p>在渲染出的图像里检查实际字体，包括字重和字距。</p>
+<p>改了标题 ⇒ 先重新渲染它的落位帧，再在回放里审视入场。</p>
+<p>收尾的行动号召也做同样的检查，尤其是把短产品名换成长产品名的时候。</p>
+
+<h3 id="s-repro">让每一帧都可复现</h3>
+<p>Remotion 用 React 组件加上当前帧号，渲染出你选中的那一刻。（<a href="https://www.remotion.dev/docs/the-fundamentals" rel="noopener">Remotion 基础</a>）</p>
+<pre><code>FRAME NUMBER
+    → element position
+    → scale and opacity
+    → visible product state
+    → text and cursor state</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>帧号
+    → 元素位置
+    → 缩放与不透明度
+    → 可见的产品状态
+    → 文字与光标状态</code></pre></details>
+<p>用 <code>useCurrentFrame()</code> 驱动运动，变化的数值用插值（interpolate）或弹簧（spring）计算。</p>
+<p>用当前帧号驱动动画，避免独立的层叠样式表（CSS）过渡带来的闪烁。（<a href="https://www.remotion.dev/docs/animating-properties" rel="noopener">动画指南</a>）</p>
+<p>任何随机变化都从固定种子派生，这样选中的那一帧始终一致。（<a href="https://www.remotion.dev/docs/random" rel="noopener">带种子的随机</a>）</p>
+<p>场景时间先用秒写，再按所选帧率换算成帧。</p>
+<p>0.6 秒的入场在每秒 30 帧下占 18 帧。</p>
+<p>把入场偏移、目的地、时长和落位参数存在一起，这样一次修改只动一组数值。</p>
+
+<h3 id="s-purpose">运动需要在镜头里有目的</h3>
+<figure><img src="img/motion-purpose.webp" alt="“运动需要在镜头里有目的”配图：入场、停留、光标移动、转场；错开、弹簧调参、细微推镜与阅读停留" loading="lazy"><figcaption>“运动需要在镜头里有目的”配图：入场、停留、光标移动、转场；错开、弹簧调参、细微推镜与阅读停留（原文配图）</figcaption></figure>
+<ul>
+<li><strong>入场：</strong>引出主体。</li>
+<li><strong>停留：</strong>留出阅读和理解的时间。</li>
+<li><strong>光标移动：</strong>指出下一个操作。</li>
+<li><strong>转场：</strong>把观众带进下一个状态。</li>
+</ul>
+<p>用 <code>spring()</code> 的时长、阻尼（damping）、刚度（stiffness）和过冲控制来调卡片的逼近与落位。（<a href="https://www.remotion.dev/docs/spring" rel="noopener">弹簧设置</a>）</p>
+<p>保持目的地不变，每次只改一个参数，然后重放入场。</p>
+<p>先让主体出场，稍作延迟再带入辅助信息。</p>
+<p>标题和它的辅助标签之间先试 0.1 秒的错开，再在回放里调顺序。</p>
+<p>如果想要细微的推镜，就写明三秒内缩放从 1.00 变到 1.03。</p>
+<p>按固定百分比逐帧变化会层层复利累积。</p>
+<p>阅读停留期间，辅助运动要足够安静，让文字始终是焦点。</p>
+
+<h3 id="s-own">决定谁占据屏幕</h3>
+<p>在按钮的响应出现之前，把注意力留在按钮上；之后让结果占据阅读窗口。</p>
+<p>如果光标在卡片入场时穿过标题，就推迟其中一个事件，或者改光标路径。</p>
+<p>阅读窗口从文字可辨认的那一刻开始计算。</p>
+<p>在每秒 30 帧下停留 8 帧，观众只有大约 0.27 秒。</p>
+<p>以正常速度播放并朗读出来；朗读还没完停留就结束的，延长它。</p>
+<p>按手机尺寸检查界面标签。</p>
+<p>对于快速的卡片运动，想清楚模糊在这一次入场里具体起什么作用。</p>
+<p>检查 Remotion 运动模糊工具混合出的采样动画状态，看有没有糊掉的文字和残留拖影。（<a href="https://www.remotion.dev/docs/motion-blur" rel="noopener">运动模糊</a>）</p>
+<p>给智能体一个有边界的请求：只在卡片入场时施加模糊，让模糊随运动一起收住，阅读停留保持清晰。</p>
+<p>渲染入场段和紧邻的切换，检查场景边界是否干净、卡片落定后文字是否可读。</p>
+
+<h3 id="s-stills">三张图就能指导下一轮</h3>
+<p>渲染一张开场帧、一张展示产品结果的帧和收尾卡片。</p>
+<p>在给运动加细节之前，先审视信息和构图：</p>
+<ul>
+<li>主文字可读吗？</li>
+<li>产品结果看得见吗？</li>
+<li>有元素被裁切或互相重叠吗？</li>
+<li>收尾的行动号召空间够吗？</li>
+</ul>
+<p>对示例中的 <code>Launch</code> 合成，使用：</p>
+<pre><code>npx remotion still Launch out/opening.png --frame=60
+npx remotion still Launch out/product.png --frame=240
+npx remotion still Launch out/closing.png --frame=540</code></pre>
+<p>用 <code>--frame</code> 选产品结果帧；如果在你的时间线里结果落在别处，就把第 240 帧改掉。（<a href="https://www.remotion.dev/docs/cli/still" rel="noopener">静帧渲染</a>）</p>
+<p>标题碰到卡片的地方加大间距；被其他元素挡住的结果要重新摆位。</p>
+<p>渲染场景边界附近的区间，观察注意力如何跨过边界转移。</p>
+<pre><code>npx remotion render Launch out/transition.mp4 --frames=90-149 --codec=h264</code></pre>
+<p>在每秒 30 帧下，这两秒的区间横跨开场的结尾和产品场景的开头。（<a href="https://www.remotion.dev/docs/cli/render#--frames" rel="noopener">局部渲染</a>）</p>
+
+<h3 id="s-edit">给智能体一个能执行的修改</h3>
+<figure><img src="img/agent-edit.webp" alt="“给智能体一个能执行的修改”配图：位置、观察到的问题、修改、保持不变的部分；修改前后与关键帧对照" loading="lazy"><figcaption>“给智能体一个能执行的修改”配图：位置、观察到的问题、修改、保持不变的部分；修改前后与关键帧对照（原文配图）</figcaption></figure>
+<p>一条修正写四个字段：位置、观察到的问题、改动，以及哪些应保持不变。</p>
+<pre><code>Revise the Launch composition using BRIEF.md.
+Observed defect: the cursor overlaps the result label at global frame210.
+
+Change only the cursor&#x27;s post-press path:
+Start the departure at204 and reach its resting point by210.
+Choose the resting point inside the card, with 24 pixels of clearance from the result label.
+Use a path that stays clear of the label throughout the move.
+Preserve the press at195, reveal at210, card geometry, copy, and audio cues.
+Hold the cursor at its destination through419.
+
+Render stills at195,210,222,240 and a preview of180 through249.
+Check intermediate frames for overlap and jumps.
+Report the changed path coordinates and output filenames for review.</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>按 BRIEF.md 修改 Launch 合成。
+观察到的缺陷：在全局第 210 帧，光标压住了结果标签。
+
+只改光标按下之后的路径：
+204 帧开始离开，210 帧前到达停靠点。
+停靠点选在卡片内部，与结果标签保持 24 像素间距。
+整个移动过程中路径都要避开标签。
+保持 195 帧的按下、210 帧的揭示、卡片几何、文案和音频提示不变。
+光标停在目的地直到 419 帧。
+
+渲染第 195、210、222、240 帧静帧，以及 180–249 帧的预览。
+检查中间帧有没有重叠和跳变。
+报告改动后的路径坐标和输出文件名，供评审。</code></pre></details>
+<p>先修缺失的信息和不可读的文字，再修时间，最后修视觉细节。</p>
+<p>想要独立的批评，就另开一个会话，带上简报、图片和提取的帧。</p>
+<p>每次最多审五条针对具体帧的修正，把采纳的修改发给负责构建的会话。</p>
+<p>一个有效的修复循环保持局部：</p>
+<pre><code>Observed defect
+    → one scoped edit
+    → affected frames
+    → surrounding scene boundary
+    → normal-speed playback</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>观察到的缺陷
+    → 一处限定范围的修改
+    → 受影响的帧
+    → 相邻的场景边界
+    → 正常速度回放</code></pre></details>
+<p>场景内的局部帧要明确标注：在从全局第 120 帧开始的序列里，局部第 30 帧对应全局第 150 帧。（<a href="https://www.remotion.dev/docs/sequence" rel="noopener">Sequence 帧偏移</a>）</p>
+
+<h3 id="s-sound">声音也有事件帧</h3>
+<p>把点击声放在可见的按下上，把揭示音效最强的重音放在视觉揭示上。</p>
+<p>柔和的前奏或开头的静音会让可听见的重音偏离文件起点。</p>
+<p>用波形和回放找到那个重音，再相应地偏移音频片段。</p>
+<p>把提示音写在视觉事件旁边：</p>
+<pre><code>BUTTON PRESS    frame 195    click transient
+RESULT REVEAL   frame 210    reveal accent
+CLOSING HOLD    frame 438    music settles</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>按钮按下    第 195 帧    点击瞬态
+结果揭示    第 210 帧    揭示重音
+收尾停留    第 438 帧    音乐收住</code></pre></details>
+<p>提示表用你实际的事件帧。</p>
+<p>音效和音乐放在不同的轨道上，位置和音量都可单独调整。（<a href="https://www.remotion.dev/docs/html5-audio" rel="noopener">Remotion 音频</a>）</p>
+<p>用耳机和手机扬声器分别检查最响的事件、最轻的有用提示音和结尾。</p>
+
+<h3 id="s-tools">把工具准备好</h3>
+<figure><img src="img/tools.webp" alt="“把工具准备好”配图：安装 Node.js / Claude Code / FFmpeg / Remotion，建项目、启动 Claude Code、放素材、抽参考帧、运行实现提示词、审查输出" loading="lazy"><figcaption>“把工具准备好”配图：安装 Node.js / Claude Code / FFmpeg / Remotion，建项目、启动 Claude Code、放素材、抽参考帧、运行实现提示词、审查输出（原文配图）</figcaption></figure>
+<p>创建 Remotion 项目之前，先安装 Node.js、Claude Code、FFmpeg 和 FFprobe。</p>
+<p>创建项目并启动预览：</p>
+<pre><code>npx create-video --yes --blank launch-video
+cd launch-video
+npx remotion skills add
+npm run dev</code></pre>
+<p>在技能安装器里选择 Claude Code，然后在 <code>launch-video</code> 目录里另开一个终端启动模型：</p>
+<pre><code>claude --model claude-opus-5-5</code></pre>
+<figure class="embed-fig"><img src="img/post-claude.webp" alt="Claude 帖子视频封面帧" loading="lazy"><figcaption><strong>原文嵌入帖子 · Claude（@claudeai）</strong>，2026-09-23 00:31（UTC+8），约 2,853 万次浏览。Opus 5.5 发布公告：“Claude 5.5 家族的第一个模型……大多数任务上达到 Claude Fable 5.1 的水平，运行成本比 Opus 5 低 40%。” <a href="https://x.com/claudeai/status/2102435511222890900" rel="noopener">查看原帖</a>（视频未转载，图为封面帧）</figcaption></figure>
+<p>技能安装器会为所选的编码智能体配置实现指南。（<a href="https://www.remotion.dev/docs/ai/coding-agents" rel="noopener">Remotion 配置</a> + <a href="https://code.claude.com/docs/en/model-config" rel="noopener">Claude 模型选择</a>）</p>
+<p>产品素材放在 <code>public/</code> 下，参考片放在 <code>reference.mp4</code>，简报放在 <code>BRIEF.md</code>。</p>
+<p>建一个 <code>frames/</code> 放参考图片，一个 <code>out/</code> 放导出的预览。</p>
+<p>提取参考片总览：</p>
+<pre><code>ffmpeg -i reference.mp4 -vf &quot;fps=2,scale=960:-2&quot; frames/ref-%04d.jpg</code></pre>
+<p>这会以每秒两张、宽 960 像素、保持宽高比的方式采样。（<a href="https://ffmpeg.org/ffmpeg-filters.html" rel="noopener">FFmpeg 滤镜</a>）</p>
+<p>保存简报后，把这段粘贴进 Claude Code：</p>
+<pre><code>Read BRIEF.md and the installed Remotion guidance.
+Inspect public/ and confirm that the required assets are available.
+Summarize the opening&#x27;s layout, event frames, and animation curves.
+Flag any conflicting requirements or missing inputs before implementation.
+Implement only the first review stage specified in BRIEF.md.
+Return the stills, moving preview, changed files, and checks performed.
+Wait for approval before continuing.</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>阅读 BRIEF.md 和已安装的 Remotion 指南。
+检查 public/，确认所需素材齐全。
+总结开场的布局、事件帧和动画曲线。
+在实现之前标出任何互相冲突的要求或缺失的输入。
+只实现 BRIEF.md 中规定的第一个评审阶段。
+返回静帧、动态预览、改动的文件和已做的检查。
+等待批准后再继续。</code></pre></details>
+<p>先审视开场静帧，再要求做其余场景；每个新场景都用前面的命令审查。</p>
+
+<h3 id="s-export">导出你真正批准的那一版</h3>
+<p>画面和声音两轮都通过后，渲染整个合成：</p>
+<pre><code>npx remotion render Launch out/launch.mp4 --codec=h264</code></pre>
+<p>以正常速度观看导出的文件，跟着第一条信息、产品操作和结尾看一遍。</p>
+<p>然后检查元数据：</p>
+<pre><code>ffprobe -v error -select_streams v:0 -show_entries stream=width,height,avg_frame_rate,duration -of json out/launch.mp4</code></pre>
+<p>对示例简报，预期是 1080×1080 像素、帧率 <code>30/1</code>、约 20 秒的视频。（<a href="https://ffmpeg.org/ffprobe.html" rel="noopener">FFprobe 元数据</a>）</p>
+<p>把批准的渲染与它的简报、场景时间和音频提示表放在一起保存。</p>
+
+<h3 id="s-longer">更长的片子需要场景边界</h3>
+<p>给每个场景一个进入状态和一个离开状态。</p>
+<p>想要连续转场，就把卡片的结束位置、缩放和高亮字段作为下一个场景的起始状态。</p>
+<p>字体、配色、间距和反复出现的元素放在共享设置里，任何刻意的场景例外都要明确记录。</p>
+<p>每次只做一个场景或一小组相关场景，给每个任务配上素材、目的和边界状态。</p>
+<p>转场让场景重叠时，要在总时长里把重叠算进去。（<a href="https://www.remotion.dev/docs/transitions" rel="noopener">Remotion 转场</a>）</p>
+<p>做完局部修改后，先检查两侧相邻的边界，再看整片。</p>
+<p>把采纳过的入场、光标和文字组件留给下一次发布；素材或文案变了，就重新审视它们的时间。</p>
+
+<h3 id="s-product">你的第一个产品：Launch Clip</h3>
+<figure><img src="img/launch-clip.webp" alt="“你的第一个产品：Launch Clip”配图：20 秒、1080×1080、一张封面、一轮修改；介绍 → 展示功能 → 揭示结果 → 收尾" loading="lazy"><figcaption>“你的第一个产品：Launch Clip”配图：20 秒、1080×1080、一张封面、一轮修改；介绍 → 展示功能 → 揭示结果 → 收尾（原文配图）</figcaption></figure>
+<p>把这个 20 秒的练习包装成一支发布短片，卖给正在发布某个功能的开发者。</p>
+<p>以导出为例：展示一份真实的报告，把导出操作做成动画，并让成品文件停留在屏幕上。</p>
+<p>买家拿到的视频可以附在他们的发布帖里，或者放到产品页上。</p>
+<p>第一个套餐保持小规模：</p>
+<ul>
+<li>一个功能，一份批准的脚本。</li>
+<li>一支 1080×1080 像素的 20 秒视频。</li>
+<li>一张取自已批准画面的封面图。</li>
+<li>一轮修改，涵盖时间、文案和声音。</li>
+</ul>
+<p>150 美元只是一个示意性的试点价格，请根据你的工作量和买家反馈去检验。</p>
+<p>下面是一份可以改用的报价草稿：</p>
+<pre><code>Launch Clip | $150 pilot
+
+Send your product screens, logo, and the feature you are launching.
+I will turn one product action into a 20-second launch video.
+
+Includes:
+A short script for approval.
+A square MP4 and one cover image.
+One revision round within the approved script and visual direction.
+
+We agree on the delivery date after reviewing your assets.
+Extra formats, additional scenes, and project source files are quoted separately.</code></pre>
+<details class="zhpair"><summary>中文译文</summary><pre><code>Launch Clip（发布短片）| 150 美元试点价
+
+把你的产品界面、logo 和要发布的功能发给我。
+我会把一个产品操作做成一支 20 秒的发布视频。
+
+包含：
+一份供你审批的简短脚本。
+一个方形 MP4 和一张封面图。
+在已批准的脚本和视觉方向内修改一轮。
+
+看过你的素材后，我们再约定交付日期。
+额外格式、新增场景和工程源文件另行报价。</code></pre></details>
+
+<h3 id="s-sample">先做样片，再报价</h3>
+<p>用你自己的素材，或者用产品方同意演示的产品，做一个完整的示例。</p>
+<p>把导出的成片和它的开场、操作、收尾三张静帧放在一起，让买家能检查成品。</p>
+<p>给整个工作计时，包括素材准备、反馈、渲染和交付。</p>
+
+<h3 id="s-buyer">找一个即将发布的买家</h3>
+<figure><img src="img/find-buyer.webp" alt="“找一个即将发布的买家”配图：找开发者 → 确定一个操作 → 发具体提案 → 谈定细节 → 制作中分阶段确认 → 用帧号收集反馈 → 交付" loading="lazy"><figcaption>“找一个即将发布的买家”配图：找开发者 → 确定一个操作 → 发具体提案 → 谈定细节 → 制作中分阶段确认 → 用帧号收集反馈 → 交付（原文配图）</figcaption></figure>
+<p>挑一位有可用功能、也有发布日期的开发者。</p>
+<p>找出他们的受众应该理解的那一个操作，然后起草一份具体的提案：“你的导出功能就可以撑起整支 20 秒短片。”</p>
+<p>把样片和套餐细节分享给合适的潜在客户，然后问他们想展示哪个功能。</p>
+<p>开工之前，谈定脚本、素材、截止日期、付款条件和修改范围。</p>
+<p>记录客户可以在哪里使用成片，以及你能否把它放进作品集。</p>
+<p>制作过程中，先发三张静帧确认方向，然后发动态预览，最后发成片。</p>
+<p>让反馈都对应到帧号，这样包含的那一轮修改就有一份清晰的修改清单。</p>
+<p>Remotion 允许其许可证覆盖的用户进行商业视频创作；请查看你所用版本的条款。（<a href="https://github.com/remotion-dev/remotion/blob/main/LICENSE.md" rel="noopener">Remotion 许可证</a>）</p>
+
+<p>收藏这篇，免得找不到。<br>关注 <a href="https://x.com/beamnxw" rel="noopener">@beamnxw</a> 获取更多 alpha :)<br>⇒ <a href="https://substack.com/@beamnxw" rel="noopener">我的 Substack</a><br>⇒ <a href="https://t.me/beamnxw11" rel="noopener">我的 Telegram 频道</a></p>
+<p class="caption">译注：原文另有 7 张 Remotion / FFmpeg / Claude 官方文档页面截图（Html5Audio、FFmpeg Filters、The fundamentals、Animating properties、Claude Vision、Motion blur、npx remotion still），本页改为在对应段落直接链接官方文档，未转载截图。代码块与提示词保留英文原文，提示词另附中文译文。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>原文为 beamnxw（<a href="https://x.com/beamnxw" rel="noopener">@beamnxw</a>）发布的 X 长文《Motion Engineering with Opus 5.5: Build Launch Videos You Can Sell》，2026-10-10（UTC+8），原帖：<a href="https://x.com/beamnxw/status/2108616740846420354" rel="noopener">x.com/beamnxw/status/2108616740846420354</a>。本页为非官方中文全文翻译与导读，版权归原作者；8 张信息图来自原帖。原文中的官方文档截图未转载，改为链接；嵌入帖版权归 @claudeai，本页仅附摘要、封面帧与原帖链接；评论区观点为短引用并注明作者。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/beamnxw/status/2108616740846420354" rel="noopener">x.com/beamnxw/status/2108616740846420354</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

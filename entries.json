@@ -1,5 +1,15 @@
 [
   {
+    "slug": "beamnxw-opus-launch-clip",
+    "title": "用 Opus 5.5 做动效工程：做能卖钱的产品发布短片",
+    "desc": "beamnxw X 长文全文翻译：用 Claude Code + Remotion 把 20 秒产品发布短片做成帧号驱动的工程——参考片分析（REFERENCE.md）、镜头即事件的时间线、BRIEF.md 简报模板、useCurrentFrame 可复现、三张静帧与局部渲染评审、四字段修改单、音效对齐事件帧、ffprobe 验收，以及 150 美元 Launch Clip 报价与找客户流程。附导读、要点、核实、评论区观点与启发。",
+    "source": "beamnxw（@beamnxw）· X 长文",
+    "date": "2026-10-23",
+    "type": "翻译",
+    "subtitle": "Motion Engineering with Opus 5.5: Build Launch Videos You Can Sell",
+    "original_url": "https://x.com/beamnxw/status/2108616740846420354"
+  },
+  {
     "slug": "ascii-magic-art",
     "title": "ascii-magic-art",
     "desc": "kailashsr38/ascii-magic-art（ASCII Magic）项目导读：634 段动画 ASCII 字符画、24 个分类，每段都是一个零依赖 ES 模块 create() → draw(t)，终端 npx 浏览播放、网页 <ascii-art> 一个标签嵌入、npm 引用。原理拆解（Grid 字符+颜色双层与 z 深度、确定性 PRNG/噪声、按“字形墨量×颜色亮度”重绘的十种 looks、Canvas 字形图集与半调点/Bayer 抖动、终端 256 色降级、validate 每帧 12 ms 预算）、快速上手、本站本地运行截图、与 ascii-sharks / shanshui 对比、启发。MIT（两幅照片场景为 Unsplash 许可），附 README 全文中文翻译。",
