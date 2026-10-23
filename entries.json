@@ -498,5 +498,15 @@
     "type": "导读",
     "subtitle": "The Rings of a City — Chengdu, from Jinsha to the Third Ring",
     "original_url": "https://x.com/EianLu/status/2111662397278847478"
+  },
+  {
+    "slug": "slashui-hf-openusd-simready",
+    "title": "Hugging Face 支持 OpenUSD，NVIDIA 放出 2,500+ 个 SimReady 仿真资产",
+    "desc": "洛克船长 @slashui 原帖照录 + SimReady Central 导读：Hub 原生预览 OpenUSD、nvidia/simready-assets 2,575 个带碰撞/质量/关节等物理属性的资产（约 472 GB、免登录）、自然语言 USD 搜索、OEM 生态与 Isaac Sim 示例工作流；核实（数量口径、尚无数据集卡与许可）、评论区观点。附 @huggingface/usd-web-viewer README（MIT）全文翻译。",
+    "source": "洛克船长 @slashui · X",
+    "date": "2026-10-23",
+    "type": "导读",
+    "subtitle": "OpenUSD on the Hugging Face Hub & NVIDIA SimReady Central",
+    "original_url": "https://x.com/slashui/status/2113408986406129844"
   }
 ]

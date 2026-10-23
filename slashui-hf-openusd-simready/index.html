@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hugging Face 支持 OpenUSD，NVIDIA 放出 2,500+ SimReady 仿真资产（洛克船长推荐 · 导读）</title>
+<meta name="description" content="洛克船长 @slashui 原帖照录 + SimReady Central 导读：Hugging Face Hub 原生支持 OpenUSD 预览，NVIDIA 把 2,575 个带物理属性的 SimReady 3D 资产免费放上 Hub，并提供自然语言搜索；什么是 SimReady、OEM 生态、示例工作流、评论区观点与核实。附 @huggingface/usd-web-viewer README（MIT）全文翻译。" />
+<meta property="og:title" content="Hugging Face 支持 OpenUSD，NVIDIA 放出 2,500+ SimReady 仿真资产" />
+<meta property="og:image" content="images/poster.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-23">2026.10.23</time></p>
+<h1 class="za-title">Hugging Face 支持 OpenUSD，NVIDIA 甩出 2,500+ 个 SimReady 仿真资产</h1>
+<p class="za-sub" lang="en" data-za-gen>OpenUSD on the Hugging Face Hub &amp; NVIDIA SimReady Central</p>
+<p class="za-meta" data-za-gen><span>来源 · 洛克船长 @slashui · X</span><span>收录 · 2026-10-23</span><span><a href="https://x.com/slashui/status/2113408986406129844" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/slashui/status/2113408986406129844">x.com/slashui/status/2113408986406129844</a>（作者：洛克船长 <a href="https://x.com/slashui">@slashui</a>，2026-10-23 07:15 SGT）</p>
+<p class="meta-line">原帖为中文，照录原文；视频请在 X 原帖观看（本页不转载），下图仅为视频封面帧。互动数据截至 2026-10-23 10:00 SGT：约 3,538 次浏览、56 赞、53 收藏、7 转发、2 回复。本页以帖子介绍的项目 SimReady Central 为中心做导读。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><figure class="cover-fig"><a href="https://x.com/slashui/status/2113408986406129844" rel="noopener"><img class="cover" src="images/poster.webp" alt="视频封面帧：白底上一台橙色电动堆高叉车的 3D 模型，左下标注 vehicle_forklift_orange_a01" /></a><figcaption>原视频封面帧（点击在 X 观看 33 秒演示）：SimReady 资产 <code>vehicle_forklift_orange_a01</code>。视频源自 Hugging Face 的 Caleb Fahlgren 发布帖。</figcaption></figure>
+
+<h2 id="post">原帖（照录）</h2>
+<blockquote>
+<p>Hugging Face 刚刚支持 OpenUSD ，NVIDIA 反手就甩出 2500+ 个 SimReady 3D 资产：叉车、机械臂、发动机、医疗设备……全部免费放在 Hub 上，还能直接用大白话搜！</p>
+<p>以前搭一个仿真场景要建模好几周，现在点几下就能拿到。</p>
+<p>具身智能的门槛也在松动。机器人时代不远了。🤖🔥</p>
+</blockquote>
+<p class="caption">— 洛克船长（<a href="https://x.com/slashui">@slashui</a>），<a href="https://x.com/slashui/status/2113408986406129844">2026-10-23</a>。附视频 1920×1080、33 秒；引用了 Caleb Fahlgren（<a href="https://x.com/calebfahlgren/status/2113308155270541536">@calebfahlgren</a>，Hugging Face）的英文发布帖。作者在本帖下没有自回复/续帖。</p>
+
+<h2 id="quoted">被引用的发布帖（短引）</h2>
+<p>Caleb 的原帖（2026-10-23 00:35 SGT，约 2.7 万浏览、597 赞、719 收藏）核心一句是 “We just launched OpenUSD support on the @huggingface Hub”，并说 @nvidiaomniverse 前一天放上了 “2,500+ SimReady assets”，可以 “search the whole library in plain English”。他在续帖里补了两点：</p>
+<ul>
+<li>Hub 上的 3D 查看器是开源的：用 Rust 做 USD 合成（composition）、编译成 WASM、用 three.js 渲染，可以嵌入自己的应用——即 npm 包 <a href="https://npmjs.com/package/@huggingface/usd-web-viewer"><code>@huggingface/usd-web-viewer</code></a>（MIT，全文翻译见<a href="#appendix">附录</a>）。</li>
+<li>文档 <a href="https://huggingface.co/docs/hub/main/en/datasets-3d">Hub · 3D Dataset</a> 与他整理的 <a href="https://huggingface.co/collections/cfahlgren1/openusd-datasets">OpenUSD 数据集合集</a>。</li>
+</ul>
+
+<h2 id="what">这是什么：SimReady Central</h2>
+<ul>
+<li><strong>Hub 原生认 3D 了。</strong>在数据集、模型或 Storage Bucket 的 Files 页点开 <code>.usd/.usda/.usdc/.usdz</code> 或 <code>.glb/.gltf</code>，会直接弹出可旋转、缩放、全屏的 3D 查看器；含 SimReady 包的数据集页还会出现 “3D Assets” 卡片，显示包数与最多 15 张缩略图。带 3D 文件的数据集自动获得 <code>3d</code> 模态标签。</li>
+<li><strong>NVIDIA 的资产库。</strong>主数据集 <a href="https://huggingface.co/datasets/nvidia/simready-assets">nvidia/simready-assets</a> 页面显示 <strong>2,575 个</strong>资产、总计约 <strong>472 GB</strong>，示例包括 CT 注射系统、瓦楞纸箱、移动推车、发动机总成、香蕉番茄、手术器械、劳保手套、排放测试仪等；不需要申请访问（ungated）。</li>
+<li><strong>“SimReady” ≠ 好看的模型。</strong>NVIDIA 博客的说法是：仿真需要的不只是 3D 外形，还要 “collision geometry, mass, and friction” 等属性。SimReady 资产是按 SimReady Foundation 的规范与 <em>profile</em>（按用途分组的能力要求）预先补好这些属性的 OpenUSD 资产：碰撞几何与物理属性、关节结构与限位、语义标签、材质与传感器属性等。</li>
+<li><strong>大白话搜索。</strong><a href="https://huggingface.co/spaces/nvidia/simready-central">SimReady Central USD Search</a> 这个 Space 由 NVIDIA USD Search 驱动（README 写明后端是 OpenSearch + Neo4j + Redis + SigLIP2 向量），可以用自然语言找资产；Hugging Face 也把 USD 属性与仿真元数据接进了站内搜索，方便 AI 智能体检索。</li>
+<li><strong>OEM 生态。</strong>博客点名了 Vertiv（机柜、服务器机架、冷却设备）、Comau / FANUC / Franka / Robotiq / Standard Bots / Universal Robots（机械臂与夹爪）、Palatial（NVIDIA Robotics 1K 数据集）、LG 电子（冰箱洗碗机等家居资产）、ForgeCAD 等；厂商用 “submission skill” 校验、打包、提交资产，并自己管理各自的 HF 数据集。</li>
+</ul>
+
+<h2 id="workflows">官方示例工作流（概述）</h2>
+<ol>
+<li><strong>机器人抓取放置：</strong>让前沿模型（博客举的是 GPT-6 Astra）通过 SimReady 搜索找到 FANUC 机械臂 + 兼容的 Robotiq 夹爪 + 仓储资产，引用进 OpenUSD stage，生成 Isaac Sim / PhysX 的 Python 装配脚本，渲染预览，并记录资产与运行时版本以便复现。</li>
+<li><strong>AI 工厂布局对比：</strong>用机架与冷却设备生成两套布局，按给定尺寸和通道净距检查重叠与违规，各存为 OpenUSD 场景。</li>
+<li><strong>延伸：</strong>把布局和任务改动放在独立 USD 层以复用素材；变换摆位做评测；机器人训练接 Isaac Lab；AI 工厂接 BMS/IT 遥测做数字孪生。</li>
+</ol>
+
+<h2 id="check">核实与补充</h2>
+<ul>
+<li><strong>数量：</strong>帖子说 “2500+”，数据集页实计 2,575；NVIDIA 博客（2026-10-21）写的是 “more than 2,000”，应为发布时口径。</li>
+<li><strong>免费 ≠ 许可清楚：</strong>截至 2026-10-23，<code>nvidia/simready-assets</code> 显示 “No dataset card yet”，页面上看不到许可证。可免费下载，但商用、再分发前应逐个核对资产或 OEM 数据集的条款。</li>
+<li><strong>“几周→点几下”：</strong>能省掉的是找模型、补碰撞/质量/摩擦这类手工活；场景装配、任务设计、Sim2Real 仍是工作量大头。评论区 @silic2023 也提醒：要先问 “Ready for what?”——布局规划和接触物理需要的资产属性不一样。</li>
+<li><strong>体量：</strong>472 GB 不适合整库拉取，按搜索结果逐包下载更现实；USD 资产往往由根文件 + 子层/payload/贴图组成，需保持相对路径。</li>
+</ul>
+
+<h2 id="comments">评论区观点</h2>
+<ul>
+<li>原帖下仅 2 条回复：@btc5767 说 “赚钱的本质就是解决别人的问题”；@CeoSpaceY 追问 “不远是多远？”——对“机器人时代不远了”的温和质疑。</li>
+<li>Caleb 发布帖下：@TheTrentHarvey 坦言一开始以为 USD 是“美元”（Caleb 回了 openusd.org 链接，可见名字本身就是门槛）；@3DPrintAficio 表示要先拿机械臂做工位仿真再打印支架；@infoforuzy 认为“找资产会容易得多”；@silic2023 的 “Ready for what?” 是最有信息量的一条。</li>
+</ul>
+
+<h2 id="takeaways">启发</h2>
+<ul>
+<li>Hugging Face 正把“模型/数据集托管”扩到“物理世界资产托管”，OpenUSD 成为具身智能数据的通用容器；对做机器人、数字孪生的小团队，素材冷启动成本确实下降了。</li>
+<li>“SimReady”的价值在于把<em>物理语义</em>标准化（profile + 校验工具），而不只是更多模型——选资产时先对照自己的 profile 需求。</li>
+<li>开源的 <code>usd-web-viewer</code> 本身就很实用：任何网页都可以零后端预览 USD，可用于资产审阅、作品集或 AI 生成场景的结果展示。</li>
+</ul>
+
+<h2 id="links">链接</h2>
+<ul>
+<li>原帖：<a href="https://x.com/slashui/status/2113408986406129844">@slashui</a> · 发布帖：<a href="https://x.com/calebfahlgren/status/2113308155270541536">@calebfahlgren</a></li>
+<li>NVIDIA 博客：<a href="https://huggingface.co/blog/nvidia/simready-central-assets-robotics-ai-factories">Announcing SimReady Central</a>（Hugging Face 社区文章，2026-10-21）</li>
+<li>数据集：<a href="https://huggingface.co/datasets/nvidia/simready-assets">nvidia/simready-assets</a> · 搜索：<a href="https://huggingface.co/spaces/nvidia/simready-central">SimReady Central USD Search</a></li>
+<li>文档：<a href="https://huggingface.co/docs/hub/main/en/datasets-3d">Hub 3D Dataset</a> · <a href="https://openusd.org/release/index.html">OpenUSD</a></li>
+<li>本站相关：<a href="../saccc-little-prince-3d/">用 Opus 5.5 / Astra + Tripo 制作 3D 游戏</a> · <a href="../motion2mixamorig/">Motion2MixamoRig：视频一键生成绑骨角色</a> · <a href="../slashui-motion-prompt/">洛克船长推荐的 Motion Prompt 动效库</a></li>
+</ul>
+
+<h2 id="appendix">附录：@huggingface/usd-web-viewer README 全文翻译（MIT）</h2>
+<p class="caption">原文：<a href="https://npmjs.com/package/@huggingface/usd-web-viewer">npm · @huggingface/usd-web-viewer</a> v0.1.1，仓库 <a href="https://github.com/huggingface/huggingface.js">huggingface/huggingface.js</a>，MIT 许可。代码块保持原样。</p>
+<h3>@huggingface/usd-web-viewer</h3>
+<p>在浏览器里运行 <a href="https://openusd.org">OpenUSD</a>：USD 合成在 WebAssembly 中完成，基于 <a href="https://github.com/mxpv/openusd">openusd</a>（纯 Rust），用 <a href="https://threejs.org">three.js</a> 渲染。可读取 <code>.usd</code>、<code>.usda</code>、<code>.usdc</code> 和 <code>.usdz</code>；加载在 Web Worker 中运行。</p>
+<pre><code>npm install @huggingface/usd-web-viewer three</code></pre>
+<h3>用法</h3>
+<p>现成的查看器（渲染器、灯光、轨道控制）：</p>
+<pre><code>import { createViewer } from '@huggingface/usd-web-viewer';
+
+const viewer = createViewer(document.getElementById('viewer')); // a container element
+const { info } = await viewer.load(
+  'https://huggingface.co/datasets/Robotiq-Official/simready-assets/resolve/main/Robotiq_2F_85/simready_usd/Robotiq_2F_85.usda',
+);</code></pre>
+<p>或者加载到你自己的 three.js 场景中：</p>
+<pre><code>import { loadUsd } from '@huggingface/usd-web-viewer';
+
+const { root, complete, dispose } = await loadUsd(url);
+scene.add(root); // a THREE.Group, Y-up, in meters
+await complete; // textures stream in after the geometry</code></pre>
+<p>（注释大意：<code>root</code> 是一个 THREE.Group，Y 轴朝上，单位为米；几何体加载完后贴图再流式载入。）</p>
+<h3>选项</h3>
+<p><code>loadUsd(url, options)</code> 和 <code>viewer.load(url, options)</code> 接受：</p>
+<table>
+<thead><tr><th>选项</th><th>默认值</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><code>textures</code></td><td><code>'preview'</code></td><td><code>'none'</code>、<code>'preview'</code>（基础色、小尺寸数据贴图，不含法线贴图）或 <code>'full'</code></td></tr>
+<tr><td><code>maxTextureSize</code></td><td><code>1024</code></td><td>解码后贴图长边的像素数</td></tr>
+<tr><td><code>signal</code></td><td></td><td>一个 <code>AbortSignal</code>；加载会以 code 为 <code>aborted</code> 的 <code>UsdLoadError</code> 拒绝</td></tr>
+<tr><td><code>onProgress</code></td><td></td><td>回调参数为当前阶段和 0 到 1 的整体进度 <code>fraction</code></td></tr>
+<tr><td><code>files</code></td><td></td><td>从拖入或选取的文件加载，而不是走网络（见下文）</td></tr>
+<tr><td><code>wasmUrl</code>、<code>workerUrl</code></td><td>与包同目录</td><td>WASM 二进制与 worker 脚本的服务地址</td></tr>
+<tr><td><code>maxConcurrentFetches</code></td><td><code>16</code></td><td>同时进行的请求数</td></tr>
+<tr><td><code>maxLayerBytes</code>、<code>maxLayers</code></td><td>768 MiB、1024</td><td>图层下载上限</td></tr>
+<tr><td><code>maxTextureBytes</code></td><td>512 MiB</td><td>贴图下载上限</td></tr>
+<tr><td><code>maxTriangles</code>、<code>maxInstances</code></td><td>2000 万、100,000</td><td>最多绘制的数量</td></tr>
+</tbody>
+</table>
+<p><code>createViewer(container, options)</code> 接受 <code>background</code>（默认透明）、<code>onContextLost</code> 和 <code>onContextRestored</code>（调用时会重新加载上次显示的模型）。</p>
+<p>失败时抛出带 <code>code</code> 的 <code>UsdLoadError</code>（<code>aborted</code>、<code>fetch</code>、<code>compose</code>、<code>worker</code>、<code>webgl</code>）；任何无法如实显示的内容都会列在 <code>info.warnings</code> 中。所有选项、错误和警告都有类型定义。</p>
+<h3>加载不受信任的文件</h3>
+<ul>
+<li>请求的发送方式与 <code>&lt;model-viewer&gt;</code> 相同：cookie 只发往页面自身的源（<code>credentials: 'same-origin'</code>），不带自定义请求头，不带 referrer。</li>
+<li>图层和贴图只通过 http(s) 获取。</li>
+<li>解析在编译为 WebAssembly 的 Rust 中进行，运行于 Web Worker。</li>
+<li>每次加载都有上限：<code>maxLayerBytes</code>（768 MiB）、<code>maxLayers</code>（1024）、<code>maxTextureBytes</code>（512 MiB）、<code>maxTriangles</code>（2000 万）和 <code>maxInstances</code>（100,000）；图片单边最大 16384 px、面积最大 8192 × 8192 px；prim 嵌套最多 256 层；<code>.usdz</code> 内单个条目最大 512 MiB、合计最大 1 GiB，且须为未压缩存储。</li>
+<li>格式错误的文件会以 <code>UsdLoadError</code> 使加载失败。</li>
+</ul>
+<h3>本地文件</h3>
+<p>要显示拖到页面上或通过 <code>&lt;input type="file" webkitdirectory&gt;</code> 选取的文件，把它们作为 <code>files</code> 传入，以它们在包内的路径为键，然后加载根图层对应的键。文件中的相对路径会彼此解析，不会为它们发起任何网络请求。</p>
+<pre><code>const files = new Map([...input.files].map((file) =&gt; [file.webkitRelativePath || file.name, file]));
+await viewer.load('chair/simready_usd/sm_chair.usd', { files });</code></pre>
+<h3>打包工具</h3>
+<p>worker 与 WASM 二进制通过 <code>new URL(..., import.meta.url)</code> 定位，Vite、webpack 等打包工具会解析并输出它们。使用 Vite 开发服务器时，请把该包排除在依赖预打包之外：</p>
+<pre><code>// vite.config.js
+export default { optimizeDeps: { exclude: ['@huggingface/usd-web-viewer'] } };</code></pre>
+<p>以 MIT 许可发布。编译进 WASM 二进制的 Rust crate 的许可证见 <code>THIRD_PARTY_LICENSES</code>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>版权与来源说明：</strong>洛克船长 @slashui 的原帖为作者本人中文内容，全文照录并注明出处；Caleb Fahlgren 的发布帖、NVIDIA 博客、Hugging Face 文档与 Space README 未见开放许可，本页仅做导读与简短引用；<code>@huggingface/usd-web-viewer</code> README 为 MIT 许可，附全文中文翻译。视频未转载，封面帧版权归原作者 / NVIDIA。如需删除，请提交 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">Removal request</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/slashui/status/2113408986406129844" rel="noopener">x.com/slashui/status/2113408986406129844</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
