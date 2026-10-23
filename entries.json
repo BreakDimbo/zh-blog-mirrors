@@ -1,5 +1,15 @@
 [
   {
+    "slug": "every-how-codex-happened",
+    "title": "Codex 是怎么来的：Every 长文《How Codex Happened》导读",
+    "desc": "Dan Shipper（Every）长篇特稿中文导读（非翻译）：OpenAI Codex 从 Codex Cloud 外部失利、转向本地并用 Rust 重写代理、GPT-5 与 VS Code 扩展、独立 Codex 模型线、不做代码编辑器的桌面 app，到 2026 年 7 月成为 ChatGPT 桌面 app 的全过程。分节概述、时间线、人物与产品、少量短摘引、评论（形态跟着模型走、创新者的窘境）与本站相关文章。",
+    "source": "Dan Shipper · Every（every.to）",
+    "date": "2026-10-23",
+    "type": "导读",
+    "subtitle": "How Codex Happened",
+    "original_url": "https://every.to/p/how-codex-happened"
+  },
+  {
     "slug": "beamnxw-opus-launch-clip",
     "title": "用 Opus 5.5 做动效工程：做能卖钱的产品发布短片",
     "desc": "beamnxw X 长文全文翻译：用 Claude Code + Remotion 把 20 秒产品发布短片做成帧号驱动的工程——参考片分析（REFERENCE.md）、镜头即事件的时间线、BRIEF.md 简报模板、useCurrentFrame 可复现、三张静帧与局部渲染评审、四字段修改单、音效对齐事件帧、ffprobe 验收，以及 150 美元 Launch Clip 报价与找客户流程。附导读、要点、核实、评论区观点与启发。",

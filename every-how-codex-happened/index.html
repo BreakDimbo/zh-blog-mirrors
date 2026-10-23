@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codex 是怎么来的：Every 长文《How Codex Happened》导读</title>
+<meta name="description" content="Dan Shipper（Every）长篇特稿导读：OpenAI Codex 从 Codex Cloud 失败、转向本地 CLI 与 Rust 重写、VS Code 扩展、无代码编辑器的桌面 app，到并入 ChatGPT 桌面端的全过程；分节中文概述、短摘引、背景与评论。">
+<meta property="og:title" content="Codex 是怎么来的：《How Codex Happened》导读">
+<meta property="og:image" content="cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-23">2026.10.23</time></p>
+<h1 class="za-title">Codex 是怎么来的：Every 长文《How Codex Happened》导读</h1>
+<p class="za-sub" lang="en" data-za-gen>How Codex Happened</p>
+<p class="za-meta" data-za-gen><span>来源 · Dan Shipper · Every（every.to）</span><span>收录 · 2026-10-23</span><span><a href="https://every.to/p/how-codex-happened" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原文：<a href="https://every.to/p/how-codex-happened" rel="noopener">How Codex Happened</a> · 作者 Dan Shipper（Every 联合创始人兼 CEO）· 发布方 <a href="https://every.to" rel="noopener">Every（every.to）</a> · 2026-10-15</p>
+<img class="cover" src="cover.webp" alt="How Codex Happened 封面" width="1200" height="685" loading="lazy"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>版权说明：</strong>原文版权归 Every 及作者 Dan Shipper 所有，没有开放许可。本页<strong>不是翻译</strong>，而是按原文结构写的中文导读：用我们自己的话概括各节内容，只摘录少量很短的英文原句（附出处），再加上背景和评论。正文在 Every 上标注为 “Free Read”，可免费阅读<strong>全文请到 <a href="https://every.to/p/how-codex-happened" rel="noopener">Every 原文页</a></strong>；文中提到的六篇受访者完整访谈稿需要 Every 付费会员/试用，本页<strong>没有</strong>使用这部分内容。封面图为原文社交分享图的缩小预览。</div>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是一篇什么文章</a></li>
+<li><a href="#tldr">一句话和五个要点</a></li>
+<li><a href="#open">开场：GPT-5 发布前夜</a></li>
+<li><a href="#thinking">Thinking…：推理模型为什么改变了编程</a></li>
+<li><a href="#beginnings">很多个起点</a></li>
+<li><a href="#builders">“构建构建者”：用模型造模型</a></li>
+<li><a href="#convergence">汇流：内部的平行创业</a></li>
+<li><a href="#cloud">Codex Cloud 和它的局限</a></li>
+<li><a href="#local">另一条路：转向本地、用 Rust 重写</a></li>
+<li><a href="#desktop">桌面 app 的赌注：不做代码编辑器</a></li>
+<li><a href="#app">Codex app 上线，并吞下 ChatGPT</a></li>
+<li><a href="#curve">下一条曲线</a></li>
+<li><a href="#timeline">时间线</a></li>
+<li><a href="#people">人物与产品</a></li>
+<li><a href="#comment">评论与启发</a></li>
+<li><a href="#related">本站相关</a></li>
+</ol></nav>
+
+<h2 id="what">这是一篇什么文章</h2>
+<p>Every 创始人 Dan Shipper 写的长篇特稿（Every 的 “Chain of Thought” 专栏作者），讲 OpenAI 的 Codex 如何在不到一年里从一次失败的云端发布，变成 ChatGPT 桌面应用的底座。作者采访了六位参与者：Greg Brockman（总裁、联合创始人）、Alexander Embiricos（产品）、Thibault “Tibo” Sottiaux（研究与工程，后升任统管 OpenAI 核心产品与平台）、Amelia “Mia” Glaese（模型研究）、Andrew Ambrosino（设计与工程）、Ed Bayes（设计）。</p>
+<p>文章有个形式上的巧思：各章节之间插入模仿推理模型“Thinking…”状态的短句（“回到起点……”“这在我们的环境里能用，为什么用户用不起来？”），把 Codex 团队的试错过程写成一次“推理—回溯—换路”的过程。作者也坦白 Every 自己大量使用 Claude Code，而且他本人也是一个“局内观察者”——Every 曾提前拿到 GPT-5 做评测。</p>
+
+<h2 id="tldr">一句话和五个要点</h2>
+<p><strong>一句话：</strong>模型能力每跳一次，就把上一代产品形态甩在身后；Codex 团队没有守着已经成功的形态，而是连续换了几次形态，最终从“边缘小组”变成了 ChatGPT 的未来。</p>
+<ul>
+<li><strong>先失败：</strong>2025-05-16 上线的 Codex Cloud（云端异步代理）在 OpenAI 内部很受欢迎，外部却没找到 PMF——用户要花几个小时在云端复刻本地开发环境，任务中途也不能打断纠偏。</li>
+<li><strong>再回到本地：</strong>Tibo 接手团队后转向“本地”，先不加功能，而是把代理内核用 Rust 重写，让同一套内核能跑在 CLI、编辑器扩展乃至桌面 app 里。</li>
+<li><strong>模型线单独走：</strong>Codex 有了独立于 ChatGPT 的编程模型线（GPT-5.1 Codex Max、5.2 Codex、5.3 Codex……），迭代时不必顾虑 8 亿 ChatGPT 用户。按作者的说法，这并不是一次“拍板分家”，而是研究探索和提速的自然结果。</li>
+<li><strong>大胆的减法：</strong>桌面 app 故意不内置代码编辑器，想改代码就得让代理去改。团队内部一度怀疑，直到 GPT-5.2 前后模型够强，大家才真正“以它为主力”。</li>
+<li><strong>结果：</strong>2026-02-02 Codex macOS app 发布；6 月周活超 500 万、约五分之一是非程序员知识工作者；7 月 9 日 Codex 桌面 app 直接成为新的 ChatGPT 桌面 app。作者用 Christensen《创新者的窘境》来解释这一切。</li>
+</ul>
+
+<h2 id="open">开场：GPT-5 发布前夜</h2>
+<p>2025 年夏天，GPT-5 发布前一晚，作者在 OpenAI Mission Bay 办公室向 Embiricos 反馈 Every 的测试结论：GPT-5 在 Codex 里又快又聪明，但“停得太早”，像个谨慎的结对程序员；而 Every 团队已经在用 Claude Code + Opus 4 把整块任务交出去然后走开。他的原话是 GPT-5 <q lang="en">feels a little timid</q>（显得有点胆怯）。他甚至说出了“我们已经基本不看代码了”，说完自己都脸红。</p>
+<p>离开时作者担心：OpenAI 是不是在给一个正在消亡的工作流打造完美工具？随后文章快进到结果：编辑器扩展用量涨了十倍以上，但团队没有就此押注编辑器，而是做了专门的编程模型线和管理多代理的桌面 app，最后反过来重塑了公司。</p>
+
+<h2 id="thinking">Thinking…：推理模型为什么改变了编程</h2>
+<p>作者用“即兴演员”比喻第一代大模型：边说边想、没法回头改。思维链提示让人们发现“先写步骤再作答”更准，OpenAI 把这种行为训练进模型，就有了 o1（2024 年 9 月预览）——同一个模型多花时间思考就能答得更好。</p>
+<p>编程是最大的受益者，因为它天然是闭环：改代码、运行、几秒内就知道对不对，模型可以自己试错，不需要人来检查。理论上，给足思考时间，推理模型可以独立完成任何编程任务。</p>
+
+<h2 id="beginnings">很多个起点</h2>
+<p>“Codex”这个名字本身就有历史：2021 年的初代 Codex 是在公开代码上微调的 GPT-3，驱动了最早的 GitHub Copilot。o1 预览之后，OpenAI 内部有好几个小组从不同方向重新追这个目标。</p>
+<p>Embiricos（2024 年 OpenAI 收购他联合创办的屏幕共享工具 Multi 后加入）回忆自己的 “feel-the-AGI” 时刻：看到推理模型连上终端，自己读文件、跑命令、处理报错。他判断这能撑起一个真正的编程产品，并认为用户需要每 30 秒到一分钟看到一次模型在干什么。难点在于速度：Copilot、Cursor、Windsurf 都依赖秒级反馈，而早期推理模型恰恰慢、而且思考时间一被压缩就变弱——能不能把“慢”变成优势？</p>
+
+<h2 id="builders">“构建构建者”：用模型造模型</h2>
+<p>另一条线来自 Tibo Sottiaux。他长期做研究基础设施（先在 DeepMind，后在 OpenAI），2024 年 12 月开始做编程代理，目标是帮 OpenAI 自己更快地写基础设施、做研究。他的小组在 OpenAI 的 monorepo 上训练内部编程代理，研究员每天都在用，反馈回路很紧——这就是“自举（bootstrapping）”：模型帮研究员做实验，研究员用它造出更强的模型。</p>
+<p>作者原以为会听到一个“高层远见拍板拆分模型线”的故事，Tibo 却说 <q lang="en">There was no decision to split off the model line</q>——一开始只是研究探索和提速。这一半提供了“能改进造模型基础设施的代理”，另一半则是 Embiricos 关于“人该如何与代理协作”的主张。</p>
+
+<h2 id="convergence">汇流：内部的平行创业</h2>
+<p>编程成为公司级目标后，多个团队从不同角度研究同一个问题：代理到底该放在终端、编辑器还是云端（Brockman 所说的“form factor”）。作者引用 Altman 的说法：OpenAI 像是在押注一系列“内部创业公司”。他承认这有内耗，有人会抱怨“谁愿意做内部第三好的代理产品”，但他认为在前沿不断移动时这是必要的：能补全一行代码的模型适合做自动补全，能想 30 秒的适合做侧栏问答，能干一小时的模型“想要成为完全不同的东西”。</p>
+<p>2025 年初几个小组合并（包括一个叫 “Scientist Assistant” 的项目），形成了产品、工程、研究混编的小团队。来自 DeepMind 的 Glaese 负责训练与对齐数据，她的态度是 <q lang="en">Just trusting vibes is not that useful in research</q>。产品同事提出“要是模型能做到 X 就好了”，研究员就去实现——又是一个自举回路，只不过这次发生在模型与产品之间。</p>
+
+<h2 id="cloud">Codex Cloud 和它的局限</h2>
+<p>同一时期，Anthropic 在 2025-02-24 随 Claude 3.7 Sonnet 推出 Claude Code 研究预览：没有编辑器，跑在终端里，直接改你本机的文件，可以中途打断，经验还能跨会话积累。开发者迅速接受，Every 内部也是。</p>
+<p>Codex 团队则押注云端：给代理一台自己的电脑，异步干活，用户可以从电脑或手机派任务。约七周做完，2025-05-16 上线。它在 OpenAI 内部“非常成功”，在外部却很少有人持续使用：内部有标准化开发环境，外部用户得花几个小时在云端复刻环境、搬凭证、装依赖；任务不能中途纠偏，连追问都要开一台新的云机器。Embiricos 的总结是模型当时还不够聪明；Glaese 则承认团队没有“去用户所在的地方”——也就是他们的笔记本电脑。</p>
+<p>为什么不先做终端？Tibo 说他们其实做过一个内部终端原型，一个月后放弃了，转去做完整的云端版本。背后是 OpenAI 一贯的信念，Brockman 的说法是理想形态是 <q lang="en">an AI in the cloud that has its own laptop</q>。同年 4 月 16 日 OpenAI 也发布过开源的 Codex CLI，但那是“两个人英雄般做出来”的副项目，连 Codex 专用模型都用不上（默认 o4-mini），部分原因是公司对在用户电脑上执行命令的安全态度很保守。</p>
+<p>结果是团队陷入低谷：工程经理去了 Cursor；OpenAI 据报以 30 亿美元收购 Windsurf 的交易在 7 月告吹。用 Embiricos 的话说，最难的是“不知道该做什么，或者知道但看不到进展”。</p>
+
+<h2 id="local">另一条路：转向本地、用 Rust 重写</h2>
+<p>作者把这一段比作推理模型的“回溯”。当时 Codex 被新加入的设计师 Ed Bayes 形容为 OpenAI 的“backwaters”（冷门角落）。Tibo 升任工程经理后改了方向：<q lang="en">We pivoted to local.</q> 他没有急着往 CLI 上堆功能，而是先重写代理内核，并把它和终端界面解耦，用 Rust 实现，让同一套机器能驱动 CLI、编辑器扩展，以及后来的各种界面。</p>
+<p>缺的是一个足够好的模型。Michelle Pokrass 领导的 GPT-5 后训练团队坐到程序员旁边看他们工作，把模型出错的地方变成可重复的训练任务——Brockman 说之前的模型“从没见过乱糟糟的代码库，也没见过程序员中途打断它”。这解释了作者在发布前夜感到的“谨慎”：被 Cloud 烫过一次、又被客户要求做更好的交互式协作者，GPT-5 被做成了一个出色的结对程序员。</p>
+<p>作者还引用了 Ruby on Rails 作者 DHH 的态度变化作为行业背景：GPT-5 发布时他说不让 AI 驾驶自己的代码，到 2026 年则改口称代理已能产出生产级贡献。GPT-5 + 重写后的 CLI、8 月底的 VS Code/Cursor 扩展带来了增长飞轮，Embiricos 的感受是：终于可以开打了。</p>
+
+<h2 id="desktop">桌面 app 的赌注：不做代码编辑器</h2>
+<p>CLI 和扩展正火的时候，团队却决定：CLI 继续维护，但下一笔最大的投入是原生桌面 app。Tibo 的理由是模型很快能做更长的任务、用上代码库以外的信息，还会有语音和图像；人们会同时跑多个代理、一整天待在里面，用一个 1970 年代的纯文本窗口来管理这一切太别扭了。Embiricos 则把它看作弥补 Cloud 缺陷的路径：先在本地紧密协作，再像带新同事一样逐步放手。</p>
+<p>设计师兼程序员 Andrew Ambrosino 加入（作者花了些笔墨写他的冷幽默，比如自称“Tibo 是我的喜剧偶像”）。参考对象是 Conductor 这类多代理 Mac app 和 ChatGPT 的对话列表——用 Ambrosino 的话，这个 app 更多借鉴了聊天而不是 VS Code。最冒险的决定是：<strong>不内置代码编辑器</strong>，想改代码只能让代理改。理由是一旦允许手写代码，用户就会期待撤销、搜索、快捷键等完整编辑器功能，一个四人团队不可能做好；Codex 不能靠当一个“糟糕的编辑器”取胜。</p>
+<p>一开始没人把它当主力，Embiricos 每天问大家“你在用它当主力吗？”，答案都是否。内部有人抱怨改一句话都得提示代理；2025 年 11 月 Google 发布基于 VS Code 的 Antigravity，团队一度怀疑“是不是犯了大错没 fork VS Code”。模型也还不够好。转折来自模型：11 月 19 日 GPT-5.1 Codex Max（能连续编码数小时）、12 月 18 日 GPT-5.2 Codex。独立模型线让团队能围绕真实使用而不是基准分快速迭代。到 1 月全队都在用，2 月它在 OpenAI 工程和研究团队中普及，据作者转述 Altman 称其为 OpenAI 内部最受喜爱的产品。</p>
+
+<h2 id="app">Codex app 上线，并吞下 ChatGPT</h2>
+<p>2026-02-02 Codex macOS app 公开发布：侧栏是进行中和历史任务，可以让多个代理各自在独立代码副本上并行工作。作者承认功能上并不算开创——Claude 桌面 app 早已能做类似的事——但 Claude 是从 Chat、到 Code、再到 Cowork 逐步叠加的，显得拼凑；Codex app 没有这些“伤疤”，快、简单、完全“agent-native”。因为没有编辑器，团队确保用户能做的事代理几乎都能做，比如接入新工具直接让代理去做。作者也坦率称之为“后来者优势”。</p>
+<p>GPT-5.3 Codex 开始超出纯编程训练；3 月初的 GPT-5.4 让 Codex 成为作者的日常主力，Every 内部也从几乎全用 Claude 转向大量使用 OpenAI。数据：3 月 19 日周用户超 200 万；4 月加入应用内浏览器，能操作其他 Mac 应用、预览文档/幻灯片/表格；6 月周活超 500 万，约五分之一是知识工作者；7 月 9 日 Codex 桌面 app 成为新的 ChatGPT 桌面 app（作者注意到它在 Mac 上的标识仍是 com.openai.codex）。作者的一句总结很精炼：<q lang="en">Now ChatGPT runs on Codex.</q> 目前 Codex 与 ChatGPT for Work 合计周活 4,000 万。</p>
+
+<h2 id="curve">下一条曲线</h2>
+<p>2026 年 6 月，作者在 OpenAI 曼哈顿办公室再见 Embiricos（此时已转任企业产品负责人）。Embiricos 在白板上画出 Codex 的几条增长曲线：Cloud 一个小尖峰后走平；GPT-5 后的 CLI 更陡；编辑器扩展更高；5.3 Codex + 桌面 app 则远超前面所有曲线。</p>
+<p>作者认为这就是《创新者的窘境》的缩影：硬件进步曾经推动大型机→小型机→PC→笔记本→手机，每一代形态都打开更大、技术门槛更低的市场；同样的模式在 OpenAI 内部、由几个人、用 10 个月演完了。团队避开“守着成功产品被窒息”的命运，一是公司被组织成一组平行押注、Codex 有自己的产品和模型线；二是“用 Codex 造 Codex”改变了产品开发的物理规律——几个人几周就能起一个新界面，Tibo 说现在说服别人需要的“谈话”少多了。</p>
+<p>结尾回到起点：既然几百万人已经信任本地代理，下一步就是回到去年失败的愿景——你走开后仍持续工作的异步代理，“要重新搬回云端”。作者注意到，这一次 Embiricos 的笔记本盖子是合上的（呼应开头他半合屏幕让代理继续思考的细节）。</p>
+
+<h2 id="timeline">时间线（据原文整理）</h2>
+<ul>
+<li><strong>2021</strong>：初代 Codex（GPT-3 代码微调），驱动 GitHub Copilot。</li>
+<li><strong>2024-09</strong>：o1 预览，推理模型登场；2024 年末 Embiricos 看到“推理模型 + 终端”；12 月 Tibo 开始做内部编程代理。</li>
+<li><strong>2025 年初</strong>：多支内部编程团队合并（含 Scientist Assistant）。</li>
+<li><strong>2025-02-24</strong>：Anthropic 发布 Claude 3.7 Sonnet 与 Claude Code 预览。</li>
+<li><strong>2025-04-16</strong>：开源 Codex CLI（小副项目，默认 o4-mini）。</li>
+<li><strong>2025-05-16</strong>：Codex Cloud 上线，外部未找到 PMF。</li>
+<li><strong>2025 年夏</strong>：转向本地、Rust 重写代理；Windsurf 收购 7 月告吹。</li>
+<li><strong>2025-08</strong>：GPT-5 发布；月底推出 VS Code/Cursor 扩展。</li>
+<li><strong>2025-09</strong>：专门的 Codex 模型线发布。</li>
+<li><strong>2025-11-19 / 12-18</strong>：GPT-5.1 Codex Max / GPT-5.2 Codex。</li>
+<li><strong>2026-02-02</strong>：Codex macOS 桌面 app 发布，随后 GPT-5.3 Codex。</li>
+<li><strong>2026-03</strong>：GPT-5.4；3 月 19 日周用户超 200 万。</li>
+<li><strong>2026-06</strong>：周活超 500 万。<strong>2026-07-09</strong>：Codex 桌面 app 成为 ChatGPT 桌面 app。</li>
+</ul>
+
+<h2 id="people">人物与产品</h2>
+<ul>
+<li><strong>Alexander Embiricos</strong>：Codex 产品负责人（后任 OpenAI 企业产品负责人），Multi 联合创始人。</li>
+<li><strong>Thibault “Tibo” Sottiaux</strong>：研究基础设施出身，主导转向本地与 Rust 重写，后统管 ChatGPT、Codex 与 API 等核心产品和平台。</li>
+<li><strong>Greg Brockman</strong>：OpenAI 总裁、联合创始人，“云端 AI 拥有自己的笔记本电脑”的形态观。</li>
+<li><strong>Amelia “Mia” Glaese</strong>：模型研究，负责训练与对齐数据。</li>
+<li><strong>Andrew Ambrosino、Ed Bayes</strong>：桌面 app 的设计与工程。</li>
+<li><strong>Michelle Pokrass</strong>：GPT-5 编程方向后训练负责人。</li>
+<li>其他：Sam Altman、Noam Brown、DHH；产品与竞品——Claude Code / Opus 4 / Opus 4.5、Cursor、Windsurf、GitHub Copilot、Google Antigravity、Conductor、Every 的 Monologue 与 Proof。</li>
+</ul>
+
+<h2 id="comment">评论与启发</h2>
+<ul>
+<li><strong>立场要看清：</strong>这是一篇有深度采访、但视角明显偏向 OpenAI 团队的“成功叙事”。作者既是 OpenAI 的早期测评合作方，也在文末推销访谈稿和基于本文的付费活动；文中用户数等数字多为 OpenAI 自述。把它当作“团队怎么讲自己的故事”来读最合适。</li>
+<li><strong>形态跟着模型走：</strong>文章最有价值的观点是“模型能干多久，就决定了产品该长什么样”——补全一行→侧栏问答→长时间自主任务→多代理管理。做 AI 产品的人可以问自己：当下的界面是不是为上一代模型设计的？</li>
+<li><strong>先去用户所在的地方：</strong>Codex Cloud 的教训很具体：内部顺手不等于外部可用，标准化的内部环境掩盖了外部用户的配置成本。先本地、建立信任，再回到云端异步，是一条“先近后远”的路线。</li>
+<li><strong>减法要配合模型拐点：</strong>“不做编辑器”在模型不够强时是负担，在 GPT-5.2 之后变成了优势。大胆的产品减法，赌的其实是模型进步的时间表。</li>
+<li><strong>和 Claude Code 的对照：</strong>文中多次以 Claude Code 为参照，与本站收录的 Anthropic 工程文章可以对读——两家最终都走向“让代理干活、人负责方向和把关”。</li>
+</ul>
+
+<h2 id="related">本站相关</h2>
+<ul>
+<li><a href="../anthropic-code-review/">Claude Code 团队怎么做代码评审：详细导读</a>——约 90% 代码由 Claude 写之后，评审如何分层。</li>
+<li><a href="../anthropic-source-control/">Anthropic 重新设计源码管理：Scion 详细导读</a>——代理带来的变更量暴涨。</li>
+<li><a href="../harness/">面向自我改进的 Harness 工程</a> 与 <a href="../nftchen-harness2/">Harness²：让 Agent 递归优化自己的 harness</a>——代理内核与 harness 的重要性。</li>
+<li><a href="../zai/">走向递归自我改进：GLM 如何构建自己的推理基础设施</a>——与本文“用模型造模型”的自举主题呼应。</li>
+<li><a href="../claude-faster/">我们如何在两周内把 claude.ai 提速约 3 倍</a>。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>本页为中文导读与评述，非翻译。原文：<a href="https://every.to/p/how-codex-happened" rel="noopener">Dan Shipper, “How Codex Happened”, Every, 2026-10-15</a>。正文在 Every 免费阅读（Free Read），完整访谈稿需 Every 付费会员/试用。文中英文短句均出自原文，引自相应受访者或作者。版权归 Every 及作者所有；如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://every.to/p/how-codex-happened" rel="noopener">every.to/p/how-codex-happened</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
