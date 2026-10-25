@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AvatarScript：写一段带“导演批注”的文字，得到会对口型、会演戏的头像视频（项目导读）</title>
+<meta name="description" content="receptron/avatarscript 项目导读：标准头像包（avatar.json）+ 脚本语言（.avs，[emotion:happy]、<nod>、[pause:300ms]）+ 由 TTS 驱动的编译器与渲染器，把一张插画头像和一段文字变成口型同步、带表情与动作的 MP4/透明 WebM。ElevenLabs/OpenAI/Gemini 统一 TTS 接口、本地强制对齐（中位误差 19 ms）、日英口型、字幕与布局、MulmoCast 集成；MIT 许可，附 README 全文中文翻译。" />
+<meta property="og:image" content="images/ani-cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.shots figure{margin:0}
+.hero-tags .tag{margin-right:.35em}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-26">2026.10.26</time></p>
+<h1 class="za-title">AvatarScript：写一段带“导演批注”的文字，得到会对口型、会演戏的头像视频</h1>
+<p class="za-sub" lang="en" data-za-gen>Turn an avatar and text into a lip-synced, acted video</p>
+<p class="za-meta" data-za-gen><span>来源 · receptron/avatarscript（GitHub）</span><span>收录 · 2026-10-26</span><span><a href="https://github.com/receptron/avatarscript" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/receptron/avatarscript" rel="noopener">github.com/receptron/avatarscript</a> · 组织 <a href="https://github.com/receptron" rel="noopener">receptron</a>（MulmoCast、GraphAI 的开发方）· npm：<a href="https://www.npmjs.com/package/avatarscript" rel="noopener">avatarscript</a> · MIT 许可</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>给它一个“头像包”（一张拆好图层的插画）和一段文字，文字里用 <code>[emotion:happy]</code>、<code>&lt;nod&gt;</code>、<code>[pause:300ms]</code> 这样的批注写好情绪、动作和停顿，它就调用 TTS 合成语音、算出每个字的发音时刻，再逐帧渲染出口型同步、会点头会惊讶的视频。</div>
+
+<p class="hero-tags"><span class="tag">★ 12 stars</span> <span class="tag">3 forks</span> <span class="tag">TypeScript</span> <span class="tag">MIT</span> <span class="tag">v0.5.0</span> <span class="tag">Node 22.18+ · ffmpeg</span> <span class="tag">ElevenLabs / OpenAI / Gemini</span></p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-26 01:00（UTC+8）。仓库建于 2026-10-06 01:24（UTC+8），最后推送 2026-10-14 09:32（UTC+8），最新提交 <code>f8a3fbc</code>；npm 包当前版本 0.5.0（2026-10-14）。</p>
+
+<figure><img src="images/ani-cover.webp" alt="仓库自带的示例头像 Ani：金色双马尾、蓝眼睛、黑色露肩上衣的动漫风少女，微笑露齿，浅灰蓝背景" loading="lazy"><figcaption>仓库自带的示例头像 <code>avatars/ani</code>（© 2026 receptron，MIT）。本站用其 <code>built/base.png</code> 底图叠加 <code>eye*_ball/low/crease/lash</code> 图层按 <code>layers.json</code> 坐标合成，衬上渲染器默认背景色 <code>#e9edf2</code>，压缩为 WebP。底图本身是“没有眼睛”的——眼睛、眨眼和嘴型都在运行时由引擎叠加。</figcaption></figure>
+
+<h2 id="what">它是什么</h2>
+<p>AvatarScript 想解决的是“让一个头像替你开口说话”这件事里最费工的部分：口型对齐、表情切换、动作卡点。它把流程拆成三件可以单独检查、单独修改的东西：</p>
+<pre><code>头像包 + 文字 ──► AvatarScript (.avs) ──► 编译器 + TTS ──► score.json + 音频 ──► video.mp4</code></pre>
+<ol>
+<li><strong>标准头像包</strong>（<code>avatar.json</code>）：一个头像必须声明什么（运行时、资源、情绪/动作能力、默认声音、版权），才能在不关心它内部怎么做出来的前提下被驱动。</li>
+<li><strong>脚本语言</strong>（<code>.avs</code>）：就是你要说的原文，加上行内“导演批注”——情绪、动作、停顿，未来还有视线与重音。设计上由 LLM 来写、人来改。</li>
+<li><strong>编译器与渲染器</strong>：合成语音，把脚本按语音的实际时间轴解析成带时间戳的<strong>乐谱</strong>（score），再用无头 Chrome 逐帧驱动头像引擎，管道给 ffmpeg 出片。</li>
+</ol>
+<p>第一个运行时是 shinshin86（Yuki Shindo）的 <a href="https://github.com/shinshin86/mesh-avatar-studio" rel="noopener">mesh-avatar-studio</a> 里的 2D 网格头像引擎 <a href="https://www.npmjs.com/package/mesh-avatar" rel="noopener">mesh-avatar</a>：它能把一张插画变成会眨眼、会转头、有表情和元音口型的 2D 网格头像，AvatarScript 已把它打包在 npm 包里，装完即可渲染。</p>
+
+<h2 id="points">五个要点</h2>
+<ol>
+<li><strong>“表演交给 LLM，时间交给代码”。</strong>设计目标里写得很明白：LLM 决定情绪、手势、视线、重音这些<em>表演</em>，确定性代码决定<em>时间</em>，从不让 LLM 输出时间戳。脚本里的锚点是纯文本中的字符偏移，所以对日文、中文这种没有空格的语言同样成立。</li>
+<li><strong>原话不改一个字。</strong>去掉批注后的纯文本必须与输入完全一致，否则编译器拒绝；TTS 若“多念了词”（比如把风格提示念出来），会通过对齐检测到、重试一次，仍不对就报错。</li>
+<li><strong>一个 TTS 接口，三家供应商。</strong><code>createTts({ provider, … })</code> 统一返回 24 kHz 单声道采样 + 每个字符的 <code>{start, end}</code>。ElevenLabs 自带字符时间戳（再对照音频校正）；OpenAI、Gemini 只给音频，就在本地用 wav2vec2 音素模型（ONNX）做<strong>强制对齐</strong>——与 ElevenLabs 自带时间对比，中位误差 19 ms（一帧模型 20 ms）。</li>
+<li><strong>可复现、可审阅的每一步。</strong>脚本、乐谱、音频、视频都是落盘文件；语音按段缓存，改一个动作或一句话不会重新请求整篇；渲染带随机种子，同一乐谱 + 种子 + 头像得到同一视频。</li>
+<li><strong>为 MulmoCast 而生。</strong>它首先是 Node 库，CLI 只是薄壳。<code>compileTimeline</code> 接收宿主已经合成好的音频（MulmoCast 自己做 TTS），只负责“加一张会说话的脸”，可输出透明背景的 WebM 头像轨道叠到幻灯片视频上。</li>
+</ol>
+
+<h2 id="how">工作原理：口型怎么对上</h2>
+<ol>
+<li>每段文本用 ElevenLabs <code>/with-timestamps</code>（默认 <code>eleven_v3</code>，并带 <code>language_code</code>）合成，拿到每个字符的发音时刻。</li>
+<li>对照音频校正时间：测出起音、收音和标点处的静音，把字符时间轴拉伸对齐（v3 在情绪标签后可能晚 0.4 秒起音）。</li>
+<li>字符变成视素（viseme）：日文经 kuromoji 读音转成假名音拍，拉丁字母按拼写规则，其他字符走通用开/合。</li>
+<li>渲染器在无头 Chrome 里逐帧驱动网格引擎，固定随机种子，帧流管道给 ffmpeg。</li>
+</ol>
+<figure><img src="images/ani-mouths.webp" alt="同一张笑眼脸叠加四种嘴型图层：张大的 a、扁平露齿的 i、圆形的 o、半张的 a" loading="lazy"><figcaption>Ani 的嘴型精灵（从左到右 <code>mouth_a</code>、<code>mouth_i</code>、<code>mouth_o</code>、<code>mouth_a_half</code>），配 <code>eyes_smile</code> 笑眼，按 <code>sprites.json</code> 坐标由本站合成。设计文档把 15 个 Oculus/Meta 视素映射到头像实际拥有的嘴型：Ani 属于“第 1 档”（画好了 a/i/o 等元音嘴）。</figcaption></figure>
+
+<h2 id="script">脚本长什么样</h2>
+<pre><code>---
+lang: en
+---
+[emotion:happy] Hi everyone! &lt;nod&gt; I'm Ani.
+[pause:300ms]
+Today I'd like to show you a new way to turn text into video.
+[emotion:surprised] You just write the words, and I speak them! &lt;surprise&gt;
+[emotion:relaxed] Let's get started.</code></pre>
+<p class="caption">仓库自带的 <code>examples/hello-en.avs</code>（MIT）。情绪有 <code>neutral happy sad angry surprised relaxed</code> 六种（沿用 VRM 1.0 预设名）；网格头像的动作有 <code>nod tilt think giggle surprise shy no wink greet</code> 等。字幕、背景、头像位置也写在 front matter 里。</p>
+
+<h2 id="quickstart">快速上手</h2>
+<pre><code>npm install avatarscript
+npm install onnxruntime-node          # 仅 --tts openai / gemini 需要（对齐用，约 290 MB）
+echo "ELEVENLABS_API_KEY=..." &gt; .env
+
+npx avatarscript make \
+  --avatar https://raw.githubusercontent.com/receptron/mulmocast-media/main/avatars/ani \
+  --script example:hello-ja --tts elevenlabs -o out/hello-ja.mp4</code></pre>
+<ul>
+<li>没有 API key 也能先跑通：<code>--tts mock</code> 用“嗡嗡声”替代语音，走完整个流程。</li>
+<li>输出 <code>out/hello-ja.wav</code>、<code>.score.json</code>、<code>.mp4</code>；<code>compile</code> 与 <code>render</code> 也可分开执行。</li>
+<li>在仓库克隆目录里 <code>npx avatarscript</code> 会失败（npx 找到的是项目本身），要用 <code>yarn avatarscript make …</code> 或 <code>node dist/cli.js</code>。</li>
+<li>只有文字会发给 TTS 服务；头像图片留在本地，渲染页面没有网络访问；对齐模型（635 MB，首次下载）也完全在本机运行。</li>
+</ul>
+
+<h2 id="status">现状与边界</h2>
+<p>早期但端到端可用：三家 TTS、日英口型、情绪与动作、MP4 / 透明 WebM / ProRes 输出、字幕。还没做的：自动写脚本的 LLM 步骤、视线与重音的渲染（语法已能解析）。v1 不做音频输入（录音驱动）、实时流式和 3D 头像。另一个值得注意的细节是许可意识：设计阶段放弃了 Meta 的 MMS 对齐器，理由是其权重为 CC-BY-NC；头像包的 <code>license</code> 字段会随渲染写进元数据。</p>
+
+<h2 id="take">对我们的启发</h2>
+<ul>
+<li><strong>“代码即影片”的又一种形态。</strong>本站收录过用代码画水墨、用 Claude 渲染城市史的项目；AvatarScript 则把“出镜讲解人”也变成了一份可 diff 的文本文件——改一句台词、换一个动作，只重算那一段。</li>
+<li><strong>把 LLM 放在它擅长的位置。</strong>让 LLM 写“演什么”，让对齐与规则算“什么时候演”，是一个可以迁移到其他多模态生成管线的分工模式。</li>
+<li><strong>中文还需要补一层。</strong>当前 G2P 只做了日文与拉丁字母，中文会落到“通用开/合”口型；但 OpenAI/Gemini 路线的音素对齐与字符锚点设计对中文是友好的，补一个拼音→视素的模块即可。</li>
+</ul>
+
+<h2 id="appendix">附录：README 全文中文翻译</h2>
+<p class="caption">仓库采用 MIT 许可（Copyright (c) 2026 receptron），以下为 README.md 的全文翻译（截至提交 <code>f8a3fbc</code>）。代码块与命令保持原样，仅翻译注释。许可声明原文附在本节末尾。</p>
+<blockquote>
+<h3>AvatarScript</h3>
+<p>把一个头像和一段文字变成口型同步、带表演的视频：</p>
+<pre><code>avatar package + text ──► AvatarScript (.avs) ──► compiler + TTS ──► score.json + audio ──► video.mp4</code></pre>
+<p>AvatarScript 定义了一种标准头像包、一种用于指挥头像说话、情绪和手势的脚本语言，以及生成视频的编译器和渲染器。第一个运行时是网格头像引擎，即 <a href="https://github.com/shinshin86/mesh-avatar-studio" rel="noopener">mesh-avatar-studio</a> 中的 <a href="https://www.npmjs.com/package/mesh-avatar" rel="noopener">mesh-avatar</a>。设计与里程碑见 <a href="https://github.com/receptron/avatarscript/blob/main/PLAN.md" rel="noopener">PLAN.md</a>。</p>
+
+<h4>状态</h4>
+<p>尚处早期，但已端到端可用：来自 ElevenLabs、OpenAI 或 Gemini 的语音，日语和英语口型同步，情绪和动作，用网格引擎渲染为 MP4。尚未实现：编写脚本的 LLM 步骤，视线与重音的渲染。</p>
+
+<h4>安装</h4>
+<p>需要 Node.js 22.18+ 和 ffmpeg。包内已含网格头像引擎，渲染无需其他任何东西。</p>
+<pre><code>npm install avatarscript
+npm install onnxruntime-node             # 仅用于 --tts openai 或 gemini（通过对齐获取时间，约 290 MB）
+echo "ELEVENLABS_API_KEY=..." &gt; .env    # 从环境变量或 ./.env 读取</code></pre>
+
+<h4>命令行</h4>
+<pre><code>npx avatarscript make --avatar https://raw.githubusercontent.com/receptron/mulmocast-media/main/avatars/ani \
+  --script example:hello-ja --tts elevenlabs -o out/hello-ja.mp4</code></pre>
+<p><code>--script example:&lt;name&gt;</code> 读取包内附带的示例脚本（<a href="https://github.com/receptron/avatarscript/tree/main/examples" rel="noopener"><code>examples/*.avs</code></a>：<code>hello-ja</code>、<code>hello-en</code>、<code>subtitles-ja</code>）；否则 <code>--script</code> 接受你自己的 <code>.avs</code> 或纯 <code>.txt</code> 文件。</p>
+<blockquote><p><strong><code>npx avatarscript</code> 在本仓库的克隆目录中无法使用。</strong>npx 找到的是项目本身而不是已发布的包，而一个包永远不会被链接进它自己的 <code>node_modules/.bin</code>，所以即使执行过 <code>yarn build</code>，也会报 <code>sh: avatarscript: command not found</code>。请在任何其他文件夹中运行，或在克隆目录中使用以下之一：</p>
+<ul>
+<li><code>yarn avatarscript make ...</code>：从源码运行 CLI</li>
+<li><code>node dist/cli.js make ...</code>：<code>yarn build</code> 后运行构建好的 CLI</li>
+<li><code>npx avatarscript@latest make ...</code>：从 npm 获取已发布的包</li>
+</ul></blockquote>
+<p>这会写出 <code>out/hello-ja.wav</code>、<code>out/hello-ja.score.json</code> 和 <code>out/hello-ja.mp4</code>。合成的语音按段缓存在 <code>out/.tts-cache/</code>，所以修改动作或某一句话不会重新请求整篇脚本。<code>--tts mock</code> 用一个嗡嗡作响的替身声音离线运行整个流程。各步骤也可以用 <code>compile</code> 和 <code>render</code> 分开运行；运行 <code>npx avatarscript --help</code> 查看全部选项（声音、模型、尺寸、帧率、背景、种子）。</p>
+<p><code>--avatar</code> 接受一个 mesh-avatar-studio 项目文件夹（<code>rig.json</code> + <code>built/</code>）或一个带 <code>avatar.json</code> 清单的文件夹，可以在磁盘上，也可以是 http(s) URL。仓库包含一个示例头像 <a href="https://github.com/receptron/avatarscript/tree/main/avatars/ani" rel="noopener"><code>avatars/ani</code></a>（不在 npm 包中）；上面的 URL 是同一个头像，发布在 <a href="https://github.com/receptron/mulmocast-media/tree/main/avatars" rel="noopener">mulmocast-media</a> 中，因此无需克隆即可使用。</p>
+<p>从 URL 加载时，包里的小 JSON 文件每次都会获取，图片则按头像的每次构建缓存在 <code>~/.cache/avatarscript/avatars/</code>（或 <code>$AVATARSCRIPT_AVATAR_DIR</code>），因此头像更新后会重新获取。只获取包文件夹内的文件，每个最多 32 MB，且图片必须是 PNG。重定向只在同源内跟随，所以请使用直接的文件 URL（<code>raw.githubusercontent.com</code>，而不是 <code>github.com/.../raw/...</code>）。在 URL 中用某个提交代替 <code>main</code> 即可锁定版本。只有文字会发送给 ElevenLabs；头像图片留在本地，渲染页面没有网络访问。</p>
+
+<h4>库</h4>
+<p><a href="https://github.com/receptron/avatarscript/blob/main/examples/make-video.ts" rel="noopener"><code>examples/make-video.ts</code></a> 是一个完整、可运行的示例。简而言之：</p>
+<pre><code>import { loadAvatar, parseScript, compile, render, createTts, toWav } from "avatarscript";
+import { writeFile } from "node:fs/promises";
+
+const avatar = await loadAvatar("path/to/avatar"); // 或头像文件夹的 https:// URL
+const tts = createTts({ provider: "elevenlabs", cacheDir: "out/.tts-cache" }); // key 取自 ELEVENLABS_API_KEY
+const { score, audio } = await compile(parseScript("[emotion:happy] Hello! &lt;nod&gt;"), tts, { lang: "en", audioName: "hello.wav" });
+await writeFile("out/hello.wav", toWav(audio));
+await render({ avatar, score, audioPath: "out/hello.wav", out: "out/hello.mp4" });</code></pre>
+<p><code>compile</code> 返回带时间的乐谱和音频；<code>render</code> 把乐谱变成视频。<code>ScoreSchema</code> 和 <code>AvatarManifestSchema</code>（zod）用于校验从文件读入的乐谱和清单。</p>
+
+<h5>已有的语音（<code>compileTimeline</code>）</h5>
+<p>自己做文字转语音的宿主（MulmoCast 就是）把现有音频文件放到时间轴上；不调用 TTS，时间来自强制对齐（需要 <code>onnxruntime-node</code>）：</p>
+<pre><code>import { avatarAspect, compileTimeline, loadAvatar, render, toWav } from "avatarscript";
+
+const { score, audio } = await compileTimeline(
+  [
+    { text: "みなさん、こんにちは！", audio: "beat0.mp3", start: 1.0, emotion: "happy", motions: [{ motion: "nod", at: "こんにちは" }] },
+    { text: "スライドの上で説明します。", audio: "beat1.mp3", start: 4.2 },
+  ],
+  { lang: "ja", duration: 9, view: { background: "transparent" } },
+);
+await writeFile("voice.wav", toWav(audio)); // 让头部随声音运动
+const avatar = await loadAvatar("path/to/avatar"); // 或头像文件夹的 https:// URL
+const height = 446, width = Math.round(height * avatarAspect(avatar.rig) / 2) * 2;
+// 一条连续、透明的头像轨道，只有画面，用于叠加到另一段视频上
+await render({ avatar, score, audioPath: "voice.wav", audio: false, out: "avatar.webm", width, height });</code></pre>
+<p><code>motions[].at</code> 指定文本中的词：动作从说到这些词的地方开始。<code>avatarAspect</code> 给出头像的宽 ÷ 高，用于设定一条只容纳头像的轨道尺寸。对于叠加在其他视频上的轨道，请同时给 <code>avatarAspect(rig, 0)</code> 和 <code>render</code> 传 <code>padTop: 0</code>：有些 rig 会裁掉图像平直的上边缘，只有头像顶到画面上沿时这条边才会被隐藏。（用 <code>avatar-y</code>/<code>avatar-scale</code> 放在画面内部时，整张图像本来就会完整显示。）在 ffmpeg 中用 <code>-c:v libvpx-vp9</code> 解码 WebM 以保留其 alpha 通道。</p>
+
+<h5>文字转语音</h5>
+<p>所有供应商只有一个 API：<code>createTts({ provider, model?, voice?, apiKey?, options?, cacheDir? })</code>。供应商是一个参数，它原生返回的任何内容都会被规范化，所以供应商或模型变化时应用代码不必改动：</p>
+<ul>
+<li><code>synthesize(request)</code> 总是返回 <code>Speech</code>：采样率为 <code>SPEECH_SAMPLE_RATE</code>（24 kHz）的单声道采样，以及文本中每个字符一个 <code>{ start, end }</code>。其他采样率会被重采样；与文本不匹配的时间信息视为错误。</li>
+<li><code>model</code> 和 <code>voice</code> 默认取供应商的默认值；<code>apiKey</code> 默认取其环境变量。供应商特有的设置放在 <code>options</code> 中，由该供应商检查。</li>
+<li>目前的供应商：
+<table>
+<thead><tr><th>provider</th><th>key</th><th>时间信息</th><th>语音情绪</th><th>options</th></tr></thead>
+<tbody>
+<tr><td><code>elevenlabs</code></td><td><code>ELEVENLABS_API_KEY</code></td><td>ElevenLabs 自带，并对照音频校正</td><td>v3 音频标签</td><td><code>emotionTags</code>、<code>seed</code></td></tr>
+<tr><td><code>openai</code></td><td><code>OPENAI_API_KEY</code></td><td>强制对齐</td><td><code>instructions</code>（gpt-4o-mini-tts）</td><td><code>instructions</code>、<code>emotionInstructions</code>、<code>speed</code></td></tr>
+<tr><td><code>gemini</code></td><td><code>GEMINI_API_KEY</code></td><td>强制对齐</td><td>导演备注</td><td><code>instructions</code>、<code>emotionInstructions</code></td></tr>
+<tr><td><code>mock</code></td><td>—</td><td>精确，但是编造的</td><td>—</td><td>—</td></tr>
+</tbody></table></li>
+<li>OpenAI 和 Gemini 只返回音频。由于文本已知，其时间信息通过<strong>强制对齐</strong>求得：一个音素模型（<a href="https://huggingface.co/facebook/wav2vec2-lv-60-espeak-cv-ft" rel="noopener">wav2vec2-lv-60-espeak-cv-ft</a>，Apache-2.0，以 <a href="https://huggingface.co/sadda-speech/wav2vec2-espeak-ctc" rel="noopener">ONNX</a> 形式）通过 onnxruntime 在本地运行，其音素被归并为几个大类，再把文本（来自 kuromoji 读音的假名，或拼写）拟合上去。在 8 个句子上对照 ElevenLabs 自带的时间测量：中位误差 19 ms（模型一帧为 20 ms）；79%（日语）和 91%（英语）的字符误差在 50 ms 以内。</li>
+<li>模型（635 MB）只从 Hugging Face 下载一次，存入 <code>~/.cache/avatarscript/models</code>（或 <code>AVATARSCRIPT_MODEL_DIR</code>）。对齐时音频和文本都不会离开本机。</li>
+<li><strong>说话风格</strong>（openai、gemini）：<code>instructions</code> 为每一句描述角色（“你是一个精力充沛的 7 岁男孩。用高亢的小孩嗓音。”），后面接上该句情绪对应的风格——默认的，或你在 <code>emotionInstructions</code> 中自定义的（<code>{ "happy": "…" }</code>）。Gemini 的提示词总是 <code>### DIRECTOR'S NOTES</code>（风格）后接 <code>#### TRANSCRIPT</code>（文本），Gemini 会遵循这种形式而不把它念出来；在 <code>gemini-2.5-flash-preview-tts</code> 上单独发送文本时，如果是问句会失败。</li>
+<li>没有说出该文本的语音——供应商念了多余的词，例如它的指令——会从对齐中被检测出来，重新请求一次，否则报错。</li>
+<li>以 503 或 429（模型过载）响应的 Gemini 请求会重试三次，间隔 1、2、4 秒。</li>
+</ul>
+<p>头像可以在 <code>avatar.json</code> 中按供应商指定默认声音、模型和供应商选项，让角色的说话风格随头像一起走：</p>
+<pre><code>"voice": {
+  "gemini": { "voice": "Puck", "options": { "instructions": "You are an energetic 7-year-old boy…" } },
+  "openai": { "voice": "verse", "options": { "instructions": "…", "emotionInstructions": { "happy": "…" } } },
+  "elevenlabs": { "voice": "&lt;voice id&gt;", "model": "eleven_v3" }
+}</code></pre>
+<p>CLI 的 <code>--voice</code> 和 <code>--model</code> 会覆盖头像中的设置；头像的 options 则原样使用。</p>
+
+<h4>脚本</h4>
+<p>脚本就是要说的文字，加上行内的指挥批注。纯 <code>.txt</code> 文件按原样朗读。</p>
+<pre><code>---
+lang: ja
+---
+[emotion:happy] みなさん、こんにちは！&lt;nod&gt; アニです。
+[pause:300ms]
+[emotion:surprised] テキストを書くだけで、私がしゃべるんです！&lt;surprise&gt;</code></pre>
+<p class="caption">（示例台词大意：“大家好！我是 Ani。”“只要写文字，我就会说出来！”）</p>
+<table>
+<thead><tr><th>语法</th><th>含义</th></tr></thead>
+<tbody>
+<tr><td><code>[emotion:NAME]</code></td><td>从此处起的情绪：<code>neutral happy sad angry surprised relaxed</code>；使用 <code>eleven_v3</code> 时，语音会获得对应的情绪标签</td></tr>
+<tr><td><code>[pause:300ms]</code>、<code>[pause:1.2s]</code></td><td>静音</td></tr>
+<tr><td><code>&lt;motion&gt;</code></td><td>在下一个被说出的字符处播放一个动作（若在行尾：在该行结束时）。网格头像：<code>nod tilt think giggle surprise shy no wink greet</code> 以及待机动作</td></tr>
+<tr><td><code>[gaze:left]</code>、<code>*word*</code></td><td>能解析，尚未渲染</td></tr>
+<tr><td><code>\[ \&lt; \* \\</code></td><td>字面字符</td></tr>
+<tr><td>front matter</td><td><code>lang</code>（默认：根据文本检测）</td></tr>
+</tbody></table>
+
+<h4>字幕、背景与位置</h4>
+<p>这些都写在脚本的 front matter 中；CLI 参数（<code>--subtitles</code>、<code>--no-subtitles</code>、<code>--background</code>、<code>--avatar-x</code>、<code>--avatar-y</code>、<code>--avatar-scale</code>）以及库的 <code>compile</code> / <code>render</code> 选项（<code>subtitles</code>、<code>view</code>）会覆盖它们。</p>
+<pre><code>---
+lang: ja
+subtitles: on
+subtitle-font: Hiragino Mincho ProN, Noto Serif CJK JP, serif
+subtitle-size: 6%
+subtitle-color: "#fff8e7"
+subtitle-outline: "#5a2a14"
+subtitle-background: rgba(0, 0, 0, 0.35)
+subtitle-position: bottom
+background: stage.png
+avatar-x: 68%
+avatar-scale: 85%
+---</code></pre>
+<table>
+<thead><tr><th>键</th><th>含义</th><th>默认值</th></tr></thead>
+<tbody>
+<tr><td><code>subtitles</code></td><td><code>on</code> 或 <code>off</code></td><td><code>off</code></td></tr>
+<tr><td><code>subtitle-font</code></td><td>CSS 字体族列表，或字体文件（<code>.ttf</code>、<code>.otf</code>、<code>.woff</code>、<code>.woff2</code>）</td><td>Hiragino / Noto CJK / Yu Gothic, sans-serif</td></tr>
+<tr><td><code>subtitle-size</code></td><td><code>40px</code>，或视频高度的比例（<code>6%</code>）</td><td><code>5.5%</code></td></tr>
+<tr><td><code>subtitle-weight</code></td><td><code>normal</code> 或 <code>bold</code></td><td><code>bold</code></td></tr>
+<tr><td><code>subtitle-color</code>、<code>subtitle-outline</code>、<code>subtitle-background</code></td><td>CSS 颜色；<code>none</code> 关闭描边或背景</td><td>白色、黑色、<code>none</code></td></tr>
+<tr><td><code>subtitle-position</code></td><td><code>bottom</code>、<code>top</code> 或 <code>middle</code></td><td><code>bottom</code></td></tr>
+<tr><td><code>subtitle-margin</code></td><td>距边缘的距离，<code>px</code> 或高度的 <code>%</code></td><td><code>6%</code></td></tr>
+<tr><td><code>subtitle-max-width</code></td><td>占视频宽度的比例；更长的行会折成长度均匀的几行</td><td><code>90%</code></td></tr>
+<tr><td><code>background</code></td><td>CSS 颜色、<code>transparent</code>（或任何带 alpha 的颜色），或图片文件（<code>.png</code>、<code>.jpg</code>、<code>.webp</code>，相对于脚本路径；铺满画面）</td><td><code>#e9edf2</code></td></tr>
+<tr><td><code>avatar-x</code></td><td>头像的水平中心，占宽度的 %</td><td><code>50%</code></td></tr>
+<tr><td><code>avatar-y</code></td><td>头像的下边缘，占高度的 %</td><td><code>100%</code></td></tr>
+<tr><td><code>avatar-scale</code></td><td>头像的高度，占高度的 %</td><td><code>100%</code></td></tr>
+</tbody></table>
+<p>字幕每次显示一句，按语音计时；乐谱总是带有这些 <code>captions</code>，即使不绘制。透明背景需要能保留 alpha 的输出格式：<code>-o video.webm</code>（VP9）或 <code>-o video.mov</code>（ProRes 4444）；MP4（H.264）会被拒绝。按字体族名指定的字体必须安装在渲染视频的机器上（Linux 通常需要 Noto CJK 来显示日文）；字体文件则总是可用。</p>
+
+<h4>口型同步如何工作</h4>
+<ol>
+<li>每一段都用 ElevenLabs <code>/with-timestamps</code> 合成（默认模型 <code>eleven_v3</code>，带 <code>language_code</code>），它会报告每个字符何时被说出。</li>
+<li>对照音频校正时间：测量语音的起止点以及标点处的静音，并拉伸字符时间轴使之匹配。（v3 的时间在情绪标签之后可能晚开始最多 0.4 秒。）</li>
+<li>字符变成视素：日语经由假名音拍（汉字读音来自 kuromoji），拉丁文字的单词经由拼写规则，其他一切经由通用的张/合。</li>
+<li>渲染器在无头 Chrome 中逐帧驱动网格引擎，使用固定种子使渲染可精确重复，并把帧通过管道送给 ffmpeg。</li>
+</ol>
+
+<h4>开发</h4>
+<p>从源码运行（<code>node src/cli.ts …</code>）时，会从 <a href="https://www.npmjs.com/package/mesh-avatar" rel="noopener">mesh-avatar</a> 开发依赖中打包引擎，该依赖在 package.json 中锁定到确切版本。要在发布前试用引擎改动，把 <code>--engine &lt;dir&gt;</code> / <code>AVATARSCRIPT_MESH_ENGINE</code> 指向一个 <a href="https://github.com/shinshin86/mesh-avatar-studio" rel="noopener">mesh-avatar-studio</a> 检出目录。</p>
+<pre><code>yarn install
+yarn format   # Prettier
+yarn lint     # ESLint，包括类型感知规则
+yarn test
+yarn typecheck
+yarn build    # dist/，包括从 mesh-avatar 打包的引擎
+scripts/smoke.sh avatars/ani   # 打包、安装、渲染（与 CI 相同）</code></pre>
+<p>CI（<code>.github/workflows/ci.yml</code>）在 Ubuntu 和 macOS 上运行 Prettier、ESLint、类型检查与构建、测试，以及上面的包冒烟测试。</p>
+<p><code>yarn build</code> 会把引擎的包版本记录在 <code>dist/engine/source.json</code> 中。</p>
+
+<h4>许可</h4>
+<p><a href="https://github.com/receptron/avatarscript/blob/main/LICENSE" rel="noopener">MIT</a>。打包的网格头像引擎（<code>dist/engine/</code>）是 <a href="https://github.com/shinshin86/mesh-avatar-studio" rel="noopener">mesh-avatar-studio</a> 中的 <a href="https://www.npmjs.com/package/mesh-avatar" rel="noopener">mesh-avatar</a>，MIT 许可，© Yuki Shindo；其许可证以 <code>dist/engine/LICENSE.mesh-avatar</code> 附带。示例头像 <code>avatars/ani</code>（插画及构建出的图层）© 2026 receptron，采用同一 MIT 许可。</p>
+</blockquote>
+<details><summary>MIT 许可声明原文（LICENSE）</summary>
+<pre><code>MIT License
+
+Copyright (c) 2026 receptron
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre></details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/receptron/avatarscript" rel="noopener">receptron/avatarscript</a>，作者 <a href="https://github.com/receptron" rel="noopener">receptron</a>，MIT 许可，Copyright (c) 2026 receptron。README 译文、示例脚本与短代码片段依 MIT 许可转载并保留版权与许可声明；内置引擎 mesh-avatar 为 © Yuki Shindo（MIT）。配图由本站用仓库内 MIT 许可的示例头像 <code>avatars/ani</code> 图层合成（2026-10-26），未下载或转载任何视频。统计数据取自公开 GitHub API（2026-10-26）。导读、要点、启发为本站整理。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/receptron/avatarscript" rel="noopener">github.com/receptron/avatarscript</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

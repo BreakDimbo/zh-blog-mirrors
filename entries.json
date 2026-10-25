@@ -538,5 +538,15 @@
     "type": "导读",
     "subtitle": "OpenUSD on the Hugging Face Hub & NVIDIA SimReady Central",
     "original_url": "https://x.com/slashui/status/2113408986406129844"
+  },
+  {
+    "slug": "receptron-avatarscript",
+    "title": "AvatarScript：写一段带“导演批注”的文字，得到会对口型、会演戏的头像视频",
+    "desc": "receptron/avatarscript 项目导读：标准头像包（avatar.json）+ 脚本语言（.avs：[emotion:happy]、<nod>、[pause:300ms]）+ TTS 驱动的编译器与渲染器，把一张插画头像和一段文字变成口型同步、带表情动作的 MP4 / 透明 WebM。五个要点（表演交给 LLM、时间交给代码；原话不改一字；ElevenLabs/OpenAI/Gemini 统一接口 + 本地 wav2vec2 强制对齐中位误差 19 ms；可复现可缓存；为 MulmoCast 叠加头像轨道）、口型原理、快速上手、现状与启发；示例头像 Ani 合成图 webp。MIT，附 README 全文中文翻译。",
+    "source": "receptron/avatarscript（GitHub）",
+    "date": "2026-10-26",
+    "type": "导读",
+    "subtitle": "Turn an avatar and text into a lip-synced, acted video",
+    "original_url": "https://github.com/receptron/avatarscript"
   }
 ]
