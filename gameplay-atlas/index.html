@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gameplay Atlas · 游戏玩法灵感库：280 个玩法机制的拆解图鉴（导读）</title>
+<meta name="description" content="Gameplay Atlas（游戏玩法灵感库，loopyhop）导读：以「一个条目 = 一个玩法机制」为单位，把 280 个机制分成 28 组，每条给出核心循环、一回合示例、设计取舍、最小原型建议、试玩观察问题、跨游戏对照与组合提案；面向个人开发者与小团队。作者 五分之1蓝 @onefifthblue。">
+<meta property="og:title" content="Gameplay Atlas · 游戏玩法灵感库 导读">
+<meta property="og:image" content="atlas-home.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.ga-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:1.2em 0}
+.ga-pair figure{margin:0}
+.ga-pair img{width:100%;height:auto;border-radius:6px;border:1px solid rgba(127,127,127,.25)}
+@media (max-width:640px){.ga-pair{grid-template-columns:1fr}}
+.ga-loop{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:.6em 0 1em;padding:0;list-style:none}
+.ga-loop li{border:1px solid rgba(127,127,127,.35);border-radius:6px;padding:.25em .6em;font-size:.92em}
+.ga-loop li+li::before{content:"→ ";opacity:.55}
+.ga-go{display:inline-block;margin:.4em 0 1em;padding:.55em 1.1em;border:1.5px solid currentColor;border-radius:999px;font-weight:600;text-decoration:none}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-26">2026.10.26</time></p>
+<h1 class="za-title">Gameplay Atlas · 游戏玩法灵感库：280 个玩法机制的拆解图鉴（导读）</h1>
+<p class="za-sub" lang="en" data-za-gen>Gameplay Atlas · A field guide to game mechanics</p>
+<p class="za-meta" data-za-gen><span>来源 · 五分之1蓝 @onefifthblue · loopyhop</span><span>收录 · 2026-10-26</span><span><a href="https://gameplayatlas.loopyhop.com/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">网站：<a href="https://gameplayatlas.loopyhop.com/" rel="noopener">gameplayatlas.loopyhop.com</a> · 作者 五分之1蓝 <a href="https://x.com/onefifthblue" rel="noopener">@onefifthblue</a>（独立开发者 / 一人公司）· <a href="https://x.com/onefifthblue/status/2113199407852401146" rel="noopener">发布帖</a>（2026-10-22）· 本页依据 2026-10-26 抓取的公开页面整理（站内「References checked」标注 2026-10-21 · 280 个机制）</p>
+<img class="cover" src="atlas-home.webp" alt="Gameplay Atlas 首页截图 封面" width="1280" height="843" loading="lazy"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>版权说明：</strong>Gameplay Atlas 是个人作者运营的产品网站，<strong>没有声明任何开源 / 知识共享许可</strong>；站内反复注明「游戏截图与商标归各自所有者，收录不代表授予复用许可」。因此本页是我们自己用中文写的<strong>导读 / 评述</strong>，<strong>不是翻译或镜像</strong>：只引用少量短句，示例条目只做概括；两张截图是我们对其公开页面的截屏，仅作说明之用（首页截图中的游戏画面版权归 ConcernedApe 等原游戏方）。内容版权归作者 五分之1蓝 @onefifthblue / loopyhop。原作者如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</div>
+
+<p><a class="ga-go" href="https://gameplayatlas.loopyhop.com/" rel="noopener">→ 打开原站 Gameplay Atlas（网站自带中文界面）</a></p>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#tldr">五个要点</a></li>
+<li><a href="#who">谁做的</a></li>
+<li><a href="#org">怎么组织的：28 组 · 280 个机制</a></li>
+<li><a href="#entry">一个条目长什么样（以「精准格挡」为例）</a></li>
+<li><a href="#rigor">它对「事实」和「编辑观点」的区分</a></li>
+<li><a href="#use">怎么用</a></li>
+<li><a href="#comment">评论</a></li>
+<li><a href="#related">本站相关</a></li>
+<li><a href="#license">来源与授权</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p>Gameplay Atlas 的中文名叫「游戏玩法灵感库」，副标题是 <em>A field guide to game mechanics</em>——一本「游戏机制野外图鉴」。它不按游戏、也不按类型归档，而是把<strong>单个玩法机制</strong>当作最小单元：每个条目只讲一件事，比如「季节种植窗口」「传送带走线」「精准格挡」「推箱子与位置陷阱」。首页口号是 <em>Unpack great play. Make something new.</em>，定位很明确：写给<strong>个人开发者和小团队</strong>，帮他们看懂一个机制的循环、知道可以调哪些旋钮，然后<strong>从一个很小的原型开始做</strong>。</p>
+<p>它是同一作者 loopyhop 系列的第二个站，前一个是游戏美术风格图鉴 <a href="https://gameartstyle.loopyhop.com/" rel="noopener">Game Art Style</a>（loopyhop.com 根域名目前就指向它）。一个管「长什么样」，一个管「怎么玩」。</p>
+
+<h2 id="tldr">五个要点</h2>
+<ul>
+<li><strong>一条一个机制，共 280 条、28 组：</strong>从种田、钓鱼、烹饪、采集、生存，到自动化、建造、经营、卡组构筑、三消合成、单位指挥、战斗、移动、射击、潜行、塔防、节奏、驾驶、成长、社交、合作、对话叙事，覆盖面很宽。</li>
+<li><strong>每条都是同一套结构：</strong>核心循环（通常 4 步「行动 → 反馈 → 下一个选择」）、一回合走查、玩家在权衡什么、「先做这个」的最小原型、范围最容易膨胀的地方、试玩时该观察的问题、设计旋钮、跨游戏实例对照、以及「可以和什么组合」的原创提案。</li>
+<li><strong>落脚点是原型而不是百科：</strong>每条都会告诉你「最小可玩范围」该多小——例如季节种植只要一个 10 天日历加两种生长期不同的作物；精准格挡只要两种可读的敌人攻击加一个判定。</li>
+<li><strong>事实与观点分开标注：</strong>实例都附玩法来源（官方手册 / 商店页优先，必要时用标明的社区 Wiki）和图片来源；截图是真实游戏截图、不用 AI 生成；组合提案明确标为「原创设计提案，并非现有功能」。</li>
+<li><strong>无需账号、纯本地：</strong>收藏、对比、语言和「工作台笔记」都存在浏览器本地；内置多语言（含中文），切换语言不会把内容发给外部翻译服务。可以把几条机制加进「对比」，也有「随机来一个」帮你撞灵感。</li>
+</ul>
+
+<h2 id="who">谁做的</h2>
+<p>作者是 X 用户 <strong>五分之1蓝（<a href="https://x.com/onefifthblue" rel="noopener">@onefifthblue</a>）</strong>，个人简介写着「独立开发者｜一人公司」，并在简介里同时挂着「游戏玩法灵感库」和「游戏美术风格库」两个链接；两站都在 <code>loopyhop.com</code> 名下，页脚署名 <em>Gameplay Atlas / loopyhop</em>。他平时主要聊独立游戏、Steam 与用 AI 做游戏，并提到自己用 AI 做过好几个小游戏、但「玩法上我自己都不想玩」——这大概就是做这个库的动机。</p>
+<p>发布帖（2026-10-22 17:22，新加坡时间）大意是：做游戏常常没灵感，又没时间大量玩游戏，所以做了这个以「玩法」为单元、收集并拆解各种游戏玩法、「从小原型开始」的网站。截至我们查看时该帖约 200+ 赞、270+ 收藏；随后前游戏策划 Rainy <a href="https://x.com/jiangjiangling/status/2114068890783490253" rel="noopener">@jiangjiangling</a> 的转介让它在中文游戏开发圈又传了一轮。</p>
+
+<h2 id="org">怎么组织的：28 组 · 280 个机制</h2>
+<p>左侧分类栏把 28 个机制组再归成 5 个大区（括号内为该组条目数，以站点 2026-10-21 的数据为准）：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>大区</th><th>机制组</th></tr></thead>
+<tbody>
+<tr><td>照料与维持<br><small>Care &amp; sustain</small></td><td>种田与生长（10）· 钓鱼与捕获（10）· 烹饪与食物（10）· 采集与挖矿（10）· 生存与需求（12）· 繁育与生态（8）</td></tr>
+<tr><td>生产与经营<br><small>Produce &amp; manage</small></td><td>制作与自动化（10）· 建造与空间（10）· 商业与贸易（11）· 收入与累积 / 放置（11）</td></tr>
+<tr><td>组合与分配<br><small>Combine &amp; allocate</small></td><td>背包与资源（10）· 谜题与推理（10）· 卡组与协同（12）· 三消与合成（10）· 单位协调（10）· 轮抽与分配（8）</td></tr>
+<tr><td>操控与应对<br><small>Control &amp; respond</small></td><td>战斗与战术（18）· 探索与路线（4）· 移动与穿越（15）· 瞄准与弹道（10）· 潜行与身份（11）· 防御与波次（9）· 节拍与时机（5）· 载具操控（5）</td></tr>
+<tr><td>成长与互动<br><small>Develop &amp; interact</small></td><td>成长与传承（12）· 社交与关系（10）· 合作与社交玩法（9）· 对话与事件选择（10）</td></tr>
+</tbody></table></div>
+<p>列表页可以搜索（「搜索动作、规则或设计问题」）、按「更多筛选」过滤，排序有「混合精选 / 新增优先 / 小原型优先 / 名称」几种。每张卡片显示参考游戏截图、机制名、一句话说明、原型规模标签（如「紧凑规则原型」或「需要联动系统」）、互动方式（如「单人决策」），展开即可看 4 步循环和两款实例游戏。每个条目也有独立 URL（如 <code>/mechanic/combat-timed-parry/</code>），站点提供 sitemap，方便分享和检索。</p>
+
+<h2 id="entry">一个条目长什么样（以「精准格挡」为例）</h2>
+<div class="ga-pair">
+<figure><img src="mechanic-timed-parry.webp" alt="Gameplay Atlas 条目页：Timed parries" width="1280" height="843" loading="lazy"><figcaption>条目页「Timed parries」（战斗与战术 · 机制 022）：顶部四个页签「理解 / 原型 / 真实案例 / 组合」，下面是核心循环与一回合走查。</figcaption></figure>
+<figure><img src="atlas-home.webp" alt="Gameplay Atlas 首页" width="1280" height="843" loading="lazy"><figcaption>首页：左侧 28 组分类，右侧卡片流；右上角 280 mechanics / 28 mechanic groups。</figcaption></figure>
+</div>
+<p>以下是我们对该条目结构的概括（非逐句翻译）：</p>
+<ul>
+<li><strong>一句话：</strong>把防御从「按住不放的状态」变成「有风险的时机决策」。</li>
+<li><strong>核心循环：</strong></li>
+</ul>
+<ol class="ga-loop"><li>识别攻击</li><li>等待时机窗口</li><li>按下格挡</li><li>利用破绽</li></ol>
+<ul>
+<li><strong>一回合走查：</strong>敌人举刀 → 玩家读动作、在接触前按防御 → 成功则敌人露出破绽、晚了就挨打（音效与特效要能区分结果）→ 反击，并判断下一刀节奏是否相同。</li>
+<li><strong>玩家在权衡：</strong>格挡能抢回主动，闪避更安全；陌生招式值不值得冒险？多段连击考验的是连续的节奏识别。</li>
+<li><strong>原型建议：</strong>先做两种可读的敌人攻击、一个格挡判定和清晰的成功反馈；范围膨胀点在于动画、命中与输入时机的对齐；试玩时问玩家「刚才是早了还是晚了」，看反馈能否指导下一次。</li>
+<li><strong>真实案例：</strong>《只狼》（弹刀并积累架势、连段需要连续弹反）对照《死亡细胞》（盾反，还能反弹飞行物）——站点把「值得注意的差异」单独写出来。</li>
+<li><strong>组合提案：</strong>把格挡输入先用在「烹饪完成时机」这类无伤的节奏机关上，教会时机后再到战斗里考验识别——标注为原创提案。</li>
+</ul>
+<p>另一个例子「季节种植窗口」也是同样套路：最小原型是一个 10 天日历 + 两种作物 + 收获日预览，并提醒先别加天气、病害等例外，否则玩家看不出决策为什么失败；实例对照《星露谷物语》和 Dinkum，结论是「借鉴时间窗口决策，而不是照搬收益表」。</p>
+
+<h2 id="rigor">它对「事实」和「编辑观点」的区分</h2>
+<p>About 页写得相当克制，这是它和一般「玩法清单」最不一样的地方：</p>
+<ul>
+<li>每个案例都有<strong>玩法来源和图片来源</strong>，优先开发者文档与官方商店，必要时用明确标注的社区 Wiki；版本可能不同，以链接资料和游戏本身为准。</li>
+<li>截图是<strong>真实游戏截图</strong>，「绝不是 AI 生成图或冒充机制的封面」；标为「System reference」的图只提供场景语境，<em>不能单独证明动态规则</em>。</li>
+<li>循环是对交互的抽象；取舍、参数效果和组合提案属于<strong>编辑分析</strong>，不代表原设计者的意图，也不证明提案组合真实存在。</li>
+<li>复杂度和互动方式描述的是<strong>建议中的最小原型</strong>，不是原游戏的规模或多人模式，也不是工期估算。</li>
+</ul>
+
+<h2 id="use">怎么用</h2>
+<ul>
+<li><strong>找灵感：</strong>从一个你喜欢的机制出发，用「下一个想法 / 随机来一个」顺藤摸瓜，或者把 2–3 个机制加进「对比」看它们的循环差异。</li>
+<li><strong>开原型：</strong>直接照「先做这个」那一段搭最小可玩版本，用「试玩观察」那一句当验收问题。</li>
+<li><strong>和 AI 协作：</strong>条目的循环、旋钮、范围风险写得很结构化，适合作为给 AI 编程助手的玩法需求描述——这与作者前一个站 Game Art Style「把风格名直接发给 AI」的思路一脉相承（这是我们的推断，原站并未这样宣传）。</li>
+<li><strong>团队沟通：</strong>每条有固定 URL，可以把「我们要的是这种格挡」直接贴给同事。</li>
+</ul>
+
+<h2 id="comment">评论</h2>
+<p>市面上的游戏设计资料大多按「游戏」或「类型」组织，Gameplay Atlas 把粒度压到<strong>单个机制</strong>，并且每条都强行收束到「最小原型 + 一个可观察的试玩问题」，这对小团队非常实用：它回答的不是「这个游戏为什么好玩」，而是「我明天能先做什么」。对「事实 / 编辑分析 / 原创提案」三者的显式区分，也比很多 AI 时代的内容站更严谨。</p>
+<p>可以留意的局限：条目由编辑归纳，数量与分类仍在更新（比如「探索与路线」目前只有 4 条、「节拍」「驾驶」各 5 条）；实例多集中在近十年的知名独立 / 主机游戏；图片走外链，部分图床可能加载失败（站内会提示去原始来源查看）。它是灵感与起点，不是规则权威——站点自己也这么说。</p>
+
+<h2 id="related">本站相关</h2>
+<ul>
+<li><a href="../cnyzgkc-3d-wuxia-arpg/">一个人用 AI 做 3D 武侠 ARPG：Tripo + Claude Opus 5.5 制作全过程</a>——机制落地到具体游戏的例子，战斗类机制（格挡、架势、连段）可以对照着看。</li>
+<li><a href="../guanmo-design-style/">每天一个设计风格 · Design Style</a>——同样是「一期拆一种」的参考库，只是对象从玩法换成视觉风格。</li>
+<li><a href="../design-resources/">设计资源大赏：@amananimates 帖子与评论区的 17 个设计资源</a>——视觉/界面资源清单，可与 Game Art Style、本站玩法库互补。</li>
+</ul>
+
+<h2 id="license">来源与授权</h2>
+<ul>
+<li>原站：<a href="https://gameplayatlas.loopyhop.com/" rel="noopener">https://gameplayatlas.loopyhop.com/</a>（About：<a href="https://gameplayatlas.loopyhop.com/about/" rel="noopener">/about/</a>）；robots.txt 允许抓取，本页仅参考公开页面，未调用任何接口。</li>
+<li>作者：五分之1蓝 <a href="https://x.com/onefifthblue" rel="noopener">@onefifthblue</a> / loopyhop；发布帖 <a href="https://x.com/onefifthblue/status/2113199407852401146" rel="noopener">x.com/onefifthblue/status/2113199407852401146</a>。</li>
+<li>授权：未声明开源或 CC 许可，视为保留所有权利；本页为中文导读，仅短摘引，不复制条目正文。游戏截图与商标归各自所有者。</li>
+<li>删除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">在 GitHub 提交</a>。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>本页为「中文镜像文库」收录的导读，非官方翻译。内容依据 2026-10-26 查看的公开页面整理，数据以原站为准。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://gameplayatlas.loopyhop.com/" rel="noopener">gameplayatlas.loopyhop.com/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

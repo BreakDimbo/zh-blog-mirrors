@@ -1,5 +1,15 @@
 [
   {
+    "slug": "gameplay-atlas",
+    "title": "Gameplay Atlas · 游戏玩法灵感库：280 个玩法机制的拆解图鉴（导读）",
+    "desc": "loopyhop 出品、五分之1蓝 @onefifthblue 制作的游戏玩法灵感库中文导读（无开源许可，非翻译）：一条一个机制，280 个机制分 28 组、5 大区；每条含 4 步核心循环、一回合走查、玩家权衡、最小原型与范围风险、试玩观察问题、设计旋钮、跨游戏实例对照与原创组合提案；事实/编辑分析/提案分开标注，无需账号、内置中文。五个要点、分类表、「精准格挡」条目拆解、使用方法与评论；附首页与条目页截图 webp。",
+    "source": "五分之1蓝 @onefifthblue · loopyhop",
+    "date": "2026-10-26",
+    "type": "导读",
+    "subtitle": "Gameplay Atlas · A field guide to game mechanics",
+    "original_url": "https://gameplayatlas.loopyhop.com/"
+  },
+  {
     "slug": "guanmo-design-style",
     "title": "每天一个设计风格 · Design Style：观默的开源设计风格库（导读）",
     "desc": "guanmo-ai/design-style 项目中文导读（无开源许可，非翻译）：面向设计师与 AI 的设计风格库，每期一支 15 秒 Remotion 代码动效短片（配乐由 numpy 合成）+ 4 张手写 SVG 风格图 + tokens.ts/css/json 设计令牌 + AI 提示词 + PROCESS/MAKING 制作过程；已出包豪斯、瑞士国际主义、构成主义 3 种风格与便当盒、瀑布流 2 种布局。五个要点、目录与规格、十步工作流、本地渲染与喂给 AI 的用法、网页画廊、评论与本站相关；附封面、风格图、过程图与画廊截图 webp。",
