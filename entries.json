@@ -209,14 +209,6 @@
     "type": "导读"
   },
   {
-    "slug": "lemo-opuscar-98-styles",
-    "title": "OPUSCAR 98：98 种奥斯卡最佳影片风格 + 提示词 + 导演编排全部公开",
-    "desc": "lemo-opuscar 更新版：98 部最佳影片的视觉风格、提示词与导演编排。",
-    "source": "Lemomo @lemomo_ai · MIT",
-    "date": "2026-10-12",
-    "type": "翻译"
-  },
-  {
     "slug": "anatomy-skill",
     "title": "Anatomy：说出一个想法，Claude 把它造成一台会动的机器",
     "desc": "一个把想法变成可交互机械动画的 Claude Code Skill，中文翻译。",
@@ -323,8 +315,8 @@
   },
   {
     "slug": "lemo-opuscar",
-    "title": "Lemo-Opuscar：39 种影片风格 · Claude Opus 5.5 纯代码短片",
-    "desc": "39 种电影风格的纯代码短片合集与创作说明。",
+    "title": "Lemo-Opuscar 合集：39 种影片风格 → OPUSCAR 98 → 「实证影像」· Claude Opus 5.5 纯代码短片",
+    "desc": "Lemomo 纯代码短片风格库三篇合一：项目与用法、39 种核心风格、OPUSCAR 98 的 98 种最佳影片风格（中英提示词 + 导演编排）、「实证影像」8 种风格（库达 51 种）。",
     "source": "Lemomo / LemoLab",
     "date": "2026-09-27",
     "type": "翻译"
@@ -462,15 +454,6 @@
     "date": "2026-10-16",
     "type": "全文镜像",
     "original_url": "https://x.com/slashui/status/2110860240271048834"
-  },
-  {
-    "slug": "lemo-opuscar-evidence-films",
-    "title": "Lemo-Opuscar 新分支「实证影像」：8 种基于真实素材的解说风格",
-    "desc": "卫星影像、点云、白模投影、显微切片、档案底片……用真实素材做知识解说短片的 8 种风格（库已达 51 种）。",
-    "source": "Lemomo @lemomo_ai · MIT",
-    "date": "2026-10-16",
-    "type": "全文镜像",
-    "original_url": "https://x.com/lemomo_ai/status/2110983292027814316"
   },
   {
     "slug": "yanliu-design-sites",
