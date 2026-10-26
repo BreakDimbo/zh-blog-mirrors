@@ -1,5 +1,15 @@
 [
   {
+    "slug": "orange-podcast-jingdu",
+    "title": "没时间听播客？Orange 常读的 8 个 AI 播客精读站（原帖镜像 + 导读）",
+    "desc": "Orange AI（@oran_ge）原帖中文全文镜像 + 向阳乔木 qiaomu.ai 播客精读站群导读：张小珺商业访谈录、42章经、晚点聊、十字路口、AI炼金术、三五环、知行小酒馆、面基 8 站一览（期数/精读数/小宇宙订阅/最近精读，2026-10-26 实测）、网页·RSS·Markdown/llms.txt·Obsidian 插件 Qiaomu AI RSS 的用法、「转写」与「AI 精读」的边界与启发；附 2 张配图 webp。",
+    "source": "Orange AI @oran_ge · 精读站：向阳乔木 @vista8",
+    "date": "2026-10-26",
+    "type": "导读",
+    "subtitle": "8 AI-written podcast digests worth reading instead of listening",
+    "original_url": "https://x.com/oran_ge/status/2113996510287585493"
+  },
+  {
     "slug": "servasyy-minimax-h3-local-deploy",
     "title": "MiniMax H3 本地部署保姆级教程：从零装机到写出专业提示词，附实测数据",
     "desc": "huangserva（@servasyy_ai）X 长文中文全文镜像：ComfyUI 本地部署 MiniMax H3（开源 33B H3-Base，768p 级带立体声音视频）——三模块分工、显卡分档与 4 个权重文件（约 39.6 GB）、T2V/I2V/R2V 三种模式、17k+5 帧网格静默吸附与短边 768 原生画布、官方三字段/六段式提示词语法与 <d> 对白标签、SageAttention（省 24%）+ TeaCache/EasyCache 加速实测与画质代价、本地 vs API 成本账与 API 脚本；附 18 张原文配图 webp。",
