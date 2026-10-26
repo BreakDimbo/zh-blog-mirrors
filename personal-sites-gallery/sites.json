@@ -1,7 +1,73 @@
 {
- "updated": "2026-10-26T14:10:48.185111+08:00",
+ "updated": "2026-10-26T18:00:36.689094+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "eilnoctis.com",
+   "url": "https://eilnoctis.com/",
+   "title": "EIL NOCTIS — 个人数字世界",
+   "description": "EIL NOCTIS — 汇集作品、实验、照片、音乐与文字的个人数字世界。",
+   "shared_by": "@NeoNoctis8",
+   "reply": "https://x.com/NeoNoctis8/status/2114647693628977214",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "hezron-okwach.vercel.app",
+   "url": "https://hezron-okwach.vercel.app/",
+   "title": "Hezron Okwach",
+   "description": null,
+   "shared_by": "@fayar04",
+   "reply": "https://x.com/fayar04/status/2114639521463644276",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "kanakkholwal.eu.org",
+   "url": "https://kanakkholwal.eu.org/",
+   "title": "Kanak Kholwal | Product Engineer",
+   "description": "Product engineer in India. I build products end to end, from Baby UI and Recast to GlyphTeX and Docvia. Open to founding engineer roles.",
+   "shared_by": "@KanakKholwal",
+   "reply": "https://x.com/KanakKholwal/status/2114623879281017333",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "solt.yee.site",
+   "url": "https://solt.yee.site/",
+   "title": "Solt Wagner — Designer, creator, building cool things",
+   "description": "Hey, I’m Solt — an indie maker from Hungary building macOS apps, SaaS products, and digital tools. Explore my latest work and projects.",
+   "shared_by": "@soltwagner",
+   "reply": "https://x.com/soltwagner/status/2114623728487383428",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "pengxi.online",
+   "url": "https://www.pengxi.online/",
+   "title": "pengxi.online · 想读想看想听",
+   "description": "一本更新很慢的私人书影音志。读过、看过、听过的，都留在这里。",
+   "shared_by": "@pengxi414",
+   "reply": "https://x.com/pengxi414/status/2114622948887929284",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "sahanasood.com",
+   "url": "https://sahanasood.com/",
+   "title": "Sahana Sood",
+   "description": "Product designer working across ecosystems and focused products. Intent shapes experience.",
+   "shared_by": "@SahanaSood",
+   "reply": "https://x.com/SahanaSood/status/2114616209715114473",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "frvky.online",
    "url": "https://frvky.online/",
