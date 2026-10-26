@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-17T10:28:44.179440+08:00",
+ "updated": "2026-10-26T10:19:14.304282+08:00",
  "post": "https://x.com/amananimates/status/2110584646794887669",
  "sites": [
   {
@@ -145,6 +145,14 @@
    "price": null,
    "recommended_by": "@Hebel07",
    "post": "https://x.com/Hebel07/status/2111017229852553429"
+  },
+  {
+   "url": "https://zepa.design",
+   "title": "Zepa UI",
+   "category": "ui",
+   "price": null,
+   "recommended_by": "@zepaui",
+   "post": "https://x.com/zepaui/status/2114426737832697954"
   }
  ]
 }
