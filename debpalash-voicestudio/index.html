@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VoiceStudio：完全本地的开源 ElevenLabs 替代（项目导读 + README 全文中译）</title>
+<meta name="description" content="debpalash/VoiceStudio（AGPL-3.0，约 9 万星）项目导读：本地跑的声音克隆、声音设计、视频配音、听写、转写与有声书，默认引擎 k2-fsa/OmniVoice（646 种语言），另可选 CosyVoice 3、IndexTTS 2.5、VoxCPM2、GPT-SoVITS 等十几种 TTS 与 WhisperX 等 ASR；Electron 桌面/网页 UI、本地 API 与 MCP；NVIDIA/Apple Silicon/CPU/手机预览。注意：默认模型权重为 CC-BY-NC，应用许可不覆盖模型与输出权利；只在获得许可时克隆声音。附 README 全文中译。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-27">2026.10.27</time></p>
+<h1 class="za-title">VoiceStudio：完全本地的开源 ElevenLabs 替代</h1>
+<p class="za-sub" lang="en" data-za-gen>开源 TTS / 声音克隆 · AGPL-3.0 · README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · debpalash/VoiceStudio</span><span>收录 · 2026-10-27</span><span><a href="https://github.com/debpalash/VoiceStudio" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/debpalash/VoiceStudio" rel="noopener">github.com/debpalash/VoiceStudio</a>（作者 Palash Debnath <a href="https://x.com/idebpalash" rel="noopener">@idebpalash</a>，核心团队 Shimul Debnath；维护公司 Yupcha Softwares）· 官网 <a href="https://voicestudio.sh" rel="noopener">voicestudio.sh</a> · 许可 AGPL-3.0-only · 线索：<a href="https://x.com/julsix2333/status/2111365316374618450" rel="noopener">柒月陸 @julsix2333 的推文</a>（2026-10-17 15:54 UTC+8）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>一个装在自己电脑上的“ElevenLabs”：克隆声音、用文字描述设计声音、给视频翻译配音、悬浮窗听写、转写和做有声书，模型全在本地跑；默认引擎是 k2-fsa 的 OmniVoice，此外可切换十几种开源 TTS/ASR 引擎，还提供本地 API 和 MCP 给 AI 智能体调用。</div>
+<figure><img src="images/cover.webp" alt="VoiceStudio 深色界面截图：左侧栏有 Voice（Clone/Design/Saved/Gallery）、Stories、Dubbing、Transcribe、Projects 等菜单，中间是脚本输入框，底部有“Synthesize audio”按钮" loading="lazy"><figcaption>声音克隆工作区（截图来自仓库 docs/media，AGPL-3.0 © Palash Debnath 及贡献者）。</figcaption></figure>
+<p class="caption">仓库数据（2026-10-27 15:15 UTC+8，GitHub API）：★ 89,957、fork 9,910、开放 issue 68；2026-04-10 建库，最新版本 v0.5.7（2026-10-26 22:59 UTC+8 发布），主要语言 Python。</p>
+
+<h2 id="what">它是什么</h2>
+<p>VoiceStudio 是一个<strong>本地优先</strong>的语音制作应用：Electron 做桌面与网页 UI，FastAPI 做后端，语音模型下载到本机运行。README 原话是“Local workflows run on your hardware. Remote services are optional; usage analytics requires consent.”（本地工作流在你的硬件上运行，远程服务可选，使用统计需经同意。）</p>
+<p>它把 ElevenLabs 那一整套付费功能拆成了可以本地完成的几块：</p>
+<div class="table-wrap"><table><thead><tr><th>功能</th><th>说明</th></tr></thead><tbody>
+<tr><td>声音克隆</td><td>选一个声音或上传一段干净的参考录音，输入文字即可生成；参考片段要有转写文本（没有的话会先自动跑一次 Whisper）</td></tr>
+<tr><td>声音设计</td><td>用文字描述想要的嗓音，生成新声音</td></tr>
+<tr><td>视频配音</td><td>提取音频 + 人声分离 → 转写 → 翻译（可接 LLM，默认 6 路并发） → 按时间轴逐段合成 → 混音导出</td></tr>
+<tr><td>听写</td><td>悬浮窗实时听写（sherpa-onnx）</td></tr>
+<tr><td>转写 / 说话人分离 / 人声分离</td><td>WhisperX（默认）、Faster-Whisper、MLX Whisper、Parakeet、Moonshine、FunASR 等</td></tr>
+<tr><td>故事 / 有声书 / 批处理</td><td>长文本分块合成、批量队列、可复用“配方”与监视文件夹</td></tr>
+<tr><td>集成</td><td>本地 API、MCP 服务器、agent skill（<code>npx skills add debpalash/VoiceStudio</code>）</td></tr>
+<tr><td>AI 水印</td><td>功能目录中列出“AI Watermark”，后处理阶段加水印</td></tr>
+</tbody></table></div>
+<figure><img src="images/dubbing.webp" alt="VoiceStudio 视频配音工作区截图" loading="lazy"><figcaption>视频配音工作区（仓库截图，AGPL-3.0）。</figcaption></figure>
+
+<h2 id="models">用到的模型</h2>
+<ul>
+<li><strong>默认 TTS：VoiceStudio 引擎 = k2-fsa/OmniVoice</strong>（作者 Han Zhu；描述中的“646 种语言”指它）。代码 Apache-2.0，但据仓库 LICENSE-NOTICE，<strong>预训练权重是 CC-BY-NC（非商用）</strong>，音频 tokenizer 还另带 Boson Higgs Audio 2 与 Meta Llama 社区条款。</li>
+<li><strong>可选 TTS 引擎</strong>：CosyVoice 3（含 GGUF/Vulkan）、IndexTTS 2.5、VoxCPM2、GPT-SoVITS、MOSS-TTS-v1.5 / Nano、dots.tts、Confucius4-TTS、KittenTTS、MLX-Audio、sherpa-onnx、supertonic3、pockettts、audiocpp、OmniVoice GGUF 等。</li>
+<li><strong>ASR</strong>：WhisperX（默认）、Faster-Whisper、MLX Whisper、PyTorch Whisper、Parakeet TDT（v3 有 MLX 版）、Moonshine、FunASR、sherpa-onnx，也可接 OpenAI 兼容服务器。</li>
+<li>每个模型的许可单独记录在 Model Manager 里（商用模型使用、商用输出、再分发、声音/录音同意四项分开标注），“未知”既不代表允许，也不代表禁止。</li>
+</ul>
+
+<h2 id="hardware">硬件要求</h2>
+<ul>
+<li>NVIDIA GPU（Windows/Linux）：CUDA 加速；可选 FlashInfer 内核（约 2 倍，需额外显存）。</li>
+<li>Apple Silicon M1–M5：Metal（MPS）加速；官方性能数据在 16 GB M2 上测得。</li>
+<li>AMD：Windows 上默认 CPU，可选 ROCm；CosyVoice GGUF 可走 Vulkan（RX 6700 XT 验证）。</li>
+<li>无独显：CPU 可用但更慢，安装小号 CPU 版 PyTorch，约需 5 GB 磁盘。</li>
+<li>Intel Mac 只能当 UI、连远程后端；Windows on ARM 实验性；Android 10+ / iOS 17+ 为预览版，模型在手机上离线运行。</li>
+<li>性能提示：首次生成最慢（懒加载约 8 秒）；16 GB 统一内存机器上内存压力会让后端被杀；GPU 驱动问题会静默退回 CPU（慢 10–50 倍），设置里可查当前设备。</li>
+</ul>
+
+<h2 id="vs-elevenlabs">和 ElevenLabs 比</h2>
+<div class="table-wrap"><table><thead><tr><th></th><th>VoiceStudio</th><th>ElevenLabs</th></tr></thead><tbody>
+<tr><td>部署</td><td>本机（或自建后端）</td><td>云服务</td></tr>
+<tr><td>费用</td><td>应用免费（AGPL）；闭源嵌入需商业许可，另有 Pro 功能</td><td>订阅 / 按字符计费</td></tr>
+<tr><td>隐私</td><td>音频与文本不出本机（远程服务可选）</td><td>上传到服务商</td></tr>
+<tr><td>商用</td><td>应用可商用，但<strong>默认模型权重 CC-BY-NC</strong>，商用要换引擎并逐个核对模型许可</td><td>按付费计划授予输出商用权</td></tr>
+<tr><td>质量与效率</td><td>取决于所选开源引擎和你的硬件；本页未做实测</td><td>托管的成熟模型，速度稳定</td></tr>
+<tr><td>可扩展</td><td>十几种引擎可换，本地 API + MCP</td><td>官方 API</td></tr>
+</tbody></table></div>
+<p class="caption">“平替”是推文的说法；README 本身只在 GitHub 简介里称“fully-local ElevenLabs alternative”。本站没有安装运行或对比音质（盒子磁盘紧张，且未经授权的声音克隆不宜随手测试）。</p>
+
+<h2 id="caveats">注意事项（伦理与法律）</h2>
+<ul>
+<li><strong>README 原话：“Clone voices only with permission.”</strong>（只在获得许可时克隆声音。）Model Manager 会把“声音/录音同意”作为单独一项标注，但 LICENSE-NOTICE 明说可选的审阅流程“不会核实声音同意”——是否取得同意要由使用者自己负责。</li>
+<li><strong>应用许可 ≠ 模型/输出许可</strong>：“Model weights, tokenizers, voices and generated-output conditions are separate; a paid app licence does not grant those rights.”默认 OmniVoice 权重 CC-BY-NC，意味着用默认引擎做商业配音存在风险；初始的许可清单“不声称任何商业许可”。</li>
+<li><strong>AGPL 网络条款</strong>：改了 VoiceStudio 并通过网络提供给他人，必须向这些用户开放修改后的完整源码；想闭源嵌入要买商业许可。贡献者需签 CLA，把贡献授权给 Yupcha Softwares。</li>
+<li>捆绑的 PyAV 15.1.0 wheel 内含 FFmpeg 与 x264/x265，再分发要求尚未厘清（仓库有专门审计文档）。</li>
+<li>界面内有“Get Pro”入口，部分功能属于付费版。</li>
+<li>线索推文说“一天涨了 2301 星”，这个数字来自 GitHub 趋势榜，本站无法回溯核实；目前总星数约 9 万。</li>
+<li>仓库另有官方简体中文 README（docs/readme/README_CN.md），第三方中文分支 bayshier/voicestudio-zh（AGPL-3.0）也在维护中文版。</li>
+</ul>
+
+<h2 id="readme">附录：README 全文中译</h2>
+<p class="caption">译自 <a href="https://github.com/debpalash/VoiceStudio/blob/main/README.md" rel="noopener">debpalash/VoiceStudio README.md</a>（2026-10-27 读取）。Copyright 2024-present Palash Debnath and VoiceStudio contributors，GNU AGPL-3.0；本译文同样以 AGPL-3.0 发布，系翻译修改版。徽章、头像墙和截图从略，命令保持原样。</p>
+<details><summary>展开 README 译文</summary>
+<h3>VoiceStudio</h3>
+<p><strong>开源的声音克隆、声音设计、视频配音、听写、转写与有声书制作，支持 646 种语言。</strong></p>
+<p>官网 · 下载 · 快速开始 · 文档 · Discord · 简体中文 · 日本語</p>
+<p>（动图：Electron 应用导览——声音克隆、声音设计、配音和模型管理。）</p>
+<h4>你的声音。你的工作流。</h4>
+<div class="table-wrap"><table><thead><tr><th>创作</th><th>制作</th><th>连接</th></tr></thead><tbody>
+<tr><td>克隆一个声音或设计你自己的声音</td><td>用卡准时间的语音给视频配音</td><td>给智能体用的本地 API 与 MCP</td></tr>
+<tr><td>用悬浮小窗听写</td><td>故事、有声书与批处理任务</td><td>可复用的配方与监视文件夹</td></tr>
+</tbody></table></div>
+<p>从 <strong>VoiceStudio</strong> 开始（默认引擎，由 k2-fsa/OmniVoice 驱动），或选择其他引擎。见“功能与引擎目录”。</p>
+<p>本地工作流在你的硬件上运行。远程服务是可选的；使用统计需要你的同意。</p>
+<p>（折叠区“浏览各工作区”：声音克隆、视频配音、声音设计、本地模型四张截图，以及桌面工作区截图。）</p>
+<p>OmniVoice GGUF 源码构建在 Windows 和 Linux 上可选使用 Vulkan；构建要求、CPU 回退和设备覆盖见原生引擎指南。</p>
+<h4>快速开始</h4>
+<p><strong>一条命令安装（macOS / Linux）</strong></p>
+<pre><code># 最新的 Electron 发布版
+curl -fsSL https://voicestudio.sh/install | sh
+
+# 指定某个已发布的 Electron 版本（替换 X.Y.Z）
+curl -fsSL https://voicestudio.sh/install | sh -s -- --version X.Y.Z
+
+# 构建当前 main 分支并安装桌面应用
+curl -fsSL https://voicestudio.sh/install | sh -s -- --main
+
+# 卸载应用，保留你的数据
+curl -fsSL https://voicestudio.sh/install | sh -s -- --uninstall</code></pre>
+<p>在 Windows 上，于 PowerShell 中运行 <code>irm https://voicestudio.sh/install | iex</code>。</p>
+<p>如果 <code>voicestudio.sh/install</code> 无法访问或返回 404，可以直接从仓库运行同一个脚本，或者克隆仓库后运行 <code>scripts/install.sh</code>：</p>
+<pre><code>curl -fsSL https://raw.githubusercontent.com/debpalash/VoiceStudio/main/scripts/install.sh | sh</code></pre>
+<p>下载发布版需要 curl 和一个 SHA-256 工具。<code>--main</code> 需要 Git、Node.js 22+、Bun、Rust/Cargo 和平台构建工具；见“安装器前置条件与行为”。安装器会保留你的设置、项目和模型。旧版本必须包含 Electron 安装包；它绝不会回退到已归档的 Tauri 构建。</p>
+<p>也可以从 Releases 下载（macOS <code>.dmg</code>、Windows <code>.exe</code>、Linux <code>.AppImage</code> 或 <code>.deb</code>、Android <code>.apk</code>、iPhone <code>.ipa</code>；或在 Linux 上 <code>sudo snap install voicestudio</code>），并按你的平台指南操作：</p>
+<p><strong>macOS · Windows · Linux · Docker · Android 和 iPhone</strong></p>
+<div class="table-wrap"><table><thead><tr><th>硬件</th><th>支持情况</th></tr></thead><tbody>
+<tr><td>NVIDIA GPU（Windows / Linux）</td><td>CUDA 加速</td></tr>
+<tr><td>AMD Radeon / 受支持的 Ryzen AI（Windows）</td><td>默认 CPU；针对 AMD 的 Windows 11 硬件矩阵提供可选的 Windows ROCm 设置。安装程序会区分“包修复”与“主机故障”；请先手动安装 VC++ 运行库。可选引擎有各自的限制；Vulkan 引擎保留自己的运行时。</td></tr>
+<tr><td>Apple Silicon（M1–M5）</td><td>Metal（MPS）加速</td></tr>
+<tr><td>AMD GPU</td><td>可选的原生 CosyVoice GGUF 在社区运行时以 Vulkan 构建时可使用 Vulkan；已在 RX 6700 XT 上验证（设置）</td></tr>
+<tr><td>无独立显卡（Intel/AMD 集显、旧电脑）</td><td>完全可在 CPU 上使用，但更慢；安装程序会安装小号的 CPU 版 PyTorch（约需 5 GB 可用磁盘）</td></tr>
+<tr><td>Windows on ARM（骁龙 X 等）</td><td><strong>实验性</strong>，验证待定：原生 ARM64 应用，x64 Python 后端在模拟下运行，仅 CPU</td></tr>
+<tr><td>Intel Mac</td><td>仅应用 UI；需连接远程后端（原因）</td></tr>
+<tr><td>Android 手机（Android 10+）</td><td><strong>预览版</strong>：模型在手机上运行，下载后可离线使用（安装）</td></tr>
+<tr><td>iPhone 和 iPad（iOS 17+）</td><td><strong>预览版</strong>：模型在设备上运行；用你的 Apple ID 侧载 IPA（安装）</td></tr>
+</tbody></table></div>
+<p>打开<strong>声音克隆</strong>，选择一个声音或添加一段干净的参考录音，输入文本，然后生成。出现提示时安装所需模型。硬件需求因引擎而异；见“性能”。</p>
+<p><strong>用提示词安装</strong></p>
+<p>粘贴到你的编码智能体（Claude Code、Codex、Cursor……）：</p>
+<pre><code>Install the VoiceStudio Electron app on this device and verify it works, following
+https://github.com/debpalash/VoiceStudio/blob/main/docs/install/agent.md</code></pre>
+<p class="caption">（提示词大意：按照该文档在本设备上安装 VoiceStudio Electron 应用并验证其可用。）</p>
+<p>智能体指南涵盖硬件检测、复用已有数据、下载模型前先询问，以及一次测试生成。支持 skills 的智能体也可以运行 <code>npx skills add debpalash/VoiceStudio</code>。</p>
+<p><strong>从源码运行 Electron 预览版</strong>（折叠区）</p>
+<pre><code>git clone https://github.com/debpalash/VoiceStudio.git
+cd VoiceStudio
+bun install
+bun run setup:api  # 启动 Electron 前先准备 Python 依赖
+bun run dev</code></pre>
+<p>前置条件和后端配置见 Electron 设置文档。</p>
+<p>用 <code>bun run smoke-test</code> 构建并启动一个隔离的打包版 Electron 应用。加上 <code>-- --install</code> 可进行联网的托管运行时安装检查。</p>
+<blockquote><p><strong>Electron 是唯一的桌面应用和网页 UI。</strong>0.5.3 版是最后一个 Tauri 版本。现有 Tauri 用户必须单独安装 Electron 版。已退役的 Tauri 外壳和旧版 UI 入口已被移除。</p></blockquote>
+<h4>文档</h4>
+<div class="table-wrap"><table><thead><tr><th>需要</th><th>从这里开始</th></tr></thead><tbody>
+<tr><td>安装帮助</td><td>故障排除 · 模型下载</td></tr>
+<tr><td>模型与音质</td><td>引擎指南 · whisper.cpp ASR · 基准测试</td></tr>
+<tr><td>集成</td><td>本地 API · MCP · 示例</td></tr>
+<tr><td>手机应用（预览版，离线运行）</td><td>iOS 和 Android</td></tr>
+<tr><td>开发</td><td>贡献指南（首个 PR 的 CLA 签署说明）· Electron · 更新日志</td></tr>
+</tbody></table></div>
+<p>智能体技能：<code>npx skills add debpalash/VoiceStudio</code>——音频工作流选 <strong>voicestudio</strong>，仓库维护选 <strong>voicestudio-maintainer</strong>。</p>
+<h4>团队</h4>
+<p><strong>核心团队</strong>：Palash Debnath（创建者、核心团队，palash.dev · GitHub · X）；Shimul Debnath（核心团队，shimul.me · GitHub · X）。</p>
+<p><strong>贡献者</strong>：（头像墙从略）感谢每一位提交代码、报告、翻译和想法的人。查看全部贡献者 · 参与贡献</p>
+<h4>赞助</h4>
+<p>赞助资金用于维护者的时间、开发工具、发布基础设施和测试硬件；它换来的是致谢，而不是功能。</p>
+<p>GitHub Sponsors · Ko-fi · PayPal · 档位与致谢 · 申请致谢</p>
+<h4>许可与负责任的使用</h4>
+<p>AGPL-3.0 覆盖本应用，包括在其条件下的商业使用。模型权重、tokenizer、声音和生成输出的条件是分开的；付费的应用许可并不授予这些权利。<strong>只在获得许可时克隆声音。</strong>Model Manager 现在会显示来自共享清单的、带版本的模型来源声明、证据链接和尚未解决的审查缺口。其可选的“已审阅文件预览”不会对普通下载做强制，也不认证商业许可。见许可详情（LICENSE-NOTICE.md）。</p>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>VoiceStudio 代码与 README © 2024-present Palash Debnath 及 VoiceStudio 贡献者，GNU AGPL-3.0；本页 README 译文与转载截图依同一许可发布。默认模型 k2-fsa/OmniVoice 代码 Apache-2.0、权重 CC-BY-NC，以上游为准。本页导读由 Grok Bot 整理，未安装实测，仅作学习交流；不构成法律意见。项目：<a href="https://github.com/debpalash/VoiceStudio" rel="noopener">github.com/debpalash/VoiceStudio</a>；线索推文：<a href="https://x.com/julsix2333/status/2111365316374618450" rel="noopener">@julsix2333</a>。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/debpalash/VoiceStudio" rel="noopener">github.com/debpalash/VoiceStudio</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

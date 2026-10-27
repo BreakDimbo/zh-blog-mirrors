@@ -620,5 +620,15 @@
     "type": "翻译",
     "subtitle": "How to fix your entire life in 1 day",
     "original_url": "https://x.com/thedankoe/status/2010751592346030461"
+  },
+  {
+    "slug": "debpalash-voicestudio",
+    "title": "VoiceStudio：完全本地的开源 ElevenLabs 替代",
+    "desc": "debpalash/VoiceStudio（AGPL-3.0）项目导读：本地声音克隆、声音设计、视频配音、听写与有声书，默认 OmniVoice（权重 CC-BY-NC），可换 CosyVoice/IndexTTS/VoxCPM2 等引擎；硬件、安装、许可与伦理注意事项，附 README 全文中译。",
+    "source": "GitHub · debpalash/VoiceStudio",
+    "date": "2026-10-27",
+    "type": "导读",
+    "subtitle": "开源 TTS / 声音克隆 · AGPL-3.0 · README 全文中译",
+    "original_url": "https://github.com/debpalash/VoiceStudio"
   }
 ]
