@@ -1,6 +1,6 @@
-# AGENT.md — 复刻 Eian「孟菲斯微缩世界」代码动画（可执行任务书）
+# AGENT.md — 复刻 Eian「孟菲斯微缩世界」风格代码动画（可执行任务书）
 
-> 来源：Eian（[@EianLu](https://x.com/EianLu)）在 X 公开的提示词与回复（2026-10-26 / 10-27 SGT）。聚合页：<https://breakdimbo.github.io/zh-blog-mirrors/eianlu-code-miniature-animation-collection/>
+> 来源：Eian（[@EianLu](https://x.com/EianLu)）在 X 公开的提示词与回复（2026-10-26 / 10-27 SGT）。孟菲斯微缩世界合集页：<https://breakdimbo.github.io/zh-blog-mirrors/eianlu-code-miniature-animation-collection/>（本任务书只覆盖孟菲斯微缩风格）
 > 原帖：<https://x.com/EianLu/status/2114695987424063730>（提示词） · <https://x.com/EianLu/status/2114650892934975667>（稻田 / 玉林路）
 > 本文件由 zh-blog-mirrors 整理，**非作者本人发布**。标注约定：**【作者】** = 作者原文或作者在回复中明确说过；**【推断】** = 本站为了让 agent 能跑通而补的工程细节，作者没有公开。
 > 移除请求：<https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request>
@@ -189,7 +189,7 @@ ffmpeg -y -i out/frames/00600.png -vf scale=720:720 -c:v libwebp -quality 80 out
 
 ## 11. 附录：可运行的参考实现（本站 4 秒样片，30 fps）【推断】
 
-> 这是本站为验证本任务书写的最小实现，不是作者代码，画面精细度远不如作者成片，只用于跑通管线。源文件也在聚合页 `sample/` 目录。
+> 这是本站为验证本任务书写的最小实现，不是作者代码，画面精细度远不如作者成片，只用于跑通管线。源文件也在合集页 `sample/` 目录。
 
 <details><summary>scene/cues.js</summary>
 

@@ -1,12 +1,12 @@
 [
   {
     "slug": "eianlu-code-miniature-animation-collection",
-    "title": "Eian 代码动画合集：孟菲斯微缩世界与家乡系列（帖子聚合 + Agent 复刻包）",
-    "desc": "Eian @EianLu 用 Claude / Opus 5.5 写代码出片的全部相关帖子聚合（2026-10-18 至 10-27 SGT）：《一座城的年轮》（Opus 5.5 + lemo-opuscar）、《都江堰》工程蓝图风、《卫星年鉴·成都》（Landsat 逐像素去云合成）、孟菲斯微缩世界三连（成都平原 / 玉林路 / 曲院风荷，直接提示词）。时间线逐帖照录、提示词与社区变体照录、作者明说与本站推断分栏、十余支社区跟做与问答；附可交给 agent 执行的 AGENT.md（风格变量表、确定性 frame(i) 契约、无头 Chrome 导出脚本、代码配乐、ffmpeg 命令、QA 清单）与本站 4 秒验证样片。",
+    "title": "孟菲斯微缩世界合集：Eian 原帖、提示词、社区复刻与 Agent 复刻包",
+    "desc": "只收 Eian @EianLu「孟菲斯微缩世界」代码动画：成都平原 / 玉林路（10-26 17:30）与曲院风荷 + 完整提示词（10-26 20:29）两条原帖照录，作者相关回复（Opus 5.5、直接提示词不用 skill、镜头可调、代码配乐“没有自己找音乐好”、出圈）时间线（SGT），提示词与社区场景槽 / 水墨换色板变体照录，作者明说与本站推断分栏，十余支社区复刻与问答；附可交给 agent 执行的 AGENT.md（孟菲斯风格变量表、确定性 frame(i) 契约、无头 Chrome 导出、代码配乐、ffmpeg、QA 清单）与本站 4 秒验证样片。",
     "source": "Eian @EianLu · X",
     "date": "2026-10-28",
     "type": "导读",
-    "subtitle": "Eian's code-rendered films · a post collection and an agent replication kit",
+    "subtitle": "Memphis Miniature World · posts, prompt, replications and an agent kit",
     "original_url": "https://x.com/EianLu/status/2114650892934975667"
   },
   {
