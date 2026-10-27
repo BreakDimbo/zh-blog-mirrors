@@ -570,5 +570,15 @@
     "type": "导读",
     "subtitle": "Turn an avatar and text into a lip-synced, acted video",
     "original_url": "https://github.com/receptron/avatarscript"
+  },
+  {
+    "slug": "thorstenball-how-i-work-with-agents",
+    "title": "Thorsten Ball：我如何与 Agent 一起工作（2026 年 10 月版）",
+    "desc": "Amp 工程师 Thorsten Ball 的 X 长文《How I work with Agents》全文中译：15 条经验——用最强模型、别担心 slop、提示“要什么”而非“怎么做”、让整个 SDLC 对 Agent 可见并给它工具、用盲测评估 AGENTS.md/skills、本地开发让位远程机器、让 Agent 造迭代工具、索要无可辩驳的证据、异步与定时唤醒、不手动管理上下文、线程即公司记忆、只审高爆炸半径代码。附作者评论区补充（“什么不算证据”、不在乎 token 成本、Orbs）与读后注记。",
+    "source": "Thorsten Ball @thorstenball · X",
+    "date": "2026-10-27",
+    "type": "翻译",
+    "subtitle": "How I work with Agents",
+    "original_url": "https://x.com/thorstenball/status/2114386050638336082"
   }
 ]

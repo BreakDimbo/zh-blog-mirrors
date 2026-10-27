@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Thorsten Ball：我如何与 Agent 一起工作（2026 年 10 月版 · 全文中译）</title>
+<meta name="description" content="Amp 工程师 Thorsten Ball 的 X 长文《How I work with Agents》全文中译：用最强模型、别担心“垃圾代码”、提示“要什么”而非“怎么做”、让整个 SDLC 对 Agent 可见、索要无可辩驳的证据、拥抱异步与定时唤醒、不再手动管理上下文、只审高爆炸半径的代码等 15 条经验；附作者在评论区的补充回复与 Amp Orbs 背景。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-27">2026.10.27</time></p>
+<h1 class="za-title">Thorsten Ball：我如何与 Agent 一起工作</h1>
+<p class="za-sub" lang="en" data-za-gen>How I work with Agents</p>
+<p class="za-meta" data-za-gen><span>来源 · Thorsten Ball @thorstenball · X</span><span>收录 · 2026-10-27</span><span><a href="https://x.com/thorstenball/status/2114386050638336082" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：<a href="https://x.com/thorstenball" rel="noopener">Thorsten Ball @thorstenball</a>（<a href="https://ampcode.com" rel="noopener">Amp</a> 工程师，《Writing an Interpreter in Go》《Writing a Compiler in Go》作者，Newsletter <a href="https://registerspill.thorstenball.com" rel="noopener">Register Spill</a>）· 原帖：<a href="https://x.com/thorstenball/status/2114386050638336082" rel="noopener">x.com/thorstenball/status/2114386050638336082</a>（X Article，2026-10-25 23:58 UTC+8 发布）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>Thorsten Ball 把他平时在私信里反复跟朋友说的 Agent 编程心得整理成 15 条：用最强的模型，别再手把手指挥步骤，让 Agent 看见并操作整个软件生命周期，向它要“无可辩驳的证据”，然后放手让它异步干活——只亲自审查少数高风险代码。</div>
+<figure><img src="images/cover.webp" alt="浅绿到浅灰渐变背景上，一个铜版画风格的银灰色球体向四周放射线条" loading="lazy"><figcaption>原文封面图（© Thorsten Ball / Amp），压缩为 WebP 转载。球体意象与 Amp 的远程机器“Orbs”呼应。</figcaption></figure>
+<p class="caption">发布时互动数据（2026-10-27 12:15 UTC+8，经 X API 读取）：约 71 万次浏览、5,750 赞、520 转帖、242 引用、219 回复、1.3 万收藏。</p>
+
+<h2 id="post">原帖</h2>
+<blockquote><p>终于把我一直在私信里发给朋友们的东西总结出来了。</p><p lang="en"><em>Finally summarized what I've been sending to friends in DMs</em></p></blockquote>
+
+<h2 id="article">全文中译：《我如何与 Agent 一起工作》</h2>
+<p class="caption">英文原题 <em lang="en">How I work with Agents</em>。以下为作者本人 X Article 的完整中文翻译；原文中个别笔误（如 “now How”“featuer”“inicident”“ambitous”）按作者本意译出。</p>
+<p>……截至 2026 年 10 月。</p>
+<ol>
+<li><p><strong>用最新、最强的模型。</strong>别的都可能是在浪费时间。一个模型如果有 10% 的时候是错的，你并不知道是哪 10%，于是只能多试几次。你什么时候会真心想雇一个便宜 50%、却会随机笨 20% 的通才？现在谁还在用 Opus 4.5？就是这个意思。</p></li>
+<li><p><strong>别再担心“垃圾代码”（slop）越积越多。</strong>“它会把你的代码库变成一团没法维护的烂摊子。”也许六个月前是这样。现在？我不确定它还会添加垃圾。就算会，我也不确定结果就没法维护。</p></li>
+<li><p><strong>提示“要什么”，而不是“怎么做”。</strong>描述你想要的结果（What），而不是你会怎么去做（How）。这样往往效果更好。“把字节码编译器和虚拟机做得<strong>尽可能快</strong>。不到快 2 倍不许停。”“最终应该是这样工作的：……”</p></li>
+<li><p><strong>让整个软件开发生命周期（SDLC）对 Agent 清晰可见。</strong>是什么让幻觉停下来的？工具调用。工具让 Agent 能触碰我们的现实。Agent 看不见的东西，它就会编出来。所以，让它端到端地运行自己构建的东西，让它读生产日志、部署、盯着发布过程、切版本、打开功能开关、分诊 bug 报告、给客户发邮件。凡是你能看到的，Agent 也应该能看到。</p></li>
+<li><p><strong>给它覆盖 SDLC 的工具。</strong>我们有自定义插件，用来处理 bug 报告、给用户发邮件、回答“我们的系统健康吗？”以及授予功能开关。</p></li>
+<li><p><strong>评估 Agent 层面的知识。</strong>知识会在代码库里不断堆积：AGENTS.md 文件、skills、脚本、文档。可 Agent 真的会用它们吗？派出五个“盲测” Agent，分对照组和实验组，答案自然揭晓。Agent 非常、非常擅长跑实验。</p></li>
+<li><p><strong>本地开发现在感觉很别扭。</strong>每个 Agent 都应该能安装、运行它完成任务所需的任何东西。在远程机器上这很容易，在本地开发里就很别扭。当你想让 Agent 端到端测试时，在本地很难不撞上资源冲突。</p></li>
+<li><p><strong>别跟 Agent 一来一回地迭代，让它自己造迭代用的工具。</strong>不要“试试这个……啊不对，试试那个”。而是：“生成 20 个变体，再做一个小页面让我组合、测试它们。”这不仅适用于解空间，也适用于问题空间：“给我 4 个关于它为什么慢的猜想，然后把四个都验证一遍。”</p></li>
+<li><p><strong>索要无可辩驳的证据。</strong>最大的改变游戏规则的一条。Agent 非常擅长拿出证据：端到端的演示流程、演示视频、改动前后的数字。你得逐步建立信任，并培养出对这件事的直觉。在你的 AGENTS.md 里写上“这不算证据”。</p></li>
+<li><p><strong>别等你的 Agent，让它们等你。</strong>如果你在纠结首 token 延迟（TTFT），你多半做错了什么。拥抱异步。给它们更大的任务，更有野心一点。批量处理，而不是来回拉扯。</p></li>
+<li><p><strong>自动化 / 定时任务 / 唤醒 / 心跳是杀手级功能。</strong>我之前没意识到，直到它被关掉才发现自己多么想念它。我一直在用。“两小时后去看看日志。”“上线了告诉我。”“每天早上 9 点检查一次。”</p></li>
+<li><p><strong>别再手动管理上下文。</strong>你花在琢磨“它现在用的是 30 万还是 38 万 token？”上的每一个念头都是浪费时间。压缩（compaction）效果好得惊人。别手动管理上下文。一个线程 = 一个任务。有的线程 46 条消息，有的 3,714 条。</p></li>
+<li><p><strong>线程就是公司的记忆。</strong>（在 Amp 里）“我们当初为什么这么做？”团队用 Amp 越多，知识就成倍积累。线程与 git 提交相关联。改变游戏规则。避免重复劳动。</p></li>
+<li><p><strong>别让 Agent 替你写给人看的东西。</strong>例外：调试步骤、事故报告、某些文档——那些机械性的、对面是谁并不那么要紧的内容。</p></li>
+<li><p><strong>只审查高爆炸半径的代码。</strong>有不到 5 个核心文件——这些我会审。数据库迁移，审。闭包还是类、更漂亮的类型、变量命名，甚至重复代码：我已经不在乎了。它能跑吗？我能在“架构图里的箭头”这个层面理解它吗？Agent 端到端测过了吗？一个月后我还能改它吗？如果都是“是”，<em>也许</em>我会去审代码。</p></li>
+</ol>
+
+<h2 id="replies">作者在评论区的补充</h2>
+<p class="caption">以下为 Thorsten Ball 本人在该帖回复中的说法（中译，按主题整理）。</p>
+<ul>
+<li><strong>“这不算证据”是什么意思？</strong>“你需要校准 Agent 对什么才算真实证据的认识。例：本地内存数据库不能作为生产环境性能的证据，应该用真正的生产金丝雀。当然这是夸张的例子，大多数模型不会犯这么明显的错，但确实有些会。”</li>
+<li><strong>上下文与成本：</strong>被问到用 1M 上下文模型是否还手动压缩，他说“从来不去想，就让 Amp 自己压缩”；“现在有压缩了，它会在进入奇怪状态之前压缩。不，上下文管理已经不是问题了。”至于成本：“我真的不在乎成本。在 Amp，我们把搞清楚未来往哪走当作自己的工作（我们毕竟是 Amp Frontier Corporation），盯着 token 计量表帮不上忙。”</li>
+<li><strong>为什么“记录 Agent 每一步再复查”是浪费时间：</strong>“跟踪 Agent 到底做了什么、再检查它做得对不对——因为你不信任它——这才是浪费时间，如果你能用更好的模型的话。”</li>
+<li><strong>本地资源冲突（端口、同一个 Postgres）：</strong>“对。所以才有 orbs。”——指 Amp 的远程机器 Orbs（见下）。iOS/Android 模拟器目前“用 runner 跑，但有新东西要来”。</li>
+<li><strong>新模型多快换：</strong>“尽快试，这是我的工作。”</li>
+<li><strong>自动化线程被淹没怎么办：</strong>“我把它们 snooze 掉😃——‘暂停到下次回复’，只有有事时它们才会醒。”另一位用户说应该让自动化主动 ping 自己，他回“对”。</li>
+<li><strong>线程作为公司记忆的异议</strong>（有人故意不在提交里链接 Agent 线程）：“嗯，这是一家公司里用好多种 Agent 的坏处 :)”</li>
+<li><strong>“看得见部署”与“能动生产”应是不同权限：</strong>他回：“对，本来也不是同一个权限啊？”</li>
+<li>有人建议 UI 里加一个“证明它”按钮：“正在做相关的东西 :)”</li>
+</ul>
+
+<h2 id="context">背景：Amp 与 Orbs</h2>
+<p>Thorsten Ball 在 <a href="https://ampcode.com" rel="noopener">Amp</a>（编码 Agent 产品）工作，文中“线程与 git 提交关联”“自动化 / 唤醒”“远程机器”都对应 Amp 的功能。按 <a href="https://ampcode.com/docs/orbs" rel="noopener">Amp 文档</a>，<strong>Orbs</strong> 是 Amp 为每个线程创建的远程隔离机器：带着你的代码、插件和开发工具，Agent 可在里面装依赖、跑应用、开浏览器做端到端测试；空闲后自动休眠、休眠不计费，下次发消息时带着文件和服务状态醒来（CLI：<code>amp -ox "提示词"</code>）。这正是第 7 条“本地开发很别扭”的解法。</p>
+
+<h2 id="notes">读后注记</h2>
+<ul>
+<li>这是一份<strong>带立场的个人经验</strong>，而非实验结论：作者明说不在乎 token 成本、是 Agent 产品从业者，且很多条（压缩、线程即记忆、远程机器）依赖 Amp 的具体能力。换成按量付费的个人或别的工具，“别管上下文”“用最贵的模型”需要自己权衡。</li>
+<li>“不再审查大部分代码”的前提是第 4、9 条：Agent 能端到端运行和验证，并且你校准过它对“证据”的标准；关键文件、数据库迁移仍要人审。</li>
+<li>“Opus 4.5”是作者举的过时模型例子，意在“别用上一代模型”，并非对具体模型的评测。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>原文为 Thorsten Ball（<a href="https://x.com/thorstenball" rel="noopener">@thorstenball</a>）发布在 X 上的 Article《How I work with Agents》（<a href="https://x.com/thorstenball/status/2114386050638336082" rel="noopener">原帖链接</a>），版权归作者所有。本页为作者本人帖子的全文中文翻译与评论区回复摘译，封面图转载自原文；Orbs 背景引自 Amp 公开文档；“读后注记”为本站整理。经 X API 读取于 2026-10-27。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/thorstenball/status/2114386050638336082" rel="noopener">x.com/thorstenball/status/2114386050638336082</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
