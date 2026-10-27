@@ -1,5 +1,15 @@
 [
   {
+    "slug": "eianlu-code-miniature-animation-collection",
+    "title": "Eian 代码动画合集：孟菲斯微缩世界与家乡系列（帖子聚合 + Agent 复刻包）",
+    "desc": "Eian @EianLu 用 Claude / Opus 5.5 写代码出片的全部相关帖子聚合（2026-10-18 至 10-27 SGT）：《一座城的年轮》（Opus 5.5 + lemo-opuscar）、《都江堰》工程蓝图风、《卫星年鉴·成都》（Landsat 逐像素去云合成）、孟菲斯微缩世界三连（成都平原 / 玉林路 / 曲院风荷，直接提示词）。时间线逐帖照录、提示词与社区变体照录、作者明说与本站推断分栏、十余支社区跟做与问答；附可交给 agent 执行的 AGENT.md（风格变量表、确定性 frame(i) 契约、无头 Chrome 导出脚本、代码配乐、ffmpeg 命令、QA 清单）与本站 4 秒验证样片。",
+    "source": "Eian @EianLu · X",
+    "date": "2026-10-28",
+    "type": "导读",
+    "subtitle": "Eian's code-rendered films · a post collection and an agent replication kit",
+    "original_url": "https://x.com/EianLu/status/2114650892934975667"
+  },
+  {
     "slug": "eianlu-memphis-miniature-world",
     "title": "孟菲斯微缩世界：Eian 用代码做治愈系小动画的提示词（原帖照录 + 拆解）",
     "desc": "Eian @EianLu 公开的「孟菲斯微缩世界」提示词原帖照录：20 秒 1080×1080 60fps，暖白底圆角画框、喷漆颗粒进出场、7 色孟菲斯色板 + 深靛描边硬投影、一镜到底慢推、小动静与“剧情瞬间”、中英标题 + 经纬度字幕；Canvas 确定性 frame(i) + 无头 Chrome 逐帧 + ffmpeg，五声音阶代码配乐与事件卡点，先看 4 张样帧再渲全片。附所引用的稻田/玉林路前一帖照录、作者回复（Opus 5.5、直接提示词）、逐段拆解、色板与评论区观点；3 张视频封面帧 webp。",
