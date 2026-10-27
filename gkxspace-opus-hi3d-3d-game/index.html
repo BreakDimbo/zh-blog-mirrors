@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>余温：Opus 5.5 + Hi3D 通宵搓一个 3D 海战游戏（原帖照录 + Hi3D v1.0 导读）</title>
+<meta name="description" content="余温 @gkxspace 用 Opus 5.5 编排、GPT-Image-2.5 出多视角参考图、Hi3D MCP 生成 PBR 模型、LOD 减面 + Draco 压缩、Three.js 装配、WebAudio 合成音效，一夜做出风暴海战 3D 网页游戏。原帖照录；附 Hi3D v1.0 开源（Sparc3D 几何精修，自定义许可）导读与核实：开源版只做几何精修、需大显存 GPU，帖中的 MCP 是付费云 API。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-27">2026.10.27</time></p>
+<h1 class="za-title">Opus 5.5 + Hi3D 通宵搓一个 3D 海战游戏</h1>
+<p class="za-sub" lang="en" data-za-gen>AI 3D 游戏流程 · 原帖照录 + Hi3D v1.0 导读</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @gkxspace</span><span>收录 · 2026-10-27</span><span><a href="https://x.com/gkxspace/status/2114923036516471083" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/gkxspace/status/2114923036516471083" rel="noopener">余温 @gkxspace</a>（2026-10-27 11:31 UTC+8；截至 15:25 约 8.9 千浏览 / 63 收藏）· 原帖为中文，以下照录 · 文末附 <a href="https://github.com/hi3d-official/Hi3Dv1.0" rel="noopener">hi3d-official/Hi3Dv1.0</a> 导读</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>Opus 5.5 当总编排：GPT-Image-2.5 先出正/侧/背多视角参考图，再经 Hi3D 的 MCP 生成带 PBR 材质的模型，<strong>减面 + Draco 压缩</strong>后交给 Three.js 装配成可玩的风暴海战场景。注意帖里用的 Hi3D MCP 是付费云服务，和同时开源的 Hi3D v1.0（只做几何精修）不是一回事。</div>
+<figure><img src="images/cover.webp" alt="游戏画面：暴雨闪电中的帆船，巨大的海怪触手破浪而出，溅起大片浪花" loading="lazy"><figcaption>原帖 65 秒演示视频的封面帧（© 余温 @gkxspace）。视频请到原帖观看。</figcaption></figure>
+
+<h2 id="post">原帖照录</h2>
+<blockquote>
+<p>蛙趣，刚用 Opus5.5 + Hi3D 跑一个通宵搓的游戏，这个精细度，真的很哇塞！</p>
+<p>Opus5.5编排 + Image-2.5 出图 + Hi3D MCP 做模 + Three.js 装配</p>
+<p>整套做法分享给大家：<br>
+1、概念与多视角参考图：GPT-Image-2.5<br>
+先让 GPT-Image-2.5 出多视角的概念图和参考图（正面、侧面、背面），把材质纹理和结构确定。</p>
+<p>2、高精 3D 资产建模：Hi3D MCP<br>
+把 Hi3D 的 MCP 接进 AI工具，需要时会把参考图喂给 Hi3D MCP，秒级生成带完整 PBR 材质的高精 3D Mesh。</p>
+<p>3、Web 端性能优化：自动减面与 Draco 压缩（关键避坑点）<br>
+AI 生成的原生模型动辄几十万面，直接丢进网页必卡，让 AI 调用 MCP 时加入 LOD 网格简化并压成 Draco 格式的 glb。</p>
+<p>4、逻辑与场景组装：Three.js / WebGL<br>
+模型就绪后，AI 自动编写 Loader 异步加载，补齐物理碰撞体、海水着色器、光影和粒子特效，拼成完整可交互的世界。</p>
+<p>5、音效和配乐：WebAudio 实时合成</p>
+<p>另外，@Hi3D_AI 刚把 V1.0 开源了，由 200 万真实生产资产训出，细节还原和多视角保真都很顶，堪称目前最扎实的工业级开源 3D 模型，摆明就是奔着 3D 赛道的 AI Infra 去的。</p>
+</blockquote>
+
+<h3 id="replies">作者在评论区的补充</h3>
+<ul>
+<li>有人问船、堡垒、海怪是不是都要单独建模，作者答：“都是单独建模了”。</li>
+<li>有人催着优化玩法做正式版上架，作者答：“其实做好了，哈哈”。</li>
+<li>有人说再优化一下可以上 Steam，作者答：“那难度太高了🤪”。</li>
+<li>有人问是不是电影感的游戏，作者答：“对的，现在还是有点难，但一句话一个游戏应该也快了😂”。</li>
+<li>回复 @Saccc_c（《小王子》3D 游戏的作者）：“跟你学的，哈哈”。</li>
+</ul>
+<p class="caption">其余作者回复只是寒暄或表情，没有收录。</p>
+
+<h2 id="pipeline">流程拆解</h2>
+<div class="table-wrap"><table><thead><tr><th>环节</th><th>工具</th><th>要点</th></tr></thead><tbody>
+<tr><td>编排</td><td>Claude Opus 5.5</td><td>统领全程，按需调用出图、建模，写加载与场景代码</td></tr>
+<tr><td>参考图</td><td>GPT-Image-2.5</td><td>正 / 侧 / 背多视角图，先把结构和材质定下来</td></tr>
+<tr><td>建模</td><td>Hi3D MCP（云端）</td><td>参考图生成带 PBR 材质的 mesh；每个物件单独建模</td></tr>
+<tr><td>Web 优化</td><td>LOD 网格简化 + Draco</td><td>原生模型几十万面，不减面网页必卡；导出 Draco 压缩的 glb</td></tr>
+<tr><td>装配</td><td>Three.js / WebGL</td><td>异步 Loader、物理碰撞体、海水着色器、光影、粒子</td></tr>
+<tr><td>声音</td><td>WebAudio</td><td>音效和配乐都实时合成</td></tr>
+</tbody></table></div>
+<p>这条链路和本站收录过的几条 AI 3D 游戏流程同构：Sac 的《小王子》用 Tripo 建模、Blender/Unity MCP 装配；木马人的武侠 ARPG 用 Tripo 四边形拓扑加 Three.js。这一篇的区别在于，模型生成整个交给 MCP，减面和压缩也写进了智能体的调用步骤。</p>
+
+<h2 id="hi3d">Hi3D v1.0 开源：是什么，与帖子的关系</h2>
+<p><a href="https://github.com/hi3d-official/Hi3Dv1.0" rel="noopener">hi3d-official/Hi3Dv1.0</a>（2026-10-23 发布，★489，GitHub 数据取于 2026-10-27 15:25 UTC+8）是 Hi3D 开放的<strong>第二阶段几何精修模型</strong>。厂商是数学魔法 Math Magic（官网 hi3d.ai，国内站 hi3d.cn），基于自家的 Sparc3D 表示。按 README 的说法：</p>
+<ul>
+<li><strong>输入</strong>：同一物体的参考图 + 一个粗糙 mesh。<strong>输出</strong>：高分辨率几何，可以选 512³、1024³ 或 1536³，分别对应跑 1、2、3 轮精修（这里是名义上的稀疏提取网格，不是固定面数）。</li>
+<li><strong>训练数据</strong>：技术报告称约<strong>两百万个</strong>精选 3D 资产，与帖中“200 万真实生产资产”一致。</li>
+<li><strong>只开放推理代码和 8 个权重文件</strong>，不含训练代码和评测框架，所以仅凭仓库无法复现论文里的对比表。</li>
+<li><strong>只出几何</strong>，batch 为 1：<em>“No textures, materials, or vertex colors are generated.”</em>（不生成纹理、材质或顶点色。）输出会被居中并归一化，原始尺度不保留。</li>
+<li><strong>粗模要自己提供</strong>。第一阶段的粗模生成不在开源范围内，示例里可选接腾讯 Hunyuan3D-2 mini，它有单独的许可。</li>
+<li><strong>硬件门槛高</strong>：只支持 Linux、Python 3.10、计算能力 8.0 及以上的 NVIDIA GPU、CUDA 12.0–12.5，没有 CPU 路径，flash-attn 是硬依赖。实测环境是 <strong>96 GB 显存的 NVIDIA H20</strong>；README 写明 1536³ 只在这张卡上验证过，更小显卡的可行性“尚未确定”。</li>
+<li>同一种子也不保证生成逐位相同的 mesh，因为 GPU 稀疏卷积和注意力不是逐位确定的。</li>
+</ul>
+<p><strong>与帖子的关系</strong>：帖中“秒级生成带完整 PBR 材质”的 Hi3D MCP，是 Hi3D 的<strong>商用云 API</strong>（文档 docs.hi3d.ai，MCP 端点 mcp.hitem3d.ai，用 client_id/secret 鉴权，按积分计费）。它支持 PBR 和多视角输入（正、背、左、右最多 4 张），模型版本到 hi3dv3.0，面数可设 10 万–500 万。官方 CLI 文档写的生成耗时是 <strong>2–15 分钟</strong>，并不是“秒级”。开源的 v1.0 只是其中精修几何的一部分。</p>
+
+<h2 id="caveats">注意事项</h2>
+<ul>
+<li><strong>“秒级”存疑</strong>：Hi3D 官方 CLI 文档写的单次生成是 2–15 分钟，帖子的说法应理解为体感或宣传口径。</li>
+<li><strong>云服务要付费</strong>：照做需要 Hi3D 平台账号和积分；MCP 用 Basic Auth，凭据不要在录屏或截图里露出来（官方文档也这样提醒）。</li>
+<li><strong>开源许可不是 OSI 许可</strong>：v1.0 用自定义的《Hi3D Open License Agreement 1.0》，许可方是 OCEANO HK HOLDING LIMITED。允许商用，但相关产品月活超过 <strong>20 万</strong>或月收入达到 <strong>100 万美元</strong>时，需在 60 天内通知许可方并另行申请书面许可；商用集成要显示 <code>Powered by Hi3D 1.0</code>；另附可接受使用政策。单独的生成结果（不含 Hi3D 代码或权重的 mesh）不触发这些义务。原有的 Apache-2.0 / MIT 部分仍按原条款。</li>
+<li><strong>“最扎实的工业级开源 3D 模型”是作者的评价</strong>：README 里的对比图都由厂商自选，仓库不含评测集，本站无法核实。</li>
+<li>帖子语气接近推广，原文没有标注合作；本站没有试玩游戏，也没有运行模型。游戏本身尚未公开。</li>
+</ul>
+<p class="caption">许可处理：原帖是作者本人中文帖，照录全文。Hi3D 仓库用的是自定义许可，不属于 MIT/Apache/GPL 这类开放许可，所以 README 只做导读和短引，不全文翻译，也不转载仓库里的对比图；需要全文可看官方简体中文 README（README.zh-CN.md）。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原帖与演示视频 © 余温 @gkxspace，本页照录用于学习交流；Hi3D v1.0 © OCEANO HK HOLDING LIMITED / Math Magic，按《Hi3D Open License Agreement 1.0》发布，本页仅作导读。原帖：<a href="https://x.com/gkxspace/status/2114923036516471083" rel="noopener">x.com/gkxspace/status/2114923036516471083</a>；项目：<a href="https://github.com/hi3d-official/Hi3Dv1.0" rel="noopener">github.com/hi3d-official/Hi3Dv1.0</a>。导读由 Grok Bot 整理。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/gkxspace/status/2114923036516471083" rel="noopener">x.com/gkxspace/status/2114923036516471083</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

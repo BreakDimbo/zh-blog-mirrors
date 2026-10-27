@@ -630,5 +630,15 @@
     "type": "导读",
     "subtitle": "开源 TTS / 声音克隆 · AGPL-3.0 · README 全文中译",
     "original_url": "https://github.com/debpalash/VoiceStudio"
+  },
+  {
+    "slug": "gkxspace-opus-hi3d-3d-game",
+    "title": "Opus 5.5 + Hi3D 通宵搓一个 3D 海战游戏",
+    "desc": "余温 @gkxspace：Opus 5.5 编排、GPT-Image-2.5 多视角参考图、Hi3D MCP 出 PBR 模型、LOD 减面 + Draco、Three.js 装配、WebAudio 音效。原帖照录 + Hi3D v1.0 开源导读（几何精修、96GB H20 验证、自定义许可；MCP 为付费云 API）。",
+    "source": "X · @gkxspace",
+    "date": "2026-10-27",
+    "type": "导读",
+    "subtitle": "AI 3D 游戏流程 · 原帖照录 + Hi3D v1.0 导读",
+    "original_url": "https://x.com/gkxspace/status/2114923036516471083"
   }
 ]
