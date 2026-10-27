@@ -90,6 +90,36 @@
 <li><strong>工具链：</strong>作者称用 Claude Opus 5.5 + Three.js 构建；作者本身长期用 Three.js 做互动 3D 作品（海洋、机械表、细胞等，多数在 GitHub 以 MIT 开源）。</li>
 </ol>
 
+<h2 id="method">制作方法：能查到什么</h2>
+<p>读者常问“这是怎么做的”。截至 2026-10-27（UTC+8），我们查了作者在两条帖子下的全部回复、他近期的其他帖子、第 1 课的 GitHub 仓库和作者网站。结论是：<strong>作者没有公开 Every Joule 的提示词、CLAUDE.md、分步流程、耗时或成本。</strong>下面分三部分列出能确认的信息，作者说的和我们推断的分开写。</p>
+
+<h3 id="method-stated">一、作者自述</h3>
+<ul>
+<li><strong>工具：</strong>两条主帖都只写了一句 “Built with Opus 5.5 and Three.js”（<a href="https://x.com/techartist_/status/2113310927093436587">首帖</a> · <a href="https://x.com/techartist_/status/2114035463153742180">全书帖</a>）。</li>
+<li><strong>配套内容：</strong>索引、测验、每个数字的出处、对齐五套考纲的教师指南（<a href="https://x.com/techartist_/status/2114035465875824813">续帖</a>）。</li>
+<li><strong>课堂验证：</strong>“Demonstrated this at a school and both students and educators loved it”（<a href="https://x.com/techartist_/status/2113496116394418219">回复</a>）。</li>
+<li><strong>音效：</strong>仓库里的 <a href="https://github.com/iamtechartist/every-joule-lesson1/blob/main/audio/CREDITS.md">audio/CREDITS.md</a> 说明，所有音效都剪自 Freesound 上 CC0 授权的真实录音（翻页、落书、盖章、水壶、弹簧等），经过剪切、高通滤波、响度统一后，打包成一个音效精灵文件。原文写明 “There is no music and nothing synthesised”。处理脚本在 <code>tools/audio/</code> 目录下，这个目录没有放进公开仓库。</li>
+<li><strong>作者在别的作品里提过的做法</strong>（不是专门讲这本书）：有的作品“没用任何 3D 模型、贴图、照片或视频”（<a href="https://x.com/techartist_/status/2111912410131153254">海洋探索</a>）；有的作品少量模型来自 Tripo，其余由 Opus 在 Blender 和代码里完成（<a href="https://x.com/techartist_/status/2112265555780771886">来源</a>）；他也说过 Opus 5.5 最近常“缺乏常识逻辑”，自己扔掉过整天的工作（<a href="https://x.com/techartist_/status/2111197708673593558">来源</a>）；还说过关键在于 “how many [tokens] are you willing to spend”（<a href="https://x.com/techartist_/status/2112066514971148502">来源</a>）。</li>
+</ul>
+
+<h3 id="method-inferred">二、从公开构建产物推断</h3>
+<p class="caption">以下是本站阅读 <a href="https://github.com/iamtechartist/every-joule-lesson1">every-joule-lesson1</a> 仓库里打包后的文件得出的推断，<strong>不是作者的说法</strong>。仓库没有许可证，所以这里只做描述，不转载代码。</p>
+<ul>
+<li><strong>仓库只有构建产物：</strong>整个仓库只有一次提交（2026-10-22 23:58，UTC+8），没有 README、CLAUDE.md、AGENTS.md、提示词或源码目录，真正的源码仓库没有公开。教师页提到的 “research notes”（研究笔记）也不在仓库里。</li>
+<li><strong>技术栈：</strong>用 Vite 打包，Three.js 单独拆成一个包（版本号像是 r170，不确定）；字体用 Caveat（手写体）和 Source Serif 4；声音直接用浏览器的 Web Audio 播放音效精灵；进度保存在 localStorage；会照顾系统的“减弱动画”设置。</li>
+<li><strong>3D 是程序生成的：</strong>没有加载任何外部模型或贴图（没有 glTF/Draco/KTX2 加载器，也没有 .glb 文件）。物件应该是用 Three.js 的几何体在代码里拼出来的，比如旋转体、挤出体、管道、边线和大量实例化网格。</li>
+<li><strong>“墨线画”与“放大镜”：</strong>书页上的线稿和排线很可能是先用 Canvas 2D 画好，再贴到 3D 场景里，配合自定义着色器做出图从纸面浮起的效果。“液态玻璃”放大镜用的是物理材质的透射效果，代码注释写着按镜心放大、带色散。另外还用了后期处理。</li>
+<li><strong>内容和代码分开：</strong>能量存储、数字出处、教师指南、出处列表、音效分别是独立模块，说明文字和数据是单独整理后接进场景的。</li>
+</ul>
+
+<h3 id="method-missing">三、查不到的内容</h3>
+<ul>
+<li><strong>提示词和对话记录：</strong>评论区至少六个人问过提示词或流程，包括中文的“请问这是怎么做的？”，作者都没有回答。</li>
+<li><strong>迭代步骤、耗时、token 或费用：</strong>都没有公开。作者博客 <a href="https://iamtechartist.com/blog/">iamtechartist.com/blog</a> 目前显示 “No posts here yet”。</li>
+<li><strong>视频或访谈：</strong>没有找到。搜索结果把 YouTube 视频 “Claude Opus 5.5 Built This Interactive 3D Koi Pond” 归到他名下，但这个视频其实来自 Sourany Studio，和他无关。</li>
+<li><strong>第三方复刻（不是作者的方法）：</strong>XiaoHu.AI 写过一篇<a href="https://xiaohu.ai/en/article/techartist-3d-energy-teaching-guide/">复刻教程</a>，自己设计了四轮中文提示词，用 Codex 从空目录做出“书从书架掉落”这一课的原型。文中明确写道 “the original creator did not release their prompts or development timeline”，可以当参考思路，不代表作者本人的做法。</li>
+</ul>
+
 <h2 id="license">许可与可用性</h2>
 <p>完整版在作者站 <a href="https://iamtechartist.com/every-joule/">iamtechartist.com/every-joule</a>；第 1 课试读托管在 GitHub Pages，仓库 <a href="https://github.com/iamtechartist/every-joule-lesson1">iamtechartist/every-joule-lesson1</a> 只有构建产物，<strong>没有许可证文件</strong>，页面标注 “© 2026 Techartist”。因此本页只做导读和简短引用，不转载书中文字。需要 WebGL / 硬件加速。</p>
 
