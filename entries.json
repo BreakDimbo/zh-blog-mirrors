@@ -392,8 +392,8 @@
   {
     "slug": "anthropic-code-review",
     "title": "Claude Code 团队怎么做代码评审：详细导读",
-    "desc": "PR 翻倍、回滚降 40%+：Claude Code 团队把“阅读”交给机器——先自证、多智能体投票评审、可阻断安全审查、按风险分级的人工批准、3 轮上限、事故即 eval、快速回滚。",
-    "source": "claude.dev Blog · Addy Osmani、Morgan Westlee Lunt、Qing Wang",
+    "desc": "PR 翻倍、回滚降 40%+：Claude Code 团队把“阅读”交给机器——先自证、多智能体投票评审、可阻断安全审查、按风险分级的人工批准、3 轮上限、事故即 eval、快速回滚。新增 Addy Osmani X 长文改写版全文中译。",
+    "source": "claude.dev Blog · Addy Osmani、Morgan Westlee Lunt、Qing Wang · X 长文 @addyosmani",
     "date": "2026-10-17",
     "type": "导读",
     "subtitle": "How the Claude Code team does code review",
