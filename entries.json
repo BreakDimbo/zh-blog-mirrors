@@ -590,5 +590,15 @@
     "type": "导读",
     "subtitle": "AI digital-human talking-head videos from one photo",
     "original_url": "https://github.com/andyhuo520/digital-human-koubo"
+  },
+  {
+    "slug": "katelyn-lesse-multiagent-engineering-problems",
+    "title": "Katelyn Lesse：多智能体时代，工程师要解决的一组新问题",
+    "desc": "Anthropic 平台负责人 Katelyn Lesse 的 X 长文《The new set of problems for engineers to solve》全文中译：数千个持久运行的智能体带来四类新工程问题——为有状态、常空闲、突发的智能体重做基础设施（Kubernetes 不合身，Google Agent Substrate）；身份与授权（工作负载身份、代表人类行事 OBO 与同意、智能体之间的信任）；安全与隔离（漏洞快于修补、注入指令在智能体间与记忆中传播、爆炸半径）；跨智能体 OTel 追踪与一键停机。附作者博客《Secure agents》导读（大脑/双手分离、四档隔离、出站默认拒绝）。",
+    "source": "Katelyn Lesse @katelyn_lesse · X",
+    "date": "2026-10-27",
+    "type": "翻译",
+    "subtitle": "The new set of problems for engineers to solve",
+    "original_url": "https://x.com/katelyn_lesse/status/2114542280535318557"
   }
 ]
