@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>孟菲斯微缩世界：Eian 用代码做治愈系小动画的提示词（原帖照录 + 拆解）</title>
+<meta name="description" content="Eian @EianLu 公开的「孟菲斯微缩世界」提示词：Claude 用 Canvas 写确定性 frame(i)，无头 Chrome 逐帧导出、ffmpeg 合成，五声音阶配乐也用代码合成，20 秒 1080×1080 60fps。原帖与前一帖照录、提示词逐段拆解、色板、作者回复与评论区观点。" />
+<meta property="og:title" content="孟菲斯微缩世界：Eian 用代码做治愈系小动画的提示词" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.swatches{display:flex;flex-wrap:wrap;gap:.6em;margin:0 0 1.5em;padding:0;list-style:none}
+.swatches li{display:flex;align-items:center;gap:.5em;margin:0;font-size:13.5px}
+.swatches i{display:inline-block;width:1.6em;height:1.6em;border:1.5px solid #25214A;box-shadow:2px 2px 0 #25214A}
+.swatches code{font-size:12.5px}
+.frames{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1em;margin:0 0 1.5em}
+.frames figure{margin:0}
+.prompt-pre{white-space:pre-wrap}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-10-27">2026.10.27</time></p>
+<h1 class="za-title">孟菲斯微缩世界：Eian 用代码做治愈系小动画的提示词</h1>
+<p class="za-sub" lang="en" data-za-gen>Memphis Miniature World · a prompt for healing code-rendered animations</p>
+<p class="za-meta" data-za-gen><span>来源 · Eian @EianLu · X</span><span>收录 · 2026-10-27</span><span><a href="https://x.com/EianLu/status/2114695987424063730" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/EianLu/status/2114695987424063730">x.com/EianLu/status/2114695987424063730</a>（作者：Eian <a href="https://x.com/EianLu">@EianLu</a>，2026-10-26 20:29 SGT）</p>
+<p class="meta-line">原帖为中文，正文、所引用的前一帖和作者回复都照录原文；视频请在 X 原帖观看（本页不转载），下图仅为原视频封面帧。互动数据截至 2026-10-27 23:15 SGT：本帖约 7,297 次浏览、186 赞、173 收藏、17 转发、3 引用、14 回复；前一帖约 6.3 万次浏览、394 赞、367 收藏。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><figure class="cover-fig"><a href="https://x.com/EianLu/status/2114695987424063730" rel="noopener"><img class="cover" src="images/cover.webp" alt="《曲院风荷 West Lake Lotus Pond》封面帧：暖白底上的方形画框，边缘像喷漆一样颗粒消散；荷叶、荷花、蜻蜓、乌龟浮在水面，水下有锦鲤、金鱼、小鱼群、青蛙和水草；画框下方三行小字：标题、季节描述和经纬度 30.2563° N 120.1362° E" /></a><figcaption>本帖视频封面帧《曲院风荷 West Lake Lotus Pond》（夏 · 水面之上，水面之下；经纬度指向杭州西湖曲院风荷）。点击在 X 观看 20 秒成片。</figcaption></figure>
+
+<h2 id="what">这是什么</h2>
+<ul>
+<li><strong>一份可以直接复用的“代码动画”提示词。</strong>Eian 前一天发了一支稻田俯视小动画，收藏 367 次，评论区很多人要方法。第二天他用同一种风格做了荷塘短片，并把完整提示词贴出来，最后一行留空：“场景：【在这里写你的场景】”。</li>
+<li><strong>画面不是视频模型生成的。</strong>提示词让模型用 Canvas 写一个确定性的 <code>frame(i)</code> 函数，用无头 Chrome 逐帧导出，再用 ffmpeg 合成；配乐也用代码合成（五声音阶旋律加环境声）。有人问是不是 Opus 5.5 做的，作者回答“是的”；问用 skills 还是 prompt，作者回答“直接提示词”。</li>
+<li><strong>和《一座城的年轮》是同一条路线。</strong>都是“让 Claude 写代码渲染每一帧”。不同的是，这次不靠真实数据，而是用风格约束把一个场景做成会动的微缩模型。</li>
+</ul>
+
+<h2 id="post">原帖（照录）</h2>
+<blockquote>
+<p>这种风格真的太适合做一些治愈系动画了！<br>
+又尝试了一些新的内容，比如这支荷塘风格的短片。</p>
+<p>提示词：用代码做一支 20 秒的"孟菲斯微缩世界"小动画，1080×1080，60fps。<br>
+画面：把一个场景做成会动的微缩模型。暖白底，内容放在居中的圆角画框里，四周多留白；画框边缘是颗粒状消散的边（像喷漆），开场从中心颗粒状长出来，结尾收回去。<br>
+配色：孟菲斯风格。饱和原色 + 粉彩（黄 #FFC93C、粉 #FF8DB5、钴蓝 #2E5BE6、珊瑚红 #FF5A5F、薄荷绿 #A9E6C6、天蓝 #8DD3F6、淡紫 #D3BEFF），所有物体有深靛色 #25214A 描边和不模糊的硬投影，大色块上铺圆点、条纹、折线这类小图案。<br>
+镜头：一镜到底，缓慢匀速移动，可以带一点旋转和推近。<br>
+节奏：靠画面里的小动静撑起来，比如鸟飞过、云影掠过、鱼游、人走、车开、叶子飘落，至少安排一两个有"剧情"的瞬间。<br>
+文字：画框下方三行居中小字：标题（中英）/ 季节 · 一句描述（中英）/ 随镜头变化的经纬度。<br>
+做法：用 Canvas 写一个确定性的 frame(i) 函数，输入帧号输出一张图，场景按坐标和固定随机种子生成；用无头 Chrome 逐帧导出，ffmpeg 合成。配乐也用代码合成：五声音阶的轻旋律 + 环境声，画面里的事件要和音效卡上。<br>
+先给我看 4 张样帧拼图，我确认后再渲全片。<br>
+场景：【在这里写你的场景】</p>
+</blockquote>
+<p class="caption">— Eian（<a href="https://x.com/EianLu">@EianLu</a>），<a href="https://x.com/EianLu/status/2114695987424063730">2026-10-26 20:29 SGT</a>。附视频 1080×1080、20 秒，<a href="https://x.com/EianLu/status/2114695987424063730">在 X 观看</a>；本帖引用了下面的前一帖。</p>
+
+<h3 id="prev">所引用的前一帖（照录）</h3>
+<blockquote>
+<p>再一次被Claude的审美震惊了🤯做动画也很👍<br>
+刷到一支稻田的俯视小动画，实际上就是把一张地图做成会动的微缩模型，再配上好看的经典配色，质感和视觉上就会显的很干净好看。<br>
+做法也很简单，全部用代码实现，Canvas写一个frame（i）函数逐帧画出每帧画面，用ffmpeg合成，配音也用代码生成。<br>
+一镜到底，慢推加一点旋转，再加画面里的一些小动静，比如鸟的飞行、鱼的动静、青蛙跳水什么的，画面就会显的很灵动。也可以做网页动画，可以交互。</p>
+</blockquote>
+<p class="caption">— Eian（<a href="https://x.com/EianLu">@EianLu</a>），<a href="https://x.com/EianLu/status/2114650892934975667">2026-10-26 17:30 SGT</a>。附两支 20 秒视频，<a href="https://x.com/EianLu/status/2114650892934975667">在 X 观看</a>。</p>
+<div class="frames">
+<figure><a href="https://x.com/EianLu/status/2114650892934975667" rel="noopener"><img src="images/paddy-1.webp" alt="《成都平原 Chengdu Plain》封面帧：俯视的彩色田块，中间一条蓝色河流和红色小桥，左上是林盘院落，路上有黄色小车" loading="lazy" /></a><figcaption>前一帖视频一：《成都平原 Chengdu Plain》，春 · 油菜花开，秧田放水（30.9447° N 103.6181° E）。</figcaption></figure>
+<figure><a href="https://x.com/EianLu/status/2114650892934975667" rel="noopener"><img src="images/paddy-2.webp" alt="《玉林路 Yulin Road, Chengdu》封面帧：等轴测视角的粉彩街区，银杏、遮阳篷、小酒馆和行人" loading="lazy" /></a><figcaption>前一帖视频二：《玉林路 Yulin Road, Chengdu》，秋 · 银杏、小酒馆和慢悠悠的街（30.6285° N 104.0601° E）。</figcaption></figure>
+</div>
+
+<h2 id="replies">作者回复（照录）</h2>
+<p>两条帖子评论区里和做法相关的作者回复（时间为 SGT）：</p>
+<div class="xpost"><p>直接提示词</p><p class="meta">回 @daydreamer93_「这种是利用 skills 还是直接prompt 实现的」· 10-26 23:23</p></div>
+<div class="xpost"><p>是的</p><p class="meta">回 @theolearnsAI「这是opus 5.5做的么」· 10-27 10:40</p></div>
+<div class="xpost"><p>镜头都是可以调的，不一定非要俯视哇 这种做动画效果真的挺好的。</p><p class="meta">回 @huqinyiyayuguan「试了试，感觉还是俯视的效果好」· 10-26 21:26</p></div>
+<div class="xpost"><p>其实是可以的 不过没有自己找音乐好</p><p class="meta">回 @Moblacksoil「连配音都是代码生成的，这个没想到」· 10-26 18:04</p></div>
+<div class="xpost"><p>是的！</p><p class="meta">回 @growaiskills（建议四张样帧里留一张开场、一张收尾，顺便检查颗粒进出场和字幕边距）· 10-26 22:24</p></div>
+<div class="xpost"><p>哈哈哈这下思路打开了！</p><p class="meta">回 @lemomo_ai「你这套都可以单独自己做一个库了」· 10-26 20:39</p></div>
+<div class="xpost"><p>我新发的帖子有提示词可以去尝试一下！</p><p class="meta">回 @Yudian_Zero · 10-26 20:30</p></div>
+<div class="xpost"><p>我有发的哦 这条帖子的上面那一条</p><p class="meta">回 @nextalphax（求第一个视频鸟俯瞰视角的提示词）· 10-27 16:56</p></div>
+
+<h2 id="breakdown">提示词拆解</h2>
+<p>这份提示词短，但每一行都在替模型做一个决定。逐段看：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>段落</th><th>规定了什么</th><th>为什么有用</th></tr></thead>
+<tbody>
+<tr><td>规格</td><td>20 秒、1080×1080、60fps，共 1,200 帧</td><td>方形画幅适合社交平台；先把帧数定死，后面的“慢”和“匀速”才有尺度。</td></tr>
+<tr><td>画面</td><td>暖白底、居中圆角画框、四周留白；画框边缘像喷漆一样颗粒消散，开场从中心长出、结尾收回</td><td>画框把场景变成“桌上的模型”；颗粒进出场同时解决了开头和结尾，片子天然闭合。</td></tr>
+<tr><td>配色</td><td>7 个具体色值 + 深靛色描边 + 硬投影 + 圆点/条纹/折线小图案</td><td>用色值代替“好看的配色”这类形容词；描边和硬投影让所有物体像同一套贴纸，风格一致性主要靠这一行。</td></tr>
+<tr><td>镜头</td><td>一镜到底，缓慢匀速，可带旋转和推近</td><td>不剪辑就不用设计转场；慢推加微旋转是“微缩模型”观感的来源。</td></tr>
+<tr><td>节奏</td><td>鸟、云影、鱼、行人、车、落叶；至少一两个有“剧情”的瞬间</td><td>画面信息靠小动静撑起来；“剧情瞬间”（比如青蛙跳水）给观众一个记忆点。</td></tr>
+<tr><td>文字</td><td>画框下三行：中英标题 / 季节 · 一句描述 / 随镜头变化的经纬度</td><td>经纬度随镜头变化，是很省力的“真实地点”暗示，也让每支片都像同一系列。</td></tr>
+<tr><td>做法</td><td>Canvas 写确定性 <code>frame(i)</code>，坐标 + 固定随机种子；无头 Chrome 逐帧导出、ffmpeg 合成；五声音阶 + 环境声，事件与音效对齐</td><td>同一帧号永远得到同一张图，可以只改某一帧、可以重渲；声音和画面共用帧号时间线，才能“卡上”。</td></tr>
+<tr><td>评审关卡</td><td>先出 4 张样帧拼图，确认后再渲全片</td><td>全片渲染慢，先看静帧能便宜地纠正风格。评论区 @growaiskills 补充：样帧里留一张开场、一张收尾，顺便检查颗粒进出场和字幕边距，作者回“是的！”。</td></tr>
+<tr><td>场景槽</td><td>“场景：【在这里写你的场景】”</td><td>前面所有行是固定的风格骨架，只换最后一行就能出新片，例如荷塘、成都平原、玉林路。</td></tr>
+</tbody></table></div>
+
+<h3 id="palette">色板</h3>
+<ul class="swatches" aria-label="孟菲斯色板">
+<li><i style="background:#FFC93C"></i>黄 <code>#FFC93C</code></li>
+<li><i style="background:#FF8DB5"></i>粉 <code>#FF8DB5</code></li>
+<li><i style="background:#2E5BE6"></i>钴蓝 <code>#2E5BE6</code></li>
+<li><i style="background:#FF5A5F"></i>珊瑚红 <code>#FF5A5F</code></li>
+<li><i style="background:#A9E6C6"></i>薄荷绿 <code>#A9E6C6</code></li>
+<li><i style="background:#8DD3F6"></i>天蓝 <code>#8DD3F6</code></li>
+<li><i style="background:#D3BEFF"></i>淡紫 <code>#D3BEFF</code></li>
+<li><i style="background:#25214A"></i>描边 / 投影 深靛 <code>#25214A</code></li>
+</ul>
+
+<h2 id="notes">用之前值得知道的几点</h2>
+<ol>
+<li><strong>镜头角度可以换。</strong>有人试了侧视，觉得还是俯视好看。作者说镜头都可以调，不一定要俯视；荷塘这支就是水面上下的剖面视角，玉林路是等轴测视角。</li>
+<li><strong>代码配乐能用，但作者自己更偏向找现成音乐。</strong>他的原话是“其实是可以的 不过没有自己找音乐好”。如果要用现成音乐，记得核对授权。</li>
+<li><strong>时间最好按秒算。</strong>评论区 @zealdin 建议在帧函数里用 <code>i/fps</code> 算时间，ffmpeg 合成时再指定 <code>-framerate</code>，这样以后改时长或帧率不用重写动画。这和本站多篇代码成片文章里的“渲染契约”是同一个意思。</li>
+<li><strong>模型与耗时。</strong>作者确认用的是 Opus 5.5、直接提示词，没有 skill；渲染时长和费用没有说明。</li>
+<li><strong>“孟菲斯”在这里是配色语言。</strong>提示词里的孟菲斯主要指饱和原色加粉彩、粗描边、几何小图案，用来画写实场景的微缩模型，和 1980 年代孟菲斯设计里夸张的几何家具造型不完全是一回事。</li>
+</ol>
+
+<h2 id="comments">评论区观点</h2>
+<ul>
+<li><strong>“可以单独做一个库”</strong>：@lemomo_ai 认为这套风格可以单独做成风格库，作者回“这下思路打开了”。</li>
+<li><strong>马上有人跟做</strong>：前一帖下 @jesseqin_ 用它“演绎一下小学放学回家的路”，@jiangjiangling、@huqinyiyayuguan 也贴了自己的版本。</li>
+<li><strong>关于 AI 与才华</strong>：@less_is_more_ai 说，如果是人做的会惊讶于才华，AI 做的会慢慢被当成基本操作；作者反问“如果是人用AI做的勒？”。</li>
+<li><strong>对 Opus 视觉能力的惊喜</strong>：@josh_janse 说 Opus 最让他意外的是视觉能力，作者回“yes！！”。</li>
+</ul>
+
+<h2 id="related">本站相关</h2>
+<ul>
+<li><a href="../eianlu-chengdu-rings/">Eian《一座城的年轮》</a>：同一作者，同样让 Claude 写代码渲染每一帧，素材换成了真实建筑数据。</li>
+<li><a href="../kerazcity-opus-motion-playbook/">kerazcity：Opus 5.5 动效手册</a>：<code>seek(t)</code> 渲染契约、先看联系表再渲全片的评审循环，和这里的 <code>frame(i)</code> + “先看 4 张样帧”是一回事。</li>
+<li><a href="../mg-styles-15/">mg-styles-15：15 种 MG 风格样本</a>：同样是“通用骨架 + 风格专属段落”的提示词结构。</li>
+<li><a href="../guanmo-design-style/">观默 Design Style</a>：逐期拆解设计风格的代码短片，孟菲斯在其计划列表中。</li>
+<li><a href="../shanshui/">Shanshui</a>：零素材、全代码出片的水墨山水，配乐同样用代码合成。</li>
+<li><a href="../prompt-motion/">Prompt Motion 画廊</a>：233 条 Opus 5.5 动效视频与提示词。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文镜像整理。原帖、视频与封面帧版权归 Eian（<a href="https://x.com/EianLu">@EianLu</a>）所有；作者正文、所引用的前一帖与回复照录，他人回复仅作简短引用并署名。帖中没有代码仓库或项目站点。原文：<a href="https://x.com/EianLu/status/2114695987424063730">x.com/EianLu/status/2114695987424063730</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/EianLu/status/2114695987424063730" rel="noopener">x.com/EianLu/status/2114695987424063730</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,5 +1,15 @@
 [
   {
+    "slug": "eianlu-memphis-miniature-world",
+    "title": "孟菲斯微缩世界：Eian 用代码做治愈系小动画的提示词（原帖照录 + 拆解）",
+    "desc": "Eian @EianLu 公开的「孟菲斯微缩世界」提示词原帖照录：20 秒 1080×1080 60fps，暖白底圆角画框、喷漆颗粒进出场、7 色孟菲斯色板 + 深靛描边硬投影、一镜到底慢推、小动静与“剧情瞬间”、中英标题 + 经纬度字幕；Canvas 确定性 frame(i) + 无头 Chrome 逐帧 + ffmpeg，五声音阶代码配乐与事件卡点，先看 4 张样帧再渲全片。附所引用的稻田/玉林路前一帖照录、作者回复（Opus 5.5、直接提示词）、逐段拆解、色板与评论区观点；3 张视频封面帧 webp。",
+    "source": "Eian @EianLu · X",
+    "date": "2026-10-27",
+    "type": "全文镜像",
+    "subtitle": "Memphis Miniature World · a prompt for healing code-rendered animations",
+    "original_url": "https://x.com/EianLu/status/2114695987424063730"
+  },
+  {
     "slug": "orange-podcast-jingdu",
     "title": "没时间听播客？Orange 常读的 8 个 AI 播客精读站（原帖镜像 + 导读）",
     "desc": "Orange AI（@oran_ge）原帖中文全文镜像 + 向阳乔木 qiaomu.ai 播客精读站群导读：张小珺商业访谈录、42章经、晚点聊、十字路口、AI炼金术、三五环、知行小酒馆、面基 8 站一览（期数/精读数/小宇宙订阅/最近精读，2026-10-26 实测）、网页·RSS·Markdown/llms.txt·Obsidian 插件 Qiaomu AI RSS 的用法、「转写」与「AI 精读」的边界与启发；附 2 张配图 webp。",
