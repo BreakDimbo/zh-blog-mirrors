@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pomerado：把任何网站变成确定性 API / MCP，替代浏览器智能体（项目导读 + 推文串全译 + README 全译）</title>
+<meta name="description" content="Pomerado（YC F26，MIT）项目导读：智能体只铸造一次，把网页任务变成确定性的 HTTP / Playwright 代码并发布为 MCP 工具，执行时不再调用模型；Guardian 事前审查、读写权限、登录域白名单；附 Akshay 发布推文串全文中译与 README 全文中译。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.hero-tags .tag{margin-right:.35em}
+.readme-mirror table code{word-break:break-all}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-27">2026.10.27</time></p>
+<h1 class="za-title">Pomerado：把任何网站变成确定性 API / MCP，替代浏览器智能体</h1>
+<p class="za-sub" lang="en" data-za-gen>Turn any website into an API / MCP · 推文串全译 + README 全译</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @akshay_manglik · GitHub Pomerado/pomerado</span><span>收录 · 2026-10-27</span><span><a href="https://x.com/akshay_manglik/status/2114435444587065486" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/akshay_manglik/status/2114435444587065486" rel="noopener">x.com/akshay_manglik/status/2114435444587065486</a>（<a href="https://x.com/akshay_manglik" rel="noopener">Akshay @akshay_manglik</a>，Pomerado 创始人，2026-10-26）· 项目：<a href="https://github.com/Pomerado/pomerado" rel="noopener">github.com/Pomerado/pomerado</a>（Pomerado AI, Inc.，MIT）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide">
+<p><strong>一句话：</strong>Pomerado（YC F26）是一个“把网站变成 API / MCP”的工具。你只要用自然语言描述任务，它就派一个智能体在真实 Chromium 里把网站摸一遍，生成一段<strong>确定性的</strong>操作代码（HTTP 调用或 Playwright 脚本）。以后你的智能体调用这个 MCP 工具时，就不必再一屏一屏截图、让模型推理怎么点。开源核心是 MIT 许可，托管版 Pomerado Cloud 提供托管、登录保管、反爬浏览器集群和“网站改版后自动修复”。本页包括：<a href="#thread">作者发布推文串全文中译</a>、<a href="#guide">项目导读</a>、<a href="#readme">README 全文中译（MIT）</a>。相关阅读：<a href="../katelyn-lesse-multiagent-engineering-problems/">Katelyn Lesse：多智能体时代工程师要解决的新问题</a>（智能体身份与授权）、<a href="../thorstenball-how-i-work-with-agents/">Thorsten Ball：我怎么和智能体一起工作</a>。</p>
+</div>
+<p class="hero-tags"><span class="tag">★ 1,008 stars</span> <span class="tag">82 forks</span> <span class="tag">TypeScript</span> <span class="tag">MIT（≤0.1.2 为 AGPL-3.0）</span> <span class="tag">MCP stdio 服务器</span> <span class="tag">Playwright + Chromium</span> <span class="tag">npm pomerado 0.4.0</span></p>
+<p class="caption">仓库数据取自公开 GitHub 仓库页，时间 2026-10-27 15:58（UTC+8）；最新提交 <code>848fcda</code>（2026-10-27 15:03 UTC+8）。发布推文时作者截图里仓库只有 43 星，两天内涨到一千出头。</p>
+
+<figure><img src="images/cover.webp" alt="封面：左 Pomerado、右 Codex Computer Use，两个 ChatGPT 窗口并排，下方计时器与“321× speed”，任务：为 HR、IT、课程和图书馆系统入职 2 名新员工" loading="lazy"><figcaption>发布视频的封面帧（© Pomerado AI），视频未转载。任务是“为 2 名新员工在 HR、IT、课程和图书馆系统里办好入职”，左边 Pomerado，右边 Codex Computer Use，中间标注“321× speed”。原视频约 1 分 57 秒，见<a href="https://x.com/akshay_manglik/status/2114435444587065486" rel="noopener">原帖</a>。</figcaption></figure>
+
+<h2 id="thread">原帖：作者发布推文串全文中译</h2>
+<p class="caption">作者 <a href="https://x.com/akshay_manglik" rel="noopener">Akshay（@akshay_manglik）</a>，Pomerado 创始人，此前在 Scale AI 做应用 AI。推文串发于 2026-10-26 03:14（UTC+8），共 9 条加 2 条链接回复。主帖截至 2026-10-27 15:56（UTC+8）：约 44.4 万浏览、3,793 赞、4,965 收藏、193 转发、254 回复、91 引用。以下按顺序全文翻译。</p>
+
+<blockquote>
+<p><strong>1/</strong> 隆重介绍 Pomerado（YC F26）：比浏览器操作（browser use）更快、更便宜、更可靠的替代方案。</p>
+<p>开源。免费注册，给你的智能体加满马力 🧵 ［附发布视频］</p>
+<p><strong>2/</strong> 计算机操作（computer use）又慢、又贵、又不可靠。但要让智能体在网上执行操作，它是唯一的办法：大多数网站没有公开 API，而且你还得登录。</p>
+<p><strong>3/</strong> 所以我们做了 Pomerado：一个能在 30 分钟内把任何网站变成 API / MCP 的平台。</p>
+<p>我们的 API 比浏览器智能体更快（2–4 倍）、更便宜（10–1000 倍）、更可靠（+30%），对比对象包括 Astra、Muse 和 Instinct。［附基准图］</p>
+<p><strong>4/</strong> Pomerado 的原理是：根据用户的提示词，即时构建一个确定性的 API。我们的智能体会扫描网站，把任务翻译成 HTTP 调用或 Playwright 脚本。</p>
+<p><strong>5/</strong> 这些 API 能自我修复：它们会自动检测网站的变化并修好自己，全程不需要人参与。你的请求总能拿到响应。</p>
+<p><strong>6/</strong> Pomerado 适用于任何网站。可以用它让个人助理更擅长处理网页任务；也可以把智能体接入 ERP、CRM、电子病历（EHR）、保险门户等系统。</p>
+<p><strong>7/</strong> Pomerado 是为云端智能体打造的。托管、扩容和身份验证都由我们负责，包括安全的凭据存储和自动两步验证（2FA）。智能体永远看不到密钥。</p>
+<p><strong>8/</strong> 我们是开源的，采用 MIT 许可：用我们的仓库，你可以自己搭建本地托管的 API。［附仓库截图］</p>
+<p><strong>9/</strong> 免费注册：pomerado.ai</p>
+<p><strong>10/</strong> 看看我们的开源代码：<a href="https://github.com/Pomerado/pomerado" rel="noopener">github.com/Pomerado/pomerado</a></p>
+</blockquote>
+<figure><img src="images/benchmark-30-workflows.webp" alt="散点图：30 个真实浏览器工作流上的准确率、速度与成本。Pomerado/Astra 约 100% 准确、约 4.5 分钟、每任务 1.62 美元；Pomerado/Luna 约 90%、约 6 分钟、0.02 美元；Computer Use/Astra 约 77%、约 9 分钟、13.63 美元；Instinct 约 60%、约 13.5 分钟；Muse 约 70%、约 24 分钟" loading="lazy"><figcaption><strong>图（第 3 条推文附图）：30 个真实浏览器工作流上的准确率、速度与成本。</strong>纵轴是每个任务的中位耗时（分钟，越低越好），横轴是准确率（越高越好）。Pomerado 指“Codex 调用 Pomerado 预先生成好的工具”，Codex 模型分别为 GPT-6 Astra（★）和 GPT-6 Luna（☾）。读图约为：Pomerado/Astra 准确率约 100%、约 4.5 分钟、每任务 1.62 美元；Pomerado/Luna 约 90%、约 6 分钟、0.02 美元；Computer Use/Astra 约 77%、约 9 分钟、13.63 美元；Instinct 约 60%、约 13.5 分钟；Muse 约 70%、约 24 分钟。图注：任务取自真实的开源和老旧业务软件，如 OpenEMR、ERPNext、Moodle、Dolibarr、QuickBooks、Zoho Books 等；每个任务只试一次；成本按 API 标价的模型 token 计算；Instinct 和 Muse 不报告 token 用量。（© Pomerado AI）</figcaption></figure>
+
+<figure><img src="images/repo-screenshot.webp" alt="GitHub 仓库页截图：pomerado，Public，434 branches，29 tags，2,449 commits，43 stars，8 forks，简介 YC F26. Turn any website into an API / MCP in minutes. Open source core integration minting harness. MIT." loading="lazy"><figcaption>第 8 条推文附图：发布时的仓库页（43 星、8 fork、2,449 次提交）。仓库简介：“YC F26。几分钟把任何网站变成 API / MCP。开源的核心集成铸造框架（minting harness）。MIT。”</figcaption></figure>
+
+<h3>作者在评论区的补充（节译）</h3>
+<p class="caption">用 <code>conversation_id</code> 检索到作者在该对话中约 60 条回复，大多是致谢。下面挑出有信息量的几条，全文翻译。</p>
+
+<ul>
+<li><strong>和 browser use 的区别（回复 @sabir_huss50540）：</strong>“浏览器操作需要点开、截图每一页，再让模型对截图推理。Pomerado 则只用一次智能体来构建一个确定性的 API；执行时没有模型参与，所以速度快 2 倍、成本低 10–1000 倍、可靠性高 30% 以上。”</li>
+<li><strong>登录与 2FA（回复 @LiquidBuiltIt）：</strong>“可以——每次请求时传入登录信息，或者把它安全地存进我们的保管库，以便无缝使用。我们也能处理两步验证。”后续又补充：“TOTP 可以存在我们这里，我们会自动填验证码；短信验证码则需要你自己输入，想闭环的话 Mac 的 Messages MCP 挺好用。我们有可绑定的专用手机号来收短信 2FA，但因为成本原因只给企业用户。”</li>
+<li><strong>反爬与站点覆盖（回复 @keyserfaty 等）：</strong>“我们有一整套隐身（stealth）技术栈，能访问绝大多数网站，包括面向消费者的电商。哪个网站不行，联系我们，会尽快处理。”另一条：“我们有定制的隐身栈和自研的验证码破解器……”“隐身栈只在云端提供。”</li>
+<li><strong>限制：</strong>“LinkedIn 目前不支持——它封号很狠，我们先把它隔离出去”；“还不支持桌面应用，在路线图上”；“完整结账（比如支付集成）暂不支持，在路线图上；目前可以用账户里已保存的支付方式”；“目前用户不能接管浏览器；如果需要用户额外输入，可以直接通过 MCP 回答，或者在网页上的安全输入框里填写。目标是不让人在回路（HITL）变成拐杖。”</li>
+<li><strong>地区（回复 @BharadwajaSimh1）：</strong>“总体来说非美国网站更难。免费档的浏览器来自美国 IP，可能显得异常。我们正在修，没想到有这么多国际用户！”</li>
+<li><strong>适用场景（回复 @Vian_hrtm）：</strong>“我们的目标是让 API 的创建尽可能快！Pomerado 目前最适合重复性的工作流——你需要用到 3 次以上的那种。也可以并行创建多个 API。”</li>
+<li><strong>自修复里的权限扩张（回复 @geclos）：</strong>“这类改动在修复流程中会有自动审查。多数情况下会被拒绝；如果根据上下文确实有理由扩大权限，它会请用户明确确认。我们还在摸索最佳做法。”</li>
+</ul>
+<h2 id="guide">项目导读</h2>
+<h3>它在解决什么问题</h3>
+<p>让智能体在网页上“办事”，现在主要有两条路。一是网站有 API，就直接调用；二是没有 API，就让智能体像人一样看屏幕、点按钮（computer use / browser use）。第二条路通用，但每一步都要截图、让模型推理，所以慢、贵，而且同样的任务每次结果都可能不一样。Pomerado 的思路是把“理解网站”这件昂贵的事<strong>只做一次</strong>：先由智能体把任务做成一段确定性代码并发布成 MCP 工具，此后每次调用都是普通的代码执行，不再请求模型。这和 Pomerado 自己说的“重复 3 次以上的工作流最划算”一致：只做一次的任务，铸造成本摊不薄。</p>
+<h3>工作流：探索 → 完成你的示例 → 泛化 → 智能体调用</h3>
+<ol>
+<li><strong>铸造（mint）：</strong>在 MCP 客户端（Claude Code、Codex、Cursor 等）里对智能体说“用 Pomerado 给某网站做一个叫 xxx 的集成，只读”。客户端调用 <code>mint</code>，拿到一个任务 ID，再用 <code>get_job</code> 轮询进度，用 <code>provide_input</code> 回答 Pomerado 的提问（登录、验证码、选择），需要时用 <code>cancel_job</code> 取消。每次铸造最多 20 分钟的有效工作时间，等你回答的时间不算。</li>
+<li><strong>铸造器（minter）：</strong>一个带本地工作区和真实 Chromium（原生 Playwright 驱动）的模型智能体。它阅读网站，在 <code>src/</code> 下写操作模块，并在真实网站上跑这些模块来验证。对于只读任务，它还会根据网页上看到的内容自己设计 <code>test/cases.json</code> 实测用例，通过率至少 70% 才能进入发布审查。</li>
+<li><strong>Guardian：</strong>第二个模型，在每次浏览器调用执行<strong>之前</strong>审查，向你提问之前也审查，成品源码保存之前再审一次；被拒绝的调用不会碰到网站。它的策略改编自 OpenAI Codex（Apache-2.0）。另有一个“结果审查器”在事后判断每一次写操作是否真的改动了网站（done / not_done / unknown）。</li>
+<li><strong>权限（authority）：</strong>铸造时必须选 <code>read</code> 或 <code>write</code>，工具会让智能体在选 <code>write</code> 前先问你。写操作在构建时会真的执行一次，之后只审查源码，不再重复执行。登录只会填进目标站点或你在 <code>authenticationOrigins</code> 里列出的登录域，表单字段或提交目标指向别的网站会被直接拒绝（<code>credential_target_refused</code>）。</li>
+<li><strong>产物：</strong>一个归你所有的源码目录：<code>src/</code>、<code>pomerado.json</code>（入口与输入输出 JSON Schema）、<code>deployment.json</code>、<code>mcp.mjs</code> 等。每个集成都是一个独立的 MCP stdio 服务器，只暴露一个以集成命名的工具。运行时先按 schema 校验输入，执行不请求模型，也就不需要模型密钥。</li>
+<li><strong>运行时细节：</strong>每次调用都从站点根路径开始，开一个全新的浏览器上下文（无 cookie）。需要登录的集成每次调用都重新登录，并且不保存任何凭据。失败时返回 <code>possible_commit</code> 等字段，提醒调用方先把网站状态读回来，再决定是否重试，避免重复下单这类事故。</li>
+</ol>
+<h3>开源核心 vs. Pomerado Cloud</h3>
+<p>开源仓库就是完整的核心：铸造器、铸造框架与提示词、Guardian、本地 MCP 宿主，以及集成本身，不需要账号。不过铸造用的是 OpenAI 模型（代码里写死在 <code>models.ts</code>：铸造用 <code>gpt-6.1-sol</code>，Guardian 用 <code>gpt-6-luna</code>），需要你自己的 <code>OPENAI_API_KEY</code>；你的智能体本身可以用任何模型。Cloud 版在同一核心上增加了：托管、OAuth 代理与已保存登录、访问控制、能应对反爬的托管浏览器集群，以及<strong>网站改版检测与自动修复</strong>。注意推文里的“自我修复”“自动 2FA”“隐身栈”都是 Cloud 功能，开源版没有。</p>
+<h3>怎么看那张基准图</h3>
+<ul>
+<li>测的是 30 个跑在开源和老旧业务软件上的真实工作流（OpenEMR、ERPNext、Moodle、Dolibarr 等），每个任务只试一次。这类后台系统表单多、结构稳定，正是“铸造成确定性代码”最占优势的场景。</li>
+<li>“Pomerado”这一栏是“Codex 调用<strong>预先铸造好</strong>的工具”，图上的耗时和成本看起来不包括铸造本身的时间（推文说 30 分钟内）和 token。只用一次的话，这个对比并不公平。</li>
+<li>Instinct、Muse 不报告 token 用量，所以没有成本数字；基准为厂商自测，作者在评论区说“完整基准稍后发布”。推文里的“快 2–4 倍”“+30%”与评论区的“快 2 倍”口径不完全一致。</li>
+</ul>
+<h3>局限与注意事项</h3>
+<ul>
+<li><strong>合规风险：</strong>Cloud 的“隐身栈 + 自研验证码破解器”意在绕过网站的反机器人措施，可能违反目标网站的服务条款；LinkedIn 被主动排除，也说明了这一点。用于自家系统或明确授权的站点更稳妥。</li>
+<li><strong>凭据：</strong>托管版要把登录信息、TOTP 种子交给第三方保管；推文强调“智能体看不到密钥”，但信任边界转移到了 Pomerado 本身。开源版运行时不保存凭据，每次都向你要。</li>
+<li><strong>依赖与平台：</strong>只支持 macOS / Linux 和 Node 24.21+；铸造依赖 OpenAI API；还不支持桌面应用、完整结账，也不能让用户接管浏览器；免费档用美国 IP，非美国网站更容易被拦。</li>
+<li><strong>许可变更：</strong>0.1.2 及更早版本是 AGPL-3.0-only，之后改为 MIT。Guardian 策略和可访问名称计算分别改编自 OpenAI Codex 和 Playwright（Apache-2.0），保留各自的许可。</li>
+<li><strong>项目非常新、变化快：</strong>仓库有 434 个分支，CHANGELOG 接近 1,300 行，大量是破坏性变更；README 的写作风格偏向写给智能体看的精确规范（<code>docs/how-it-works.md</code> 约 2.4 万词）。</li>
+</ul>
+<h3>小结</h3>
+<p>Pomerado 把“智能体每次都现场看网页”换成“智能体铸造一次、代码重复执行”，并用 Guardian 事前审查、读写权限、登录域白名单和“可能已提交”提示，把写操作的风险控制在可审计的范围内。对重复性高、站点结构稳定的后台流程（ERP、CRM、病历、保险门户），这是比 computer use 更工程化的路线；一次性任务、强反爬站点和需要人随时接管的场景，它还不擅长。想了解多智能体系统里的身份、授权与沙箱问题，可对照阅读 <a href="../katelyn-lesse-multiagent-engineering-problems/">Katelyn Lesse 那篇</a>；想了解“让智能体交出证据”的工作方式，可读 <a href="../thorstenball-how-i-work-with-agents/">Thorsten Ball 那篇</a>；评审与回滚的工程化思路可参考 <a href="../anthropic-code-review/">Claude Code 团队怎么做代码评审</a>。</p>
+<h2 id="readme">附录：README 全文中译（MIT）</h2>
+<p class="caption">译自 <a href="https://github.com/Pomerado/pomerado/blob/848fcda6e16490da563dd3f8372bd6ca9dca4a80/README.md" rel="noopener">README.md @ 848fcda</a>，Copyright (c) 2026 Pomerado AI, Inc.，MIT 许可。命令、代码与文件名保持原样，徽章与 Star History 图未转载，相对链接已改为指向 GitHub。</p>
+
+<div class="readme-mirror">
+<h3>Pomerado</h3>
+<p>把网站变成你的智能体可以依赖的 MCP 集成。</p>
+<p><a href="#how-it-works-zh">工作原理</a> · <a href="#get-started-zh">开始使用</a> · <a href="#create-zh">创建集成</a> · <a href="#use-zh">使用集成</a> · <a href="#oss-cloud-zh">开源与 Cloud</a> · <a href="#docs-zh">文档</a> · <a href="https://discord.gg/QCwQFydAym" rel="noopener">Discord</a> · <a href="#contributing-zh">贡献</a></p>
+<h4>Pomerado 能做什么</h4>
+<p>Pomerado 为网站构建 MCP 集成，包括没有 API 的网站。</p>
+<ul>
+<li>我们的工具只需要一段对任务的自然语言描述就能构建集成，不需要 HAR 文件或录制</li>
+<li>集成是确定性的，因此比计算机操作（computer use）快得多，也可靠得多</li>
+<li>Pomerado 能用在需要登录和两步验证的网站上</li>
+</ul>
+<h4 id="how-it-works-zh">工作原理</h4>
+<pre><code class="language-text">┌──────────────────────────────────────────────────────────────────────────┐
+│  探索网站 → 完成你的示例 → 泛化 → 智能体调用它                           │
+└──────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>更多细节见 <a href="https://github.com/Pomerado/pomerado/blob/main/docs/how-it-works.md" rel="noopener">How it works</a>。</p>
+<h4 id="get-started-zh">开始使用</h4>
+<p>前置条件</p>
+<ul>
+<li>macOS 或 Linux</li>
+<li>Node 24.21 或更新的 Node 24 版本，可以用 <code>node --version</code> 检查</li>
+<li>一个 OpenAI API 密钥，因为 Pomerado 用 OpenAI 模型来构建和审查集成。你的智能体可以运行在任何模型上</li>
+<li>一个能运行本地服务器的 MCP 客户端，例如 Claude Code、Codex、Cursor、VS Code、Claude Desktop 或 Gemini CLI</li>
+</ul>
+<p>安装 Pomerado 及其驱动的 Chromium 构建。</p>
+<pre><code class="language-sh">npx -y -p pomerado pomerado-mcp --help
+npx -y -p pomerado playwright install chromium
+</code></pre>
+<p>在 Linux 上，如果缺少 Chromium 的系统库，在 <code>install</code> 后面加上 <code>--with-deps</code>。</p>
+<p>Pomerado 以标准 MCP stdio 服务器的方式运行。读取 <code>mcpServers</code> 文件的客户端使用下面这个条目。</p>
+<pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;pomerado&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [&quot;-y&quot;, &quot;-p&quot;, &quot;pomerado&quot;, &quot;pomerado-mcp&quot;, &quot;mint&quot;, &quot;--root&quot;, &quot;/absolute/path/to/pomerado-integrations&quot;]
+    }
+  }
+}
+</code></pre>
+<ul>
+<li><code>--root</code> 设置 Pomerado 保存你的集成的文件夹。请使用绝对路径，因为每个客户端都会从自己的工作目录启动服务器</li>
+<li>服务器从环境变量中读取 <code>OPENAI_API_KEY</code>，所以密钥永远不需要出现在聊天里</li>
+<li>启动服务器、列出它的工具不花任何钱。在你开始一次铸造（mint）之前，它不会启动浏览器，也不会调用模型</li>
+</ul>
+<p>用下面的命令或文件把 Pomerado 加到你的客户端。</p>
+<table>
+<thead>
+<tr>
+<th>客户端</th>
+<th>添加 Pomerado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Claude Code</td>
+<td><code>claude mcp add --scope user pomerado -- npx -y -p pomerado pomerado-mcp mint --root ~/pomerado-integrations</code></td>
+</tr>
+<tr>
+<td>Codex</td>
+<td><code>codex mcp add pomerado -- npx -y -p pomerado pomerado-mcp mint --root ~/pomerado-integrations</code>，然后添加 <code>env_vars</code></td>
+</tr>
+<tr>
+<td>Gemini CLI</td>
+<td><code>gemini mcp add -s user -e 'OPENAI_API_KEY=$OPENAI_API_KEY' pomerado npx -y -p pomerado pomerado-mcp mint --root ~/pomerado-integrations</code></td>
+</tr>
+<tr>
+<td>Cursor</td>
+<td>把条目加到 <code>~/.cursor/mcp.json</code></td>
+</tr>
+<tr>
+<td>VS Code</td>
+<td><code>code --add-mcp '{"name":"pomerado","command":"npx","args":["-y","-p","pomerado","pomerado-mcp","mint","--root","/absolute/path/to/pomerado-integrations"]}'</code>，或者把条目加到工作区的 <code>.mcp.json</code></td>
+</tr>
+<tr>
+<td>Claude Desktop</td>
+<td>把条目加到 <code>claude_desktop_config.json</code></td>
+</tr>
+</tbody>
+</table>
+<p>每个客户端传递环境变量的方式各不相同。<a href="https://github.com/Pomerado/pomerado/blob/main/docs/getting-started.md#client-settings" rel="noopener">客户端设置</a>涵盖了上面每个客户端的密钥和超时设置。</p>
+<p>要确认安装成功，问问你的智能体它有哪些 Pomerado 工具。它应该列出 <code>mint</code>、<code>get_job</code>、<code>provide_input</code> 和 <code>cancel_job</code>。</p>
+<h4>让你的智能体来安装</h4>
+<p>如果你不想自己执行这些步骤，把下面这段粘贴给你的智能体。</p>
+<pre><code class="language-text">Set up Pomerado for me by following https://raw.githubusercontent.com/Pomerado/pomerado/main/docs/agent-setup.md
+</code></pre>
+<p>（意为：“按照 …/docs/agent-setup.md 帮我安装 Pomerado”。）你的智能体会检查 Node 版本、安装 Chromium，并把 Pomerado 加到它所在的客户端。改动任何你没提到的东西之前它都会先问你，而且它从不在聊天里向你索要 API 密钥。</p>
+<h4 id="create-zh">创建集成</h4>
+<p>让你的智能体用 Pomerado 创建一个集成。我们把这个过程叫作铸造（minting）。一个好的请求会写明网站、用平实的语言描述任务，并说明这个集成只读，还是也要做出更改。</p>
+<blockquote>
+<p>Use Pomerado to create an integration named example_reader that reads the main heading from https://example.com. Keep it read-only.</p>
+<p>（用 Pomerado 创建一个名为 example_reader 的集成，读取 https://example.com 的主标题。保持只读。）</p>
+</blockquote>
+<p>你的智能体用四个工具完成铸造。</p>
+<ul>
+<li><code>mint</code> 根据名称、URL、任务、可选的示例输入以及 <code>read</code> 或 <code>write</code> 权限启动一个任务，并立即返回任务 ID</li>
+<li><code>get_job</code> 最多等待 30 秒，等待进度、问题或结果。查询任务永远不会让工作重新开始</li>
+<li><code>provide_input</code> 在 Pomerado 提问时发送你的答案。Pomerado 会按问题要求的格式检查答案</li>
+<li><code>cancel_job</code> 停止任务并关闭它的浏览器。已经发送给网站的操作可能仍然已经生效</li>
+</ul>
+<p>权限决定了集成被允许做什么，所以请慎重选择。你的智能体在调用 <code>mint</code> 时选择权限，工具会告诉它在选择 <code>write</code> 之前先问你。</p>
+<ul>
+<li>任务只是查看网站时，使用 <code>read</code></li>
+<li>只有在任务要更改某些东西时才用 <code>write</code>，例如提交表单或预订</li>
+<li>写入型铸造在构建时会执行一次该操作，然后审查最终源码，不会再重复执行</li>
+<li>只读型铸造如果发现任务需要做出更改，会请求切换到写入，由你的智能体的回答决定</li>
+<li>运行时不检查权限或意图，对 <code>src/</code> 或 <code>deployment.json</code> 的修改也不会被审查。需要登录的运行只会在该网站及其登录域上重放登录过程。被服务的调用从 <code>deployment.json</code> 取这些域，<code>pomerado run --artifact</code> 则从 <code>pomerado.json</code> 取</li>
+</ul>
+<p>Pomerado 只会把你的登录信息填写到该网站上，或你调用 <code>mint</code> 时在 <code>authenticationOrigins</code> 中传入的登录地址上。如果登录表单的字段或提交指向任何其他网站，会在填写任何内容之前被拒绝。登录页面位于另一个网站上的集成不会发布，即使你传入了该网站也一样。Pomerado 不会询问其他地址，也不会检查页面自身的脚本把你输入的内容发到了哪里。</p>
+<p>名称以小写字母开头，只能使用小写字母、数字和下划线。集成的文件夹必须尚不存在。每次铸造有 20 分钟的有效工作时间，等待你回答的时间不计入。</p>
+<h4 id="use-zh">使用集成</h4>
+<p>铸造完成后，Pomerado 会把集成保存为一个源码文件夹，并返回它的路径。</p>
+<pre><code class="language-text">pomerado-integrations/example_reader/
+├── src/                 生成的操作模块
+├── pomerado.json        入口、输入输出 schema，以及运行可能会问的问题
+├── auth-fill.json       登录过的构建所记录的登录界面，不含任何值
+├── deployment.json      工具名、描述、URL、任务、权限和登录域
+├── mcp.mjs              共享 Pomerado 运行时的启动器
+├── mcp.json             标准 MCP 服务器条目，不含密钥
+└── README.md            各 MCP 客户端的添加命令
+</code></pre>
+<ol>
+<li>打开集成的 <code>README.md</code>。里面有各主流客户端的添加命令，路径已经替你填好</li>
+<li>用该命令添加服务器。跳过密钥设置。运行集成不会发出模型请求，所以只有铸造才需要 <code>OPENAI_API_KEY</code></li>
+<li>重新加载客户端，让你的智能体使用这个集成</li>
+</ol>
+<blockquote>
+<p>Use example_reader to read the page heading.</p>
+<p>（用 example_reader 读取页面标题。）</p>
+</blockquote>
+<p>每个集成在你的智能体看来都是一个独立的 MCP 服务器。</p>
+<ul>
+<li>它有一个以集成命名的工具，参数放在 <code>input</code> 下</li>
+<li>它还有 <code>get_job</code>、<code>provide_input</code> 和 <code>cancel_job</code>，用于需要回答或需要更多时间的调用</li>
+<li>一次调用返回符合 <code>pomerado.json</code> 中 schema 的输出，或者返回一个供后续跟进的任务 ID</li>
+<li>失败的调用会返回一个任务，带有 <code>code</code>、<code>write_status</code>、<code>possible_commit</code> 和 <code>retry</code>。当 <code>possible_commit</code> 为 true 时，在再次调用之前先读回网站的状态</li>
+<li>构建时登录过的集成，每次调用都会登录。它会索要登录信息，以及网站需要的任何验证码或答案，并且一个都不保存</li>
+<li>集成运行在铸造它的那个 Pomerado 安装上。想要稳定的路径，可以用 <code>npm install -g pomerado</code> 全局安装，并用 <code>pomerado-mcp</code> 代替 <code>npx -y -p pomerado pomerado-mcp</code></li>
+</ul>
+<h4 id="oss-cloud-zh">开源与 Pomerado Cloud</h4>
+<p>本仓库是完整的 Pomerado 核心，以 MIT 许可发布。自己铸造并运行集成所需的一切都在这里，不需要 Pomerado 账号。</p>
+<ul>
+<li>铸造器，在真实的 Chromium 浏览器中构建集成</li>
+<li>铸造框架（harness）和提示词</li>
+<li>Guardian，在铸造过程中审查每一个浏览器操作以及最终源码</li>
+<li>独立宿主，在你自己的机器上把每个集成作为 MCP 服务器提供服务</li>
+<li>集成本身，以源码形式保存在你的文件夹中，归你所有</li>
+</ul>
+<p><a href="https://pomerado.ai" rel="noopener">Pomerado Cloud</a> 以托管服务的形式运行同一个核心，并加上生产环境所需的运维能力。</p>
+<ul>
+<li>托管你的集成及其任务</li>
+<li>OAuth 代理和已保存的登录</li>
+<li>对每个集成的使用者进行访问控制</li>
+<li>能应对机器人防护的托管浏览器集群</li>
+<li>故障检测：发现网站变化时自动修复集成</li>
+</ul>
+<h4 id="docs-zh">面向人和智能体的文档</h4>
+<ul>
+<li><a href="https://docs.pomerado.ai" rel="noopener">docs.pomerado.ai</a> 有完整的 Pomerado 文档，包括 Pomerado Cloud 的 API 和托管 MCP。</li>
+<li><a href="https://github.com/Pomerado/pomerado/blob/main/docs/getting-started.md" rel="noopener">Getting started</a> 涵盖安装、客户端设置、第一个集成和故障排查。</li>
+<li><a href="https://github.com/Pomerado/pomerado/blob/main/docs/agent-setup.md" rel="noopener">Agent setup</a> 给 AI 智能体提供替你安装 Pomerado 的步骤。</li>
+<li><a href="https://github.com/Pomerado/pomerado/blob/main/docs/how-it-works.md" rel="noopener">How it works</a> 涵盖铸造器、Guardian、运行时、任务和库。</li>
+<li><a href="https://github.com/Pomerado/pomerado/blob/main/AGENTS.md" rel="noopener">AGENTS.md</a> 告诉编码智能体如何修改本仓库。</li>
+<li><a href="https://github.com/Pomerado/pomerado/blob/main/CONTRIBUTING.md" rel="noopener">CONTRIBUTING.md</a> 涵盖从源码构建，以及改动如何合入。</li>
+<li><a href="https://github.com/Pomerado/pomerado/blob/main/docs/RELEASING.md" rel="noopener">RELEASING.md</a> 涵盖 npm 版本如何构建和验证。</li>
+</ul>
+<h4>仓库导览</h4>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>typescript/src/</code></td>
+<td>铸造器、Guardian、运行时、浏览器辅助工具和本地 MCP 宿主</td>
+</tr>
+<tr>
+<td><code>typescript/authoring/</code></td>
+<td>共享的提示词和示例，其中有宿主可以替换的段落</td>
+</tr>
+<tr>
+<td><code>typescript/tests/</code></td>
+<td>单元测试，以及带本地测试站点的浏览器测试</td>
+</tr>
+<tr>
+<td><code>tools/</code></td>
+<td>构建辅助工具和 CI 扫描</td>
+</tr>
+<tr>
+<td><code>docs/</code></td>
+<td>面向用户、智能体和维护者的指南</td>
+</tr>
+<tr>
+<td><code>third-party/</code></td>
+<td>改编自第三方代码的许可证</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://github.com/Pomerado/pomerado/blob/main/docs/how-it-works.md#source-layout" rel="noopener">How it works</a> 列出了 <code>typescript/src/</code> 下的每个模块。</p>
+<h4>社区</h4>
+<p>加入 <a href="https://discord.gg/QCwQFydAym" rel="noopener">Pomerado Discord</a>，获取帮助、分享你构建的集成、讨论贡献。</p>
+<h4 id="contributing-zh">贡献</h4>
+<ul>
+<li>欢迎提交 issue 和 pull request。</li>
+<li>Pomerado 对智能体友好。<a href="https://github.com/Pomerado/pomerado/blob/main/AGENTS.md" rel="noopener">AGENTS.md</a> 为你的编码智能体提供了环境设置和规则。</li>
+<li>每个 pull request 在合入前都由 Alan 或 Akshay 评审。</li>
+<li>每个人都遵守我们的<a href="https://github.com/Pomerado/pomerado/blob/main/CODE_OF_CONDUCT.md" rel="noopener">行为准则</a>。</li>
+<li>安全问题请通过 <a href="https://github.com/Pomerado/pomerado/security" rel="noopener">Security 标签页</a>上的 <strong>Report a vulnerability</strong> 私下报告。</li>
+<li><a href="https://github.com/Pomerado/pomerado/blob/main/CONTRIBUTING.md" rel="noopener">CONTRIBUTING.md</a> 给出了构建、测试和开 pull request 的步骤。</li>
+</ul>
+<h4>许可证</h4>
+<p>Copyright (c) 2026 Pomerado AI, Inc. 以 MIT 许可证（<code>MIT</code>）授权。见 <a href="https://github.com/Pomerado/pomerado/blob/main/LICENSE" rel="noopener">LICENSE</a>。</p>
+<p>0.1.2 及更早的版本以 GNU Affero 通用公共许可证第 3 版（仅限该版本，<code>AGPL-3.0-only</code>）发布。</p>
+<p>第三方代码保留其自身的许可证。<code>typescript/src/guardian/upstream-policy.md</code> 中的 Guardian 策略改编自 <a href="https://github.com/openai/codex" rel="noopener">OpenAI Codex</a>，采用 Apache License 2.0，其许可证和声明位于 <a href="https://github.com/Pomerado/pomerado/tree/main/third-party/codex" rel="noopener">third-party/codex/</a>，并随 npm 包一同发布。<code>typescript/src/destinations/accessible-name.ts</code> 中的可访问名称计算改编自 <a href="https://github.com/microsoft/playwright" rel="noopener">Playwright</a>，采用 Apache License 2.0，其许可证和声明位于 <a href="https://github.com/Pomerado/pomerado/tree/main/third-party/playwright" rel="noopener">third-party/playwright/</a>，并随 npm 包一同发布。</p>
+<h4>Star History</h4>
+<p>（星标历史图未转载，见<a href="https://www.star-history.com/?repos=pomerado%2Fpomerado&type=date&legend=top-left" rel="noopener">star-history.com</a>。）</p>
+</div>
+<h3>MIT 许可证原文</h3>
+<pre><code class="language-text">MIT License
+
+Copyright (c) 2026 Pomerado AI, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>推文串作者 Akshay（<a href="https://x.com/akshay_manglik" rel="noopener">@akshay_manglik</a>），原帖 <a href="https://x.com/akshay_manglik/status/2114435444587065486" rel="noopener">x.com/akshay_manglik/status/2114435444587065486</a>；推文为作者本人发布，本站全文翻译。项目 <a href="https://github.com/Pomerado/pomerado" rel="noopener">Pomerado/pomerado</a>，Copyright (c) 2026 Pomerado AI, Inc.，MIT 许可，README 依 MIT 全文翻译并保留版权与许可声明。配图为推文附图（视频封面帧、基准图、仓库截图，© Pomerado AI），已转为 WebP；未下载或转载视频。导读、读图与小结为本站整理。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/akshay_manglik/status/2114435444587065486" rel="noopener">x.com/akshay_manglik/status/2114435444587065486</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

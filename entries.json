@@ -640,5 +640,15 @@
     "type": "导读",
     "subtitle": "AI 3D 游戏流程 · 原帖照录 + Hi3D v1.0 导读",
     "original_url": "https://x.com/gkxspace/status/2114923036516471083"
+  },
+  {
+    "slug": "akshay-manglik-pomerado",
+    "title": "Pomerado：把任何网站变成确定性 API / MCP",
+    "desc": "YC F26 新项目（MIT，★1k）：智能体只铸造一次，把网页任务变成确定性 HTTP / Playwright 代码并发布为 MCP 工具，执行不再调用模型；Guardian 事前审查、读写权限、登录域白名单；Cloud 版自修复与隐身栈。推文串全译 + 项目导读 + README 全译。",
+    "source": "X · @akshay_manglik · GitHub Pomerado/pomerado",
+    "date": "2026-10-27",
+    "type": "导读",
+    "subtitle": "Turn any website into an API / MCP · 推文串全译 + README 全译",
+    "original_url": "https://x.com/akshay_manglik/status/2114435444587065486"
   }
 ]
