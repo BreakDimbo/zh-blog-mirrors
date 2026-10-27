@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>一张立绘就能动起来：染川瞳团队的看板娘「若泉绮羽」与 See-through + Anime2.5DRig（原帖镜像 + 导读）</title>
+<meta name="description" content="染川瞳 @Hitomiiim 团队预告的“一张立绘自动拆层+绑定+实时驱动”项目：看板娘若泉绮羽会眨眼、转头、变表情、被戳有反应，全部实机实时驱动、无手 K 动画；基于 See-through（单图拆层，Apache-2.0，SIGGRAPH 2026）与 Anime2.5DRig（浏览器自动绑骨，MIT）大量重构，计划以 AGPLv3.0 开源。原帖照录、作者回复、上游两项目导读与 README 全文中译。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-27">2026.10.27</time></p>
+<h1 class="za-title">一张立绘就能动起来：看板娘「若泉绮羽」与它背后的两个开源项目</h1>
+<p class="za-sub" lang="en" data-za-gen>只要一张立绘，就能把心中的角色真正带到你身边</p>
+<p class="za-meta" data-za-gen><span>来源 · 染川瞳 @Hitomiiim · X</span><span>收录 · 2026-10-27</span><span><a href="https://x.com/Hitomiiim/status/2114704821852991771" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：<a href="https://x.com/Hitomiiim" rel="noopener">染川瞳 @Hitomiiim</a>（个人主页 <a href="https://kiseki.blog/" rel="noopener">kiseki.blog</a>）· 原帖：<a href="https://x.com/Hitomiiim/status/2114704821852991771" rel="noopener">x.com/Hitomiiim/status/2114704821852991771</a>（2026-10-26 21:04 UTC+8 发布，附 57 秒演示视频）· 上游：<a href="https://github.com/shitagaki-lab/see-through" rel="noopener">shitagaki-lab/see-through</a>（Apache-2.0）、<a href="https://github.com/852wa/Anime2.5DRig" rel="noopener">852wa/Anime2.5DRig</a>（MIT）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>一个尚未公开的项目：只放进一张二次元立绘，系统自动拆分图层、自动绑定，角色就能实时眨眼、转头、换表情、被戳有反应；它站在 See-through（单图拆成 23 个语义图层）和 Anime2.5DRig（浏览器里把分层 PSD 自动绑骨动起来）两个开源项目的肩上，团队说会以 AGPLv3.0 开源。</div>
+<figure><img src="images/cover.webp" alt="浅色背景上的半身动漫少女：粉色渐变短发、紫色眼睛、星形发卡和鸟笼耳坠，穿淡紫色水手服外套与紫色领结，微笑" loading="lazy"><figcaption>演示视频的封面帧：看板娘若泉绮羽（© 染川瞳团队）。本站未下载或转载视频，仅转载封面帧（WebP）。<a href="https://x.com/Hitomiiim/status/2114704821852991771" rel="noopener">到原帖观看 57 秒演示 ↗</a></figcaption></figure>
+<p class="caption">互动数据（2026-10-27 12:18 UTC+8，经 X API 读取）：约 7 万次浏览、1,101 赞、132 转帖、46 回复、1,364 收藏。</p>
+
+<h2 id="post">原帖照录</h2>
+<blockquote>
+<p>只要一张立绘，就能把心中的角色真正带到你身边。这正是我们一直想做的事。</p>
+<p>她会眨眼、转头、变换神情，轻轻戳一下还会给你回应。视频里的每一个动作都由实机实时驱动，没有任何手K动画。</p>
+<p>她叫若泉绮羽，是我们项目的看板娘，口头禅是「……不是这个。」</p>
+<p>无需学习复杂的绑定，也不用手动拆分图层，只需放进一张立绘，TA 就能鲜活地动起来。这次先为大家展示半身效果，更多细节仍在持续打磨中。</p>
+<p>我们并不打算喊出「颠覆 Live2D」这样的口号。距离它的高度，我们还有一段路要追赶；但今天，我们确实迈出了扎实的一大步。</p>
+<p>特别感谢两个优秀的开源项目，是它们奠定了绮羽诞生的基础： · See-through（shitagaki-lab，@ljsabc 妈咪！）：将单张立绘拆分为图层 <a href="http://github.com/shitagaki-lab/see-through" rel="noopener">github.com/shitagaki-lab/…</a> · Anime2.5DRig（8co28）：让拆分后的立绘在浏览器中动起来 <a href="http://github.com/852wa/Anime2.5DRig" rel="noopener">github.com/852wa/Anime2.5…</a> 在这两个项目的基础上，我们进行了大量的底层重构与改进。<br>演示配音由 GPT-SoVITS 合成，参考音源来自 あみたろの声素材工房（<a href="http://amitaro.net" rel="noopener">amitaro.net</a>）。<br>项目将于近期公开。有任何想了解的，欢迎在评论区留言，我们会尽量回复。<br>#Live2D #立绘 #二次元 #原创角色 #OC #VTuber #虚拟主播 #插画 #动画 #动态立绘 #独立开发</p>
+</blockquote>
+
+<h2 id="replies">作者在评论区的回复（照录）</h2>
+<ul>
+<li>问：付费还是开源？——“会以AGPLv3.0开源”</li>
+<li>问：做了多久？——“差不多2个月左右☺️”</li>
+<li>问：See-through 拆层还是只能 25 层吗？——“我们并没有突破上游项目的拆层层数限制 更多的是后处理”</li>
+<li>问：相当于程序化掉骨骼、完全用视差图做动画？——“我们实际上是有使用骨骼的 不完全是视差”</li>
+<li>问：复杂发型、大角度转头时穿模如何？——“目前我们这边还没有一个严谨的数据 但是可以分享的是穿模问题很看原图片的相关区域是怎么画的 但出现概率不算高”</li>
+<li>问：语音能完全对上口型吗？——“能基本对齐的 放心～☺️”</li>
+<li>评：抚摸、转动、表情自然度还有很大改进空间。——“是的 我们还在继续进行优化 谢谢你的支持☺️🙏”</li>
+<li>另一位同样基于 See-through 做类似项目的开发者（<a href="https://github.com/hyperlogue/catchlight" rel="noopener">hyperlogue/catchlight</a>，目前只放出渲染运行时）留言，作者回：“面部转动这块确实我们花了很多时间和代价，现在我们正在处理一些稳定性 画风适配 以及生产效率上的问题”；对另一条提到他人同类项目的评论则说：“他做的很好 还很快 这也是为什么我们决定提前将我们的成果展示出来 我们原本是打算配套产品一起公开的”</li>
+</ul>
+
+<h2 id="what">这个项目是什么</h2>
+<p>从帖子和回复能确认的信息：</p>
+<ol>
+<li><strong>输入只有一张立绘</strong>：不需要画师预先分层，也不需要像 Live2D 那样手工做网格、变形器和物理。</li>
+<li><strong>流水线 = 自动拆层 + 自动绑定 + 实时驱动</strong>：拆层沿用 See-through 的模型（层数上限未突破，改进主要在后处理）；绑定和运行时以 Anime2.5DRig 为基础“大量底层重构”，并且<strong>用了骨骼</strong>，不只是视差。</li>
+<li><strong>效果</strong>：目前展示半身；眨眼、转头、表情切换、点击（“戳一下”）互动、口型基本对齐配音；作者自认离 Live2D 的水准“还有一段路”。</li>
+<li><strong>配音</strong>：演示用 GPT-SoVITS 合成，参考音来自 あみたろの声素材工房（免费声音素材站）。</li>
+<li><strong>状态</strong>：约 2 个月开发；“近期公开”，计划 <strong>AGPLv3.0</strong> 开源，原本打算与配套产品一起发布。项目名称尚未公布（看板娘名为若泉绮羽）。</li>
+</ol>
+
+<h2 id="upstream">两块基石</h2>
+<h3>See-through：单张立绘 → 分层 PSD</h3>
+<p class="hero-tags"><span class="tag">★ 4,929</span> <span class="tag">Apache-2.0</span> <span class="tag">SIGGRAPH 2026</span> <span class="tag">Python · PyTorch</span></p>
+<p>圣方济各大学、宾大、Spellbrush、Shitagaki Lab 的研究（arXiv 2602.03749）。用扩散模型（基于 SDXL 的 LayerDiff 3D）生成<strong>补全遮挡部分</strong>的透明图层，配合动漫微调的 Marigold 伪深度估计推断绘制顺序，把一张图拆成最多 23 个语义层（头发、脸、眼睛、衣服、饰品等），输出分层 PSD。默认约需 12–16 GB 显存（1280 分辨率），有 8 GB 方案；HuggingFace 与魔搭有免费在线演示。作者明确说它<strong>不是</strong>“图转 Live2D”：拆层只是起点，绑定才是最费工的一步。</p>
+<h3>Anime2.5DRig：分层 PSD → 浏览器里自动绑定动起来</h3>
+<p class="hero-tags"><span class="tag">★ 297</span> <span class="tag">MIT</span> <span class="tag">WebGL1 · 纯前端</span> <span class="tag">v2.0</span></p>
+<p>8co28（GitHub 852wa）的工具：把分层 PSD 拖进浏览器，自动完成网格分割、变形、物理设置，立刻带待机动作、眨眼、口型、头发物理动起来；转头是按图层深度做的“伪 3D”（视差 + 剪切），并有发束双弹簧物理；支持摄像头面部追踪（MediaPipe FaceMesh）、麦克风口型、透明 WebM 录制和 OBS 透明输出。图层命名直接兼容 See-through 的输出。<a href="https://852wa.github.io/Anime2.5DRig/" rel="noopener">在线演示</a>。</p>
+
+<h2 id="notes">核实与注记</h2>
+<ul>
+<li><strong>层数</strong>：评论里说 See-through “只能 25 层”，README 写的是最多 <strong>23 个</strong>语义层（V3 模型）；作者回复只说没突破上游限制。</li>
+<li><strong>“无手 K 动画、实机实时驱动”</strong>是作者自述，视频无法独立复现；项目代码尚未公开，暂无可验证的仓库。</li>
+<li><strong>许可</strong>：上游 See-through 为 Apache-2.0、Anime2.5DRig 为 MIT，都允许在 AGPLv3.0 项目中使用（需保留版权与许可声明）。See-through 的模型权重托管在 HuggingFace，权重许可以各模型页为准。Anime2.5DRig 自带的示例 PSD 画作版权归各自作者。</li>
+<li>同方向的公开项目还有 <a href="https://github.com/hyperlogue/catchlight" rel="noopener">catchlight</a>（评论区提到），以及 See-through README 列出的 StretchyStudio、PNGAL、PachiPakuGen 等社区工具。</li>
+</ul>
+
+<h2 id="readme-st">附录一：See-through README 全文中译</h2>
+<p class="caption">译自 <a href="https://github.com/shitagaki-lab/see-through" rel="noopener">shitagaki-lab/see-through</a> README（2026-10-27 读取）。Copyright © shitagaki-lab 及论文作者，Apache License 2.0；本译文以同一许可发布，已作翻译修改。徽章、图片和视频链接从略，命令与代码保持原样。</p>
+<details><summary>展开 See-through README 译文</summary>
+<h3>See-through：动漫角色的单图层分解</h3>
+<p>arXiv 2602.03749 · ACM 数字图书馆 · HuggingFace Space（PSD 推理演示）· 魔搭在线演示</p>
+<p><em>Jian Lin¹、Chengze Li¹*、Haoyun Qin²³⁴、Kwun Wang Chan¹、Yanghua Jin³、Hanyuan Liu¹、Stephen Chun Wang Choy¹、Xueting Liu¹</em><br>¹圣方济各大学　²宾夕法尼亚大学　³Spellbrush　⁴Shitagaki Lab　*通讯作者<br>发表于 <em>ACM SIGGRAPH 2026 Conference Papers</em>。</p>
+<blockquote><p><strong>声明：</strong>本项目为开源研究项目，我们未开设任何付费服务。如遇到以此功能收费的网站，均与我们无关，请注意甄别。使用风险自负。</p></blockquote>
+<h4>概要</h4>
+<p>我们提出一个框架，把静态的动漫插画自动转换为可操控的 <strong>2.5D 模型</strong>。我们的方法把单张图像分解为完整补全、语义各异、并推断出绘制顺序的图层——最多 <strong>23 层</strong>，包括头发、脸、眼睛、服装、饰品等。</p>
+<p>（代表图；预告视频，点击播放。）</p>
+<h4>环境配置</h4>
+<pre><code># 1. 创建环境
+conda create -n see_through python=3.12 -y
+conda activate see_through
+
+# 2. 安装 PyTorch（CUDA 12.8）
+# aarch64 用户：下列固定版本可能不可用，请改用 torch>=2.9.0
+pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio==2.8.0+cu128 \
+  --index-url https://download.pytorch.org/whl/cu128
+
+# AMD ROCm 用户：请安装与本地 ROCm 运行时匹配的 ROCm wheel。
+# 例如 ROCm 7.2：
+# pip install torch torchvision torchaudio \
+#   --index-url https://download.pytorch.org/whl/rocm7.2
+
+# 3. 安装依赖（含常用工具和标注器）
+pip install -r requirements.txt
+
+# 4. 创建 assets 软链接（也可以直接把 assets 复制到根目录）
+ln -sf common/assets assets</code></pre>
+<p><strong>可选标注器分级</strong>（按需安装）：</p>
+<div class="table-wrap"><table><thead><tr><th>级别</th><th>命令</th><th>增加的功能</th></tr></thead><tbody>
+<tr><td>人体解析</td><td><code>pip install --no-build-isolation -r requirements-inference-annotators.txt</code></td><td>detectron2，用于身体属性标注</td></tr>
+<tr><td>SAM2</td><td><code>pip install --no-build-isolation -r requirements-inference-sam2.txt</code></td><td>SAM2，用于语言引导分割</td></tr>
+<tr><td>实例分割</td><td><code>pip install -r requirements-inference-mmdet.txt</code></td><td>mmcv/mmdet，用于动漫实例分割</td></tr>
+</tbody></table></div>
+<blockquote><p><strong>注意：</strong>始终以仓库根目录为工作目录运行脚本。</p></blockquote>
+<h4>脚本与模型</h4>
+<p><strong>模型</strong></p>
+<div class="table-wrap"><table><thead><tr><th>模型</th><th>HuggingFace 仓库</th><th>说明</th></tr></thead><tbody>
+<tr><td>LayerDiff 3D</td><td>layerdifforg/seethroughv0.0.2_layerdiff3d</td><td>基于扩散的透明图层生成（SDXL）</td></tr>
+<tr><td>Marigold Depth</td><td>24yearsold/seethroughv0.0.1_marigold</td><td>针对动漫微调的伪深度估计</td></tr>
+<tr><td>SAM Body Parsing</td><td>24yearsold/l2d_sam_iter2</td><td>语义身体部位分割</td></tr>
+</tbody></table></div>
+<p><strong>推理脚本</strong></p>
+<div class="table-wrap"><table><thead><tr><th>脚本</th><th>用途</th></tr></thead><tbody>
+<tr><td><code>inference/scripts/inference_psd.py</code></td><td><strong>主流程</strong>——端到端图层分解 → 输出 PSD</td></tr>
+<tr><td><code>inference/scripts/syn_data.py</code></td><td>合成训练数据生成工具</td></tr>
+</tbody></table></div>
+<blockquote><p>其他推理 / 数据解析脚本请参阅代码库（<code>./inference/scripts/</code>），详见各脚本的 docstring。</p></blockquote>
+<p><strong>演示</strong>：<code>inference/demo/bodypartseg_sam.ipynb</code>——带可视化的交互式身体部位分割演示（19 个部位）。</p>
+<blockquote><p>完整身体标签的定义请参考 <code>scrap_model.py</code>（<code>./common/live2d/scrap_model.py</code>）。</p></blockquote>
+<p><strong>在线演示</strong></p>
+<p>我们准备了一个使用 ZeroGPU 的 HuggingFace Space，注册 HuggingFace 后每天应能运行 1–2 次 PSD 提取（每次约 2–3 分钟，1280 分辨率）。</p>
+<p>中国大陆用户可以使用魔搭社区 ModelScope 在线演示，目前完全免费，并且可以使用更高一点的分辨率。我们会持续维护这两个演示，确保全球用户都能使用。</p>
+<p>（演示截图；版权归 Tohoku Zunko Project。）</p>
+<h4>使用方法</h4>
+<p><strong>图层分解（主流程）</strong></p>
+<p><code>inference_psd.py</code> 运行完整的 See-through 流程：用 <strong>LayerDiff 3D</strong> 模型生成透明图层，用微调过的 <strong>Marigold</strong> 模型推断伪深度，再把角色分层为最多 <strong>23 个语义层</strong>并导出分层 PSD。注意头部和身体的分离是两个连续阶段，耗时可能比论文中提到的原始模型更长。</p>
+<pre><code># 把单张图像分解为分层 PSD
+python inference/scripts/inference_psd.py \
+  --srcp assets/test_image.png \
+  --save_to_psd
+
+# 处理一个图像目录
+python inference/scripts/inference_psd.py \
+  --srcp path/to/image_folder/ \
+  --save_to_psd</code></pre>
+<p>输出默认保存到 <code>workspace/layerdiff_output/</code>。每个结果包括：</p>
+<ul><li>一个按语义分离图层的 <code>.psd</code> 文件</li><li>中间深度图和分割掩码</li></ul>
+<blockquote><p><strong>注意：</strong>这里使用的是我们最新的、23 层身体部位分离模型（V3）。</p></blockquote>
+<p>完成分层后，可以用 <code>inference/scripts/heuristic_partseg.py</code> 中的脚本对 PSD 进一步做基于深度或左右的分层。</p>
+<pre><code># 按深度拆分
+python inference/scripts/heuristic_partseg.py seg_wdepth --srcp workspace/test_samples_output/PV_0047_A0020.psd --target_tags handwear
+
+
+#左右拆分
+python inference/scripts/heuristic_partseg.py seg_wlr --srcp workspace/test_samples_output/PV_0047_A0020_wdepth.psd --target_tags handwear-1</code></pre>
+<p><strong>低显存用户</strong></p>
+<p>默认流程以 bf16 精度运行，1280 分辨率下约需 12–16 GB 显存。</p>
+<p><strong>12 GB 显卡</strong>：启用分组卸载（group offload），把 1280 分辨率下的峰值显存降到约 10 GB：</p>
+<pre><code>python inference/scripts/inference_psd.py \
+  --srcp assets/test_image.png \
+  --save_to_psd \
+  --group_offload</code></pre>
+<p><strong>8 GB 显卡</strong>：使用 NF4 量化流程（4 位量化权重），1280 分辨率下峰值约 8 GB，配合分组卸载降低分辨率还能再降：</p>
+<pre><code># 安装 bitsandbytes（一次性）
+pip install -r requirements-inference-bnb.txt
+
+# 以 NF4 量化运行（默认：开启 group_offload，深度分辨率 720）
+python inference/scripts/inference_psd_quantized.py \
+  --srcp assets/test_image.png \
+  --save_to_psd
+
+# 想进一步降低显存，可把 layerdiff 分辨率降到 1024
+python inference/scripts/inference_psd_quantized.py \
+  --srcp assets/test_image.png \
+  --save_to_psd \
+  --resolution 1024</code></pre>
+<p>量化模型托管在 HuggingFace，首次运行时自动下载。质量接近全精度模型（相对 bf16 基线 PSNR 约 30 dB、SSIM 约 0.96）。</p>
+<blockquote><p><strong>注意：</strong>分组卸载以速度换显存（约慢 1.5 倍）。NF4 量化的速度开销很小，但能减少模型权重占用的内存。</p></blockquote>
+<p><strong>8 GB 显卡</strong>：块交换（block swap）流程在 1280 分辨率、bf16 精度下峰值约 8 GB：</p>
+<pre><code>python inference/scripts/inference_psd_blockswap.py \
+  --srcp assets/test_image.png \
+  --save_to_psd \</code></pre>
+<p><strong>准备训练数据集（如 Live2D 解析）</strong></p>
+<p>我们提供了一个单独的仓库，用于准备训练 Live2D 解析模型的数据集。请参考 CubismPartExtr（<code>shitagaki-lab/CubismPartExtr</code>）了解如何下载示例模型文件并准备工作区文件夹。之后参考 <code>README_datapipeline.md</code>，按说明运行数据解析脚本，准备用于检查和训练的数据集。</p>
+<p><strong>用户界面</strong></p>
+<p>数据准备好后就可以使用用户界面。启动方法见 UI Readme（<code>ui/README.md</code>）。</p>
+<blockquote><p>目前启动 UI 需要仓库根目录下的 <code>workspace/datasets/</code> 文件夹，其中包含演示用的示例数据。我们以后会让这一点更灵活。</p><p>建议安装 <code>mmdet</code> 级依赖，以确保 UI 能成功启动。</p></blockquote>
+<p><strong>训练</strong></p>
+<p>所有模型（LayerDiff、Marigold 深度、VAE、身体部位分割）的训练脚本都在 <code>training/</code> 中，附配置和数据流程工具。我们的训练在 8 张 NVIDIA H200 上完成。</p>
+<h4>社区支持</h4>
+<p>欢迎社区贡献和第三方集成！如果你在本项目之上构建了工具、扩展或工作流，请开 issue 或 PR 告诉我们——我们很乐意在这里展示你的作品。</p>
+<ul>
+<li><strong>ComfyUI-See-through</strong>（@jtydhr88）——ComfyUI 集成，节点式工作流，可在浏览器内导出 PSD。感谢这份出色的工作！</li>
+<li><strong>PachiPakuGen</strong>（@kazuya-bros）——桌面工具，读取 See-Through 分解出的 PSD，为会说话角色动画工具 SpriTalk 生成动画素材（眨眼、口型）。工具和演示视频见其 Booth 页面！</li>
+<li><strong>StretchyStudio</strong>——免费的浏览器内 2D 木偶动画工具，可自动绑定 See-through 分解出的 PSD 图层，弥合分解与可完整动画化角色之间的差距。直接把我们的 PSD 输出拖进去就能用。可看其 Reddit 帖子和在线编辑器。</li>
+<li><strong>Anime2.5DRig</strong>（@8co28）——免费的浏览器内工具，拖入分层 PSD 的瞬间就把它变成会动的 2.5D VTuber 风格头像（眨眼、口型、头发物理）；它要求的图层命名遵循 See-through 的 PSD 约定，所以我们的输出基本开箱即用。可试在线演示并看发布推文！</li>
+<li><strong>PNGAL</strong>（@1mm-module）——Windows 本地工具，把透明 PNG 变成可直接用于游戏的立绘动画：生成眼睛/嘴巴表情差分，用 See-through 拆成语义 PSD，再设置眨眼、口型和摇摆动作，导出 PSD、WebM、MP4、GIF 或精灵图。一键安装会把便携版 Python、固定版本的 ComfyUI、See-through 和所有所需模型装进一个自包含文件夹。工程很出色——感谢！</li>
+</ul>
+<p>我们也在寻求本项目的国际化（i18n）帮助，非常感谢你的协助。</p>
+<h4>讨论：这是“图转 Live2D”吗？</h4>
+<p>我们认为不是——至少目前还不是。</p>
+<p>虽然我们能从单张图像生成 2.5D 图层分解，但完整的“图转 Live2D”流程需要多得多的东西：</p>
+<ol>
+<li><strong>更精细的艺术化拆分。</strong>Live2D 模型需要按特定变形行为来设计图层。我们的自动分解优先保证语义正确，但 Live2D 画师为了让动作自然，会在如何拆层上做出不同的艺术选择。</li>
+<li><strong>绑定（Rigging）。</strong>分解之后，Live2D 模型还需要变形网格、物理参数和运动曲线——这个绑定过程可以说是最关键（也最费工）的一步，本项目并不涵盖。</li>
+<li><strong>艺术意图。</strong>专业 Live2D 作品是整体打造的：图层结构、补全画风和绑定是一起设计的。孤立地自动化其中一步无法复制这一点。</li>
+</ol>
+<p>尽管如此，我们相信我们的分解能为 Live2D 画师提供一个有用的<strong>起点</strong>，省掉工作流中一些最繁琐的部分，例如手动分割和遮挡区域补全。</p>
+<h4>更新日志</h4>
+<p><strong>2026-04-14</strong>：发布所有模型（LayerDiff、Marigold 深度、VAE、身体部位分割）的训练脚本、配置和数据流程。这是使用 23 个身体部位标签训练的 V3 模型。</p>
+<p><strong>2026-04-02</strong>：多项内存优化；为低显存用户增加建议（分组卸载、NF4 量化）。</p>
+<h4>致谢</h4>
+<p>本工作由中国香港特别行政区研究资助局的拨款资助并获得大力支持（项目编号 UGC/FDS11/E02/23）。</p>
+<p>感谢以下人士的帮助与支持：</p>
+<ul><li>Dingkun Yan 和 Xinrui Wang，为项目提供灵感与支持。</li><li>中国科学技术大学学生 ACG 社团“LEO”，慷慨提供了论文演示所用的示例 Live2D 模型文件。</li></ul>
+<p>这是一个开源研究项目。感谢以下项目的作者，让这项工作成为可能：</p>
+<ul>
+<li>LayerDiffuse——透明图像图层扩散（Lvmin Zhang 永远是传奇）</li>
+<li>Marigold——基于扩散的单目深度估计</li>
+<li>Segment Anything（SAM）——分割基础模型</li>
+<li>Grounding DINO——开放集目标检测</li>
+<li>LaMa——大面积掩码补全</li>
+<li>AnimeInstanceSegmentation——动漫专用实例分割</li>
+</ul>
+<h4>引用</h4>
+<p>如果你觉得这项工作有用，请引用：</p>
+<pre><code>@inproceedings{lin2026seethrough,
+  author={Lin, Jian and Li, Chengze and Qin, Haoyun and Chan, Kwun Wang and Jin, Yanghua and Liu, Hanyuan and Choy, Stephen Chun Wang and Liu, Xueting},
+  title={See-through: Single-image Layer Decomposition for Anime Characters},
+  booktitle={Proceedings of the Special Interest Group on Computer Graphics and Interactive Techniques Conference Conference Papers},
+  series={SIGGRAPH Conference Papers '26},
+  publisher={Association for Computing Machinery},
+  address={New York, NY, USA},
+  year={2026},
+  pages={1--11},
+  doi={10.1145/3799902.3811209},
+  url={https://doi.org/10.1145/3799902.3811209}
+}</code></pre>
+</details>
+
+<h2 id="readme-rig">附录二：Anime2.5DRig README 全文中译</h2>
+<p class="caption">译自 <a href="https://github.com/852wa/Anime2.5DRig" rel="noopener">852wa/Anime2.5DRig</a> README（日文原文，2026-10-27 读取）。Copyright © 8co28（852wa），MIT License；同梱的 ag-psd 为 MIT，MediaPipe FaceMesh 为 Apache-2.0。命令、文件名和图层名保持原样。</p>
+<details><summary>展开 Anime2.5DRig README 译文</summary>
+<h3>Anime2.5DRig</h3>
+<p>演示：<a href="https://852wa.github.io/Anime2.5DRig/" rel="noopener">https://852wa.github.io/Anime2.5DRig/</a></p>
+<p>只要把分好部件的 PSD 拖进浏览器，就会自动绑定（rigging）并动起来的 2.5D 头像工具。它把过去需要手工完成的设置（网格分割、变形、物理设置）自动化。无需安装，所有处理都在客户端完成。</p>
+<h4>演示 / 使用方法</h4>
+<ol>
+<li>把本仓库用 GitHub Pages 发布（Settings → Pages → Branch: main / root），或者在本地运行：
+<pre><code>python obs_server.py
+# → http://127.0.0.1:8000</code></pre>
+（<code>python -m http.server 8000</code> 也能运行。如需 OBS 联动，请使用 <code>obs_server.py</code>。）</li>
+<li>打开页面，拖入分部件 PSD，或选择“读取示例 A”“读取示例 B”。A 是 <code>sample2.psd</code>，B 是 <code>sample.psd</code>。读取后也可随时通过左上角的“示例 A”“示例 B”切换。</li>
+<li>自动绑定开始运行，角色当场带着待机动作、眨眼、口型、头发物理动起来。</li>
+</ol>
+<h4>v2.0 新功能</h4>
+<ul>
+<li><strong>强化 OBS 联动</strong>：在普通浏览器中打开的 PSD、调整、表情、锚点会自动同步到 OBS 的浏览器源（不再固定为 <code>sample.psd</code>）。</li>
+<li><strong>强化面部追踪</strong>：左右眼分别眨眼（眨单眼）、眉毛、笑容追踪，正面校准，灵敏度与平滑度调整，摄像头画面预览。追踪库（MediaPipe FaceMesh）以固定版本同梱，离线也能运行。</li>
+<li><strong>锚点编辑模式</strong>：在预览上拖动修正脸、眼、闭眼位置、嘴、脖子、胸部的基准点。</li>
+<li><strong>视频导出</strong>：以原 PSD 尺寸录制透明 WebM（或 MP4）动作视频。</li>
+<li><strong>易用性</strong>：撤销/重做、按键切换表情、预览缩放与平移、图层缩略图与角色显示、拖拽排序、模型诊断、按行搜索设置。</li>
+<li><strong>自动绑定</strong>：支持日文图层名（前髪、白目、瞳等）和 see-through 的输出名，支持耳饰、尾巴的摆动。</li>
+<li><strong>绘制质量</strong>：瞳孔裁切改为平滑边缘（抗锯齿）。修复隐藏眼白时瞳孔也一起消失的问题。</li>
+</ul>
+<p>详情请参阅 IMPROVEMENTS.md。</p>
+<h4>编辑与保存</h4>
+<ul>
+<li>随时可以通过顶部“打开 PSD”（Ctrl+O）更换模型。读取中会显示进度，可点“中止读取”取消。即使新 PSD 读取失败，正在编辑的模型也会保留。</li>
+<li>用“搜索设置”筛选眼、头发、嘴等设置，只显示匹配的行。分区标题可以通过点击、Enter、Space 展开/折叠，并会记住展开状态。</li>
+<li>滑块右侧的数值可以直接输入。双击滑块，只把该项恢复为初始值。</li>
+<li>修改可以通过“↶ / ↷”或 Ctrl+Z / Ctrl+Shift+Z 撤销（参数、表情、图层、锚点、背景）。</li>
+<li>在“图层”中可调整显示/隐藏、浓度（不透明度）、深度和绘制顺序。上方为后、下方为前。拖动缩略图或用 ↑↓ 排序，用 ▸ 展开浓度和深度。鼠标悬停在卡片上时，预览中会显示该部件的范围。深度影响转头时的移动量，与绘制顺序是分开的设置。</li>
+<li>“保存调整”（Ctrl+S）会把参数、自动动作、背景、图层设置、锚点按模型保存在浏览器内。有未保存的修改时按钮上会显示“●”，关闭页面前会提示确认。读取内容相同的 PSD 时会自动恢复。“恢复保存状态”可回到上一次保存的状态。</li>
+<li>迁移到其他浏览器/电脑时，请使用“导出设置 JSON”。打开同一个 PSD 后点“读取设置 JSON”，或把 JSON 拖到预览上即可应用。也能读取旧版（v1）的设置 JSON。设置 JSON 不包含 PSD 图像本身和摄像头/麦克风的开启状态。重新编辑过的 PSD 会被视为另一个模型。</li>
+<li>“暂停”（Space）可停止动作以调整数值。</li>
+<li>“保存轻量 PSD”会保存经过去噪、裁剪的 PSD。动作、绘制顺序、深度等调整请保存在设置 JSON 中。</li>
+<li>使用表情预设时，会抑制自动眨眼、随机口型的覆盖。使用摄像头输入时，也会优先采用追踪值而不是自动眨眼和随机口型。</li>
+<li>“模型信息・诊断”会列出必要图层是否找到、是否自动生成、是否有未分类的图层。</li>
+</ul>
+<h4>键盘与鼠标操作</h4>
+<div class="table-wrap"><table><thead><tr><th>操作</th><th>内容</th></tr></thead><tbody>
+<tr><td><code>Space</code></td><td>暂停 / 播放</td></tr>
+<tr><td><code>1</code>～<code>7</code></td><td>表情预设（普通、笑容、眯眼、惊讶、白眼（ジト目）、左眼眨眼、右眼眨眼）。再按一次同一个键即解除</td></tr>
+<tr><td><code>0</code></td><td>解除表情预设</td></tr>
+<tr><td><code>Ctrl+Z</code> / <code>Ctrl+Shift+Z</code>（<code>Ctrl+Y</code>）</td><td>撤销 / 重做</td></tr>
+<tr><td><code>Ctrl+S</code> / <code>Ctrl+O</code></td><td>保存调整 / 打开 PSD</td></tr>
+<tr><td><code>E</code></td><td>锚点编辑模式（<code>Esc</code> 退出）</td></tr>
+<tr><td><code>F</code>、双击</td><td>预览恢复为全图显示</td></tr>
+<tr><td><code>B</code></td><td>切换背景</td></tr>
+<tr><td>滚轮・双指捏合 / 拖动</td><td>预览放大缩小 / 平移</td></tr>
+<tr><td><code>?</code></td><td>快捷键列表</td></tr>
+</tbody></table></div>
+<h4>锚点编辑</h4>
+<p>眼、嘴、脖子的位置会自动检测，但根据画风可能会有偏差。按“锚点编辑”（<code>E</code>）后，静止姿势上会显示基准点。</p>
+<ul>
+<li><strong>脸部中心</strong>：转头深度、刘海分块边界的基准</li>
+<li><strong>左眼・右眼</strong>：瞳孔缩放、视线移动的中心</li>
+<li><strong>闭合位置</strong>（蓝）：眼睑闭合的高度。拖动时会让该眼闭上以便预览</li>
+<li><strong>嘴</strong>：嘴巴开合、缩放、闭嘴旋转的中心</li>
+<li><strong>脖子旋转轴</strong>：头部转动的支点</li>
+<li><strong>胸</strong>（紫）：胸部摆动的中心（有上半身服装图层时）</li>
+</ul>
+<p>可拖动，或选中点后用方向键（1px）/ Shift+方向键（10px）移动。这些调整会纳入设置保存、JSON、OBS 同步和撤销。“恢复为自动检测位置”可重置。</p>
+<h4>摄像头・麦克风</h4>
+<ul>
+<li>打开“摄像头跟随”后，会追踪头部朝向、眨眼、视线、嘴巴张开、眉毛、笑容（嘴形）。左上角会显示小的摄像头画面和检测点（“缩小显示摄像头画面”可关闭）。</li>
+<li><strong>记录正面（校准）</strong>：摄像头跟随中，请面向正面、以自然表情按下。系统会以这张脸为基准判定，因此即便有眼睛偏细、嘴角偏上等个人差异，也不容易误判。记录保存在本浏览器中。</li>
+<li>关闭“左右眨眼联动”后即可检测眨单眼。眉毛、笑容追踪可分别关闭。</li>
+<li>可调整头、眨眼、嘴、眉、视线的灵敏度，以及动作平滑度（抑制抖动的强度）。</li>
+<li>“麦克风口型”可调整灵敏度和噪声门（忽略低于此值的小声音），输入电平会显示在电平表上。</li>
+<li>面部追踪使用 MediaPipe FaceMesh（Apache-2.0）。它同梱在 <code>lib/vendor/face_mesh/</code>，所以没有网络也能运行，也不会因上游更新而改变行为（只有不支持 WebAssembly SIMD 的旧浏览器会从 CDN 获取同一版本）。</li>
+</ul>
+<blockquote><p>摄像头跟随和麦克风口型只能在 https 或 localhost 下运行（浏览器权限规范）。用 file:// 直接打开也能拖入播放。</p></blockquote>
+<h4>导出</h4>
+<ul>
+<li>“保存 PNG”按原 PSD 尺寸导出当前姿势，不包含操作界面。</li>
+<li>“录制”按原 PSD 尺寸导出视频。时长（3～60 秒）、帧率（30/60fps）和格式可在“导出”中选择。录制中再按一次，即保存到当前为止的内容。</li>
+<li>背景可在“透明・绿幕・深色”中选择，PNG 和视频都会使用。能保留透明的是 WebM（Chrome / Edge / Firefox）。MP4 不透明。</li>
+</ul>
+<h4>OBS 透明输出</h4>
+<ol>
+<li>双击 <code>start_obs.bat</code>。本地服务器启动，并在普通浏览器中打开编辑界面（请允许摄像头）。</li>
+<li>在 OBS 中添加“浏览器”源，URL 设为 <code>http://127.0.0.1:8000/?obs=1</code>，宽高设为 PSD 的尺寸。编辑界面的“OBS 联动”中有 URL 和复制按钮。</li>
+<li>在编辑界面打开的 PSD、调整、表情预设、锚点、面部追踪、麦克风口型会原样反映到 OBS。之后打开的 OBS 源也会追上当前状态。页头的“OBS”标识可查看连接状况（显示中的数量）。</li>
+</ol>
+<ul>
+<li>OBS 专用显示的背景完全透明，不会显示操作面板和 FPS。</li>
+<li>关闭编辑界面后，OBS 会保持最后收到的模型和调整，继续做待机动作。面部追踪约 1.2 秒没有数据时也会回到普通动作。</li>
+<li>直播中请不要关闭编辑用的浏览器。面部追踪和向 OBS 的中继在后台也会持续运行（藏在 OBS 后面也可以），但如果在你的环境中跟随有延迟，请避免最小化。</li>
+<li>如果不使用编辑界面、只在 OBS 中显示，可以把 PSD 和设置 JSON 放进本文件夹，并以 <code>http://127.0.0.1:8000/?obs=1&amp;model=mymodel.psd&amp;settings=mymodel.rig.json</code> 的形式指定（两者都可省略，省略时为 <code>sample.psd</code>）。</li>
+<li>关闭“同步到 OBS 显示”后，OBS 会停留在最后发送的状态。</li>
+</ul>
+<p>需要 Python 3。如果无法自动检测，可以在环境变量 <code>ANIME25D_PYTHON</code> 中设置 <code>python.exe</code> 的路径。如果 8000 端口被其他应用占用，请用 <code>python obs_server.py --port 8001 --open-browser --camera</code> 启动，并把 OBS 的 URL 改成同一端口。</p>
+<p>中继只在运行 <code>obs_server.py</code> 的电脑内部（127.0.0.1）进行，只接受来自同源的已验证数据。不中继视频和音频本身（只有面部追踪数值、麦克风音量、设置和 PSD）。PSD 只放在中继服务器的内存中，不会保存。</p>
+<p>在闭眼图层中加入 <code>eyeclose2</code>（或 <code>eye_close2</code>、<code>閉じ目2</code>）后，会与普通闭眼以 4:1 的概率切换。<code>eyeclose2</code> 的闭眼时间是普通眨眼的 10 倍。</p>
+<h4>自动完成的事项</h4>
+<ul>
+<li>直接接受 <a href="https://github.com/shitagaki-lab/see-through" rel="noopener">see-through</a> 输出的 PSD（<code>mouth</code>→<code>mouth_open</code> 自动重命名；<code>hair</code> 的绘制顺序在脸之上则视为前发，在之下则视为后发）</li>
+<li><strong>自动识别日文、英文别名</strong>（<code>前髪</code>、<code>白目</code>、<code>瞳</code>、<code>まつ毛</code>、<code>閉じ目</code>、<code>bangs</code>、<code>iris</code> 等，见下表）</li>
+<li><strong>没有闭眼、闭嘴差分时，自动生成通用差分</strong>（按锚点缩放和放置，自动调整为睫毛/嘴的颜色；可用专用滑条微调位置和角度）
+<ul><li>差分的原图优先使用仓库根目录下的 <code>eye_close.psd</code>（左右两眼画在一张上、中间留空）/ <code>mouth_close.psd</code>；没有则使用内置数据</li></ul></li>
+<li>低 alpha 噪点去除（连通分量过滤）</li>
+<li>递归读取包括文件夹内在内的可见图像图层</li>
+<li>眼、眉、睫毛、闭眼的<strong>左右自动分离</strong>（按连通分量的重心判定）</li>
+<li>眼睑位置、虹膜中心、嘴、脖子支点等<strong>锚点自动检测</strong>（可在锚点编辑模式下修正）</li>
+<li>头发<strong>发束（strand）自动检测</strong>（发梢轮廓峰值检测，每个图层最多 6 束）</li>
+<li>耳饰、尾巴的<strong>钟摆式摆动</strong></li>
+<li>通过为每个图层分配深度实现的<strong>伪 3D 转头</strong>（视差 + 剪切）</li>
+<li>每束头发的双重弹簧物理（<strong>发根硬、发梢蓬松</strong>）、跟随身体倾斜、胸部摆动、呼吸</li>
+<li>闭眼/闭嘴差分的<strong>交叉淡入淡出</strong>，瞳孔裁切（按眼白形状平滑裁切，不受绘制顺序、眼白浓度、显示状态影响）</li>
+</ul>
+<h4>图层命名规约</h4>
+<p>图层名（日文的“のコピー”“copy”、全角字符、大小写，以及 <code>_</code>、<code>-</code>、空格的差异会被自动规范化）：</p>
+<div class="table-wrap"><table><thead><tr><th>图层名</th><th>别名示例</th><th>内容</th><th>必需</th><th>备注</th></tr></thead><tbody>
+<tr><td><code>face</code></td><td>顔、輪郭</td><td>脸部底层</td><td>◎</td><td>锚点基准。唯一必须有的</td></tr>
+<tr><td><code>eyewhite</code></td><td>白目</td><td>眼白（左右两侧）</td><td>○</td><td>左右自动分离。用来裁切瞳孔的形状</td></tr>
+<tr><td><code>irides</code></td><td>瞳、黒目、iris</td><td>虹膜（左右两侧）</td><td>○</td><td>视线移动、瞳孔缩放对象</td></tr>
+<tr><td><code>eyelash</code></td><td>まつ毛、アイライン</td><td>睫毛（睁眼）</td><td>○</td><td></td></tr>
+<tr><td><code>eye_close</code></td><td>閉じ目</td><td>闭眼</td><td>○</td><td>眨眼时交叉淡入淡出</td></tr>
+<tr><td><code>eye_close2</code> / <code>eyeclose2</code></td><td>閉じ目2</td><td>长闭眼</td><td></td><td>20% 概率使用，闭眼时间 10 倍</td></tr>
+<tr><td><code>eyebrow</code></td><td>眉、眉毛</td><td>眉毛（左右两侧）</td><td>○</td><td>角度、上下操作对象</td></tr>
+<tr><td><code>mouth_open</code></td><td>口、開き口、mouth</td><td>张嘴</td><td>○</td><td>按开合度下巴下移</td></tr>
+<tr><td><code>mouth_close</code></td><td>閉じ口</td><td>闭嘴</td><td>○</td><td></td></tr>
+<tr><td><code>nose</code></td><td>鼻</td><td>鼻子</td><td></td><td></td></tr>
+<tr><td><code>ears</code></td><td>耳</td><td>耳朵</td><td></td><td></td></tr>
+<tr><td><code>earwear</code></td><td>ピアス、イヤリング</td><td>耳饰</td><td></td><td>钟摆摆动</td></tr>
+<tr><td><code>eyewear</code></td><td>眼鏡、メガネ</td><td>眼镜</td><td></td><td>跟随头部</td></tr>
+<tr><td><code>facedetail</code></td><td>頬、頬染め、blush</td><td>脸部细节</td><td></td><td></td></tr>
+<tr><td><code>neck</code></td><td>首</td><td>脖子</td><td></td><td>上端跟随头部</td></tr>
+<tr><td><code>neckwear</code></td><td>ネクタイ、チョーカー</td><td>颈部小物</td><td></td><td></td></tr>
+<tr><td><code>topwear</code></td><td>服、体、上半身</td><td>上半身服装</td><td></td><td>呼吸、胸部摆动对象</td></tr>
+<tr><td><code>bottomwear</code></td><td>スカート、ズボン</td><td>下半身服装</td><td></td><td></td></tr>
+<tr><td><code>handwear</code></td><td>腕、手</td><td>手臂、手</td><td></td><td>手臂高度操作对象</td></tr>
+<tr><td><code>legwear</code> / <code>footwear</code></td><td>脚、靴下 / 靴</td><td>腿、鞋</td><td></td><td></td></tr>
+<tr><td><code>headwear</code></td><td>帽子、髪飾り、カチューシャ</td><td>头饰</td><td></td><td></td></tr>
+<tr><td><code>front hair</code></td><td>前髪、bangs</td><td>前发（刘海）</td><td></td><td>发束物理 + 3 分块操作</td></tr>
+<tr><td><code>side hair</code></td><td>横髪、もみあげ</td><td>侧发</td><td></td><td>与前发相同的摆动设置</td></tr>
+<tr><td><code>ahoge</code></td><td>アホ毛</td><td>呆毛</td><td></td><td>与前发相同的摆动设置</td></tr>
+<tr><td><code>back hair</code></td><td>後ろ髪、後髪</td><td>后发</td><td></td><td>发束物理</td></tr>
+<tr><td><code>hair</code></td><td>髪</td><td>头发（未指定前后）</td><td></td><td>在脸之上则为前发，之下则为后发</td></tr>
+<tr><td><code>tail</code> / <code>wings</code></td><td>尻尾 / 羽、翼</td><td>尾巴、翅膀</td><td></td><td>尾巴会摆动</td></tr>
+</tbody></table></div>
+<ul>
+<li><strong>把头发分成多个图层时</strong>：像 <code>front hair_1</code>、<code>front hair_2</code>、<code>前髪2</code> …… 这样加上序号，各图层会作为独立的发束组进行物理计算（发束数按图层宽度自动决定）。</li>
+<li>不符合规约的图层也会被读取（根据位置推断属于头部还是躯干，只做跟随）。在“模型信息・诊断”中显示为未分类。</li>
+<li>也支持图层组（文件夹）内的图像图层。隐藏的文件夹和图层不会读取。</li>
+<li><strong>关于脖子（neck）和躯干（topwear）</strong>：直接使用 see-through 的输出时，脖子和躯干的前后关系难以解决，动起来时交界处可能破绽。如果效果不好，把脖子合并进躯干图层、做成<strong>一体式</strong>（没有 neck 图层，topwear 包含到脖子）更容易成功。</li>
+<li>画布建议为正方形（已在 768×768～2048×2048 确认可运行）。</li>
+</ul>
+<h4>功能</h4>
+<p>表情预设（笑容/惊讶/白眼/左右眨眼，按键切换）、左右独立的睁眼程度、眉毛角度（左右独立 + 对称）、视线、瞳孔缩放、眼/嘴的“易闭合”阈值、刘海 3 分块操作与<strong>刘海专用的摆动和柔软度</strong>、手臂高度/位置、胸部摆动（可调强度和位置）、小物摆动、身体倾斜、待机/随机动作、随机口型、麦克风口型（灵敏度、噪声门）、鼠标跟随、<strong>网络摄像头跟随</strong>（头部 XYZ、左右眨眼、嘴、眉、笑容、视线，校准）、锚点编辑、撤销/重做、透明 PNG 与透明视频导出、背景切换（透明/绿幕/深色）、OBS 同步。</p>
+<h4>结构</h4>
+<pre><code>index.html           界面结构
+lib/app.css          样式・响应式布局
+lib/app.js           编辑 UI・动画・OBS 显示
+lib/renderer.js      WebGL 绘制（网格・瞳孔遮罩）
+lib/runtime.js       输入／设置校验・历史・网格上限・弹簧计算
+lib/face-features.js 面部关键点→表情参数（校准・滤波）
+lib/devices.js       摄像头（MediaPipe FaceMesh）・麦克风输入
+lib/recorder.js      视频导出
+lib/obs-sync.js      编辑界面与 OBS 显示的同步
+lib/psd-worker.js    PSD 解析与自动绑定（后台处理）
+lib/rigger.js        自动绑定生成（纯 TypedArray 实现，可在 Node 中测试）
+lib/ag-psd.min.js    PSD 解析器（ag-psd, MIT）
+lib/genericparts.js  通用闭眼・闭嘴差分（内置后备）
+lib/vendor/face_mesh MediaPipe FaceMesh 0.4.1633559619（Apache-2.0，同梱）
+eye_close.psd        闭眼差分原图（可选・可替换）
+mouth_close.psd      闭嘴差分原图（可选・可替换）
+sample2.psd          示例 A
+sample.psd           示例 B（OBS 专用显示的初始模型）
+obs_server.py        本地服务・向 OBS 中继（追踪值・设置・PSD）
+start_obs.bat        Windows 启动批处理
+tests/               Node・Python・浏览器回归测试</code></pre>
+<p>运行时为 WebGL1（网格扭曲 + 瞳孔用遮罩纹理）。PSD 在浏览器内处理，不上传到外部服务器（仅 OBS 联动时发送到同一台电脑上的 <code>obs_server.py</code>）。</p>
+<h4>开发时的验证</h4>
+<p>无需额外安装包，即可运行 Node.js 18 以上与 Python 3 的测试。</p>
+<pre><code>npm test            # = node tests/*.test.js + python -m unittest</code></pre>
+<p>浏览器测试有两种方式：</p>
+<ul>
+<li>启动本地服务器，打开 <code>http://localhost:8000/tests/browser.html</code>，点“运行测试”。用合成的测试 PSD 和虚拟输入，验证设置保存、历史、锚点、搜索、缩放、PNG/视频透明、瞳孔裁切、输入取消、绘制恢复、窄屏等 47 项（不会访问真实的摄像头和麦克风）。</li>
+<li>执行 <code>npm install --no-save playwright &amp;&amp; npx playwright install chromium</code> 后运行 <code>npm run test:browser</code>。除上述内容外，还会启动 <code>obs_server.py</code>，验证编辑界面→OBS 显示的同步（模型、表情、滑块、锚点、后打开的 OBS），并用伪造的摄像头画面（<code>tests/fixtures/face.y4m</code>）验证真实的面部追踪、校准和向 OBS 的中继。</li>
+</ul>
+<p>GitHub Actions（<code>.github/workflows/test.yml</code>）中也运行同样的测试。</p>
+<h4>已知限制</h4>
+<ul>
+<li>应用内不进行一张图的分解。请拖入用 <a href="https://huggingface.co/spaces/24yearsold/see-through-demo" rel="noopener">see-through 官方演示（HuggingFace Space）</a>等拆分好的 PSD（后处理全自动）。</li>
+<li>嘴巴张开是用差分切换 + 变形的简易表现（中间差分越多越平滑）。</li>
+<li>初始深度基于名称，但读取后可按图层调整。</li>
+<li>PSD 支持 RGB・8bit/通道、128MB 以下、2400 万像素以下、单边 16384px 以下。此外，可读取的尺寸还受图层总像素数、解析内存和设备 GPU 上限限制。</li>
+<li>会反映文件夹的可见性。组合成、不透明度的组继承、特殊混合模式、调整图层、蒙版效果不在完整还原范围内。需要的效果请合并到图像部件中。</li>
+<li>用 <code>file://</code> 直接打开时，解析在主线程进行，解析中可能无法中断。需要进度、中断、摄像头、OBS 联动时请通过 localhost 或 HTTPS 打开。</li>
+<li>设置保存使用浏览器的本地存储。在隐私模式、容量限制等情况下无法保存时，请导出 JSON。</li>
+<li>透明视频仅限 WebM。在 Safari 等无法导出透明 WebM 的浏览器中，请带背景色导出。</li>
+<li>面部追踪精度受照明、摄像头、眼镜等影响。判定不准时，请尝试“记录正面”和灵敏度调整。</li>
+</ul>
+<h4>License</h4>
+<p>MIT（同梱的 ag-psd 也是 MIT，MediaPipe FaceMesh 为 Apache-2.0，同梱在 <code>lib/vendor/face_mesh/</code>）。</p>
+<p>一张图的图层分解预期使用 <a href="https://github.com/shitagaki-lab/see-through" rel="noopener">shitagaki-lab/see-through</a>（Apache-2.0, SIGGRAPH 2026）。本工具是负责该项目输出 PSD 后处理与绑定的独立第三方工具，不同梱 see-through 的代码和模型。<br><strong>示例 PSD 的画作权利归各作者所有。</strong>发布自制模型时，请使用你自己拥有权利的素材。</p>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原帖文字、演示视频及封面帧版权归 <a href="https://x.com/Hitomiiim" rel="noopener">染川瞳 @Hitomiiim</a> 及其团队所有；本页照录原帖（原文即中文）、整理作者公开回复，仅转载视频封面帧，未下载或转载视频。附录 README 译文分别依 Apache-2.0（See-through，© shitagaki-lab 及论文作者）与 MIT（Anime2.5DRig，© 8co28）许可翻译发布。演示配音参考音源来自 あみたろの声素材工房。本页由 Grok Bot 整理，仅作学习交流。原帖：<a href="https://x.com/Hitomiiim/status/2114704821852991771" rel="noopener">x.com/Hitomiiim/status/2114704821852991771</a>。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/Hitomiiim/status/2114704821852991771" rel="noopener">x.com/Hitomiiim/status/2114704821852991771</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

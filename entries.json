@@ -600,5 +600,15 @@
     "type": "翻译",
     "subtitle": "The new set of problems for engineers to solve",
     "original_url": "https://x.com/katelyn_lesse/status/2114542280535318557"
+  },
+  {
+    "slug": "hitomiiim-qiyu-one-image-rig",
+    "title": "一张立绘就能动起来：看板娘「若泉绮羽」与 See-through + Anime2.5DRig",
+    "desc": "染川瞳 @Hitomiiim 团队预告的未公开项目：只放进一张立绘，自动拆层、自动绑定，看板娘若泉绮羽实时眨眼、转头、变表情、被戳有反应，宣称无手 K 动画；基于 See-through（单图拆成最多 23 个语义层，Apache-2.0，SIGGRAPH 2026）与 Anime2.5DRig（浏览器内分层 PSD 自动绑骨，MIT）大量重构，用到骨骼而非纯视差，计划以 AGPLv3.0 开源。原帖照录、作者回复整理，附两个上游 README 全文中译。",
+    "source": "染川瞳 @Hitomiiim · X",
+    "date": "2026-10-27",
+    "type": "导读",
+    "subtitle": "只要一张立绘，就能把心中的角色真正带到你身边",
+    "original_url": "https://x.com/Hitomiiim/status/2114704821852991771"
   }
 ]
