@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>草地上的羊：areadne 的水彩风可交互微缩牧场（原帖翻译 + 导读）</title>
+<meta name="description" content="前 OpenAI 设计工程师 areadne（@AreadneMaria）发布的 21 秒演示：一块水彩质感的微缩牧场，河流、小路、田埂、圆团树和会低头吃草的绵羊，可以在画布上随手“放”出羊。原帖全文中文翻译、画面拆解、同系列天空与池塘帖、评论区要点。" />
+<meta property="og:title" content="草地上的羊：areadne 的水彩风可交互微缩牧场" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.frames{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1em;margin:0 0 1.5em}
+.frames figure{margin:0}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-28">2026.10.28</time></p>
+<h1 class="za-title">草地上的羊：areadne 的水彩风可交互微缩牧场</h1>
+<p class="za-sub" lang="en" data-za-gen>Sheep grazing grass · an interactive watercolor miniature farm</p>
+<p class="za-meta" data-za-gen><span>来源 · areadne @AreadneMaria · X</span><span>收录 · 2026-10-28</span><span><a href="https://x.com/AreadneMaria/status/2114898325451444419" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><article><p class="source">原帖：<a href="https://x.com/AreadneMaria/status/2114898325451444419">x.com/AreadneMaria/status/2114898325451444419</a>（作者：areadne <a href="https://x.com/AreadneMaria">@AreadneMaria</a>，2026-10-27 09:53 SGT）</p>
+<p class="meta-line">原帖为英文，下文给出全文中文翻译；视频请在 X 原帖观看（本页不转载），下图只是原视频的封面帧。互动数据截至 2026-10-28 10:20 SGT：约 8.9 万次浏览、3,105 赞、1,476 收藏、147 转发、8 引用、69 回复。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><figure><a href="https://x.com/AreadneMaria/status/2114898325451444419" rel="noopener"><img class="cover" src="images/cover.webp" alt="原视频封面帧：暖白纸面上一块边缘像水彩晕开的方形草地，被深绿田埂分成几块；左侧一条蓝色小河蜿蜒而下，中间一条土黄色小路，右下角一块金黄麦田；十几只圆滚滚的白色绵羊散落在草地上，四周有圆团状的绿树、一棵粉色树和一朵小云" /></a><figcaption>原视频封面帧（21 秒）。点击在 X 观看完整演示。</figcaption></figure>
+
+<h2 id="post">原帖（全文翻译）</h2>
+<blockquote>
+<p>羊在吃草！🐑🌱</p>
+</blockquote>
+<p class="caption">英文原文：“sheep grazing grass! 🐑🌱”，附一段 21 秒视频。作者没有在帖子或回复里给出代码仓库、在线链接或说明文字。</p>
+
+<h2 id="what">这是什么</h2>
+<ul>
+<li><strong>一个可以交互的微缩场景，而不是一段渲染好的动画。</strong>画面是一块悬在暖白纸面上的方形地块，边缘像水彩在纸上晕开一样不规则。地块里有一条蓝色小河、一条土路、深绿色田埂把草地分成几块，右下角有一片麦田。树是圆团状的，像软软的毛球，外加一棵粉色树和一朵小云。</li>
+<li><strong>羊是“放”进去的。</strong>封面帧中央有一个十字光标。评论区有人说，看到作者把羊“生成”出来那一刻才觉得惊艳，也有人问画面上的缩放手柄是干什么用的。所以这更像一个能在画布上操作的场景编辑器或玩具，不是固定镜头的短片。</li>
+<li><strong>作者是做“设计工程”的。</strong>她的简介是：设计工程师，前 OpenAI，哥伦比亚大学计算机系，“喜欢做东西”。账号很新，只有几百个关注者，这条帖子却有近 9 万次浏览、近 1,500 次收藏。</li>
+</ul>
+
+<h2 id="look">画面是怎么做出“手作感”的（观察）</h2>
+<p>作者没有公开实现方式，以下只是从封面帧能看出来的东西，不是作者的说法。</p>
+<ul>
+<li><strong>边缘像纸上的颜料。</strong>地块边缘不是硬切的矩形，而是带颗粒的晕染边，让整块地像画在纸上的一张小画，而不是 3D 场景里的一块平面。</li>
+<li><strong>草地有笔触和散点。</strong>大块草色上叠了细碎的橙黄小点（像野花），颜色深浅分区，读起来像水彩或彩铅，不是平涂的色块。</li>
+<li><strong>立体的东西都是“软”的。</strong>树、羊和云都是圆鼓鼓的团块，带柔和的投影。有评论说“树看起来好想捏一下”。</li>
+<li><strong>俯视加一点透视。</strong>地块略带透视，远小近大，像一块放在桌上的模型。同一天作者另发了一条“加了一点透视”的帖子，说明透视是她在调的一个参数。</li>
+</ul>
+
+<h2 id="series">同一系列：天空、透视与池塘</h2>
+<p>这条帖子是作者一天之内连发的几个小实验之一（时间均为 SGT）：</p>
+<ul>
+<li><strong>10-27 07:18 · 玩天空</strong>（<a href="https://x.com/AreadneMaria/status/2114859334677254291">原帖</a>）：“playing with the sky ☁️”（在玩天空）。画面是渐变天空里一朵蓬松的云，云上有一条白色曲线，像是沿着画出的路径生成的云。</li>
+<li><strong>10-27 09:53 · 羊在吃草</strong>：就是本帖。</li>
+<li><strong>10-27 12:22 · 加了一点透视</strong>（<a href="https://x.com/AreadneMaria/status/2114935628907639007">原帖</a>）：“added some perspective 🤔”（加了一点透视），引用了“玩天空”那条，画面是黄昏色的天空和海平线。</li>
+<li><strong>10-27 22:38 · 池塘的忙碌一天</strong>（<a href="https://x.com/AreadneMaria/status/2115090786979299550">原帖</a>）：“busy day at a pond 🦆🦆”（池塘忙碌的一天）。同样的纸面地块，换成了池塘：睡莲、锦鲤、香蒲、小鸭子、一座小木栈桥。</li>
+</ul>
+<div class="frames">
+<figure><a href="https://x.com/AreadneMaria/status/2114859334677254291" rel="noopener"><img src="images/sky.webp" alt="“玩天空”封面帧：蓝色渐变天空中一朵弯成拱形的蓬松白云，云上叠着一条白色细曲线" /></a><figcaption>“玩天空”封面帧</figcaption></figure>
+<figure><a href="https://x.com/AreadneMaria/status/2115090786979299550" rel="noopener"><img src="images/pond.webp" alt="“池塘的忙碌一天”封面帧：同样水彩边缘的草地中间是一片蓝绿色池塘，有睡莲叶、粉色睡莲、几条锦鲤、一只鸭子，岸边长着香蒲，右下有一座小木栈桥连着土路" /></a><figcaption>“池塘的忙碌一天”封面帧</figcaption></figure>
+</div>
+<p>更早，作者在 10-14 发过一个“黄油捏捏乐”的小玩意，配文是“谢谢 Opus 5.5”；也发过用别人的效果做的交互抹茶演示。<strong>本帖本身没有说明用了什么工具或模型</strong>，这里不做推断。</p>
+
+<h2 id="replies">评论区要点</h2>
+<ul>
+<li><strong>“在哪能玩？”“有教程吗？”</strong>是最常见的问题，作者没有回复，目前没有公开的试玩链接或代码。</li>
+<li><strong>“这是什么风格？看着像水彩。”</strong>（<a href="https://x.com/nikolai_arso/status/2115214372670976417">@nikolai_arso</a>）</li>
+<li><strong>“缩放手柄是做什么的？👀”</strong>（<a href="https://x.com/rbhalla_/status/2115133765483913698">@rbhalla_</a>）：说明演示里出现了类似编辑器的选择框。</li>
+<li><strong>“能让羊叠成羊塔吗？”</strong>（<a href="https://x.com/TobiasAbram/status/2115096075396665387">@TobiasAbram</a>），以及“应该做成游戏”（<a href="https://x.com/crimsonblue2eo/status/2115200666943832120">@crimsonblue2eo</a>）。</li>
+<li>有人猜是 tldraw 的新功能（<a href="https://x.com/jakedowns/status/2115072725337117016">@jakedowns</a>），这只是评论者的猜测，作者没有证实。</li>
+</ul>
+
+<h2 id="takeaways">可以借鉴什么</h2>
+<ul>
+<li><strong>把“场景”当成可以摆弄的玩具。</strong>同样是微缩世界，把镜头和时间轴交给观众（放羊、拖地块、调透视），比固定的短片更容易让人想“在哪能玩”。</li>
+<li><strong>材质感来自边缘和纸面。</strong>不规则的晕染边、纸色底、散点笔触，几样便宜的处理就能把干净的 3D 变成手作插画。</li>
+<li><strong>一天连发几个小实验。</strong>天空、透视、牧场、池塘，每条只验证一个想法，配文只有一句话。</li>
+</ul>
+
+<h2 id="related">延伸阅读（本站）</h2>
+<ul>
+<li><a href="../eianlu-memphis-miniature-world/">Eian：孟菲斯微缩世界提示词</a>：同样是“画框里的微缩世界”，但那边是用代码逐帧渲染的固定短片，这边是可以交互的场景。</li>
+<li><a href="../eianlu-code-miniature-animation-collection/">孟菲斯微缩世界合集</a>：原帖、提示词与社区复刻。</li>
+<li><a href="../shanshui/">Shanshui</a>：用着色器做出颜料质感的另一个例子。</li>
+</ul>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文镜像整理。原帖、视频与封面帧版权归 areadne（<a href="https://x.com/AreadneMaria">@AreadneMaria</a>）所有；作者正文全文翻译，他人回复只作简短引用并署名。帖中没有代码仓库或项目站点，因此没有可镜像的 README 或许可证。原文：<a href="https://x.com/AreadneMaria/status/2114898325451444419">x.com/AreadneMaria/status/2114898325451444419</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/AreadneMaria/status/2114898325451444419" rel="noopener">x.com/AreadneMaria/status/2114898325451444419</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

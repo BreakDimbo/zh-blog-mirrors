@@ -1,5 +1,15 @@
 [
   {
+    "slug": "areadne-sheep-grazing",
+    "title": "草地上的羊：areadne 的水彩风可交互微缩牧场（原帖翻译 + 导读）",
+    "desc": "前 OpenAI 设计工程师 areadne（@AreadneMaria）的 21 秒演示：水彩晕染边缘的纸面微缩牧场——小河、土路、田埂、麦田、圆团树，绵羊可以随手“放”进画布并低头吃草。原帖全文中文翻译、画面手作感拆解（晕染边、散点笔触、软团块、带透视的俯视）、同日“玩天空”“加透视”“池塘”系列、评论区要点（在哪能玩、缩放手柄、tldraw 猜测）与借鉴；3 张视频封面帧 webp，未转载视频。",
+    "source": "areadne @AreadneMaria · X",
+    "date": "2026-10-28",
+    "type": "翻译",
+    "subtitle": "Sheep grazing grass · an interactive watercolor miniature farm",
+    "original_url": "https://x.com/AreadneMaria/status/2114898325451444419"
+  },
+  {
     "slug": "mileson-chaojifeng-video-design",
     "title": "超级峰的视频设计方法论（chaojifeng-video-design）：让 Agent 当导演的视频 Skill",
     "desc": "mileson/chaojifeng-video-design 中文项目页：一个给 Codex / Claude Code 等 Agent 用的视频设计 Skill——先定观众所得，再排镜头、素材、文字与声音；8 类视频任务、66 套风格（7 套自有 + 59 套集成自 Lemo-Opuscar）、18 类配方、64 项表达、12 项动效；招牌的“音乐 + 主题 + 风格”音乐驱动三维世界工作流（Three.js / Blender + Remotion 起步工程），安装、调用、六步流程、案例与局限；附 README 中文原文全文镜像（MIT）。",
