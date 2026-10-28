@@ -1,5 +1,15 @@
 [
   {
+    "slug": "dankoe-influencer-is-dead",
+    "title": "Dan Koe：网红已死，“体验时代”来了",
+    "desc": "Dan Koe 2026 年 10 月 X 长文全文中译：社交媒体上的三种创作者——为注意力优化的网红、为转化优化的个人品牌、用社交媒体供养一套作品的“匠人”；观点是 AI 时代最后的护城河；建“想法博物馆”（已验证想法 × 最爱想法）、只读高想法密度的来源；人们追随的是视角而非信息，用 5 个角度改写同一个想法；把正在爆的话题当市场调研做第一款产品；30 天启动计划。两段提示词英文原文 + 中译，附评论区与读后注记（含作者自家产品 Eden 的利益相关提示）。",
+    "source": "Dan Koe @thedankoe · X",
+    "date": "2026-10-28",
+    "type": "翻译",
+    "subtitle": "The influencer is dead. The Age of Experience is here.",
+    "original_url": "https://x.com/thedankoe/status/2112586533610156368"
+  },
+  {
     "slug": "tsukiema-grok-bot-second-brain",
     "title": "第二大脑工程：用 Karpathy 的 LLM Wiki + Grok Bot 把笔记变成成品",
     "desc": "tsukiema（@tsukiema_）X 长文《Second Brain Engineering》全文镜像 + 中译：把 Karpathy 式 LLM Wiki 搬到 Grok Bot 不关机的云端电脑上——建名为 Brain 的 bot，/workspace/brain 下 raw/、people/、projects/、out/ 与 voice.md、rules.md、attention.md 等约定；每条事实附来源与核对时间；先把一段对话手动变成回复草稿并审阅，再存为技能“Thread to Reply”；Gmail 标签入库按 ID 去重；晨间简报/夜间入库/周日回顾例程；把纠正沉淀为 rules.md。附 10 段提示词（英文原文 + 中译）、7 张配图 webp 与评论区、核实注记。",
