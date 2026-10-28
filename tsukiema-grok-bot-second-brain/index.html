@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tsukiema：第二大脑工程——用 Karpathy 的 LLM Wiki + Grok Bot 把笔记变成成品（全文中译）</title>
+<meta name="description" content="tsukiema（@tsukiema_）的 X 长文《Second Brain Engineering》全文中译：把 Karpathy 式 LLM Wiki 搬到 Grok Bot 的常驻云端电脑上——/workspace/brain 目录结构、可追溯的事实记录、把一段对话变成回复草稿并存为技能、Gmail 标签入库与去重、晨间简报等定时例程、把纠正沉淀为 rules.md；附 10 段可直接粘贴的提示词（英文原文 + 中译）。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-10-28">2026.10.28</time></p>
+<h1 class="za-title">第二大脑工程：用 Karpathy 的 LLM Wiki + Grok Bot，把笔记变成成品</h1>
+<p class="za-sub" lang="en" data-za-gen>Second Brain Engineering · LLM Wiki + Grok Bot</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @tsukiema_</span><span>收录 · 2026-10-28</span><span><a href="https://x.com/tsukiema_/status/2112947495059743047" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：<a href="https://x.com/tsukiema_" rel="noopener">tsukiema @tsukiema_</a>（X 简介：“quant finance and data science”）· 原帖：<a href="https://x.com/tsukiema_/status/2112947495059743047" rel="noopener">x.com/tsukiema_/status/2112947495059743047</a>（X Article，2026-10-22 00:41 UTC+8 发布）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>这是一篇手把手的搭建教程：把 Andrej Karpathy 提出的“由 AI 撰写和维护的个人知识库（LLM Wiki）”放到 Grok Bot 那台不关机的云端电脑上，建一个叫 Brain 的 bot，用固定的目录和文件（raw/、out/、voice.md、rules.md……）管理材料，再一步步加上对话→回复草稿、Gmail 入库、晨间简报和规则沉淀——每一步都先手动跑通、人工审阅，再存成技能、最后才定时自动化。</div>
+<figure><img src="images/cover.webp" alt="黑底封面：左侧是由光点连线构成的大脑与散落的文档，右侧大字 BUILD A SECOND BRAIN WITH GROK BOT，副标题 Files, routines, and work you can review" loading="lazy"><figcaption>原文封面图，压缩为 WebP 转载。右下角水印为 “@beamnxw”（配图可能出自该作者之手，属推断，未核实）。</figcaption></figure>
+<p class="caption">互动数据（2026-10-28 13:30 UTC+8，经 X API 读取）：约 53.7 万次浏览、205 赞、24 转帖、8 引用、44 回复、773 收藏——收藏数约为点赞的 3.8 倍，典型的“先存起来照着做”型教程。</p>
+
+<h2 id="post">原帖</h2>
+<blockquote lang="en"><p>Andrej Karpathy’s LLM Wiki + Grok Bot</p><p>A Second Brain that turns your knowledge into finished work</p><p>Put your notes on a night shift before another week slips away</p><p>The complete setup and prompts below ↓</p></blockquote>
+<blockquote><p>Andrej Karpathy 的 LLM Wiki + Grok Bot</p><p>一个把你的知识变成成品的“第二大脑”</p><p>趁又一周溜走之前，让你的笔记去上夜班</p><p>完整搭建步骤和提示词见下 ↓</p></blockquote>
+
+<h2 id="article">全文中译：《第二大脑工程：搭一个把笔记变成成品的 Grok Bot》</h2>
+<p class="caption">英文原题 <em lang="en">Second Brain Engineering: Build a Grok Bot That Turns Your Notes Into Finished Work</em>。以下为作者本人 X Article 的完整中文翻译。文中的提示词保留英文原文（便于直接粘贴），并在其后附中文译文；配图为原文配图，压缩为 WebP 转载。</p>
+
+<p>把你的项目笔记、几段你自己写的文字样本交给 Grok Bot，再给它一个明确的地方存放产出。然后你就可以提具体的要求：一封带着正确上下文的客户回复、一份上线计划，或者一页“早上等你拍板的决定”。</p>
+<p>Grok Bot 运行在一台常驻的云端电脑上，所以定时任务在你合上笔记本后仍能继续。它的文件系统给了这个“第二大脑”一个地方，用来保存每个回答背后的材料。（官方文档：电脑说明）</p>
+<p>Andrej Karpathy 在 4 月把它描述为“一个由 AI 替你撰写和维护的知识库”，那条帖子获得了 2,190 万次浏览。一条分享自己搭建版本的帖子有 8.5 万次收藏。</p>
+<p>但流行的搭法都跑在笔记本电脑上。收藏最多的那篇教程告诉你“让 Obsidian 保持打开，连接只在应用运行时有效”。</p>
+<p><strong>一个真正干活的大脑，需要一台永不合盖的电脑。</strong></p>
+<p>Grok Bot 给了它这样一台电脑。它的 AI 助手——叫作 bot——在云端属于自己的电脑上工作，你的笔记本关机时那台电脑仍在运转。</p>
+<p>Kevin Rose 已经在上面搭了一个：一个 bot，把他收藏的每条 Instagram 视频索引进一个 Karpathy 风格的 wiki。</p>
+
+<h3 id="s1">1. 给你的大脑一份工作和一个起点</h3>
+<figure><img src="images/01-give-brain-a-job.webp" alt="信息图：Give your brain a job——左侧为想法与消息、人物、项目三类输入，中央是发光大脑，右侧为 /workspace/brain 目录树，底部是五步搭建流程、Bot 描述与快速检查清单" loading="lazy"><figcaption>原文配图 · 第 1 节“给你的大脑一份工作”。</figcaption></figure>
+<p>从一件你已经很熟悉的、反复出现的任务开始。给一条项目进展起草回复是个不错的第一次练习，因为事实、语气和下一步行动你都能自己判断。</p>
+<p>从 Grok Bot 安装应用，按你账户当前的登录说明操作。</p>
+<p>在侧边栏选择 New，然后 Create new Bot。打开 Edit Profile，把它命名为 Brain，并把它的长期职责写进描述里。（官方文档：Bot 设置）</p>
+<p>粘贴到 Bot 描述中：</p>
+<pre lang="en"><code>Maintain my second brain in /workspace/brain.
+Read INDEX.md and rules.md at the start of a task, then open the relevant files.
+Use voice.md when drafting in my name.
+Preserve original material in raw/ and link each summary to its sources.
+Check changing facts in the current source before using them.
+Save drafts and plans in out/ and show me the result.
+Ask for approval before sending, publishing, purchasing, deleting, or changing external records.
+Report missing access and failed checks clearly.</code></pre>
+<pre class="zh-tr"><code>【中译】在 /workspace/brain 维护我的第二大脑。
+每个任务开始时先读 INDEX.md 和 rules.md，再打开相关文件。
+以我的名义起草时，使用 voice.md。
+把原始材料保存在 raw/ 中，每份摘要都链接到它的来源。
+使用会变化的事实之前，先在当前来源中核对。
+草稿和计划存到 out/，并把结果给我看。
+发送、发布、购买、删除或更改外部记录之前，先征求我的批准。
+清楚地报告缺失的访问权限和失败的检查。</code></pre>
+<p>挑选大约二十条你自己写的消息。</p>
+<p>里面要包括日常回复、一段项目说明、一个请求和一次纠正，这样样本能覆盖几种不同情境。</p>
+<p>删掉任何你不愿意放到 bot 云端电脑上的内容。</p>
+<p>文件和已登录的会话在你账户下的所有 Bot 之间共享，所以挑选材料时要考虑到这种账户级的访问范围。（官方文档：共享电脑说明）</p>
+<p>把样本作为文本文档附上，或者把消息直接粘贴进 Brain 的对话。</p>
+<p>再加一句简短说明，指明这次练习要用的项目。</p>
+<p>粘贴在你的写作样本下方：</p>
+<pre lang="en"><code>Create /workspace/brain with raw/, people/, projects/, and out/.
+Create INDEX.md, log.md, me.md, voice.md, attention.md, and rules.md.
+
+Preserve the supplied messages in raw/ with their available dates and authors.
+Write me.md using only supported facts about my work, current goals, collaborators, and commitments. Mark uncertain details as questions.
+Write voice.md with up to 10 specific writing rules. Support each rule with a short line I actually wrote and a link to its saved source.
+Leave unsupported details blank.
+
+INDEX.md should map each file to its purpose. Add a dated record of this setup to log.md.
+Show me me.md and voice.md for correction before using them in a draft.</code></pre>
+<pre class="zh-tr"><code>【中译】创建 /workspace/brain，包含 raw/、people/、projects/ 和 out/。
+创建 INDEX.md、log.md、me.md、voice.md、attention.md 和 rules.md。
+
+把我提供的消息连同可得的日期和作者保存到 raw/。
+写 me.md 时，只用有依据的事实描述我的工作、当前目标、合作者和承诺；不确定的细节标成问题。
+写 voice.md，最多 10 条具体的写作规则；每条规则都用一句我真正写过的短句佐证，并链接到它保存的来源。
+没有依据的细节留空。
+
+INDEX.md 要说明每个文件的用途。在 log.md 里加一条带日期的本次搭建记录。
+在把 me.md 和 voice.md 用于任何草稿之前，先给我看、让我修正。</code></pre>
+<p>两个文件都要读。尤其注意“义务”：对一个可能的截止日期的讨论，在总结时很容易变成一个并不存在的承诺。</p>
+<p>如果你一开始没有写作样本，可以让 Brain 就你的工作和偏好采访你，一次只问一个问题。</p>
+<p>在你提供真实的文字之前，voice.md 都只是暂定版本。</p>
+
+<h3 id="s2">2. 让每条有用的事实都可追溯</h3>
+<figure><img src="images/02-traceable-facts.webp" alt="信息图：Make every useful fact traceable——文件夹图标连到 raw、people、projects、out 以及 me.md、voice.md、attention.md、rules.md、INDEX.md、log.md；右侧为一条可追溯记录样例" loading="lazy"><figcaption>原文配图 · 第 2 节“让每条事实可追溯”。</figcaption></figure>
+<p>这个文件夹应该在你自己打开时也一目了然。</p>
+<pre lang="en"><code>/workspace/brain/
+  raw/          Original messages, notes, and exports
+  people/       Working context about collaborators
+  projects/     Project summaries and decisions
+  out/          Drafts, plans, and briefs to review
+  me.md         Confirmed background and goals
+  voice.md      Writing guidance with examples
+  attention.md  Current priorities and next actions
+  rules.md      Approved workflow corrections
+  INDEX.md      File map
+  log.md        Dated record of changes</code></pre>
+<pre class="zh-tr"><code>【中译】/workspace/brain/
+  raw/          原始消息、笔记与导出文件
+  people/       关于合作者的工作背景
+  projects/     项目摘要与决策
+  out/          待审阅的草稿、计划与简报
+  me.md         已确认的背景与目标
+  voice.md      附示例的写作指南
+  attention.md  当前优先事项与下一步行动
+  rules.md      已批准的工作流修正
+  INDEX.md      文件地图
+  log.md        带日期的变更记录</code></pre>
+<p>让 Brain 在关键论断旁边附上来源链接和“最后核对日期”。一条小笔记就能携带足够的上下文，来回答将来的问题：</p>
+<pre lang="en"><code>Project: Website launch
+Source: raw/2026-10-21-client-update.txt
+Observed: The client requested a revised opening section.
+Status checked: 2026-10-21, 16:20 Europe/London
+Open question: Who approves the final copy?</code></pre>
+<pre class="zh-tr"><code>【中译】项目：网站上线
+来源：raw/2026-10-21-client-update.txt
+观察：客户要求修改开头部分。
+状态核对：2026-10-21，16:20 Europe/London
+待解问题：最终文案由谁批准？</code></pre>
+<p>这是一条示意记录。请使用你实际材料中的日期、来源和时区。</p>
+<p>写作偏好之类的背景信息放在档案文件里。交付日期、会议时间、付款状态和项目归属，只要任务依赖它们的当前值，每次都要重新核对。</p>
+<p>Grok Bot 自己的文档也做了同样务实的区分：它的记忆可以保留偏好和摘要，但关于当前状况的回答仍然需要权威来源。（官方文档：记忆）</p>
+<p>无法访问的来源应当在回答里留下一个看得见的缺口。比如：“保存的笔记写的是周五；最新的对话串打不开。”这样你就有一件具体的事情去解决。</p>
+<p>这里有一条有用的整理规则：原始材料保持原样，然后更新指向它的摘要。</p>
+<p>当两个来源互相矛盾时，两个引用都保留，并把冲突标记出来等待审阅。</p>
+
+<h3 id="s3">3. 把一段保存下来的对话变成成品</h3>
+<figure><img src="images/03-conversation-to-work.webp" alt="信息图：Turn one saved conversation into finished work——左侧项目对话与笔记进入大脑处理，输出请求、已确认事项、缺失信息、回复草稿四栏，右侧为发送前检查与“Thread to Reply”技能" loading="lazy"><figcaption>原文配图 · 第 3 节“把对话变成成品”。</figcaption></figure>
+<p>在接入收件箱或添加定时任务之前，先做这个练习。</p>
+<p>附上一段当前项目的对话，以及你自己的粗略笔记。</p>
+<p>粘贴到 Brain 的对话中：</p>
+<pre lang="en"><code>Use the attached conversation to prepare my next reply.
+
+Read voice.md, rules.md, and the relevant project file first.
+Preserve the new source material in raw/ and update the project summary with source links.
+
+Return:
+1. The other person's request in one sentence.
+2. Confirmed commitments, with a source for each.
+3. Missing information that affects the reply.
+4. A concise reply in my voice, saved in out/.
+
+Use current source material for dates, prices, and status.
+If a commitment needs my decision, leave it as a clearly marked question outside the draft.
+Keep supporting notes separate from the message text.
+Show the draft here and leave sending to me.</code></pre>
+<pre class="zh-tr"><code>【中译】用附上的对话为我准备下一条回复。
+
+先读 voice.md、rules.md 和相关的项目文件。
+把新的来源材料保存到 raw/，并用来源链接更新项目摘要。
+
+返回：
+1. 用一句话概括对方的请求。
+2. 已确认的承诺，每条附来源。
+3. 影响这条回复的缺失信息。
+4. 一条用我的口吻写的简洁回复，保存到 out/。
+
+日期、价格和状态以当前来源材料为准。
+如果某个承诺需要我来决定，把它作为明确标注的问题放在草稿之外。
+辅助笔记与消息正文分开。
+草稿在这里给我看，发送留给我。</code></pre>
+<p>假设对话串在问一个落地页能不能周五上线。</p>
+<p>你的笔记里提到还缺一张产品截图，文案也在等待批准。</p>
+<p>一个有用的结果会指出这些依赖项，起草一条你可以直接发出的回复，并请你确认是否承诺上线。</p>
+<p>你应该能打开每个依赖项背后的证据。</p>
+<p>检查四件事：</p>
+<ul>
+<li>它有没有保留“谁说了什么”？</li>
+<li>草稿是否回答了对方真正的请求？</li>
+<li>提议的行动是否与你已经做出的承诺清楚区分？</li>
+<li>它是否遵守了你批准的写作规则？</li>
+</ul>
+<p>修改这份草稿，直到你愿意用它为止。</p>
+<p>然后把这个方法保存下来。</p>
+<p>批准结果之后粘贴：</p>
+<pre lang="en"><code>Save this reviewed workflow as a private skill called Thread to Reply.
+Include the required inputs, relevant brain files, source checks, output location, and approval boundary.
+Add the checks we used to review this draft.
+For an incomplete thread, ask for the missing context before proposing a commitment.
+Show me the saved instructions.</code></pre>
+<pre class="zh-tr"><code>【中译】把这个审阅过的工作流保存为一个名为 Thread to Reply 的私有技能（skill）。
+包括所需输入、相关的大脑文件、来源核对、输出位置和审批边界。
+加上我们审阅这份草稿时用到的检查项。
+如果对话串不完整，先索要缺失的上下文，再提出任何承诺。
+把保存后的说明给我看。</code></pre>
+<p>技能（skill）保存的是完成一项任务的方法；例程（routine）决定一个工作流何时运行。</p>
+<p>官方建议的顺序是：先完成任务，让流程变得可靠，保存为技能，然后再自动化。（官方文档：技能与例程）</p>
+<p>另外两个有用的工作流也适合放进同一个文件夹：</p>
+<ul>
+<li><strong>会议笔记</strong> —— 成品：一份带负责人、标了日期的行动计划；审阅问题：每位负责人真的接下这项任务了吗？</li>
+<li><strong>一个保存的想法加来源链接</strong> —— 成品：一份文章大纲或帖子草稿；审阅问题：哪些论断仍需核实？</li>
+</ul>
+<p>等你有真实的例子可以审阅时再搭这些。</p>
+<p>每个技能都需要自己的验收标准。</p>
+
+<h3 id="s4">4. 建一个你能掌控的“入口”</h3>
+<figure><img src="images/04-intake.webp" alt="信息图：Create an intake you can control——连接 Gmail、建立 Brain 标签、在 Grok Bot 中运行入库；下方展示 /workspace/brain 目录、消息记录样例、首次与第二次运行结果、移动端入口与关键原则" loading="lazy"><figcaption>原文配图 · 第 4 节“可控的入库流程”。</figcaption></figure>
+<p>一个 Gmail 标签让你可以有意识地选择什么进入大脑。把它命名为 Brain，第一次运行时只给几封相关邮件贴上。</p>
+<p>打开 Connect apps，找到 Gmail，选择 Add，完成认证。在输入框里键入 @ 来为任务选择已安装的连接器。（官方文档：连接器说明）</p>
+<p>初始范围要小到你能逐一检查每条保存的内容。五封邮件就能在分类错误扩散到更大的档案之前把它暴露出来。</p>
+<p>选中 Gmail 连接器后粘贴：</p>
+<pre lang="en"><code>Run one intake pass for up to five Gmail messages labelled Brain.
+
+For each message:
+- Record its message ID, sender, timestamp, subject, and source link.
+- Check whether that ID was already processed.
+- Save the original content in raw/ using a stable filename.
+- Update the relevant person or project file with a linked summary.
+- Put ambiguous items in a review list.
+
+Record processed IDs in intake-state.md only after the source and summary are saved successfully.
+Update INDEX.md and log.md.
+Return the saved paths, skipped duplicates, and unresolved items.
+Keep mailbox contents unchanged.</code></pre>
+<pre class="zh-tr"><code>【中译】对贴了 Brain 标签的 Gmail 邮件运行一次入库，最多五封。
+
+对每封邮件：
+- 记录它的邮件 ID、发件人、时间戳、主题和来源链接。
+- 检查这个 ID 是否已经处理过。
+- 用稳定的文件名把原始内容保存到 raw/。
+- 用带链接的摘要更新相关的人物或项目文件。
+- 把含糊的条目放进待审阅清单。
+
+只有在来源和摘要都成功保存之后，才把已处理的 ID 记入 intake-state.md。
+更新 INDEX.md 和 log.md。
+返回已保存的路径、跳过的重复项和未解决的条目。
+保持邮箱内容不变。</code></pre>
+<p>对同样的邮件再运行一次。</p>
+<p>第二次运行应当识别出已保存的条目，文件夹里不出现重复副本。</p>
+<p>当一次被中断的运行从中途恢复时，这项检查就很重要。</p>
+<p>你也可以在一天中随时手动给大脑“投喂”。</p>
+<p>在 iPhone 上，系统分享面板可以把照片、文件、链接或文字发送到指定的 Grok Bot 对话。</p>
+<p>在 Android 上，文档中的分享面板支持目前只覆盖文字。（官方文档：文件与移动端入口）</p>
+<p>对于链接，保留原始地址和你保存它的日期。一条有用的笔记还会写明你为什么保留这份材料：“把这个例子用在入门文章里”就给了 bot 一个将来可以与之关联的任务。</p>
+
+<h3 id="s5">5. 安排一个从“决定”开始的早晨</h3>
+<figure><img src="images/05-morning-routines.webp" alt="信息图：Schedule a morning that starts with decisions——夜间入库、早间简报、可选午后更新、每周回顾四个例程，下方为来源、自动化例程与晨间简报样例，以及示例时间表" loading="lazy"><figcaption>原文配图 · 第 5 节“从决定开始的早晨”。</figcaption></figure>
+<p>手动入库和草稿都通过审阅之后，再给 Brain 一个简短的日程。以下时间仅为示例，请换成你的时区和工作时间。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>时间</th><th>任务</th><th>预期结果</th></tr></thead>
+<tbody>
+<tr><td>每天 23:00</td><td>归档新贴标签的材料</td><td>带链接的摘要和一份入库日志</td></tr>
+<tr><td>工作日 07:30</td><td>准备晨间简报</td><td>当前事实、有用的草稿和待做决定</td></tr>
+<tr><td>周日 18:00</td><td>回顾知识库</td><td>冲突、过时笔记和建议的更新</td></tr>
+</tbody></table></div>
+<p>还可以加一个可选的工作日 17:00 任务来更新 attention.md。让它区分你明确说过的优先事项，和从邮件、日历事件中推断出来的活动。</p>
+<p>在某个项目上花了时间，只是“有活动”的证据。你的优先级清单仍然需要你自己判断。</p>
+<p>如果简报需要会议背景，就通过 Connect apps 接入 Google Calendar。然后精确定义早晨要拿到的结果。</p>
+<p>粘贴到 Brain 中，替换时区：</p>
+<pre lang="en"><code>Draft a weekday 07:30 morning routine in [YOUR TIME ZONE].
+Read rules.md and attention.md, then check the relevant current sources.
+
+Save the brief in out/ and show it in this conversation.
+Keep it under 400 words, with these sections only when useful:
+
+Facts: relevant changes, each with a source and check time.
+Inferences: possible implications, explicitly labelled.
+Completed: files or drafts actually produced, with paths.
+Your decision: items waiting for my approval and the exact choice needed.
+Questions: missing information that blocks useful work.
+
+Prioritize my confirmed commitments and deadlines.
+If nothing changed, stay quiet. If a source check fails, report the failure and affected items.
+Show the schedule, next run, sources, and approval boundary before enabling it.</code></pre>
+<pre class="zh-tr"><code>【中译】在 [你的时区] 起草一个工作日 07:30 的晨间例程。
+先读 rules.md 和 attention.md，再核对相关的当前来源。
+
+把简报保存到 out/，并在本对话中展示。
+控制在 400 词以内，以下栏目仅在有用时出现：
+
+事实：相关变化，每条附来源和核对时间。
+推断：可能的影响，明确标注为推断。
+已完成：实际产出的文件或草稿，附路径。
+需你决定：等待我批准的事项，以及需要做的具体选择。
+问题：阻碍有效工作的缺失信息。
+
+优先处理我已确认的承诺和截止日期。
+如果没有任何变化，就保持安静。如果某个来源核对失败，报告失败和受影响的条目。
+启用之前，先展示日程、下次运行时间、来源和审批边界。</code></pre>
+<p>这个简报结构遵循官方建议：把事实、推断、已完成的操作、待批准事项和未解决的问题分开。（官方文档：结果审阅）</p>
+<p>一个好的决定条目是具体的：“批准 out/launch-reply.md 中修改后的开头段落；客户在文案审阅前需要它。”而像“跟进上线”这样的标题，会让你自己去重建任务。</p>
+<p>用审阅过的五封邮件工作流创建每晚入库例程，沿用同样的去重检查。它“安静”的状态应当意味着一次成功的检查没有发现新东西；访问失败则应当产生一份看得见的报告。</p>
+<p>检查每个例程的下次运行时间，并用安全的输入执行 Test run。（官方文档：例程测试）</p>
+
+<h3 id="s6">6. 给“纠正”一个安身之处</h3>
+<figure><img src="images/06-corrections.webp" alt="信息图：Give corrections somewhere to live——添加纠正、审阅提议、应用并修改、保存与追踪四步，下方为规则条目样例、项目审计样例、周日回顾与关键原则" loading="lazy"><figcaption>原文配图 · 第 6 节“给纠正一个安身之处”。</figcaption></figure>
+<p>当 Brain 反复犯同一个错误时，保存一条有明确适用范围的纠正。</p>
+<p>比如，“听起来自然一点”几乎给不了指引。“在客户回复中，使用对方的名字；在延续进行中的对话串时省略开头问候”描述的则是你能在下一份草稿里检查的东西。</p>
+<p>当一条纠正需要延续下去时粘贴：</p>
+<pre lang="en"><code>Turn this correction into a proposed rule for rules.md.
+State when it applies and include a short example.
+Check for an existing rule that covers the same behavior or conflicts with it.
+Show me the proposed change before saving it.
+Apply the approved rule to the current artifact and show the revision.</code></pre>
+<pre class="zh-tr"><code>【中译】把这条纠正变成一条拟加入 rules.md 的规则。
+说明它何时适用，并附一个简短示例。
+检查是否已有规则覆盖同样的行为，或与之冲突。
+保存之前先把拟议的改动给我看。
+把批准后的规则应用到当前产出上，并展示修改后的版本。</code></pre>
+<p>临时性的要求留在各自的任务里。</p>
+<p>某个客户的特殊格式，只有在你打算复用时才应进入通用规则文件。</p>
+<p>周日回顾是你检查累积改动的时候。</p>
+<p>让它找出过时的项目摘要、相互冲突的承诺、未解决的问题、反复出现的纠正，以及等待下一步行动的有用材料。</p>
+<p>让 Brain 以待审阅清单的形式提出合并和删除建议。</p>
+<p>在你做决定期间，原始来源保持可用。</p>
+<p>你可以用一个简短的审计请求测试整套系统：</p>
+<pre lang="en"><code>Choose one active project in /workspace/brain.
+Show its latest source, current summary, next action, and any related draft in out/.
+Recheck the facts that could have changed.
+List unresolved contradictions and anything you could not verify.
+Explain which rule or skill guided the work.</code></pre>
+<pre class="zh-tr"><code>【中译】在 /workspace/brain 中选一个进行中的项目。
+展示它最新的来源、当前摘要、下一步行动，以及 out/ 中任何相关草稿。
+重新核对可能已经变化的事实。
+列出尚未解决的矛盾，以及任何你无法核实的内容。
+说明是哪条规则或哪个技能指导了这项工作。</code></pre>
+<p>如果你能顺着这条线索走下去，说明这个系统给了你可以审阅的东西。如果某份摘要丢了来源，就去修正产生它的入库流程或技能。</p>
+<p>重要的结果也要保存到 bot 的工作环境之外。文档描述的电脑恢复流程可以从保存的快照恢复，但有可能丢失最近的改动。（官方文档：持久化与恢复）</p>
+<p>第一次使用时，完成一个完整循环就停下：加入一个来源，检查保存的摘要，产出一份有用的草稿，然后修正它。把审阅过的工作流保存为技能，再按底层信息变化的频率给它安排日程。</p>
+
+
+<h2 id="refs">文中引用</h2>
+<ul>
+<li>Andrej Karpathy 的原帖《LLM Knowledge Bases》：<a href="https://x.com/karpathy/status/2039805659525644595" rel="noopener">x.com/karpathy/status/2039805659525644595</a>（2026-04-03 04:42 UTC+8 发布；经 X API 核对，截至 2026-10-28 约 2,200 万次浏览、10.9 万收藏，与文中“2,190 万”相符）。另见其 <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" rel="noopener">LLM Wiki gist</a>。</li>
+<li>Kevin Rose 的 Grok Bot 搭建：<a href="https://x.com/kevinrose/status/2101455244567973976" rel="noopener">x.com/kevinrose/status/2101455244567973976</a>（2026-09-20 发布）——“完全离线的已收藏 Instagram 视频索引，Karpathy wiki 风格的 .md”，用到 Grok Voice Transcribe 2.0、Grok Vision 等。</li>
+<li>文中链接的 Grok Bot 官方文档（2026-10-28 均可访问）：<a href="https://x.ai/bot" rel="noopener">x.ai/bot</a> · <a href="https://docs.x.ai/grok-bot/get-started" rel="noopener">Get started</a> · <a href="https://docs.x.ai/grok-bot/bots" rel="noopener">Bots</a> · <a href="https://docs.x.ai/grok-bot/computer-and-apps" rel="noopener">Computer and apps</a> · <a href="https://docs.x.ai/grok-bot/files-and-results" rel="noopener">Files and results</a> · <a href="https://docs.x.ai/grok-bot/skills-routines-and-automations" rel="noopener">Skills, routines and automations</a>。正文中“（官方文档：……）”是原文行内链接的位置，X API 未返回各锚文本与 URL 的一一对应，故集中列于此处。</li>
+</ul>
+
+<h2 id="replies">评论区</h2>
+<p>截至 2026-10-28，作者本人没有在该对话串中补充回复（按 <code>conversation_id</code> + <code>from:tsukiema_</code> 检索，只返回主帖本身）。约 44 条回复里，绝大多数是读者 @ Grok Bot 官方账号说“对照我现有的做法审一遍，给我一个改进计划”，随后 @bot 回复“已发送到你的 Grok Bot”——帖子本身成了一个把教程“转交给自己的 bot”的入口。其余值得一提的：</p>
+<ul>
+<li>@flapsandwich 问能否用它整合散落在多个应用、跨越多年的资料；@grok 回答建议从少量关键样本起步，每条论断都链接到来源和日期。</li>
+<li>@aryanvij02 推荐了另一款“模型无关、自动维护第二大脑”的产品 Turnstone（myturnstone.ai）——属于评论区自荐/推广，本站未评估。</li>
+</ul>
+
+<h2 id="notes">核实与读后注记</h2>
+<ul>
+<li><strong>已核实：</strong>Karpathy 帖子的浏览量；Kevin Rose 帖子存在且内容与文中描述一致；文中所有官方文档链接可访问。</li>
+<li><strong>未核实：</strong>“一条分享搭建版本的帖子有 8.5 万次收藏”“收藏最多的教程要求保持 Obsidian 打开”——原文未给链接，本站未找到对应来源。</li>
+<li><strong>这是什么、不是什么：</strong>它不是一个开源项目或代码仓库，没有可下载的代码；“产品”就是 Grok Bot 本身，可复用的部分是一套目录约定和 10 段提示词。Gmail、Google Calendar 连接器、iPhone/Android 分享面板、Test run、快照恢复等功能描述来自作者对官方文档的转述，以官方文档当前版本为准。</li>
+<li><strong>方法上的亮点：</strong>“先手动做一次 → 人工审阅 → 存成技能 → 再定时”；把“讨论过的截止日期”与“已做出的承诺”严格分开；来源失效要在回答里留下可见的缺口；入库按 ID 去重、只在保存成功后记账，保证中断后可安全重跑。这些与 Karpathy 原帖中的 raw/ → wiki 编译、lint 健康检查一脉相承，又补上了“审批边界”和“定时运行”两块。</li>
+<li><strong>需要留意：</strong>文中提醒，同一账户下所有 Bot 共享文件与已登录会话——放进 raw/ 的材料对账户内其他 bot 同样可见。</li>
+</ul>
+
+<h2 id="original">附录：英文原文</h2>
+<details><summary>展开英文原文（作者本人 X Article 全文，提示词按原文位置插回）</summary>
+<div lang="en">
+<h3>Second Brain Engineering: Build a Grok Bot That Turns Your Notes Into Finished Work</h3>
+<p>Give Grok Bot your project notes, a few examples of your writing, and a clear place to save its work. You can then ask for something concrete: a client reply with the right context, a launch plan, or a morning page of decisions waiting for you.</p>
+<p>Grok Bot runs on a persistent cloud computer, so scheduled work can continue while your laptop is closed. Its files give this second brain somewhere to keep the material behind each answer. Official computer documentation</p>
+<p>Andrej Karpathy described it in April as a knowledge base that an AI writes and keeps for you, and his post drew 21.9 million views. one post sharing a build of it has 85,000 bookmarks.</p>
+<p>but the popular builds live on a laptop. the most saved guide tells you to &quot;leave Obsidian open, the connection only works while the app is running.&quot;</p>
+<p>a brain that does the work needs a computer that never closes.</p>
+<p>Grok Bot gives it one. its AI helpers, called bots, work on a computer of their own in the cloud, and that computer keeps going while your laptop is shut.</p>
+<p>Kevin Rose already built one there: a bot that indexes every Instagram video he saved into a Karpathy style wiki.</p>
+<h4>1. Give your brain a job and a starting point</h4>
+<p>Start with one recurring task you already understand. Drafting a reply to a project update is a useful first exercise because you can judge the facts, tone, and next action yourself.</p>
+<p>Install the app from Grok Bot and follow the current sign-in instructions for your account.</p>
+<p>In the sidebar, choose New, then Create new Bot. Open Edit Profile, name it Brain, and put its lasting responsibilities in the description. Bot setup documentation</p>
+<p>Paste into the Bot description:</p>
+<pre><code>Maintain my second brain in /workspace/brain.
+Read INDEX.md and rules.md at the start of a task, then open the relevant files.
+Use voice.md when drafting in my name.
+Preserve original material in raw/ and link each summary to its sources.
+Check changing facts in the current source before using them.
+Save drafts and plans in out/ and show me the result.
+Ask for approval before sending, publishing, purchasing, deleting, or changing external records.
+Report missing access and failed checks clearly.</code></pre>
+<p>Choose about twenty messages you wrote.</p>
+<p>Include ordinary replies, a project explanation, a request, and a correction so the sample contains several situations.</p>
+<p>Remove anything you are uncomfortable placing on the bot&#x27;s cloud computer.</p>
+<p>Files and signed-in sessions are shared across the Bots on your account, so choose the material with that account-wide access in mind. Shared computer details</p>
+<p>Attach the sample as a text document, or paste the messages into the Brain conversation.</p>
+<p>Add a short note naming the project you want to use for the exercise.</p>
+<p>Paste below your writing sample:</p>
+<pre><code>Create /workspace/brain with raw/, people/, projects/, and out/.
+Create INDEX.md, log.md, me.md, voice.md, attention.md, and rules.md.
+
+Preserve the supplied messages in raw/ with their available dates and authors.
+Write me.md using only supported facts about my work, current goals, collaborators, and commitments. Mark uncertain details as questions.
+Write voice.md with up to 10 specific writing rules. Support each rule with a short line I actually wrote and a link to its saved source.
+Leave unsupported details blank.
+
+INDEX.md should map each file to its purpose. Add a dated record of this setup to log.md.
+Show me me.md and voice.md for correction before using them in a draft.</code></pre>
+<p>Read both files. Pay particular attention to obligations: a discussion about a possible deadline can easily become a false commitment during summarization.</p>
+<p>If you are starting without writing samples, ask Brain to interview you about your work and preferences, one question at a time.</p>
+<p>Keep voice.md provisional until you supply real writing.</p>
+<h4>2. Make every useful fact traceable</h4>
+<p>The folder should be easy to understand when you open it yourself.</p>
+<pre><code>/workspace/brain/
+  raw/          Original messages, notes, and exports
+  people/       Working context about collaborators
+  projects/     Project summaries and decisions
+  out/          Drafts, plans, and briefs to review
+  me.md         Confirmed background and goals
+  voice.md      Writing guidance with examples
+  attention.md  Current priorities and next actions
+  rules.md      Approved workflow corrections
+  INDEX.md      File map
+  log.md        Dated record of changes</code></pre>
+<p>Ask Brain to include a source link and a last-checked date beside consequential claims. A small note can carry enough context to answer a future question:</p>
+<pre><code>Project: Website launch
+Source: raw/2026-10-21-client-update.txt
+Observed: The client requested a revised opening section.
+Status checked: 2026-10-21, 16:20 Europe/London
+Open question: Who approves the final copy?</code></pre>
+<p>This is an illustrative record. Use the date, source, and time zone from your actual material.</p>
+<p>Keep background such as writing preferences in the profile files. Recheck delivery dates, meeting times, payment status, and project ownership whenever the task depends on their current value.</p>
+<p>Grok Bot&#x27;s own documentation makes the same practical distinction: its memory can retain preferences and summaries, while current answers still need authoritative sources. Memory documentation</p>
+<p>An inaccessible source should leave a visible gap in the answer. For example: “The saved note says Friday; the latest thread could not be opened.” That gives you something specific to resolve.</p>
+<p>There is one useful housekeeping rule here: keep original material intact, then update the summary that points to it.</p>
+<p>When two sources disagree, retain both references and mark the conflict for review.</p>
+<h4>3. Turn one saved conversation into finished work</h4>
+<p>Run this exercise before connecting an inbox or adding schedules.</p>
+<p>Attach a current project conversation and your own rough notes.</p>
+<p>Paste into the Brain conversation:</p>
+<pre><code>Use the attached conversation to prepare my next reply.
+
+Read voice.md, rules.md, and the relevant project file first.
+Preserve the new source material in raw/ and update the project summary with source links.
+
+Return:
+1. The other person&#x27;s request in one sentence.
+2. Confirmed commitments, with a source for each.
+3. Missing information that affects the reply.
+4. A concise reply in my voice, saved in out/.
+
+Use current source material for dates, prices, and status.
+If a commitment needs my decision, leave it as a clearly marked question outside the draft.
+Keep supporting notes separate from the message text.
+Show the draft here and leave sending to me.</code></pre>
+<p>Suppose the thread asks whether a landing page can go live on Friday.</p>
+<p>Your notes mention a missing product screenshot and pending copy approval.</p>
+<p>A useful result identifies those dependencies, drafts a response you could send, and asks you to confirm the launch commitment.</p>
+<p>You should be able to open the evidence behind each dependency.</p>
+<p>Check four things:</p>
+<p>Did it preserve who said what?</p>
+<p>Does the draft answer the actual request?</p>
+<p>Are proposed actions clearly separated from promises you already made?</p>
+<p>Does it follow the writing rules you approved?</p>
+<p>Correct the existing draft until you would use it.</p>
+<p>Then save the method.</p>
+<p>Paste after approving the result:</p>
+<pre><code>Save this reviewed workflow as a private skill called Thread to Reply.
+Include the required inputs, relevant brain files, source checks, output location, and approval boundary.
+Add the checks we used to review this draft.
+For an incomplete thread, ask for the missing context before proposing a commitment.
+Show me the saved instructions.</code></pre>
+<p>A skill stores the method for a task; a routine determines when a workflow runs.</p>
+<p>The official guidance recommends completing a task, making the process reliable, saving the skill, and then automating it. Skills and routines documentation</p>
+<p>Two other useful workflows fit the same folder:</p>
+<p>Meeting notes</p>
+<p>Finished artifact: A dated action plan with owners</p>
+<p>Review question: Did each owner actually accept the task?</p>
+<p>A saved idea and source links</p>
+<p>Finished artifact: An article outline or post draft</p>
+<p>Review question: Which claims still need verification?</p>
+<p>Build these when you have a real example to review.</p>
+<p>Each skill needs its own acceptance criteria.</p>
+<h4>4. Create an intake you can control</h4>
+<p>A Gmail label gives you a deliberate way to choose what enters the brain. Call it Brain and apply it to a few relevant messages for the first run.</p>
+<p>Open Connect apps, find Gmail, choose Add, and complete authentication. In the composer, type @ to select the installed connector for the task. Connector instructions</p>
+<p>Keep the initial scope small enough to inspect every saved item. Five messages can reveal a classification mistake before it spreads through a larger archive.</p>
+<p>Paste with the Gmail connector selected:</p>
+<pre><code>Run one intake pass for up to five Gmail messages labelled Brain.
+
+For each message:
+- Record its message ID, sender, timestamp, subject, and source link.
+- Check whether that ID was already processed.
+- Save the original content in raw/ using a stable filename.
+- Update the relevant person or project file with a linked summary.
+- Put ambiguous items in a review list.
+
+Record processed IDs in intake-state.md only after the source and summary are saved successfully.
+Update INDEX.md and log.md.
+Return the saved paths, skipped duplicates, and unresolved items.
+Keep mailbox contents unchanged.</code></pre>
+<p>Run it again against the same messages.</p>
+<p>The second run should identify the saved items and leave the folder free of duplicate copies.</p>
+<p>That check matters when an interrupted run resumes halfway through</p>
+<p>You can also feed the brain manually throughout the day.</p>
+<p>On iPhone, the system share sheet can send a photo, file, link, or text into a chosen Grok Bot conversation</p>
+<p>On Android, the documented share-sheet support currently covers text. File and mobile intake documentation</p>
+<p>For links, keep the original address and the date you saved it. A useful note also says why you kept the material: “Use this example in the onboarding article” gives the bot a future task to connect it to.</p>
+<h4>5. Schedule a morning that starts with decisions</h4>
+<p>After the manual intake and draft both pass review, give Brain a short schedule. These are example times; replace them with your time zone and working hours.</p>
+<p>23:00 daily</p>
+<p>Job: File new labelled material</p>
+<p>Expected result: Linked summaries and an intake log</p>
+<p>07:30 weekdays</p>
+<p>Job: Prepare the morning brief</p>
+<p>Expected result: Current facts, useful drafts, and decisions</p>
+<p>Sunday 18:00</p>
+<p>Job: Review the knowledge base</p>
+<p>Expected result: Conflicts, stale notes, and proposed updates</p>
+<p>An optional 17:00 weekday pass can update attention.md. Ask it to distinguish your stated priorities from activity inferred from messages and calendar events.</p>
+<p>Time spent on a project is evidence of activity. Your priority list still needs your judgment.</p>
+<p>Connect Google Calendar through Connect apps if the brief needs meeting context. Then define the morning result precisely.</p>
+<p>Paste into Brain, replacing the time zone:</p>
+<pre><code>Draft a weekday 07:30 morning routine in [YOUR TIME ZONE].
+Read rules.md and attention.md, then check the relevant current sources.
+
+Save the brief in out/ and show it in this conversation.
+Keep it under 400 words, with these sections only when useful:
+
+Facts: relevant changes, each with a source and check time.
+Inferences: possible implications, explicitly labelled.
+Completed: files or drafts actually produced, with paths.
+Your decision: items waiting for my approval and the exact choice needed.
+Questions: missing information that blocks useful work.
+
+Prioritize my confirmed commitments and deadlines.
+If nothing changed, stay quiet. If a source check fails, report the failure and affected items.
+Show the schedule, next run, sources, and approval boundary before enabling it.</code></pre>
+<p>The brief structure follows the official recommendation to separate facts, inferences, completed actions, pending approval, and unresolved questions. Result review documentation</p>
+<p>A good decision item is specific: “Approve the revised opening paragraph in out/launch-reply.md; the client needs it before the copy review.” A heading such as “Follow up on launch” leaves you to reconstruct the task.</p>
+<p>Create the nightly intake routine from the reviewed five-message workflow, using the same duplicate checks. Its quiet state should mean a successful check found nothing new; failed access should produce a visible report.</p>
+<p>Review each routine&#x27;s next run and use Test run with safe inputs. Routine testing documentation</p>
+<h4>6. Give corrections somewhere to live</h4>
+<p>When Brain makes a recurring mistake, save a correction with a clear scope.</p>
+<p>For example, “sound natural” gives little guidance. “In client replies, use the person&#x27;s first name and omit an opening greeting when continuing an active thread” describes something you can inspect in the next draft.</p>
+<p>Paste when a correction should carry forward:</p>
+<pre><code>Turn this correction into a proposed rule for rules.md.
+State when it applies and include a short example.
+Check for an existing rule that covers the same behavior or conflicts with it.
+Show me the proposed change before saving it.
+Apply the approved rule to the current artifact and show the revision.</code></pre>
+<p>Keep temporary requests attached to their task.</p>
+<p>A special format for one client should enter the general rule file only if you intend to reuse it.</p>
+<p>The Sunday review is where you inspect accumulated changes.</p>
+<p>Ask for stale project summaries, conflicting commitments, unresolved questions, repeated corrections, and useful material waiting for a next action.</p>
+<p>Have Brain propose merges and removals as a review list.</p>
+<p>Keep the original sources available while you decide what to change.</p>
+<p>You can test the whole setup with a short audit request:</p>
+<pre><code>Choose one active project in /workspace/brain.
+Show its latest source, current summary, next action, and any related draft in out/.
+Recheck the facts that could have changed.
+List unresolved contradictions and anything you could not verify.
+Explain which rule or skill guided the work.</code></pre>
+<p>If you can follow that trail, the system is giving you something reviewable. If a summary has lost its source, fix the intake or skill that produced it.</p>
+<p>Save important results outside the bot&#x27;s working environment as well. The documented computer recovery process can restore from a saved snapshot, with a possibility of losing very recent changes. Persistence and recovery details</p>
+<p>For your first session, stop after one complete cycle: add a source, inspect the saved summary, produce a useful draft, and correct it. Save the reviewed workflow as a skill, then give it a schedule that matches how often the underlying information changes.</p>
+</div>
+<p class="caption">英文原文经 X API 读取（article.plain_text + code 实体），段落按原文顺序；原文中的行内链接锚文本保留为纯文字，配图见上方中译部分。</p>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>原文为 tsukiema（<a href="https://x.com/tsukiema_" rel="noopener">@tsukiema_</a>）发布在 X 上的 Article《Second Brain Engineering: Build a Grok Bot That Turns Your Notes Into Finished Work》（<a href="https://x.com/tsukiema_/status/2112947495059743047" rel="noopener">原帖链接</a>），版权归作者所有。本页为作者本人帖子的全文镜像与中文翻译，配图转载自原文（图中水印 @beamnxw）；“文中引用”“评论区”“核实与读后注记”为本站整理。经 X API 读取于 2026-10-28。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/tsukiema_/status/2112947495059743047" rel="noopener">x.com/tsukiema_/status/2112947495059743047</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

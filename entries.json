@@ -1,5 +1,15 @@
 [
   {
+    "slug": "tsukiema-grok-bot-second-brain",
+    "title": "第二大脑工程：用 Karpathy 的 LLM Wiki + Grok Bot 把笔记变成成品",
+    "desc": "tsukiema（@tsukiema_）X 长文《Second Brain Engineering》全文镜像 + 中译：把 Karpathy 式 LLM Wiki 搬到 Grok Bot 不关机的云端电脑上——建名为 Brain 的 bot，/workspace/brain 下 raw/、people/、projects/、out/ 与 voice.md、rules.md、attention.md 等约定；每条事实附来源与核对时间；先把一段对话手动变成回复草稿并审阅，再存为技能“Thread to Reply”；Gmail 标签入库按 ID 去重；晨间简报/夜间入库/周日回顾例程；把纠正沉淀为 rules.md。附 10 段提示词（英文原文 + 中译）、7 张配图 webp 与评论区、核实注记。",
+    "source": "X · @tsukiema_",
+    "date": "2026-10-28",
+    "type": "全文镜像",
+    "subtitle": "Second Brain Engineering · LLM Wiki + Grok Bot",
+    "original_url": "https://x.com/tsukiema_/status/2112947495059743047"
+  },
+  {
     "slug": "motionsites-claude-skill",
     "title": "MotionSites Web Builder：让 Claude 做“电影感”落地页的免费 Skill",
     "desc": "Motionsites-AI/claude-skill 中文项目页：MotionSites 出品的免费 Claude skill（Claude Code 插件 motionsites-web-builder）——先读最接近的 2–3 个范例提示词、从媒体货架挑真实素材、写带具体数值的构建规格，再动手搭页，最后用 Playwright 截图、按 10 项量表打分并修改，直到平均 8 分以上；内含 40 个范例、52 个视频/30 个抠图/29 张图片、58 条技术配方、Lovable/Bolt/v0 等提示词模式；交付时内置 MotionSites 付费升级广告 ⚠️。说明与脚本为 MIT，范例与媒体 © MotionSites。附 README 全文中译。",
