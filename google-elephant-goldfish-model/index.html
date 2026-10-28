@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>大象设计，金鱼评审：Google 开源的 Elephant-Goldfish Model（EGM）中文项目页 + README 全译</title>
+<meta name="description" content="google/elephant-goldfish-model 中文项目页：一个给 Antigravity / Claude Code / Codex 等编码 Agent 用的开源插件——让“记得一切”的大象 Agent 和你一起写设计文档，再让“什么都不记得”的金鱼子 Agent 零上下文评审。名字由来、工作原理、七个技能、安装用法、作者与局限，附 README 全文中文翻译（Apache-2.0）。" />
+<link rel="canonical" href="https://breakdimbo.github.io/zh-blog-mirrors/google-elephant-goldfish-model/" />
+<meta property="og:title" content="大象设计，金鱼评审：Google 开源的 Elephant-Goldfish Model" />
+<meta property="og:image" content="images/cover.webp" />
+<meta property="og:description" content="深上下文 Agent 起草规格，零上下文子 Agent 压力测试，人做取舍与批准。Apache-2.0 开源。" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.egm-pic{margin:1.4em 0}
+.egm-pic img{width:100%;height:auto;border-radius:6px;display:block}
+.egm-pic figcaption{font-size:.85em;opacity:.75;margin-top:.4em}
+.egm-roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:1.2em 0}
+.egm-role{border-top:1px solid currentColor;padding-top:.6em}
+.egm-role b{display:block;font-size:1.05em;margin-bottom:.2em}
+.egm-role span{font-size:.92em;opacity:.85}
+.egm-note{border-left:2px solid currentColor;padding:.3em 1em;opacity:.88;font-size:.95em}
+.egm-appendix td{vertical-align:top}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-28">2026.10.28</time></p>
+<h1 class="za-title">大象设计，金鱼评审：Google 开源的 Elephant-Goldfish Model（EGM）</h1>
+<p class="za-sub" lang="en" data-za-gen>Design with an elephant. Review with a goldfish. · 项目导读 + README 全译</p>
+<p class="za-meta" data-za-gen><span>来源 · Google · GitHub google/elephant-goldfish-model（Apache-2.0）</span><span>收录 · 2026-10-28</span><span><a href="https://github.com/google/elephant-goldfish-model" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/google/elephant-goldfish-model">https://github.com/google/elephant-goldfish-model</a> · 官网：<a href="https://egm.dev">egm.dev</a> · 出品：Google（仓库声明“这不是 Google 官方支持的产品”）· 许可：Apache License 2.0 · 本页依据提交 <a href="https://github.com/google/elephant-goldfish-model/tree/a8380ab5f0aba392c97e31c79f9a6666b3f09f14"><code>a8380ab</code></a>（2026-10-28 读取，插件版本 0.1.0）</p>
+<p class="source">本页为非官方中文项目页：前半是本站撰写的导读，附录为 README 全文中文翻译（Apache-2.0 允许翻译与再分发；译文为本站修改，原文以仓库为准）。方法论原文 Dave Rensin 的 Medium 长文未附开放许可，本页只做转述与短引。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<img class="cover" src="images/cover.webp" alt="Elephant-Goldfish Model · Elephant remembers everything, Goldfish remembers nothing 封面"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h2>一句话：它是什么</h2>
+<p><strong>Elephant-Goldfish Model（大象-金鱼模型，简称 EGM）</strong>是 Google 开源的一个编码 Agent 插件，口号是“<em>Design with an elephant. Review with a goldfish.</em>”——用大象做设计，用金鱼做评审。它是一套 <code>SKILL.md</code> 技能 + 评审人格提示词 + 文档标准，装进 Antigravity、Claude Code、Codex（以及 Claude Cowork、ChatGPT Work 等）之后，让你在<strong>写代码之前</strong>先和一个“深上下文”的 Agent 把功能的设计规格谈清楚、写下来，再派一群“零上下文”的子 Agent 去挑刺，最后由你本人拍板。</p>
+<p>它不是一个新模型，也不自带推理服务：用的是宿主 Agent 的模型和权限。README 写道，已有数千名 Google 工程师在用它。</p>
+
+<h2>名字的意思：一个关于“记忆”的比喻</h2>
+<p>是的，名字讲的就是记忆。方法论作者 Dave Rensin 在长文里用了一句英文谚语：“An elephant never forgets.”（大象从不遗忘。）</p>
+<div class="egm-roles">
+<div class="egm-role"><b>大象 Elephant</b><span>记得一切。指那个被反复喂上下文、和你争论了很久的 AI 会话，以及它帮你写出的设计文档：它装着所有制度性知识、微小决策、你和模型的争论与整个功能的来龙去脉。</span></div>
+<div class="egm-role"><b>金鱼 Goldfish</b><span>什么都不记得。一个全新的、零记忆的 AI 会话，只知道摆在它面前的东西——文档本身和文档引用的源文件。</span></div>
+<div class="egm-role"><b>你 You</b><span>决定什么重要。做架构取舍，批准设计，决定要不要造。</span></div>
+</div>
+<p>流程浓缩成一句话就是：<strong>喂饱大象，再拿金鱼来检验</strong>（原文：“Feed the Elephant; test it against the Goldfish.”）。如果一个毫无前情的金鱼读完你的文档，说不清你要做什么、系统现在怎么运作，那就说明文档依赖了只存在于大象脑子里的上下文——要补。</p>
+
+<h2>为什么要这么做</h2>
+<p>EGM 的架构文档把“直接和 AI 聊着写代码”的毛病归为四类：</p>
+<ol>
+<li><strong>幻觉级联与上下文污染</strong>：同一个会话既访谈、又设计、又写码，猜测和对话偏见越积越多，模型会替自己的错误假设背书。</li>
+<li><strong>过早实现（“陷进杂草”）</strong>：编码 Agent 习惯在就近文件里直接开写，跳过架构放置、YAGNI 简化与复用已有设施。</li>
+<li><strong>聊天倾倒疲劳</strong>：把几页长的规格和评审意见直接贴进聊天，既难读，又拖累模型的上下文表现。</li>
+<li><strong>文档漂移</strong>：项目启动时写的设计文档随代码演进而腐烂，后来的 Agent 无从上手。</li>
+</ol>
+<p>Rensin 的长文给出了更个人化的来路：一次长会话中途崩溃，新会话从零开始，他意识到如果有一份写清意图与进度的文档，重新进入状态只要 30 秒；接着发现模型会“欣然冲下悬崖”，需要护栏；最后的顿悟是一行式子——<code>sizeof(docs) &lt;&lt; sizeof(code)</code>：用简明英文的设计文档给 AI 上下文，比让它读成千上万行代码更便宜、更快、更可靠。由此他的结论是“设计就是新的代码”（Design is the new code）：当代码越来越多由 AI 写出、人难以逐行审阅时，真正需要人读懂并签字的，是设计。</p>
+
+<h2>它怎么工作</h2>
+<figure class="egm-pic"><picture><source srcset="images/hero-dark.webp" media="(prefers-color-scheme: dark)"><img src="images/hero-light.webp" alt="egm.dev 首屏：Design with an elephant. Review with a goldfish." loading="lazy"></picture><figcaption>egm.dev 首屏（取自仓库 <code>site/screenshots/</code>，随本站明暗模式切换）。</figcaption></figure>
+<p>仓库由四层组成：</p>
+<ul>
+<li><strong>技能层 <code>skills/</code></strong>：七个可用斜杠命令调用的技能（见下表）。</li>
+<li><strong>人格层 <code>agents/</code></strong>：金鱼评审的系统提示词。每个金鱼都被要求“严格只读”、“无状态”（像刚入职的新人那样读文档）、“不闲聊”。人格包括：怀疑派架构师（Zoom Out，专抓过度设计与 YAGNI）、天真读者（Comprehension）、设计批评者（Design Critic）、实现就绪度（Implementation Readiness）、代码库审计（Codebase Details）、结构校验（Structural）、文风编辑（Style），以及负责并行派发、去重、按 🔴 阻塞 / 🟡 重要 / 🟢 小问题分级汇总的 Synthesizer。</li>
+<li><strong>文档标准 <code>resources/document_standards/</code></strong>：金鱼评审对照的版本化评分标准。</li>
+<li><strong>活文档 <code>docs/</code></strong>：使用指南与设计规格本身（EGM 自己也用 EGM 写设计）。</li>
+</ul>
+<p>主流程大致是：</p>
+<ol>
+<li><code>/egm-brainstorm</code>：大象先访谈你、锚定核心假设，再派出 6 个视角的金鱼“击落”有缺陷的设想，产出 <code>concepts_brief.md</code>。</li>
+<li><code>/egm-draft</code>：把概念简报逐节写成设计文档（放在 <code>docs/designs/</code>），每写完一节停下来等你在聊天里反馈。</li>
+<li><code>/egm-review</code>：在全新、零上下文的会话里分阶段评审——先 Zoom Out 查是否过度设计，再做理解测试（文档能否自洽），然后批评者审架构、规模瓶颈与失败模式，中途再查一次臃肿，最后核对实现计划里的文件路径、函数签名与测试用例。每轮发现用 <code>/egm-resolve</code> 和你一起逐条处理。</li>
+<li><strong>人工评审</strong>：把设计文档当 PR 发给真人同事。</li>
+<li><strong>实现</strong>：让编码 Agent 照文档实现；跑偏得厉害就回去改文档。</li>
+<li><code>/egm-drift-report</code>：建议每周跑一次，对比已提交的文档与当前代码，发现漂移由人决定改文档还是改代码。</li>
+</ol>
+<p>对已有的老代码库，<code>/egm-bootstrap</code> 自底向上递归生成各目录的 README——长文里管这叫给大象喂“花生和干草”：从叶子目录开始让 AI 写 README、人花 5–10 分钟修正（作者说叶子层 AI 大约一半是错的），再逐层向上汇总，最后用一棵 README 树就能让新会话迅速理解整个代码库。</p>
+<p class="egm-note">硬性前提：金鱼评审必须能开出<strong>全新上下文的子 Agent</strong>。如果宿主不能，EGM 会直接停止评审，而不是在同一会话里假装评审。另外，所有长篇产出都写进文件或侧边产物面板，不往聊天里倾倒。</p>
+
+<h2>怎么用</h2>
+<p>安装（选你的编码 Agent，装完整插件，因为技能运行时要读 <code>agents/</code> 与 <code>resources/</code>）：</p>
+<pre><code class="language-sh"># Antigravity
+agy plugin install https://github.com/google/elephant-goldfish-model
+
+# Claude Code
+claude plugin marketplace add google/elephant-goldfish-model
+claude plugin install egm@egm
+
+# Codex
+codex plugin marketplace add google/elephant-goldfish-model
+codex plugin add egm@egm</code></pre>
+<p>装完开新会话。Antigravity 里直接用 <code>/egm-brainstorm</code>；Claude Code 里加前缀 <code>/egm:egm-brainstorm</code>；Codex 在技能选择器里选。README 的示例是给项目加 webhook 投递：投递失败怎么办、同一事件到两次怎么办——正是那种需要先做设计决策的功能。小而清楚的 bug 修复，照常写就行。</p>
+<table>
+<thead><tr><th>技能</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>egm-brainstorm</code></td><td>检验一个想法，写出概念简报</td></tr>
+<tr><td><code>egm-draft</code></td><td>把简报或笔记写成设计文档</td></tr>
+<tr><td><code>egm-resolve</code></td><td>逐条处理评审发现，商定修改</td></tr>
+<tr><td><code>egm-bootstrap</code></td><td>为现有代码库生成或更新文档</td></tr>
+<tr><td><code>egm-review</code></td><td>用新鲜 Agent 分五个阶段评审设计</td></tr>
+<tr><td><code>egm-review-loop</code></td><td>为特定评审任务运行一组配置好的评审者</td></tr>
+<tr><td><code>egm-drift-report</code></td><td>对比已提交文档与当前源码</td></tr>
+</tbody>
+</table>
+<p>不装插件也能先试：入门指南建议先按长文里的对话步骤手动走一两遍（开新会话当金鱼、复制粘贴提示词），觉得有用、又嫌重复，再用插件把步骤自动化——插件本就是一群长期这样实践的人把模式固化下来的结果。</p>
+
+<h2>谁做的</h2>
+<ul>
+<li><strong>方法论</strong>：Google 的 Dave Rensin（GitHub <a href="https://github.com/drensin">@drensin</a>），长文《<a href="https://medium.com/@drensin/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Elephants, Goldfish and the New Golden Age of Software Engineering</a>》，2026-04-27 发表于 Medium。他在文中说，这套方式来自他和团队写一个内部工具的经历（2025 年夏天起步，几个月内被十万多名 Google 员工经常使用），日常用的是 Google Antigravity 和 Gemini。文章 2026-10-21 的更新注明：Google 允许团队把内部使用的这个插件开源。</li>
+<li><strong>代码与设计</strong>：仓库归 Google 组织，版权声明为 Google LLC；架构设计文档署名 Jim Quinn（@quinnjim）、Elise Ewing（@eewing314）、Dave Rensin；评审协议设计署名 Brandon Tearse、Brian Suchy、Sean Stappas。提交数最多的贡献者是 <a href="https://github.com/n3wth">@n3wth</a>。</li>
+<li><strong>热度</strong>：读取时约 3.5k 星、230 分叉。</li>
+</ul>
+
+<h2>局限与它自己的坦白</h2>
+<ul>
+<li>评审不能代替测试和人的判断；官方 FAQ 明说“你对结果负责”，EGM 只是让 LLM 更好用的方法之一，不是唯一方法。</li>
+<li>设计和评审要花时间，对小而明确的改动未必划算；FAQ 建议在自己的任务上比较总耗时、有用发现与返工，而不是把“跑完流程”当成提效的证据。</li>
+<li>文档变多可能让人工评审成为瓶颈，建议只对“现在重要的事”用 EGM。</li>
+<li>金鱼评审会给出<strong>很多</strong>意见，这是故意的；Rensin 的经验是批评者大约 30% 的建议真正有价值——取有用的，其余忽略。</li>
+<li>依赖宿主能否开独立子 Agent；云端支持仍是部分的。</li>
+</ul>
+
+<h2>附录：README 全文中文翻译</h2>
+<p class="egm-note">译自仓库 README（提交 <code>a8380ab</code>），原文 © Google LLC，Apache License 2.0。本译文为本站所作的修改（翻译），相对链接改为指向原仓库的绝对链接，图标已省略。原文：<a href="https://github.com/google/elephant-goldfish-model/blob/main/README.md">README.md</a>。</p>
+<div class="egm-appendix">
+<p style="text-align:center"><strong>Elephant-Goldfish Model</strong></p>
+<p style="text-align:center">用大象做设计。用金鱼做评审。</p>
+<p style="text-align:center"><a href="https://github.com/google/elephant-goldfish-model#install">安装</a> · <a href="https://github.com/google/elephant-goldfish-model#try-your-first-design">快速上手</a> · <a href="https://github.com/google/elephant-goldfish-model/blob/main/docs/getting_started.md">文档</a> · <a href="https://egm.dev">网站</a></p>
+<p>数千名 Google 工程师在使用 EGM——一个开源插件——在写代码之前，用深上下文 Agent 起草规格，再用零上下文子 Agent 对规格做压力测试。</p>
+<p><strong>大象（Elephant）</strong>掌握你的项目上下文并起草规格。<strong>金鱼（Goldfish）</strong>评审者在不看先前对话的情况下审查草稿及其引用的源材料，帮助暴露未说明的假设和盲点。<strong>你（You）</strong>做出架构取舍，并在实现之前批准规格。</p>
+<p>当一个功能在实现前需要做设计决策时使用它。对于小而明确的 bug 修复，使用你平常的编码流程即可。</p>
+<h3>安装</h3>
+<p>选择你的编码 Agent。请安装完整插件，以便其技能能读取评审者提示词和文档标准。</p>
+<h4>Antigravity</h4>
+<pre><code class="language-sh">agy plugin install https://github.com/google/elephant-goldfish-model</code></pre>
+<h4>Claude Code</h4>
+<pre><code class="language-sh">claude plugin marketplace add google/elephant-goldfish-model
+claude plugin install egm@egm</code></pre>
+<h4>Codex</h4>
+<pre><code class="language-sh">codex plugin marketplace add google/elephant-goldfish-model
+codex plugin add egm@egm</code></pre>
+<p>安装后开启一个新会话。<strong>Claude Cowork</strong> 和 <strong>ChatGPT Work</strong> 请参阅<a href="https://github.com/google/elephant-goldfish-model/blob/main/docs/harnesses.md">设置指南</a>。</p>
+<h3>试做你的第一个设计</h3>
+<p>在你的编码 Agent 中打开项目，选一个需要设计决策的功能。本例为项目添加 webhook 投递：投递失败时应该怎么办？同一事件到达两次又该怎么办？</p>
+<p>下面的命令适用于 Antigravity。在 Claude Code 中使用 <code>/egm:</code> 前缀，例如 <code>/egm:egm-brainstorm</code>。在 Codex 中，从技能选择器里选择对应的 EGM 技能。头脑风暴和评审需要一个能创建全新子 Agent 的会话。</p>
+<p><strong>探索想法</strong></p>
+<pre><code class="language-text">/egm-brainstorm Add webhook delivery to this project.</code></pre>
+<p>与 Agent 讨论需求和取舍。新鲜的评审者会质疑提案，Agent 把商定的方向保存到 <code>concepts_brief.md</code>。</p>
+<p><strong>起草规格</strong></p>
+<pre><code class="language-text">/egm-draft</code></pre>
+<p>Agent 把简报写成 <code>design_draft.md</code>，每写完一节就暂停，等你在聊天中反馈。</p>
+<p><strong>评审草稿</strong></p>
+<pre><code class="language-text">/egm-review design_draft.md</code></pre>
+<p>使用 Agent 返回的草稿路径。</p>
+<p>新鲜的评审者会检查设计本身、它的清晰度、它与代码的契合度以及它的实现计划。由你选择要处理哪些发现。当你批准设计后，让你的编码 Agent 去实现它。</p>
+<p>完整流程（包括把已批准的规格保存到 <code>docs/designs/</code> 下）见<a href="https://github.com/google/elephant-goldfish-model/blob/main/docs/getting_started.md">工作流指南</a>。</p>
+<h3>工作原理</h3>
+<table>
+<thead><tr><th>角色</th><th>上下文</th><th>职责</th></tr></thead>
+<tbody>
+<tr><td><strong>大象</strong></td><td>你的项目、需求和先前的决策</td><td>探索问题并起草规格。</td></tr>
+<tr><td><strong>金鱼</strong></td><td>文档及其引用的源材料，不含先前的对话</td><td>找出缺失的假设、不清楚的需求和实现风险。</td></tr>
+<tr><td><strong>你</strong></td><td>真正重要的目标和约束</td><td>化解取舍、批准设计、决定要构建什么。</td></tr>
+</tbody>
+</table>
+<p>金鱼评审需要全新的子 Agent 上下文。如果你的 Agent 无法创建它们，EGM 会停止评审。评审不能代替测试或人的判断。参见<a href="https://github.com/google/elephant-goldfish-model/blob/main/docs/harnesses.md#support-status--contributing-other-harnesses">支持的环境与验证局限</a>。</p>
+<h3>选择一个技能</h3>
+<p>每个技能都可以在需要时单独使用，不必走完整个序列。</p>
+<table>
+<thead><tr><th>技能</th><th>用它来……</th></tr></thead>
+<tbody>
+<tr><td><a href="https://github.com/google/elephant-goldfish-model/blob/main/skills/egm-brainstorm/SKILL.md">Brainstorm（头脑风暴）</a></td><td>检验一个想法并写出概念简报。</td></tr>
+<tr><td><a href="https://github.com/google/elephant-goldfish-model/blob/main/skills/egm-draft/SKILL.md">Draft（起草）</a></td><td>把简报或现有笔记写成设计文档。</td></tr>
+<tr><td><a href="https://github.com/google/elephant-goldfish-model/blob/main/skills/egm-resolve/SKILL.md">Resolve（处理）</a></td><td>逐条处理评审发现并商定修改。</td></tr>
+<tr><td><a href="https://github.com/google/elephant-goldfish-model/blob/main/skills/egm-bootstrap/SKILL.md">Bootstrap（引导）</a></td><td>为现有代码库创建或更新文档。</td></tr>
+<tr><td><a href="https://github.com/google/elephant-goldfish-model/blob/main/skills/egm-review/SKILL.md">Review（评审）</a></td><td>用新鲜 Agent 分五个阶段评审设计。</td></tr>
+<tr><td><a href="https://github.com/google/elephant-goldfish-model/blob/main/skills/egm-review-loop/SKILL.md">Review loop（评审循环）</a></td><td>为特定评审任务运行一组配置好的评审者。</td></tr>
+<tr><td><a href="https://github.com/google/elephant-goldfish-model/blob/main/skills/egm-drift-report/SKILL.md">Drift report（漂移报告）</a></td><td>对比已提交的文档与当前源代码。</td></tr>
+</tbody>
+</table>
+<h3>了解更多</h3>
+<ul>
+<li><a href="https://github.com/google/elephant-goldfish-model/blob/main/docs/getting_started.md">入门</a>：工作流与项目布局。</li>
+<li><a href="https://github.com/google/elephant-goldfish-model/blob/main/docs/harnesses.md">设置</a>：安装、Agent 能力与已知局限。</li>
+<li><a href="https://github.com/google/elephant-goldfish-model/blob/main/docs/designs/architecture.md">架构</a>：技能与评审者如何协同。</li>
+<li><a href="https://github.com/google/elephant-goldfish-model/blob/main/TESTING.md">测试</a>：检查项、执行记录与验证局限。</li>
+<li><a href="https://medium.com/@drensin/elephants-goldfish-and-the-new-golden-age-of-software-engineering-c33641a48874">Dave Rensin 的原始文章</a>：EGM 背后的想法。</li>
+</ul>
+<h3>参与贡献</h3>
+<p>提交 PR 请阅读<a href="https://github.com/google/elephant-goldfish-model/blob/main/CONTRIBUTING.md">贡献指南</a>，报告 bug 请用 <a href="https://github.com/google/elephant-goldfish-model/issues">issues</a>，提问请到 <a href="https://github.com/google/elephant-goldfish-model/discussions">discussions</a>。</p>
+<h3>许可</h3>
+<p><a href="https://github.com/google/elephant-goldfish-model/blob/main/LICENSE">Apache 2.0</a>。这不是 Google 官方支持的产品。</p>
+</div>
+<p class="egm-note">许可声明：Elephant-Goldfish Model 依 Apache License, Version 2.0 授权（全文见 <a href="https://github.com/google/elephant-goldfish-model/blob/main/LICENSE">LICENSE</a> 或 <a href="https://www.apache.org/licenses/LICENSE-2.0">apache.org/licenses/LICENSE-2.0</a>）。除非适用法律要求或书面同意，按“原样”分发，不附带任何明示或暗示的担保或条件。本页翻译不代表 Google 立场。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：Elephant-Goldfish Model 由 Google（Google LLC）开源，方法论作者 Dave Rensin（<a href="https://github.com/drensin">@drensin</a>），架构与评审设计作者 Jim Quinn、Elise Ewing、Brandon Tearse、Brian Suchy、Sean Stappas 等，及全体贡献者。原仓库 <a href="https://github.com/google/elephant-goldfish-model">https://github.com/google/elephant-goldfish-model</a>，许可 Apache License 2.0。封面与首屏截图取自仓库 <code>site/public/og.png</code> 与 <code>site/screenshots/</code>（Apache-2.0），本站仅做格式转换（png→webp、缩放）。Medium 长文版权归 Dave Rensin，本页仅转述与短引。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/google/elephant-goldfish-model" rel="noopener">github.com/google/elephant-goldfish-model</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

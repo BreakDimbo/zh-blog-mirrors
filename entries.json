@@ -1,5 +1,15 @@
 [
   {
+    "slug": "google-elephant-goldfish-model",
+    "title": "大象设计，金鱼评审：Google 开源的 Elephant-Goldfish Model（EGM）",
+    "desc": "google/elephant-goldfish-model 中文项目页：Google 开源的编码 Agent 插件（Antigravity / Claude Code / Codex 等）——“记得一切”的大象 Agent 陪你起草设计规格，“什么都不记得”的金鱼子 Agent 在零上下文下分阶段评审（Zoom Out、理解测试、批评、实现就绪），你来取舍与批准；7 个技能（brainstorm / draft / review / resolve / review-loop / bootstrap / drift-report）、名字由来与 Dave Rensin 长文要点、安装用法、作者与局限；附 README 全文中文翻译（Apache-2.0）。",
+    "source": "Google · GitHub google/elephant-goldfish-model（Apache-2.0）",
+    "date": "2026-10-28",
+    "type": "导读",
+    "subtitle": "Design with an elephant. Review with a goldfish. · 项目导读 + README 全译",
+    "original_url": "https://github.com/google/elephant-goldfish-model"
+  },
+  {
     "slug": "asynkimo-ai-pixel-art-sprite",
     "title": "把 AI 像素画修成能进游戏的精灵图：Kimo 的六步流程（原帖翻译 + 导读）",
     "desc": "SpriteCook 作者 Kimo（@asynkimo）的高收藏帖（~5.9 万浏览/1,536 收藏）：AI 生成的“像素画”是没对齐网格的 mixels，进引擎就糊。六步修法——找网格、每格一色、硬阈值去背景、补描边缺口、锁调色板、从干净帧做动画。原帖全文中译、配套博客导读（无开放许可，仅转述短引）、评论区要点（视频共用调色板、Retro Diffusion 等同类工具、风格同质化批评），以及本站原创合成示例与 80 行 Python 参考脚本（MIT）；视频只放封面帧。",
