@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grok Imagine《奥德赛》第 1 集《誓言》制作揭秘：从剧本到成片的提示词指南（全文中译）</title>
+<meta name="description" content="Grok Imagine 官方 X 长文《Inside Episode 1: The Oath》全文中译：与 Wonder Studios、导演 Dev Walker 合作，用 3–5 人小团队公开制作《奥德赛》短剧；剧本、分镜表、Canvas 画布、角色设定图与角色提示词、场景与统一影调、关键帧、7 段式视频提示词、中间关键帧、手持镜头提示词、后期剪辑。提示词保留英文原文并附中译。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-28">2026.10.28</time></p>
+<h1 class="za-title">《奥德赛》第 1 集《誓言》制作揭秘</h1>
+<p class="za-sub" lang="en" data-za-gen>Inside Episode 1: The Oath · Odyssey Prompting Guide</p>
+<p class="za-meta" data-za-gen><span>来源 · Grok Imagine @imagine · X</span><span>收录 · 2026-10-28</span><span><a href="https://x.com/imagine/status/2115214583983935517" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：<a href="https://x.com/imagine" rel="noopener">Grok Imagine @imagine</a>（xAI 旗下 Grok Imagine 官方账号）· 合作：<a href="https://x.com/WonderStudiosX" rel="noopener">Wonder Studios @WonderStudiosX</a>、导演 Dev Walker <a href="https://x.com/glumlot_" rel="noopener">@glumlot_</a> · 原帖：<a href="https://x.com/imagine/status/2115214583983935517" rel="noopener">“Our Prompting Guide is live.”</a>（2026-10-28 06:50 UTC+8 发布）附 X 长文《Inside Episode 1: The Oath》· 中文全文翻译</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>Grok Imagine 官方公开了用自家图像/视频模型制作《奥德赛》短剧第 1 集的完整流程：先写剧本和逐镜分镜表，在 Canvas 画布上按镜头管理所有生成；用“特写 + 正面全身 + 背面全身”的灰底角色设定图锁住人物；每条提示词都写明景别、镜头、胶片；先把静帧关键帧做对再动画化；视频提示词拆成 7 段，失败就写短；用中间关键帧控制人物入画时机；后期剪辑、声音、调色约 18 小时。</div>
+<figure><img src="images/cover.webp" alt="雾中海面上一排古希腊帆船的剪影，中央文字 Odyssey Prompting Guide · Grok Imagine × Wonder" loading="lazy"><figcaption>原文封面图（© xAI / Wonder Studios）。</figcaption></figure>
+<p class="caption">原帖正文：“Our Prompting Guide is live. We're building the Odyssey episodes in public with a small crew of creatives. Learn from our workflows!”（我们的提示词指南上线了。我们正和一个小型创意团队公开制作《奥德赛》系列。来学我们的工作流吧！）<br>互动数据（2026-10-28 18:05 UTC+8，经 X API 读取）：约 37.9 万次浏览、1,412 赞、185 转帖、62 引用、98 回复、1,438 收藏。</p>
+
+<h2 id="translation">全文翻译：《第 1 集〈誓言〉幕后》</h2>
+<p>我们把自己从剧本到最终剪辑的工作流分享出来，这样你可以和我们一起学习，并把这些技巧用到你自己的创作项目里。</p>
+<p>最近，我们与 Wonder Studios 合作，制作一组取材于《奥德赛》及更广义的“史诗诗系（Epic Cycle）”的短剧。</p>
+<p>我们的目标很简单：从电影人那里得到诚实、尖锐的反馈，并用它来改进 Grok Imagine 的图像和视频模型。</p>
+<p>我们和一个 3–5 人的小型创意团队一起公开制作这些剧集。每一集的快速周转让我们能快速改进，并把学到的东西分享给任何对在创作中使用 AI 感到好奇的人。</p>
+<p>下面，导演 Dev Walker 与 Wonder Studios 团队分享他们在制作第 1 集《誓言》（The Oath）时使用 Grok Imagine 的心得。</p>
+
+<h3>写剧本</h3>
+<p>第 1 集改编自《塞浦路斯之歌》（Cypria）中的一场戏——那是《伊利亚特》已失传的前传。留存下来的只有一段简短的故事梗概：奥德修斯装疯以逃避特洛伊战争，结果被识破。其余的一切，从对白到角色的面孔，都得靠我们去想象。</p>
+<p>因为这些剧集发布在社交媒体上，我们原本计划每集控制在 5 分钟左右。之后的几集我们会给更长的时长，让故事和角色有发展空间，不过仍然会是短剧。</p>
+<figure><img src="images/script-page.webp" alt="英文剧本第 3 页：EXT. ITHACA - SHORE - DAY，伊萨卡海岸，十二艘希腊船停泊，佩涅洛佩把一匹小木马交给奥德修斯" loading="lazy"><figcaption>剧本页示例：伊萨卡海岸，佩涅洛佩把一匹粗糙的小木马放进奥德修斯掌心（原文配图）。</figcaption></figure>
+
+<h3>列出每一个镜头</h3>
+<p>在生成任何东西之前，先写分镜表（shot list）。</p>
+<p>每一个镜头都要记下景别、镜头焦段、摄影机运动、动作和准确的对白。你写得越具体，结果就越一致。</p>
+<p>从一开始就把文件整理好。文件夹先按场次命名，再按 A-roll 或 B-roll 分，例如 <code>SCENE1_FIELD_BROLL</code>。当你每个镜头要生成几十条素材时，这会让你在剪辑时找到正确片段容易得多。</p>
+<figure><img src="images/shot-list.webp" alt="EPISODE 1 - SHOT LIST 文档：Sequence 1 The Plough，Shot 1 到 Shot 4，每条含起始构图、画面细节与视频动作" loading="lazy"><figcaption>第 1 集分镜表节选（“犁”这一段，Shot 1–4，每条分“起始构图 / 画面细节 / 视频动作”）（原文配图）。</figcaption></figure>
+
+<h3>使用 Grok Imagine 的 Canvas（画布）</h3>
+<p>把一切放在同一张画布上。每一帧、每条提示词、每一条素材都放在那里，按镜头分组。把多条素材并排摆放，挑出最好的一条，并检查整场戏的连续性：面孔、服装、光线。</p>
+
+<h3>做角色设定图</h3>
+<p>保持简单。一张特写、一张正面全身、一张背面全身，纯灰底。</p>
+<p>如果角色变老或换服装，就做一张新的设定图。</p>
+<p>比如，奥德修斯就有三张。</p>
+<figure><img src="images/odysseus-sheets.webp" alt="奥德修斯的三张角色设定图并排：每张由面部特写、正面全身、背面全身三栏组成，灰色背景，其中一张戴头盔" loading="lazy"><figcaption>奥德修斯的三张角色设定图（原文配图）。</figcaption></figure>
+
+<h3>写角色提示词</h3>
+<p>角色提示词有助于让他在每个镜头里保持同一张脸。你仍然会偶尔看到面部漂移，不过下面是我们给奥德修斯用的提示词示例。</p>
+<pre lang="en"><code>An ultra-photorealistic cinematic character reference sheet for ODYSSEUS, King of Ithaca, ancient Mycenaean Greece circa 1200 BCE.
+CHARACTER: Rugged Greek man, late 30s to early 40s, olive skin, strong Mediterranean features, deep-set brown eyes, prominent nose, shoulder-length wavy black hair, thick full black beard. Lean, muscular build. Weathered, intelligent face with a serious, commanding expression.
+COSTUME: Dark brown knee-length wool tunic with subtle embroidered trim, weathered dark leather scale armor, leather belt, forearm bracers, wrapped leather boots, and a short bronze sword in a leather scabbard. A heavy charcoal-brown wool cloak draped asymmetrically over his shoulders, fastened with an ornate golden brooch depicting a hunting dog gripping a spotted fawn in its forepaws, the fawn struggling to escape, intricately sculpted in raised gold. The brooch is prominently visible on his right shoulder. Authentic handmade materials, worn leather, heavy textured wool, aged bronze.
+LAYOUT: Single wide 16:9 image divided into THREE VERTICAL PANELS with thin white dividing lines.
+LEFT: Large three-quarter facial close-up, looking slightly toward frame right. Detailed facial features, hair, beard, cloak, and gold fawn brooch.
+CENTER: Full-body FRONT VIEW, standing naturally with arms relaxed, entire costume visible from head to boots.
+RIGHT: Full-body BACK VIEW, showing the cloak's full drape, hairstyle, and footwear.
+All three panels must depict the EXACT SAME MAN wearing the EXACT SAME COSTUME, with identical proportions, materials, and accessories.
+PHOTOGRAPHY: Professional Hollywood costume reference photography. Neutral medium-gray seamless studio background, soft diffused studio lighting, natural skin texture, realistic fabric and leather detail, subtle film grain. Grounded historical realism, not fantasy.
+STRICTLY PHOTOREALISTIC. No illustrations, no CGI appearance, no text, no labels, no additional characters.</code></pre>
+<details><summary>角色提示词中译</summary>
+<p>一张超写实的电影级角色参考设定图：奥德修斯（ODYSSEUS），伊萨卡国王，约公元前 1200 年的迈锡尼时代古希腊。</p>
+<p><strong>角色：</strong>粗犷的希腊男子，三十多岁末到四十出头，橄榄色皮肤，鲜明的地中海五官，深陷的棕色眼睛，鼻梁突出，及肩的黑色波浪长发，浓密的黑色络腮胡。精瘦而有肌肉。饱经风霜、透着聪慧的脸，表情严肃、威严。</p>
+<p><strong>服装：</strong>深棕色及膝羊毛束腰外衣，带细微的刺绣滚边；磨旧的深色皮革鳞甲、皮带、护臂、缠绑式皮靴，以及插在皮鞘里的青铜短剑。一件厚重的炭棕色羊毛斗篷不对称地披在双肩，用一枚华丽的金色胸针固定，胸针图案是一只猎犬用前爪抓住一头带斑点的小鹿、小鹿挣扎欲逃，以浮雕金工精细雕刻。胸针在他右肩上清晰可见。真实的手工材质：磨旧的皮革、厚重粗纹的羊毛、氧化的青铜。</p>
+<p><strong>版式：</strong>单张 16:9 宽幅图，用细白线分成<strong>三个竖向面板</strong>。左：大尺寸四分之三侧脸特写，视线略朝画面右侧，展示面部细节、头发、胡须、斗篷和金色小鹿胸针。中：<strong>正面全身</strong>，自然站立、双臂放松，从头到靴的整套服装可见。右：<strong>背面全身</strong>，展示斗篷完整的垂坠、发型和鞋履。三个面板必须是<strong>完全同一个人</strong>穿<strong>完全同一套服装</strong>，比例、材质与配饰一致。</p>
+<p><strong>摄影：</strong>专业好莱坞服装参考摄影。中性中灰无缝影棚背景，柔和漫射的影棚光，自然的皮肤质感，真实的织物与皮革细节，轻微胶片颗粒。扎实的历史写实，不是奇幻。</p>
+<p><strong>严格照片级写实。</strong>不要插画、不要 CGI 感、不要文字、不要标注、不要额外角色。</p>
+</details>
+
+<h3>搭建场景</h3>
+<p>第 1 集有五个场景：</p>
+<ul><li>田野</li><li>宫殿</li><li>海岸</li><li>船上</li><li>特洛伊城外的营地</li></ul>
+<p>每一条提示词都写明景别、时段、氛围、摄影机、镜头和胶片型号。</p>
+<figure><img src="images/location-olive-tree.webp" alt="黄昏的山间草地上，一个披斗篷的人跪在一棵粗壮的古橄榄树下" loading="lazy"><figcaption>场景/影调示例：古橄榄树下（原文配图）。</figcaption></figure>
+
+<h3>让所有镜头保持同一种影调</h3>
+<p>从一张情绪板或一张风格参考图出发，然后在每一条提示词里都写明摄影机、镜头和胶片型号。</p>
+<p>我们在提示词里没有点名任何导演；影调来自 2000 年代初的古装史诗片。</p>
+
+<h3>做关键帧</h3>
+<p>把设定图里的角色放进每个相关场景，得到你要拿去做动画的关键帧。如果静帧不对，动画视频也不会对。我们建议先花时间确保关键帧镜头足够好，再进入动画环节。</p>
+<figure><img src="images/keyframe-ship.webp" alt="越过船员肩头的视角：希腊帆船驶离岸边，左侧悬崖上有石砌城堡，黄昏天空" loading="lazy"><figcaption>关键帧示例：帆船离岸（原文配图）。</figcaption></figure>
+
+<h3>把视频提示词分块写</h3>
+<p>用 7 个块：</p>
+<ol><li>摄影机（camera）</li><li>动作（action）</li><li>环境（environment）</li><li>物理（physics）</li><li>音频（audio）</li><li>音效（SFX）</li><li>约束（constraints）</li></ol>
+<p><strong>如果一条提示词失败了，就把它写短。</strong>更多细节很少能解决问题。</p>
+<p>下面是我们开场镜头的完整提示词。</p>
+<pre lang="en"><code>[Camera &amp; Style]
+Photorealistic 2000s historical epic, ancient Aegean world circa 1200 BCE. Shot on 35mm film with vintage spherical lenses. Naturalistic 24fps motion, subtle film grain. MASTERFUL CINEMATOGRAPHY.
+ONE CONTINUOUS SHOT. Use the three reference images as sequential visual guides for the action. Preserve the EXACT camera composition, perspective, landscape, lighting, and character appearances.
+EXTREME WIDE SIDE PROFILE. Completely STATIC, LOCKED-OFF CAMERA. No camera movement throughout the shot.
+[Subject Motion / Action]
+The shot begins matching IMAGE 1.
+FRAME LEFT: Menelaus and Palamedes stand together in the muddy field, watching toward FRAME RIGHT. Their bodies remain mostly still as strong gusts of wind blow their heavy cloaks.
+CENTER: Infant Telemachus lies on a cream linen blanket directly on the flat muddy ground, surrounded by shallow puddles.
+FRAME RIGHT: The black horse and brown ox gradually enter from OFFSCREEN RIGHT, walking toward FRAME LEFT.
+The BROWN OX is closest to camera, with the BLACK HORSE walking alongside it on the far side.
+Their movement progresses naturally through the composition shown in IMAGE 2.
+Odysseus follows behind the animals, gripping BOTH wooden handles of the primitive plough.
+By the end of the shot, the composition matches IMAGE 3, with Odysseus, the plough, and both animals fully visible.
+The animals continue walking slowly toward FRAME LEFT, pulling the plough through the thick mud.
+Palamedes and Menelaus remain standing together, watching their approach.
+[Environment &amp; Atmosphere]
+Heavy rain falls continuously across the vast, desolate agricultural field.
+Strong, irregular gusts of wind sweep across the landscape.
+CRITICAL: THE WIND VISIBLY BLOWS THE MEN’S CLOAKS.
+Menelaus’ dark red cloak billows and flutters in the wind. Palamedes’ dark brown cloak moves naturally around his body.
+Odysseus’ dark cloak also blows and ripples as he walks behind the plough.
+CRITICAL: THE PLANTS AND TALL GRASS IN THE EXTREME FOREGROUND SWAY AND WHIP NATURALLY IN THE WIND.
+The blurred foreground vegetation bends under stronger gusts, then partially returns upright. Individual stems and leaves move independently.
+Rain falls diagonally during stronger gusts.
+Dark storm clouds hang over the distant mountains. Atmospheric mist softens the horizon.
+[Physics &amp; Details]
+Realistic animal walking mechanics and weight distribution.
+The brown ox and black horse move together at a steady pace, their hooves sinking into the saturated soil.
+Mud compresses beneath their weight. Small splashes and displaced water accompany each step.
+The wooden plough remains physically connected to both animals and cuts through the muddy earth.
+Odysseus maintains a firm grip on both handles while walking behind it.
+Clothing responds realistically to changing wind intensity. Heavy, rain-soaked wool moves with believable weight and resistance.
+Foreground plants react continuously to the wind, with occasional stronger gusts producing more pronounced movement.
+Rain creates visible ripples across puddles and runs naturally over the muddy furrows.
+[Audio]
+NO MUSIC. NATURAL SOUND ONLY. NO DIALOGUE.
+Heavy rainfall, gusting wind, distant thunder, animal breathing, hooves squelching through mud, wooden plough creaking, and wet footsteps.
+[SFX]
+Wind rushing through foreground vegetation, rain striking puddles, wet fabric flapping during stronger gusts, subtle harness creaking, and mud displacement beneath the animals’ hooves.
+[Restrictions / Constraints]
+ONE CONTINUOUS SHOT. NO CUTS.
+IMAGE 1 IS THE EXACT STARTING COMPOSITION.
+IMAGE 2 ESTABLISHES THE ANIMALS ENTERING FRAME.
+IMAGE 3 IS THE EXACT ENDING COMPOSITION.
+STATIC LOCKED-OFF CAMERA THROUGHOUT.
+NO PAN, TILT, ZOOM, DOLLY, TRACKING, OR CAMERA SHAKE.
+PRESERVE THE EXACT LANDSCAPE AND FRAMING.
+MENELAUS AND PALAMEDES REMAIN FRAME LEFT.
+TELEMACHUS REMAINS CENTER.
+ODYSSEUS AND ANIMALS ENTER FROM FRAME RIGHT.
+THE BROWN OX MUST BE CLOSEST TO CAMERA.
+THE BLACK HORSE MUST BE FARTHER FROM CAMERA.
+ODYSSEUS ALWAYS WALKS BEHIND THE PLOUGH HOLDING BOTH HANDLES.
+THE ANIMALS MUST WALK TOWARD FRAME LEFT.
+ALL CHARACTERS AND ANIMALS MUST BE FULLY VISIBLE BY THE FINAL FRAME.
+HEAVY RAIN THROUGHOUT.
+STRONG WIND MUST VISIBLY MOVE THE MEN’S CLOAKS.
+FOREGROUND PLANTS MUST SWAY AND BEND IN THE WIND THROUGHOUT THE SHOT.
+REALISTIC WIND AND FABRIC PHYSICS.</code></pre>
+<details><summary>开场镜头提示词中译</summary>
+<p><strong>【摄影机与风格】</strong>照片级写实的 2000 年代古装史诗片，约公元前 1200 年的古爱琴海世界。35mm 胶片拍摄，复古球面镜头。自然的 24fps 运动，轻微胶片颗粒。大师级摄影。<strong>一个连续镜头。</strong>把三张参考图作为动作的顺序视觉指引。<strong>严格保持</strong>摄影机构图、透视、地貌、光线和角色外观。<strong>大远景侧面。完全静止、锁定的机位。</strong>整个镜头中摄影机不动。</p>
+<p><strong>【主体运动 / 动作】</strong>镜头开始时与<strong>图 1</strong> 一致。画面左：墨涅拉俄斯与帕拉墨得斯并肩站在泥泞田野中，望向画面右侧；身体基本不动，强阵风吹动他们厚重的斗篷。中央：婴儿忒勒马科斯躺在一块米色亚麻毯上，直接放在平坦的泥地上，四周是浅水洼。画面右：黑马和棕牛从画外右侧逐渐入画，朝画面左侧走。<strong>棕牛离镜头最近</strong>，黑马在它远侧并行。它们的运动自然推进到<strong>图 2</strong> 所示的构图。奥德修斯跟在牲口后面，双手握住原始木犁的<strong>两个</strong>把手。镜头结束时构图与<strong>图 3</strong> 一致，奥德修斯、犁和两头牲口完全可见。牲口继续缓慢朝画面左侧走，拖着犁穿过厚泥。帕拉墨得斯和墨涅拉俄斯仍并肩站着，看着他们走近。</p>
+<p><strong>【环境与氛围】</strong>大雨持续落在辽阔荒凉的农田上。强烈而不规则的阵风扫过大地。<strong>关键：风要明显吹动男人们的斗篷。</strong>墨涅拉俄斯的暗红斗篷在风中鼓起、翻飞；帕拉墨得斯的深棕斗篷自然地在身侧摆动；奥德修斯在犁后行走时，深色斗篷也随风起伏。<strong>关键：极前景的植物和高草要在风中自然摇摆、抽打。</strong>虚焦的前景植被在强阵风下弯折，再部分弹回；每根茎叶各自运动。强阵风时雨斜着下。远山上压着乌黑的暴风云，大气雾霭柔化了地平线。</p>
+<p><strong>【物理与细节】</strong>真实的动物行走力学与重心分布。棕牛和黑马以稳定步速一起前进，蹄子陷进吸饱水的泥土。泥在重压下被挤实，每一步伴随小水花和被排开的水。木犁始终与两头牲口物理相连，切开泥地。奥德修斯在后面行走时双手牢握两个把手。衣物随风力变化真实响应，浸透雨水的厚羊毛有可信的重量与阻力。前景植物持续对风作出反应，偶尔的强阵风带来更明显的动作。雨在水洼上激起可见涟漪，并自然地流过泥泞的犁沟。</p>
+<p><strong>【音频】</strong>无音乐。只有自然声。无对白。大雨、阵风、远处雷声、动物呼吸、蹄子踩进泥里的咕唧声、木犁吱嘎、潮湿的脚步声。</p>
+<p><strong>【音效】</strong>风穿过前景植被的呼啸、雨打水洼、强阵风时湿布拍打、轻微的挽具吱嘎声、牲口蹄下泥土被挤开的声音。</p>
+<p><strong>【限制 / 约束】</strong>一个连续镜头，不剪切。图 1 是确切的起始构图；图 2 确立牲口入画；图 3 是确切的结束构图。全程静止锁定机位；不摇、不俯仰、不变焦、不推轨、不跟拍、不抖动。保持确切的地貌与取景。墨涅拉俄斯和帕拉墨得斯保持在画面左；忒勒马科斯保持在中央；奥德修斯和牲口从画面右入画。棕牛必须离镜头最近，黑马必须离镜头更远。奥德修斯始终在犁后、双手握着两个把手行走。牲口必须朝画面左侧走。最后一帧时所有角色和牲口必须完全可见。全程大雨。强风必须明显吹动男人们的斗篷。前景植物在整个镜头中必须随风摇摆弯折。真实的风与布料物理。</p>
+</details>
+
+<h3>使用中间关键帧</h3>
+<p>Grok Imagine 允许你在首帧和尾帧之间再加一帧。</p>
+<p>你可以选择它出现的确切时间点。</p>
+<p>比如，我们需要奥德修斯扶着犁准时入画时，就用了这个功能。</p>
+<figure><img src="images/canvas-intermediate-frame.webp" alt="Grok Imagine 视频生成界面截图：雨中泥田里两人站在左侧，奥德修斯扶犁赶着牛马；弹出菜单显示 First frame、Intermediate frame（Image appears at 3.0s，已勾选）、Last frame、Loop、Reference；下方是 [Camera & Style] 提示词输入框，参数 720p、6s、2:3" loading="lazy"><figcaption>Grok Imagine 界面：为参考图选择“中间帧（Intermediate frame）”并设定出现时间（截图中为 3.0 秒）（原文配图）。</figcaption></figure>
+<figure><img src="images/middle-keyframes.webp" alt="两张并排的关键帧：左图雨中泥田里只有两人和地上的婴儿；右图棕牛、黑马和扶犁的奥德修斯已从右侧入画" loading="lazy"><figcaption>开场镜头的关键帧：牲口入画前后（原文配图）。</figcaption></figure>
+
+<h3>把摄影机写进每一条提示词</h3>
+<p>用静止机位交代场景。打斗开始时改用手持。</p>
+<p>这是我们常用的手持镜头提示词：</p>
+<pre lang="en"><code>Unstabilized handheld combat camera POV, violent jagged shake, the camera swinging, rolling and tilting wildly, the horizon tipping off-level with every stride, hard vertical bounces, sudden sideways whips, lurching drops and jolts, focus hunting and snapping, the frame barely holding the chaos. Chaotic, never aligned, never smooth, like a camera held by someone crouching inside a shadowed threshold tracking urgent movement. Fast, urgent, real-time speed, no slow motion.</code></pre>
+<p class="caption">（中译）未加稳定的手持战斗摄影机主观视角，剧烈、参差的抖动，摄影机疯狂地摆动、翻滚、倾斜，地平线随每一步歪斜失衡，强烈的上下颠簸，突然的横向甩动，踉跄的下坠与震动，焦点来回搜寻、骤然咬合，画面勉强兜住混乱。混乱、从不对齐、从不平滑，就像一个蹲在阴暗门槛里的人举着摄影机追踪急促的动作。快速、紧迫、实时速度，不要慢动作。</p>
+
+<h3>在剪辑中完成</h3>
+<p>剪辑、声音和调色大约花了 18 小时。大多数音效直接来自 Grok Imagine。我们在此之上加了音乐和调色。</p>
+
+<h3>现在轮到你了！</h3>
+<p>去拍那部一直卡在你脑海里的短片吧，一直做下去，直到它看起来就是你想象中的样子。</p>
+<p>在<a href="https://x.com/imagine/status/2113712964419063911" rel="noopener">这里</a>观看第 1 集《誓言》。</p>
+<p>在 <a href="https://grok.com/imagine" rel="noopener">grok.com/imagine</a> 试用 Grok Imagine。</p>
+<figure><a href="https://x.com/imagine/status/2113712964419063911" rel="noopener"><img src="images/ep1-poster.webp" alt="第 1 集视频封面帧：一艘帆船驶向海边悬崖下的洞穴，前景是礁石" loading="lazy"></a><figcaption>第 1 集《誓言》视频封面帧（点击前往 X 观看；视频约 7 分 12 秒，4K；本站不下载、不转载视频）。</figcaption></figure>
+
+<h2 id="replies">作者回复与评论区</h2>
+<ul>
+<li><strong>作者回复</strong>：经 X API 检索 <code>conversation_id:2115214583983935517 from:imagine</code>（2026-10-28 18:05 UTC+8），@imagine 未在该串下回复或补充。</li>
+<li><strong>相关前帖</strong>：2026-10-24 03:23（UTC+8）@imagine 发布第 1 集正片，称与 @WonderStudiosX 及导演 Dev Walker @glumlot_ 合作，并问观众“是否想看完整制作拆解”——本文即兑现；该帖约 785 万浏览、2.4 万赞、1.5 万收藏。</li>
+<li><strong>评论区摘选</strong>（意译）：合作方 @WonderStudiosX 表示“很高兴和 @imagine 团队合作，这始终是关于回馈创意社区”；@KarunakarGautam 问“对白场景里如何让声音跨镜头保持一致？”（截至读取时未见官方回答）；@yousieve 建议 Canvas 支持以剧本 Markdown 一次导入所有场景、角色与动作，并支持场景的链接与分支；也有批评声音，如有人认为成片“有《使命召唤》的灵魂”、有人质疑“小团队”的挑选方式。</li>
+</ul>
+
+<h2 id="notes">读后注记</h2>
+<ul>
+<li><strong>性质</strong>：这是 Grok Imagine（xAI）官方账号发布的制作指南，兼具教程与产品推广性质；文中关于 Canvas、中间关键帧、“大多数音效直接来自 Grok Imagine”等功能描述均为官方自述，本站未实测。</li>
+<li><strong>可复用的方法</strong>（与具体模型无关）：先剧本/分镜表后生成；按场次与 A/B-roll 命名素材；三栏灰底角色设定图；每条提示词固定写景别/时段/氛围/机位/镜头/胶片；关键帧先行；7 段式视频提示词；“失败就写短”；静止机位交代、手持表现打斗。</li>
+<li><strong>史实</strong>：《塞浦路斯之歌》（Cypria）确为史诗诗系中已佚的一部，仅凭普罗克洛斯（Proclus）的《文选》摘要等残篇流传；奥德修斯装疯、被帕拉墨得斯以婴儿忒勒马科斯识破的情节见于该摘要及后世神话汇编。剧中对白与人物外貌为制作团队创作。</li>
+<li><strong>数据未核实</strong>：“3–5 人团队”“剪辑/声音/调色约 18 小时”为官方自述；生成次数、总成本、用时未披露。</li>
+<li><strong>配图</strong>：文中剧本页、分镜表、角色设定图、场景/关键帧与界面截图均为原文配图，已转为 WebP 转载；第 1 集仅使用视频封面帧，未下载视频。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原文与配图版权归 xAI / Grok Imagine（<a href="https://x.com/imagine" rel="noopener">@imagine</a>）及 Wonder Studios 所有；本页为该官方 X 长文的全文中文翻译，提示词保留英文原文并附中译，评论区内容为意译摘选。本页由 Grok Bot 整理，仅作学习交流，与 xAI 无关联。原文：<a href="https://x.com/imagine/status/2115214583983935517" rel="noopener">x.com/imagine/status/2115214583983935517</a>。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/imagine/status/2115214583983935517" rel="noopener">x.com/imagine/status/2115214583983935517</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

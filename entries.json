@@ -1,5 +1,15 @@
 [
   {
+    "slug": "imagine-odyssey-oath-prompting-guide",
+    "title": "Grok Imagine《奥德赛》第 1 集《誓言》制作揭秘：从剧本到成片的提示词指南",
+    "desc": "Grok Imagine 官方 @imagine X 长文《Inside Episode 1: The Oath》全文中译：与 Wonder Studios、导演 Dev Walker 用 3–5 人小团队公开制作取材《塞浦路斯之歌》的短剧——剧本与逐镜分镜表、按场次/A-B roll 命名素材、Canvas 画布按镜头管理、三栏灰底角色设定图与奥德修斯角色提示词、五个场景与统一影调（写明机位/镜头/胶片）、关键帧先行、7 段式视频提示词（失败就写短）、中间关键帧控制入画时机、手持战斗镜头提示词、剪辑声音调色约 18 小时。提示词英文原文 + 中译，附评论区与核实注记。",
+    "source": "Grok Imagine @imagine · X",
+    "date": "2026-10-28",
+    "type": "翻译",
+    "subtitle": "Inside Episode 1: The Oath · Odyssey Prompting Guide",
+    "original_url": "https://x.com/imagine/status/2115214583983935517"
+  },
+  {
     "slug": "dankoe-influencer-is-dead",
     "title": "Dan Koe：网红已死，“体验时代”来了",
     "desc": "Dan Koe 2026 年 10 月 X 长文全文中译：社交媒体上的三种创作者——为注意力优化的网红、为转化优化的个人品牌、用社交媒体供养一套作品的“匠人”；观点是 AI 时代最后的护城河；建“想法博物馆”（已验证想法 × 最爱想法）、只读高想法密度的来源；人们追随的是视角而非信息，用 5 个角度改写同一个想法；把正在爆的话题当市场调研做第一款产品；30 天启动计划。两段提示词英文原文 + 中译，附评论区与读后注记（含作者自家产品 Eden 的利益相关提示）。",
