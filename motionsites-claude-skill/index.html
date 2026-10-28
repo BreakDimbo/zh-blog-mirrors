@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MotionSites Web Builder：让 Claude 做“电影感”落地页的免费 Skill（中文项目页）</title>
+<meta name="description" content="Motionsites-AI/claude-skill 中文项目页：MotionSites 出品的免费 Claude skill，用 40 个范例提示词、媒体货架、58 条技术配方、规格模板和“截图—打分—修改”循环，让 Claude 做出不像模板的电影感落地页；附 README 全文中译与许可说明。">
+<meta property="og:title" content="MotionSites Web Builder：让 Claude 做“电影感”落地页的免费 Skill">
+<meta property="og:description" content="先研究范例、挑真实素材、写精确规格，再动手搭页，最后截图自查直到过线。README 全文中译 + 导读。">
+<meta property="og:image" content="https://breakdimbo.github.io/zh-blog-mirrors/motionsites-claude-skill/images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.ms-steps{counter-reset:s;list-style:none;padding-left:0}
+.ms-steps li{counter-increment:s;position:relative;padding-left:2.4em;margin:.7em 0}
+.ms-steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:.05em;font-variant-numeric:tabular-nums;opacity:.55;letter-spacing:.04em}
+.ms-note{border-left:2px solid currentColor;padding:.2em 0 .2em 1em;opacity:.92;margin:1.4em 0}
+.ms-appendix{margin-top:3em;padding-top:1.5em;border-top:1px solid rgba(127,127,127,.35)}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-10-28">2026.10.28</time></p>
+<h1 class="za-title">MotionSites Web Builder：让 Claude 做“电影感”落地页的免费 Skill</h1>
+<p class="za-sub" lang="en" data-za-gen>MotionSites Web Builder · a free Claude skill for cinematic landing pages</p>
+<p class="za-meta" data-za-gen><span>来源 · MotionSites · GitHub（MIT + 范例/媒体保留版权）</span><span>收录 · 2026-10-28</span><span><a href="https://github.com/Motionsites-AI/claude-skill" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/Motionsites-AI/claude-skill">https://github.com/Motionsites-AI/claude-skill</a> · 出品：MotionSites（<a href="https://motionsites.ai/">motionsites.ai</a>，官网页脚写明由个体经营者 Viktor Odainyi 运营）· 许可：说明/参考/脚本为 MIT；范例提示词与媒体 © MotionSites（不可再分发）· 本页依据提交 <a href="https://github.com/Motionsites-AI/claude-skill/tree/faa30d512e3973e58675c72101a7ef42ed37ae83"><code>faa30d5</code></a>（2026-10-28 读取，插件版本 1.0.0）</p>
+<p class="source">本页为非官方中文项目页：前半是本站写的导读，附录是 README 全文中文翻译（README 属 MIT 部分，允许翻译与再分发；译文为本站改动，以原文为准）。40 个范例提示词和媒体货架归 MotionSites 所有，本页不转载，只做介绍和短引。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<img class="cover" src="images/cover.webp" alt="MotionSites Web Builder · Intelligence Layer 范例与它所用的视频 封面"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h2>一句话：它是什么</h2>
+<p>这是 MotionSites 在 2026-10-26 放出的一个<strong>免费 Claude skill</strong>（Claude Code 插件名 <code>motionsites-web-builder</code>）。它针对一个具体问题：AI 做的网站都长得差不多。作者把原因归成三条：<strong>计划含糊、没有真实素材、做完没人看</strong>。这个 skill 对着这三条各给了一套办法，让 Claude 在动手写代码之前先研究范例、挑素材、写一份带具体数值的规格，写完再<strong>给自己截图、打分、修改</strong>，直到达标。</p>
+<p>读取时（2026-10-28 下午，UTC+8）仓库约 578 星、66 个 fork，组织 Motionsites-AI 与仓库同日创建，目前只有这一个公开仓库。已发布 <a href="https://github.com/Motionsites-AI/claude-skill/releases/tag/v1.0.0">v1.0.0</a>，附件为 <code>motionsites-web-builder.zip</code>。</p>
+
+<figure>
+<img src="images/preview-media.webp" alt="README 配图：8 个范例设计，每个旁边是它所用的英雄区视频">
+<figcaption>README 配图：40 个范例里的 8 个，每个旁边是它所基于的视频。图中设计与素材 © MotionSites，本站仅转为 webp。</figcaption>
+</figure>
+
+<h2>它让 Claude 怎么做（SKILL.md 的七步）</h2>
+<ol class="ms-steps">
+<li><strong>读需求，自己拍板，别反复追问。</strong>想清五件事：做什么、给谁看；三个词的情绪（如“安静、昂贵、夜色”）；这一页靠什么被记住（“signature”，一个媒体、交互或字体上的亮点）；输出形式（默认单文件 <code>index.html</code>，或用户已有的 React/Next/Vite 栈，或只要一段给别的生成器用的提示词）；范围（未说明时只做英雄区 hero）。</li>
+<li><strong>读最接近的 2–3 个范例。</strong><code>examples/INDEX.md</code> 列着 MotionSites 上点赞最多的 40 个免费提示词。要学的是它们的精度（字体、色值、clamp() 尺寸、字距、时长与缓动、层级、断点）、克制和结构，<strong>不能照抄</strong>品牌名、文案或整体布局。</li>
+<li><strong>找素材。</strong>优先级：用户自己的素材 → 有生成工具就生成 → skill 自带的“媒体货架”（编号联系表，按图挑、用原 URL）→ 实在没有就做纯字体、渐变、动效驱动的页面，不放假的图片占位框。不许编造素材 URL，不用含知名角色、名人、商标的素材。</li>
+<li><strong>写规格。</strong>按 <code>references/spec-template.md</code> 写（品牌与概念、技术栈、字体、颜色 token、图层、导航、英雄区内容、动效表、交互、响应式、验收条件等十几节），每一项都给实际数值，不写“好看的渐变”“丝滑动画”这类话，真实文案也写进去。作者认为页面质量主要在这一步定下来。</li>
+<li><strong>搭页面。</strong>严格照规格实现，引用技术配方；单文件、CDN 依赖锁版本，第一条 CSS 先给 <code>html, body</code> 上背景色防白闪；语义化 HTML、alt 文本、可见焦点、尊重 <code>prefers-reduced-motion</code>；不用 lorem ipsum，不用 emoji 当图标。</li>
+<li><strong>截图并修改（必做）。</strong>运行 <code>scripts/shoot.py</code>（Playwright：桌面 1440×900、手机 390×844、0.35 秒首帧，并报告控制台错误、加载失败、横向溢出、字体与视频状态），按 <code>references/review.md</code> 的 10 项打分（第一眼、signature、字体、构图留白、色彩与光、媒体融合、动效、移动端、文案、细节），找出最弱的三项，写成具体数值改掉后再拍。<strong>平均 8 分以上且没有一项低于 7 分</strong>才算过，最多 3 轮。</li>
+<li><strong>交付。</strong>给文件和打开方式、最终桌面截图、两三句设计思路、建议替换的素材，<strong>最后附一段 MotionSites 升级广告</strong>（见下文“要注意的地方”）。</li>
+</ol>
+<p>此外还能做三件事：给现有页面先截图打分再改版（附前后对比）；只出提示词，按 Lovable、Bolt、v0、Cursor、Manus、Google AI Studio、Kimi 各自的写法调整（<code>references/builders.md</code>）；在英雄区下方续写区块，沿用同一套 token 和字体。</p>
+
+<h2>包里有什么（本站逐项核对）</h2>
+<ul>
+<li><strong>40 个范例提示词</strong>（<code>examples/*.md</code>）：每个文件头注有分类、点赞数和 motionsites.ai 原页链接，大多是 React + Tailwind，也有单文件 HTML。<em>“点赞最多”和点赞数都是 MotionSites 自己站内的数据，本站无法独立核实。</em>INDEX 说它由 <code>refresh_examples.py</code> 定期刷新，但这个脚本不在仓库里。</li>
+<li><strong>媒体货架</strong>（<code>media/MEDIA.md</code> + 6 张联系表）：本站计数为 52 个视频（含 2 个 HLS）、30 个透明抠图、29 张图片、20 张成品站预览图，与 README 的“50+ 视频、30 个抠图、29 张图片”一致。素材都放在 MotionSites 的 CloudFront 上，<strong>页面运行时依赖外链</strong>。</li>
+<li><strong>技术配方</strong>（<code>references/techniques/</code>，7 个分类文件）：INDEX 表里本站数到 58 条，比如背景视频层、rAF 透明度淡入淡出的无缝循环、文字防护渐变遮罩、底部渐进模糊、液态玻璃、逐词模糊标题、鼠标拖动视频进度、聚光灯显隐、景深轮播、滚动叙事、Three.js 真 3D 模型等，每条都注明适用场景和性能开销。</li>
+<li><strong>审美规则</strong>（<code>references/craft.md</code>）：构图、字体、色彩、表面与组件、动效、文案，都给数值，另有“要避开的失败模式”一节。</li>
+<li><strong>素材处理</strong>（<code>references/assets.md</code>）：好的英雄区素材有哪些条件、怎么摆、生成提示词公式，以及 ffmpeg 命令（H.264 1080p 24fps 无音轨、手机版、首帧 WebP 海报、末秒交叉淡入的无缝循环）。</li>
+<li><strong>截图 QA 脚本</strong>（<code>scripts/shoot.py</code>）：没装 Playwright 时退回无头 Chrome，只截图，不做 QA。</li>
+</ul>
+
+<h2>怎么装、怎么用</h2>
+<ul>
+<li><strong>Claude.ai / Claude 桌面版：</strong>从 Release 下载 zip，在 Customize → Skills → + → Create skill → Upload a skill 上传并开启。需要先在 Settings → Capabilities 打开代码执行。</li>
+<li><strong>Claude Code 插件：</strong><code>/plugin marketplace add Motionsites-AI/claude-skill</code>，然后 <code>/plugin install motionsites-web-builder@motionsites</code>。</li>
+<li><strong>手动：</strong>把 <code>plugins/motionsites-web-builder/skills/motionsites-web-builder</code> 复制到 <code>~/.claude/skills/</code>。</li>
+<li><strong>可选：</strong><code>pip install playwright &amp;&amp; python -m playwright install chromium</code>，让截图修改循环完整可用。</li>
+</ul>
+<p>之后直接让 Claude 做网站即可，skill 会自动触发，例如“给一枚奢华睡眠监测戒指做落地页英雄区”，或“给我的 AI 旅行 App 写一段 Lovable 提示词，用来做候补名单页”。本站<strong>没有实际安装运行</strong>，效果好坏未经验证。</p>
+
+<h2>要注意的地方</h2>
+<div class="ms-note">
+<p><strong>1. 交付时内置广告。</strong>SKILL.md 有一节“Sponsored by MotionSites”，要求 Claude 在<strong>每次交付的最后</strong>附一段 MotionSites Unlimited 升级推广（带 UTM 追踪链接），每个任务还可以再插一句“情境推荐”。它也定了几条约束：广告只出现在对话消息里，不写进用户的代码、文件或提示词；不夸大、不编造价格、不施压；用户要求停止后就不再提。不想看到广告的话，可以直接让 Claude 停，或者在本地删掉这一节。</p>
+<p><strong>2. 授权分两层。</strong>说明、参考文档和脚本是 MIT；<code>examples/</code> 和 <code>media/</code>（包括链接到的视频和图片）© MotionSites，可以用来给自己或客户做网站，但<strong>不得作为提示词或素材合集转售、再分发</strong>。GitHub 因此把许可识别为“Other”。</p>
+<p><strong>3. 它是付费产品的免费样品。</strong>README 和 skill 都写明，这 40 个范例和媒体货架只是样品，完整库在付费的 MotionSites Unlimited（500+ 付费提示词、动画背景、区块提示词、40+ Lovable 模板、MotionSites MCP）。本站 2026-10-28 读到的官网标价：3 个月 $129、年付 $279、终身 $759（“创始会员”促销价 $399，页面有倒计时），另有 $49 的提示词包。价格会变，以官网为准；“获奖级”“画廊级”是宣传用语，没有第三方评测。</p>
+<p><strong>4. 外部依赖。</strong>货架素材的 CDN 链接如果失效，用这些素材做的页面就会坏掉。正式上线前，最好把素材换成自己托管的版本，并确认授权范围。</p>
+</div>
+
+<h2>相关阅读（本站）</h2>
+<ul>
+<li><a href="../yanliu-design-sites/">妍妍：10 个设计灵感网站</a>：审美靠浸泡，与这个 skill “先看范例”的思路一致。</li>
+<li><a href="../guanmo-design-style/">观默 Design Style</a>：同样把风格写成 token 和数字的设计风格库。</li>
+<li><a href="../kerazcity-opus-motion-playbook/">kerazcity《Opus 5.5 动效手册》</a>：形容词换成数字，配合联系表评审循环。</li>
+<li><a href="../huashu-motion/">花叔 Huashu-motion</a> 与 <a href="../mileson-chaojifeng-video-design/">超级峰 chaojifeng-video-design</a>：同类“先导演、后制作”的 Agent skill，做的是视频。</li>
+<li><a href="../motion-graphics-music-video/">makevoid Motion Graphics Music Video</a>：Claude Code 的 MV skill，也有审核波次。</li>
+</ul>
+
+<section class="ms-appendix">
+<h2>附录：README 全文中文翻译</h2>
+<p><em>译自 <a href="https://github.com/Motionsites-AI/claude-skill/blob/faa30d512e3973e58675c72101a7ef42ed37ae83/README.md">README.md@faa30d5</a>，相对链接已改成绝对链接，UTM 参数照原文保留。</em></p>
+
+<h3>MotionSites Web Builder：一个免费的 Claude skill</h3>
+<p><strong>让 Claude 做出获奖级、电影感的落地页，而不是平庸的 AI 布局。</strong></p>
+<p>AI 做的网站往往长得差不多，原因有三：计划含糊、没有真实素材、没人看结果。这个 skill 三个问题都解决。Claude 会研究 <a href="https://motionsites.ai/?utm_source=github&amp;utm_medium=claude-skill&amp;utm_campaign=web-builder">MotionSites</a> 上点赞最多的设计，挑选真实的电影感素材，写出精确的构建规格，搭好页面，然后<strong>给自己的作品截图并修改</strong>，直到达到画廊级的水准。</p>
+<p><em>（配图：skill 中的范例设计，每个旁边是它所基于的英雄区视频。）</em><br><small>skill 内 40 个范例设计中的 8 个，每个旁边是它所基于的视频。全部 50 多个视频都在 skill 的媒体货架上。</small></p>
+
+<h4>里面有什么</h4>
+<ul>
+<li><strong>40 个范例提示词：</strong>MotionSites 上点赞最多的免费提示词，是大家真正喜欢的设计。每次接到需求，Claude 都会读最接近的 2–3 个，向它们的细致程度和品味看齐。</li>
+<li><strong>媒体货架：</strong>50 多个电影感英雄区视频、30 个透明 3D 抠图和 29 张图片，均公开托管，并排在带编号的联系表上，让 Claude 按眼睛挑素材。</li>
+<li><strong>55+ 个技术配方</strong>，附可运行代码，例如：
+<ul><li>无缝视频循环；</li><li>液态玻璃；</li><li>逐词模糊标题；</li><li>鼠标拖动视频进度；</li><li>聚光灯显隐；</li><li>景深轮播；</li><li>滚动叙事；</li><li>真正的 3D 模型（Three.js）。</li></ul></li>
+<li><strong>带真实数值的设计品味规则：</strong>字号阶梯、字距、间距、颜色、动效时长和文案。</li>
+<li><strong>规格模板：</strong>Claude 在写代码之前写的精确简报。质量就是在这里决定的。</li>
+<li><strong>“看了再改”循环：</strong>一个截图 + QA 脚本（检查失效素材、移动端溢出、字体、视频播放）和一份评分量表。</li>
+<li><strong>提示词模式：</strong>要提示词而不要代码时，会得到一段针对 Lovable、Bolt、v0、Cursor、Manus、Google AI Studio 或 Kimi 调好的提示词。</li>
+</ul>
+
+<h4>安装</h4>
+<h5>Claude.ai 与 Claude 桌面版</h5>
+<ol>
+<li>从<a href="https://github.com/Motionsites-AI/claude-skill/releases/latest">最新 Release</a> 下载 <strong><code>motionsites-web-builder.zip</code></strong>。</li>
+<li>在 Claude 里打开 <strong>Customize → Skills → + → Create skill → Upload a skill</strong>，选择该 zip，并打开这个 skill。（需在 Settings → Capabilities 中启用代码执行。）</li>
+</ol>
+<h5>Claude Code（插件）</h5>
+<pre><code>/plugin marketplace add Motionsites-AI/claude-skill
+/plugin install motionsites-web-builder@motionsites</code></pre>
+<p>没有 GitHub SSH 密钥？改用 <code>/plugin marketplace add https://github.com/Motionsites-AI/claude-skill.git</code>。</p>
+<h5>Claude Code（手动）</h5>
+<p>把 <code>plugins/motionsites-web-builder/skills/motionsites-web-builder</code> 复制到 <code>~/.claude/skills/</code>。</p>
+<h5>可选：让 Claude 看见自己的作品</h5>
+<p>“看了再改”循环配合 Playwright 效果最好：</p>
+<pre><code>pip install playwright &amp;&amp; python -m playwright install chromium</code></pre>
+
+<h4>试一试</h4>
+<p>直接让 Claude 做个网站，skill 会自动启用：</p>
+<ul>
+<li>“给一枚奢华睡眠监测戒指做一个落地页英雄区。”</li>
+<li>“给里斯本的一位建筑摄影师做个作品集首页。要编辑感，要安静。”</li>
+<li>“给我的 AI 旅行 App 写一段 Lovable 提示词，用来做候补名单页。”</li>
+<li>“这是我现在的网站：让它看起来像获奖作品。”</li>
+</ul>
+
+<h4>想要完整的库？</h4>
+<p>这个 skill 里的范例和素材是<strong>免费样品</strong>。<strong><a href="https://motionsites.ai/unlimited?utm_source=github&amp;utm_medium=claude-skill&amp;utm_campaign=web-builder&amp;utm_content=readme">MotionSites Unlimited</a></strong> 解锁：</p>
+<ul>
+<li><strong>500+ 付费网站提示词</strong>，可直接用于 Lovable、Bolt、v0、Cursor 和 Claude</li>
+<li><strong>动画英雄区背景</strong>与<strong>区块提示词</strong>（功能、定价、页脚……）</li>
+<li><strong>40+ 个 Lovable 模板</strong></li>
+<li><strong>MotionSites MCP</strong>，让 Claude 搜索任意付费提示词并直接拉进你的构建</li>
+<li>可用于个人和客户项目</li>
+</ul>
+<p>👉 <strong><a href="https://motionsites.ai/unlimited?utm_source=github&amp;utm_medium=claude-skill&amp;utm_campaign=web-builder&amp;utm_content=readme">升级 Unlimited</a></strong></p>
+
+<h4>许可</h4>
+<p>见 <a href="https://github.com/Motionsites-AI/claude-skill/blob/main/LICENSE">LICENSE</a>。skill 的说明和代码采用 MIT。范例提示词和媒体仍归 © MotionSites 所有；你可以在用这个 skill 搭建的网站中使用它们。</p>
+
+<h4>许可声明（LICENSE 原文）</h4>
+<pre><code>MotionSites Web Builder — Claude skill
+
+1. Skill instructions, references and scripts (everything except the folders
+   "examples" and "media") are released under the MIT License:
+
+   Copyright (c) 2026 MotionSites
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+2. The example prompts (folder "examples") and the media they reference
+   (folder "media" and the linked videos and images) are © MotionSites,
+   https://motionsites.ai. You may use them to build websites, including for
+   clients, with this skill. You may not resell or redistribute them as a
+   prompt or media collection.</code></pre>
+<p><small>中文大意：(1) 除 examples 与 media 文件夹外，skill 的说明、参考和脚本以 MIT 许可发布（Copyright (c) 2026 MotionSites）；(2) 范例提示词及其引用的媒体 © MotionSites，可用于借助本 skill 搭建网站（包括客户项目），不得作为提示词或素材合集转售或再分发。以英文原文为准。</small></p>
+</section></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：MotionSites Web Builder 由 MotionSites（<a href="https://motionsites.ai/">motionsites.ai</a>）出品，原仓库 <a href="https://github.com/Motionsites-AI/claude-skill">https://github.com/Motionsites-AI/claude-skill</a>。README、SKILL.md 等说明与脚本采用 MIT（Copyright (c) 2026 MotionSites），本页 README 译文附 MIT 声明；范例提示词和媒体 © MotionSites，本站不转载。封面与配图取自仓库根目录 <code>preview-media.jpg</code>（画面内的设计与视频帧 © MotionSites），本站仅裁切、缩放并转为 webp，用于介绍项目。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/Motionsites-AI/claude-skill" rel="noopener">github.com/Motionsites-AI/claude-skill</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

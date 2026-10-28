@@ -1,5 +1,15 @@
 [
   {
+    "slug": "motionsites-claude-skill",
+    "title": "MotionSites Web Builder：让 Claude 做“电影感”落地页的免费 Skill",
+    "desc": "Motionsites-AI/claude-skill 中文项目页：MotionSites 出品的免费 Claude skill（Claude Code 插件 motionsites-web-builder）——先读最接近的 2–3 个范例提示词、从媒体货架挑真实素材、写带具体数值的构建规格，再动手搭页，最后用 Playwright 截图、按 10 项量表打分并修改，直到平均 8 分以上；内含 40 个范例、52 个视频/30 个抠图/29 张图片、58 条技术配方、Lovable/Bolt/v0 等提示词模式；交付时内置 MotionSites 付费升级广告 ⚠️。说明与脚本为 MIT，范例与媒体 © MotionSites。附 README 全文中译。",
+    "source": "MotionSites · GitHub（MIT + 范例/媒体保留版权）",
+    "date": "2026-10-28",
+    "type": "全文镜像",
+    "subtitle": "MotionSites Web Builder · a free Claude skill for cinematic landing pages",
+    "original_url": "https://github.com/Motionsites-AI/claude-skill"
+  },
+  {
     "slug": "google-elephant-goldfish-model",
     "title": "大象设计，金鱼评审：Google 开源的 Elephant-Goldfish Model（EGM）",
     "desc": "google/elephant-goldfish-model 中文项目页：Google 开源的编码 Agent 插件（Antigravity / Claude Code / Codex 等）——“记得一切”的大象 Agent 陪你起草设计规格，“什么都不记得”的金鱼子 Agent 在零上下文下分阶段评审（Zoom Out、理解测试、批评、实现就绪），你来取舍与批准；7 个技能（brainstorm / draft / review / resolve / review-loop / bootstrap / drift-report）、名字由来与 Dave Rensin 长文要点、安装用法、作者与局限；附 README 全文中文翻译（Apache-2.0）。",
