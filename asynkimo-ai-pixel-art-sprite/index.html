@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>把 AI 像素画修成能进游戏的精灵图：Kimo 的六步流程（原帖翻译 + 导读）</title>
+<meta name="description" content="SpriteCook 作者 Kimo（@asynkimo）的高收藏帖：AI 生成的“像素画”其实不在真正的像素网格上，进引擎就糊。六步修法——找网格、每格一色、硬阈值去背景、补描边缺口、锁调色板、从干净帧做动画。原帖全文中译、配套博客导读、评论区要点，以及本站用合成示例复现的参考脚本。" />
+<meta property="og:title" content="把 AI 像素画修成能进游戏的精灵图：Kimo 的六步流程" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.frames{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1em;margin:0 0 1.5em}
+.frames figure{margin:0}
+img.pixel{image-rendering:pixelated}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-28">2026.10.28</time></p>
+<h1 class="za-title">把 AI 像素画修成能进游戏的精灵图：Kimo 的六步流程</h1>
+<p class="za-sub" lang="en" data-za-gen>Turning raw AI pixel art into game-ready sprites</p>
+<p class="za-meta" data-za-gen><span>来源 · Kimo @asynkimo · X</span><span>收录 · 2026-10-28</span><span><a href="https://x.com/asynkimo/status/2114796665307578732" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><article><p class="source">原帖：<a href="https://x.com/asynkimo/status/2114796665307578732">x.com/asynkimo/status/2114796665307578732</a>（作者：Kimo <a href="https://x.com/asynkimo">@asynkimo</a>，2026-10-27 03:09 SGT）</p>
+<p class="meta-line">原帖为英文，下文给出全文中文翻译；17 秒视频请在 X 原帖观看（本页不转载），下面只放它的封面帧。作者是像素画生成工具 SpriteCook 的开发者，帖子带有推广性质。互动数据截至 2026-10-28 13:00 SGT：约 5.9 万次浏览、1,232 赞、1,536 收藏、93 转发、6 引用、19 回复。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><figure><img class="cover" src="images/cover.webp" alt="本站合成示例：左边是一张模糊、带噪点、像素大小不一的“AI 像素画”小人（红帽子、蓝裤子、拿黄色木剑）；中间是同一张图叠上找出的黄色网格线；右边是重建后的真正像素精灵，边缘干净、背景透明" /><figcaption>本站用合成图复现的流程（不是作者的图）：左为模拟的 AI 原图，中为找出的网格，右为每格一色、去背景、锁调色板后的精灵。</figcaption></figure>
+
+<h2 id="post">原帖（全文翻译）</h2>
+<blockquote>
+<p><strong>怎么把 AI 直接生成的像素画，变成真正能在游戏里用的精灵图</strong></p>
+<p>做像素画，永远选基于 Nano Banana 的模型，别选 GPT Image。</p>
+<p>&gt; 找出它本来想画的像素网格（<a href="https://www.spritecook.ai/pixel-grid-detector">链接</a>）<br>
+&gt; 按“每格一种颜色”把图重建出来<br>
+&gt; 用硬阈值去掉背景<br>
+&gt; 把这一步在描边上留下的缺口补上<br>
+&gt; 锁定到你游戏的调色板<br>
+&gt; 从这一帧干净的图开始做动画</p>
+<p>或者直接用 SpriteCook 里的 pixel engine 跳过前三步，它会按你选定的精确尺寸来画。</p>
+</blockquote>
+<p class="caption">原帖为长帖，附一段 17 秒视频。链接指向 SpriteCook 的免费网页工具 Pixel Grid Detector。</p>
+
+<p><strong>作者在同一串里的补充</strong>（<a href="https://x.com/asynkimo/status/2114796806873710708">原帖</a>，发帖 34 秒后）：</p>
+<blockquote><p>我把“网格修复”写得更详细了，在这里：<a href="https://www.spritecook.ai/blog/nanobanana-pixel-art-for-games">spritecook.ai/blog/nanobanana-pixel-art-for-games</a></p></blockquote>
+<p>除此之外作者没有再回复评论。</p>
+
+<div class="frames">
+<figure><a href="https://x.com/asynkimo/status/2114796665307578732" rel="noopener"><img src="images/poster.webp" alt="原视频封面帧：白底上写着 GPT Image 2，下面一排七个小方块进度点，第一个是黄色；画面中央是一句提示词“pixel art fox adventurer”" /></a><figcaption>原视频封面帧（17 秒）。开头是 GPT Image 2 和一句提示词“pixel art fox adventurer”，七个进度点像是在逐步对比。点击去 X 观看。</figcaption></figure>
+</div>
+
+<h2 id="what">它在说什么</h2>
+<ul>
+<li><strong>AI 画的“像素画”通常是假的。</strong>图像模型一般输出 1024×1024 这样的大图，看起来是一格一格的，但这些“像素”并没有对齐到统一的网格上：有的 6 像素宽，有的 7 像素宽，边缘还有半透明的过渡色和细小噪点。业内把这种东西叫 mixels（混合尺寸的伪像素）。</li>
+<li><strong>放进游戏引擎就会糊。</strong>引擎不知道每个“逻辑像素”的边界在哪，缩到目标分辨率时会在边界上插值，结果是一团糊。一位评论者说得很直白：放大看还行，一缩放进引擎就花了。</li>
+<li><strong>修法是先把网格找回来，再逐格取色。</strong>找到“这张 1024 的图其实是一张约 64×64 的像素画放大了 16 倍”这样的事实之后，每个格子只留一种颜色，图就变回真正的像素画。后面三步——硬阈值去背景、补描边、锁调色板——是让它能和游戏里其他素材放在一起。</li>
+<li><strong>“选 Nano Banana，不选 GPT Image”是作者的经验之谈。</strong>帖子没给对比数据，视频看起来是在做这组对比（我们没有下载视频，只看了封面帧）。博客里也说这套修法对 Midjourney、DALL·E、Stable Diffusion、Flux 一样适用。</li>
+</ul>
+
+<h2 id="steps">六步拆开看</h2>
+<figure><img src="images/steps.webp" alt="六格示意图：1 原图（模糊的 AI 像素小人）；2 找网格（叠上黄色网格线）；3 每格一色（变回 24×21 的清晰小图，背景仍是米色）；4 硬阈值去背景（背景变成透明棋盘格）；5 补描边缺口；6 锁定调色板" /><figcaption>本站合成示例的六个中间结果。原图是我们自己画的 24×21 小人，按 37.3 倍非整数比例放大，再加模糊和噪点来模拟 AI 输出。</figcaption></figure>
+<ol>
+<li><strong>找网格。</strong>关键是估出格子大小（往往不是整数）和起点偏移。真像素画的颜色突变只会落在格线上，所以可以试一遍候选格子大小，看哪一种能把大部分边缘“对齐”到格线上。注意别选到真实格子的一半或三分之一，它们也能对齐，要取能解释边缘的最大格子。</li>
+<li><strong>每格一色。</strong>只看格子中心区域，避开模糊的边，取中位数颜色。中位数比平均值好，因为它不会把两种颜色混成第三种。</li>
+<li><strong>硬阈值去背景。</strong>透明度只有 0 和 255 两档，不留半透明边。我们在复现时踩了一个坑：如果按“和背景色接近就删”全图删，角色眼睛里的白色高光也会被删掉；改成从图像边缘往里“漫水填充”，只删和外部连通的背景，问题就没了。</li>
+<li><strong>补描边缺口。</strong>AI 常把轮廓上某一格画得发白，去背景时会被当成背景删掉，轮廓上就出现一个洞。规则可以很简单：一个透明格子左右（或上下）两边都是描边色，就把它补成描边色。但它也会误补：我们的示例里，有一处本来就该留空的一格凹口也被补上了。这一步最好人工看一眼。</li>
+<li><strong>锁调色板。</strong>把每格颜色就近映射到游戏统一的调色板。评论区有人说，这一步平时最容易忘，直到新精灵和游戏里其他素材摆在一起才发现颜色不搭。</li>
+<li><strong>从干净的帧做动画。</strong>先有一张干净的单帧，再去做走路、待机、攻击等动作。SpriteCook 卖的就是这一步（从单帧生成动作序列）。</li>
+</ol>
+
+<h2 id="repro">本站复现：一份 80 行的参考脚本</h2>
+<p>原帖和博客都没有公开算法或代码，Pixel Grid Detector 是闭源的网页工具。为了确认这套思路确实可行，我们用 Python（NumPy + Pillow）写了一个最小实现：<a href="pixel_fix.py">pixel_fix.py</a>（本站原创，MIT，可自由取用）。它依次提供 <code>find_grid</code>、<code>rebuild</code>、<code>cut_background</code>、<code>fill_outline_gaps</code>、<code>lock_palette</code> 五个函数，对应前五步。</p>
+<p>在上面的合成示例上（真实格子 37.3 像素，加了高斯模糊和噪点，并故意把一格描边画淡）：</p>
+<ul>
+<li>估出的格子大小是 37.6 像素，重建出的尺寸正好是 24×21，和原图一致；</li>
+<li>前景颜色 100% 还原，透明区域 504 格里错 1 格（就是上面说的误补凹口）；</li>
+<li>故意画淡的那一格描边被正确补回。</li>
+</ul>
+<p>这只是合成图上的结果。真实的 AI 输出会更乱：网格可能不是严格等距、局部会有扭曲、背景也未必是纯色。真要用在项目里，建议先用现成工具（例如 Pixel Grid Detector，或评论区提到的 Retro Diffusion Pixel Art Fixer），再拿这份脚本里的思路去理解和排查问题。</p>
+<pre><code>from PIL import Image
+from pixel_fix import *
+raw = Image.open('ai_sprite.png')
+s, ox, oy = find_grid(raw)                 # 格子大小与偏移
+sp = rebuild(raw, s, ox, oy)               # 每格一色
+sp = fill_outline_gaps(cut_background(sp)) # 去背景 + 补描边
+sp = lock_palette(sp, MY_PALETTE)          # 锁调色板
+sp.save('sprite.png')</code></pre>
+
+<h2 id="blog">配套博客导读：《把 Nano Banana 2 的 AI 图变成真正的像素画》</h2>
+<p>作者在回复里给的博客文章发表于 2026-03-19，是 SpriteCook 官网的营销文章，没有开放许可，这里只做转述和短引。</p>
+<figure><a href="https://www.spritecook.ai/blog/nanobanana-pixel-art-for-games" rel="noopener"><img class="pixel" src="images/blog-og.webp" alt="博客题图：同一个戴蓝色头盔的像素士兵头像，左边是 AI 原图，颜色在边界处串色、格子大小不一；右边是网格对齐后的版本，格子整齐、颜色干净" /></a><figcaption>博客题图：左为 Nano Banana 2 原图放大，右为网格对齐后。图片版权归 SpriteCook，点击阅读原文。</figcaption></figure>
+<ul>
+<li><strong>提示词怎么写。</strong>博客给的示例是“pixel art infantry soldier, side view, 2d game sprite, clean pixel edges, limited color palette, transparent background”。几条经验：明确写 side view 或 front view，否则模型默认 3/4 角度；加上“game sprite”或“2d game asset”；写“limited color palette”或“8-color palette”能让色块更干净；写“32x32”这样的画布尺寸，有时管用，有时被忽略。</li>
+<li><strong>问题在哪。</strong>模型画出来的东西“看起来像像素画，但没有对齐到一致的网格”，到处是亚像素噪点，硬边之间串色。</li>
+<li><strong>怎么修。</strong>用 Pixel Grid Detector 识别网格，再重采样，让每个逻辑像素正好对应一个输出像素；需要时把颜色压到 8/16/32/64 色。导入引擎时用 point（最近邻）过滤。</li>
+<li><strong>四条建议。</strong>提示词只管风格，网格交给后处理（“别在提示词里跟模型较劲”）；用能拿到的最高分辨率生成，网格识别更准；颜色压缩要克制，喜欢模型配色就保留；下载前看一眼网格叠加图，确认识别对了。</li>
+</ul>
+<p>Pixel Grid Detector 页面的说明里还有一句：最近邻放大（硬方块）的图识别最稳，经过平滑或双线性放大的图更难判断，结果会不稳定。</p>
+
+<h2 id="replies">评论区要点</h2>
+<ul>
+<li><strong>做视频要共用调色板。</strong><a href="https://x.com/airi_ai_navi/status/2115023002765316531">@airi_ai_navi</a> 说他们在一张 RTX 3090 上做 AI 像素动画也是类似流程：每格一色、32 色、12 fps，多一步是“从多帧一起建调色板并共用，颜色才不会逐帧闪烁”。被追问时补充：从片段里均匀取 8 帧拼成一张图建调色板；如果片段中途光线变化，就在变化处切开、各用一套调色板（<a href="https://x.com/airi_ai_navi/status/2115204296111501584">回复</a>）。</li>
+<li><strong>“每格一色就是全部诀窍。”</strong>（<a href="https://x.com/jj_kovacs/status/2115131807037296968">@jj_kovacs</a>）图像模型偏爱软边和零散的半个像素。另有人说硬阈值去背景“被低估了”（<a href="https://x.com/canveedotapp/status/2115124775983231078">@canveedotapp</a>）。</li>
+<li><strong>同类工具。</strong>有人直接推荐 Retro Diffusion 的免费 <a href="https://retrodiffusion.ai/tools/pixel-art-fixer/">Pixel Art Fixer</a>（<a href="https://x.com/XProfessah/status/2114835777565708353">@XProfessah</a>，这条回复本身也有 24 赞 13 收藏）；有人问“SpriteCook 和 PixelLab 哪个好”，得到的回答是“PixelLab 和 pixel engine”（<a href="https://x.com/luksaa__/status/2114921766938128430">@luksaa__</a>）。</li>
+<li><strong>动作参考。</strong>可以先用 GPT 生成姿势参考图，再让 SpriteCook 按姿势做动画（<a href="https://x.com/SRGaming2k20/status/2114821892536184849">@SRGaming2k20</a>）。</li>
+<li><strong>反对声音也不少。</strong>“看着还是很糙”“Nano Banana 出的精灵都长一个样，除了题材几乎没有风格差异”（<a href="https://x.com/opinjonated/status/2115111049338745088">@opinjonated</a>），也有人说宁可让 AI 出点子、自己从头画。</li>
+</ul>
+
+<h2 id="notes">需要注意的地方</h2>
+<ul>
+<li>作者是 SpriteCook 的开发者，帖子最后一句和视频都在推自家的 pixel engine。“选 Nano Banana 不选 GPT Image”没有给出可复核的对比。</li>
+<li>Pixel Grid Detector 免费但闭源，帖子和博客都没有公开算法或代码仓库；本页的脚本是我们自己写的复现，不代表作者的实现。</li>
+<li>前三步解决的是“网格”问题，不解决“好不好看”。评论区对 AI 像素画风格同质化的批评，这套流程管不了。</li>
+</ul>
+
+<h2 id="related">延伸阅读（本站）</h2>
+<ul>
+<li><a href="../ascii-magic-art/">ASCII Magic</a> 与 <a href="../ascii-sharks/">ascii-sharks</a>：同样是“把连续画面压到一个格子网格上”，只不过格子里放的是字符。</li>
+<li><a href="../cnyzgkc-3d-wuxia-arpg/">木马人：一个人用 AI 做 3D 武侠 ARPG</a>：3D 这边的同类问题——AI 资产要先“修干净”（拓扑、绑骨）才能进游戏。</li>
+<li><a href="../gkxspace-opus-hi3d-3d-game/">余温：Opus 5.5 + Hi3D 做 3D 海战游戏</a>：减面和压缩，是另一种“让 AI 资产能进引擎”的后处理。</li>
+<li><a href="../opennana-prompt-gallery/">OpenNana 提示词图库</a>：大量 Nano Banana 提示词。</li>
+<li><a href="../gameplay-atlas/">Gameplay Atlas</a>：素材之外，玩法原型怎么做。</li>
+</ul>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文镜像整理。原帖、视频与封面帧版权归 Kimo（<a href="https://x.com/asynkimo">@asynkimo</a>）所有，作者正文全文翻译；配套博客与题图版权归 SpriteCook，没有开放许可，只做导读与短引；他人回复只作简短引用并署名。封面图、六步示意图和 <a href="pixel_fix.py">pixel_fix.py</a> 为本站原创合成示例（MIT）。原文：<a href="https://x.com/asynkimo/status/2114796665307578732">x.com/asynkimo/status/2114796665307578732</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/asynkimo/status/2114796665307578732" rel="noopener">x.com/asynkimo/status/2114796665307578732</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

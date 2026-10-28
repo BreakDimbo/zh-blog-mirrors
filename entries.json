@@ -1,5 +1,15 @@
 [
   {
+    "slug": "asynkimo-ai-pixel-art-sprite",
+    "title": "把 AI 像素画修成能进游戏的精灵图：Kimo 的六步流程（原帖翻译 + 导读）",
+    "desc": "SpriteCook 作者 Kimo（@asynkimo）的高收藏帖（~5.9 万浏览/1,536 收藏）：AI 生成的“像素画”是没对齐网格的 mixels，进引擎就糊。六步修法——找网格、每格一色、硬阈值去背景、补描边缺口、锁调色板、从干净帧做动画。原帖全文中译、配套博客导读（无开放许可，仅转述短引）、评论区要点（视频共用调色板、Retro Diffusion 等同类工具、风格同质化批评），以及本站原创合成示例与 80 行 Python 参考脚本（MIT）；视频只放封面帧。",
+    "source": "Kimo @asynkimo · X",
+    "date": "2026-10-28",
+    "type": "翻译",
+    "subtitle": "Turning raw AI pixel art into game-ready sprites",
+    "original_url": "https://x.com/asynkimo/status/2114796665307578732"
+  },
+  {
     "slug": "areadne-sheep-grazing",
     "title": "草地上的羊：areadne 的水彩风可交互微缩牧场（原帖翻译 + 导读）",
     "desc": "前 OpenAI 设计工程师 areadne（@AreadneMaria）的 21 秒演示：水彩晕染边缘的纸面微缩牧场——小河、土路、田埂、麦田、圆团树，绵羊可以随手“放”进画布并低头吃草。原帖全文中文翻译、画面手作感拆解（晕染边、散点笔触、软团块、带透视的俯视）、同日“玩天空”“加透视”“池塘”系列、评论区要点（在哪能玩、缩放手柄、tldraw 猜测）与借鉴；3 张视频封面帧 webp，未转载视频。",
