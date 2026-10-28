@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>超级峰的视频设计方法论（chaojifeng-video-design）：让 Agent 当导演的视频 Skill — 中文导读 + README 全文镜像</title>
+<meta name="description" content="mileson/chaojifeng-video-design 中文项目页：一个面向 Codex / Claude Code 等 Agent 的视频设计 Skill——8 类视频任务、66 套风格（7 套自有 + 59 套集成自 Lemo-Opuscar）、18 类配方、64 项表达、音乐驱动三维世界工作流、安装用法与局限，附 README 全文镜像（MIT）。" />
+<link rel="canonical" href="https://breakdimbo.github.io/zh-blog-mirrors/mileson-chaojifeng-video-design/" />
+<meta property="og:title" content="超级峰的视频设计方法论：让 Agent 当导演的视频 Skill" />
+<meta property="og:image" content="images/cover-scenario-routes.webp" />
+<meta property="og:description" content="先决定观众要理解或感受到什么，再组织镜头、素材、文字与声音。MIT 开源。" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.cjf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:1.2em 0}
+.cjf-cell{margin:0}
+.cjf-cell img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;display:block}
+.cjf-cell figcaption{font-size:.85em;opacity:.8;margin-top:.3em}
+.cjf-appendix img{max-width:100%;height:auto;border-radius:4px}
+.cjf-appendix td{vertical-align:top}
+.cjf-appendix .vid{font-size:.9em;word-break:break-all}
+.cjf-note{border-left:3px solid currentColor;padding:.4em 1em;opacity:.9;font-size:.95em}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文镜像</span><time datetime="2026-10-28">2026.10.28</time></p>
+<h1 class="za-title">超级峰的视频设计方法论（chaojifeng-video-design）：让 Agent 当导演的视频 Skill</h1>
+<p class="za-sub" lang="en" data-za-gen>Chaojifeng Video Design · a director-first video skill for coding agents</p>
+<p class="za-meta" data-za-gen><span>来源 · 超级峰 @mileson · GitHub（MIT）</span><span>收录 · 2026-10-28</span><span><a href="https://github.com/mileson/chaojifeng-video-design" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/mileson/chaojifeng-video-design">https://github.com/mileson/chaojifeng-video-design</a> · 作者：超级峰（GitHub <a href="https://github.com/mileson">@mileson</a> / X <a href="https://x.com/Mileson07">@Mileson07</a>）· 许可：MIT（代码与文档）；集成的 Lemo-Opuscar 代表帧与样片为 CC BY 4.0 · 本页依据提交 <a href="https://github.com/mileson/chaojifeng-video-design/tree/a7c84de88f9632a013ab2db16cb9ab0543f897e9"><code>a7c84de</code></a>（2026-10-28 读取）</p>
+<p class="source">本页为非官方中文项目页：前半是本站撰写的导读，附录为 README 中文原文全文镜像（原文即中文，逐字照录，仅把相对链接改为指向原仓库的绝对链接）。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<img class="cover" src="images/cover-scenario-routes.webp" alt="超级峰的视频设计方法论 · 八类场景链路图 封面"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h2>一句话：它是什么</h2>
+<p><strong>chaojifeng-video-design</strong> 是一个装进 Agent（README 以 Codex 为例，任何支持 <code>SKILL.md</code> 的 Agent 均可，比如 Claude Code）的<strong>视频设计 Skill</strong>：你给主题、产品或素材——最简单的情况只给一首音乐——Agent 按它的方法把内容变成<strong>可修改的分镜与制作计划</strong>，再组织镜头、文字、旁白、音乐和节奏，最后完成预览、审片、返修与成片交付。它本身<strong>不附带渲染器</strong>，渲染、配音、导出依赖宿主 Agent 环境已有的工具（HTML/Canvas、Remotion、Three.js、Blender、FFmpeg 等）。</p>
+<p>README 给出的规模：<strong>8 类视频任务、66 套风格、59 条随库样片、12 项基础动效、64 项表达指导、18 类组合配方</strong>。其中 7 套基础风格为作者自有，59 套影片风格、代表帧与样片集成自 LemoLab 的 <a href="https://github.com/lemomo-ai/lemo-opuscar">Lemo-Opuscar</a>（本站另有 <a href="../lemo-opuscar/">Lemo-Opuscar 合集页</a>）。</p>
+
+<h2>作者与传播</h2>
+<p>作者超级峰在 X（<a href="https://x.com/Mileson07">@Mileson07</a>）自述为 AI 独立创作者、前 toB 产品总监。相关帖子（时间为新加坡时间 SGT）：</p>
+<ul>
+<li>2026-10-20 17:16 · <a href="https://x.com/Mileson07/status/2112473015439208688">开源帖</a>：认为模型做视频已很强，但知识科普内容越来越同质化，这个 Skill 想解决“怎样一个提示词就做出更有情绪感、沉浸感的视频”。</li>
+<li>2026-10-26 11:28 · <a href="https://x.com/Mileson07/status/2114559821357948995">新一期 AI 视频</a>（约 5.5 万次浏览）：配视频展示用该 Skill 做的作品。</li>
+<li>2026-10-27 10:20 · <a href="https://x.com/Mileson07/status/2114904965009617011">“不到一天破 100 星”</a>；同日 18:37 <a href="https://x.com/Mileson07/status/2115030189835231392">琵琶行帖</a>称“我就给了它一个音乐《琵琶行》”，20:32 <a href="https://x.com/Mileson07/status/2115058996000555139">MV 级视频帖</a>称“就给了一个背景音乐文件而已”。</li>
+<li>2026-10-28 10:06 · <a href="https://x.com/Mileson07/status/2115263952024379450">回复网友</a>：GPT、Claude、Kimi 等模型都可以配合这个 Skill 做出来。</li>
+</ul>
+<p class="cjf-note">“只给一首音乐就出片”是作者的宣传表述；仓库自己的文档更克制：结构检查只说明结构成立，画面、听感、事实与观众理解需要分别验收（见下文“局限”）。</p>
+
+<h2>核心理念：先导演，后特效</h2>
+<p>SKILL.md 的第一句就是整个项目的纲领：</p>
+<blockquote>先决定观众要理解或感受到什么，再组织镜头、素材、文字与声音。故事属于当前题材，风格提供材质和表达语法，实现由实际可用工具完成。</blockquote>
+<p>由此展开的几条设计原则（本站归纳）：</p>
+<ul>
+<li><strong>三层分离</strong>：导演与计划（观众变化、镜头任务、声音、整片排程）／风格包（材质、颜色、文字、运动、镜头、声音）／实际制作路线（已有引擎、录屏、合成或生成工具）。风格包“不自动成为渲染器”。</li>
+<li><strong>观众所得优先</strong>：每个场景都写成“怎样组织内容 → 观众所得”，例如产品演示 = 真实任务 → 关键操作 → 结果证据 →“看懂产品能做什么”。</li>
+<li><strong>每镜都要说清</strong>：新增信息或感受、焦点、揭示顺序、稳定阅读窗、下一镜接力；相机移动要服务揭示、关系或情绪，不凑运镜数量。</li>
+<li><strong>声音共同设计</strong>：确定主声、动机、能量起落与静默；音乐、旁白或任务都可以领拍，但不把所有变化锁到每一拍；有旁白／歌词时取得真实音频再排时间。</li>
+<li><strong>统一时钟</strong>：画面、音效、旁白、字幕从同一份排程派生，使用整片绝对秒与稳定 ID；顺序／倒序／随机 seek 实测一致才能声称可重复。</li>
+<li><strong>事实镜头找真证据</strong>：先找真实产品、原始照片、录像、档案与数据，无法成立就换镜头或收缩主张。</li>
+<li><strong>诚实验收</strong>：“未看、未听、未做观众测试的项目保持未验证”，候选版本不能继承旧版或上游案例的通过状态。</li>
+</ul>
+<p class="cjf-note">页首封面图即仓库示意图 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/assets/diagrams/scenario-routes.png">assets/diagrams/scenario-routes.png</a>（MIT）：同一套方法（元素 · 规则 · 配方 · 流程），按八类场景走不同链路。</p>
+
+<h2>能力地图：任务 × 风格 × 配方 × 表达</h2>
+<p>README 的说法是：“场景决定要完成的任务，风格决定材质与视觉语言，配方安排整片内容，表达和动效处理局部。”</p>
+<div class="table-wrap"><table>
+<tr><th>层</th><th>数量</th><th>内容</th></tr>
+<tr><td>视频任务（场景）</td><td>8</td><td>产品演示、知识讲解（含概念科普、说唱科普）、资讯呈现、图片成片、故事视频、功能动效、品牌形象短片、音乐与视觉表演</td></tr>
+<tr><td>风格包</td><td>66</td><td>7 套基础风格（清晰产品、纸面编辑、暗色技术、单色图解、影像叙事、鲜明拼贴、双底色发布片）+ 59 套 Lemo-Opuscar 影片风格（剪辑纪实、实证影像、手绘、东方传统、版画、图形排版、信息发布、卡通、游戏、电影时代、材质 3D 共 11 类）</td></tr>
+<tr><td>组合配方</td><td>18</td><td>如“用真实任务证明产品价值”“逐层递进讲清抽象概念”“证据板讲清资讯”“发布片情绪弧”“嘻哈知识科普”等，含输入、镜头步骤、表达组合、检查问题</td></tr>
+<tr><td>表达指导</td><td>64</td><td>叙事、镜头、转场、视觉、动画、文字、声音、交互、风格统一、制作组织、知识表达 11 类</td></tr>
+<tr><td>基础动效</td><td>12</td><td>出现、离场、强调、路径描绘、建立关系、数值变化、状态替换、镜头聚焦、遮罩切换、逐项呈现、层间视差、稳定停留</td></tr>
+</table></div>
+<p>部分集成风格的代表帧（来自 LemoLab · Lemo-Opuscar，CC BY 4.0；由本站转为 webp）：</p>
+<div class="cjf-grid"><figure class="cjf-cell"><img loading="lazy" src="images/style-ink-wash.webp" alt="中国水墨 · Chinese Ink Wash 代表帧"><figcaption>中国水墨 · Chinese Ink Wash</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-paper-lantern.webp" alt="纸雕灯影 · Paper-cut Lightbox 代表帧"><figcaption>纸雕灯影 · Paper-cut Lightbox</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-swiss-motion.webp" alt="瑞士动态排版 · Swiss Motion 代表帧"><figcaption>瑞士动态排版 · Swiss Motion</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-lidar-survey.webp" alt="点云测绘 · LiDAR Survey 代表帧"><figcaption>点云测绘 · LiDAR Survey</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-teardown.webp" alt="产品拆解 · Exploded Teardown 代表帧"><figcaption>产品拆解 · Exploded Teardown</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-newsreel.webp" alt="1920s 新闻影片 · Newsreel 代表帧"><figcaption>1920s 新闻影片 · Newsreel</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-pixel-rpg.webp" alt="16-bit 像素 RPG 代表帧"><figcaption>16-bit 像素 RPG</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-art-deco.webp" alt="装饰艺术 · Art Deco 代表帧"><figcaption>装饰艺术 · Art Deco</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/style-glass-product.webp" alt="玻璃质感产品 · Glass Product 代表帧"><figcaption>玻璃质感产品 · Glass Product</figcaption></figure></div>
+<p>完整 66 套风格可在附录 README 的风格表、或仓库内离线画廊 <code>assets/gallery/index.html</code>（需完整下载仓库）中浏览、筛选与并排对比。</p>
+
+<h2>招牌工作流：音乐驱动三维世界</h2>
+<p>这是作者在 X 上主推的玩法：<strong>音乐 + 主题 + 风格</strong> 三项输入，默认约 60 秒、1080p、30fps。README 给出的提示词模板：</p>
+<pre><code>用 $chaojifeng-video-design 做一支音乐驱动的三维视频。
+音乐：【音乐文件或链接】
+主题：【要表现的对象或讲清的关系】
+风格：【水墨、烟雨、诗词意象、理论概念或自己的风格描述】
+直接完成成片和可编辑工程。</code></pre>
+<p>按 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/music-driven-world.md">references/music-driven-world.md</a>，流程大致是：</p>
+<ol>
+<li><strong>核音轨</strong>：核对哈希、长度，回听候选区间，选有发展、释放与收束的连续乐段；有歌词就取得实际唱词量时。</li>
+<li><strong>分析只出候选</strong>：<code>music_world.py analyse</code> 用 FFmpeg + Python 标准库生成粗频带、RMS 与候选起音；“候选不是已核实节拍或乐句”。</li>
+<li><strong>选贯穿对象</strong>：例如墨滴 → 山体 → 河道；青蓝笔触 → 器物纹样 → 烟雨空间；点与向量 → 投影 → 曲线。新题材重新定义。</li>
+<li><strong>编排事件阶段</strong>：预备 ≤ 触发 ≤ 峰值 ≤ 落定 ≤ 停留（prepare / trigger / peak / settle / hold_until），写入 <code>score.json</code>，渲染读同一份数据。</li>
+<li><strong>两条起步工程</strong>：Three.js + Remotion（可计算几何、公式、快速重排）与 Blender + Remotion（器物、地形、材质），位于 <code>assets/music-world/starter</code>。</li>
+<li><strong>先锁音乐与关系，再调外观</strong>：每个外观层可独立关闭做同镜对照，“不能靠加亮、加密、加颗粒替代内容”。</li>
+<li><strong>实测验收</strong>：核对导出片中的接触、峰值、落定和停顿；机器时刻、抽帧、连续观看、听审和观众理解分别登记。</li>
+</ol>
+<pre><code>python3 SKILL_ROOT/scripts/music_world.py init --music /project/song.wav --theme "潮汐与月引力" --style 理论概念 --into /project/tide
+python3 SKILL_ROOT/scripts/music_world.py analyse --project /project/tide
+python3 SKILL_ROOT/scripts/music_world.py validate --project /project/tide</code></pre>
+<p>作者的四段原创音乐视觉作品（封面帧截图；视频本身托管在 GitHub，本站未转存。片中歌曲权利归各自权利人，案例视频不在 MIT 范围内）：</p>
+<div class="cjf-grid"><figure class="cjf-cell"><img loading="lazy" src="images/orig-ink-landscape.webp" alt="水墨山河 ·《山河图》 封面帧"><figcaption>水墨山河 ·《山河图》</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/orig-porcelain-rain.webp" alt="青花烟雨 ·《青花瓷》 封面帧"><figcaption>青花烟雨 ·《青花瓷》</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/orig-pipa-moon-river.webp" alt="琵琶江月 ·《琵琶行》 封面帧"><figcaption>琵琶江月 ·《琵琶行》</figcaption></figure><figure class="cjf-cell"><img loading="lazy" src="images/orig-math-world.webp" alt="三维数学世界 ·《三角函数之歌》 封面帧"><figcaption>三维数学世界 ·《三角函数之歌》</figcaption></figure></div>
+
+<h2>安装与使用</h2>
+<h3>安装</h3>
+<p>把仓库克隆到 Agent 能加载 Skill 的目录。README 以 Codex 为例：</p>
+<pre><code>git clone https://github.com/mileson/chaojifeng-video-design.git ~/.codex/skills/chaojifeng-video-design</code></pre>
+<p>其他支持 <code>SKILL.md</code> 的 Agent 放到对应 Skill 路径即可。以 Claude Code 为例（本站补充，非 README 原文），通常可放在 <code>~/.claude/skills/chaojifeng-video-design</code>（个人）或项目内 <code>.claude/skills/</code>，保持相对目录结构。注意：仓库带 59 条样片与 4 段作品视频，完整克隆体积在 1 GB 量级；只想要方法和脚本可考虑浅克隆。</p>
+<h3>调用</h3>
+<p>在 Agent 中写 <code>$chaojifeng-video-design</code> 并描述目标，例如：</p>
+<ul>
+<li>“用 $chaojifeng-video-design 做一期关于【主题】的概念知识科普视频，一次性完成。”</li>
+<li>“为这个产品制作一条 30 秒竖版介绍视频。使用项目中已有的截图和素材，先确认要证明的任务……”</li>
+<li>“只修改第 3 个镜头，让操作结果更容易看清，并复验相关字幕和声音落点。”</li>
+<li>“我只需要分镜方案。请先核实 TCP 三次握手的事实，再用逐层递进的画面解释。”</li>
+</ul>
+<p>两种节奏：明确说“一次性完成 / 直接成片”（direct）时，Agent 连续完成制作、内部检查与返修；要求分阶段审阅（staged）才在约定节点停下。</p>
+<h3>本地工具</h3>
+<p>查询与校验脚本只用 Python 3.10+ 标准库；媒体探测需要 FFmpeg / ffprobe：</p>
+<pre><code>python3 scripts/catalog.py --kind scenario list
+python3 scripts/stylepacks.py resolve 中国水墨
+python3 scripts/stylepacks.py init brand-ink --into /project/video/styles --extends opuscar-ink-wash
+python3 scripts/validate_plan.py examples/product-demo.plan.json
+python3 scripts/check_delivery.py plan.json delivery.json --probe --require-video</code></pre>
+
+<h2>从计划到成片：六步流程</h2>
+<p>据 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/production-workflow.md">references/production-workflow.md</a>：</p>
+<ol>
+<li><strong>定主线和导演意图</strong>：观众起点 / 终点、贯穿线、真实依据；“科技感”要落实到具体视觉与听觉选择。</li>
+<li><strong>写镜头任务与可编辑计划</strong>：按计划合同（plan.json），时间用整片绝对秒，镜头 / 对象 / 节拍 / 旁白 / 素材有稳定 ID。</li>
+<li><strong>落实素材与时间</strong>：优先用户素材与真实证据，缺了先联网找原始来源并记录权利与取舍。</li>
+<li><strong>声画一起排练</strong>：先写各段情绪与职责再选曲；音效多时先写事件表，渲染后用 <code>audio_event_audit.py</code> 核对。</li>
+<li><strong>按约定节奏制作</strong>：看首帧、最密帧、关系落定帧、转场边界与连续播放。</li>
+<li><strong>审片、导出、交付</strong>：保存源、视频与交付记录（delivery.json），已知错词、字幕错位先返修，不以“披露缺陷”代替满足要求。</li>
+</ol>
+
+<h2>示例与案例</h2>
+<ul>
+<li><strong>计划示例</strong>（<code>examples/</code>）：品牌短片、产品演示、知识讲解、资讯简报、音乐视觉、TCP 三次握手、证据板等十余份 <code>*.plan.json</code>，可直接用 <code>validate_plan.py</code> 校验。</li>
+<li><strong>成片案例</strong>（<a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/examples/showcase/README.md">examples/showcase</a>）：音乐视觉 4 段（水墨山河、青花烟雨、琵琶江月、三维数学世界，均 15 秒高亮）、说唱知识解说《AI 闯关记》约 18.6 秒、音乐产品解说《小圆角》22 秒竖屏。</li>
+<li><strong>评测题</strong>（<code>evals/</code>）：知识科普、说唱、发布片、产品音乐叙事等创作评测，README 标注为“尚未执行”。</li>
+</ul>
+
+<h2>局限与注意</h2>
+<ul>
+<li><strong>不是渲染器</strong>：仓库是方法、合同、目录、模板和检查脚本；能否出片取决于宿主 Agent 的工具、模型与算力。</li>
+<li><strong>检查 ≠ 质量</strong>：README 明说“检查通过只说明对应结构或测量条件成立”；分析工具产出的是候选节拍，不是已核实的乐句。</li>
+<li><strong>评测未执行</strong>：<code>evals/</code> 的题目尚未跑过；<code>data/memory.md</code> 记录的是工程验证（导出、seek 检查），作者注明“不代替新主题的视听与理解检查”。</li>
+<li><strong>素材权利分层</strong>：代码与文档 MIT；Lemo-Opuscar 样片与代表帧 CC BY 4.0（三条移除了受限音轨）；作者的作品案例视频“不纳入 MIT 许可”，转载改编需取得许可；片中歌曲归原权利人；默认背景音乐仓库只存元信息，不附音源。</li>
+<li><strong>体积大</strong>：样片与作品视频随仓库分发，克隆时注意磁盘。</li>
+<li><strong>中文为主</strong>：文档、目录与查询均以中文为主，英文环境需要自行适配。</li>
+</ul>
+
+<h2>相关页面</h2>
+<ul>
+<li><a href="../lemo-opuscar/">Lemo-Opuscar 合集</a>——本项目 59 套影片风格的上游。</li>
+<li><a href="../motion-graphics-music-video/">Motion Graphics Music Video：Claude Code 音乐视频 Skill</a>——另一款音乐视频 Skill，可对照。</li>
+<li><a href="../huashu-motion/">huashu-motion</a>——本项目方法借鉴对象 huashu-design 的同作者系列。</li>
+</ul>
+
+<h2 id="appendix">附录：README 全文镜像（中文原文）</h2>
+<p class="cjf-note">以下为 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/README.md">README.md</a>（提交 <code>a7c84de</code>）的逐字镜像。原文为中文，未作翻译或改写；仅为排版把标题层级下调、把相对链接与图片改为指向原仓库的绝对地址，并把 GitHub 内嵌视频改为链接。版权归原作者，许可为 MIT（见下方许可声明）。</p>
+<div class="cjf-appendix">
+<h3>超级峰的视频设计方法论</h3>
+<p>一个帮助 AI Agent 设计和制作视频的 Skill。把主题、产品和素材变成可修改的分镜与制作计划，组织镜头、文字、旁白、音乐和节奏，再完成预览、审片、返修与成片交付。</p>
+<p>适合产品演示、知识讲解、音乐科普、说唱科普、资讯、图片成片、故事和品牌短片。也可以只做方案、分镜、单个动效或已有作品的局部修改。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>视频任务</th>
+<th>可选风格</th>
+<th>随库样片</th>
+<th>基础动效</th>
+<th>表达指导</th>
+<th>组合配方</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>8 类</strong></td>
+<td><strong>66 套</strong></td>
+<td><strong>59 条</strong></td>
+<td><strong>12 项</strong></td>
+<td><strong>64 项</strong></td>
+<td><strong>18 类</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>具体制作沿用项目已有工具，渲染、配音和导出由运行 Skill 的 Agent 环境提供。</p>
+<p><a href="https://github.com/mileson/chaojifeng-video-design#创作案例">创作案例</a> · <a href="https://github.com/mileson/chaojifeng-video-design#开始使用">开始使用</a> · <a href="https://github.com/mileson/chaojifeng-video-design#能力从哪里来">本库能力与来历</a> · <a href="https://github.com/mileson/chaojifeng-video-design#本库维护的七套基础风格">七套基础风格</a> · <a href="https://github.com/mileson/chaojifeng-video-design#开源集成的-59-套影片风格">59 套集成风格</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/assets/gallery/index.html">风格画廊</a></p>
+<h4>音乐、主题、风格，直接开始</h4>
+<p>给 Agent 三项输入，按真实音乐的起伏组织三维对象、镜头、文字与声音，完成可播放视频和可编辑工程。</p>
+<pre><code class="language-text">用 $chaojifeng-video-design 做一支音乐驱动的三维视频。
+音乐：【音乐文件或链接】
+主题：【要表现的对象或讲清的关系】
+风格：【水墨、烟雨、诗词意象、理论概念或自己的风格描述】
+直接完成成片和可编辑工程。
+</code></pre>
+<p>默认约60秒、1080p、30fps，已有项目或明确要求优先。水墨用墨滴、山体与河道表现力度；烟雨用器物、笔触、雾层组织尺度；诗词让琴弦、水波、笔触与诗字接力；理论概念让对象、投影与公式表达关系。音乐先分析，再编排预备、触发、峰值、落定和停留；保留指定歌曲，字幕稳定。</p>
+<p>内置音乐分析与事件校验工具，以及 Blender＋Remotion、Three.js＋Remotion 两条起步工程。Agent 会按新主题完善对象与关系，复用时间、镜头和外观层。查看 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/music-driven-world.md">完整制作流程</a> 或 <a href="https://mileson.github.io/chaojifeng-video-design/">在线作品与风格图册</a>。</p>
+<h4>创作案例</h4>
+<p>按作品的主要表达方式分类。点击下方播放器即可在本页观看，片段均保留原声。</p>
+<h5>音乐视觉作品</h5>
+<p>用音乐的力度、乐句和段落推进三维空间、对象与镜头。四段均为15秒高亮。</p>
+<h5>水墨山河</h5>
+<p class="vid">▶ 视频（GitHub 托管，本站不转存）：<a href="https://github.com/user-attachments/assets/95b117d6-ba08-4714-9869-c0dc6b7cdab1" rel="noopener">https://github.com/user-attachments/assets/95b117d6-ba08-4714-9869-c0dc6b7cdab1</a></p>
+
+<p>墨点、峡谷与山河拉升，随《山河图》的节奏展开。</p>
+<h5>青花烟雨</h5>
+<p class="vid">▶ 视频（GitHub 托管，本站不转存）：<a href="https://github.com/user-attachments/assets/de15cfd8-d5f6-4a2d-9d11-bf17b719cc8a" rel="noopener">https://github.com/user-attachments/assets/de15cfd8-d5f6-4a2d-9d11-bf17b719cc8a</a></p>
+
+<p>从器物纹样穿入烟雨山水，让《青花瓷》的乐句带动空间变化。</p>
+<h5>琵琶江月</h5>
+<p class="vid">▶ 视频（GitHub 托管，本站不转存）：<a href="https://github.com/user-attachments/assets/d585b421-229a-401b-8006-09e12e468305" rel="noopener">https://github.com/user-attachments/assets/d585b421-229a-401b-8006-09e12e468305</a></p>
+
+<p>月下拨弦，让水波、笔触与立体诗字接力，从留白走向爆发。查看 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/poetry-music-world.md">诗词音乐世界的方法</a>。</p>
+<h5>三维数学世界</h5>
+<p class="vid">▶ 视频（GitHub 托管，本站不转存）：<a href="https://github.com/user-attachments/assets/dbc46343-0914-4c86-a258-c79100bd1997" rel="noopener">https://github.com/user-attachments/assets/dbc46343-0914-4c86-a258-c79100bd1997</a></p>
+
+<p>穿越无穷符号，展开波形与公式，让三维对象随音乐表达数学关系。</p>
+<h5>说唱知识解说</h5>
+<p>将知识主线写入说唱，用歌词、字幕和画面逐层展开。</p>
+<h5>AI 闯关记</h5>
+<p class="vid">▶ 视频（GitHub 托管，本站不转存）：<a href="https://github.com/user-attachments/assets/bced29b5-a55a-4f92-85a5-865c6730752a" rel="noopener">https://github.com/user-attachments/assets/bced29b5-a55a-4f92-85a5-865c6730752a</a></p>
+
+<p>约18.6秒高亮，将开机倒数与“升级闯关”副歌串联，用闯关母题组织内容。</p>
+<h5>音乐产品解说</h5>
+<p>让歌词、音乐与真实产品操作一起推进，呈现功能和使用结果。</p>
+<h5>小圆角</h5>
+<p class="vid">▶ 视频（GitHub 托管，本站不转存）：<a href="https://github.com/user-attachments/assets/d87f8264-0a95-40d6-adbb-4e7e0afa32d3" rel="noopener">https://github.com/user-attachments/assets/d87f8264-0a95-40d6-adbb-4e7e0afa32d3</a></p>
+
+<p>22秒竖屏片段，将圆角滑动、九张批量处理与小卡环形展示串成一段。</p>
+<p>选段与创作来源见 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/examples/showcase/README.md">案例说明</a>，音乐视觉作品的复用流程见 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/music-driven-world.md">音乐驱动三维世界</a>。后续作品按表达方式补入对应分类，需要时再扩展新类。</p>
+<h4>能力从哪里来</h4>
+<p>本库把创作方法、风格资源和制作工具组织在一起。下面按实际来源说明各部分，便于选择和继续扩展。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>组成</th>
+<th>来历与维护</th>
+<th>能带来什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>导演方法、场景编排、表达目录与组合配方</td>
+<td>本库结合创作实践和外部研究，原创归纳与适配</td>
+<td>从观众要理解什么出发，安排主线、镜头、证据、声音和修改</td>
+</tr>
+<tr>
+<td>7 套基础风格</td>
+<td>本库原有配置与规则，持续维护</td>
+<td>产品、阅读、关系图、影像、拼贴和发布片的常用起点</td>
+</tr>
+<tr>
+<td>59 套影片风格、代表帧、案例与样片</td>
+<td>集成自 <a href="https://github.com/lemomo-ai/lemo-opuscar">LemoLab · Lemo-Opuscar</a></td>
+<td>补充水墨、版画、纪实、像素、卡通、材质与 3D 等表达</td>
+</tr>
+<tr>
+<td>音乐驱动三维世界、分析工具与起步工程</td>
+<td>本库从原创山河、青花、琵琶与数学视频工程提炼并独立实现</td>
+<td>音乐、主题和风格驱动可编辑的三维音乐视频</td>
+</tr>
+<tr>
+<td>统一风格包、中文查询、外置集合和离线画廊</td>
+<td>本库参考 Lemo-Opuscar 的工程分层后独立适配</td>
+<td>让原有与集成风格进入同一目录，可查询、比较、派生和复用</td>
+</tr>
+<tr>
+<td>计划与交付规范、素材与媒体检查、声音事件审计等工具</td>
+<td>本库独立实现</td>
+<td>检查时间、引用、文件、实际媒体信息和交付完整性</td>
+</tr>
+</tbody>
+</table></div>
+<p>本库原创的部分集中在方法归纳、任务编排、配置、计划规范、工具和实践案例。设计与导演方法也参考了社区项目和创作者经验，具体借鉴与独立实现的关系见 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/sources.md">方法来源</a>。</p>
+<h4>8 类视频任务</h4>
+<p><img loading="lazy" alt="八类视频场景的组织链路与观众所得" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/assets/diagrams/scenario-routes.png" /></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>怎样组织内容</th>
+<th>观众所得</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>产品演示</td>
+<td>真实任务 → 关键操作 → 结果证据</td>
+<td>看懂产品能做什么</td>
+</tr>
+<tr>
+<td>知识讲解</td>
+<td>核对事实 → 建立关系 → 逐层解释</td>
+<td>理解概念、关系或过程</td>
+</tr>
+<tr>
+<td>资讯呈现</td>
+<td>核对来源 → 梳理变化 → 组织证据</td>
+<td>知道发生了什么</td>
+</tr>
+<tr>
+<td>图片成片</td>
+<td>素材排序 → 焦点移动 → 转场接力</td>
+<td>图片连成一段表达</td>
+</tr>
+<tr>
+<td>故事视频</td>
+<td>人物目标 → 事件推进 → 转折收束</td>
+<td>跟随一个故事</td>
+</tr>
+<tr>
+<td>功能动效</td>
+<td>初始状态 → 操作触发 → 变化反馈</td>
+<td>看懂交互如何发生</td>
+</tr>
+<tr>
+<td>品牌形象短片</td>
+<td>品牌主张 → 视觉母题 → 记忆落点</td>
+<td>记住品牌的感受</td>
+</tr>
+<tr>
+<td>音乐与视觉表演</td>
+<td>乐段结构 → 动机变奏 → 高潮释放</td>
+<td>体验声音与画面的共振</td>
+</tr>
+</tbody>
+</table></div>
+<p>知识讲解还包含概念知识科普和嘻哈知识科普两种编排。可以由旁白、音乐、歌词、过程或关系领拍，按题材选择。</p>
+<h4>本库的导演与制作能力</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>在作品里怎样使用</th>
+<th>进一步阅读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主线与镜头设计</td>
+<td>明确观众变化、每镜焦点、揭示顺序、稳定停留与下一镜接力</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/creative-direction.md">创意导演</a></td>
+</tr>
+<tr>
+<td>首帧与前三秒</td>
+<td>用主体、任务或变化建立开场，检查重点和信息密度</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/opening-design.md">开场设计</a></td>
+</tr>
+<tr>
+<td>产品任务证明</td>
+<td>围绕真实操作组织界面、结果和对照，让功能有画面依据</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/product-expression.md">产品表达</a></td>
+</tr>
+<tr>
+<td>概念知识科普</td>
+<td>梳理事实、关系、载体与逐层揭示，按真实音乐和阅读时间编排</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/knowledge-music-direction.md">科普编排</a></td>
+</tr>
+<tr>
+<td>嘻哈知识科普</td>
+<td>先核知识与可唱歌词，再按真实音轨安排画面、字幕和声音落点</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/knowledge-rap-direction.md">说唱编排</a></td>
+</tr>
+<tr>
+<td>旁白、字幕与音乐</td>
+<td>先取得实际音频量时，安排乐段、主声、音效、字幕和接缝</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/sound-and-rhythm.md">声音与节奏</a></td>
+</tr>
+<tr>
+<td>素材选择与调度</td>
+<td>选择录屏、照片、影像、图形、生成素材与 3D，保留各自职责</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/asset-routing.md">素材路由</a></td>
+</tr>
+<tr>
+<td>局部修改与审片</td>
+<td>按镜头、对象或时间窗修改，复验受影响的字幕、声音与接缝</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/review-and-revision.md">审片与修改</a></td>
+</tr>
+<tr>
+<td>连续制作或分阶段审阅</td>
+<td>明确要求直接成片时连续完成；需要分镜审阅时在约定节点停下</td>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/production-workflow.md">制作流程</a></td>
+</tr>
+</tbody>
+</table></div>
+<h4>本库维护的七套基础风格</h4>
+<p>这些风格沿用本库原有 ID，可以直接作为常用视频的起点，再组合下面的表达与配方。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>基础风格</th>
+<th>画面方向</th>
+<th>适合怎样的内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/product-minimal/STYLE.md">清晰产品</a></td>
+<td>克制留白，突出界面和操作</td>
+<td>产品介绍、功能演示、任务证明</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/paper-editorial/STYLE.md">纸面编辑</a></td>
+<td>纸面阅读与编辑排版</td>
+<td>知识讲解、资料解释、阅读型内容</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/dark-tech/STYLE.md">暗色技术</a></td>
+<td>暗色空间与清晰的信息层次</td>
+<td>技术说明、信息流、状态变化</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/mono-diagram/STYLE.md">单色图解</a></td>
+<td>用位置、线条和单色强调关系</td>
+<td>系统机制、流程、概念解释</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/cinematic-photo/STYLE.md">影像叙事</a></td>
+<td>由照片和影像主体承担叙事</td>
+<td>人物、旅行、图片成片、影像故事</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/vivid-collage/STYLE.md">鲜明拼贴</a></td>
+<td>图片切块、鲜明颜色与尺度变化</td>
+<td>节奏短片、活动、品牌与音乐视觉</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/dual-ground-launch/STYLE.md">双底色发布片</a></td>
+<td>两块底色串联问题与解答</td>
+<td>产品发布、功能章节、任务前后变化</td>
+</tr>
+</tbody>
+</table></div>
+<h4>开源集成的 59 套影片风格</h4>
+<p>以下风格、代表帧与样片来自 <a href="https://github.com/lemomo-ai/lemo-opuscar">LemoLab · Lemo-Opuscar</a>，感谢作者开放分享。本库将它们接入统一风格包和中文目录，保留规则、案例说明、可用文本源码与样片，供当前作品选择和改编。</p>
+<p>点画面查看风格规则，点“样片”打开本仓库中的视频。59 条样片随库分发，下载完整目录后可在 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/assets/gallery/index.html">风格画廊</a> 离线播放；其中三条保留画面并移除了受限音轨。来源与变更见 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/THIRD_PARTY_NOTICES.md">素材清单</a>。</p>
+<h5>剪辑与纪实 · 8 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-caption-news/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-caption-news/preview.jpg" alt="字幕新闻" width="300"></a><br><b>字幕新闻</b><br><sub>Caption News</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-caption-news/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-caption-news/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-city-symphony/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-city-symphony/preview.jpg" alt="延时交响" width="300"></a><br><b>延时交响</b><br><sub>Time-lapse Symphony</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-city-symphony/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-city-symphony/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-countdown/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-countdown/preview.jpg" alt="实时倒计时分屏" width="300"></a><br><b>实时倒计时分屏</b><br><sub>Live Countdown Split-screen</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-countdown/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-countdown/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-kino-montage/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-kino-montage/preview.jpg" alt="构成主义蒙太奇" width="300"></a><br><b>构成主义蒙太奇</b><br><sub>Constructivist Montage</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-kino-montage/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-kino-montage/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-news-package/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-news-package/preview.jpg" alt="电视新闻包装" width="300"></a><br><b>电视新闻包装</b><br><sub>Broadcast News Package</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-news-package/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-news-package/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-newsreel/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-newsreel/preview.jpg" alt="1920s 新闻影片" width="300"></a><br><b>1920s 新闻影片</b><br><sub>1920s Newsreel</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-newsreel/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-newsreel/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-telestrator/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-telestrator/preview.jpg" alt="体育战术板" width="300"></a><br><b>体育战术板</b><br><sub>Sports Telestrator</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-telestrator/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-telestrator/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-visual-investigation/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-visual-investigation/preview.jpg" alt="视觉调查" width="300"></a><br><b>视觉调查</b><br><sub>Visual Investigation</sub><br><sub>资讯呈现／故事视频／图片成片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-visual-investigation/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-visual-investigation/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>实证影像 · 8 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-archive-lighttable/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-archive-lighttable/preview.jpg" alt="档案灯台" width="300"></a><br><b>档案灯台</b><br><sub>Archive Light Table</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-archive-lighttable/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-archive-lighttable/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-briefing-board/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-briefing-board/preview.jpg" alt="工程简报板" width="300"></a><br><b>工程简报板</b><br><sub>Engineering Briefing Board</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-briefing-board/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-briefing-board/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-data-physical/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-data-physical/preview.jpg" alt="数据实物化" width="300"></a><br><b>数据实物化</b><br><sub>Data Physicalization</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-data-physical/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-data-physical/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lidar-survey/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lidar-survey/preview.jpg" alt="点云测绘" width="300"></a><br><b>点云测绘</b><br><sub>LiDAR Survey</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lidar-survey/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lidar-survey/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microscope/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microscope/preview.jpg" alt="显微叙事" width="300"></a><br><b>显微叙事</b><br><sub>Microscope Story</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microscope/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microscope/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-satellite-briefing/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-satellite-briefing/preview.jpg" alt="卫星简报" width="300"></a><br><b>卫星简报</b><br><sub>Satellite Briefing</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-satellite-briefing/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-satellite-briefing/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-teardown/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-teardown/preview.jpg" alt="产品拆解" width="300"></a><br><b>产品拆解</b><br><sub>Exploded Teardown</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-teardown/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-teardown/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-white-model/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-white-model/preview.jpg" alt="白模投影" width="300"></a><br><b>白模投影</b><br><sub>Projection on White Model</sub><br><sub>知识讲解／资讯呈现／产品演示</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-white-model/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-white-model/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>手绘与绘画 · 7 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-crayon-book/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-crayon-book/preview.jpg" alt="蜡笔儿童绘本" width="300"></a><br><b>蜡笔儿童绘本</b><br><sub>Crayon Picture Book</sub><br><sub>故事视频／知识讲解／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-crayon-book/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-crayon-book/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-impasto/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-impasto/preview.jpg" alt="油画厚涂" width="300"></a><br><b>油画厚涂</b><br><sub>Impasto Oil Painting</sub><br><sub>故事视频／知识讲解／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-impasto/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-impasto/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ink-wash/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ink-wash/preview.jpg" alt="中国水墨" width="300"></a><br><b>中国水墨</b><br><sub>Chinese Ink Wash</sub><br><sub>故事视频／知识讲解／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ink-wash/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ink-wash/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-one-line/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-one-line/preview.jpg" alt="一笔画" width="300"></a><br><b>一笔画</b><br><sub>One-line Drawing</sub><br><sub>故事视频／知识讲解／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-one-line/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-one-line/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-urban-sketch/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-urban-sketch/preview.jpg" alt="钢笔淡彩" width="300"></a><br><b>钢笔淡彩</b><br><sub>Urban Sketch · Pen &amp; Wash</sub><br><sub>故事视频／知识讲解／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-urban-sketch/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-urban-sketch/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-watercolor/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-watercolor/preview.jpg" alt="水彩笔刷" width="300"></a><br><b>水彩笔刷</b><br><sub>Watercolor Brush</sub><br><sub>故事视频／知识讲解／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-watercolor/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-watercolor/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-whiteboard/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-whiteboard/preview.jpg" alt="白板讲解" width="300"></a><br><b>白板讲解</b><br><sub>Whiteboard Explainer</sub><br><sub>故事视频／知识讲解／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-whiteboard/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-whiteboard/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>东方传统 · 4 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-lantern/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-lantern/preview.jpg" alt="纸雕灯影" width="300"></a><br><b>纸雕灯影</b><br><sub>Paper-cut Lightbox</sub><br><sub>故事视频／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-lantern/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-lantern/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-papercut-red/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-papercut-red/preview.jpg" alt="红色窗花剪纸" width="300"></a><br><b>红色窗花剪纸</b><br><sub>Red Paper-cut</sub><br><sub>故事视频／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-papercut-red/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-papercut-red/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-shadow-puppet/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-shadow-puppet/preview.jpg" alt="皮影戏" width="300"></a><br><b>皮影戏</b><br><sub>Shadow Puppetry</sub><br><sub>故事视频／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-shadow-puppet/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-shadow-puppet/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ukiyoe/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ukiyoe/preview.jpg" alt="浮世绘" width="300"></a><br><b>浮世绘</b><br><sub>Ukiyo-e</sub><br><sub>故事视频／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ukiyoe/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ukiyoe/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>印刷与版画 · 5 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-engraving/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-engraving/preview.jpg" alt="铜版画" width="300"></a><br><b>铜版画</b><br><sub>Copperplate Engraving</sub><br><sub>资讯呈现／故事视频／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-engraving/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-engraving/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-halftone-dossier/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-halftone-dossier/preview.jpg" alt="复古半调案卷" width="300"></a><br><b>复古半调案卷</b><br><sub>Halftone Dossier</sub><br><sub>资讯呈现／故事视频／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-halftone-dossier/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-halftone-dossier/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-risograph/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-risograph/preview.jpg" alt="Risograph 孔版印刷" width="300"></a><br><b>Risograph 孔版印刷</b><br><sub>Risograph Print</sub><br><sub>资讯呈现／故事视频／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-risograph/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-risograph/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silkscreen-poster/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silkscreen-poster/preview.jpg" alt="丝印旅行海报" width="300"></a><br><b>丝印旅行海报</b><br><sub>Silkscreen Travel Poster</sub><br><sub>资讯呈现／故事视频／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silkscreen-poster/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silkscreen-poster/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-woodcut/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-woodcut/preview.jpg" alt="木刻版画" width="300"></a><br><b>木刻版画</b><br><sub>Woodcut Print</sub><br><sub>资讯呈现／故事视频／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-woodcut/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-woodcut/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>图形与排版 · 7 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-art-deco/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-art-deco/preview.jpg" alt="装饰艺术" width="300"></a><br><b>装饰艺术</b><br><sub>Art Deco</sub><br><sub>知识讲解／功能动效／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-art-deco/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-art-deco/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ascii-crt/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ascii-crt/preview.jpg" alt="ASCII / CRT 终端" width="300"></a><br><b>ASCII / CRT 终端</b><br><sub>ASCII / CRT Terminal</sub><br><sub>知识讲解／功能动效／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ascii-crt/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-ascii-crt/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-blueprint/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-blueprint/preview.jpg" alt="蓝图 / 工程制图" width="300"></a><br><b>蓝图 / 工程制图</b><br><sub>Blueprint</sub><br><sub>知识讲解／功能动效／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-blueprint/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-blueprint/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pictogram-motion/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pictogram-motion/preview.jpg" alt="象形运动图形" width="300"></a><br><b>象形运动图形</b><br><sub>Pictogram Motion</sub><br><sub>知识讲解／功能动效／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pictogram-motion/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pictogram-motion/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-spy-titles/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-spy-titles/preview.jpg" alt="60s 间谍片头" width="300"></a><br><b>60s 间谍片头</b><br><sub>60s Spy Title Sequence</sub><br><sub>知识讲解／功能动效／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-spy-titles/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-spy-titles/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-stained-glass/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-stained-glass/preview.jpg" alt="彩色玻璃窗" width="300"></a><br><b>彩色玻璃窗</b><br><sub>Stained Glass</sub><br><sub>知识讲解／功能动效／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-stained-glass/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-stained-glass/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-swiss-motion/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-swiss-motion/preview.jpg" alt="瑞士动态排版" width="300"></a><br><b>瑞士动态排版</b><br><sub>Swiss Motion Graphics</sub><br><sub>知识讲解／功能动效／品牌形象短片</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-swiss-motion/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-swiss-motion/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>信息与发布 · 5 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dark-keynote/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dark-keynote/preview.jpg" alt="暗色科技发布" width="300"></a><br><b>暗色科技发布</b><br><sub>Dark Tech Keynote</sub><br><sub>产品演示／知识讲解／资讯呈现</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dark-keynote/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dark-keynote/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dataviz/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dataviz/preview.jpg" alt="数据叙事" width="300"></a><br><b>数据叙事</b><br><sub>Data Storytelling</sub><br><sub>产品演示／知识讲解／资讯呈现</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dataviz/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-dataviz/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hologram-hud/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hologram-hud/preview.jpg" alt="科幻全息界面" width="300"></a><br><b>科幻全息界面</b><br><sub>Sci-fi Hologram HUD</sub><br><sub>产品演示／知识讲解／资讯呈现</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hologram-hud/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hologram-hud/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-iso-infographic/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-iso-infographic/preview.jpg" alt="等距信息图" width="300"></a><br><b>等距信息图</b><br><sub>Isometric Infographic</sub><br><sub>产品演示／知识讲解／资讯呈现</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-iso-infographic/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-iso-infographic/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-living-screencast/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-living-screencast/preview.jpg" alt="活体实机录屏" width="300"></a><br><b>活体实机录屏</b><br><sub>Living Screencast</sub><br><sub>产品演示／知识讲解／资讯呈现</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-living-screencast/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-living-screencast/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>卡通与动画 · 4 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-cel-anime-80s/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-cel-anime-80s/preview.jpg" alt="80 年代赛璐璐动画" width="300"></a><br><b>80 年代赛璐璐动画</b><br><sub>80s Cel Anime</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-cel-anime-80s/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-cel-anime-80s/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-midcentury-toon/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-midcentury-toon/preview.jpg" alt="50s 扁平卡通" width="300"></a><br><b>50s 扁平卡通</b><br><sub>Mid-century Cartoon</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-midcentury-toon/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-midcentury-toon/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-rubber-hose/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-rubber-hose/preview.jpg" alt="1930s 橡皮管卡通" width="300"></a><br><b>1930s 橡皮管卡通</b><br><sub>1930s Rubber Hose Cartoon</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-rubber-hose/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-rubber-hose/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-scifi-toon/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-scifi-toon/preview.jpg" alt="科幻情景喜剧卡通" width="300"></a><br><b>科幻情景喜剧卡通</b><br><sub>Sci-Fi Sitcom Toon</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-scifi-toon/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-scifi-toon/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>游戏 · 4 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-game-show/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-game-show/preview.jpg" alt="综艺节奏扁平" width="300"></a><br><b>综艺节奏扁平</b><br><sub>Game Show Flat</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-game-show/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-game-show/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hd-2d/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hd-2d/preview.jpg" alt="HD-2D" width="300"></a><br><b>HD-2D</b><br><sub>HD-2D</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hd-2d/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-hd-2d/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microgame/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microgame/preview.jpg" alt="微游戏快闪" width="300"></a><br><b>微游戏快闪</b><br><sub>Microgame Frenzy</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microgame/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-microgame/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pixel-rpg/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pixel-rpg/preview.jpg" alt="16-bit 像素 RPG" width="300"></a><br><b>16-bit 像素 RPG</b><br><sub>16-bit Pixel RPG</sub><br><sub>故事视频／知识讲解／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pixel-rpg/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-pixel-rpg/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>电影与时代 · 2 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-backrooms/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-backrooms/preview.jpg" alt="后室 / 新怪谈" width="300"></a><br><b>后室 / 新怪谈</b><br><sub>Liminal Found Footage</sub><br><sub>故事视频／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-backrooms/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-backrooms/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silent-film/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silent-film/preview.jpg" alt="1920s 默片" width="300"></a><br><b>1920s 默片</b><br><sub>1920s Silent Film</sub><br><sub>故事视频／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silent-film/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-silent-film/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h5>材质与 3D · 5 套</h5>
+<div class="table-wrap"><table>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-brick-toy/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-brick-toy/preview.jpg" alt="积木玩具" width="300"></a><br><b>积木玩具</b><br><sub>Brick Toy</sub><br><sub>产品演示／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-brick-toy/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-brick-toy/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-glass-product/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-glass-product/preview.jpg" alt="玻璃质感产品" width="300"></a><br><b>玻璃质感产品</b><br><sub>Glass Product Render</sub><br><sub>产品演示／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-glass-product/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-glass-product/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lowpoly-island/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lowpoly-island/preview.jpg" alt="低多边形等距" width="300"></a><br><b>低多边形等距</b><br><sub>Low-poly Isometric Island</sub><br><sub>产品演示／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lowpoly-island/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-lowpoly-island/sample.mp4">样片</a></td>
+</tr>
+<tr>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-popup/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-popup/preview.jpg" alt="纸片立体书" width="300"></a><br><b>纸片立体书</b><br><sub>Paper Pop-up Book</sub><br><sub>产品演示／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-popup/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-paper-popup/sample.mp4">样片</a></td>
+<td width="33%" valign="top"><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-tilt-shift/STYLE.md"><img loading="lazy" src="https://raw.githubusercontent.com/mileson/chaojifeng-video-design/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-tilt-shift/preview.jpg" alt="移轴微缩" width="300"></a><br><b>移轴微缩</b><br><sub>Tilt-Shift Miniature</sub><br><sub>产品演示／品牌形象短片／音乐与视觉表演</sub><br><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-tilt-shift/STYLE.md">规则</a> · <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/styles/opuscar-tilt-shift/sample.mp4">样片</a></td>
+</tr>
+</table></div>
+
+<h4>怎样把这些能力组合起来</h4>
+<p>场景决定要完成的任务，风格决定材质与视觉语言，配方安排整片内容，表达和动效处理局部。它们可以按当前主题重新组合。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>想做的作品</th>
+<th>可以怎样开始</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>产品发布片</td>
+<td>产品任务证明 + 清晰产品或玻璃产品风格 + 操作重点标注 + 结果揭示</td>
+</tr>
+<tr>
+<td>概念知识科普</td>
+<td>逐层递进 + 单色图解或等距信息图 + 旁白或音乐编排</td>
+</tr>
+<tr>
+<td>嘻哈知识科普</td>
+<td>事实与歌词 + 像素或综艺节奏风格 + 逐句字幕与真实音轨</td>
+</tr>
+<tr>
+<td>资讯短片</td>
+<td>证据板 + 字幕新闻或新闻包装 + 原始资料与数据</td>
+</tr>
+<tr>
+<td>图片与品牌短片</td>
+<td>真实图片到主画面 + 影像叙事或鲜明拼贴 + 音乐动机与转场</td>
+</tr>
+</tbody>
+</table></div>
+<h5>18 类组合配方</h5>
+<p>配方是本库依据创作研究与实践形成的编排，包含输入、镜头步骤、表达组合、检查问题和调整方法。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>配方</th>
+<th>怎样组织内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">同一对象的界面旅程</a></td>
+<td>让同一界面对象经过多个状态，保持空间与动作连续。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">跟随信号讲清系统</a></td>
+<td>跟随信号或信息单元，解释系统中的路径和变化。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">从整体进入微观</a></td>
+<td>从整体进入局部与微观，逐层建立尺度参照。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">真实图片到主画面</a></td>
+<td>保留真实图片的主体，用裁切、排版和镜头突出重点。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">音乐事件成为可见动作</a></td>
+<td>把音乐中的事件变成可见的动作与变化。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">文字承担叙事动作</a></td>
+<td>让文字的出现、位置和运动承担叙事。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">数据与比较讲清差异</a></td>
+<td>建立共同基准，再呈现数值、关系与差异。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">有表达目标的品牌形象片</a></td>
+<td>围绕品牌主张，用一个视觉母题反复推进。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">用真实任务证明产品价值</a></td>
+<td>从用户任务进入实际操作，以可见结果收束。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">同片段逐层增加能力</a></td>
+<td>在同一片段上逐层呈现变化，让差异可比较。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">物即解释讲清机制</a></td>
+<td>让物体的结构、位置和运转过程承担解释。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">逐层递进讲清抽象概念</a></td>
+<td>先建立载体和关系，再逐层加入新信息。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">证据板讲清资讯</a></td>
+<td>将资料、事实和对照组织成清晰的资讯线索。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">发布片情绪弧</a></td>
+<td>围绕问题、转折、证明和行动安排发布片节奏。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">功能章节串联</a></td>
+<td>用连续章节呈现一组相关功能。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">产品音乐叙事</a></td>
+<td>把产品动作、歌词、音乐段落与画面变化一起编排。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">概念知识科普</a></td>
+<td>按所选音乐组织知识层次、关键词、字幕与揭示落点。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/recipes.json">嘻哈知识科普</a></td>
+<td>让核对后的知识进入可唱歌词，再按真实音轨编排声画。</td>
+</tr>
+</tbody>
+</table></div>
+<h5>64 项表达指导</h5>
+<p>表达条目由本库归纳与适配，用来说明局部手法的目的、输入、参数与检查方式。完整说明可在 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/assets/gallery/expressions.html">表达目录</a> 中查看。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>类别</th>
+<th>已收录的表达</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>叙事 · 9 项</td>
+<td>目标到证据、跟随一个信息单元、连续尺度解释、视觉能量起落、同一主体贯穿变化、痛点证据到判决阶梯、成品即证据，节选标明、平行承诺章节、行动即调用</td>
+</tr>
+<tr>
+<td>镜头 · 4 项</td>
+<td>推近与退回语境、路线导览镜头、运动补偿构图、拉远揭示与点击穿越</td>
+</tr>
+<tr>
+<td>转场 · 6 项</td>
+<td>共享形体过渡、构图匹配切换、遮挡后揭示、对象突破画框、沿切线连续离轨、动作因果接缝</td>
+</tr>
+<tr>
+<td>视觉 · 9 项</td>
+<td>动作与计量联动、媒体空间阵列、结构分解与装回、受控粒子场、连续材质变化、目标框与语义标注、有边界的处理与结果揭示、量级鞭甩与逐位计数、可识别外壳的复刻界面</td>
+</tr>
+<tr>
+<td>动画 · 4 项</td>
+<td>有目标的弹性落定、前后沿差动伸缩、沿路径生长与流过、填充与转移</td>
+</tr>
+<tr>
+<td>文字 · 6 项</td>
+<td>随语义变化的文字重点、沿曲线排字、字向补偿、先读后运动、打字叙述者、判决牌与三种声线</td>
+</tr>
+<tr>
+<td>声音 · 5 项</td>
+<td>音乐拍点映射、可见事件触发声音、按频段响应画面、把注意留给主要声音、转折落拍与接缝浅谷</td>
+</tr>
+<tr>
+<td>交互 · 2 项</td>
+<td>可见直接操控、把交互体验变成导览片</td>
+</tr>
+<tr>
+<td>风格统一 · 2 项</td>
+<td>统一视觉与运动气质、双底色世界</td>
+</tr>
+<tr>
+<td>制作组织 · 6 项</td>
+<td>可定位的统一时间、首尾连续循环、先锁关系与节奏再换肤、能力探测与可信回退、内钟压缩、停留预算</td>
+</tr>
+<tr>
+<td>知识表达 · 11 项</td>
+<td>物即解释、逐层递进、层间桥接、部件登场四问、一次完整运行、反事实探针、落地标签、真值账本、受控表达、证据板、模型边界与延伸指路</td>
+</tr>
+</tbody>
+</table></div>
+<h5>12 项基础动效</h5>
+<p>出现 · 离场 · 强调 · 路径描绘 · 建立关系 · 数值变化 · 状态替换 · 镜头聚焦 · 遮罩切换 · 逐项呈现 · 层间视差 · 稳定停留</p>
+<p>配方、表达和动效提供设计与实现指导，实际画面由当前工程与可用工具完成；它们可以从 <a href="https://github.com/mileson/chaojifeng-video-design/tree/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/">目录</a> 查询和继续扩展。</p>
+<h4>本库增加的工程与使用能力</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>怎样使用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>精确选择风格</td>
+<td>用规范 ID、中文名或英文名查询，先看规则再进入制作</td>
+</tr>
+<tr>
+<td>新增与派生风格</td>
+<td>新建独立包，继承一个基底，按需要声明局部借用</td>
+</tr>
+<tr>
+<td>项目与个人集合</td>
+<td>将自己的变体放在外置集合，内置目录生成时排除这些内容</td>
+</tr>
+<tr>
+<td>可视化选择</td>
+<td>在画廊搜索、筛选、并排对比，复制风格 ID 或创作指令</td>
+</tr>
+<tr>
+<td>样片离线播放</td>
+<td>代表帧与 59 条样片随仓库分发，保持目录即可本地浏览</td>
+</tr>
+<tr>
+<td>自动生成目录</td>
+<td>风格元数据生成索引和画廊，新增包后统一更新</td>
+</tr>
+<tr>
+<td>文件与依赖检查</td>
+<td>检测命名冲突、缺失引用、循环依赖、文件变化和计划锁</td>
+</tr>
+<tr>
+<td>媒体与交付检查</td>
+<td>探测实际视频与音频，核对排程、字幕、声音事件和交付文件</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code class="language-sh">python3 scripts/stylepacks.py resolve 中国水墨
+python3 scripts/stylepacks.py init brand-ink --into /project/video/styles --extends opuscar-ink-wash
+python3 scripts/stylepacks.py validate --style-root /project/video/styles
+</code></pre>
+<p>扩展规范见 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/MAINTAINING.md">维护说明</a> 和 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/style-pack-contract.md">风格包合同</a>。导演与技术分层、风格规则与案例分开维护等工程方法参考了 Lemo-Opuscar，本库保留自己的交付方式、合同与工具接口。</p>
+<h4>方法借鉴与社区支持</h4>
+<p>除完整集成的 Lemo-Opuscar 风格外，本库还从以下项目与作品研究中吸收方法，并形成自己的编排和检查规则。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>参考项目</th>
+<th>在本库中的借鉴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/alchaincyf/huashu-design">huashu-design</a></td>
+<td>方向、分镜、关键帧与声音审查</td>
+</tr>
+<tr>
+<td><a href="https://github.com/op7418/guizang-ppt-skill">guizang-ppt-skill</a></td>
+<td>内容槽位、风格和布局组织</td>
+</tr>
+<tr>
+<td><a href="https://github.com/nexu-io/open-design">OpenDesign</a></td>
+<td>观众所得、焦点、变换与停留</td>
+</tr>
+<tr>
+<td><a href="https://github.com/op7418/guizang-social-card-skill">guizang-social-card-skill</a></td>
+<td>内容与证据如何进入画面、首帧与短动态</td>
+</tr>
+<tr>
+<td><a href="https://github.com/op7418/guizang-product-video-skill">guizang-product-video-skill</a></td>
+<td>产品任务、真实组件与旁白量时</td>
+</tr>
+<tr>
+<td><a href="https://github.com/heygen-com/hyperframes-launches">HyperFrames launches</a></td>
+<td>产品任务证明、发布片组织与声画编排</td>
+</tr>
+<tr>
+<td><a href="https://github.com/yihui-dev/awesome-opus5-5-videos">awesome-opus5-5-videos</a></td>
+<td>表达母题、提示描述与作品关系的研究线索</td>
+</tr>
+</tbody>
+</table></div>
+<p>这些项目提供方法启发；本库对应的归纳、合同和适配关系记在 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/sources.md">来源说明</a> 与条目的来源字段中。感谢创作者开放分享。</p>
+<h4>安装</h4>
+<p>将仓库克隆到你的 Agent 能加载的 Skill 目录。以 Codex 为例，目标目录不存在时执行下面的命令。</p>
+<pre><code class="language-sh">git clone https://github.com/mileson/chaojifeng-video-design.git ~/.codex/skills/chaojifeng-video-design
+</code></pre>
+<p>已有同名 Skill 时，先检查自己的改动与私人素材，避免覆盖。其他支持 <code>SKILL.md</code> 的 Agent 可将完整目录放到对应的 Skill 路径，保留相对目录结构。</p>
+<h4>开始使用</h4>
+<p>在 Agent 中调用 <code>$chaojifeng-video-design</code> 并描述目标，例如下面几种任务。</p>
+<p>最短可以这样写：</p>
+<blockquote>
+<p>用 $chaojifeng-video-design 做一期关于【主题】的概念知识科普视频，一次性完成。</p>
+</blockquote>
+<p>也可以指定音乐：</p>
+<blockquote>
+<p>用 $chaojifeng-video-design，以我提供的【音乐文件】制作【主题】的概念知识科普视频，按这首曲子的结构编排，直接完成成片。</p>
+<p>为这个产品制作一条 30 秒竖版介绍视频。使用项目中已有的截图和素材，先确认要证明的任务，再完成镜头、声音、成片和必要编辑源。</p>
+<p>把这组图片组织成一条 20 秒视频，保留主体，安排画面重点与转场。音乐使用我提供的获准音轨。</p>
+<p>只修改第 3 个镜头，让操作结果更容易看清，并复验相关字幕和声音落点。</p>
+<p>我只需要分镜方案。请先核实 TCP 三次握手的事实，再用逐层递进的画面解释。</p>
+</blockquote>
+<p>Agent 会根据已有项目和工具选择实现方式。此仓库包含创作方法、合同、示例和检查脚本；生成、渲染、配音与导出需要宿主提供相应能力。它不附带通用视频渲染器，也不要求固定模型或引擎。</p>
+<p>明确要求“一次性完成、直接成片、无需试片”时，Agent 连续完成制作、内部检查和必要返修；要求分阶段审阅时，才在约定节点等待。只要方案、分镜或局部修改，也可以直接说明范围。</p>
+<h4>浏览和检查</h4>
+<p>在仓库根目录执行。查询与合同检查脚本使用 Python 3.10 或更新版本及标准库；媒体探测和部分测试还需要现有的 FFmpeg、ffprobe。无需安装 Python 第三方包。</p>
+<pre><code class="language-sh">python3 scripts/catalog.py --kind scenario list
+python3 scripts/catalog.py --kind recipe get product-task-proof
+python3 scripts/catalog.py --kind expression get visual.target-callout
+python3 scripts/validate_plan.py examples/product-demo.plan.json
+python3 -m unittest discover -s scripts -p 'test_*.py'
+</code></pre>
+<p>打开 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/assets/gallery/index.html">风格画廊</a>，用代表画面浏览全部 66 种风格，可搜索、按分类或视频任务筛选、并排对比，并复制当前风格的创作指令。59 张代表帧已嵌入 HTML，59 条样片随仓库一起分发，下载完整仓库后可直接离线播放；基础风格按实际参数呈现。需要动作与配方时进入 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/assets/gallery/expressions.html">表达目录</a>。也可以直接阅读 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/SKILL.md">Skill 入口</a>、<a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/plan-contract.md">计划合同</a> 和 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/runtime-and-delivery.md">执行与交付</a>。图册与计划示例用于理解和检查结构，实际作品仍需渲染、观看与试听。</p>
+<h4>音乐和声音</h4>
+<p>“概念知识科普”配方支持<strong>一个音乐池、多首候选、一首默认</strong>。选择顺序为：用户明确指定 → 项目已选 → 配方当前默认。新增候选与更换默认分别处理；单次指定只影响当前作品。换曲后重新分析实际乐段、拍点和映射，不沿用旧曲的节奏结论。</p>
+<p>当前 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/catalog/music.json">音乐目录</a> 保留“知识分享背景音乐神曲”的元信息，作为该配方的初始默认引用；仓库不附带音源。使用默认曲目前，需将获准的同一文件关联到本机位置表，脚本会核对哈希和实际时长。也可以直接指定自己的音乐文件，无需先修改音乐池：</p>
+<pre><code class="language-sh">python3 scripts/music_library.py search --recipe knowledge-music-explainer --limit 5
+python3 scripts/music_library.py select --recipe knowledge-music-explainer --source-file /project/music/chosen.wav
+</code></pre>
+<p>其他配方按各自配置与任务选曲。按 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/music-direction.md">音乐导演说明</a> 添加自己获准使用的曲目与片段，记录实际文件哈希、时长、来源和使用范围。音源位置通过项目内的 <code>*.local.json</code> 或 <code>CJF_VIDEO_MUSIC_REGISTRY</code> 关联，不提交到仓库。</p>
+<pre><code class="language-sh">python3 scripts/music_library.py validate-catalog
+python3 scripts/music_library.py search --scenario product-demo --emotion curious --role establish --limit 5
+python3 scripts/build_music_atlas.py
+</code></pre>
+<p>添加曲目后重新生成图册；仅导入音源位置表不会新增曲目。默认音源缺失或哈希变化时，选择工具返回具体缺口，不静默换曲。</p>
+<p><a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/knowledge-music-direction.md">概念知识科普编排</a> 说明音乐地图、字幕与旁白分支、阅读窗和声音提示；可选的 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/templates/knowledge-music-score.json">声画任务表</a> 通过 <code>explainer_timing_audit.py</code> 检查已声明的阅读窗与时间映射。结构检查不代替测拍、连续观看或听审。</p>
+<p>旁白参考由使用者自行提供，按 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/references/explainer-narration.md">讲解与声音参考</a> 检查授权、降噪派生、准确读稿和实际听感。仓库附带上述 59 条风格样片；私人声音、单独的付费歌曲和模型权重由使用者自行准备。</p>
+<h4>目录</h4>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>位置</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SKILL.md</code></td>
+<td>轻量入口与任务路由</td>
+</tr>
+<tr>
+<td><code>DIRECTOR.md</code> / <code>TECHNIQUE.md</code></td>
+<td>导演方法与制作能力适配</td>
+</tr>
+<tr>
+<td><code>MAINTAINING.md</code></td>
+<td>扩展、导入、生成与回归</td>
+</tr>
+<tr>
+<td><code>styles/</code></td>
+<td>独立风格包、完整风格规则与案例源码</td>
+</tr>
+<tr>
+<td><code>vendor/lemo-opuscar/</code></td>
+<td>锁定的共享文本源码、许可证与哈希清单</td>
+</tr>
+<tr>
+<td><code>references/</code></td>
+<td>导演、知识表达、镜头、声音与验收方法</td>
+</tr>
+<tr>
+<td><code>catalog/</code></td>
+<td>场景、风格、动效、表达与配方目录</td>
+</tr>
+<tr>
+<td><code>templates/</code></td>
+<td>计划、交付记录、声音事件表与其他模板</td>
+</tr>
+<tr>
+<td><code>examples/</code></td>
+<td>计划、知识包结构示例与成片案例</td>
+</tr>
+<tr>
+<td><code>scripts/</code></td>
+<td>查询、校验、探测、图册构建和离线测试</td>
+</tr>
+<tr>
+<td><code>assets/</code></td>
+<td>可视化风格画廊、动效配方目录和音乐图册</td>
+</tr>
+<tr>
+<td><code>evals/</code></td>
+<td>尚未执行的创作评测题目</td>
+</tr>
+</tbody>
+</table></div>
+<p>检查通过只说明对应结构或测量条件成立。画面、听感、事实与观众理解需要分别验收，未做的检查保留未验证状态。</p>
+<h4>许可与来源</h4>
+<p>本库原创代码、文档、模板和画廊程序采用 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/LICENSE">MIT License</a>。集成的 Lemo-Opuscar 代码和文档保留其 MIT 许可；59 条样片与代表帧采用其 CC BY 4.0 许可，具体素材署名和三条无声样片的变更见 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/THIRD_PARTY_NOTICES.md">第三方说明</a>。</p>
+<p>创作案例的使用范围见 <a href="https://github.com/mileson/chaojifeng-video-design/blob/a7c84de88f9632a013ab2db16cb9ab0543f897e9/examples/showcase/README.md#使用范围">案例说明</a>。其他字体、音乐、模型和素材按各自条件使用。</p>
+</div>
+
+<h3>MIT 许可声明（原文照录）</h3>
+<pre><code>MIT License
+
+Copyright (c) 2026 Chaojifeng
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：原作者 超级峰（<a href="https://github.com/mileson">@mileson</a> / <a href="https://x.com/Mileson07">@Mileson07</a>），原仓库 <a href="https://github.com/mileson/chaojifeng-video-design">https://github.com/mileson/chaojifeng-video-design</a>。代码与文档 MIT；集成风格代表帧来自 LemoLab · <a href="https://github.com/lemomo-ai/lemo-opuscar">Lemo-Opuscar</a>，<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>，本站仅做格式转换（jpg→webp、缩放）；作品封面帧版权归作者，仅作介绍引用。本站未转存任何视频。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/mileson/chaojifeng-video-design" rel="noopener">github.com/mileson/chaojifeng-video-design</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,5 +1,15 @@
 [
   {
+    "slug": "mileson-chaojifeng-video-design",
+    "title": "超级峰的视频设计方法论（chaojifeng-video-design）：让 Agent 当导演的视频 Skill",
+    "desc": "mileson/chaojifeng-video-design 中文项目页：一个给 Codex / Claude Code 等 Agent 用的视频设计 Skill——先定观众所得，再排镜头、素材、文字与声音；8 类视频任务、66 套风格（7 套自有 + 59 套集成自 Lemo-Opuscar）、18 类配方、64 项表达、12 项动效；招牌的“音乐 + 主题 + 风格”音乐驱动三维世界工作流（Three.js / Blender + Remotion 起步工程），安装、调用、六步流程、案例与局限；附 README 中文原文全文镜像（MIT）。",
+    "source": "超级峰 @mileson · GitHub（MIT）",
+    "date": "2026-10-28",
+    "type": "全文镜像",
+    "subtitle": "Chaojifeng Video Design · a director-first video skill for coding agents",
+    "original_url": "https://github.com/mileson/chaojifeng-video-design"
+  },
+  {
     "slug": "unclebob-ub-mode",
     "title": "ub-mode：Uncle Bob 给编码 Agent 的“先让它能跑，再让它正确”（导读）",
     "desc": "Robert C. Martin（Uncle Bob）开源的 Agent skill「ub-mode」中文导读：一页 SKILL.md 把工程纪律压成 First Make it Work / Then Make it Right / Practice 三段（TDD、让非法状态不可表示、边界校验、幂等、修根因、测行为不测实现、小步提交、守住上下文窗口），并把“代码好不好”交给 crapper（CRAP < 10）、dryer（重复度 < 0.8）、mutator（变异测试）与 uml-viewer 这些确定性质量门。含来由（X 帖子时间线，UTC+8）、安装方法、原则一览、典型回合示意与读后注记；仓库未声明许可证，仅转述与短引。",
