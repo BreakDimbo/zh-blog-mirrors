@@ -694,7 +694,7 @@
   {
     "slug": "andyhuo520-digital-human-koubo",
     "title": "Digital Human Koubo：一张照片 + 一句话，让 AI Agent 做出数字人口播成片",
-    "desc": "andyhuo520（Berryxia）/digital-human-koubo 项目导读：装进 Claude Code / Codex 的数字人口播 Skill——persona.json 固定形象，先报价再经 Renoise MCP（Grok Video 1.5）按 ≤15 秒分段生成对口型片段，whisper 回听 + 抽帧质检、频谱匹配声音统一、逐字时间轴，Remotion 套 5 种剪辑风格与 48 个头部博主包装组件（含 macOS Vision 景深字）出 MP4；成本实测、局限（付费云依赖、换声口型差 ~100 ms、形象版权限制）。MIT，附中文 README 逐字镜像；配图为仓库 docs 图转 webp。",
+    "desc": "andyhuo520（Berryxia）/digital-human-koubo 项目导读：装进 Claude Code / Codex 的数字人口播 Skill——persona.json 固定形象，先报价再经 Renoise MCP（Grok Video 1.5）按 ≤15 秒分段生成对口型片段，whisper 回听 + 抽帧质检、频谱匹配声音统一、逐字时间轴，Remotion 套 5 种剪辑风格与 48 个头部博主包装组件（含 macOS Vision 景深字）出 MP4；成本实测、局限（付费云依赖、换声口型差 ~100 ms、形象版权限制）。MIT，附中文 README 逐字镜像；配图为仓库 docs 图转 webp。（10-28 增补：模型与付费依赖一览表、Grok 原生说话 vs Wan 音频驱动两条口型路线、finance-explainer 事实清单与真人录音对齐流程、GB 45438 AI 标识与肖像/声音授权风险、Renoise utm 利益关联、未核实清单与站内相关阅读。）",
     "source": "andyhuo520/digital-human-koubo（GitHub）",
     "date": "2026-10-27",
     "type": "导读",

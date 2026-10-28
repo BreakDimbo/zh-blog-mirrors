@@ -34,7 +34,7 @@
 <!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>这是一个装进 AI 编程 Agent（Claude Code、Codex 等）的“数字人口播”技能包。你给它一张照片和一句需求，它会写稿、报价、通过 Renoise MCP 调用 Grok Video 1.5 分段生成会对口型的数字人片段，再在本机用 ffmpeg、whisper 和 Remotion 做质检、修音、字幕和头部博主风格的包装，最后输出 MP4 成片。</div>
 
 <p class="hero-tags"><span class="tag">★ 805 stars</span> <span class="tag">202 forks</span> <span class="tag">TypeScript · Python · Shell</span> <span class="tag">MIT</span> <span class="tag">Agent Skill（SKILL.md）</span> <span class="tag">Renoise MCP</span> <span class="tag">Remotion 4</span></p>
-<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-27 12:15（UTC+8）。仓库建于 2026-10-26 12:34（UTC+8），最后推送 2026-10-26 19:52（UTC+8），最新提交 <code>5fa9b19</code>。一天之内拿到八百多颗星，说明这类“Agent 一条龙做口播”的需求相当旺盛。</p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-27 12:15（UTC+8）。仓库建于 2026-10-26 12:34（UTC+8），最后推送 2026-10-26 19:52（UTC+8），最新提交 <code>5fa9b19</code>。（10-28 复核：★ 1,269 / 295 forks，代码未更新，见文末“2026-10-28 复核与增补”。）一天之内拿到八百多颗星，说明这类“Agent 一条龙做口播”的需求相当旺盛。</p>
 
 <figure><img src="images/cover.webp" alt="封面：左侧大字“一张照片 + 一句话 / 27 秒直播带货广告”，右侧三张 9:16 竖屏截图，AI 女主播在直播间讲课程促销，画面带价格花字和画中画" loading="lazy"><figcaption>仓库封面图 <code>docs/images/cover.jpg</code>（© Berryxia），本站压缩为 WebP。画面中的主播是作者自己的 AI 数字人；依仓库 NOTICE，人物形象仅作演示，请勿在自己的内容中使用。</figcaption></figure>
 
@@ -108,6 +108,92 @@ skills/finance-explainer/  风格 A 引擎（episode.json 拍表、检索与对�
 <li><strong>伦理红线。</strong>作者要求只用本人或明确授权的脸和声音、每条片子标注“内容由 AI 数字人演绎”、不编造价格与评价。“小林式”风格只学结构与剪辑语法，不得使用真实创作者的脸、声音和原话。数字人带货广告在各平台的标注规定需自行核对。</li>
 </ul>
 <figure><img src="images/burned-subtitles.webp" alt="Grok 生成的横屏口播画面中出现了模型自行烧入的字幕" loading="lazy"><figcaption>“踩过的坑”之一：Grok 横屏口播偶尔自己烧字幕，提示词写了也挡不住，只能抽帧发现后重拍（<code>docs/images/burned-subtitles.jpg</code>，© Berryxia）。</figcaption></figure>
+
+<h2 id="update-1028">2026-10-28 复核与增补</h2>
+<div class="related-guide"><strong>本节说明：</strong>10 月 28 日本站重新浅克隆了仓库，并通读了上次没有展开的 <code>SKILL.md</code>、<code>persona.json</code>、<code>references/</code>（含 finance-explainer 的制作手册）、<code>NOTICE.md</code> 与 <code>THIRD_PARTY.md</code>，结果补在这一节。前文保持不变。凡是本站<strong>没有亲自跑过</strong>的数字（价格、准确率、效果），都按作者自报处理，标 ⚠️；本站自己的推断也标 ⚠️ 推断。</div>
+
+<h3>仓库现状</h3>
+<ul>
+<li><strong>代码没有更新。</strong>最新提交仍是 <code>5fa9b19</code>（2026-10-26 17:03，UTC+8），与 10-27 收录时相同；最后两次提交只是把 Renoise 注册链接改成带 utm 追踪参数的版本。</li>
+<li><strong>热度：</strong>★ 1,269 / 295 forks（公开 GitHub API，2026-10-28 23:50 UTC+8；10-27 收录时 ★ 805 / 202）。</li>
+<li><strong>演示视频：</strong>Issue #1 曾报告 README 里 8 个演示 MP4 链接全部 404（10-26 14:50 UTC+8），现已关闭；<code>v1.0.0</code> Release 已于 10-26 19:52（UTC+8）发布，8 个视频都在。本站依规则不下载视频，只用仓库自带的封面帧。</li>
+<li><strong>社区补丁：</strong>PR #3（未合并）把抽帧拼图脚本里写死的 macOS 字体路径改成跨平台查找。这说明部分辅助脚本默认只在作者的 Mac 上测过，Linux / Windows 用户可能踩到同类问题。⚠️ 推断</li>
+</ul>
+
+<h3>模型与付费依赖一览</h3>
+<p>前文说“依赖付费云服务”，这里把各环节具体用了什么列出来。价格单位是 Renoise 积分，来自 <code>persona.json</code>、<code>references/new-avatar.md</code> 与 <code>finance-explainer/references/production.md</code>（后者注明“2026-10-21 实测”）。积分和人民币 / 美元怎么换算，仓库里没写 ⚠️。</p>
+<table>
+<thead><tr><th>环节</th><th>用什么</th><th>在哪跑 / 是否付费</th><th>作者给的价格</th></tr></thead>
+<tbody>
+<tr><td>会说话的数字人（主力）</td><td>Grok Video 1.5（参考图 + 提示词里写台词，自带配音和口型）</td><td>云端 · Renoise 积分</td><td>720p 17/秒、480p 10/秒；15 秒一段 720p = 255</td></tr>
+<tr><td>用自己的声音驱动口型</td><td>Wan 3.0 参考模式（参考图 + 参考音频）；README 和教程模板还提到 OmniHuman</td><td>云端 · Renoise 积分</td><td>480p 约 6/秒（720p 翻倍）；输出音频比画面晚 0.23 秒，需要补偏移</td></tr>
+<tr><td>定妆照 / 四视图 / 场景开场画面</td><td>GPT Image 2.5（主 Skill）；Seedream 5.0 Pro（finance-explainer）</td><td>云端 · Renoise 积分</td><td>GPT Image 2.5 2k 约 23；Seedream 约 6</td></tr>
+<tr><td>空镜、梗、贴纸</td><td>Wan 3.0 无声短片；grok-image 绿底贴纸后抠像</td><td>云端 · Renoise 积分</td><td>5 秒 30 / 10 秒 60；贴纸约 3</td></tr>
+<tr><td>保留节奏、换成主播音色</td><td>Seed Audio 1.0 re-voicing 等</td><td>云端</td><td>未给价格 ⚠️</td></tr>
+<tr><td>声音克隆 / 音色设计（可选）</td><td>小米 MiMo <code>mimo-v2.5-tts-voiceclone</code> / <code>voicedesign</code></td><td>云端 API · 自备密钥</td><td>未给价格 ⚠️</td></tr>
+<tr><td>事实检索、图库（finance-explainer）</td><td>Exa / Tavily / Serper / Firecrawl；Unsplash / Pexels / Pixabay / Wikimedia</td><td>云端 API · 自备密钥</td><td>未给价格；各家是否有免费额度要自己看 ⚠️</td></tr>
+<tr><td>回听质检、逐字对齐</td><td>whisper.cpp + ggml-medium-q5_0</td><td>本机 · 免费（MIT）</td><td>—</td></tr>
+<tr><td>景深字抠像</td><td>Apple Vision 人像分割（<code>personmask.swift</code>）</td><td>本机 · 仅 macOS</td><td>—</td></tr>
+<tr><td>剪辑与渲染</td><td>Remotion 4 + ffmpeg</td><td>本机 · Remotion 对 3 人以上公司要买授权</td><td>—</td></tr>
+</tbody>
+</table>
+<p>结论：<strong>所有“生成画面 / 声音”的环节都在云端付费</strong>，本机只做检查、对齐、剪辑。仓库没有本地视频生成方案。想把声音这一环换成本地，可以参考本站的 <a href="../debpalash-voicestudio/">VoiceStudio</a>；想要本地生成音视频，可以参考 <a href="../servasyy-minimax-h3-local-deploy/">MiniMax H3 本地部署</a>（需要大显存，效果与本项目没有可比的公开测试 ⚠️）。</p>
+
+<h3>两条“开口”路线：G 与 W</h3>
+<p>finance-explainer 的制作手册把“让数字人说话”拆成两种方案，并给了作者的对比（⚠️ 作者自报，本站未测）：</p>
+<table>
+<thead><tr><th></th><th>G：Grok Video 1.5 原生说话</th><th>W：Wan 3.0 音频驱动</th></tr></thead>
+<tbody>
+<tr><td>输入</td><td>1 张参考图 + 提示词里写台词</td><td>参考图 + 这一拍的音频</td></tr>
+<tr><td>口型</td><td>和它自己生成的声音天然一致；事后换声约差 100 毫秒</td><td>跟着你给的音频走；停顿时偶尔不闭嘴</td></tr>
+<tr><td>表情</td><td>灵动：眨眼、挑眉、手势多</td><td>偏呆、变化少</td></tr>
+<tr><td>单段时长</td><td>≤ 15 秒</td><td>2–30 秒</td></tr>
+<tr><td>坑</td><td>每段音色略有差异；型号要写成中文读法，否则会念成英文</td><td>音画偏移 0.23 秒</td></tr>
+</tbody>
+</table>
+<p>作者推荐的组合是：全屏特写用 G 720p；画中画小窗用 G 480p 或 W，或者干脆用 3 段 10 秒的通用说话循环轮流播放，据称能省约 40% 口型费用 ⚠️。主 Skill 的 <code>persona.json</code> 里还写了“白背心数字人”之外的三个角色：用户本人（只准用在用户自己的片子里）、橘猫店长、柴犬新闻主播；多语言 whisper 回听准确率写的是英 / 日 / 法 / 西 100%、阿拉伯语 99%、韩语 94%（⚠️ 作者 2026-10 自测）。</p>
+<p>细节上的小出入：README 说 OmniHuman 的写法“Skill 里有”，但本站在 <code>SKILL.md</code> 和 <code>references/</code> 里只找到 Wan 3.0 的写法，OmniHuman 只出现在教程模板的台词和画面里。</p>
+
+<h3>finance-explainer：把“小Lin说式”解说写成流水线</h3>
+<figure><img src="images/posters/xiaolin-style-explainer.webp" alt="风格 A 财经解说示例的封面帧：数字人主播在书房场景中讲解，旁边是图表" loading="lazy"><figcaption>风格 A 示例（2 分 21 秒）的封面帧，<code>docs/posters/xiaolin-style-explainer.jpg</code>（© Berryxia），本站压缩为 WebP，未下载视频。</figcaption></figure>
+<p>上次只简单提了这个副 Skill。读完 <code>SKILL.md</code> 和 6 份参考文档后，可以确定它是整个仓库里流程最严的一部分：</p>
+<ul>
+<li><strong>先查事实再写稿。</strong><code>research.py</code> 找线索、打开原文核对，写成 <code>facts.md</code>：每条都是“事实 — 日期 — 来源 URL”；剧本里的数字必须能在清单里找到，查不到的标 ⚠ 且不进剧本，主播可以直接说“这个我没查到”。</li>
+<li><strong>剧本就是拍表。</strong><code>episode.json</code> 每一拍写一段口播、一个主画面（主播全屏 / 侧边 / 小窗 / 下场，或图表、空镜）和若干叠加卡片，用 <code>[[cue]]</code> 标卡点。三种骨架：危机型、收购博弈型、悖论型。文案指标写得很具体：成片约 6 字/秒，每分钟 1–2 个设问、3–4 个带参照物的数字。</li>
+<li><strong>首选真人录音。</strong><code>align_recording.py</code> 按停顿把长录音切开逐段转写，口误只留最后一遍，拍内长停顿压到 0.16 秒；MiMo 预设音色只是占位。这一点和主 Skill（默认用 Grok 原生配音）不同。</li>
+<li><strong>频道拆解有数据。</strong><code>channel-teardown.md</code> 写的是 160 支视频的元数据、97 支字幕统计、6 支逐帧分类（⚠️ 作者自报，原始数据未随仓库提供）。</li>
+<li><strong>小问题：</strong>SKILL.md 里提到的 <code>promo-video</code>、<code>ai-teardown</code> 两个 Skill 不在本仓库，大概是作者自己的其他工具 ⚠️ 推断。</li>
+</ul>
+
+<h3>合规与伦理：数字人的脸和声音</h3>
+<p>以下是本站补充的背景，<strong>不是法律意见</strong>；各平台、各地区的规则要以最新原文为准。</p>
+<ul>
+<li><strong>仓库自己的红线写得比较全：</strong>只用本人或明确同意的脸和声音；不冒充真人；“小林式”只学结构，不用真实创作者的脸、声音、布景和原话；生成前先报价。finance-explainer 还要求做“身份核查”：用户给的脸如果被说成某位真实创作者，或者只是把真人照片改了发型眼镜，就不用。</li>
+<li><strong>中国大陆的 AI 标识规则：</strong>《人工智能生成合成内容标识办法》自 2025-09-01 起施行，第十条要求用户发布 AI 生成合成内容时主动声明并标识；配套强制性国家标准 GB 45438—2025 规定，视频的显式标识文字要同时含“人工智能 / AI”和“生成 / 合成”，放在起始画面的边角，字高不低于画面短边的 5%，至少显示 2 秒（<a href="https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm" rel="noopener">网信办原文</a>）。</li>
+<li><strong>⚠️ 推断：主 Skill 的默认标注可能不够。</strong><code>persona.json</code> 里写的标注是“内容由 AI 数字人演绎”，其中没有“生成 / 合成”字样；finance-explainer 用的角标“AI 生成数字人演示 · 非商用”则符合上述要素。在大陆平台发布时，建议把字样、位置、字号、时长都按 GB 45438 核一遍。</li>
+<li><strong>肖像与声音：</strong>《民法典》第 1019 条禁止“利用信息技术手段伪造”他人肖像，第 1023 条规定声音参照肖像权保护；《互联网信息服务深度合成管理规定》第十四条要求提供人脸、人声编辑功能的服务提示使用者告知被编辑的个人并取得单独同意。也就是说，拿别人的照片或声音做数字人，风险不只在平台规则。</li>
+<li><strong>仓库里的人物不能拿来用。</strong>NOTICE 写明：MIT 只覆盖代码和文档；白背心主播、作者本人的形象都只供演示。<code>persona.json</code> 里的 <code>material:</code> ID 属于作者的 Renoise 账号，别人本来也调不了。</li>
+<li><strong>利益关联：</strong>README、THIRD_PARTY 与 SKILL.md 中的 Renoise 链接都带 <code>utm_source=official</code>，最后两次提交专门加上这个参数；SKILL.md 还要求 Agent 原样给出这条链接。演示片“产品推荐口播”的文件名是 <code>renoise-koubo-huazi</code>。作者和 Renoise 有没有合作或分成，仓库里没有说明 ⚠️ 推断，读者可自行判断。</li>
+</ul>
+
+<h3>未核实与推断清单</h3>
+<ul>
+<li>⚠️ 成本（482 / ~3,250 / ~3,409 积分）、单价、语言准确率、齿音段间差 13.2 → 5.9 dB、“省约 40%”：都是作者自报，本站没有 Renoise 账号，也没有跑过生成。</li>
+<li>⚠️ 成片效果：本站只看了仓库自带的封面帧和 GIF 静帧，没有看完整视频，无法评价口型和画质。</li>
+<li>⚠️ 除 Claude Code 外的 Agent（Codex、OpenClaw、WorkBuddy 等）兼容性是作者写的“预期可用 / 应可用”。</li>
+<li>⚠️ 推断：Renoise 的商业关联、<code>promo-video</code> / <code>ai-teardown</code> 的来源、部分脚本仅在 macOS 测过。</li>
+</ul>
+
+<h3>本站相关阅读</h3>
+<ul>
+<li><a href="../receptron-avatarscript/">AvatarScript</a>：同样是“让形象替你开口”，但走可复现的确定性 rig 路线，正好和本项目对照。</li>
+<li><a href="../debpalash-voicestudio/">VoiceStudio</a>：本地声音克隆和配音，可以替换本项目里的 MiMo / Seed Audio 环节（默认权重非商用 ⚠️）。</li>
+<li><a href="../hitomiiim-qiyu-one-image-rig/">若泉绮羽：一张立绘自动绑定</a>：从单张图出发的另一条数字人路线（二次元、实时驱动）。</li>
+<li><a href="../imagine-odyssey-oath-prompting-guide/">Grok Imagine《奥德赛》制作揭秘</a>：先做好角色设定图和关键帧再让画面动，和本项目“四视图 → 参考图 → 开口”的做法同一个思路。</li>
+<li><a href="../hypit/">Hypit</a>、<a href="../huashu-motion/">Huashu-motion</a>、<a href="../vibe-knowledge-film/">vibe-knowledge-film</a>：同样是让 Agent 按 Skill 出视频，分别侧重克隆爆款结构、商业发布片和知识短片。</li>
+<li><a href="../servasyy-minimax-h3-local-deploy/">MiniMax H3 本地部署</a>、<a href="../minimax-h3-director/">H3 Director 工作流</a>：本地或 ComfyUI 生成音视频的路线。</li>
+<li><a href="../qingj-ai-shuorenhua/">怎么让 AI 说人话</a>：口播稿写得像真人说话，和 finance-explainer 的“活人感手法”可以对照着读。</li>
+</ul>
 
 <h2 id="takeaways">小结</h2>
 <p>这个仓库的价值不在某个新模型，而在<strong>把一整条短视频生产线写成了 Agent 能照做的 SOP</strong>：花钱前停下来问人、每一段都有机器质检、声音和画面的“缝”都有脚本去缝、包装手法被拆成可调用的组件。与 <a href="../receptron-avatarscript/">AvatarScript</a> 那种从头像 rig 出发、强调可复现的路线相比，它更贴近当下内容创作者的实际需求——真人感、快、可商用——代价是依赖付费云模型和更多的重拍成本。</p>
