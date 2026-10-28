@@ -1,7 +1,62 @@
 {
- "updated": "2026-10-27T09:59:40.695812+08:00",
+ "updated": "2026-10-28T10:06:59.462922+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "luxinzhang.me",
+   "url": "https://luxinzhang.me/",
+   "title": "Luxin Zhang | Golden Gate Castle",
+   "description": "Step inside Luxin Zhang’s Golden Gate castle exhibition hall, with San Francisco bay windows and three friendly cats. Explore AI projects, research, awards, open source, and a little world of stories — and meet your preset guide.",
+   "shared_by": "@luxi95411",
+   "reply": "https://x.com/luxi95411/status/2115174603308093919",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "imanu.xyz",
+   "url": "https://imanu.xyz/",
+   "title": "Manu Bhardwaj | Staff Software Engineer Portfolio",
+   "description": "Portfolio website of Manu Bhardwaj",
+   "shared_by": "@shipwithmanu",
+   "reply": "https://x.com/shipwithmanu/status/2115147157783371856",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "folasewaogunsola.framer.website",
+   "url": "https://folasewaogunsola.framer.website/",
+   "title": "Folasewa O. portfolio | 0-1 Product Designer",
+   "description": "Sewa Ogunsola | 0-1 Product Designer",
+   "shared_by": "@shewa_lee",
+   "reply": "https://x.com/shewa_lee/status/2115055547775066537",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "jacobcritch.com",
+   "url": "https://jacobcritch.com/",
+   "title": null,
+   "description": null,
+   "shared_by": "@JacobLCritch",
+   "reply": "https://x.com/JacobLCritch/status/2115052441167180163",
+   "recommended": false,
+   "owner": null,
+   "status": "error"
+  },
+  {
+   "domain": "yueb1ng.com",
+   "url": "https://yueb1ng.com/",
+   "title": "YUEB1NG",
+   "description": "Wabi — an interactive prism, a quiet starfield, and a few words to uncover.",
+   "shared_by": "@YUEB1NG",
+   "reply": "https://x.com/YUEB1NG/status/2115051603619410372",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "whois.fpszero.com",
    "url": "https://whois.fpszero.com/",
