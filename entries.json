@@ -1,5 +1,15 @@
 [
   {
+    "slug": "humpalumps-ultra-water",
+    "title": "Ultra Water：在浏览器里算出一片海",
+    "desc": "three.js（WebGL2）实时 FFT 海洋渲染器（Humpalumps，MIT，★197）：4 级联 Tessendorf FFT + 毛细波层、程函旅行时间驱动的近岸破浪与流动泡沫、Evan Wallace 焦散、水下斯涅尔窗与光束、GPU 异步回读浮力、Hillaire 2020 天空；全部提交与 Claude Opus 5.5 共同署名。项目导读 + 本站本地运行截图 + README 全文中译；fps 为作者自报 ⚠️。",
+    "source": "GitHub · Humpalumps/Ultra-Water",
+    "date": "2026-10-29",
+    "type": "导读",
+    "subtitle": "Real-time FFT ocean renderer for three.js · 项目导读 + README 全译",
+    "original_url": "https://github.com/Humpalumps/Ultra-Water"
+  },
+  {
     "slug": "imagine-odyssey-oath-prompting-guide",
     "title": "Grok Imagine《奥德赛》第 1 集《誓言》制作揭秘：从剧本到成片的提示词指南",
     "desc": "Grok Imagine 官方 @imagine X 长文《Inside Episode 1: The Oath》全文中译：与 Wonder Studios、导演 Dev Walker 用 3–5 人小团队公开制作取材《塞浦路斯之歌》的短剧——剧本与逐镜分镜表、按场次/A-B roll 命名素材、Canvas 画布按镜头管理、三栏灰底角色设定图与奥德修斯角色提示词、五个场景与统一影调（写明机位/镜头/胶片）、关键帧先行、7 段式视频提示词（失败就写短）、中间关键帧控制入画时机、手持战斗镜头提示词、剪辑声音调色约 18 小时。提示词英文原文 + 中译，附评论区与核实注记。",
