@@ -331,8 +331,8 @@
   {
     "slug": "anatomy-skill",
     "title": "Anatomy：说出一个想法，Claude 把它造成一台会动的机器",
-    "desc": "一个把想法变成可交互机械动画的 Claude Code Skill，中文翻译。",
-    "source": "Ryan @wheresryan22 · MIT",
+    "desc": "一个把想法变成可交互机械动画的 Claude Code Skill，中文翻译。（10-29 增补：Elvar @elvar_official 实战长文《把任何问题变成一台能运行的机器》全文中译——意式咖啡机案例、6 要素、10 条提示词英中对照（造机器/一眼看懂/画风/评论家检查/录视频/配乐/并行/建站/滑块），附利益相关（visual-learning.app 为作者自站）、付费依赖与未核实数据注记，以及仓库 1.1.0 之后的更新摘要。）",
+    "source": "Ryan @wheresryan22 · MIT；增补：Elvar @elvar_official",
     "date": "2026-10-11",
     "type": "翻译"
   },

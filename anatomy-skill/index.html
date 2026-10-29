@@ -6,7 +6,7 @@
   <title>Anatomy：说出一个想法，Claude 把它造成一台会动的机器（Claude Code Skill 中文翻译）</title>
   <meta name="description" content="Anatomy 是一个 Claude Code / Agent Skill：把技术概念画成可交互的等轴测机器图（SVG、WebGL、3D）。README 与发布帖中文翻译，原作者 @wheresryan22，MIT 许可。" />
   <meta property="og:title" content="Anatomy：Claude 造出解释想法的机器（中文翻译）" />
-  <meta property="og:image" content="images/raptor-engine-firing.webp" />
+  <meta property="og:image" content="https://breakdimbo.github.io/zh-blog-mirrors/anatomy-skill/images/cover.webp" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
@@ -21,17 +21,18 @@
 <p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-11">2026.10.11</time></p>
 <h1 class="za-title">Anatomy：说出一个想法，Claude 把它造成一台会动的机器</h1>
 
-<p class="za-meta" data-za-gen><span>来源 · Ryan @wheresryan22 · MIT</span><span>收录 · 2026-10-11</span><span><a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">查看原文 ↗</a></span></p>
+<p class="za-meta" data-za-gen><span>来源 · Ryan @wheresryan22 · MIT；增补：Elvar @elvar_official</span><span>收录 · 2026-10-11</span><span><a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">查看原文 ↗</a></span></p>
 <!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/wheresryan22/status/2108948624004526516">x.com/wheresryan22/status/2108948624004526516</a>（串内仓库帖：<a href="https://x.com/wheresryan22/status/2108948630011056355">2108948630011056355</a>）</p>
   <p class="source">仓库：<a href="https://github.com/wheresryan22/anatomy">github.com/wheresryan22/anatomy</a> · 官网：<a href="https://skills.wheresryan.sh/anatomy">skills.wheresryan.sh/anatomy</a></p>
-  <p class="meta-line">作者：Ryan（R，@wheresryan22） · 发布于 2026-10-10 23:51（UTC+8） · 抓取于 2026-10-11（UTC+8），README 版本 dbf697a · 非官方中文翻译镜像</p></div><!-- /za:origin -->
+  <p class="meta-line">作者：Ryan（R，@wheresryan22） · 发布于 2026-10-10 23:51（UTC+8） · 抓取于 2026-10-11（UTC+8），README 版本 dbf697a · 非官方中文翻译镜像</p>
+  <p class="meta-line">2026-10-29 增补：Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）X 长文 <a href="https://x.com/elvar_official/status/2111831136171151589">How I Turn Any Question Into a Machine You Can Run</a>（2026-10-18 22:45 UTC+8）全文中译与 10 条提示词，另附仓库 1482e84 的更新摘要</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><article>
-<div class="related-guide"><strong>镜像说明：</strong>本页翻译了作者的 X 发布帖和 Anatomy 仓库 README（MIT 许可）的主要内容，结构与原文对应，并带署名和原文链接。图片来自仓库 <code>.github/assets/</code>，还有发布视频的截帧。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。社区作品见 <a href="../anatomy-community/">Anatomy 社区作品展</a>。</div>
+<div class="related-guide"><strong>镜像说明：</strong>本页翻译了作者的 X 发布帖和 Anatomy 仓库 README（MIT 许可）的主要内容，结构与原文对应，并带署名和原文链接。图片来自仓库 <code>.github/assets/</code>，还有发布视频的截帧。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。社区作品见 <a href="../anatomy-community/">Anatomy 社区作品展</a>。<br><strong>2026-10-29 增补：</strong>文末新增 Elvar 的实战长文全文中译，含 10 条提示词的英中对照，见<a href="#elvar">增补一节</a>。</div>
 <figure class="cover-fig"><img src="images/raptor-engine-firing.webp" alt="Raptor 2 发动机试车台等轴测图" /><figcaption><code>examples/raptor-engine</code>，浅色主题，点火状态。发动机和试车台是 SVG，尾焰是同一等轴测相机里的 WebGL 着色器。</figcaption></figure>
 <nav class="toc"><strong>目录</strong><ol>
-<li><a href="#post">发布帖</a></li><li><a href="#quick">快速上手</a></li><li><a href="#gallery">图库</a></li><li><a href="#kinds">能做什么</a></li><li><a href="#install">安装</a></li><li><a href="#usage">用法</a></li><li><a href="#examples">示例</a></li><li><a href="#how">工作原理</a></li><li><a href="#req">环境要求</a></li><li><a href="#limits">局限</a></li></ol></nav>
+<li><a href="#post">发布帖</a></li><li><a href="#quick">快速上手</a></li><li><a href="#gallery">图库</a></li><li><a href="#kinds">能做什么</a></li><li><a href="#install">安装</a></li><li><a href="#usage">用法</a></li><li><a href="#examples">示例</a></li><li><a href="#how">工作原理</a></li><li><a href="#req">环境要求</a></li><li><a href="#limits">局限</a></li><li><a href="#elvar">2026-10-29 增补：Elvar 实战长文与 10 条提示词</a></li></ol></nav>
 
 <h2 id="post">发布帖</h2>
 <blockquote>隆重介绍 Anatomy<br>用一句话描述一台机器，Claude 就让它活过来。<br>· 可交互的等轴测线框图，能旋转、细看、探索<br>· 用 WebGL 着色器画火焰、水、等离子体等<br>· 真正的 3D 运动，单个零件可以转动、移动<br>以 Agent Skill 形式安装。完全开源。</blockquote>
@@ -130,10 +131,362 @@
 </ul>
 <blockquote><b>3D 模式仍是 beta。</b>它只在自带示例和一张测试图上验证过，还没用于生产级图。小型 3D 图能跑 60 fps；380 零件的压力测试机械手在一台高负载机器上测得：1440 px 宽约 20 fps，限速手机配置下 13 到 15 fps。</blockquote>
 <p>欢迎提 Issue 和 PR，提交前请先读 CONTRIBUTING.md。其中的规矩包括：代码里不写注释；改动工具包时，所有现有示例的输出必须逐字节不变。许可证：MIT © 2026 Ryan · @wheresryan22。</p>
+
+<hr>
+<section id="elvar-2026-10-29">
+<h2 id="elvar">2026-10-29 增补：Elvar《把任何问题变成一台能运行的机器》（X 长文全文中译）</h2>
+<div class="related-guide"><strong>增补说明（2026-10-29，UTC+8）：</strong>以下是 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）2026-10-18 22:45（UTC+8）发布的 X 长文 <a href="https://x.com/elvar_official/status/2111831136171151589">How I Turn Any Question Into a Machine You Can Run</a> 的全文中译。这是作者本人的原创长文，按本站规则全文翻译，10 条提示词保留英文原文，并附中文对照；英文全文放在本节末尾的折叠附录里。Elvar <b>不是</b> Anatomy 的作者，他是用这个 Skill 做东西的第三方创作者。按 R6 规则，同一项目的内容并入本页，不另建新页。封面与两张视频海报帧取自原帖（只取海报帧，没有下载视频），网站截图由本站用 Chrome 截取。</div>
+<figure><img src="images/cover.webp" alt="Elvar 长文封面：Claude Code × anatomy / Visual learning" loading="lazy"><figcaption>原文封面图（Elvar）。图里的 Claude Code 和 anatomy 字标是作者自己做的拼贴，不代表 Anthropic 或 Anatomy 作者官方背书。</figcaption></figure>
+
+<div class="related-guide"><p><strong>先读这几条（本站注记）</strong></p><ul>
+<li>⚠️ <b>利益相关：</b>文末推荐的 <a href="https://visual-learning.app/">visual-learning.app</a> 是 Elvar 自己的网站，页面标着 “Made by @elvar_official”。网站目前免费、没看到收费入口，但这篇文章本身也在给他的网站引流。文中没有提到他和 Anatomy 作者 Ryan 有合作或报酬关系，这一点本站无法核实。</li>
+<li>⚠️ <b>付费依赖：</b>文中路线依赖 Claude Code，需要包含 Claude Code 的付费 Claude 套餐（或 API 计费）。Skill 本身免费，MIT 许可。仓库 README 现在也写明支持 Antigravity、OpenCode、Codex 和 MiniMax Code，不只是 Claude Code。</li>
+<li>⚠️ <b>“10 分钟”与仓库说法不一致：</b>作者说 10 分钟就做出了咖啡机，但 Anatomy README 的“局限”一节写的是“它故意很慢，一张图要一个很长的会话”。CHANGELOG 也提到，因为 30–90 分钟的预估常常比实际构建长得多，已经去掉了耗时预估（#41）。耗时因模型、机器和图的复杂度差异很大，“10 分钟”是作者自报。</li>
+<li>⚠️ <b>未核实的自报数据：</b>打气筒课 122,818 次浏览、洗衣机 110,691 次浏览、像素跳变统计（900–1,400 / 95,245 像素、612 帧）、视频 2,160 帧 / 4.5 MB，都是作者自报，本站没有复现。文末说“目前做了 12 台”，但 2026-10-29 本站访问该网站时，导航显示 “all 40”，应该是发文后陆续增加的（⚠️ 推断）。</li>
+<li><b>本站做过的数字核对：</b>微波炉 6.12 cm：2.45 GHz 微波的波长约 12.24 cm，驻波相邻热点间距是半个波长，约 6.12 cm，用 2 × 6.12 cm × 2.45 GHz 算出约 3.0×10⁸ m/s，自洽。咖啡机参数（18 g 粉出 36 g 液，约 1:2；27 s；弹簧拉杆机 9 bar 降到 6 bar；锅炉约 1.1 bar）都在常见范围内，但属于典型值，不是某台具体机器的实测（⚠️ 推断）。“Node.js 22.20 或更新”与 README 一致：这是 skills CLI 1.7.1 的要求，Skill 本身只要 Node 20.10+。“8 个示例”与 README 表格一致。</li>
+</ul></div>
+
+<figure><img src="images/visual-learning-espresso.webp" alt="visual-learning.app 上的弹簧拉杆意式咖啡机交互图" loading="lazy"><figcaption>visual-learning.app/espresso-machine，本站 2026-10-29 用 Chrome 截图，初始状态。左侧为步骤按钮，下方是读数标签和“核心道理”。</figcaption></figure>
+
+<h3>正文（中译）</h3>
+<p class="lede">一个免费的 Claude Skill，能把任何讲解变成一台人们可以点着走一遍的机器。下面是配置方法和全部 10 条提示词。</p>
+<p>有一个免费的 Claude Skill，能展示任何东西是怎么运作的。</p>
+<p>你提一个问题，它把答案造成一台机器：真实的零件，每一步一个按钮，还有一扇窗，让你看到正在干活的那个部件。</p>
+<p>咖啡机、汽车发动机、冰箱、你自己的产品，它都能造。</p>
+<p>它最受孩子欢迎。孩子按下按钮，看着东西自己运转，而不是坐着听一通解释。用这种方式做的一节儿童课（打气筒给轮胎打气）拿到了 122,818 次浏览。一台可以装衣服、按启动的洗衣机拿到了 110,691 次。</p>
+<p>我拿一个我自己也答不上来的问题试了试：意式咖啡机是怎么产生压力的？</p>
+<p>10 分钟后，我得到了这个：</p>
+<figure><img src="images/elvar-video-start.webp" alt="原帖视频海报帧：咖啡机初始状态" loading="lazy"><figcaption>原帖视频（36 秒）的海报帧。视频没有转载，请到<a href="https://x.com/elvar_official/status/2111831136171151589">原帖</a>观看。</figcaption></figure>
+<p>你研磨、压粉、扣上手柄、压下拉杆。一扇窗显示弹簧以 9 bar 的压力把水推过咖啡粉。屏幕上的每个数字都来自那台真实的机器。</p>
+<p>人们会跳过一段讲压力的文字，却会一遍又一遍地去拉那根拉杆。</p>
+<p>这个 Skill 叫 anatomy。它免费，在 Claude Code 里运行。</p>
+
+<h3>你要造的是什么</h3>
+<p>一张“图”（figure）就是一个独立的 HTML 页面，在笔记本或平板的浏览器里打开就行。我做的每张图都有同样的 6 个部分，下面以咖啡机为例：</p>
+<ul>
+<li><b>机器。</b>一件真实、一眼能认出的物体，由许多小零件组成：螺栓、压力表、接水盘、杯子下面的秤。</li>
+<li><b>按钮。</b>每一步一个，按顺序排列，只有下一个能点，谁也跳不过关键的那一步。顶部的开关选模式：“手动”等你一次次按，“自动”循环播放全程。</li>
+<li><b>窗口。</b>在干活的部位切开一个口。这里展示的是冲煮头里的活塞、弹簧和水。</li>
+<li><b>数字。</b>压力表、机身上的显示屏和下面的标签：粉量、锅炉压力、冲煮压力、杯中克数、萃取时间、牛奶温度。它们全都来自同一个描述真实机器的小模型。</li>
+<li><b>文字。</b>每一步顶部一句提示，动作旁边画上拟声词：grrrr、tok、psssh、knock。</li>
+<li><b>核心道理。</b>图下方一句话：弹簧产生压力。</li>
+</ul>
+
+<h3>你需要什么</h3>
+<ul>
+<li>Claude Code，任何包含它的 Claude 套餐都行。</li>
+<li>Node.js 22.20 或更新版本，Skill 安装器会要求。</li>
+<li>Google Chrome。Skill 会在无头浏览器里检查自己的成果。</li>
+<li>ffmpeg 和 Python 3，只有最后做视频时才需要。你开口，Claude Code 会帮你装好。</li>
+</ul>
+<p>这个 Skill 是 wheresryan22 写的 anatomy：MIT 许可，免费，无依赖，内含 8 个示例机器。</p>
+
+<h3>第 1 步：安装 Skill</h3>
+<pre lang="en" style="white-space:pre-wrap"><code>npx skills add wheresryan22/anatomy -g -a claude-code</code></pre>
+<p>然后打开 Claude Code，输入 <code>/anatomy</code>。</p>
+<p>没有 npm？直接克隆进你的 skills 文件夹：</p>
+<pre lang="en" style="white-space:pre-wrap"><code>git clone https://github.com/wheresryan22/anatomy.git ~/.claude/skills/anatomy</code></pre>
+
+<h3>第 2 步：选问题</h3>
+<p>最好的问题要有一个会动的部件和一个数字。下面 5 个是我还没做过的：</p>
+<ul><li>马桶冲水后是怎么重新蓄满水的？</li><li>自行车变速为什么能让蹬车更轻松？</li><li>钥匙是怎么打开锁的？</li><li>电梯是怎么停在正确楼层的？</li><li>每月存 100 美元，复利是怎么让它增长的？</li></ul>
+<p>挑那个你自己答不上来的。</p>
+
+<h3>第 3 步：造机器</h3>
+<p>把这段粘进 Claude Code，把所有 [方括号] 里的内容换成你的。</p>
+<p><b>提示词 1 · 造机器（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>/anatomy Someone asked me: &quot;[How does an espresso machine make coffee?]&quot;
+
+Answer with a machine, not a diagram. Build a real, recognisable [lever espresso machine with a burr grinder beside it, a portafilter, a tamper, a milk jug and a cup on a scale], made of many small parts, in isometric view, as one standalone HTML page.
+
+The steps are buttons in a column on the left: [Grind 18 g] [Tamp] [Lock it in] [Pull the lever] [Let go] [Steam the milk] [Pour] [New cup]. Only the next step is clickable. Each button plays that step on the machine itself.
+
+Cut a window into the part where the real work happens [the group head: the piston, the spring and the water inside]. The viewer sees the cause and the result together.
+
+Write one small model of the real thing as a pure function before you draw anything. Drive every number on screen from it: [18 g of coffee in, 36 g of espresso out in 27 s, brew pressure 9 bar falling to 6 as the spring opens, boiler at 1.1 bar, milk from 4 °C to 62 °C in 36 s]. Show them live on gauges, on displays built into the machine and as small chips under the figure. If you are not sure a number is real, say so and tell me where it comes from.
+
+Under the figure, one line: &quot;The big idea: [a spring makes the pressure].&quot;</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>/anatomy 有人问我：“[意式咖啡机是怎么做出咖啡的？]”
+
+用一台机器来回答，不要用示意图。造一台真实、一眼能认出的[拉杆式意式咖啡机，旁边一台锥刀磨豆机，外加冲煮手柄、压粉器、奶缸和放在秤上的杯子]，由许多小零件组成，等轴测视角，做成一个独立的 HTML 页面。
+
+步骤做成左侧一列按钮：[研磨 18 g] [压粉] [扣上手柄] [压下拉杆] [松手] [打奶] [倒入] [换一杯]。只有下一步能点。每个按钮都在机器本身上演示这一步。
+
+在真正干活的部位开一扇窗[冲煮头：活塞、弹簧和里面的水]。让观众同时看到原因和结果。
+
+动笔画之前，先把真实机器写成一个小小的纯函数模型。屏幕上每个数字都由它驱动：[进 18 g 咖啡粉，27 s 出 36 g 浓缩，冲煮压力 9 bar，随弹簧伸开降到 6 bar，锅炉 1.1 bar，牛奶 36 s 内从 4 °C 升到 62 °C]。把它们实时显示在压力表上、机身内置的显示屏上，以及图下方的小标签里。如果你不确定某个数字是真的，就直说，并告诉我它出自哪里。
+
+图下方写一行：“核心道理：[弹簧产生压力]。”</code></pre>
+
+<p><b>为什么它靠得住：</b></p>
+<p>模型先于绘图。压力表、秤和萃取计时器读的是同一个函数，它们不可能互相矛盾。我的这台在构建时会打印自检结果：萃取 27.0 s，5.4 s 出第一滴，出液 36 g。</p>
+<p>只讲一个核心道理。如果你不能用一句话说清，这张图就是在讲两件事，结果哪件都没讲明白。</p>
+<p>我做的其他每台机器，都出自这同一段提示词，只是换了方括号里的内容。</p>
+
+<h3>第 4 步：让它一眼看懂</h3>
+<p><b>提示词 2 · 一眼看懂（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Make it readable at a glance without dumbing down the numbers:
+- one short hint at the top for each step, simple enough for a 7-year-old: what is happening and why
+- big pill buttons with a number in a circle; the running step lights up, finished steps fade
+- a small handwritten sound word on each action: grrrr at the grinder, tok when the basket locks, psssh at the steam wand, knock when the puck comes out
+- a speed badge whenever a step runs faster or slower than real time (×4, ×1/20), computed from the real seconds
+- a switch with 2 modes above the steps: Manual by default, where nothing moves until someone presses a step and the next button pulses; Auto, where the machine runs every step by itself on a loop. Remember the choice between visits
+- a &quot;Start over&quot; link that puts the machine back at step 1
+- [optional] 3 numbered step cards under the figure, a small robot mascot and a &quot;Show me&quot; button that plays the whole thing</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>让它一眼就能看懂，但不要把数字弄“简化”：
+- 每一步在顶部配一句简短提示，简单到 7 岁孩子能懂：正在发生什么、为什么
+- 大号胶囊按钮，圆圈里写编号；正在运行的步骤亮起，已完成的步骤变淡
+- 每个动作旁画一个手写小拟声词：磨豆机处 grrrr，手柄卡紧时 tok，蒸汽棒处 psssh，敲出粉饼时 knock
+- 只要某一步比真实时间快或慢，就显示速度徽标（×4、×1/20），按真实秒数计算
+- 步骤上方放一个两档开关：默认“手动”，有人按下某一步之前什么都不动，下一个按钮会轻轻跳动；“自动”则让机器自己循环跑完所有步骤。记住访客上次的选择
+- 一个“从头开始”链接，把机器恢复到第 1 步
+- [可选] 图下方 3 张编号步骤卡、一个小机器人吉祥物，以及一个播放全程的“演示给我看”按钮</code></pre>
+
+<p>7 岁孩子就是检验标准。一句孩子读一遍就懂的提示，成年人半秒钟就能看懂。</p>
+<p>我的萃取实际要 27 秒，播放只用 6.5 秒，所以徽标显示 ×4，而萃取计时器仍然显示 27 s。汽车发动机正好相反：怠速 800 rpm，以 ×1/20 播放。</p>
+
+<h3>第 5 步：给它定个画风</h3>
+<p><b>提示词 3 · 画风（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Style: a hand-inked children&#x27;s book, not a technical drawing.
+- dark navy ink outlines, 1.2 px, flat colour fills with 3 tones per colour (top lightest, sides darker)
+- cream paper background (#f5f0e5), one bold colour per object, chrome and brass for the metal parts
+- colour swatches under the figure that recolour the machine
+- short, hard-edged, warm grey shadows (#ddd4c3) falling just behind each object; never blue or purple
+- every dial, display and label sits on a face that nothing else hides</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>风格：手绘墨线的儿童绘本，不是技术制图。
+- 深海军蓝墨线轮廓，1.2 px；平涂色块，每种颜色 3 个色调（顶面最亮，侧面更暗）
+- 奶油色纸张背景（#f5f0e5），每件物体一种醒目的颜色，金属部件用铬色和黄铜色
+- 图下方放色板，点一下就给机器换色
+- 短而硬边的暖灰色投影（#ddd4c3），只落在每件物体正后方；绝不用蓝色或紫色
+- 每个表盘、显示屏和标签都放在不被任何东西遮挡的面上</code></pre>
+
+<p>这里的每一行都是一次修正。第一版有一道很长的紫色投影，还有一个压力表被冲煮头挡住了。</p>
+
+<h3>第 6 步：像评论家一样检查</h3>
+<p><b>提示词 4 · 评论家式检查（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Before you show me anything, check it like a critic:
+1. Capture a still in the middle of every step and read each one: a part hidden behind another part, text that overflows its box, a number that disagrees with the model.
+2. Scrub every move longer than 1 second at 0.1 s steps and count how many pixels change per frame. A frame that changes 3x more than its neighbours is a jump: find it and fix it.
+3. Slow moves must be continuous. Never step through pre-drawn poses on a move that takes longer than a second.
+Tell me what you checked and what you fixed. Show me the stills.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>给我看任何东西之前，先像评论家一样检查一遍：
+1. 在每一步进行到一半时截一张静帧，逐张读：有没有零件被别的零件挡住、文字溢出框外、某个数字和模型对不上。
+2. 把每个超过 1 秒的动作按 0.1 s 步长逐帧拖动，统计每帧变化了多少像素。某一帧的变化量是相邻帧的 3 倍，就是一次跳变：找出来并修好。
+3. 慢动作必须连续。时长超过一秒的动作，绝不能靠预先画好的几个姿态逐个切换。
+告诉我你检查了什么、修了什么。把静帧给我看。</code></pre>
+
+<p>第 2 条规则抓到了我遇到的最严重的 bug。在某一帧、某个精确角度，拉杆突然膨胀成一个巨大的黑色圆盘。拉杆抬起时，正常一帧变化 900 到 1,400 个像素，那一帧变了 95,245 个。修好后，我扫描了抬起过程的全部 612 帧，没有一帧跳变。</p>
+
+<h3>第 7 步：做成视频</h3>
+<p>3 条提示词，按这个顺序。</p>
+<p><b>提示词 5 · 让演示可录制（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Make the tour recordable:
+- add window.seek(t) that replays the whole tour from zero to time t. Any frame can then be drawn in any order
+- with ?render in the URL, the page stops its own clock
+- draw a cursor that walks to each button and presses it a moment before the step starts
+- cut the whole tour to 36 seconds: 0.7 s between steps, the first click at 0.9 s; the main moment [the shot] stays the slowest step</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>让这段演示可以录制：
+- 加一个 window.seek(t)，从 0 重放整段演示直到时间 t。这样任何一帧都可以按任意顺序画出来
+- URL 带 ?render 时，页面停掉自己的时钟
+- 画一个光标，走到每个按钮前，在该步骤开始前一刻按下它
+- 把整段演示剪到 36 秒：步骤间隔 0.7 s，第一次点击在 0.9 s；最重要的那一刻[萃取]仍然是最慢的一步</code></pre>
+
+<p><b>提示词 6 · 录制（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Record it: open the page with ?render in headless Chrome, call window.seek() for every frame at 60 fps at 1500×1320, screenshot each frame and pipe them into ffmpeg as H.264, yuv420p, faststart. Then make a contact sheet with one frame every 3 seconds and show it to me.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>录下来：在无头 Chrome 里用 ?render 打开页面，按 60 fps、1500×1320 对每一帧调用 window.seek()，逐帧截图并通过管道送进 ffmpeg，编码为 H.264、yuv420p、faststart。然后做一张每 3 秒取一帧的联系表给我看。</code></pre>
+
+<p><b>提示词 7 · 配乐（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Score it in code, no samples and nothing to license: a 36-second lo-fi bed at 84 BPM with soft electric piano on Fmaj7, Em7, Dm7, Cmaj7, a round bass, brushed drums after the first bar and faint vinyl crackle. On top, quiet sounds at the exact seconds of the picture: a click on every button press, the grinder&#x27;s hum, the steam hiss, a thin trickle while the espresso runs. Master to -14 LUFS with the true peak under -1 dB and mux it into the video with ffmpeg.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>用代码配乐，不用采样，也没有任何需要授权的东西：一段 36 秒、84 BPM 的 lo-fi 底乐，柔和的电钢琴弹 Fmaj7、Em7、Dm7、Cmaj7，圆润的贝斯，第一小节之后进刷子鼓，加一点淡淡的黑胶底噪。上面在画面对应的精确秒数叠加轻微的音效：每次按按钮一声咔哒、磨豆机的嗡嗡声、蒸汽的嘶嘶声、浓缩流出时细细的水流声。母带做到 -14 LUFS，真峰值低于 -1 dB，再用 ffmpeg 合进视频。</code></pre>
+
+<figure><img src="images/elvar-video-let-go.webp" alt="原帖视频海报帧：松开拉杆，9 bar" loading="lazy"><figcaption>原帖第二段视频的海报帧：“松手”这一步，顶部提示写着“弹簧推动活塞向下：开始 9 bar，结束 6 bar。5 秒后出第一滴”，右侧徽标 ×4。</figcaption></figure>
+<p>屏幕录制在慢动作上会掉帧。用 seek 逐帧渲染的演示每次都是稳定的 60 fps：我的这段是 2,160 帧、36 秒、4.5 MB。</p>
+
+<h3>第 8 步：并行造出其余的机器</h3>
+<p>一张图跑通之后，Claude Code 可以并行造其余的，每台机器一个 agent。</p>
+<p><b>提示词 8 · 并行（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Build these machines in parallel, one agent per machine: [vending machine, washing machine, toaster, microwave, pencil sharpener, smoke alarm, fridge, capsule toy machine, photo booth].
+Every agent follows the rules of my espresso machine: the same look, the step buttons, the window into the mechanism, one model that drives every number, one big idea.
+Give each one its own fact to prove, with the real number behind it: [the microwave measures the speed of light off a chocolate bar, 6.12 cm between the melted spots].
+Each agent works in its own folder, never edits the shared files and checks its own stills before it reports back.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>并行造出这些机器，每台机器一个 agent：[自动售货机、洗衣机、烤面包机、微波炉、卷笔刀、烟雾报警器、冰箱、扭蛋机、自助照相亭]。
+每个 agent 都遵守我那台意式咖啡机的规则：同样的画风、步骤按钮、通向机构内部的窗口、一个驱动所有数字的模型、一个核心道理。
+给每台机器一个要证明的事实，并附上背后的真实数字：[微波炉用一块巧克力测光速，融化点间距 6.12 cm]。
+每个 agent 在自己的文件夹里工作，绝不改共享文件，汇报前先检查自己的静帧。</code></pre>
+
+<p>最重要的是那个事实。让 agent“做一台微波炉”，它会画一个里面放着盘子的箱子；让 agent 用一块巧克力证明光速，它就必须把驻波画出来。</p>
+
+<h3>第 9 步：放到一个网站上</h3>
+<p>有了 2 到 3 张图之后，给它们一个统一的地址。</p>
+<p><b>提示词 9 · 建站（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Put my figures on one small site:
+- a front page with one card per figure: a still from its best moment, the name and one line about what it answers
+- each figure on its own page with a nav on top: a menu with a thumbnail of every machine, and the ← → keys switch machines
+- Space or Enter runs the next step
+- a 1200×630 preview card for every page, made from a still in the middle of a step, with absolute image URLs so the card shows up when the link is shared on X
+- links to other sites open in a new tab, so the machine stays where the viewer left it
+- deploy it to Vercel and point my domain at it</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>把我的这些图放到一个小网站上：
+- 首页每张图一张卡片：取它最精彩时刻的一帧静帧、名字，以及一句话说明它回答了什么问题
+- 每张图单独一页，顶部有导航：一个带所有机器缩略图的菜单，← → 键切换机器
+- 空格或回车执行下一步
+- 每页一张 1200×630 的预览卡，取自某一步进行到一半的静帧，图片用绝对 URL，这样链接分享到 X 时卡片能显示出来
+- 指向其他网站的链接在新标签页打开，机器停在观众离开时的状态
+- 部署到 Vercel，并把我的域名指向它</code></pre>
+
+<p>每张卡片下面那一句话负责“卖”。我的几句是：“9 bar 从哪里来，为什么一根弹簧就够了。”“小兔子为什么滑落 17 次，第 18 次又由谁决定。”“用一块巧克力测光速。”</p>
+
+<h3>彩蛋：让他们把它玩坏</h3>
+<p><b>提示词 10 · 让人玩坏它（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Add one slider for [the dose, 9 g to 22 g] and run the model again when it moves: [a light dose runs fast and thin, a heavy one chokes]. Show the result in the same gauges and numbers.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>加一个滑块控制[粉量，9 g 到 22 g]，滑块一动就重新运行模型：[粉少则流得快而稀，粉多则堵住流不出]。结果显示在同样的压力表和数字里。</code></pre>
+
+<p>谁能把机器玩坏，谁就明白了每个数字的作用。</p>
+<p>到目前为止我做了 12 台。想亲手按按钮的话，它们都免费放在 <a href="https://visual-learning.app/">visual-learning.app</a>。</p>
+
+<h3>本站补充：自 2026-10-11 镜像以来，仓库有什么变化</h3>
+<p>本站 2026-10-29 重新浅克隆了 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a>（HEAD <code>1482e84</code>，2026-10-19 04:20 UTC+8；上文 README 译文对应的是 <code>dbf697a</code>）。CHANGELOG 中与本页相关的更新：</p>
+<ul>
+<li><b>1.1.0（2026-10-12）：</b>新增 <code>scripts/publish.mjs</code>，可以把做好的图提交到社区画廊（见 <a href="../anatomy-community/">Anatomy 社区作品展</a>），并记录耗时和 token 用量；新增 OpenCode、Codex 支持；Linux 上的无头 Chrome 加了 <code>--no-sandbox</code>。</li>
+<li><b>未发布（Unreleased）：</b>新增可打印的 A4/Letter PDF 图纸（<code>scripts/print.mjs</code>，海报、工程图、详解三种版式）；新增 Antigravity、MiniMax Code 支持；不再向用户报预计耗时（#41）；修了一批审计、截图和驱动脚本的问题。</li>
+</ul>
+<p>上面的 README 正文保持 2026-10-11 的译文不变，没有逐句更新到最新版。</p>
+
+<details><summary>英文原文附录（Elvar，How I Turn Any Question Into a Machine You Can Run）</summary>
+<div lang="en">
+<p><b>How I Turn Any Question Into a Machine You Can Run</b></p>
+<p>One free Claude skill turns any explanation into a machine people can click through. Below: the setup and all 10 prompts.</p>
+<p>There&#x27;s a free Claude skill that shows how anything works.</p>
+<p>You ask a question. It builds the answer as a machine: real parts, a button for every step, a window into the part doing the work.</p>
+<p>A coffee machine, a car engine, a fridge, your own product. It builds any of them.</p>
+<p>It&#x27;s most popular with kids. A kid presses the buttons and watches the thing work instead of sitting through an explanation. A kids&#x27; lesson built this way, a pump filling a tyre, pulled 122,818 views. A washing machine you load and start pulled 110,691.</p>
+<p>I tried it on a question I couldn&#x27;t answer myself: how does an espresso machine make pressure?</p>
+<p>10 minutes later I had this:</p><p><i>[video]</i></p>
+<p>You grind, tamp, lock it in and pull the lever. A window shows the spring pushing water through the coffee at 9 bar. Every number on screen comes from the real machine.</p>
+<p>People skip a paragraph about pressure. A lever gets pulled again and again.</p>
+<p>The skill is called anatomy. It&#x27;s free and runs inside Claude Code.</p>
+<h4>What You&#x27;re Building</h4>
+<p>A figure is one standalone HTML page. Open it in a browser, on a laptop or a tablet. Every figure I built has the same 6 parts. Here they are on the espresso machine:</p>
+<p>The machine. A real, recognisable object built from many small parts: bolts, gauges, a drip tray, a scale under the cup.</p>
+<p>The buttons. One per step, in order. Only the next one is live. Nobody can skip the part that matters. A switch on top picks the mode: Manual waits for every press, Auto plays the whole thing on a loop.</p>
+<p>The window. A cut into the part where the work happens. Here it shows the piston, the spring and the water inside the group head.</p>
+<p>The numbers. Gauges, displays on the machine and chips under it: dose, boiler, brew pressure, grams in the cup, shot time, milk temperature. All of them come from one small model of the real machine.</p>
+<p>The words. One hint per step at the top, plus sound words drawn on the action: grrrr, tok, psssh, knock.</p>
+<p>The big idea. One sentence under the figure: a spring makes the pressure.</p>
+<h4>What You Need</h4>
+<p>Claude Code, on any Claude plan that includes it.</p>
+<p>Node.js 22.20 or newer. The skill installer asks for it.</p>
+<p>Google Chrome. The skill checks its own work in a headless browser.</p>
+<p>ffmpeg and Python 3, only for the video at the end. Claude Code installs both if you ask.</p>
+<p>The skill is anatomy by wheresryan22: MIT licence, free, no dependencies, 8 example machines inside.</p>
+<h4>Step 1. Install the Skill</h4>
+<pre style="white-space:pre-wrap"><code>npx skills add wheresryan22/anatomy -g -a claude-code</code></pre>
+<p>Then open Claude Code and type /anatomy.</p>
+<p>No npm? Clone it straight into your skills folder:</p>
+<pre style="white-space:pre-wrap"><code>git clone https://github.com/wheresryan22/anatomy.git ~/.claude/skills/anatomy</code></pre>
+<h4>Step 2. Pick the Question</h4>
+<p>The best questions have a moving part and a number. 5 I haven&#x27;t built yet:</p>
+<p>How does a toilet refill after a flush?</p>
+<p>How do bike gears make pedalling easier?</p>
+<p>How does a key open a lock?</p>
+<p>How does a lift stop at the right floor?</p>
+<p>How does compound interest grow $100 a month?</p>
+<p>Take the one you can&#x27;t answer yourself.</p>
+<h4>Step 3. Build the Machine</h4>
+<p>Paste this into Claude Code. Swap everything in [brackets].</p>
+<pre style="white-space:pre-wrap"><code>/anatomy Someone asked me: &quot;[How does an espresso machine make coffee?]&quot;
+
+Answer with a machine, not a diagram. Build a real, recognisable [lever espresso machine with a burr grinder beside it, a portafilter, a tamper, a milk jug and a cup on a scale], made of many small parts, in isometric view, as one standalone HTML page.
+
+The steps are buttons in a column on the left: [Grind 18 g] [Tamp] [Lock it in] [Pull the lever] [Let go] [Steam the milk] [Pour] [New cup]. Only the next step is clickable. Each button plays that step on the machine itself.
+
+Cut a window into the part where the real work happens [the group head: the piston, the spring and the water inside]. The viewer sees the cause and the result together.
+
+Write one small model of the real thing as a pure function before you draw anything. Drive every number on screen from it: [18 g of coffee in, 36 g of espresso out in 27 s, brew pressure 9 bar falling to 6 as the spring opens, boiler at 1.1 bar, milk from 4 °C to 62 °C in 36 s]. Show them live on gauges, on displays built into the machine and as small chips under the figure. If you are not sure a number is real, say so and tell me where it comes from.
+
+Under the figure, one line: &quot;The big idea: [a spring makes the pressure].&quot;</code></pre>
+<p>Why it holds:</p>
+<p>The model comes before the drawing. The gauge, the scale and the shot clock read the same function. They can&#x27;t disagree. Mine prints its own check when it builds: shot 27.0 s, first drops at 5.4 s, yield 36 g.</p>
+<p>One big idea. If you can&#x27;t say it in one line, the figure explains two things and lands neither.</p>
+<p>Every other machine I built came out of this same prompt with new brackets.</p>
+<h4>Step 4. Make It Readable at a Glance</h4>
+<pre style="white-space:pre-wrap"><code>Make it readable at a glance without dumbing down the numbers:
+- one short hint at the top for each step, simple enough for a 7-year-old: what is happening and why
+- big pill buttons with a number in a circle; the running step lights up, finished steps fade
+- a small handwritten sound word on each action: grrrr at the grinder, tok when the basket locks, psssh at the steam wand, knock when the puck comes out
+- a speed badge whenever a step runs faster or slower than real time (×4, ×1/20), computed from the real seconds
+- a switch with 2 modes above the steps: Manual by default, where nothing moves until someone presses a step and the next button pulses; Auto, where the machine runs every step by itself on a loop. Remember the choice between visits
+- a &quot;Start over&quot; link that puts the machine back at step 1
+- [optional] 3 numbered step cards under the figure, a small robot mascot and a &quot;Show me&quot; button that plays the whole thing</code></pre>
+<p>The 7-year-old is the test. A hint a kid gets in one read, an adult gets in half a second.</p>
+<p>My shot takes 27 real seconds and plays in 6.5, so the badge reads ×4 and the shot clock still says 27 s. A car engine runs the other way: 800 rpm at idle, played at ×1/20.</p>
+<h4>Step 5. Give It the Look</h4>
+<pre style="white-space:pre-wrap"><code>Style: a hand-inked children&#x27;s book, not a technical drawing.
+- dark navy ink outlines, 1.2 px, flat colour fills with 3 tones per colour (top lightest, sides darker)
+- cream paper background (#f5f0e5), one bold colour per object, chrome and brass for the metal parts
+- colour swatches under the figure that recolour the machine
+- short, hard-edged, warm grey shadows (#ddd4c3) falling just behind each object; never blue or purple
+- every dial, display and label sits on a face that nothing else hides</code></pre>
+<p>Every line here is a fix. The first version had a long purple shadow and a gauge hidden behind the group head.</p>
+<h4>Step 6. Check It Like a Critic</h4>
+<pre style="white-space:pre-wrap"><code>Before you show me anything, check it like a critic:
+1. Capture a still in the middle of every step and read each one: a part hidden behind another part, text that overflows its box, a number that disagrees with the model.
+2. Scrub every move longer than 1 second at 0.1 s steps and count how many pixels change per frame. A frame that changes 3x more than its neighbours is a jump: find it and fix it.
+3. Slow moves must be continuous. Never step through pre-drawn poses on a move that takes longer than a second.
+Tell me what you checked and what you fixed. Show me the stills.</code></pre>
+<p>Rule 2 caught the worst bug I had. For one frame, at one exact angle, the lever blew up into a giant black disc. A normal frame of the lever rising changed 900 to 1,400 pixels. That one changed 95,245. After the fix I scanned all 612 frames of the rise and none of them jumped.</p>
+<h4>Step 7. Turn It Into a Video</h4>
+<p>3 prompts, in this order.</p>
+<p>Make the tour recordable:</p>
+<pre style="white-space:pre-wrap"><code>Make the tour recordable:
+- add window.seek(t) that replays the whole tour from zero to time t. Any frame can then be drawn in any order
+- with ?render in the URL, the page stops its own clock
+- draw a cursor that walks to each button and presses it a moment before the step starts
+- cut the whole tour to 36 seconds: 0.7 s between steps, the first click at 0.9 s; the main moment [the shot] stays the slowest step</code></pre>
+<p>Record it:</p>
+<pre style="white-space:pre-wrap"><code>Record it: open the page with ?render in headless Chrome, call window.seek() for every frame at 60 fps at 1500×1320, screenshot each frame and pipe them into ffmpeg as H.264, yuv420p, faststart. Then make a contact sheet with one frame every 3 seconds and show it to me.</code></pre>
+<p>Score it:</p>
+<pre style="white-space:pre-wrap"><code>Score it in code, no samples and nothing to license: a 36-second lo-fi bed at 84 BPM with soft electric piano on Fmaj7, Em7, Dm7, Cmaj7, a round bass, brushed drums after the first bar and faint vinyl crackle. On top, quiet sounds at the exact seconds of the picture: a click on every button press, the grinder&#x27;s hum, the steam hiss, a thin trickle while the espresso runs. Master to -14 LUFS with the true peak under -1 dB and mux it into the video with ffmpeg.</code></pre>
+<p>A screen recorder drops frames on slow moves. A seeked tour comes out 60 fps every time: mine is 2,160 frames, 36 seconds, 4.5 MB.</p>
+<h4>Step 8. Build the Rest in Parallel</h4>
+<p>Once one figure works, Claude Code builds the rest in parallel, one agent per machine.</p>
+<pre style="white-space:pre-wrap"><code>Build these machines in parallel, one agent per machine: [vending machine, washing machine, toaster, microwave, pencil sharpener, smoke alarm, fridge, capsule toy machine, photo booth].
+Every agent follows the rules of my espresso machine: the same look, the step buttons, the window into the mechanism, one model that drives every number, one big idea.
+Give each one its own fact to prove, with the real number behind it: [the microwave measures the speed of light off a chocolate bar, 6.12 cm between the melted spots].
+Each agent works in its own folder, never edits the shared files and checks its own stills before it reports back.</code></pre>
+<p>The fact matters most. An agent told to &quot;make a microwave&quot; draws a box with a plate inside. An agent told to prove the speed of light with a chocolate bar has to draw the standing wave.</p>
+<h4>Step 9. Put Them on One Site</h4>
+<p>Once you have 2 or 3 figures, give them one address.</p>
+<pre style="white-space:pre-wrap"><code>Put my figures on one small site:
+- a front page with one card per figure: a still from its best moment, the name and one line about what it answers
+- each figure on its own page with a nav on top: a menu with a thumbnail of every machine, and the ← → keys switch machines
+- Space or Enter runs the next step
+- a 1200×630 preview card for every page, made from a still in the middle of a step, with absolute image URLs so the card shows up when the link is shared on X
+- links to other sites open in a new tab, so the machine stays where the viewer left it
+- deploy it to Vercel and point my domain at it</code></pre>
+<p>The one line under each card does the selling. Mine are: &quot;Where 9 bar comes from, and why a spring is enough to make it.&quot; &quot;Why the bunny slips 17 times, and who decides the 18th.&quot; &quot;Measure the speed of light with a chocolate bar.&quot;</p>
+<h4>Bonus. Let Them Break It</h4>
+<pre style="white-space:pre-wrap"><code>Add one slider for [the dose, 9 g to 22 g] and run the model again when it moves: [a light dose runs fast and thin, a heavy one chokes]. Show the result in the same gauges and numbers.</code></pre>
+<p>Whoever can break the machine finds out what each number does.</p>
+<p>I&#x27;ve built 12 of these so far. They&#x27;re all free at visual-learning.app if you want to press the buttons yourself.</p>
+<p><i>Source: Elvar (@elvar_official), X article, 2026-10-18. Original: <a href="https://x.com/elvar_official/status/2111831136171151589">x.com/elvar_official/status/2111831136171151589</a>. Reproduced for non-commercial translation reference; removal on request.</i></p>
+</div></details>
+<p class="source">增补来源：Elvar（@elvar_official）· <a href="https://x.com/elvar_official/status/2111831136171151589">原帖</a>（2026-10-18 22:45 UTC+8，抓取于 2026-10-29；当时约 51.7 万浏览、957 赞、2,660 收藏）· 文章内容版权归 Elvar 所有 · 如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</p>
+</section>
 </article></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。2026-10-29 增补的长文版权归 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）所有，visual-learning.app 是他本人的网站。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
   <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">x.com/wheresryan22/status/2108948624004526516</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
