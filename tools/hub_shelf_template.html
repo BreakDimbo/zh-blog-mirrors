@@ -197,7 +197,7 @@ h1 em{font:italic 400 .56em/1 var(--latin);color:var(--mute);letter-spacing:.01e
 .case-act .orig,.case-act .close{font-size:13px;color:var(--mute);border:0;border-bottom:1px solid var(--rule);background:none;padding:0 0 3px;cursor:pointer;transition:color .3s,border-color .3s}
 .case-act .orig:hover,.case-act .close:hover{color:var(--ink);border-color:var(--mute)}
 .case .ln{will-change:transform,opacity}
-.veil{position:fixed;inset:0;z-index:80;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .55s cubic-bezier(.4,0,.2,1)}
+.veil{position:fixed;inset:0;z-index:80;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
 .veil.on{opacity:1;pointer-events:auto}
 /* ---------- plain list (fallback / accessible view) ---------- */
 .flat{display:none;list-style:none;margin:0;padding:12px 0 0}
@@ -398,7 +398,7 @@ function coast(tr,v){var b=tr.b,el=tr.el;halt(tr);b.jump({s:el.scrollLeft});if(R
 function bindDrag(tr){var el=tr.el,st=null;
  el.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button!==0)return;halt(tr);var now=performance.now();st={x:e.clientX,s:el.scrollLeft,v:0,lx:e.clientX,lt:now,drag:false,id:e.pointerId}});
  el.addEventListener('pointermove',function(e){if(!st||e.pointerId!==st.id)return;var dx=e.clientX-st.x;
-  if(!st.drag&&Math.abs(dx)>5){st.drag=true;try{el.setPointerCapture(e.pointerId)}catch(_){}el.classList.add('drag');setHover(tr,null)}
+  if(!st.drag&&Math.abs(dx)>6){st.drag=true;try{el.setPointerCapture(e.pointerId)}catch(_){}el.classList.add('drag');setHover(tr,null)}
   if(st.drag){el.scrollLeft=st.s-dx;var now=performance.now(),dt=Math.max(1,now-st.lt);st.v=st.v*.5+(-(e.clientX-st.lx)/dt*1000)*.5;st.lx=e.clientX;st.lt=now}});
  function end(){if(!st)return;var s=st;st=null;if(!s.drag)return;el.classList.remove('drag');suppress=performance.now();coast(tr,performance.now()-s.lt>90?0:clamp(s.v,-4200,4200))}
  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end)}
@@ -479,11 +479,23 @@ shelvesEl.addEventListener('keydown',function(ev){var t=ev.target.closest('.tape
   var r=to.getBoundingClientRect();if(r.top<70||r.bottom>innerHeight)W.scrollBy({top:r.top-innerHeight/2+r.height/2,behavior:RM?'auto':'smooth'})}});
 doc.addEventListener('keydown',function(ev){if(ev.key==='Escape'&&pulled&&!ev.target.closest('.tape')){var t=pulled;closeCase();t.focus({preventScroll:true})}});
 $('.close',caseEl).addEventListener('click',function(){var t=pulled;closeCase();if(t)t.focus({preventScroll:true})});
-/* opening an article: the cassette is pushed back in, the room dims, then we navigate */
-$('.open',caseEl).addEventListener('click',function(ev){if(ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey||RM)return;ev.preventDefault();var href=this.href,T=pulledT;
- if(T){T.b.to({z:-26,y:0},[170,22]);T.b.to({ry:-92},[150,20])}
- LN.forEach(function(b,n){b.to({o:0,y:-6},SP.out,n*25)});PR.to({x:-30,o:0},SP.out);veil.classList.add('on');setTimeout(function(){location.href=href},560)});
-addEventListener('pageshow',function(e){if(e.persisted){veil.classList.remove('on');if(pulled){var t=pulled;pulled=null;pull(t,true)}}});
+/* opening an article: the cassette is pushed back in, the room dims, then we navigate.
+   The link is a real <a href>; the timer is armed FIRST and is independent of the springs, so any
+   error in the flourish can never strand the click (v2 bug: pulledT.b was undefined -> TypeError
+   thrown after preventDefault, before the timer -> no navigation). */
+var leaving=0;
+function enter(){leaving=0;veil.style.transition='none';veil.classList.remove('on');void veil.offsetWidth;veil.style.transition='';
+ CB.jump({o:1,y:0});PR.jump({x:0,y:0,r:0,o:1});LN.forEach(function(b){b.jump({o:1,y:0})});
+ if(pulled){var t=pulled;pulled=null;pulledT=null;t.__s.T.tr.pullS=null;pull(t,true)}else tracks.forEach(function(tr){if(tr.on)layout(tr,'back')})}
+$('.open',caseEl).addEventListener('click',function(ev){var href=this.href;
+ if(!href||/#$/.test(href)||ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey||RM||(this.target&&this.target!=='_self'))return;
+ ev.preventDefault();if(leaving)return;leaving=1;
+ setTimeout(function(){location.assign(href)},420);
+ setTimeout(function(){if(leaving&&location.href.split('#')[0]!==href.split('#')[0])location.href=href},2500);
+ try{var T=pulledT,b=T&&T.s&&T.s.b;
+  if(b){b.to({z:-26,y:0},[170,22]);b.to({ry:-92},[150,20])}
+  LN.forEach(function(b,n){b.to({o:0,y:-6},SP.out,n*25)});PR.to({x:-30,o:0},SP.out);veil.classList.add('on')}catch(_){}});
+addEventListener('pageshow',function(e){if(e.persisted||leaving)enter()});
 $$('.chips button').forEach(function(b){b.addEventListener('click',function(){filt=b.dataset.f;$$('.chips button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});apply()})});
 $$('.seg button').forEach(function(b){b.addEventListener('click',function(){if(group===b.dataset.g)return;group=b.dataset.g;$$('.seg button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});render()})});
 q.addEventListener('input',function(){apply()});
