@@ -4,7 +4,18 @@
 2. Runs tools/build_hub_shelf.py, which writes the live homepage index.html (the VHS 'tape shelf')
    and keeps hub-preview/index.html as a redirect to the homepage.
 So the usual order  entries.json -> restyle_articles -> inject_nav -> build_hub.py  yields the shelf
-homepage with every entry plus the classic list."""
+homepage with every entry plus the classic list.
+
+EVERY NEW entries.json ENTRY NEEDS (besides slug/title/desc/date/type/source/...):
+  "spine":   短中文主题，印在磁带书背上（竖排）。≤ 10 个汉字左右，说清"这篇讲什么"的具体主题，
+             不要只写英文项目名/人名/钩子问句，也不要省略号。例："火柴人视频导演 Skill"、"浏览器实时海洋渲染"、
+             "一天修好你的人生"。
+  "summary": 一句话简介（≤ 28 字左右），用于悬停标签卡、盒面和搜索。例："把 TDD 等工程纪律写成 Agent Skill，配确定性质量门"。
+Optional:
+  "kind":    书背底部小标签，2 字：项目/长文/教程/画廊/站点/作品/合集/课程/笔记/工具/产品/论文/资讯/提示词。
+  "by":      书背小字署名（如 "@kaomei"、"Anthropic"）；缺省时从 source 推断。
+Missing spine/summary fall back to a derived short title / desc and print a warning; see the
+docstring of tools/build_hub_shelf.py for details."""
 import json, os, html, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 E = sorted(json.load(open(os.path.join(ROOT, 'entries.json'), encoding='utf-8')), key=lambda x: (x['date'], x['slug']), reverse=True)

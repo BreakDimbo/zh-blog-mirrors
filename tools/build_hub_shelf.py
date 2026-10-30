@@ -12,7 +12,19 @@ Usage: python3 tools/build_hub_shelf.py [--textures] [--preview]
   --textures -> regenerate the material textures.
 Normally you do not run this directly: tools/build_hub.py (the standard pipeline step) runs it after
 writing the classic list to classic/index.html. New entries: add them to entries.json and run
-tools/build_hub.py; covers are discovered automatically from each sub-page's og:image (or images/cover.*, cover.*)."""
+tools/build_hub.py; covers are discovered automatically from each sub-page's og:image (or images/cover.*, cover.*).
+
+Spine / preview fields in entries.json (see also the note at the top of tools/build_hub.py):
+  spine    REQUIRED for new entries. Short Chinese topic printed vertically on the cassette spine: what the
+           post is ABOUT, concrete subject first, <= ~10 Chinese characters (Latin letters count ~0.6 each).
+           e.g. '火柴人视频导演 Skill', '纯代码 3D 小岛游戏', '开源 ChatGPT 提示词库'. No author names,
+           no hooks/questions, no trailing '…'. Missing -> derived from the title (with a warning).
+  summary  REQUIRED for new entries. One line (<= ~28 characters) shown in the hover card under the title.
+           Missing -> first clause of desc (with a warning).
+  kind     optional, 2-3 chars, what the thing is: 项目 / 长文 / 教程 / 画廊 / 站点 / 作品 / 合集 / 课程 /
+           笔记 / 工具 / 产品 / 论文 / 资讯 / 提示词. Missing -> derived from type.
+  by       optional, short credit in small type on the spine (e.g. '@voidJan', 'Anthropic').
+           Missing -> first @handle in source, else the GitHub owner, else the first segment of source."""
 import json, os, sys, html, hashlib, colorsys, re
 from urllib.parse import urlsplit
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -70,22 +82,63 @@ def vlen(t):
     """visual length in CJK em: Latin letters/digits are about half an em in vertical-rl (rotated)."""
     return sum(1 if ord(c) > 0x2e80 else 0.3 if c == ' ' else 0.56 for c in t)
 
+SPINE_MAX = 10.6   # vlen budget for the spine topic (font size is fitted to the label in CSS)
+SUM_MAX = 30       # vlen budget for the hover-card summary
+
+def _cut(t, budget):
+    """Cut t to <= budget visual em: at the last clause break if that keeps enough text, else at a
+    character boundary that does not split a Latin word."""
+    if vlen(t) <= budget:
+        return t
+    out, best = '', ''
+    for c in t:
+        if vlen(out + c) > budget:
+            break
+        out += c
+        if c in '，,、；;：:—·':
+            best = out
+    if best and vlen(best) >= budget * 0.45:
+        return best.rstrip(' ·-—，,、；;：:')
+    nxt = t[len(out):len(out) + 1]
+    if re.match(r'[A-Za-z0-9.]', nxt or ' '):
+        out = re.sub(r'[A-Za-z0-9._-]+$', '', out) or out
+    return out.rstrip(' ·-—，,、；;：:')
+
 def spine_title(t):
-    """A spine-friendly title: drop trailing parentheticals, then cut at the first clause break if still long."""
-    st = re.split(r'[：:｜|]', t)[0].strip() or t
+    """Fallback spine text when an entry has no `spine` field: prefer the Chinese clause of the title
+    (a Latin-only project name before the colon says little), drop parentheticals, cut at a clause break."""
+    parts = [p.strip() for p in re.split(r'[：:｜|]', t) if p.strip()] or [t]
+    cjk = lambda x: sum(1 for c in x if ord(c) > 0x2e80)
+    st = parts[0]
+    if cjk(st) < 2 and len(parts) > 1 and cjk(parts[1]) >= 2:
+        st = parts[1]
     st = re.sub(r'\s*[（(][^）)]*[）)]\s*$', '', st).strip() or st
-    if vlen(st) > 22:
-        m = re.match(r'(.{4,}?[？?!！]|.{4,}?(?=——|，|,|、))', st)
-        if m and 7 <= vlen(m.group(1)) <= 22:
-            st = m.group(1).strip()
-    if vlen(st) > 23:
-        out = ''
-        for c in st:
-            if vlen(out + c) > 21.5:
-                break
-            out += c
-        st = out.rstrip(' ·-—，,') + '…'
-    return st
+    return _cut(st, SPINE_MAX)
+
+def summary_of(e):
+    s = (e.get('summary') or '').strip()
+    if s:
+        return s
+    d = re.split(r'[。；;\n]', e.get('desc', '') or e['title'])[0].strip()
+    return d if vlen(d) <= SUM_MAX else _cut(d, SUM_MAX - 1) + '…'
+
+KIND_OF_TYPE = {'导读': '导读', '全文镜像': '镜像', '翻译': '译文', '画廊': '画廊', '评述': '评述'}
+
+def by_of(e):
+    if e.get('by'):
+        return e['by']
+    s = e.get('source', '')
+    m = re.search(r'@([A-Za-z0-9_]{2,})', s)
+    if m:
+        return '@' + m.group(1)
+    m = re.search(r'\b([A-Za-z0-9][\w.-]*)/[\w.-]+', s)
+    if m and 'GitHub' in s:
+        return m.group(1)
+    return re.split(r'\s*[·；;（(/]\s*', s)[0].strip()[:18]
+
+def svlen(t, ls=0.06):
+    """visual length of the spine topic incl. letter-spacing, used by CSS to fit the font size."""
+    return round(sum((1 if ord(c) > 0x2e80 else 0.3 if c == ' ' else 0.58) + ls for c in t), 2)
 
 def paper_tone(seed):
     # aged label paper: small spread in lightness and yellowing
@@ -154,7 +207,7 @@ if _HAVE_TEX:
     build_textures(force='--textures' in sys.argv)
 
 ORDER = {e['slug']: n + 1 for n, e in enumerate(sorted(E, key=lambda x: (x['date'], x['slug'])))}
-data = []
+data, missing = [], []
 for e in E:
     seed = h(e['slug'])
     fam = TYPE_COL.get(e['type']) or SPARE[h(e['type']) % len(SPARE)]
@@ -163,16 +216,25 @@ for e in E:
     col = shade(base, seed)
     r, g, b = (int(col[i:i+2], 16) for i in (1, 3, 5))
     light = (0.299 * r + 0.587 * g + 0.114 * b) > 150
+    sp = (e.get('spine') or '').strip()
+    if not sp or not e.get('summary'):
+        missing.append(e['slug'])
+    if not sp:
+        sp = spine_title(e['title'])
+    elif vlen(sp) > SPINE_MAX + 0.5:
+        print(f'warning: spine of {e["slug"]} is long ({vlen(sp):.1f} em > {SPINE_MAX}); shorten it in entries.json', file=sys.stderr)
     data.append({
         's': e['slug'], 't': e['title'], 'st': re.split(r'[：:｜|]', e['title'])[0].strip() or e['title'],
         'sub': e.get('subtitle', ''), 'd': e['date'], 'ty': e['type'], 'src': e.get('source', ''),
         'desc': e.get('desc', ''), 'u': e.get('original_url', ''), 'c': cover_for(e['slug']),
         'col': col, 'lt': light, 'v': seed % 3, 'f': bool(e.get('featured')),
-        'sp': spine_title(e['title']), 'no': ORDER[e['slug']], 'pp': paper_tone(seed),
+        'sp': sp, 'sv': svlen(sp), 'sm': summary_of(e), 'k': e.get('kind') or KIND_OF_TYPE.get(e['type'], e['type'][:2]),
+        'by': by_of(e), 'no': ORDER[e['slug']], 'pp': paper_tone(seed),
         'sk': round(((seed >> 11) % 11 - 5) * 0.09, 2), 'wo': (seed >> 15) % 128, 'pv': (seed >> 19) % 3,
     })
-for d in data:
-    d['l2'] = vlen(d['sp']) > 11.5
+if missing:
+    print(f'note: {len(missing)} entr{"y" if len(missing) == 1 else "ies"} without spine/summary (derived fallback used): '
+          + ', '.join(missing) + ' -- please add "spine" and "summary" to entries.json', file=sys.stderr)
 
 types = []
 for e in E:
