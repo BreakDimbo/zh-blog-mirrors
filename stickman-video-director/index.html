@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stickman Video Director：让 AI 编程代理当火柴人动画的导演（项目导读）</title>
+<meta name="description" content="kaomei/stickman-video-director 项目导读：一个装进 Claude Code / Codex / Cursor 的 Agent Skill，把话题、文章或脚本变成「不露脸」YouTube 火柴人视频——A 导演模式出分镜与逐段视频提示词，B 全自动模式本地合成带配音、字幕、微动画的成片；6 种画风；软件 MIT 免费，但生图、配音、视频生成按第三方服务计费；附官方简中 README 全文与英文原文。" />
+<meta property="og:title" content="Stickman Video Director：让 AI 编程代理当火柴人动画的导演" />
+<meta property="og:description" content="kaomei/stickman-video-director 项目导读：一个装进 Claude Code / Codex / Cursor 的 Agent Skill，把话题、文章或脚本变成「不露脸」YouTube 火柴人视频——A 导演模式出分镜与逐段视频提示词，B 全自动模式本地合成带配音、字幕、微动画的成片；6 种画风；软件 MIT 免费，但生图、配音、视频生成按第三方服务计费；附官方简中 README 全文与英文原文。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.2rem 0}
+.shots figure{margin:0}
+.hero-tags .tag{margin-right:.35em}
+.imgnote{opacity:.7;font-size:.88em}
+.readme-zh table{font-size:.92em}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-30">2026.10.30</time></p>
+<h1 class="za-title">Stickman Video Director：让 AI 编程代理当火柴人动画的导演</h1>
+<p class="za-sub" lang="en" data-za-gen>AI stickman video Skill for faceless YouTube · 项目导读 + README 全文</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · kaomei/stickman-video-director</span><span>收录 · 2026-10-30</span><span><a href="https://github.com/kaomei/stickman-video-director" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/kaomei/stickman-video-director" rel="noopener">github.com/kaomei/stickman-video-director</a> · 作者 CrazyKaomei（<a href="https://github.com/kaomei" rel="noopener">GitHub @kaomei</a> / <a href="https://x.com/CrazyKaomei" rel="noopener">X @CrazyKaomei</a>）· MIT 许可 · A5 画风由 <a href="https://github.com/leksautomate" rel="noopener">Lawal Ridwan / @leksautomate</a> 贡献</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>这不是一个视频生成模型，而是一份装进 AI 编程代理（Claude Code、Codex、Cursor 等）的 <strong>Agent Skill</strong>：它把“怎么把一个话题拍成火柴人短片”写成了一套导演规则、画风库和本地合成脚本。A 模式只出分镜和逐段视频提示词，由你自己去 Google Flow、Kling 之类的工具生成、再剪；B 模式在本地把 AI 生成的插画、配音、字幕、微动画和音效拼成完整 MP4。代码 MIT 免费，但<strong>画面和声音仍要靠第三方付费服务</strong>。</div>
+
+<p class="hero-tags"><span class="tag">★ 3,344</span> <span class="tag">501 forks</span> <span class="tag">MIT</span> <span class="tag">Agent Skill</span> <span class="tag">Node 20+ · FFmpeg</span> <span class="tag">8 种语言 README</span></p>
+<p class="caption">数据来自公开 GitHub API，取于 2026-10-30 11:50（UTC+8）。仓库建于 2026-08-03 15:44（UTC+8），作者账号建于 2026-07-22；最近一次推送 2026-10-30 11:05（UTC+8，提交 <code>439682a</code>）。本站<strong>没有</strong>实际安装运行这个 Skill（需要第三方 API 账号与付费额度），下文对效果的描述均来自仓库文档与作者样片。</p>
+
+<figure><img src="images/cover.webp" alt="手绘火柴人抱头惊慌，旁边写着 YOUR CHANNEL. NOT YOUR FACE.，左侧是红色 YouTube 图标和一台小摄像机，底部字幕：Want a YouTube channel without being on camera?" loading="lazy"><figcaption>B1「极简手绘风」样片的海报帧（仓库 <code>assets/readme/b1-minimal-handdrawn-poster.png</code>，MIT），本站转为 WebP。画面中的 YouTube 标志属于其权利人。</figcaption></figure>
+
+<h2 id="what">它是什么</h2>
+<p>仓库的自我介绍是：“将任何脚本变成适合不露脸 YouTube 频道的多画风爆款火柴人动画视频。”所谓“不露脸频道”（faceless channel），指的是创作者本人不出镜、只用旁白加画面做内容的 YouTube 号，常见于科普、心理学、历史故事一类。</p>
+<p>它的形态是一个名为 <code>directing-stickman-videos</code> 的 Skill：一个 <code>SKILL.md</code> 主文件，十几份参考文档（画风目录、分镜模板、声线一致性、各画风细则），外加一个 Node.js 小运行时和两三个辅助脚本。安装方式很“Agent 时代”——README 让你把仓库链接发给 AI 助手，说一句“帮我安装这个 Skill”，安装完让它读一遍 <code>SKILL.md</code> 给你讲清楚怎么用。</p>
+<p>同一个 Skill 里有两条彼此独立的流水线：</p>
+<table>
+<thead><tr><th></th><th>A · 导演模式（Director）</th><th>B · 全自动模式（Autopilot）</th></tr></thead>
+<tbody>
+<tr><td>交付物</td><td>导演提案 + 逐段约 10 秒的视频生成提示词 + 声音设计</td><td>带旁白、字幕、微动画、音效的完整 MP4 和字幕文件</td></tr>
+<tr><td>画面怎么来</td><td>你把提示词贴到视频生成工具里逐段生成，再在剪映 / Premiere 里剪</td><td>AI 生成插画，本地脚本按配音时间轴排镜头、做推拉平移和局部动画，再用 FFmpeg 合成</td></tr>
+<tr><td>运行环境</td><td>任何能用 Skill 的对话式 AI 即可；写提案不需要 API</td><td>需要能读写文件、执行命令的编程代理；本机装 Node 20+ 与 FFmpeg</td></tr>
+<tr><td>适合</td><td>30 秒到 3 分钟、讲究角色动作的短片</td><td>5～10 分钟以上的旁白长片</td></tr>
+</tbody></table>
+
+<h2 id="styles">六种画风</h2>
+<p>A 系列有五种：A1 经典黑白（白底黑人 / 黑底白人两种）、A2 现代潮酷（红色冷帽黄 T 恤的固定角色，分“极简科技”和“彩色故事”两套环境）、A3 史前洞穴（兽皮、篝火、职场讽刺式反转）、A4 治愈故事（彩色日常场景）、A5 历史卡通（江户、古埃及等时代服饰）。B 系列目前只有 B1 极简手绘风，而且<strong>本地运行时目前只接受 <code>style: B1</code></strong>，换其他画风代号并不会自动获得支持。下面是各画风样片的中间一帧（取自仓库 README 预览动图，MIT）：</p>
+<div class="shots">
+<figure><img src="images/frame-dark-theme-demo.webp" alt="A1.2 黑底白火柴人样片中的一帧" loading="lazy"><figcaption>A1.2 黑底白火柴人</figcaption></figure>
+<figure><img src="images/frame-style-2a-demo.webp" alt="A2.1 红帽黄衣火柴人在纯白科技空间中划出一道青蓝光线" loading="lazy"><figcaption>A2.1 现代潮酷 · 极简科技</figcaption></figure>
+<figure><img src="images/frame-style-3-demo.webp" alt="A3 史前洞穴风样片中的一帧" loading="lazy"><figcaption>A3 史前洞穴</figcaption></figure>
+<figure><img src="images/frame-style-4-cozy-cafe.webp" alt="A4 治愈故事风：露天咖啡座的一帧" loading="lazy"><figcaption>A4 治愈故事 · 露天咖啡座</figcaption></figure>
+<figure><img src="images/frame-style-5-japan-hero.webp" alt="A5 历史卡通风：江户街头的武士火柴人" loading="lazy"><figcaption>A5 历史卡通 · 江户日本</figcaption></figure>
+</div>
+<figure><img src="images/b1-contact-sheet.webp" alt="B1 极简手绘风样片的 12 格联系表：火柴人在电脑前写稿、剪辑、刷新，被一摞视频卡片压弯腰，最后举手说先修好三件事" loading="lazy"><figcaption>B1 已确认样片（2026-10-23）的联系表，仓库 <code>skills/directing-stickman-videos/assets/b1/approved-2026-10-23-contact-sheet.png</code>（MIT）。可以看到它的套路：每一句旁白对应一个画面，重点词做成大字，角色表情和道具承担情绪。</figcaption></figure>
+
+<h2 id="how">它是怎么工作的</h2>
+<h3>A 模式：先审提案，再给提示词</h3>
+<p><code>SKILL.md</code> 把 A 模式写成了一份很严格的“合同”：开工前必须拿到素材、画幅（16:9 或 9:16）和画风，缺什么就一次问齐，<strong>“赶时间”“随便选个常用设置”都不能跳过这道门</strong>。时长按 10 秒一段切分（默认 60 秒 = 6 段），脚本按“五段式高完播”结构写：黄金钩子 → 打破常识 → 揭开内幕 → 终极真相 → 升华与评论区讨论。先交导演提案并<strong>停下来等你确认</strong>；任何画幅、风格、旁白或整体方向的改动都要重写提案、重新确认，之后才输出逐段提示词。</p>
+<p>一些细则很能说明作者在和视频模型的“不稳定”较劲：A1 的角色描述要在每段里逐字重复，不许用“同一个角色”偷懒；手臂动作要“替换”而非“新增”，防止生成出第三只手；A2 的红帽角色禁止画细节眼睛，避免“虫眼变形”；提示词里不能出现色号；画面默认不出现任何文字，字幕留给后期；旁白必须锁定同一套完整声线描述，换场景不能换配音员。</p>
+<h3>B 模式：样片确认后才整片生产</h3>
+<p>流程是：检查配置 → 确认脚本、画风、声音 → 做约 20 秒有声样片 → 你确认样片并授权剩余费用 → 自动完成整片。本地运行时（<code>scripts/autopilot.mjs</code>）提供 <code>doctor</code>、<code>init</code>、<code>validate</code>、<code>preview</code>、<code>approve</code>、<code>render</code> 等命令；项目用一个 <code>project.json</code> 描述配音文件、字幕时间轴、每个镜头的图层（图片、三姿势角色、文字、线条、箭头）和音效点，用 <code>@napi-rs/canvas</code> 绘制、FFmpeg 合成。</p>
+<p>可选的 Gemini 适配器（<code>gemini-media.mjs</code>）用来生图和 TTS 配音，写得相当克制：必须显式加 <code>--allow-network</code>，密钥只读环境变量，<strong>每次只发一个请求、不自动重试</strong>，先写一份请求回执，失败时提示你去服务商后台查历史再决定要不要重试——这是为了防止代理在报错循环里反复烧钱。字幕对齐可选用本地 Whisper，且默认不自动下载模型。</p>
+<h3>收尾：封面与发布工具包</h3>
+<p>README 还附带一个“高点击率封面与发布工具包”：按视频画风给出封面生图提示词、5 个标题、YouTube 简介与标签、置顶评论问题和发布前检查清单。</p>
+
+<h2 id="cost">要花多少钱、要准备什么</h2>
+<ul>
+<li><strong>软件本身：</strong>MIT 许可，免费，可商用。</li>
+<li><strong>A 模式：</strong>写提案和提示词不需要 API；但真正出视频要在 Google Flow、Runway、Luma、Kling 等工具里逐段生成，这些工具按积分或订阅收费。按默认规则，60 秒视频就是 6 段生成，算上重抽，次数往往更多。</li>
+<li><strong>B 模式：</strong>需要可用的生图服务和 TTS 配音服务（默认示例用 Google Gemini 的 Bodi 等预置音色），以及本机的 Node 20+、FFmpeg/FFprobe；如需自动对齐字幕还要 openai-whisper。文档自己也写明：<code>doctor</code> 只检查本地依赖和密钥“是否存在”，<strong>不检查登录、模型权限、额度或计费</strong>，代理在发起付费调用前应先说明费用并征得同意。</li>
+<li><strong>中文与其他文字：</strong>自带的 Caveat 字体只覆盖拉丁字母，做中文字幕需要自己指定 CJK 字体（<code>AUTOPILOT_FONT</code>）。</li>
+<li><strong>素材版权：</strong>仓库的 ATTRIBUTION 说明，B1 样片里由服务商生成的配音和图像仍受各服务条款约束，MIT 许可<strong>不会</strong>替它们重新授权；字体另走 SIL OFL，图标来自 Lucide。</li>
+</ul>
+
+<h2 id="flags">核实与提醒</h2>
+<ul>
+<li>⚠️ <strong>“100% 免费”需要打折理解。</strong>免费的是 Skill 和脚本；生图、配音、视频生成的费用由你付给 Google、ElevenLabs 等第三方，README 的 FAQ 第 1 条自己也承认这一点。</li>
+<li>⚠️ <strong>“几分钟就能完成”“节省 80% 返工时间”未核实。</strong>这是 README 的自述，仓库没有给出计时数据；B 模式还设有脚本确认、样片确认两道人工关卡，实际耗时取决于生成服务排队与返工。</li>
+<li>⚠️ <strong>变现承诺未核实。</strong>FAQ 第 2 条称成片“完全属于高价值原创内容，符合 YouTube 创作者收益计划（YPP）与 TikTok 创作者基金的变现标准”。能否开通收益由平台逐个频道审核，任何工具都无法预先保证；批量、模板化的 AI 旁白视频正是平台“重复 / 低质内容”政策重点关注的类型，请以平台当期政策为准，并按要求做 AI 内容标注。</li>
+<li>⚠️ <strong>文档内部有几处说法不一致（冲突待审）。</strong>FAQ 说 AI 会把主题拆成“6 幕式标准分镜”，而 <code>SKILL.md</code> 实际按“时长 ÷ 10 秒”切段、用五段式叙事结构；FAQ 第 3 条说“不消耗本地硬件”，而 B 模式实际在本机用 Canvas 与 FFmpeg 渲染（不需要显卡，但确实占用本机）；FAQ 第 7 条列出 Runway Gen-3、Pika 等，而 A 模式的核心合同写的是为“Gemini Omni Flash”约 10 秒片段设计提示词，换用其他模型效果 ⚠️ 未验证。画风数量也随版本变化：10-15 更新日志写“四大画风、六种视觉方案”，现在 README 写“6 大画风 · 8 种视觉方案”，而路线图又写“1,000 Stars：已推出导演模式 + 5 种核心画风”。</li>
+<li>⚠️ <strong>“经过验证的 YouTube 包装心理学”“高完播率”属营销说法</strong>，仓库内没有对应的数据或研究出处。</li>
+<li>⚠️ <strong>利益相关：</strong>README 本身也是作者的推广页——用“5,000 Stars 解锁新画风”的方式要 Star，引导关注作者的 X 与 Telegram，并征集作品在“官方 YouTube 频道”展示。仓库约三个月获得 3,344 Star，本站未核查 Star 来源构成 ⚠️ 未核实。</li>
+<li>⚠️ <strong>风格模仿的边界。</strong>“计划中的画风”点名对标 OverSimplified、Alan Becker、Casually Explained 等在世创作者的标志性风格；画风本身一般不受版权保护，但直接复刻角色、标志性元素或冒用其名义做频道，可能引发侵权或平台纠纷。</li>
+<li>⚠️ <strong>推断：</strong>仓库 <code>docs/superpowers/</code> 下的设计与实施计划文件命名方式，看起来是用 “superpowers” 一类 Agent 工作流 Skill 规划开发的，本站据目录名推断，未向作者求证。</li>
+<li>本站未运行该 Skill，也未下载任何样片视频；文中图片均为仓库内的静态图或预览动图的单帧。</li>
+</ul>
+
+<h2 id="related">站内相关</h2>
+<ul>
+<li><a href="../motion-graphics-music-video/">Motion Graphics Music Video：Claude Code 音乐视频 Skill</a>——同样是“把视频生产写成 Skill”，但走的是代码直出动态图形。</li>
+<li><a href="../andyhuo520-digital-human-koubo/">Digital Human Koubo：一张照片 + 一句话，让 AI Agent 做出数字人口播成片</a>——同属“Agent 串起付费生成 API 出成片”，可对照其费用与肖像风险提醒。</li>
+<li><a href="../vibe-knowledge-film/">vibe-knowledge-film：一键生成知识短片的 Agent Skill</a>——同一赛道（知识类旁白短片）的另一种画面方案。</li>
+<li><a href="../story2board-ai-storyboard/">Story2Board：AI 分镜“副导演”</a>——与 A 模式“先出分镜再生成”的思路相近。</li>
+<li><a href="../voxyz-openverse-sfx/">给 Opus 5.5 一个网址，剪视频时就能搜 520 万条免费音频</a>——B 模式需要音效时可参考的免费音频来源。</li>
+</ul>
+
+<h2 id="appendix-1">附录一　README 全文（简体中文版）</h2>
+<p class="caption">以下为作者在仓库中提供的官方简体中文版 <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.zh-CN.md" rel="noopener">README.zh-CN.md</a>（提交 <code>439682a</code>），依 MIT 许可完整转载。与英文版逐节对应（章节结构一致），个别措辞以英文原文为准。原文中的动图与图片未转载，以〔〕标出其说明文字，可点击链接到仓库查看；页内锚点已改为本页内跳转。</p>
+<div class="readme-zh">
+<p><a href="https://github.com/kaomei/stickman-video-director/blob/main/README.en.md">🇺🇸 EN</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.zh-CN.md"><strong>🇨🇳 简中</strong></a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.ja.md">🇯🇵 日本語</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.ko.md">🇰🇷 한국어</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.fr.md">🇫🇷 FR</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.pt-BR.md">🇧🇷 PT-BR</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.tr.md">🇹🇷 TR</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.id.md">🇮🇩 ID</a></p>
+<h3>🎬 Stickman Video Director</h3>
+<p><strong>将任何脚本变成适合不露脸 YouTube 频道的多画风爆款火柴人动画视频。完全开源。</strong></p>
+<p><a href="https://github.com/kaomei/stickman-video-director/stargazers">〔徽章：GitHub Stars〕</a>
+〔徽章：MIT License〕</p>
+<p>从一个话题、一篇文章或一份脚本开始，自动编排画面、配音、字幕与音效，制作可直接发布的火柴人视频。</p>
+<p><strong>⚡ 100% 免费开源。无需出镜，无需每月 $50 的订阅，几分钟就能完成，不必等上几天。</strong></p>
+<p>画风持续更新，适用于 <strong>科学科普、暗黑心理学、科技寓言、热门奇闻与故事类频道。</strong></p>
+<table width="100%">
+<tr>
+<td width="50%" align="center">
+<strong>经典黑白风</strong><br>
+<a href="#zh-a1"><span class="imgnote">〔原文此处为图：经典黑白风火柴人动画：黑底白线、动态科普〕</span></a>
+</td>
+<td width="50%" align="center">
+<strong>现代潮酷风</strong><br>
+<a href="#zh-a2"><span class="imgnote">〔原文此处为图：现代潮酷风火柴人动画：红帽角色、科技光效〕</span></a>
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+<strong>史前洞穴风</strong><br>
+<a href="#zh-a3"><span class="imgnote">〔原文此处为图：史前洞穴风火柴人动画：洞穴故事、反转短片〕</span></a>
+</td>
+<td width="50%" align="center">
+<strong>治愈故事风</strong><br>
+<a href="#zh-a4"><span class="imgnote">〔原文此处为图：治愈故事风火柴人动画：彩色场景、生活共鸣〕</span></a>
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+<strong>历史卡通风</strong><br>
+<a href="#zh-style-5"><span class="imgnote">〔原文此处为图：历史卡通风火柴人动画：江户日本的武士故事〕</span></a>
+</td>
+<td width="50%" align="center">
+<strong>极简手绘风</strong><br>
+<a href="#zh-b1"><span class="imgnote">〔原文此处为图：极简手绘风火柴人视频：生动角色、重点文字与微动画〕</span></a>
+</td>
+</tr>
+</table>
+
+<p><strong>6 大画风 · 8 种视觉方案 · 实测样片 · 免费开源</strong></p>
+<p>⭐ <strong>为项目点个 Star，及时关注下一批画风和新功能解锁。</strong></p>
+<p><a href="#zh-quick-start">开始使用</a> · <a href="#zh-a-styles">导演模式画风</a> · <a href="#zh-b-styles">全自动模式画风</a> · <a href="#zh-faq">常见问题</a> · <a href="#zh-road-to-10000-stars--creator-ecosystem">路线图</a></p>
+<p><a id="zh-creation-modes"></a></p>
+<h4>🎬 两种视频制作模式</h4>
+<p><strong>想掌控每个镜头？选择 A · 导演模式。想拿到完整视频，不想自己拼接场景？选择 B · 全自动模式。</strong> 一个项目，两种工作流。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"></th>
+<th style="text-align: left;">A · 导演模式</th>
+<th style="text-align: left;">B · 全自动模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>特点</strong></td>
+<td style="text-align: left;"><strong>你来掌镜，AI 做导演</strong>：生成分镜与提示词，由你控制片段生成和剪辑。</td>
+<td style="text-align: left;"><strong>给出话题或需求，直接拿成片</strong>：自动完成插画、配音、字幕、微动画与视频合成。</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>时长</strong></td>
+<td style="text-align: left;"><strong>短片优先</strong>，如 30 秒–3 分钟；也可逐段制作更长内容。</td>
+<td style="text-align: left;"><strong>长片优先</strong>，尤其适合 <strong>10 分钟及以上</strong>的旁白视频，也能做短片和连续故事短剧。</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>工具</strong></td>
+<td style="text-align: left;">用支持 Skill 的 AI 助手规划分镜，在你偏好的视频生成工具中生成片段（Google Flow、Runway、Luma、Kling 等），再用 CapCut 或 Premiere 完成剪辑。</td>
+<td style="text-align: left;">在 <strong>Codex、Claude Code</strong> 等能读写文件、调用工具和执行命令的 AI 编程代理中运行，串起素材生成与本地合成。</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>画面</strong></td>
+<td style="text-align: left;"><strong>逐段生成动画</strong>：侧重角色动作、镜头调度与人物互动。</td>
+<td style="text-align: left;"><strong>插画分镜＋微动画</strong>：用切镜、推拉和平移配合旁白讲故事，不必逐段生成完整动作视频。</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>产出</strong></td>
+<td style="text-align: left;">导演提案、分镜、逐段视频提示词与声音设计。</td>
+<td style="text-align: left;"><strong>带配音、字幕与微动画的完整视频文件</strong>。</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>开始</strong></td>
+<td style="text-align: left;"><a href="#zh-director-start">使用导演模式</a></td>
+<td style="text-align: left;"><a href="#zh-autopilot-start">使用全自动模式</a></td>
+</tr>
+</tbody>
+</table>
+<p>两种工作流都可以从一个初步话题、一个网页链接或一份完整脚本开始。画幅（9:16、16:9、1:1）、旁白语言与配音均可自由选择。上面的时长仅供参考，不是硬性限制。</p>
+<p>💡 <strong>快速配置说明</strong>：</p>
+<ul>
+<li><strong>导演模式</strong>可在普通对话式 AI 窗口中使用。</li>
+<li><strong>全自动模式</strong>运行在具备文件和终端访问能力的 AI 编程代理中（如 <strong>Claude Code、OpenAI Codex 或 Cursor</strong>），自动完成从渲染到文件交付的全流程。</li>
+</ul>
+<p><a id="zh-quick-start"></a></p>
+<h4>🧭 开始使用</h4>
+<p>兼容 Claude Code、Codex、Cursor、Antigravity，或任何具备文件和终端访问能力的智能体环境。</p>
+<p>把以下内容发送给你的 AI 助手：</p>
+<pre><code class="language-text">帮我安装这个 Skill：
+https://github.com/kaomei/stickman-video-director
+
+安装成功后，立即读取已安装的 SKILL.md，
+用易懂的方式介绍两种模式的产出、所需工具和制作流程，
+给我可以照着说的示例；
+结合我的需求，告诉我还缺什么、下一步具体怎么做。
+</code></pre>
+<p><a id="zh-director-start"></a></p>
+<h5>A · 导演模式：逐段生成分镜提示词</h5>
+<p>安装后，把下面这段发给 AI 助手，换成自己的话题即可：</p>
+<pre><code class="language-text">使用导演模式/A模式，把下面的话题、文案或需求，
+做成火柴人视频：
+[填写话题、粘贴文案，也可以直接描述需求]
+
+需求：横屏 16:9，采用 A3「史前洞穴风」，先做 30 秒。
+先给我导演提案，确认后再输出逐段视频提示词。
+</code></pre>
+<p><strong>流程：给出话题和需求 → 生成故事脚本 → 按需确认人物三视图 → 生成详细分镜提示词 → 手动生成片段并剪辑成片</strong></p>
+<p>提案包含故事结构、分段旁白、画面动作、镜头和声音设计。拿到提示词后，将它们逐条复制到 <a href="https://flow.google.com/">Google Flow</a> 等视频生成工具，再用剪映等工具添加字幕、完成剪辑。</p>
+<p>制作第一个视频时，请参考 <a href="https://x.com/CrazyKaomei/status/2102311241046008268">X 上的可视化制作教程</a>（含分步视频演示的串帖）。</p>
+<p><a id="zh-autopilot-start"></a></p>
+<h5>B · 全自动模式：一句话生成长片</h5>
+<p>在 Codex、Claude Code 等具备文件与命令执行能力的环境中，安装后这样说：</p>
+<pre><code class="language-text">使用全自动模式/B模式，把下面的话题、文章、帖子、新闻或具体需求，
+做成在 YouTube 上有吸引力的视频：
+[粘贴内容或链接，也可以直接描述宣传需求]
+
+需求：5～10 分钟，横屏 16:9，采用 B1「极简手绘风」，配上旁白、字幕和音效。
+
+先检查生图、配音和视频合成配置，再给我脚本与 20 秒有声样片；
+确认后，让画面跟随配音节奏自动完成整片，交付完整视频文件，不用我逐段拼装。
+</code></pre>
+<p><strong>流程：给出话题、内容或需求 → 确认视频脚本 → 确认 20 秒有声样片 → 自动制作整片 → 拿到完整视频</strong></p>
+<p>AI 助手会根据内容设计分镜，生成画面与旁白，配好字幕和音效，再按配音节奏合成为完整视频。你主要负责确认脚本和样片，不用逐段生成、手动拼装。</p>
+<p>首次使用会先检查所需配置，缺什么、怎么补都会逐步说明。画面或声音不满意，可以只调整对应片段，保留已经确认的部分。</p>
+<p><a id="zh-style-gallery"></a></p>
+<p><a id="zh-a-styles"></a></p>
+<h4>🎨 A · 导演模式画风一览</h4>
+<p>按 A1、A2、A3…更新，每个画风下展示对应的动画样片。</p>
+<p><a id="zh-a1"></a></p>
+<h5>A1：经典黑白风</h5>
+<p>用最少的线条，把一个概念讲清楚。纯白或纯黑的画布上，人物、道具和强调色承担主要信息，适合做节奏明快的知识解说。</p>
+<ul>
+<li><strong>画面特点</strong>：简洁圆头、线条肢体与统一线宽，可偶尔加入简单表情；最多三种高饱和强调色，用来区分情绪、风险或行动。抽象内容可以变成具体画面，比如把焦虑画成牢笼，把注意力画成进度条。</li>
+<li><strong>适合内容</strong>：科学常识、心理成长、励志、自我管理、商业拆解与概念解释。</li>
+<li><strong>怎么选</strong>：白底黑火柴人清爽直观，适合教学和日常科普；黑底白火柴人对比更强，适合悬念、冲突和情绪表达。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A1.1 · 白底黑火柴人</th>
+<th style="text-align: center;">A1.2 · 黑底白火柴人</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：A1.1 · 白底黑火柴人动态演示〕</span></td>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：A1.2 · 黑底白火柴人动态演示〕</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">纯白画布 · 黑色人物</td>
+<td style="text-align: center;">纯黑画布 · 白色人物</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a id="zh-a2"></a></p>
+<h5>A2：现代潮酷风</h5>
+<p>红色冷帽、黄色 T 恤，是这套画风最鲜明的角色标记。既可以在干净的科技空间里讲产品，也可以走进卧室、街道和荒野，演一段有起伏的故事。</p>
+<ul>
+<li><strong>画面特点</strong>：固定红帽黄衣的极简角色，搭配两种环境。极简科技方案用纯白空间、极淡网格、悬浮玻璃界面和青蓝光效表现科技感；彩色故事方案用彩色场景、光影和空间纵深营造故事氛围。</li>
+<li><strong>适合内容</strong>：极简科技适合 AI 工具、科技产品、方法教学与功能解说；彩色故事适合成长经历、生活话题、冒险与励志故事。</li>
+<li><strong>怎么选</strong>：重点是“讲清一个工具或方法”，选极简科技；重点是“跟着角色经历一件事”，选彩色故事。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">A2.1 · 极简科技</th>
+<th style="text-align: center;">A2.2 · 彩色故事</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：A2.1 · 极简科技风动态演示〕</span></td>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：A2.2 · 彩色故事风动态演示〕</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">纯白空间 · 极淡网格 · 青蓝微光</td>
+<td style="text-align: center;">彩色场景 · 电影光影 · 叙事氛围</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a id="zh-a3"></a></p>
+<h5>A3：史前洞穴风</h5>
+<p>把今天的烦恼，搬回没有手机和办公室的史前世界。洞穴、兽皮、篝火和夸张表情，让职场、人性与生活里的荒诞，变成一段带反转的小故事。</p>
+<ul>
+<li><strong>画面特点</strong>：粗手绘线条、白色实心头部、深色肢体、兽皮服饰和土色环境，强调角色互动、表情反应与喜剧停顿。角色按故事设计，男女老幼都可以出现，不同故事不必共用一张脸。</li>
+<li><strong>适合内容</strong>：史前脑洞、职场讽刺、人性观察、黑色幽默、寓言与儿童英语故事。</li>
+<li><strong>怎么选</strong>：想用一个小情节讲出“原来如此”或“怎么会这样”的反转，可以选这一风格；尤其适合把现代关系放进原始部落，做出熟悉又意外的笑点。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">案例 1：《人类的第一份工作是怎么来的？》</th>
+<th style="text-align: center;">案例 2：《人类第一次发现火源》</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：《人类的第一份工作是怎么来的？》动态预览〕</span></td>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：《人类第一次发现火源》——粉丝作品〕</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">史前故事 · 职场反转</td>
+<td style="text-align: center;">火源主题 · 粉丝作品</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a id="zh-a4"></a></p>
+<h5>A4：治愈故事风</h5>
+<p>一只舍不得用的杯子，一条忍不住秒回的消息，一个终于留给自己的下午。让极简角色走进彩色的日常场景，用动作、表情和镜头讲普通人能共鸣的小事。</p>
+<ul>
+<li><strong>画面特点</strong>：白色实心圆头与细长躯干、深色细肢体和自然的小表情，搭配完整的 2D 卡通环境。全景交代地点，近景捕捉犹豫或释然，跟拍带着角色继续向前。</li>
+<li><strong>适合内容</strong>：生活共鸣、心理成长、人际关系、温暖故事、习惯养成与儿童英语。</li>
+<li><strong>怎么选</strong>：想让观众从一个具体生活片段里认出自己，可以选这一风格。色彩和光影随主题变化，既能表达温暖，也能讲焦虑、疲惫和重新出发。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">案例 1：通勤路上的消息焦虑</th>
+<th style="text-align: center;">案例 2：把时间留给自己</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：治愈故事风：地铁站里的消息焦虑〕</span></td>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：治愈故事风：露天咖啡座的休息时刻〕</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">地铁站 · 行走跟拍 · 情绪近景</td>
+<td style="text-align: center;">露天咖啡座 · 暖光树影 · 日常动作</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a id="zh-style-5"></a>
+<a id="zh-a5"></a></p>
+<h5>A5：历史卡通风</h5>
+<p>让火柴人走进历史：江户街头的武士、古埃及神庙里的黑猫、罗马营地中的士兵。用鲜明的时代服饰、彩色场景和带反差的小情节，把历史知识讲得更有画面感。</p>
+<ul>
+<li><strong>画面特点</strong>：白色实心圆头、黑色椭圆眼睛、清晰粗轮廓与细线肢体，搭配时代服饰、柔和赛璐璐明暗和彩色绘景。换国家、换时代时，调整服装、建筑、道具和音乐，保留同一套角色画法。</li>
+<li><strong>适合内容</strong>：世界历史、文明趣事、古人日常、人物故事与历史题材的幽默短片。</li>
+<li><strong>怎么选</strong>：想把知识点变成“古人正在经历的一件事”，可以选这一风格。既能讲一个历史细节，也能用角色反应和情节反转，让观众愿意继续看。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">案例 1：江户日本 · 武士的日常</th>
+<th style="text-align: center;">案例 2：古埃及 · 猫与木乃伊</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：历史卡通风：江户武士与街巷日常〕</span></td>
+<td style="text-align: center;"><span class="imgnote">〔原文此处为图：历史卡通风：古埃及神庙、黑猫与木乃伊〕</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">江户街巷 · 武士服饰 · 日常反差</td>
+<td style="text-align: center;">彩色神庙 · 黑猫角色 · 历史趣事</td>
+</tr>
+</tbody>
+</table>
+<p>画风与提示词贡献：<a href="https://github.com/leksautomate">Lawal Ridwan / @leksautomate</a>。</p>
+<hr>
+<p><a id="zh-a6"></a></p>
+<h5>A6：待更新…</h5>
+<p>新的专用导演画风正在训练中。<a href="#zh-road-to-10000-stars--creator-ecosystem">为项目点个 Star</a>，一起在 5,000 Stars 时解锁！</p>
+<hr>
+<p><a id="zh-b-styles"></a></p>
+<h4>🤖 B · 全自动模式画风一览</h4>
+<p>按 B1、B2、B3…更新，每个画风下展示对应的插画分镜＋微动画成片，与 A 系列分开维护。</p>
+<p><a id="zh-b1"></a></p>
+<h5>B1：极简手绘风</h5>
+<p>让画面跟着旁白推进。用表情生动的火柴人、彩色手绘道具和醒目的重点文字，把知识、故事或产品亮点讲得清楚又有趣。</p>
+<ul>
+<li><strong>画面特点</strong>：近白纸底与极淡网格，黑色手绘线条搭配少量彩色道具；用表情、局部微动画、连贯转场和音效推动画面，重点文字突出信息，字幕配合旁白。</li>
+<li><strong>适合内容</strong>：YouTube 知识讲解、心理成长、职场故事、教育科普与产品宣传。</li>
+<li><strong>怎么选</strong>：想把一个话题、一段文案或故事脚本做成带配音、字幕的完整视频，可以选这一风格。画面跟随语音节奏编排，适合持续讲解和长篇叙事。</li>
+</ul>
+<p>点击动图，查看或下载有声样片。</p>
+<table width="100%">
+  <tr>
+    <th width="50%" align="center">案例 1：不露脸做 YouTube</th>
+    <th width="50%" align="center">案例 2：为什么没人看？</th>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/b1-minimal-handdrawn.mp4"><span class="imgnote">〔原文此处为图：B1 极简手绘风案例 1：点击查看或下载不露脸的 YouTube 视频创作有声样片〕</span></a></td>
+    <td width="50%" align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/skills/directing-stickman-videos/assets/b1/approved-2026-10-23.mp4"><span class="imgnote">〔原文此处为图：B1 极简手绘风案例 2：点击查看或下载 Bodi 有声样片，含字幕、手绘角色与微动画〕</span></a></td>
+  </tr>
+  <tr>
+    <td align="center">手绘角色 · 重点文字 · 微动画</td>
+    <td align="center">Bodi 旁白 · 生动表情 · 微动画</td>
+  </tr>
+</table>
+
+<hr>
+<p><a id="zh-b2"></a></p>
+<h5>B2：待更新…</h5>
+<p>新的全自动画风和程序化动画正在训练中。<a href="#zh-road-to-10000-stars--creator-ecosystem">为项目点个 Star</a>，一起在 5,000 Stars 时解锁！</p>
+<p><a id="zh-thumbnail-publishing-kit"></a></p>
+<h4>🖼️ 高点击率封面与发布工具包</h4>
+<p><strong>视频做得再好，也要先让人愿意点开。</strong> 动画完成后，在同一工作流中统筹与画风匹配的封面、高点击率标题和观众互动钩子。</p>
+<p>适用于<strong>导演模式与全自动模式</strong>的一体化收尾工具包：围绕视频已确认的角色与画风设计视觉钩子，并配齐可直接发布的 YouTube 元数据。</p>
+<table width="100%">
+  <tr>
+    <td align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/thumbnails/no-camera.jpg"><span class="imgnote">〔原文此处为图：NO CAMERA? — 表情生动的手绘火柴人与打叉的相机〕</span></a></td>
+    <td align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/thumbnails/first-job.jpg"><span class="imgnote">〔原文此处为图：THE FIRST JOB — 史前角色面对巨大的石块障碍〕</span></a></td>
+    <td align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/thumbnails/a5-samurai-taxes.jpg"><span class="imgnote">〔原文此处为图：SAMURAI VS TAXES — 赛璐璐风武士、江户街景与木版画风衬线字〕</span></a></td>
+  </tr>
+  <tr>
+    <td align="center">一个简单问题，一个清晰符号。</td>
+    <td align="center">用巨大的障碍建立故事悬念。</td>
+    <td align="center">时代服饰、场景与标题字体相呼应。</td>
+  </tr>
+</table>
+
+<table width="100%">
+  <tr>
+    <td align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/thumbnails/a1-you-vs-you.jpg"><span class="imgnote">〔原文此处为图：YOU vs YOU — 小小的黑色火柴人面对巨大的自己，辅以克制的红色点缀〕</span></a></td>
+    <td align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/thumbnails/a2-busy-vs-better.jpg"><span class="imgnote">〔原文此处为图：BUSY ≠ BETTER — 红帽角色被工作流卡片淹没，与只专注一件事形成对照〕</span></a></td>
+    <td align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/thumbnails/a4-3am-again.jpg"><span class="imgnote">〔原文此处为图：3AM. AGAIN. — 深夜刷手机、蓝色屏幕光与柔和手写字〕</span></a></td>
+  </tr>
+  <tr>
+    <td align="center">用悬殊的体型讲清一个冲突。</td>
+    <td align="center">忙碌还是有效，一眼看懂。</td>
+    <td align="center">有共鸣的场景，绘画光影与手写字。</td>
+  </tr>
+</table>
+
+<p><em>所有封面构思都围绕经过验证的 YouTube 包装心理学设计：鲜明的视觉反差、清晰的轮廓，以及手机端易读的字体。</em></p>
+<h5>工具包包含：</h5>
+<ul>
+<li><strong>一键封面提示词</strong>: 匹配视频的角色画风、配色与核心冲突，可直接用于 Midjourney、Google Flow 或 DALL-E 生图。</li>
+<li><strong>5 个高点击率标题方案</strong>: 兼顾搜索意图、好奇心缺口与广泛的观众吸引力。</li>
+<li><strong>YouTube Studio 简介与 SEO</strong>: 包含视频时间戳、主题摘要和相关标签。</li>
+<li><strong>置顶评论互动钩子</strong>: 用有讨论度的问题激发观众交流，带动互动与留存。</li>
+<li><strong>发布前检查清单</strong>: 核对手机端安全区、画面对比度与 Content-ID 准备情况。</li>
+</ul>
+<h5>如何触发：</h5>
+<p>确认视频脚本或最终成片后，只需向 AI 助手发送：</p>
+<pre><code class="language-text">为这个视频生成封面与发布工具包：
+- 1 条匹配当前画风的 16:9 横版封面提示词
+- 5 个爆款 YouTube 标题方案 + 简介草稿
+- 1 个用于置顶评论的互动问题
+</code></pre>
+<p><em>交付内容可直接用于制作与发布，拖放进 YouTube Studio 或 TikTok 即可。</em></p>
+<p><a id="zh-faq"></a></p>
+<h4>❓ 常见问题解答 (FAQ)</h4>
+<h5>Q1. 这真的是 100% 免费的吗？有没有隐藏收费？</h5>
+<p>是的。Stickman Video Director 采用 MIT 开源协议，100% 完全免费且开源，你可以自由用于个人创作或商业变现。不同于传统每月收取 $30–$60 昂贵月费的商业软件，本项目没有任何订阅费。你只需根据自己选择调用的第三方大模型服务（如 Google Gemini、Claude 或 ElevenLabs）按需支付官方 API 费用。</p>
+<h5>Q2. 生成的视频可以在 YouTube 和 TikTok 上开通收益变现吗？</h5>
+<p>完全可以。无脸号创作者最担心被平台判定为“搬运重复内容（Reused Content）”或“低质 AI 垃圾”导致无法获利。由于本项目生成的是具有高度原创叙事节奏、独特视觉分镜和有针对性撰写的故事脚本，成片完全属于高价值原创内容，符合 YouTube 创作者收益计划（YPP）与 TikTok 创作者基金的变现标准。</p>
+<h5>Q3. 我需要懂编程或者拥有昂贵的高性能显卡吗？</h5>
+<p>完全不需要。你不需要购买几万块的专业独立显卡，也不需要懂写代码。</p>
+<ul>
+<li><strong>分镜导演模式（Director Mode）</strong>：直接在任意支持 Skill 的 AI 助手对话框里用普通中文/英文交流即可使用；</li>
+<li><strong>全自动模式（Autopilot Mode）</strong>：运行在 Claude Code、Codex 或 Cursor 等现代智能体环境中，所有繁重的生成均交由云端 API 或轻量级渲染完成，不消耗本地硬件配置。</li>
+</ul>
+<h5>Q4. 如果我手里没有写好的现成剧本，能直接做视频吗？</h5>
+<p>可以。你可以直接扔给 AI 导演一段粗糙的想法、一个新闻链接、甚至一整篇公众号长文。AI 导演会自动提炼核心戏剧冲突，写出前 3 秒爆款黄金钩子，并将你的主题拆解为带有幽默节奏与台词断句的 6 幕式标准分镜。</p>
+<h5>Q5. 我应该如何选择“分镜导演模式”与“全自动模式”？</h5>
+<ul>
+<li><strong>选择分镜导演模式（Director Mode）</strong>：当你希望严格把控每一个镜头构图、运镜轨迹和视觉隐喻时使用。它是你的“零成本安全网”，在生成任何真实视频之前，你可以完全免费地反复微调剧本和分镜；</li>
+<li><strong>选择全自动模式（Autopilot Mode）</strong>：当你追求极致出片效率、想当甩手掌柜时使用。一键自动编排剧本、对齐配音、生成字幕并合成完整成片。</li>
+</ul>
+<h5>Q6. 它是如何确保视频具有高完播率、有梗且不枯燥的？</h5>
+<p>普通 AI 工具只会机械地把文字直译成画面，导致视频像催眠 PPT。Stickman Video Director 植入了专业的<strong>视觉叙事心理学</strong>：</p>
+<ul>
+<li><strong>黄金 3 秒钩子</strong>：将开篇第一句话重构为视觉反差或悬念冲突，瞬间抓住注意力防止观众划走；</li>
+<li><strong>爆款视觉隐喻</strong>：把枯燥抽象的概念转化为具象的搞笑视觉梗（例如把“精神内耗”具象化为一个疯狂自转的仓鼠轮，把“被掏空”具象化为头顶仅剩 1% 的低电量进度条）；</li>
+<li><strong>卡点与节奏留白</strong>：内置情绪铺垫、反转神表情与音效提示点（SFX），完美还原 Casually Explained 等顶流创作者的幽默节奏。</li>
+</ul>
+<h5>Q7. 支持哪些 AI 助手和剪辑软件？</h5>
+<ul>
+<li><strong>支持环境</strong>：无缝兼容 Claude Code、OpenAI Codex、Cursor、Antigravity 等任意具备终端或文件读写能力的智能体环境；</li>
+<li><strong>视频模型</strong>：生成的提示词深度适配 Google Flow、Runway (Gen-3)、Luma、Kling（可灵）、Pika 等主流工具；</li>
+<li><strong>剪辑软件</strong>：导出的音画素材可直接一键拖入 CapCut（剪映海外版）、Premiere Pro、DaVinci Resolve 进行微调。</li>
+</ul>
+<h5>Q8. 如果成片里某个单独镜头我不满意，必须全片推倒重做吗？</h5>
+<p>绝对不需要！这是我们 6 幕式模块化架构的最大优势。如果你对第 3 个镜头不满意，你只需单独重新生成第 3 个镜头，第 1、2、4、5、6 镜头的音频和素材完全保留，为你节省 80% 的返工剪辑时间，杜绝浪费 API 额度。</p>
+<p><a id="zh-road-to-10000-stars--creator-ecosystem"></a></p>
+<h4>⭐ 迈向 10,000 Stars 与创作者生态</h4>
+<p><strong>每一颗 Star，都为下一次更新添一把火！</strong> 我们正在一起打造一个 100% 免费、开源的工作室，帮助独立创作者运营不露脸频道，无需每月支付 50 美元的 SaaS 订阅费。</p>
+<ul>
+<li>[x] <strong>1,000 Stars</strong>：已推出导演模式 + 5 种核心画风</li>
+<li>[x] <strong>3,000 Stars</strong>：已推出全自动模式，一键生成视频</li>
+<li>[ ] <strong>🔥 5,000 Stars</strong>：</li>
+<li>上线 5–10 种新画风</li>
+<li>推出适用于 YouTube Shorts 与 TikTok 的一键批量编辑器</li>
+<li>[ ] <strong>7,500 Stars</strong>：</li>
+<li>提供 1,000+ 条爆款 YouTube 脚本提示词库</li>
+<li>提供 200+ 款免版税、可安全通过 Content ID 的音效与转场</li>
+<li>[ ] <strong>10,000 Stars</strong>：推出官方一体化 Web Studio</li>
+</ul>
+<p><a href="https://www.star-history.com/?repos=kaomei%2Fstickman-video-director&amp;type=date">
+  〔Star 增长曲线图（star-history.com），本站未转载〕
+</a></p>
+<p><a id="zh-whats-next"></a></p>
+<h4>🔮 计划中的画风</h4>
+<p>我们正在为最受欢迎的不露脸 YouTube 内容领域训练新的专用引擎：</p>
+<ul>
+<li><strong>OverSimplified 式历史与传说</strong> — 迷你历史人物、征服箭头与讽刺战役地图</li>
+<li><strong>火柴人格斗与速度线</strong> — Alan Becker 式动态打斗、武术与冲击帧</li>
+<li><strong>暗黑心理学与斯多葛黑色风格</strong> — 氛围剪影、发光双眼与《权力的 48 条法则》式叙事</li>
+<li><strong>华尔街与硅谷讽刺</strong> — 西装领带火柴人、暴跌图表与职场吐槽</li>
+<li><strong>双麦播客与单口喜剧</strong> — 节奏明快的对话喜剧、访谈再创作与角色斗嘴</li>
+<li><strong>互联网谜团与都市传说</strong> — 诡异铅笔素描、模拟信号故障与 Reddit 悬疑故事</li>
+</ul>
+<h4>💬 社区与投稿</h4>
+<p>想推荐画风，或让你的频道获得展示？欢迎通过 Telegram 联系 <strong><a href="https://telegram.me/CrazyKaomei">@CrazyKaomei</a></strong>：</p>
+<ul>
+<li><strong>推荐画风</strong>：发送视觉参考链接 + 你想做的内容领域。</li>
+<li><strong>作品展示</strong>：用这个工具制作了视频？发送作品链接，就有机会在本 README 和官方 YouTube 频道中展示！</li>
+</ul>
+<p>🔔 <em>在 X 上关注 </em><em><a href="https://x.com/CrazyKaomei">@CrazyKaomei</a></em><em>，获取每日视频制作流程、自动化工具与频道增长 SOP。</em></p>
+<h4>📄 许可证</h4>
+<p>本项目采用 <a href="https://github.com/kaomei/stickman-video-director/blob/main/LICENSE">MIT License</a> 开源，允许免费使用、修改、商用和分发。分发本项目或其重要部分时，请保留原有版权和许可声明。</p>
+<p>项目按“现状”提供，不作任何担保；完整条款见 <a href="https://github.com/kaomei/stickman-video-director/blob/main/LICENSE">LICENSE</a>。</p>
+</div>
+
+<h2 id="appendix-2">附录二　英文原文与许可证</h2>
+<details><summary>README.md 英文原文（Markdown 源码，提交 439682a）</summary>
+<pre><code>&lt;div align=&quot;center&quot;&gt;
+
+[**🇺🇸 EN**](README.en.md) · [🇨🇳 简中](README.zh-CN.md) · [🇯🇵 日本語](README.ja.md) · [🇰🇷 한국어](README.ko.md) · [🇫🇷 FR](README.fr.md) · [🇧🇷 PT-BR](README.pt-BR.md) · [🇹🇷 TR](README.tr.md) · [🇮🇩 ID](README.id.md)
+
+# 🎬 Stickman Video Director
+
+**Turn any script into viral, multi-style animated stickman videos for Faceless YouTube Channels. Fully open-source.**
+
+[![GitHub Stars](https://img.shields.io/github/stars/kaomei/stickman-video-director?style=flat-square)](https://github.com/kaomei/stickman-video-director/stargazers)
+![MIT License](https://img.shields.io/badge/License-MIT-16a34a?style=flat-square)
+
+Start with a topic, an article, or a script. Automatically orchestrate visuals, voiceovers, captions, and sound effects into a production-ready stickman video.
+
+**⚡ 100% Free &amp; Open-Source. No camera, no $50/mo subscriptions, and ready in minutes, not days.**
+
+Continually updated visual styles for **science explainers, dark psychology, tech parables, viral lore, and storytelling channels.**
+
+&lt;/div&gt;
+
+&lt;table width=&quot;100%&quot;&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Classic Black &amp; White&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#a1&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/dark-theme-demo.gif&quot; alt=&quot;Classic black-and-white stickman animation: white lines on black for dynamic explainers&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Modern Pop&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#a2&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-2a-demo.gif&quot; alt=&quot;Modern pop stickman animation: red-beanie character with tech lighting&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Prehistoric Cave&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#a3&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-3-demo.gif&quot; alt=&quot;Prehistoric cave stickman animation: short cave stories with a twist&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Cozy Storytelling&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#a4&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-4-cozy-cafe.gif&quot; alt=&quot;Cozy stickman storytelling: colorful everyday scenes and relatable moments&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Historical Cartoon&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#style-5&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-5-japan-hero.gif&quot; alt=&quot;Historical stickman cartoon: a samurai story in Edo Japan&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Minimal Hand-Drawn&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#b1&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@fa0a68d1ccf9fd057230abab2af832f768debe86/assets/readme/previews/b1-minimal-handdrawn.gif&quot; alt=&quot;Minimal hand-drawn stickman video: expressive characters, key text, and subtle animation&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+
+**6 styles · 8 visual options · Tested examples · Free and open source**
+
+⭐ **Star the project to catch the next style drop and feature unlocks.**
+
+[Get started](#quick-start) · [Director Styles](#a-styles) · [Autopilot Styles](#b-styles) · [FAQ](#faq) · [Roadmap](#road-to-10000-stars--creator-ecosystem)
+
+&lt;/div&gt;
+
+&lt;a id=&quot;creation-modes&quot;&gt;&lt;/a&gt;
+
+## 🎬 Two ways to make your video
+
+**Want control over every shot? Choose A · Director Mode. Want a finished video without assembling scenes yourself? Choose B · Autopilot Mode.** One project, two workflows.
+
+|  | &lt;div align=&quot;center&quot;&gt;A · Director Mode&lt;/div&gt; | &lt;div align=&quot;center&quot;&gt;B · Autopilot Mode&lt;/div&gt; |
+|:---:|:---|:---|
+| **Approach** | **You control production; AI plans the shots.** Get storyboards and prompts, then generate clips and edit them yourself. | **Give it a topic or a brief; get a finished video.** Automate illustrations, voiceover, captions, subtle animation, and video assembly. |
+| **Length** | **Short-first**, typically 30 seconds–3 minutes. Longer videos can be built scene by scene. | **Long-form-first**, especially narrated videos of **10 minutes or more**. Also works for shorts and episodic stories. |
+| **Tools** | Plan with a Skill-compatible AI assistant, generate clips in your preferred video generator (Google Flow, Runway, Luma, Kling, etc.), then assemble in CapCut or Premiere. | Run in **Codex, Claude Code**, or another AI coding agent that can read and write files, call tools, and execute commands to connect generation with local rendering. |
+| **Visuals** | **Generated animated clips**, with character movement, camera direction, and interactions. | **Illustrated scenes with subtle animation**, using cuts, pans, and zooms to support the narration rather than generating a full-motion clip for every scene. |
+| **Output** | A director&#x27;s treatment, storyboards, scene-by-scene video prompts, and sound design. | **A complete video file with voiceover, captions, and subtle animation.** |
+| **Start** | &lt;div align=&quot;center&quot;&gt;&lt;a href=&quot;#director-start&quot;&gt;Use Director Mode&lt;/a&gt;&lt;/div&gt; | &lt;div align=&quot;center&quot;&gt;&lt;a href=&quot;#autopilot-start&quot;&gt;Use Autopilot Mode&lt;/a&gt;&lt;/div&gt; |
+
+Both workflows can start with a raw topic, a web link, or a full script. Customize your aspect ratio (9:16, 16:9, 1:1), narration language, and voiceover freely. The lengths above are recommendations, not hard limits.
+
+💡 **Quick Setup Note**:
+
+- **Director Mode** works anywhere in standard conversational AI windows.
+- **Autopilot Mode** runs inside AI coding agents with file/terminal access (like **Claude Code, OpenAI Codex, or Cursor**) to automatically handle end-to-end rendering and file delivery.
+
+&lt;a id=&quot;quick-start&quot;&gt;&lt;/a&gt;
+
+## 🧭 Get started
+
+Compatible with Claude Code, Codex, Cursor, Antigravity, or any agent environment with file/terminal access.
+
+Send the following to your AI assistant:
+
+```text
+Install this Skill for me:
+https://github.com/kaomei/stickman-video-director
+
+Once installed, read the installed SKILL.md right away.
+Explain what each mode produces, the tools it needs, and the workflow
+in plain language, with examples I can copy.
+Based on what I want to make, tell me what is missing and exactly what to do next.
+```
+
+&lt;a id=&quot;director-start&quot;&gt;&lt;/a&gt;
+
+### A · Director Mode: scene-by-scene video prompts
+
+After installation, send this to your AI assistant and replace the placeholder with your topic:
+
+```text
+Use Director Mode / mode A to turn the following topic, copy, or brief
+into a stickman video:
+[Enter a topic, paste your copy, or describe what you need]
+
+Requirements: landscape 16:9, A3 &quot;Prehistoric Cave&quot; style, starting with 30 seconds.
+Give me the director&#x27;s treatment first. After I approve it, provide scene-by-scene video prompts.
+```
+
+**Workflow: share your topic and brief → develop the story script → optionally approve front, side, and back character views → generate detailed storyboard prompts → manually generate clips and edit the final video**
+
+The treatment covers the story structure, scene-by-scene narration, actions, camera direction, and sound design. Copy each prompt into [Google Flow](https://flow.google.com/) or another video generator, then add captions and finish the edit in CapCut or your preferred editor.
+
+For your first video, follow the [visual production walkthrough on X](https://x.com/CrazyKaomei/status/2102311241046008268) (Thread with step-by-step video demos).
+
+&lt;a id=&quot;autopilot-start&quot;&gt;&lt;/a&gt;
+
+### B · Autopilot Mode: from a brief to a long-form video
+
+After installing in Codex, Claude Code, or another environment with file access and command execution, try:
+
+```text
+Use Autopilot Mode / mode B to turn the following topic, article, post, news item, or brief
+into a compelling YouTube video:
+[Paste content or a link, or describe what you want to promote]
+
+Requirements: 5–10 minutes, landscape 16:9, B1 &quot;Minimal Hand-Drawn&quot; style, with voiceover, captions, and sound effects.
+
+Check the image generation, voiceover, and video-rendering setup first. Then give me a script and a 20-second preview with sound.
+After I approve it, build the full video with visuals timed to the narration. Deliver a complete video file; I do not want to assemble scenes myself.
+```
+
+**Workflow: share a topic, content, or brief → approve the script → approve a 20-second preview with sound → automatically produce the full video → receive the finished video file**
+
+The AI assistant plans the scenes, generates the visuals and narration, adds captions and sound effects, and renders a complete video to the voiceover&#x27;s timing. You approve the script and preview; you do not have to generate and assemble every scene yourself.
+
+On first use, it checks the required setup and walks you through anything missing. If a visual or voiceover section needs work, revise just that section and keep what you have already approved.
+
+&lt;a id=&quot;style-gallery&quot;&gt;&lt;/a&gt;
+
+&lt;a id=&quot;a-styles&quot;&gt;&lt;/a&gt;
+
+## 🎨 A · Director Mode style gallery
+
+Styles are numbered A1, A2, A3… Each includes its own animated examples.
+
+&lt;a id=&quot;a1&quot;&gt;&lt;/a&gt;
+
+### A1: Classic Black &amp; White
+
+Explain an idea with just a few lines. On a pure white or black canvas, characters, props, and a little accent color do the heavy lifting—ideal for brisk, clear explainers.
+
+- **Visual style**: simple round heads, line-drawn limbs, and consistent stroke widths, with occasional simple expressions. Up to three saturated accent colors signal emotion, risk, or action. Abstract ideas become visual metaphors: anxiety as a cage, attention as a progress bar.
+- **Best for**: science explainers, psychology, motivation, self-management, business breakdowns, and abstract concepts.
+- **Choose your look**: black characters on white feel clean and direct for teaching and everyday explainers. White characters on black create stronger contrast for suspense, conflict, and emotion.
+
+| A1.1 · Black on white | A1.2 · White on black |
+|:---:|:---:|
+| &lt;!-- demo:light:start --&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/light-theme-demo.gif&quot; alt=&quot;A1.1 · Black stick figures on white: animated preview&quot; width=&quot;360&quot;&gt;&lt;!-- demo:light:end --&gt; | &lt;!-- demo:dark:start --&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/dark-theme-demo.gif&quot; alt=&quot;A1.2 · White stick figures on black: animated preview&quot; width=&quot;360&quot;&gt;&lt;!-- demo:dark:end --&gt; |
+| Pure white canvas · Black characters | Pure black canvas · White characters |
+
+---
+
+&lt;a id=&quot;a2&quot;&gt;&lt;/a&gt;
+
+### A2: Modern Pop
+
+A red beanie and yellow T-shirt give this character an instantly recognizable look. Explain a product in a clean tech setting, or follow the character into bedrooms, city streets, and the wilderness for a story with real ups and downs.
+
+- **Visual style**: a minimalist character with a consistent red beanie and yellow shirt, in two types of setting. Minimal Tech pairs white space and a faint grid with floating glass-like interfaces and cyan light. Colorful Story uses richer scenery, lighting, and depth to set the mood.
+- **Best for**: Minimal Tech suits AI tools, tech products, tutorials, and feature walkthroughs. Colorful Story works for personal growth, everyday life, adventure, and motivational stories.
+- **Choose your look**: explaining a tool or method? Pick Minimal Tech. Taking viewers through a character&#x27;s experience? Pick Colorful Story.
+
+| A2.1 · Minimal Tech | A2.2 · Colorful Story |
+|:---:|:---:|
+| &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-2a-demo.gif&quot; alt=&quot;A2.1 · Minimal Tech: animated preview&quot; width=&quot;360&quot;&gt; | &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-2b-demo.gif&quot; alt=&quot;A2.2 · Colorful Story: animated preview&quot; width=&quot;360&quot;&gt; |
+| White space · Faint grid · Cyan glow | Colorful scenes · Cinematic lighting · Story atmosphere |
+
+---
+
+&lt;a id=&quot;a3&quot;&gt;&lt;/a&gt;
+
+### A3: Prehistoric Cave
+
+Take today&#x27;s problems back to a world without phones or offices. Caves, animal skins, campfires, and exaggerated expressions turn the absurdities of work and human nature into short stories with a twist.
+
+- **Visual style**: bold hand-drawn strokes, solid white heads, dark limbs, animal-skin clothing, and earthy surroundings. Character interactions, reaction shots, and comic pauses drive the story. Design the cast for each story—different ages and genders are welcome; not every story needs the same face.
+- **Best for**: prehistoric what-ifs, workplace satire, observations on human nature, dark comedy, fables, and English-learning stories for children.
+- **Choose this when**: a small story needs an “aha” moment or an unexpected turn. Modern relationships transplanted into a prehistoric tribe make for jokes that feel both familiar and surprising.
+
+| Example 1: &quot;How Did Humans Get Their First Job?&quot; | Example 2: &quot;The First Discovery of Fire&quot; |
+|:---:|:---:|
+| &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-3-demo.gif&quot; alt=&quot;How Did Humans Get Their First Job? Animated preview&quot; width=&quot;360&quot;&gt; | &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-3-community-fire.gif&quot; alt=&quot;The First Discovery of Fire: community animation&quot; width=&quot;360&quot;&gt; |
+| Prehistoric story · Workplace twist | Discovery of fire · Community creation |
+
+---
+
+&lt;a id=&quot;a4&quot;&gt;&lt;/a&gt;
+
+### A4: Cozy Storytelling
+
+A mug too special to use. A message you feel you have to answer immediately. An afternoon finally kept for yourself. Simple characters inhabit colorful everyday settings, telling relatable stories through movement, expressions, and camera work.
+
+- **Visual style**: solid white round heads, slim bodies, fine dark limbs, and natural expressions in fully illustrated 2D environments. Wide shots establish the setting, close-ups capture hesitation or relief, and tracking shots follow the character forward.
+- **Best for**: relatable everyday stories, personal growth, relationships, heartwarming moments, habit-building, and English-learning content for children.
+- **Choose this when**: you want viewers to recognize themselves in a small moment. Adapt the colors and lighting to the theme, from warmth and comfort to anxiety, exhaustion, and starting over.
+
+| Example 1: Message anxiety on the commute | Example 2: Making time for yourself |
+|:---:|:---:|
+| &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-4-cozy-station.gif&quot; alt=&quot;Cozy Storytelling: message anxiety at a subway station&quot; width=&quot;360&quot;&gt; | &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-4-cozy-cafe.gif&quot; alt=&quot;Cozy Storytelling: a quiet break at an outdoor café&quot; width=&quot;360&quot;&gt; |
+| Subway station · Walking shots · Emotional close-ups | Outdoor café · Warm light · Everyday gestures |
+
+---
+
+&lt;a id=&quot;style-5&quot;&gt;&lt;/a&gt;
+&lt;a id=&quot;a5&quot;&gt;&lt;/a&gt;
+
+### A5: Historical Cartoon
+
+Send stick figures into history: samurai on Edo streets, black cats in ancient Egyptian temples, soldiers in Roman camps. Period clothing, colorful settings, and playful contrasts make history easier to picture.
+
+- **Visual style**: solid white round heads, black oval eyes, bold clear outlines, and thin line-drawn limbs, paired with period clothing, soft cel shading, and colorful backgrounds. Change the costumes, buildings, props, and music for each place and era while keeping the same character drawing style.
+- **Best for**: world history, curious facts about civilizations, everyday life in the past, historical figures, and humorous history shorts.
+- **Choose this when**: you want to turn a fact into something a character actually experiences. Reactions and story twists help a small historical detail hold the viewer&#x27;s attention.
+
+| Example 1: Edo Japan · A samurai&#x27;s everyday life | Example 2: Ancient Egypt · Cats and mummies |
+|:---:|:---:|
+| &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-5-japan.gif&quot; alt=&quot;Historical Cartoon: an Edo samurai and everyday street life&quot; width=&quot;360&quot;&gt; | &lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@2697fac5e0466f44098148a52c9648697521b3d6/assets/readme/previews/style-5-egypt.gif&quot; alt=&quot;Historical Cartoon: ancient Egyptian temples, black cats, and mummies&quot; width=&quot;360&quot;&gt; |
+| Edo streets · Samurai clothing · Everyday contrasts | Colorful temples · Black cat characters · History with a twist |
+
+Style and prompt contribution: [Lawal Ridwan / @leksautomate](https://github.com/leksautomate).
+
+---
+
+&lt;a id=&quot;a6&quot;&gt;&lt;/a&gt;
+
+### A6: Coming soon…
+
+New specialized director styles are currently in training. [Star the project](#road-to-10000-stars--creator-ecosystem) to unlock them at 5,000 Stars!
+
+---
+
+&lt;a id=&quot;b-styles&quot;&gt;&lt;/a&gt;
+
+## 🤖 B · Autopilot Mode style gallery
+
+Styles are numbered B1, B2, B3… Each has its own finished examples combining illustrated scenes with subtle animation, maintained separately from the A series.
+
+&lt;a id=&quot;b1&quot;&gt;&lt;/a&gt;
+
+### B1: Minimal Hand-Drawn
+
+Let the narration lead. Expressive stick figures, colorful hand-drawn props, and bold on-screen text make ideas, stories, and product benefits clear and engaging.
+
+- **Visual style**: near-white paper with a barely visible grid, black hand-drawn lines, and a few colorful props. Expressive faces, small animated details, flowing transitions, and sound effects keep the story moving. On-screen text highlights key ideas; captions follow the narration.
+- **Best for**: YouTube explainers, psychology and personal growth, workplace stories, educational videos, and product promotion.
+- **Choose this when**: you want a complete narrated, captioned video from a topic, copy, or story script. The visuals follow the voiceover&#x27;s natural rhythm, making it a good fit for sustained explanations and long-form storytelling.
+
+Click a GIF to view or download the preview with sound.
+
+&lt;table width=&quot;100%&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;50%&quot; align=&quot;center&quot;&gt;Example 1: YouTube without showing your face&lt;/th&gt;
+    &lt;th width=&quot;50%&quot; align=&quot;center&quot;&gt;Example 2: Why is nobody watching?&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/b1-minimal-handdrawn.mp4&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@fa0a68d1ccf9fd057230abab2af832f768debe86/assets/readme/previews/b1-minimal-handdrawn.gif&quot; alt=&quot;B1 Minimal Hand-Drawn example 1: click to view or download a faceless YouTube video preview with sound&quot; width=&quot;360&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;&lt;a href=&quot;skills/directing-stickman-videos/assets/b1/approved-2026-10-23.mp4&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@61e202ccecf9d9926cf76e13f3284181297729b8/assets/readme/previews/b1-minimal-handdrawn-2026-10-23.gif&quot; alt=&quot;B1 Minimal Hand-Drawn example 2: click to view or download a Bodi-narrated preview with captions and expressive animated characters&quot; width=&quot;360&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot;&gt;Hand-drawn characters · Key text · Subtle animation&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;Bodi voiceover · Expressive faces · Subtle animation&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+---
+
+&lt;a id=&quot;b2&quot;&gt;&lt;/a&gt;
+
+### B2: Coming soon…
+
+New Autopilot styles and procedural animations are currently in training. [Star the project](#road-to-10000-stars--creator-ecosystem) to unlock them at 5,000 Stars!
+
+&lt;!-- thumbnail-publishing-kit:start --&gt;
+&lt;a id=&quot;thumbnail-publishing-kit&quot;&gt;&lt;/a&gt;
+
+## 🖼️ High-CTR Thumbnail &amp; Publishing Kit
+
+**Your video is only as good as the click.** Once your animation is complete, orchestrate matched thumbnail art, high-CTR titles, and viewer engagement hooks in the same workflow.
+
+An integrated finishing pack for both **Director and Autopilot Mode**: generates visual hooks tailored to your video&#x27;s approved character and art style, complete with ready-to-publish YouTube metadata.
+
+&lt;table width=&quot;100%&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/thumbnails/no-camera.jpg&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@ae1685ba812f9686463f319fe6f0d4eb7d581433/assets/readme/thumbnails/no-camera.jpg&quot; alt=&quot;NO CAMERA? — expressive hand-drawn stickman and crossed-out camera&quot; width=&quot;280&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/thumbnails/first-job.jpg&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@ae1685ba812f9686463f319fe6f0d4eb7d581433/assets/readme/thumbnails/first-job.jpg&quot; alt=&quot;THE FIRST JOB — prehistoric character facing a stone-block obstacle&quot; width=&quot;280&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/thumbnails/a5-samurai-taxes.jpg&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@ae1685ba812f9686463f319fe6f0d4eb7d581433/assets/readme/thumbnails/a5-samurai-taxes.jpg&quot; alt=&quot;SAMURAI VS TAXES — cel-shaded samurai, Edo street and woodblock-inspired serif lettering&quot; width=&quot;280&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot;&gt;A simple question and one clear symbol.&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;A story setup with an oversized obstacle.&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;Period costume, scenery and display lettering.&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;table width=&quot;100%&quot;&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/thumbnails/a1-you-vs-you.jpg&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@ae1685ba812f9686463f319fe6f0d4eb7d581433/assets/readme/thumbnails/a1-you-vs-you.jpg&quot; alt=&quot;YOU vs YOU — tiny black stick figure confronting its enormous self, with a restrained red accent&quot; width=&quot;280&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/thumbnails/a2-busy-vs-better.jpg&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@ae1685ba812f9686463f319fe6f0d4eb7d581433/assets/readme/thumbnails/a2-busy-vs-better.jpg&quot; alt=&quot;BUSY ≠ BETTER — red-beanie character overloaded by workflow cards versus one clear task&quot; width=&quot;280&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/thumbnails/a4-3am-again.jpg&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@ae1685ba812f9686463f319fe6f0d4eb7d581433/assets/readme/thumbnails/a4-3am-again.jpg&quot; alt=&quot;3AM. AGAIN. — late-night scrolling, blue phone light and soft hand-lettered type&quot; width=&quot;280&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot;&gt;One conflict, told through extreme scale.&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;Busy versus effective, at a glance.&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;A relatable scene, painted light and hand lettering.&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+*All thumbnail concepts are designed around proven YouTube packaging psychology: bold visual contradictions, clean silhouettes, and mobile-readable typography.*
+
+### What the kit delivers:
+
+- **1-Click Thumbnail Prompt**: Matched to your video’s exact character style, color palette, and core conflict. Ready to generate in Midjourney, Google Flow, or DALL-E.
+- **5 High-CTR Title Variants**: Formulated for search intent, curiosity gaps, and broad viewer appeal.
+- **YouTube Studio Description &amp; SEO**: Complete with video timestamps, topic summary, and relevant tags.
+- **Pinned Comment Hook**: A provocative question designed to trigger viewer debates and algorithm retention.
+- **Pre-Publish Checklist**: Safe-zone verification for mobile, contrast check, and Content-ID readiness.
+
+### How to trigger it:
+
+Once you approve your video script or final cut, simply send to your AI assistant:
+
+```text
+Generate the Thumbnail &amp; Publishing Kit for this video:
+- 1 landscape 16:9 thumbnail prompt matching the current art style
+- 5 viral YouTube title options + description draft
+- 1 engagement question for the pinned comment
+```
+
+*Outputs are production-ready to drag &amp; drop directly into YouTube Studio or TikTok.*
+
+&lt;!-- thumbnail-publishing-kit:end --&gt;
+
+&lt;!-- readme:reliability --&gt;
+
+&lt;a id=&quot;faq&quot;&gt;&lt;/a&gt;
+
+## ❓ Frequently Asked Questions
+
+### Q1. Is this really 100% free? Are there any hidden fees?
+
+Yes. Stickman Video Director is 100% free and open-source under the MIT license. You can use it freely for both personal and commercial projects. Unlike proprietary SaaS platforms that charge $30–$60/month, this project has zero subscription fees. You only pay for your own third-party API usage (e.g., Google Gemini, Claude, or ElevenLabs) based on the models you choose to connect.
+
+### Q2. Can I monetize these videos on YouTube and TikTok?
+
+Yes, absolutely. A major concern for faceless creators is YouTube&#x27;s &quot;Reused Content&quot; or &quot;Low-effort AI&quot; demonetization policy. Because Stickman Video Director writes custom storytelling arcs, unique narrative pacing, and original visual staging, your output is completely original. Hundreds of channels successfully monetize stickman narrative videos under the YouTube Partner Program (YPP).
+
+### Q3. Do I need programming skills or an expensive GPU?
+
+No. You do not need a high-end RTX graphics card or coding knowledge.
+
+- **Director Mode** runs conversationally inside any Skill-compatible AI assistant.
+- **Autopilot Mode** runs inside AI coding agents (like Claude Code, Codex, or Cursor) using simple conversational English. All heavy visual generation is handled via lightweight cloud APIs or procedural rendering, not your local hardware.
+
+### Q4. Can I make a video without an existing script?
+
+Yes. You can paste a rough idea, a shower thought, a news link, or an entire blog post. The AI director will extract the core conflict, write a compelling 3-second hook, and structure your topic into a tight 6-scene narrative arc complete with comedic timing and voiceover cues.
+
+&lt;!-- readme:platforms --&gt;
+
+### Q5. When should I choose Director Mode vs. Autopilot Mode?
+
+- **Choose Director Mode** when you want absolute control over every single shot, camera angle, and visual metaphor. It acts as your cost safety net: you approve the script and storyboards for free before generating a single video frame.
+- **Choose Autopilot Mode** when you want a hands-off, 1-click experience that automatically generates the script, voiceover, captions, and finished video file.
+
+### Q6. How does the AI ensure the video has high viewer retention and isn&#x27;t boring?
+
+Traditional AI tools just spit out literal illustrations of text. Stickman Video Director applies real **visual storytelling psychology**:
+
+- **The 3-Second Hook**: Transforms your opening sentence into an immediate visual contradiction or curiosity gap to stop viewers from scrolling away.
+- **Visual Metaphors**: Converts abstract boring concepts into comedic visual jokes (e.g., anxiety depicted as a shrinking hamster wheel, burnout as a 1% battery bar).
+- **Pacing &amp; Comic Pauses**: Inserts structured pauses, reaction shots, and sound effect cues (SFX) to mirror the comedic timing of creators like Casually Explained.
+
+### Q7. What AI assistants and video editors are supported?
+
+- **AI Environments**: Compatible with Claude Code, OpenAI Codex, Cursor, Antigravity, or any agent environment with file and terminal access.
+- **Video Generators**: Works seamlessly with Google Flow, Runway (Gen-3), Luma Dream Machine, Kling, Pika, or any image-to-video / text-to-video model.
+- **Video Editors**: Prompts and audio exports are ready to drag-and-drop into CapCut, Premiere Pro, DaVinci Resolve, or Final Cut.
+
+### Q8. What if I dislike one specific scene—do I have to re-render the whole video?
+
+No! That is the core advantage of our modular 6-scene architecture. If Scene 3 needs adjustment, you only revise that single scene prompt. Scenes 1, 2, 4, 5, and 6 remain untouched. This saves you 80% of editing time and eliminates wasted generation credits.
+
+&lt;!-- readme:contribute --&gt;
+
+&lt;a id=&quot;road-to-10000-stars--creator-ecosystem&quot;&gt;&lt;/a&gt;
+
+## ⭐ Road to 10,000 Stars &amp; Creator Ecosystem
+
+**Every star fuels the next drop!** Together, we’re building a 100% free, open-source studio to help solo creators run faceless channels without $50/mo SaaS subscriptions.
+
+- [x] **1,000 Stars**: Shipped Director Mode + 5 core visual styles
+- [x] **3,000 Stars**: Shipped AutoPilot Mode for 1-click video generation
+- [ ] **🔥 5,000 Stars**:
+  - 5–10 new visual styles drop
+  - 1-click batch editor for YouTube Shorts &amp; TikTok
+- [ ] **7,500 Stars**:
+  - 1,000+ viral YouTube script prompt vault
+  - 200+ royalty-free, Content-ID safe SFX and transitions
+- [ ] **10,000 Stars**: Launch the official all-in-one Web Studio
+
+&lt;div align=&quot;center&quot;&gt;
+&lt;a href=&quot;https://www.star-history.com/?repos=kaomei%2Fstickman-video-director&amp;amp;type=date&quot;&gt;
+  &lt;picture&gt;
+    &lt;source media=&quot;(prefers-color-scheme: dark)&quot; srcset=&quot;https://api.star-history.com/svg?repos=kaomei/stickman-video-director&amp;amp;type=Date&amp;amp;theme=dark&quot;&gt;
+    &lt;source media=&quot;(prefers-color-scheme: light)&quot; srcset=&quot;https://api.star-history.com/svg?repos=kaomei/stickman-video-director&amp;amp;type=Date&quot;&gt;
+    &lt;img src=&quot;https://api.star-history.com/svg?repos=kaomei/stickman-video-director&amp;amp;type=Date&quot; alt=&quot;GitHub star history for kaomei/stickman-video-director&quot; width=&quot;800&quot;&gt;
+  &lt;/picture&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;a id=&quot;whats-next&quot;&gt;&lt;/a&gt;
+
+## 🔮 Planned Visual Styles
+
+We are actively training new specialized engines for the most requested faceless YouTube niches:
+
+- **OverSimplified History &amp; Lore** — Tiny historical figures, conquest arrows &amp; satirical battle maps
+- **Stickman Combat &amp; Speedlines** — Alan-Becker-style dynamic combat, martial arts &amp; impact frames
+- **Dark Psychology &amp; Stoic Noir** — Moody silhouettes, glowing eyes &amp; 48-Laws-of-Power storytelling
+- **Wall Street &amp; Silicon Valley Parody** — Suit-and-tie stickmen, crashing charts &amp; corporate roasts
+- **Two-Mic Podcast &amp; Stand-Up** — Snappy dialogue comedy, interview repurposing &amp; character banter
+- **Internet Mysteries &amp; Urban Legends** — Eerie pencil sketches, analog glitch &amp; Reddit mystery lore
+
+## 💬 Community &amp; Submissions
+
+Want to suggest a style or get your channel featured? Message **[@CrazyKaomei](https://telegram.me/CrazyKaomei)** on Telegram:
+
+- **Request a Style**: Send a visual reference link + the niche you want to cover.
+- **Get Featured**: Made a video with this tool? Send your link to be showcased in this README and on our official YouTube channel!
+
+🔔 *Follow **[@CrazyKaomei](https://x.com/CrazyKaomei)** on X for daily video workflows, automation tools, and channel growth SOPs.*
+
+## 📄 License
+
+Released under the [MIT License](https://github.com/kaomei/stickman-video-director/blob/main/LICENSE). Free to use, modify, distribute, and use commercially. Keep the original copyright and license notice when distributing the project or substantial portions of it.
+
+Provided “as is,” without warranty. See [LICENSE](https://github.com/kaomei/stickman-video-director/blob/main/LICENSE) for the full terms.
+</code></pre></details>
+<details><summary>LICENSE（MIT）原文</summary>
+<pre><code>MIT License
+
+Copyright (c) 2026 Stickman Video Director contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre></details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/kaomei/stickman-video-director" rel="noopener">kaomei/stickman-video-director</a>，作者 CrazyKaomei（GitHub @kaomei），MIT 许可，Copyright (c) 2026 Stickman Video Director contributors。A5 画风与提示词由 Lawal Ridwan（@leksautomate）贡献。README 中文版与英文原文依 MIT 许可转载并保留版权与许可声明；图片取自仓库（MIT），其中出现的 YouTube 等第三方标志归其权利人所有。统计数据取自公开 GitHub API（2026-10-30 11:50 UTC+8）。导读、核实与风险提示为本站整理，未实际运行该项目。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/kaomei/stickman-video-director" rel="noopener">github.com/kaomei/stickman-video-director</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
