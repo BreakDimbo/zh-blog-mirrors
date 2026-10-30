@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>dimensional-drawing：让 Agent 画出 Apple 式尺寸图的 Skill · 项目导读 + README 全文中译</title>
+<meta name="description" content="enesozturk/dimensional-drawing 项目导读：把一个 UI 组件（或一件实物）画成 Apple 配件尺寸图那样的单页黑白技术图——边距、间距、圆角、图层、视口位置全用变量标注，另附一个把图纸做成约 10 秒“笔绘 + 运镜”短片的动效 Skill。MIT 许可。附劳伦斯（@LawrenceW_Zen）推荐帖照录、iPhone Duo 示意图核对与 README 全文中译。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-30">2026.10.30</time></p>
+<h1 class="za-title">dimensional-drawing：让 Agent 画出 Apple 式尺寸图</h1>
+<p class="za-sub" lang="en" data-za-gen>Apple-style dimensional drawings for UI components · 项目导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · enesozturk/dimensional-drawing（MIT）；推荐帖：X · @LawrenceW_Zen</span><span>收录 · 2026-10-30</span><span><a href="https://github.com/enesozturk/dimensional-drawing" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">推荐帖：<a href="https://x.com/LawrenceW_Zen/status/2116039446399492218" rel="noopener">劳伦斯 @LawrenceW_Zen</a>（2026-10-30 13:28 UTC+8；截至 2026-10-30 19:15 UTC+8 约 1,887 浏览 / 14 赞 / 23 收藏 / 2 转发 / 2 回复）· 项目：<a href="https://github.com/enesozturk/dimensional-drawing" rel="noopener">github.com/enesozturk/dimensional-drawing</a>（作者 Enes Ozturk，MIT；本页对照仓库提交 <code>5c45743</code>）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>dimensional-drawing 是一套给编程 Agent 用的 Skill。你指给它一个 UI 组件（源码文件、Storybook、网址或截图），它会画出一张像 Apple 配件<a href="https://developer.apple.com/accessories/dimensional-drawings/" rel="noopener">尺寸图（dimensional drawings）</a>那样的单页技术图：黑白线稿，边距、间距、圆角、图层和视口位置都用变量编号标注，表格里给出数值和公式。仓库里还有第二个 Skill，把画好的图纸做成约 10 秒的短片：像一支笔把图画出来，镜头在纸面上推拉。</div>
+
+<figure><img src="images/cover.webp" alt="推荐帖视频的封面帧：白底黑线的技术图，一个横向的圆角矩形，标注 FRONT VIEW · OPEN，宽 W1 · OPEN 164.6、高 H · 117.8，中间一条竖向点划线写着 FOLD AXIS，屏幕区域写着 INNER DISPLAY · 7.6 英寸 · 1878 × 2670 · 430 PPI；左上角 B1、R1 两个尺寸标为 [TBD]；下方写 SCALE 2.6:1 · MM · DISPLAY INSET SCHEMATIC" loading="lazy"><figcaption>劳伦斯用这个 Skill 给 iPhone Duo 画的示意图（推荐帖 13 秒视频的封面帧）。图上的 164.6 / 117.8 mm、7.6 英寸、1878 × 2670、430 ppi 与 Apple 官方规格一致；查不到的边框宽度和圆角留成了 [TBD]。视频请到原帖观看。</figcaption></figure>
+
+<h2 id="post">推荐帖照录</h2>
+<p>劳伦斯的原帖为中文，以下逐字照录（视频与引用帖链接改为文字说明）：</p>
+<blockquote>
+<p>🔥发现一个挺有意思的 GitHub 项目：dimensional-drawing。它是一个 Skill，能让 Agent 画出那种线条简单、又很有质感的规格介绍图，做成动画也很好看。</p>
+<p>刚好第一台折叠 iPhone 出来了，我就拿 iPhone Duo 画了一张示意图，做了个视频，效果如下📐 〔视频，13 秒〕 〔引用帖：x.com/lawrencew_zen/status/2114599363171299646〕</p>
+</blockquote>
+<p>同一会话下作者没有补充回复；帖子里没有贴仓库链接，本页的仓库地址是按项目名找到的（作者 enesozturk，名称与功能都对得上）。帖子引用的是作者自己 10 月 26 日的一篇 X 长文《写 AI 内容的人，最被低估的资料库是邮箱》，讲用网易邮箱大师的 Mail Agent 把英文 newsletter 整理成选题表，和本项目无关，见下文「注意事项」。</p>
+
+<h2 id="what">项目是什么</h2>
+<p>Apple 给每台设备都公开一套尺寸图，方便配件厂商做出严丝合缝的保护壳。README 形容这种图“安静、密集、好看：一张纸，几个视图，几个小小的细节圈，到处是数字”。这个仓库就是教 Agent 用同样的方式去画<strong>你自己的组件</strong>：一张卡片、一个对话框，画成一张规格单，交给任何人都能照着复原它的<em>结构</em>。文案内容故意不画，这样文字改了，图依然成立。</p>
+<p>仓库里有两个 Skill：</p>
+<ul>
+<li><strong><code>dimensional-drawing</code></strong>：画图。输出一个自包含的 HTML 文件（在 claude.ai 上就发布成 Artifact）。附两份完整样例：卡片 <code>card-sheet.html</code> 和对话框 <code>dialog-sheet.html</code>。</li>
+<li><strong><code>dimensional-drawing-motion</code></strong>：把画好的图纸做成约 10 秒的短片。主要目标是 Claude 的 Motion 制品，另有一个不依赖 Claude 的无头渲染器（Playwright 逐帧截图 + ffmpeg 编码）。</li>
+</ul>
+<figure><img src="images/dialog-sheet.webp" alt="仓库样例：对话框组件的尺寸图。上方是标题栏与 NOTES 注记，左侧是分层爆炸轴测图（视口、遮罩、阴影、容器、插槽逐层抬起），中间是平面图，四周是链式尺寸 S1、H1、H2 等，右侧是 Spacing、Size、Radius、Shadow、Viewport 变量表，下方是圆角与表单字段等细节视图" loading="lazy"><figcaption>仓库样例之一：对话框（固定宽度、遮罩、视口位置、头部控件、底部按钮）。图片来自仓库 <code>assets/dialog-sheet.png</code>，MIT 许可，本站转为 webp。</figcaption></figure>
+
+<h3 id="rules">五条规矩</h3>
+<p>SKILL.md 给画图定了五条硬规矩，这也是它的图看起来“克制”的原因：</p>
+<div class="table-wrap"><table><thead><tr><th>规矩</th><th>具体做法</th></tr></thead><tbody>
+<tr><td>只用黑白灰</td><td>白纸黑线，不许有任何强调色。靠线宽、虚线样式、剖面线和浅灰填充来区分元素。</td></tr>
+<tr><td>画结构，不画内容</td><td>UI 只画“插槽”：<code>TITLE SLOT · FLEX</code>、<code>ACTION · HUG</code>、<code>CONTENT SLOT · FILL</code>。不标文字宽度。HUG = 随内容，FLEX = 占剩余空间，FILL = 撑满父级。</td></tr>
+<tr><td>用变量，不写死数字</td><td>图上每个尺寸都是编号（S 间距、H 高度、R 圆角、E 阴影包络……），表格给出编号、变量名和数值；推导值写公式和结果，例如 <code>H1 header-min = 2·S1 + H3 = 64</code>、<code>R2 r-inner = R1 − B − S6 = 11</code>。</td></tr>
+<tr><td>不带品牌</td><td>图上、标题栏、页脚都不出现产品名或商标，除非用户要求；用中性名字，比如 <code>UI-CARD-001</code>。</td></tr>
+<tr><td>不编数值</td><td>源里没有的值一律写 <code>[TBD]</code>，按比例画示意。</td></tr>
+</tbody></table></div>
+
+<h3 id="how">它怎么量、怎么画</h3>
+<ul>
+<li><strong>量尺寸</strong>：读真实源码（仓库文件、Storybook、设计稿、网址），用 Playwright 渲染、等字体加载完，再遍历盒模型（<code>getBoundingClientRect</code> + <code>getComputedStyle</code>：padding、gap、圆角、边框、最小高度……）；还要用 grep 统计同类组件的所有用例，让变量反映的是整套设计系统，而不是某一个例子。</li>
+<li><strong>版面</strong>：顶部是 HTML 标题栏（图号、版本、单位、比例、来源 + 通用注记 + 一排关键变量）；下面尽量只用一张 SVG 图纸：左上注记，中间平面图，左下分层爆炸轴测图，底部是嵌套圆角、各个圆角的细节视图，右栏是变量表。</li>
+<li><strong>画图工具包</strong>：SKILL.md 给了一组 SVG 小函数（水平/垂直尺寸线、引线标注、圆角标注、注记编号框、细节圈、变量表），并规定了线宽、箭头、字号等细节。</li>
+<li><strong>实物也能画</strong>：第三角投影的顶/前/右视图加剖面 A–A，单位毫米，只用公开发布的规格，列出来源，来源冲突标 <code>CONFLICT</code>，其余一律 <code>[TBD]</code>。README 的建议是“试试画一个保温杯”。</li>
+<li><strong>交付前自检</strong>：图上每个编号都要在表里出现、每个公式都要闭合；不得有品牌文字和颜色（grep 灰度以外的色值）；按 1800 px 宽用 Playwright 渲染一次，看截图有没有标签重叠或越出图框，修一遍再交。</li>
+</ul>
+<figure><img src="images/card-sheet.webp" alt="仓库样例：卡片组件的尺寸图。平面图里是标题插槽、内容区和底部按钮区，周围是间距和圆角编号，旁边有阴影包络图、嵌套圆角细节和变量表" loading="lazy"><figcaption>仓库样例之二：卡片（宽度可变、内嵌内容区、嵌套圆角、阴影包络）。图片来自仓库 <code>assets/card-sheet.png</code>，MIT 许可。</figcaption></figure>
+
+<h3 id="motion">让图动起来</h3>
+<p>动效 Skill 把一张画好的图拍成“笔在画、镜头在动”的短片。参考片 11 秒，1920×1080、60 fps，分五拍：</p>
+<ol>
+<li>0–2.3 秒：镜头贴近标题栏（约 4.4 倍），外框从左上角画起，接着是图标、标题插槽、分隔线和头部尺寸。</li>
+<li>2.3–4.2 秒：拉远到平面图（约 1.7 倍），一边拉一边把剩下的部分画完。</li>
+<li>4.2–7.2 秒：图层从平面“抬起”变成爆炸轴测图。<strong>先描边、后填充</strong>，否则白色填充会在线稿上闪一下。</li>
+<li>7.2–9.2 秒：拉回整张图纸，注记、表格和细节视图依次画出。</li>
+<li>9.2 秒以后：极慢的推镜，让最后一帧不死板。</li>
+</ol>
+<p>关键设计是整个场景是<strong>时间的纯函数</strong>：<code>render(t)</code> 只根据 <code>t</code> 设定所有属性，不依赖上一帧，所以无头渲染器可以跳到任意一帧截图。缓动只用 ease-in-out / ease-out，不弹跳、不过冲、不加颜色，默认不加音乐和人声。</p>
+<figure><img src="images/motion-frame.webp" alt="动效样片中的一帧：左侧是对话框各图层抬起后的爆炸轴测图，标注 L0 VIEWPORT、L1 SCRIM 等；右侧是带完整尺寸标注的平面图 PLAN VIEW" loading="lazy"><figcaption>仓库动效样片 <code>assets/dialog-motion.gif</code> 中的一帧（图层抬起阶段）。GIF 来自仓库，MIT 许可；本站只截取一帧，完整影片请看仓库。</figcaption></figure>
+
+<h3 id="install">安装与使用</h3>
+<p>Claude Code：</p>
+<pre>git clone https://github.com/enesozturk/dimensional-drawing
+cp -r dimensional-drawing/skills/* ~/.claude/skills/</pre>
+<p>其他 Agent（Codex、Cursor、Gemini CLI 等）：</p>
+<pre>npx skills add enesozturk/dimensional-drawing</pre>
+<p>然后直接说，例如：“给 <code>src/components/Card.tsx</code> 里的 <code>Card</code> 组件画一张尺寸图”“按样例的风格画出我们设置对话框的结构”。要做成短片就说“把这张图动起来”；不用 Claude 的话，到 <code>skills/dimensional-drawing-motion/adapters/headless</code> 下 <code>npm install</code>，再运行 <code>node render.mjs --scene … --css … --out film.mp4</code>（需要 Node 18+ 和 ffmpeg）。</p>
+
+<h2 id="duo">劳伦斯的 iPhone Duo 示意图</h2>
+<p>推荐帖里的视频是用这套 Skill 画的 iPhone Duo（Apple 第一款折叠 iPhone，2026 年 9 月发布、10 月 23 日首发）。这正好是 SKILL.md 里“实物”那一路：毫米单位、只用公开规格、查不到的写 <code>[TBD]</code>。本站把封面帧上能看到的数字和 Apple 官方技术规格对了一遍：</p>
+<div class="table-wrap"><table><thead><tr><th>图上标注</th><th>Apple 官方规格（2026-10-30 核对）</th></tr></thead><tbody>
+<tr><td>W1 · OPEN 164.6</td><td>✅ 展开宽度 164.6 mm</td></tr>
+<tr><td>H · 117.8</td><td>✅ 高度 117.8 mm</td></tr>
+<tr><td>INNER DISPLAY · 7.6" · 1878 × 2670 · 430 PPI</td><td>✅ 内屏 7.6 英寸，1878×2670，430 ppi</td></tr>
+<tr><td>B1 [TBD]、R1 [TBD]</td><td>官方没有公布边框宽度和外圆角，图上如实留空，符合“不编数值”的规矩。</td></tr>
+</tbody></table></div>
+<p>⚠️ 本站只看到了视频封面帧；视频其余部分（是否画了合起状态、侧视图等）没有逐帧核对。作者用的是哪个 Agent、是否走 Claude Motion 出片，帖子里没说。</p>
+
+<h2 id="verify">核对与注意事项</h2>
+<ul>
+<li><strong>项目状态</strong>：仓库 2026-10-23 创建，到 2026-10-30 19:17 UTC+8 约 1,594 星、107 个 fork（GitHub 仓库页）。MIT 许可 ✅（<code>LICENSE</code>：© 2026 Enes Ozturk）。仓库只有 Markdown、HTML 样例和两个 JS 文件，没有可执行的安装钩子或 MCP 配置。</li>
+<li>⚠️ <strong>本站没有实际运行</strong>这两个 Skill，也没有用无头渲染器出片；“在 Claude Motion 制品里导出 MP4”是 README 的说法，未核实。README 自己也说明：除 Playwright + ffmpeg 外，Remotion、Motion Canvas、GSAP、Lottie 等动画库都<strong>没测过</strong>。动效 SKILL.md 还提醒，移植到其他库前先看许可证（例如 Remotion 超过 3 人的公司需要商业许可）。</li>
+<li>⚠️ <strong>量 UI 依赖 Playwright 渲染</strong>：只给截图时，它拿不到 padding、圆角等真实数值，结果更接近“目测 + [TBD]”，精度取决于源（⚠️ 推断）。</li>
+<li><strong>风格是单一浅色</strong>：SKILL.md 规定 <code>color-scheme: light</code>，产出的图不带深色模式。</li>
+<li><strong>灵感来源</strong>：README 鸣谢 Apple 的配件尺寸图和设计师 <a href="https://x.com/avstorm" rel="noopener">Andreas Storm</a>（“是他的帖子开了这个头”）。</li>
+<li><strong>利益相关</strong>：推荐帖没有 utm、返利或合作标注，项目本身也没有付费版。⚠️ 推荐帖引用的是作者自己 10 月 26 日的长文，内容是网易邮箱大师 Mail Agent 的上手教程（带积分、模型选择等产品细节），和本项目无关；那篇是否为商业合作，帖内没有标注，本站无法判断（⚠️ 未核实）。引用它在这里大概是作者在带自己的旧帖（⚠️ 推断）。</li>
+</ul>
+
+<h2 id="related">站内相关</h2>
+<ul>
+<li><a href="../anatomy-skill/">Anatomy</a>：另一个“把东西拆开讲清楚”的 Claude Code Skill，做的是能按步运行的机器解释图。</li>
+<li><a href="../motionsites-claude-skill/">MotionSites Web Builder</a>：做电影感落地页的 Skill，同样把审美规则写进 SKILL.md。</li>
+<li><a href="../huashu-motion/">Huashu-motion</a>：用代码直出产品宣传片，和这里“纯函数 render(t) + 逐帧截图”的出片思路相近。</li>
+<li><a href="../flxrnc-opus-motion-lab/">Opus 5.5 动效实验室</a>：让 Claude 像工作室一样做动画的另一组实验。</li>
+</ul>
+
+<h2 id="readme">附录一：README 全文中译</h2>
+<p>以下是仓库 README（提交 <code>5c45743</code>）的全文中译，依 MIT 许可转载。页首动图与样例图已在上文以 webp 呈现，这里改写为文字说明。</p>
+<details open><summary>展开 / 收起 README 中译</summary>
+<p>〔页首动图：一个对话框组件的尺寸图自己画出来——先特写头部，再拉远到平面图，图层抬起成爆炸视图，最后是整张图纸。〕</p>
+<h3>dimensional-drawing ✏️📐</h3>
+<p><strong>给它一个 UI 组件，还你一张单页技术图。</strong><br>边距、间距、圆角、图层和视口位置，像 Apple 的尺寸图一样测量并标注。</p>
+<p>安装 · 使用 · 让它动起来 · 样例</p>
+<p>Apple 为每一台设备发布<a href="https://developer.apple.com/accessories/dimensional-drawings/" rel="noopener">尺寸图</a>，好让配件厂商做出合身的保护壳。这些图安静、密集、好看：一张纸，几个视图，几个小小的细节圈，到处是数字。</p>
+<p>这个仓库教你的 Agent 用同样的方式画<strong>你的组件</strong>。一张卡片或一个对话框会变成一张规格单，交给任何人都能照着复原它的<em>结构</em>：边距、间距、圆角、图层、它在视口里的位置。文案和内容故意不画，这样文字变了，图依然成立。</p>
+<h4>里面有什么 🎁</h4>
+<pre>skills/
+├── dimensional-drawing/          画图 Skill
+│   ├── SKILL.md
+│   └── examples/                 卡片 + 对话框图纸（单个 HTML 文件）
+└── dimensional-drawing-motion/   把图纸变成约 10 秒的短片
+    ├── SKILL.md
+    ├── templates/                参考场景 + 样式表
+    └── adapters/
+        ├── claude-motion.md      Claude 的 Motion 制品（首选）
+        └── headless/             Playwright + ffmpeg，无需 Claude</pre>
+<h4>家规</h4>
+<div class="table-wrap"><table><tbody>
+<tr><td>⚫️ <strong>单色</strong></td><td>只用灰度；靠线宽、虚线和剖面线区分</td></tr>
+<tr><td>🧱 <strong>画结构，不画内容</strong></td><td><code>TITLE SLOT · FLEX</code>、<code>ACTION · HUG</code>、<code>CONTENT SLOT · FILL</code></td></tr>
+<tr><td>🔤 <strong>变量，不是数字</strong></td><td><code>S1</code>、<code>R2</code>、<code>H1 = 2·S1 + H3</code>、<code>R2 = R1 − B − S6</code></td></tr>
+<tr><td>🏷️ <strong>不带品牌</strong></td><td>用中性名字，例如 <code>UI-CARD-001</code></td></tr>
+<tr><td>🙅 <strong>绝不编造数值</strong></td><td>未知值保持 <code>[TBD]</code></td></tr>
+</tbody></table></div>
+<h4>安装</h4>
+<p><strong>Claude Code</strong></p>
+<pre>git clone https://github.com/enesozturk/dimensional-drawing
+cp -r dimensional-drawing/skills/* ~/.claude/skills/</pre>
+<p><strong>claude.ai / Claude 桌面版：</strong>把一个 Skill 文件夹（例如 <code>skills/dimensional-drawing</code>）打成 zip，在 <em>设置 → 能力 → Skills</em> 里添加。</p>
+<p><strong>其他任何 Agent</strong>（Codex、Cursor、Gemini CLI……）：使用 <a href="https://skills.sh" rel="noopener"><code>skills</code></a> 命令行工具，或者让你的 Agent 去读 <code>SKILL.md</code> 文件。</p>
+<pre>npx skills add enesozturk/dimensional-drawing</pre>
+<h4>使用</h4>
+<p>说你要一张图，并指向来源（仓库文件、Storybook story、网址、截图）：</p>
+<blockquote><p>给 <code>src/components/Card.tsx</code> 里的 <code>Card</code> 组件画一张尺寸图</p></blockquote>
+<blockquote><p>画出我们设置对话框的结构，风格和样例一样</p></blockquote>
+<p>你会得到：顶部一个列出关键变量的标题栏，下面是一整张密集的图纸——注记、平面图、分层爆炸图、细节视图（嵌套圆角、各个圆角、主体），以及变量表。</p>
+<p>实物也能画（第三角投影视图、毫米、只用公开规格）。试试画一个保温杯 🫖。</p>
+<h4>让它动起来 🎬</h4>
+<p>动效 Skill 把一张画好的图做成动画，就像一支笔在画它、同时一台摄影机在纸面上移动：</p>
+<ol>
+<li>特写头部，它的线条一条条画出来</li>
+<li>拉远到平面图，其余部分边拉边画</li>
+<li>图层从平面图上抬起，变成爆炸视图（先描边、后填充，这样不会闪）</li>
+<li>拉远到整张图纸，剩下的视图依次画出</li>
+</ol>
+<p>场景是时间的纯函数，所以能在两个地方运行：</p>
+<div class="table-wrap"><table><tbody>
+<tr><td><strong>用 Claude</strong></td><td>说一句<em>“把这张图动起来”</em>。Claude 会在 <strong>Motion</strong> 制品里搭好它，你导出 MP4 即可。这是首选目标，节奏也是在这里调的。</td></tr>
+<tr><td><strong>不用 Claude</strong></td><td><code>cd skills/dimensional-drawing-motion/adapters/headless &amp;&amp; npm install</code>，然后 <code>node render.mjs --scene ../../templates/scene-dialog.js --css ../../templates/base.css --out dialog.mp4</code>。需要 Node 18+ 和 ffmpeg。</td></tr>
+</tbody></table></div>
+<blockquote><p><strong>注意</strong>：针对 Claude Motion 优化。无头渲染器用 Playwright（Chromium）+ ffmpeg 测试过。其他动画库（Remotion、Motion Canvas、GSAP、Lottie……）<strong>没有测试</strong>。</p></blockquote>
+<h4>样例</h4>
+<p><strong>对话框</strong>：固定宽度、遮罩、视口位置、头部控件、底部操作按钮</p>
+<p>〔图：对话框组件的尺寸图〕</p>
+<p><strong>卡片</strong>：可变宽度、内容区、嵌套圆角、阴影包络</p>
+<p>〔图：卡片组件的尺寸图〕</p>
+<p>HTML 版本在 <a href="https://github.com/enesozturk/dimensional-drawing/tree/main/skills/dimensional-drawing/examples" rel="noopener"><code>skills/dimensional-drawing/examples</code></a> 里打开。完整影片是 <a href="https://github.com/enesozturk/dimensional-drawing/blob/main/assets/dialog-motion.mp4" rel="noopener"><code>assets/dialog-motion.mp4</code></a>。</p>
+<h4>致谢 💌</h4>
+<ul>
+<li><a href="https://developer.apple.com/accessories/dimensional-drawings/" rel="noopener">Apple 的配件尺寸图</a>，北极星</li>
+<li><a href="https://x.com/avstorm" rel="noopener">Andreas Storm</a>，是他的帖子开了这个头</li>
+</ul>
+<h4>许可证</h4>
+<p>MIT © Enes Ozturk。什么都画吧。</p>
+</details>
+
+<h2 id="license">附录二：许可证原文</h2>
+<details><summary>展开 MIT License</summary>
+<pre>MIT License
+
+Copyright (c) 2026 Enes Ozturk
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>推荐帖文字与 iPhone Duo 示意图视频 © 劳伦斯 @LawrenceW_Zen，本页照录文字用于学习交流，视频仅取封面帧。原帖：<a href="https://x.com/LawrenceW_Zen/status/2116039446399492218" rel="noopener">x.com/LawrenceW_Zen/status/2116039446399492218</a>。项目 dimensional-drawing © 2026 Enes Ozturk，MIT 许可；README 中译、样例图与动效截帧依 MIT 许可转载。iPhone 为 Apple Inc. 商标，规格数据引自 Apple 官网技术规格页。导读、核对与注记由 Grok Bot 整理。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/enesozturk/dimensional-drawing" rel="noopener">github.com/enesozturk/dimensional-drawing</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

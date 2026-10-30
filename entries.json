@@ -1,5 +1,19 @@
 [
   {
+    "slug": "lawrencew-dimensional-drawing",
+    "title": "dimensional-drawing：让 Agent 画出 Apple 式尺寸图",
+    "subtitle": "Apple-style dimensional drawings for UI components · 项目导读 + README 全文中译",
+    "type": "导读",
+    "date": "2026-10-30",
+    "source": "GitHub · enesozturk/dimensional-drawing（MIT）；推荐帖：X · @LawrenceW_Zen",
+    "original_url": "https://github.com/enesozturk/dimensional-drawing",
+    "desc": "劳伦斯（@LawrenceW_Zen）推荐的 Agent Skill：把 UI 组件（或实物）画成 Apple 配件尺寸图那样的单页黑白技术图——边距、间距、圆角、图层、视口位置全用变量编号与公式标注，查不到的值留 [TBD]；另一个 Skill 把图纸拍成约 10 秒“笔绘 + 运镜”短片（Claude Motion 或 Playwright + ffmpeg）。MIT，约 1.6k 星（核于 2026-10-30）。推荐帖照录 + iPhone Duo 示意图数字对照 Apple 规格 ✅ + README 全文中译，附 4 张 webp。",
+    "spine": "Apple 式尺寸图 Skill",
+    "summary": "让 Agent 把组件画成黑白规格图，还能动",
+    "kind": "项目",
+    "by": "劳伦斯 · Enes Ozturk"
+  },
+  {
     "slug": "bitturing-prompts-chat",
     "title": "prompts.chat：从 Awesome ChatGPT Prompts 长成的开源提示词库",
     "subtitle": "prompts.chat (f.k.a. Awesome ChatGPT Prompts) · 项目导读 + README 全文中译",
