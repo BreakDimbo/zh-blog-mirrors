@@ -1,5 +1,15 @@
 [
   {
+    "slug": "bitturing-prompts-chat",
+    "title": "prompts.chat：从 Awesome ChatGPT Prompts 长成的开源提示词库",
+    "subtitle": "prompts.chat (f.k.a. Awesome ChatGPT Prompts) · 项目导读 + README 全文中译",
+    "type": "导读",
+    "date": "2026-10-30",
+    "source": "GitHub · f/prompts.chat（MIT + CC0）；推荐帖：X · @Bitturing",
+    "original_url": "https://github.com/f/prompts.chat",
+    "desc": "Bitturing（@Bitturing）推荐的 prompts.chat：2022 年 12 月最早的 ChatGPT 提示词清单 Awesome ChatGPT Prompts 改名而来，GitHub 约 17.5 万星（核于 2026-10-30）；提示词数据 CC0 公有领域、代码 MIT，可用网站、CSV（2,772 条）、Hugging Face、CLI、MCP 与 Claude Code 插件调用，也能自建私有库。推荐帖逐条核对：哈佛/哥伦比亚“引用”未能核实 ⚠️，帖子很可能转述自 @nikosolenne 的西班牙语帖、视频带 @silvanrec 水印 ⚠️；项目靠赞助运营，含推荐链接与赞助卡片。原帖照录 + README 全文中译 + 许可证原文，附 3 张 webp。"
+  },
+  {
     "slug": "voidjan-haiyu-threejs-island",
     "title": "「海屿」：Claude Code 纯代码搓出的小岛海洋游戏",
     "subtitle": "Haiyu · a three.js island game, prompt in full · 原帖与提示词全文照录",

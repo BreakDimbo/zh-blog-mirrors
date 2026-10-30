@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>prompts.chat：开源提示词库（原名 Awesome ChatGPT Prompts）· 项目导读 + README 全文中译</title>
+<meta name="description" content="f/prompts.chat 项目导读：原名 Awesome ChatGPT Prompts 的开源提示词库，GitHub 约 17.5 万星；提示词数据以 CC0 公有领域发布，代码 MIT；可用网站、CSV、Hugging Face 数据集、CLI、MCP 服务器与 Claude Code 插件调用，也可自建私有版。附 Bitturing（@Bitturing）原帖照录、核实与 README 全文中译。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-30">2026.10.30</time></p>
+<h1 class="za-title">prompts.chat：从 Awesome ChatGPT Prompts 长成的开源提示词库</h1>
+<p class="za-sub" lang="en" data-za-gen>prompts.chat (f.k.a. Awesome ChatGPT Prompts) · 项目导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · f/prompts.chat（MIT + CC0）；推荐帖：X · @Bitturing</span><span>收录 · 2026-10-30</span><span><a href="https://github.com/f/prompts.chat" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">推荐帖：<a href="https://x.com/Bitturing/status/2115719097157886024" rel="noopener">Bitturing @Bitturing</a>（2026-10-29 16:15 UTC+8；截至 2026-10-30 12:22 UTC+8 约 2.26 万浏览 / 374 赞 / 397 收藏 / 59 转发 / 9 回复）· 项目：<a href="https://github.com/f/prompts.chat" rel="noopener">github.com/f/prompts.chat</a>（作者 Fatih Kadir Akın 及贡献者；本页对照仓库提交 <code>0d2f9b3</code>）· 网站：<a href="https://prompts.chat" rel="noopener">prompts.chat</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>prompts.chat 就是 2022 年 12 月那个最早的 ChatGPT 提示词清单「Awesome ChatGPT Prompts」改名后的样子。现在它是一个可以搜、可以收藏、可以自建的提示词平台，还收技能（skills）、工作流和 bot。提示词数据以 CC0 放进公有领域，网站代码是 MIT。除了网页，也能通过 CSV、Hugging Face 数据集、命令行、MCP 服务器和 Claude Code 插件来用。</div>
+
+<figure><img src="images/cover.webp" alt="推荐帖演示视频的封面帧：紫橙渐变背景上的深色浏览器窗口，打开的是 GitHub 仓库 f/prompts.chat，可见 Fork 22.2k、Star 173k、9,393 次提交，右侧 About 写着 f.k.a. Awesome ChatGPT Prompts；右下角有 @silvanrec 水印" loading="lazy"><figcaption>推荐帖 17 秒演示视频的封面帧。画面右下角水印是 @silvanrec，不是发帖人（见下文「来源」一节）。视频请到原帖观看。</figcaption></figure>
+
+<h2 id="post">推荐帖照录</h2>
+<p>Bitturing 的原帖为中文，以下逐字照录（含长帖展开后的全文）：</p>
+<blockquote>
+<p>🚨 发现了全球最大的免费提示词库！</p>
+<p>网址是 prompts.chat，已经在 GitHub 上获得超过 173K 星标，还被哈佛和哥伦比亚大学引用过。</p>
+<p>兼容 ChatGPT、Claude、Gemini 等几乎所有模型：</p>
+<p>→ 支持命令行界面（CLI）或 MCP 服务器方式使用<br>
+→ 可作为 Claude Code 插件安装<br>
+→ 提供 CSV 格式数据，轻松导入脚本<br>
+→ 支持部署私有版本，打上个人品牌和登录系统</p>
+<p>最棒的是：所有提示词都是公共领域资源。随意复制、修改、用于项目或商业用途，无需征得任何人同意。</p>
+<p>完全免费，代码开源。</p>
+<p>赶紧收藏吧 🔖</p>
+</blockquote>
+<p>一秒后，作者在同一会话下补了一条回复，只有一个链接：<a href="https://github.com/f/prompts.chat" rel="noopener">github.com/f/prompts.chat</a>（2026-10-29 16:15 UTC+8）。会话里没有作者的其他回复。</p>
+
+<h2 id="what">项目是什么</h2>
+<p>仓库 <code>f/prompts.chat</code> 的简介是“f.k.a. Awesome ChatGPT Prompts”，也就是“原名 Awesome ChatGPT Prompts”。它最早只是一份 Markdown 清单，开头一句话让 ChatGPT “扮演 Linux 终端”“扮演英语翻译”之类，后来做成了网站。README 自称是“第一个提示词库（2022 年 12 月）”。</p>
+<figure><img src="images/site-home.webp" alt="prompts.chat 首页截图：左侧大标题 The Free Social Platform for AI Agents，下方写着 Prompts, skills, workflows and bots，按钮有 Browse Prompts、Deploy Your Private Server、Login，以及 Be the 175,117th stargazer on GitHub；右侧是搜索框和 Open Source Friday 视频卡片；下方一行赞助商标志" loading="lazy"><figcaption>prompts.chat 首页（2026-10-30 12:23 UTC+8 本站截图）。网站现在的口号是“AI 代理的免费社交平台”，不只放提示词，也放技能、工作流和 bot；首页下方有一排赞助商。</figcaption></figure>
+<p>现在的 prompts.chat 大致有这几块：</p>
+<ul>
+<li><strong>提示词库</strong>：网页上可按分类、标签、类型（文本 / 结构化 / 图像）筛选，支持 AI 搜索。网站列表页当时显示“2725 found”。仓库里的 <code>prompts.csv</code>（约 9.1 MB）有 2,772 行，字段为 <code>act, prompt, for_devs, type, contributor</code>，其中 TEXT 2,395 条、STRUCTURED 356 条、IMAGE 21 条（本站 2026-10-30 解析）。</li>
+<li><strong>投稿与同步</strong>：在网站上提交提示词，会自动同步回 GitHub 仓库。</li>
+<li><strong>The Interactive Book of Prompting</strong>：一本 29 章以上的提示词工程互动教程，源码在仓库 <code>src/content/book</code>，MIT 许可。</li>
+<li><strong>Prompting for Kids</strong>：给 8–14 岁孩子的游戏化 AI 沟通教程。</li>
+<li><strong>自建</strong>：<code>npx prompts.chat new my-prompt-library</code> 一键起一个私有库，安装向导配置品牌、主题、登录方式（GitHub / Google / Azure AD）。数据库是 PostgreSQL。</li>
+<li><strong>集成</strong>：命令行 <code>npx prompts.chat</code>；MCP 服务器（远程或本地）；Claude Code 插件（提供 <code>/prompts.chat:prompts</code> 与 <code>/prompts.chat:skills</code> 两个斜杠命令，外加两个管理代理和自动触发的技能）。</li>
+</ul>
+<figure><img src="images/site-prompts.webp" alt="prompts.chat 提示词列表页截图：顶部写 Prompts 2725 found，有 HF Data Studio、MCP Server、Create Prompt 按钮；分类标签包括 Design、Vibe Coding、Video Generation 等；左侧筛选栏；中间是用户投稿的提示词卡片，右侧有一张标注 Sponsored 的 CodeRabbit 卡片" loading="lazy"><figcaption>提示词列表页（2026-10-30 本站截图）。最新投稿里能看到质量参差的条目，右列有标“Sponsored”的赞助卡片。</figcaption></figure>
+
+<h2 id="verify">帖子里的说法，逐条核对</h2>
+<div class="table-wrap"><table><thead><tr><th>帖子说</th><th>本站核对（2026-10-30）</th></tr></thead><tbody>
+<tr><td>GitHub 超过 173K 星标</td><td>✅ 属实，而且偏保守。仓库页当时显示 175,117 星、22,346 fork。README 里还写着“143k+ stars”，是没更新的旧数。</td></tr>
+<tr><td>被哈佛和哥伦比亚大学引用过</td><td>⚠️ 未核实。README 给了哈佛 HUIT 和哥伦比亚 CUIT 两个新闻页链接，但本站请求这两个页面都返回 403，没能打开确认原文怎么写。“引用”在 README 里是 Referenced by，可能只是在学校的资源页里被提到，不等于学术引用。README 另称“40+ 学术引用”，同样未核实。</td></tr>
+<tr><td>“全球最大的免费提示词库”</td><td>⚠️ 这是项目自己的口号（The world's largest open-source prompt library），没有第三方比较数据支持。</td></tr>
+<tr><td>兼容几乎所有模型</td><td>提示词是纯文本，确实不绑定模型。但同一句提示词在不同模型上效果不同，这里说的“兼容”只是能用。</td></tr>
+<tr><td>CLI、MCP、Claude Code 插件、CSV</td><td>✅ README 与 <code>CLAUDE-PLUGIN.md</code> 都写了，命令见下方附录。本站没有实际安装试用。</td></tr>
+<tr><td>可部署私有版本，带品牌和登录</td><td>✅ README 写明安装向导配置品牌、主题和 GitHub / Google / Azure AD 登录。</td></tr>
+<tr><td>所有提示词都是公共领域，可商用、无需同意</td><td>✅ 基本属实。<code>LICENSE</code> 写明提示词内容与数据（<code>prompts.csv</code>、<code>PROMPTS.md</code>、用户投稿）以 CC0 1.0 发布；网站代码与站方内容（含互动教程）是 MIT。要注意：CC0 只是投稿人的声明，平台没法保证每条投稿真的是投稿人原创 ⚠️。</td></tr>
+<tr><td>完全免费，代码开源</td><td>✅ 代码 MIT，数据 CC0，网站可免费浏览。但项目靠赞助运营，见下方“利益相关”。</td></tr>
+</tbody></table></div>
+
+<h2 id="caveats">注意事项</h2>
+<ul>
+<li>⚠️ <strong>推荐帖不是原创（推断）：</strong>演示视频右下角水印是 <strong>@silvanrec</strong>。本站在 X 上搜到 2026-10-21 22:51 UTC+8 <a href="https://x.com/nikosolenne/status/2112919683770843455" rel="noopener">@nikosolenne 的一条西班牙语帖</a>，开头几句（“世界最大的提示词库、100% 免费、超过 173K 星、哈佛和哥伦比亚引用、兼容 ChatGPT/Claude/Gemini”）和本帖逐句对得上，配的视频也是 16.6 秒。Bitturing 的帖子很可能是那条帖子的中文转述，帖里没注明出处。Bitturing 简介自称“大自然的搬运工”。原始视频是不是 @silvanrec 做的，本站没查到原帖 ❓。</li>
+<li>⚠️ <strong>投稿质量参差：</strong>任何人都能提交提示词，本站截图里最新几条就有测试性质、内容很少的投稿。用之前要自己筛。</li>
+<li>⚠️ <strong>远程 MCP 会把查询发给第三方：</strong>README 推荐的远程 MCP 地址是 <code>https://prompts.chat/api/mcp</code>，你的搜索词会发到 prompts.chat 的服务器。介意的话用本地模式（<code>npx -y prompts.chat mcp</code>）或自建。本站没有调用这个接口。</li>
+<li><strong>利益相关：</strong>推荐帖本身没有带 utm 或返利的链接，也没有合作标注；Bitturing 简介里有 Crypto / BTC / Web3，但这条帖子和加密货币无关。项目方面：网站和 README 有一排赞助商（Neon、Clemta、Wiro、Cognition、CodeRabbit、Sentry、Each Labs、CommandCode），README 里的 Neon 链接是推荐链接（<code>get.neon.com/VqfnMo4</code>），CodeRabbit 是 <code>coderabbit.link/fatih</code>，其余多带 <code>utm_source=prompts.chat</code>；列表页里夹有标“Sponsored”的赞助卡片。README 里“Read the Book”指向作者的 Gumroad 页面（本站看到的标价为 0 美元 ⚠️ 可能是自愿付费），教程源码本身在仓库里，MIT 免费。</li>
+</ul>
+
+<h2 id="related">站内相关</h2>
+<ul>
+<li><a href="../opennana-prompt-gallery/">OpenNana 提示词图库</a>：另一个提示词案例站，偏图像与视频，是商业站。</li>
+<li><a href="../motionsites-claude-skill/">MotionSites Web Builder</a>：免费 Skill 引流到付费提示词库的例子，可以和 prompts.chat 的 CC0 路线对照。</li>
+<li><a href="../hohomngkj-skill-library/">龚浩 Snail 的 Skill 风格库</a>：完整包需付费开通的风格提示词库。</li>
+<li><a href="../minimax-h3-prompt-rewriter/">MiniMax H3 提示词改写器</a>：把提示词本身交给模型改写的另一种思路。</li>
+</ul>
+
+<h2 id="readme">附录一：README 全文中译</h2>
+<p>以下是仓库 README（提交 <code>0d2f9b3</code>）的全文中译。README 采用 MIT 许可（站方内容默认适用 MIT）。徽章、赞助商标志等图片未转载，改写成文字。</p>
+<details open><summary>展开 / 收起 README 中译</summary>
+<h3>prompts.chat</h3>
+<p><strong>全球最大的开源 AI 提示词库</strong><br>适用于 ChatGPT、Claude、Gemini、Llama、Mistral 等<br>原名 Awesome ChatGPT Prompts</p>
+<p>徽章：网站 prompts.chat · Awesome 清单 · Hugging Face 数据集 · Ask DeepWiki</p>
+<p>🌐 <a href="https://prompts.chat/prompts" rel="noopener">浏览提示词</a> • 📖 <a href="https://fka.gumroad.com/l/art-of-chatgpt-prompting" rel="noopener">阅读教程</a> • 📄 <a href="https://raw.githubusercontent.com/f/prompts.chat/main/PROMPTS.md" rel="noopener">在 GitHub 上查看</a> • 🚀 自建</p>
+<p>🏆 登上 <a href="https://www.forbes.com/sites/tjmccue/2023/01/19/chatgpt-success-completely-depends-on-your-prompt/" rel="noopener">Forbes</a> · 🎓 被<a href="https://www.huit.harvard.edu/news/ai-prompts" rel="noopener">哈佛</a>、<a href="https://etc.cuit.columbia.edu/news/columbia-prompt-library-effective-academic-ai-use" rel="noopener">哥伦比亚</a>引用 · 📄 <a href="https://scholar.google.com/citations?user=AZ0Dg8YAAAAJ&amp;hl=en" rel="noopener">40 余次学术引用</a> · ❤️ Hugging Face 上<a href="https://huggingface.co/datasets/fka/prompts.chat" rel="noopener">点赞最多的数据集</a><br>⭐ GitHub 143k+ 星 · 🏅 <a href="https://spotlights-feed.github.com/spotlights/prompts-chat/index/" rel="noopener">GitHub 官方精选</a> · 🚀 第一个提示词库（2022 年 12 月）</p>
+<p><strong>AI 先驱们的喜爱：</strong><a href="https://x.com/gdb/status/1602072566671110144" rel="noopener">Greg Brockman</a>（OpenAI 联合创始人）· <a href="https://x.com/woj_zaremba/status/1601362952841760769" rel="noopener">Wojciech Zaremba</a>（OpenAI 联合创始人）· <a href="https://x.com/clementdelangue/status/1830976369389642059" rel="noopener">Clement Delangue</a>（Hugging Face CEO）· <a href="https://x.com/ashtom/status/1887250944427237816" rel="noopener">Thomas Dohmke</a>（前 GitHub CEO）</p>
+<h4>这是什么？</h4>
+<p>一份为 AI 聊天模型精选的<strong>提示词</strong>合集。最初是为 ChatGPT 做的，这些提示词在任何现代 AI 助手上都很好用。</p>
+<div class="table-wrap"><table><thead><tr><th>浏览提示词</th><th>数据格式</th></tr></thead><tbody>
+<tr><td><a href="https://prompts.chat/prompts" rel="noopener">prompts.chat</a></td><td><a href="https://github.com/f/prompts.chat/blob/main/prompts.csv" rel="noopener">prompts.csv</a></td></tr>
+<tr><td><a href="https://raw.githubusercontent.com/f/prompts.chat/main/PROMPTS.md" rel="noopener">PROMPTS.md</a></td><td><a href="https://huggingface.co/datasets/fka/prompts.chat" rel="noopener">Hugging Face 数据集</a></td></tr>
+</tbody></table></div>
+<p><strong>想贡献？</strong>在 prompts.chat/prompts/new 添加提示词，会自动同步到这里。</p>
+<h4>📖 提示词互动教程（The Interactive Book of Prompting）</h4>
+<p>用我们<strong>免费的互动指南</strong>学习提示词工程：29 章以上，从基础讲到思维链推理、少样本学习、AI 代理等进阶技巧。</p>
+<p><strong><a href="https://fka.gumroad.com/l/art-of-chatgpt-prompting" rel="noopener">开始阅读 →</a></strong>（源码：<a href="https://github.com/f/prompts.chat/tree/main/src/content/book" rel="noopener">src/content/book</a>）</p>
+<h4>🎮 儿童提示词课（Prompting for Kids）</h4>
+<p>一场游戏化的互动冒险，用有趣的谜题和故事教 8–14 岁的孩子怎样和 AI 沟通。</p>
+<p><strong><a href="https://prompts.chat/kids" rel="noopener">开始游戏 →</a></strong></p>
+<h4>🚀 自建</h4>
+<p>部署你自己的私有提示词库，可自定义品牌、主题和登录认证。</p>
+<p><strong>快速开始：</strong></p>
+<pre>npx prompts.chat new my-prompt-library
+cd my-prompt-library</pre>
+<p><strong>手动安装：</strong></p>
+<pre>git clone https://github.com/f/prompts.chat.git
+cd prompts.chat
+npm install &amp;&amp; npm run setup</pre>
+<p>安装向导会配置品牌、主题、登录认证（GitHub / Google / Azure AD）和功能开关。</p>
+<p><strong>推荐数据库：</strong>prompts.chat 使用 PostgreSQL。如需托管数据库，我们推荐 Neon（README 中为推荐链接）。</p>
+<p>赞助方：Neon</p>
+<p>📖 <a href="https://github.com/f/prompts.chat/blob/main/SELF-HOSTING.md" rel="noopener">完整自建指南</a> • 🐳 <a href="https://github.com/f/prompts.chat/blob/main/DOCKER.md" rel="noopener">Docker 指南</a></p>
+<h4>🔌 集成</h4>
+<p><strong>命令行（CLI）</strong></p>
+<pre>npx prompts.chat</pre>
+<p><strong>Claude Code 插件</strong></p>
+<pre>/plugin marketplace add f/prompts.chat
+/plugin install prompts.chat@prompts.chat</pre>
+<p>📖 <a href="https://github.com/f/prompts.chat/blob/main/CLAUDE-PLUGIN.md" rel="noopener">插件文档</a></p>
+<p><strong>MCP 服务器</strong>：在你的 AI 工具里把 prompts.chat 当作 MCP 服务器使用。</p>
+<p>远程（推荐）：</p>
+<pre>{
+  "mcpServers": {
+    "prompts.chat": {
+      "url": "https://prompts.chat/api/mcp"
+    }
+  }
+}</pre>
+<p>本地：</p>
+<pre>{
+  "mcpServers": {
+    "prompts.chat": {
+      "command": "npx",
+      "args": ["-y", "prompts.chat", "mcp"]
+    }
+  }
+}</pre>
+<p>📖 <a href="https://prompts.chat/docs/api" rel="noopener">MCP 文档</a></p>
+<h4>💖 赞助商</h4>
+<p>Neon · Clemta · Wiro · Cognition · CodeRabbit · Sentry · Each Labs · CommandCode（README 中为标志图链接，多数带 utm 或推荐参数，本页未转载标志与链接）</p>
+<p>使用 Windsurf 和 Devin 构建<br><strong>成为赞助商 →</strong>（GitHub Sponsors）</p>
+<h4>👥 贡献者</h4>
+<p>（README 此处为 contrib.rocks 生成的贡献者头像墙，见 <a href="https://github.com/f/prompts.chat/graphs/contributors" rel="noopener">贡献者页面</a>。）</p>
+<h4>📜 许可证</h4>
+<p>本项目采用双许可：</p>
+<ul>
+<li><strong>源代码和站方编写的内容</strong>采用 MIT 许可，包括 <code>src/content/book</code> 里的互动教程内容。</li>
+<li><strong>提示词内容与数据</strong>（prompts.csv、PROMPTS.md、用户投稿的提示词）以 CC0 1.0 通用协议贡献至公有领域。</li>
+</ul>
+<p>详见 LICENSE。</p>
+</details>
+
+<h2 id="license">附录二：许可证原文</h2>
+<details><summary>LICENSE（双许可说明）与 LICENSE-MIT 原文</summary>
+<pre style="white-space:pre-wrap">This project uses a dual-license model:
+
+- **Source code and site-authored content** (everything under src/,
+  prisma/, scripts/, and all configuration/build files) is licensed under
+  the MIT License. This includes the interactive book content in
+  src/content/book/.
+  See LICENSE-MIT for the full text.
+
+- **Prompt content and data** (prompts.csv, PROMPTS.md, and all user-submitted
+  prompt text) is dedicated to the public domain under CC0 1.0 Universal.
+  See LICENSE-CC0 for the full text.
+
+If you are unsure which license applies to a particular file, the MIT License
+applies by default.</pre>
+<pre style="white-space:pre-wrap">MIT License
+
+Copyright (c) 2022-present Fatih Kadir Akin and contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+<p>CC0 1.0 全文见 <a href="https://github.com/f/prompts.chat/blob/main/LICENSE-CC0" rel="noopener">LICENSE-CC0</a>。</p>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>推荐帖文字 © Bitturing @Bitturing，本页照录用于学习交流；演示视频带 @silvanrec 水印，仅取封面帧。原帖：<a href="https://x.com/Bitturing/status/2115719097157886024" rel="noopener">x.com/Bitturing/status/2115719097157886024</a>。项目 prompts.chat © 2022-present Fatih Kadir Akin and contributors，代码 MIT、提示词数据 CC0；README 中译依 MIT 许可转载。网站截图为本站拍摄。导读、核对与注记由 Grok Bot 整理。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/f/prompts.chat" rel="noopener">github.com/f/prompts.chat</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
