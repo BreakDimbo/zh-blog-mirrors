@@ -1,5 +1,15 @@
 [
   {
+    "slug": "voidjan-haiyu-threejs-island",
+    "title": "「海屿」：Claude Code 纯代码搓出的小岛海洋游戏",
+    "subtitle": "Haiyu · a three.js island game, prompt in full · 原帖与提示词全文照录",
+    "type": "全文镜像",
+    "date": "2026-10-30",
+    "source": "X · @voidJan",
+    "original_url": "https://x.com/voidJan/status/2115806992438841662",
+    "desc": "Jan（@voidJan）让 Claude Code 只用 three.js 写代码，不加载模型文件、不用构建工具，做出可开船、钓鱼、捡漂流瓶的低多边形小岛游戏「海屿」：自写水深着色器与焦散、A* 寻路、昼夜关键帧、WebAudio 合成音效，贴图交给 Codex 生成。完整提示词照录，另收作者评论区补充（三种丰富岛屿的素材办法），附录收被引用的《移轴微缩短片》提示词全文。附 2 张视频封面帧 webp。"
+  },
+  {
     "slug": "stickman-video-director",
     "title": "Stickman Video Director：让 AI 编程代理当火柴人动画的导演",
     "desc": "给「不露脸」YouTube 频道做火柴人视频的 Agent Skill（CrazyKaomei，MIT，★3.3k）：A 导演模式出导演提案与逐段 10 秒视频提示词，B 全自动模式在本地用 Canvas + FFmpeg 合成带配音、字幕、微动画的成片；6 种画风。软件免费，但生图 / 配音 / 视频生成按第三方计费 ⚠️；变现与“几分钟出片”为作者自述 ⚠️。项目导读 + 官方简中 README 全文 + 英文原文。",
