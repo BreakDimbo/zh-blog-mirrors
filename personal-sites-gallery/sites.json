@@ -1,7 +1,18 @@
 {
- "updated": "2026-10-30T09:58:42.354138+08:00",
+ "updated": "2026-10-30T13:57:36.663056+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "susheyyy.github.io",
+   "url": "https://susheyyy.github.io/Portfolio/",
+   "title": "Sushmita Das",
+   "description": "Computer engineering student building AI and full stack projects. Open to internships and research.",
+   "shared_by": "@dsushii460",
+   "reply": "https://x.com/dsushii460/status/2116025940639940717",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "bdoan.me",
    "url": "https://bdoan.me/",
