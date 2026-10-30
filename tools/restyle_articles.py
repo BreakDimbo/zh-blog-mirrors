@@ -10,7 +10,7 @@ Then run tools/inject_nav.py (adds the back pill) and tools/build_hub.py.
 Special/interactive pages (SKIP) are never touched."""
 import html, json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SKIP = {'personal-sites-gallery'}  # app-like gallery with its own generator/template
+SKIP = {'personal-sites-gallery', 'classic', 'hub-preview'}  # app-like gallery / hub pages with their own generators
 GENERIC = re.compile(r'''^(:root|\*|html|body|\.wrap|h[1-6]|a|a:hover|p|ul|ol|li|img|video|article\b.*|header\.meta\b.*|\.source\b.*|
  \.meta-line|figure\b.*|figcaption\b.*|p\.caption|blockquote\b.*|pre\b.*|code|p\ code|li\ code|td\ code|table\b.*|th|td|tr\b.*|hr|
  footer\b.*|nav\.toc\b.*|img\.cover|\.cover|\.related-guide|\.hub\b.*|summary|details\b.*|\.table-wrap|\.lede|ol\.subs\ li|\.grid2\b.*|

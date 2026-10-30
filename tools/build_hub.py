@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
-"""Render the hub index.html from entries.json (static HTML, JS only adds filter/search)."""
-import json, os, html
+"""Standard hub build step (run after adding entries to entries.json).
+1. Renders the classic text list to classic/index.html (static HTML, JS only adds filter/search).
+2. Runs tools/build_hub_shelf.py, which writes the live homepage index.html (the VHS 'tape shelf')
+   and keeps hub-preview/index.html as a redirect to the homepage.
+So the usual order  entries.json -> restyle_articles -> inject_nav -> build_hub.py  yields the shelf
+homepage with every entry plus the classic list."""
+import json, os, html, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 E = sorted(json.load(open(os.path.join(ROOT, 'entries.json'), encoding='utf-8')), key=lambda x: (x['date'], x['slug']), reverse=True)
 esc = html.escape
@@ -12,7 +17,7 @@ for e in E:
 def item(e, i):
     d = e['date'].replace('-', '.')
     return f'''<li class="entry" data-type="{esc(e['type'])}" data-text="{esc((e['title']+' '+e['desc']+' '+e['source']+' '+e['type']).lower())}">
-  <a href="./{esc(e['slug'])}/">
+  <a href="../{esc(e['slug'])}/">
     <span class="meta"><time datetime="{e['date']}">{d}</time><span class="tag">{esc(e['type'])}</span></span>
     <span class="body"><span class="t">{esc(e['title'])}</span><span class="d">{esc(e['desc'])}</span><span class="s">{esc(e['source'])}</span></span>
     <span class="go" aria-hidden="true">→</span>
@@ -21,7 +26,7 @@ feat = next((e for e in E if e.get('featured')), None)
 feat_html = ''
 if feat:
     feat_html = f'''<section class="feature" aria-label="精选">
-  <a href="./{feat['slug']}/">
+  <a href="../{feat['slug']}/">
     <span class="k">精选 · {esc(feat['type'])}</span>
     <span class="ft">{esc(feat['title'].split('：')[0])}</span>
     <span class="fd">{esc(feat['desc'])}</span>
@@ -34,13 +39,14 @@ page = f'''<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>中文镜像文库 · zh-blog-mirrors</title>
+<title>经典列表 · 中文镜像文库 · zh-blog-mirrors</title>
 <meta name="description" content="精选海外技术与创作长文的中文镜像、翻译、导读与评述，长期托管于 GitHub Pages。">
-<link rel="canonical" href="{URL}">
+<link rel="canonical" href="{URL}classic/">
 <meta property="og:type" content="website"><meta property="og:site_name" content="zh-blog-mirrors">
 <meta property="og:title" content="中文镜像文库"><meta property="og:description" content="精选海外技术与创作长文的中文镜像、翻译、导读与评述。">
-<meta property="og:url" content="{URL}"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary">
+<meta property="og:url" content="{URL}classic/"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#f6f3ee" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%224%22 y=%229%22 width=%2224%22 height=%2214%22 rx=%221.5%22 fill=%22%233a2f26%22/%3E%3Crect x=%227%22 y=%2212%22 width=%2218%22 height=%225%22 fill=%22%23e6dcc6%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <style>
@@ -92,10 +98,12 @@ footer .mark{{font:italic 400 18px/1 var(--latin)}}
  .bar{{position:static}}.search{{flex:1 1 100%}}footer{{grid-template-columns:1fr}}h1 em{{display:block;margin:14px 0 0}}}}
 @media (prefers-reduced-motion:reduce){{*{{transition:none!important}}}}
 </style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
 </head>
 <body>
+<!-- zbm-nav --><!-- /zbm-nav -->
 <div class="wrap">
-<div class="top"><span>zh-blog-mirrors</span><a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></div>
+<div class="top"><a href="../">← 书架首页</a><a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></div>
 <header class="hero">
 <p class="eyebrow">VOL. 01 &nbsp;·&nbsp; {len(E)} 篇收录</p>
 <h1>中文镜像文库<em>a reading room</em></h1>
@@ -123,5 +131,8 @@ q.addEventListener('input',run);}})();
 </body>
 </html>
 '''
-open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(page)
-print(f'hub built: {len(E)} entries')
+os.makedirs(os.path.join(ROOT, 'classic'), exist_ok=True)
+open(os.path.join(ROOT, 'classic', 'index.html'), 'w', encoding='utf-8').write(page)
+print(f'classic list built: {len(E)} entries -> classic/index.html')
+# the live homepage is the tape shelf (also refreshes the hub-preview/ redirect)
+subprocess.run([sys.executable, os.path.join(ROOT, 'tools', 'build_hub_shelf.py')] + [a for a in sys.argv[1:] if a == '--textures'], check=True)

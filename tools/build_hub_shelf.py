@@ -1,17 +1,24 @@
 #!/usr/bin/env python3
-"""Render the PREVIEW hub /hub-preview/index.html — a 'tape shelf' (VHS cassettes as navigation)
+"""Render the LIVE hub homepage /index.html — a 'tape shelf' (VHS cassettes as navigation)
 from entries.json. v2: DOM/CSS 3D cassettes driven by a small damped-spring engine (vanilla JS, rAF,
-transform/opacity only, no libraries, no WebGL) + generated material textures in hub-preview/assets/
+transform/opacity only, no libraries, no WebGL) + generated material textures in assets/shelf/
 (generated below on first run if missing).
 
-Usage: python3 tools/build_hub_shelf.py
-New entries: add them to entries.json (same as tools/build_hub.py) and rerun; covers are discovered
-automatically from each sub-page's og:image (or images/cover.*, cover.*). The live hub
-(index.html / tools/build_hub.py) is NOT touched by this script."""
+Usage: python3 tools/build_hub_shelf.py [--textures] [--preview]
+  default    -> writes the root index.html (the live homepage, ./ paths) and turns hub-preview/index.html
+                into a small redirect to ../ (one source of truth).
+  --preview  -> instead writes the old noindex preview build to hub-preview/index.html (../ paths);
+                the root index.html is not touched.
+  --textures -> regenerate the material textures.
+Normally you do not run this directly: tools/build_hub.py (the standard pipeline step) runs it after
+writing the classic list to classic/index.html. New entries: add them to entries.json and run
+tools/build_hub.py; covers are discovered automatically from each sub-page's og:image (or images/cover.*, cover.*)."""
 import json, os, sys, html, hashlib, colorsys, re
 from urllib.parse import urlsplit
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT_DIR = os.path.join(ROOT, 'hub-preview')
+PREVIEW = '--preview' in sys.argv
+P = '../' if PREVIEW else './'  # page -> site root
+OUT_DIR = os.path.join(ROOT, 'hub-preview') if PREVIEW else ROOT
 URL = 'https://breakdimbo.github.io/zh-blog-mirrors/'
 REMOVAL = 'https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request'
 esc = html.escape
@@ -39,7 +46,7 @@ def shade(hexcol, seed):
     return '#%02x%02x%02x' % tuple(round(c * 255) for c in (r, g, b))
 
 def cover_for(slug):
-    """Find a cover image for a sub-page; returns a path relative to /hub-preview/ or ''."""
+    """Find a cover image for a sub-page; returns a path relative to the output page (P + path) or ''."""
     page = os.path.join(ROOT, slug, 'index.html')
     cands = []
     if os.path.exists(page):
@@ -56,7 +63,7 @@ def cover_for(slug):
         if os.path.basename(c).startswith('icon'):
             continue
         if os.path.isfile(os.path.join(ROOT, c)):
-            return '../' + c.replace(os.sep, '/')
+            return P + c.replace(os.sep, '/')
     return ''
 
 def vlen(t):
@@ -87,7 +94,7 @@ def paper_tone(seed):
     r, g, b = colorsys.hls_to_rgb(0.115 - y * 0.4, l, 0.30 + y * 2.2)
     return '#%02x%02x%02x' % tuple(round(c * 255) for c in (r, g, b))
 
-# ---------- material textures (paper, wood, wall, grain) -> hub-preview/assets/*.webp ----------
+# ---------- material textures (paper, wood, wall, grain) -> assets/shelf/*.webp ----------
 # Deterministic (seeded) tileable noise; generated only when missing. Needs numpy + Pillow;
 # without them the committed textures are kept.
 try:
@@ -97,7 +104,7 @@ try:
 except ImportError:
     _HAVE_TEX = False
 
-TEX_DIR = os.path.join(OUT_DIR, 'assets')
+TEX_DIR = os.path.join(ROOT, 'assets', 'shelf')
 
 def pnoise(h, w, fy, fx, rng, power=1.0):
     """Periodic band-limited noise via FFT (tileable by construction). fy/fx = gaussian cutoff in cycles/image."""
@@ -180,20 +187,71 @@ for t in types:
 shelves = [[t] for t in shelves] + ([small] if small else [])
 
 def list_item(e):
-    return (f'<li data-s="{esc(e["slug"])}"><a href="../{esc(e["slug"])}/"><time datetime="{e["date"]}">{e["date"].replace("-", ".")}</time>'
+    return (f'<li data-s="{esc(e["slug"])}"><a href="{P}{esc(e["slug"])}/"><time datetime="{e["date"]}">{e["date"].replace("-", ".")}</time>'
             f'<span class="lt">{esc(e["title"])}</span><span class="lm">{esc(e["type"])} · {esc(e.get("source", ""))}</span></a></li>')
 
 chips = '<button type="button" data-f="" aria-pressed="true">全部<sup>%d</sup></button>' % len(E) + ''.join(
     f'<button type="button" data-f="{esc(t)}" aria-pressed="false">{esc(t)}<sup>{counts[t]}</sup></button>' for t in types)
 payload = json.dumps({'items': data, 'types': types, 'shelves': shelves}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 
+TITLE = '中文镜像文库 · zh-blog-mirrors'
+DESC = '精选海外技术与创作长文的中文镜像、翻译、导读与评述，长期托管于 GitHub Pages。'
+OG_DESC = '精选海外技术与创作长文的中文镜像、翻译、导读与评述。'
+if PREVIEW:
+    head = ('<title>中文镜像文库 · 录像带书架（预览）</title>\n'
+            '<meta name="description" content="中文镜像文库的书架式首页预览：每篇文章是一盒录像带，抽出来看封套。">\n'
+            f'<meta name="robots" content="noindex">\n<link rel="canonical" href="{URL}">')
+    toplink, eyebrow = '<a href="../">首页</a>', ' &nbsp;·&nbsp; 书架预览'
+    footlink = '<span class="pv">This is a preview of the shelf layout · <a href="../">返回首页</a></span>'
+else:
+    head = (f'<title>{TITLE}</title>\n<meta name="description" content="{DESC}">\n<link rel="canonical" href="{URL}">\n'
+            '<meta property="og:type" content="website"><meta property="og:site_name" content="zh-blog-mirrors">\n'
+            f'<meta property="og:title" content="中文镜像文库"><meta property="og:description" content="{OG_DESC}">\n'
+            f'<meta property="og:url" content="{URL}"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary">\n'
+            f'<meta name="twitter:title" content="中文镜像文库"><meta name="twitter:description" content="{OG_DESC}">')
+    toplink, eyebrow = '', ''
+    footlink = '<span class="pv">也可按时间翻阅 <a href="./classic/">经典列表</a></span>'
+
 TPL = open(os.path.join(ROOT, 'tools', 'hub_shelf_template.html'), encoding='utf-8').read()
-page = (TPL.replace('%%N%%', str(len(E)))
+page = (TPL.replace('%%HEADMETA%%', head)
+           .replace('%%TOPLINK%%', toplink)
+           .replace('%%EYEBROW%%', eyebrow)
+           .replace('%%FOOTLINK%%', footlink)
+           .replace('%%TEX%%', P + 'assets/shelf/')
+           .replace('%%P%%', P)
+           .replace('%%N%%', str(len(E)))
            .replace('%%CHIPS%%', chips)
            .replace('%%LIST%%', '\n'.join(list_item(e) for e in E))
            .replace('%%DATA%%', payload)
            .replace('%%URL%%', URL)
            .replace('%%REMOVAL%%', REMOVAL))
+assert '%%' not in page.replace(payload, ''), 'unreplaced template placeholder'
 os.makedirs(OUT_DIR, exist_ok=True)
 open(os.path.join(OUT_DIR, 'index.html'), 'w', encoding='utf-8').write(page)
-print(f'hub-preview built: {len(E)} tapes, {sum(1 for d in data if d["c"])} with covers -> hub-preview/index.html')
+where = 'hub-preview/index.html' if PREVIEW else 'index.html'
+print(f'shelf hub built: {len(E)} tapes, {sum(1 for d in data if d["c"])} with covers -> {where}')
+
+if not PREVIEW:
+    # the preview URL now just points at the live homepage (keeps old links / #t= deep links working)
+    REDIRECT = f'''<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中文镜像文库 · 书架已上线</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="{URL}">
+<meta http-equiv="refresh" content="0; url=../">
+<script>location.replace('../'+location.hash)</script>
+<style>body{{margin:0;min-height:100vh;display:grid;place-items:center;background:#f1ece3;color:#1e1c19;font:15px/1.8 "Noto Serif SC",Georgia,serif}}a{{color:inherit}}@media (prefers-color-scheme:dark){{body{{background:#12110e;color:#ebe6de}}}}</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body>
+<!-- zbm-nav --><!-- /zbm-nav -->
+<p>录像带书架已成为首页 · <a href="../">前往中文镜像文库 →</a></p>
+</body>
+</html>
+'''
+    os.makedirs(os.path.join(ROOT, 'hub-preview'), exist_ok=True)
+    open(os.path.join(ROOT, 'hub-preview', 'index.html'), 'w', encoding='utf-8').write(REDIRECT)
+    print('hub-preview/index.html -> redirect to ../')
