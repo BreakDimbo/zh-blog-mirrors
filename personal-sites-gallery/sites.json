@@ -1,7 +1,18 @@
 {
- "updated": "2026-10-28T10:06:59.462922+08:00",
+ "updated": "2026-10-30T09:58:42.354138+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "bdoan.me",
+   "url": "https://bdoan.me/",
+   "title": "ben doan",
+   "description": "Hi and welcome to Ben Doan",
+   "shared_by": "@eudaimonized",
+   "reply": "https://x.com/eudaimonized/status/2115920469949813042",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "luxinzhang.me",
    "url": "https://luxinzhang.me/",
