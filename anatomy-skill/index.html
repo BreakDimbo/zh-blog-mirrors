@@ -21,18 +21,19 @@
 <p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-11">2026.10.11</time></p>
 <h1 class="za-title">Anatomy：说出一个想法，Claude 把它造成一台会动的机器</h1>
 
-<p class="za-meta" data-za-gen><span>来源 · Ryan @wheresryan22 · MIT；增补：Elvar @elvar_official</span><span>收录 · 2026-10-11</span><span><a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">查看原文 ↗</a></span></p>
+<p class="za-meta" data-za-gen><span>来源 · Ryan @wheresryan22 · MIT；增补：Elvar @elvar_official、Kaero @0x_kaero</span><span>收录 · 2026-10-11</span><span><a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">查看原文 ↗</a></span></p>
 <!-- za:origin --><div class="za-origin"><p class="source">原帖：<a href="https://x.com/wheresryan22/status/2108948624004526516">x.com/wheresryan22/status/2108948624004526516</a>（串内仓库帖：<a href="https://x.com/wheresryan22/status/2108948630011056355">2108948630011056355</a>）</p>
   <p class="source">仓库：<a href="https://github.com/wheresryan22/anatomy">github.com/wheresryan22/anatomy</a> · 官网：<a href="https://skills.wheresryan.sh/anatomy">skills.wheresryan.sh/anatomy</a></p>
   <p class="meta-line">作者：Ryan（R，@wheresryan22） · 发布于 2026-10-10 23:51（UTC+8） · 抓取于 2026-10-11（UTC+8），README 版本 dbf697a · 非官方中文翻译镜像</p>
-  <p class="meta-line">2026-10-29 增补：Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）X 长文 <a href="https://x.com/elvar_official/status/2111831136171151589">How I Turn Any Question Into a Machine You Can Run</a>（2026-10-18 22:45 UTC+8）全文中译与 10 条提示词，另附仓库 1482e84 的更新摘要</p></div><!-- /za:origin -->
+  <p class="meta-line">2026-10-29 增补：Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）X 长文 <a href="https://x.com/elvar_official/status/2111831136171151589">How I Turn Any Question Into a Machine You Can Run</a>（2026-10-18 22:45 UTC+8）全文中译与 10 条提示词，另附仓库 1482e84 的更新摘要</p>
+  <p class="meta-line">2026-10-30 增补：Kaero（<a href="https://x.com/0x_kaero">@0x_kaero</a>）X 长文 <a href="https://x.com/0x_kaero/status/2113240274394562698">How to Build a Working Machine From Any Question with Claude</a>（2026-10-22 20:05 UTC+8）全文中译与 12 段提示词</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><article>
-<div class="related-guide"><strong>镜像说明：</strong>本页翻译了作者的 X 发布帖和 Anatomy 仓库 README（MIT 许可）的主要内容，结构与原文对应，并带署名和原文链接。图片来自仓库 <code>.github/assets/</code>，还有发布视频的截帧。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。社区作品见 <a href="../anatomy-community/">Anatomy 社区作品展</a>。<br><strong>2026-10-29 增补：</strong>文末新增 Elvar 的实战长文全文中译，含 10 条提示词的英中对照，见<a href="#elvar">增补一节</a>。</div>
+<div class="related-guide"><strong>镜像说明：</strong>本页翻译了作者的 X 发布帖和 Anatomy 仓库 README（MIT 许可）的主要内容，结构与原文对应，并带署名和原文链接。图片来自仓库 <code>.github/assets/</code>，还有发布视频的截帧。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。社区作品见 <a href="../anatomy-community/">Anatomy 社区作品展</a>。<br><strong>2026-10-29 增补：</strong>文末新增 Elvar 的实战长文全文中译，含 10 条提示词的英中对照，见<a href="#elvar">增补一节</a>。<br><strong>2026-10-30 增补：</strong>新增 Kaero（@0x_kaero）同主题长文的全文中译与 12 段提示词英中对照，并注明其演示画面出自 Elvar 的网站，见<a href="#kaero">第二个增补节</a>。</div>
 <figure class="cover-fig"><img src="images/raptor-engine-firing.webp" alt="Raptor 2 发动机试车台等轴测图" /><figcaption><code>examples/raptor-engine</code>，浅色主题，点火状态。发动机和试车台是 SVG，尾焰是同一等轴测相机里的 WebGL 着色器。</figcaption></figure>
 <nav class="toc"><strong>目录</strong><ol>
-<li><a href="#post">发布帖</a></li><li><a href="#quick">快速上手</a></li><li><a href="#gallery">图库</a></li><li><a href="#kinds">能做什么</a></li><li><a href="#install">安装</a></li><li><a href="#usage">用法</a></li><li><a href="#examples">示例</a></li><li><a href="#how">工作原理</a></li><li><a href="#req">环境要求</a></li><li><a href="#limits">局限</a></li><li><a href="#elvar">2026-10-29 增补：Elvar 实战长文与 10 条提示词</a></li></ol></nav>
+<li><a href="#post">发布帖</a></li><li><a href="#quick">快速上手</a></li><li><a href="#gallery">图库</a></li><li><a href="#kinds">能做什么</a></li><li><a href="#install">安装</a></li><li><a href="#usage">用法</a></li><li><a href="#examples">示例</a></li><li><a href="#how">工作原理</a></li><li><a href="#req">环境要求</a></li><li><a href="#limits">局限</a></li><li><a href="#elvar">2026-10-29 增补：Elvar 实战长文与 10 条提示词</a></li><li><a href="#kaero">2026-10-30 增补：Kaero 长文与 12 段提示词</a></li></ol></nav>
 
 <h2 id="post">发布帖</h2>
 <blockquote>隆重介绍 Anatomy<br>用一句话描述一台机器，Claude 就让它活过来。<br>· 可交互的等轴测线框图，能旋转、细看、探索<br>· 用 WebGL 着色器画火焰、水、等离子体等<br>· 真正的 3D 运动，单个零件可以转动、移动<br>以 Agent Skill 形式安装。完全开源。</blockquote>
@@ -483,10 +484,561 @@ Each agent works in its own folder, never edits the shared files and checks its 
 </div></details>
 <p class="source">增补来源：Elvar（@elvar_official）· <a href="https://x.com/elvar_official/status/2111831136171151589">原帖</a>（2026-10-18 22:45 UTC+8，抓取于 2026-10-29；当时约 51.7 万浏览、957 赞、2,660 收藏）· 文章内容版权归 Elvar 所有 · 如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</p>
 </section>
+<hr>
+<section id="kaero-2026-10-30">
+<h2 id="kaero">2026-10-30 增补：Kaero《用 Claude 把任何问题造成一台能运转的机器》（X 长文全文中译）</h2>
+<div class="related-guide"><strong>增补说明（2026-10-30，UTC+8）：</strong>以下是 Kaero（<a href="https://x.com/0x_kaero">@0x_kaero</a>）2026-10-22 20:05（UTC+8）发布的 X 长文 <a href="https://x.com/0x_kaero/status/2113240274394562698">How to Build a Working Machine From Any Question with Claude</a> 的全文中译。这是作者本人发布的长文，按本站规则全文翻译；12 段提示词保留英文原文并附中文对照，英文全文放在本节末尾的折叠附录里。Kaero <b>不是</b> Anatomy 的作者。按 R6 规则，同一项目的内容并入本页，不另建新页。封面和两张视频海报帧取自原帖（只取海报帧，没有下载视频）。API 没有给出代码块和视频在正文里的位置，本节按上下文放回（⚠️ 推断）。</div>
+<figure><img src="images/kaero-cover.webp" alt="Kaero 长文封面：Claude Code × Any Question / Visual Learning" loading="lazy"><figcaption>原文封面（Kaero）。图中写着 “Claude Code /Visual Learning”，Claude Code 字标是作者的拼贴，不代表 Anthropic 背书。</figcaption></figure>
+
+<div class="related-guide"><p><strong>先读这几条（本站注记）</strong></p><ul>
+<li>⚠️ <b>演示画面来自 Elvar 的网站，正文没有注明：</b>原帖两段视频的海报帧分别是 “Fig. 05 · The washing machine” 和 “Fig. 04 · The vending machine”。本站 2026-10-30 打开 <a href="https://visual-learning.app/washing-machine">visual-learning.app/washing-machine</a> 和 <a href="https://visual-learning.app/vending-machine">/vending-machine</a> 对照，标题、步骤按钮（Load 6 kg / Fill 14 L…、Insert $2 / Type B4…）和底部 “The big idea” 原句逐字相同。visual-learning.app 页面标注 “Made by @elvar_official”。也就是说，视频里的机器是 <a href="#elvar">上文 Elvar</a> 网站上的作品。Kaero 正文没有提到 Elvar，也没有给出网站链接，只在封面写了 “Visual Learning”。</li>
+<li>⚠️ <b>结构与 Elvar 10-18 的长文几乎一一对应：</b>“你要造的是什么 / 你需要什么 / 第 1–9 步 / 附加：让他们把它玩坏”这些小标题，与 Elvar 四天前的长文逐条相同，只是本文把具体参数（9 bar、像素差、seek(t)、配乐等）换成了更通用的说法。Elvar 在本文发出 3 分钟后回复 “nice breakdown”（<a href="https://x.com/elvar_official/status/2113241122101403699">回复链接</a>），两人此前此后也互相回复过。所以这更像是两人知情的“改写版 / 互推”，不像未经同意的搬运。但两人的关系和是否有合作推广，本站无法核实（⚠️ 推断）。</li>
+<li>⚠️ <b>没有可核实的自报数据：</b>本文没有给出浏览量、耗时或实测数字；作者回复里的“你绝对不会后悔”属于推荐语气。文中没有 affiliate / utm 链接，没有付费课程或加密货币推广。</li>
+<li>⚠️ <b>付费依赖：</b>路线依赖 Claude Code，需要包含 Claude Code 的付费 Claude 套餐（或 API 计费）。Skill 本身免费，MIT 许可；仓库 README 也支持 Codex、OpenCode、Antigravity、MiniMax Code。</li>
+<li>⚠️ <b>提示词原文不完整：</b>“附加：让他们把它玩坏”一节的 “Add an experiment mode” 提示词在 X API 返回的原文里停在 “what stops working,”，后半句缺失，本站照原样保留，没有补写。</li>
+<li><b>本站核对：</b>安装命令 <code>npx skills add wheresryan22/anatomy -g -a claude-code</code> 和 <code>git clone … ~/.claude/skills/anatomy</code> 与仓库 README 一致 ✅；2026-10-30 重新浅克隆仓库，HEAD 仍是 <code>1482e84</code>（2026-10-19 04:20 UTC+8），10-29 之后没有新提交。</li>
+</ul></div>
+
+<h3>正文（中译）</h3>
+<p class="lede">大多数讲解只告诉你一个东西怎么运作。这套方法让你真的把它跑起来。</p>
+<p>你问 Claude 一个普通问题，通常得到几段文字、几张示意图，也许还有点代码。</p>
+<p>但同一个问题可以变成更有用的东西：一个小小的交互模型。你可以移动零件、改变输入、触发系统，实时看着结果发生。</p>
+<p>这就是我说的“机器”。</p>
+<figure><img src="images/kaero-video-1.webp" alt="原帖视频 1 海报帧：洗衣机交互图" loading="lazy"><figcaption>原帖视频 1（39 秒）的海报帧：“Fig. 05 · 洗衣机”。画面与 visual-learning.app/washing-machine（Made by @elvar_official）一致，见上方注记。视频没有转载，请到<a href="https://x.com/0x_kaero/status/2113240274394562698">原帖</a>观看。</figcaption></figure>
+<p>一台好的机器，应该让人在读解释之前就已经明白道理。</p>
+<p>你看到零件，碰一碰控件，马上就明白什么导致了什么。</p>
+<p>题材可以完全不同。</p>
+<p>机械表、发动机、相机、水泵、电路、生物系统。题材在变，但搭建流程几乎一样。</p>
+<figure><img src="images/kaero-video-2.webp" alt="原帖视频 2 海报帧：自动售货机交互图" loading="lazy"><figcaption>原帖视频 2（32 秒）的海报帧：“Fig. 04 · 自动售货机”。画面与 visual-learning.app/vending-machine 一致。</figcaption></figure>
+
+<h3>你要造的是什么</h3>
+<p>最终成果是一个独立的交互页面。在浏览器里打开，整节课都在里面了：物体、控件、动作、数字和讲解。</p>
+<p>我们造的每台机器都遵循同一个结构：</p>
+<ul>
+<li><b>物体。</b>一个能认出来的真实系统，用真正起作用的零件重建：齿轮、阀门、开关、镜片、活塞、轮子、弹簧、电线，或者任何驱动这套机构的东西。</li>
+<li><b>控件。</b>少量按钮、滑块或开关，让用户改变重要的输入。每个控件都应该揭示系统行为的某一面。</li>
+<li><b>内部视图。</b>剖切面、透明截面或暴露的机构，展示人们平时看不见的部分。真正的教学通常发生在这里。</li>
+<li><b>数字。</b>仪表、计数器、时间、压力、速度、距离、比率或其他随机器运转而更新的数值。它们应该来自同一个底层模型，而不是装饰性的标签。</li>
+<li><b>反馈。</b>简短的标签、箭头、动作、声音提示或小提示，解释刚刚发生了什么变化，不必让用户停下来读一段文字。</li>
+<li><b>核心道理。</b>机器下方一句话，讲清整节课围绕的那个关系。</li>
+</ul>
+<p>题材可以完全换掉。</p>
+<p>手表、相机、水泵、发动机、电路或生物系统，底下都可以用同一个结构。</p>
+<p>这台机器应该让用户看到原因、改变输入、理解结果。</p>
+
+<h3>你需要什么</h3>
+<p>这套工具刻意很小。在第一台机器跑起来之前，你不需要复杂的智能体配置、一打插件或一整套设计系统。</p>
+<p>这个流程里，我用五样东西：</p>
+<ul>
+<li><b>Claude Code。</b>大部分工作在这里完成：研究机构原理、规划模型、写页面、接好交互、修好坏掉的地方。</li>
+<li><b>Anatomy Skill。</b>它给 Claude 一个更好的起点来做实物讲解。它不把任务当成普通网站，而是把搭建推向零件、动作、剖面、控件和看得见的因果。</li>
+<li><b>浏览器。</b>做好的机器应该是一个普通页面，能在本地打开、点击、拖动、重置，并马上测试。如果要用它还得配特殊环境，说明搭建已经太复杂了。</li>
+<li><b>一个精确的问题。</b>问题才是真正的需求说明。“讲讲相机”太宽泛。“快门速度如何改变到达传感器的光量？”才给了 Claude 一个能真正建模的东西。</li>
+<li><b>一个要守住的真实机制。</b>在做任何美化之前，你得知道哪个关系必须保持正确。齿轮比、压力、时间、距离、力、流量或别的规律，应该驱动机器上显示的一切。</li>
+</ul>
+<p>外部素材、声音、插图或额外工具都可以以后再加。</p>
+<p>在核心交互能教对东西之前，它们都不重要。</p>
+<p>从问题、机制和一个能跑的页面开始。</p>
+
+<h3>第 1 步：安装 Skill</h3>
+<p>整个流程从 Anatomy 开始。这是一个专门把真实系统变成交互讲解的 Claude Code Skill。</p>
+<p>全局安装，这样在任何项目里都能用：</p>
+<pre lang="en" style="white-space:pre-wrap"><code>npx skills add wheresryan22/anatomy -g -a claude-code</code></pre>
+<p>然后打开 Claude Code，输入：</p>
+<pre lang="en" style="white-space:pre-wrap"><code>/anatomy</code></pre>
+<p>如果 Skill 加载成功，配置就完成了。Claude 现在有了用零件、控件、动作、数字和可见因果来思考的结构，而不是把每次搭建都当成普通网页。</p>
+<p>如果你不用 npm，就把 Skill 直接克隆进 Claude 的 skills 文件夹：</p>
+<pre lang="en" style="white-space:pre-wrap"><code>git clone https://github.com/wheresryan22/anatomy.git ~/.claude/skills/anatomy</code></pre>
+<p>只需安装一次。之后每台新机器都可以从同一个流程开始。</p>
+
+<h3>第 2 步：选问题</h3>
+<p>最好的问题要有一个会动的部件，以及一个你能测量或改变的东西。</p>
+<p>你要的是一个“一个动作明显引起另一个动作”的问题。</p>
+<pre lang="en" style="white-space:pre-wrap"><code>How does a mechanical watch keep time?
+
+How does an espresso machine create pressure?
+
+How does a camera shutter control exposure?
+
+How does a bicycle brake turn hand pressure into stopping force?
+
+How does a speaker turn electricity into sound?</code></pre>
+<p>中文对照：机械表是怎么走时的？意式咖啡机是怎么产生压力的？相机快门是怎么控制曝光的？自行车刹车是怎么把手上的力变成制动力的？扬声器是怎么把电变成声音的？</p>
+<p>避开“发动机是怎么工作的？”这类大题目。</p>
+<p>挑一个机器能清楚展示的关系。</p>
+<p>如果一页讲不完这个问题，就把它再缩小。</p>
+
+<h3>第 3 步：造机器</h3>
+<p>现在把问题交给 Claude，让它把讲解变成一个能运转的模型。</p>
+<p>不要要求“一个很酷的交互网站”。要让它先找出真实的机制、做简化，再围绕真正重要的那个关系搭页面。</p>
+<p><b>提示词 · 造机器（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Use the Anatomy skill to build an interactive explainer for:
+
+[YOUR QUESTION]
+
+Before writing the interface:
+
+1. Research how the real system works.
+2. Identify the few parts required to explain the mechanism.
+3. Find the important numbers, ratios, timing, forces, or constraints.
+4. Decide what the user should be able to change.
+5. Define the single relationship the lesson must make obvious.
+
+Then build one standalone browser page.
+
+THE MACHINE
+
+- make the real object recognisable
+- expose the parts where the important work happens
+- animate the real sequence of cause and effect
+- keep every moving part connected to the same underlying model
+
+THE CONTROLS
+
+- use only 2–4 meaningful controls
+- let the user run, pause and reset the system
+- add slow motion when timing or movement matters
+- update the machine immediately when an input changes
+
+THE EXPLANATION
+
+- show important numbers next to the parts they describe
+- use short labels instead of long paragraphs
+- explain what changed while the machine is running
+- finish with one sentence that states the big idea
+
+Do not fake the mechanism with decorative animation.
+
+If a visual change does not correspond to something real in the model,
+remove it.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>用 Anatomy Skill 为下面这个问题做一个交互讲解：
+
+[你的问题]
+
+在写界面之前：
+
+1. 研究真实系统是怎么运作的。
+2. 找出讲清机制所必需的少数几个零件。
+3. 找出重要的数字、比率、时间、力或约束。
+4. 决定用户应该能改变什么。
+5. 定义这节课必须讲明白的那一个关系。
+
+然后做成一个独立的浏览器页面。
+
+机器
+
+- 让真实物体一眼能认出来
+- 露出发生关键作用的零件
+- 用动画演示真实的因果顺序
+- 让每个运动零件都连在同一个底层模型上
+
+控件
+
+- 只用 2–4 个有意义的控件
+- 让用户能运行、暂停和重置系统
+- 当时机或运动很重要时，加慢动作
+- 输入一变，机器立即更新
+
+讲解
+
+- 把重要数字放在它所描述的零件旁边
+- 用短标签，不用长段落
+- 在机器运转时解释发生了什么变化
+- 最后用一句话说出核心道理
+
+不要用装饰性动画假装机制。
+
+如果某个视觉变化在模型里没有对应的真实东西，
+就删掉它。</code></pre>
+<p>关键在于：Claude 先搭逻辑，再围绕逻辑做界面，而不是反过来。</p>
+<p>如果齿轮比决定输出，每个轮子都应该遵守这个比例。如果压力变了，压力表、活塞、流量和结果都应该对同一个数值作出反应。</p>
+<p>正是这一点，让页面感觉像一台机器，而不是一段动画。</p>
+<p>第一个版本跑起来之后，先别管视觉打磨。</p>
+<p>先证明模型行为正确，再让它变好看。</p>
+
+<h3>第 4 步：让人一眼看懂</h3>
+<p>机器应该在用户读讲解之前就说得通。</p>
+<p>打开页面看五秒。你应该已经知道这是什么物体、流程从哪里开始、你能和什么互动。</p>
+<p>我始终坚持几条规则：</p>
+<ul>
+<li><b>一台显眼的机器。</b>主体物占据大部分空间，控件和讲解退居次要。</li>
+<li><b>控件挨着动作。</b>如果一个滑块改变压力，就把它放在它影响的水泵或压力表旁边。别让用户在脑子里连接页面的两端。</li>
+<li><b>展示隐藏的部分。</b>对物体内部通常发生的事，用剖面、透明窗口或分离的图层展示出来。</li>
+<li><b>数字属于零件。</b>压力放在压力表旁边，转速贴着旋转部件，时间放在它所计量的事件旁边。</li>
+<li><b>一次一步。</b>如果机制有先后顺序，就按顺序揭示，而不是让所有零件同时争夺注意力。</li>
+</ul>
+<p>界面应该隐身在道理后面。</p>
+<p>如果用户得先读说明才知道往哪里看，那就再简化一遍。</p>
+
+<h3>第 5 步：给它定外观</h3>
+<p>机器能跑之后，再给它加风格，但不要把它的运作方式藏起来。</p>
+<p>让物体居中、配色简单，让重要的运动零件和周围的一切容易区分开。</p>
+<p><b>提示词 · 画风（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Keep all mechanics unchanged.
+
+Restyle the explainer with:
+- one simple visual language
+- a restrained color palette
+- clear moving and static parts
+- subtle depth and physical materials
+- labels only where they help understanding
+
+Do not turn it into a generic dashboard.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>所有机械逻辑保持不变。
+
+按以下要求重做讲解的样式：
+- 一种简单的视觉语言
+- 克制的配色
+- 运动零件与静止零件区分清楚
+- 轻微的纵深感和实物材质
+- 只在有助于理解的地方加标签
+
+不要把它做成一个千篇一律的仪表盘。</code></pre>
+<p>设计应该让机制更好读，而不是更复杂。</p>
+
+<h3>第 6 步：像评论家一样检查</h3>
+<p>发布之前，让 Claude 去找哪里错了，而不是找哪里还能改进。</p>
+<p><b>提示词 · 评论家检查（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Check this machine like a strict critic.
+
+Test every control and inspect the important states.
+
+Look for:
+- parts that move incorrectly
+- numbers that disagree
+- hidden or unreadable details
+- impossible states
+- anything that could teach the wrong idea
+
+Fix what you find, then check it again.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>像一个严格的评论家那样检查这台机器。
+
+测试每一个控件，检查重要的状态。
+
+找出：
+- 动得不对的零件
+- 互相矛盾的数字
+- 被遮住或看不清的细节
+- 不可能出现的状态
+- 任何可能教错道理的地方
+
+修好你发现的问题，然后再检查一遍。</code></pre>
+<p>当模型、数字和画面讲的是同一个故事时，机器才算完成。</p>
+
+<h3>第 7 步：把它变成视频</h3>
+<p>机器能跑之后，把同一套交互变成一段简短的自动导览。</p>
+<p><b>提示词 · 自动导览（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Create a short automatic tour of the machine.
+
+Run the important controls in order,
+pause briefly on each result,
+and keep the full sequence under 30 seconds.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>为这台机器做一段简短的自动导览。
+
+按顺序操作重要的控件，
+在每个结果上短暂停留，
+整段控制在 30 秒以内。</code></pre>
+<p><b>提示词 · 录制（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Open the page in a browser and record the automatic tour.
+
+Keep the machine centered and remove unnecessary UI
+or cursor movement from the frame.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>在浏览器里打开页面，录下自动导览。
+
+让机器保持居中，把多余的界面元素
+和光标移动从画面里去掉。</code></pre>
+<p>现在，同一份成果既是一节交互课，也是一段短视频。</p>
+<p class="note">本站注：这里的录制方式是“在浏览器里录屏”。上文 Elvar 的做法是 <code>window.seek(t)</code> + 无头 Chrome 逐帧截图再用 ffmpeg 合成，他特别指出录屏在慢动作上会掉帧。两种做法都保留，供对照。</p>
+
+<h3>第 8 步：并行造其余的机器</h3>
+<p>一台机器跑通之后，下一台复用同一套体系，不要从零开始。</p>
+<p><b>提示词 · 并行（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Build these explainers in parallel:
+
+[QUESTION 1]
+[QUESTION 2]
+[QUESTION 3]
+
+For each one:
+- research the real mechanism
+- identify one relationship to prove
+- reuse the same interaction structure
+- keep the visual design specific to the subject
+- run the critic check before marking it done</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>并行做下面这些讲解：
+
+[问题 1]
+[问题 2]
+[问题 3]
+
+对每一个：
+- 研究真实的机制
+- 确定一个要证明的关系
+- 复用同一套交互结构
+- 视觉设计要贴合各自的题材
+- 标记完成之前先跑一遍评论家检查</code></pre>
+<p>复用的是流程，不是物体。每台机器仍然应该像是为它自己的问题专门造的。</p>
+
+<h3>第 9 步：放到同一个网站上</h3>
+<p>有了几台机器之后，把它们放进一个简单的合集。</p>
+<p><b>提示词 · 建站（原文）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Put these interactive machines on one site.
+
+For each one, create:
+- a preview card
+- the question as the title
+- one short line explaining what it teaches
+- an Open Machine button
+
+Keep navigation simple and make the machines the main content.</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>把这些交互机器放到同一个网站上。
+
+为每一台做：
+- 一张预览卡片
+- 以问题作为标题
+- 一句短话说明它教什么
+- 一个“打开机器”按钮
+
+导航保持简单，让机器成为主要内容。</code></pre>
+<p>这个网站要让一件事一目了然：你接下来想弄懂什么？</p>
+
+<h3>附加：让他们把它玩坏</h3>
+<p>理解一个系统最好的办法，有时是把它推到正常设定之外。</p>
+<p><b>提示词 · 实验模式（原文，原文在此处截断）</b></p>
+<pre lang="en" style="white-space:pre-wrap"><code>Add an experiment mode.
+
+Let the user push one or two important variables beyond the normal range.
+
+Show what changes, what stops working,</code></pre>
+<p>中文对照：</p>
+<pre style="white-space:pre-wrap"><code>加一个实验模式。
+
+让用户把一两个重要变量推到正常范围之外。
+
+展示什么发生了变化、什么不再起作用、[原文到此截断]</code></pre>
+<p>当用户能通过把机器玩坏来发现规律时，这台机器会让人记得牢得多。</p>
+
+<h3>作者在评论区的回复</h3>
+<p>作者在本帖下只有三条简短回复（2026-10-22 21:38–21:39，UTC+8）：回答 “可以自己试试”（yep, you can try it yourself）、“确实如此”（that's so true）、“你绝对不会后悔”（you will not regret for sure）。没有补充额外的提示词或资料。</p>
+
+<h3>本站对照：Kaero 版与 Elvar 版有什么不同</h3>
+<ul>
+<li><b>Kaero 版更通用：</b>提示词不绑定某台机器，用 [YOUR QUESTION] 占位；强调“2–4 个控件”“运行 / 暂停 / 重置 / 慢动作”“视觉变化必须对应模型里的真实东西”。</li>
+<li><b>Elvar 版更具体：</b>以弹簧拉杆咖啡机为例，给出了逐步按钮、手动 / 自动模式、速度徽标、逐帧像素差查跳帧、<code>seek(t)</code> 60 fps 导出、代码合成配乐、“每台机器一个要证明的事实”等可检验做法（见<a href="#elvar">上一节</a>）。</li>
+<li>⚠️ 两篇共用同一套小标题，Kaero 版的演示画面就是 Elvar 网站上的机器（见本节开头注记）。想要能直接照做的细节，建议以 Elvar 版为准。</li>
+</ul>
+
+<details><summary>英文原文附录（Kaero，How to Build a Working Machine From Any Question with Claude）</summary>
+<div lang="en">
+<p><b>How to Build a Working Machine From Any Question with Claude</b></p>
+<p>Most explanations tell you how something works. This setup lets you actually run it.</p>
+<p>Ask Claude a normal question and you usually get paragraphs, diagrams, maybe some code.</p>
+<p>But the same question can become something much more useful: a small interactive model where you can move parts, change inputs, trigger the system, and watch the result happen in real time.</p>
+<p>That is what I mean by a machine.</p>
+<p><i>[video]</i></p>
+<p>A good one should make the idea understandable before you read the explanation.</p>
+<p>You see the parts, touch the controls, and immediately understand what causes what.</p>
+<p>These can be completely different subjects.</p>
+<p>A mechanical watch. An engine. A camera. A pump. A circuit. A biological system. The subject changes, but the build process stays almost the same.</p>
+<p><i>[video]</i></p>
+<h4>What You’re Building</h4>
+<p>The final result is one standalone interactive page. Open it in a browser and the whole lesson is already there: the object, the controls, the motion, the numbers, and the explanation.</p>
+<p>Every machine we build follows the same structure:</p>
+<p>The object. A recognisable real-world system rebuilt from the parts that actually matter: gears, valves, switches, lenses, pistons, wheels, springs, wires, or whatever drives the mechanism.</p>
+<p>The controls. A small set of buttons, sliders, or switches that let the user change the important inputs. Every control should reveal something about how the system behaves.</p>
+<p>The inside view. A cutaway, transparent section, or exposed mechanism that shows the part people normally cannot see. This is where the real teaching usually happens.</p>
+<p>The numbers. Gauges, counters, timings, pressure, speed, distance, ratios, or other values that update as the machine runs. They should come from the same underlying model, not from decorative labels.</p>
+<p>The feedback. Short labels, arrows, motion, sound cues, or small hints that explain what just changed without forcing the user to stop and read a paragraph.</p>
+<p>The big idea. One sentence under the machine that explains the relationship the whole lesson is built around.</p>
+<p>The subject can change completely.</p>
+<p>A watch, a camera, a pump, an engine, a circuit, or a biological system can all use the same structure underneath.</p>
+<p>The machine should let the user see the cause, change the input, and understand the result.</p>
+<h4>What You Need</h4>
+<p>The stack is deliberately small. You do not need a complicated agent setup, a dozen plugins, or a full design system before the first machine works.</p>
+<p>For this workflow, I use five things:</p>
+<p>Claude Code. This is where most of the work happens: researching the mechanism, planning the model, writing the page, connecting the interactions, and fixing what breaks.</p>
+<p>The Anatomy skill. It gives Claude a better starting point for physical explainers. Instead of treating the task like a normal website, it pushes the build toward parts, motion, cutaways, controls, and visible cause and effect.</p>
+<p>A browser. The finished machine should run as a normal page you can open locally, click, drag, reset, and test immediately. If you need a special environment just to use it, the build is already getting too complicated.</p>
+<p>One precise question. The question is the real specification. “Explain cameras” is too broad. “How does shutter speed change the amount of light reaching the sensor?” gives Claude something it can actually model.</p>
+<p>A real mechanism to preserve. Before styling anything, you need to know which relationship must stay true. Gear ratios, pressure, timing, distance, force, flow, or another rule should drive what the machine shows.</p>
+<p>You can add external assets, sound, illustrations, or extra tools later.</p>
+<p>None of them matter until the core interaction teaches the right thing.</p>
+<p>Start with the question, the mechanism, and one working page.</p>
+<h4>Step 1. Install the Skill</h4>
+<p>The workflow starts with Anatomy, a Claude Code skill built specifically for turning real systems into interactive explainers.</p>
+<p>Install it globally so you can use it from any project:</p>
+<pre style="white-space:pre-wrap"><code>npx skills add wheresryan22/anatomy -g -a claude-code</code></pre>
+<p>Then open Claude Code and type:</p>
+<pre style="white-space:pre-wrap"><code>/anatomy</code></pre>
+<p>If the skill loads, the setup is done. Claude now has the structure it needs to think in parts, controls, motion, numbers, and visible cause and effect instead of treating every build like a normal webpage.</p>
+<p>If you do not use npm, clone the skill directly into Claude's skills folder:</p>
+<pre style="white-space:pre-wrap"><code>git clone https://github.com/wheresryan22/anatomy.git ~/.claude/skills/anatomy</code></pre>
+<p>You only install it once. From here, every new machine can start from the same workflow.</p>
+<h4>Step 2. Pick the Question</h4>
+<p>The best questions have a moving part and something you can measure or change.</p>
+<p>You want a question where one action clearly causes another.</p>
+<pre style="white-space:pre-wrap"><code>How does a mechanical watch keep time?
+
+How does an espresso machine create pressure?
+
+How does a camera shutter control exposure?
+
+How does a bicycle brake turn hand pressure into stopping force?
+
+How does a speaker turn electricity into sound?</code></pre>
+<p>Avoid giant topics like “How do engines work?”</p>
+<p>Pick one relationship the machine can show clearly.</p>
+<p>If you cannot explain the question in one page, make it smaller.</p>
+<h4>Step 3. Build the Machine</h4>
+<p>Now give Claude the question and make it turn the explanation into a working model.</p>
+<p>Do not ask for “a cool interactive website.” Ask it to identify the real mechanism first, simplify it, and then build the page around the relationship that actually matters.</p>
+<pre style="white-space:pre-wrap"><code>Use the Anatomy skill to build an interactive explainer for:
+
+[YOUR QUESTION]
+
+Before writing the interface:
+
+1. Research how the real system works.
+2. Identify the few parts required to explain the mechanism.
+3. Find the important numbers, ratios, timing, forces, or constraints.
+4. Decide what the user should be able to change.
+5. Define the single relationship the lesson must make obvious.
+
+Then build one standalone browser page.
+
+THE MACHINE
+
+- make the real object recognisable
+- expose the parts where the important work happens
+- animate the real sequence of cause and effect
+- keep every moving part connected to the same underlying model
+
+THE CONTROLS
+
+- use only 2–4 meaningful controls
+- let the user run, pause and reset the system
+- add slow motion when timing or movement matters
+- update the machine immediately when an input changes
+
+THE EXPLANATION
+
+- show important numbers next to the parts they describe
+- use short labels instead of long paragraphs
+- explain what changed while the machine is running
+- finish with one sentence that states the big idea
+
+Do not fake the mechanism with decorative animation.
+
+If a visual change does not correspond to something real in the model,
+remove it.</code></pre>
+<p>The key is that Claude builds the logic first and the interface around it, not the other way around.</p>
+<p>If a gear ratio controls the output, every wheel should follow that ratio. If pressure changes, the gauge, piston, flow, and result should all react to the same value.</p>
+<p>That is what makes the page feel like a machine instead of an animation.</p>
+<p>Once the first version runs, leave the visual polish alone.</p>
+<p>First prove that the model behaves correctly. Then make it beautiful.</p>
+<h4>Step 4. Make It Readable at a Glance</h4>
+<p>The machine should make sense before the user reads the explanation.</p>
+<p>Open the page and look at it for five seconds. You should already know what the object is, where the process starts, and what you can interact with.</p>
+<p>I keep a few rules consistent:</p>
+<p>One obvious machine. The main object gets most of the space. Controls and explanations stay secondary.</p>
+<p>Controls next to the action. If a slider changes pressure, put it near the pump or gauge it affects. Do not make the user connect opposite sides of the page mentally.</p>
+<p>Show the hidden part. Use a cutaway, transparent window, or separated layer for whatever normally happens inside the object.</p>
+<p>Numbers belong to parts. Pressure sits beside the pressure gauge. RPM stays near the rotating component. Timing stays beside the event it measures.</p>
+<p>One step at a time. If the mechanism has a sequence, reveal it in order instead of making every part compete for attention at once.</p>
+<p>The interface should disappear behind the idea.</p>
+<p>If the user has to read instructions before they understand where to look, simplify it again.</p>
+<h4>Step 5. Give It the Look</h4>
+<p>Once the machine works, style it without hiding how it works.</p>
+<p>Keep the object central, the palette simple, and the important moving parts easy to separate from everything around them.</p>
+<pre style="white-space:pre-wrap"><code>Keep all mechanics unchanged.
+
+Restyle the explainer with:
+- one simple visual language
+- a restrained color palette
+- clear moving and static parts
+- subtle depth and physical materials
+- labels only where they help understanding
+
+Do not turn it into a generic dashboard.</code></pre>
+<p>The design should make the mechanism easier to read, not more complicated.</p>
+<h4>Step 6. Check It Like a Critic</h4>
+<p>Before publishing, make Claude look for things that are wrong rather than things it can improve.</p>
+<pre style="white-space:pre-wrap"><code>Check this machine like a strict critic.
+
+Test every control and inspect the important states.
+
+Look for:
+- parts that move incorrectly
+- numbers that disagree
+- hidden or unreadable details
+- impossible states
+- anything that could teach the wrong idea
+
+Fix what you find, then check it again.</code></pre>
+<p>The machine is finished when the model, numbers, and visuals all tell the same story.</p>
+<h4>Step 7. Turn It Into a Video</h4>
+<p>Once the machine works, turn the same interaction into a short automatic tour.</p>
+<pre style="white-space:pre-wrap"><code>Create a short automatic tour of the machine.
+
+Run the important controls in order,
+pause briefly on each result,
+and keep the full sequence under 30 seconds.</code></pre>
+<pre style="white-space:pre-wrap"><code>Open the page in a browser and record the automatic tour.
+
+Keep the machine centered and remove unnecessary UI
+or cursor movement from the frame.</code></pre>
+<p>Now the same build works as both an interactive lesson and a short video.</p>
+<h4>Step 8. Build the Rest in Parallel</h4>
+<p>Once one machine works, reuse the same system for the next ones instead of starting from zero.</p>
+<pre style="white-space:pre-wrap"><code>Build these explainers in parallel:
+
+[QUESTION 1]
+[QUESTION 2]
+[QUESTION 3]
+
+For each one:
+- research the real mechanism
+- identify one relationship to prove
+- reuse the same interaction structure
+- keep the visual design specific to the subject
+- run the critic check before marking it done</code></pre>
+<p>Reuse the workflow, not the object. Each machine should still feel built for its own question.</p>
+<h4>Step 9. Put Them on One Site</h4>
+<p>Once you have a few machines, put them in one simple library.</p>
+<pre style="white-space:pre-wrap"><code>Put these interactive machines on one site.
+
+For each one, create:
+- a preview card
+- the question as the title
+- one short line explaining what it teaches
+- an Open Machine button
+
+Keep navigation simple and make the machines the main content.</code></pre>
+<p>The site should make one thing obvious: what do you want to understand next?</p>
+<h4>Bonus. Let Them Break It</h4>
+<p>The best way to understand a system is sometimes to push it past the normal settings.</p>
+<pre style="white-space:pre-wrap"><code>Add an experiment mode.
+
+Let the user push one or two important variables beyond the normal range.
+
+Show what changes, what stops working,</code></pre>
+<p>A machine becomes much more memorable when the user can discover the rule by breaking it.</p>
+<p><i>Source: Kaero (@0x_kaero), X article, 2026-10-22. Original: <a href="https://x.com/0x_kaero/status/2113240274394562698">x.com/0x_kaero/status/2113240274394562698</a>. Reproduced for non-commercial translation reference; removal on request.</i></p>
+</div></details>
+<p class="source">增补来源：Kaero（@0x_kaero）· <a href="https://x.com/0x_kaero/status/2113240274394562698">原帖</a>（2026-10-22 20:05 UTC+8，抓取于 2026-10-30；当时约 6.09 万浏览、79 赞、130 收藏）· 文章内容版权归 Kaero 所有；演示画面中的机器出自 Elvar（@elvar_official）的 visual-learning.app · 如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</p>
+</section>
+
 </article></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。2026-10-29 增补的长文版权归 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）所有，visual-learning.app 是他本人的网站。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。2026-10-29 增补的长文版权归 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）所有，visual-learning.app 是他本人的网站。2026-10-30 增补的长文版权归 Kaero（<a href="https://x.com/0x_kaero">@0x_kaero</a>）所有，其演示画面中的机器出自 visual-learning.app。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
   <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">x.com/wheresryan22/status/2108948624004526516</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
