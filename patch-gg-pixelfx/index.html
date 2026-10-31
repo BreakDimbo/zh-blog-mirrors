@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>pixelfx：232 个用代码画的像素特效 + 一个会“画—渲染—看—改”的 Claude Code Skill · 项目导读 + README / SKILL.md 全文中译</title>
+<meta name="description" content="patch-gg/pixelfx 项目导读（重点讲 Skill）：232 个像素风特效与动画，每个都是一小段 JavaScript，可在浏览器游戏里直接运行、换色、镜像，或导出 Godot/Unity 可用的精灵图集；附带的 pixelfx Skill 让 Claude Code 先查现成特效，再按“起稿—渲染—看接触印样—修最差的一处”的循环做新特效。MIT 许可。附本站实测、README 与 SKILL.md 全文中译。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-31">2026.10.31</time></p>
+<h1 class="za-title">pixelfx：232 个代码像素特效，与一个会自己看图返工的 Skill</h1>
+<p class="za-sub" lang="en" data-za-gen>232 pixel art effects as code, plus a Claude Code skill · 项目导读 + README / SKILL.md 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · patch-gg/pixelfx（Patch，MIT）</span><span>收录 · 2026-10-31</span><span><a href="https://github.com/patch-gg/pixelfx" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/patch-gg/pixelfx" rel="noopener">github.com/patch-gg/pixelfx</a>（发布方 Patch · patch.gg；MIT 许可；本页对照仓库提交 <code>fe7103c</code>，2026-10-30 14:58 UTC+8）· 在线图库：<a href="https://patch-gg.github.io/pixelfx/" rel="noopener">patch-gg.github.io/pixelfx</a> · 方法出处：Hugo Duprez《<a href="https://www.spritefusion.com/blog/how-to-make-good-pixel-art-effects-with-claude" rel="noopener">How to make (good) pixel art effects with Claude</a>》（Sprite Fusion 博客，2026-10-28）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>pixelfx 是一个像素风游戏特效库：火焰、爆炸、魔法、天气、UI 反馈、拾取物、小动物……共 232 个，每一个都是一个几十到几百行的 JavaScript 文件，没有一张图片。它们可以在网页游戏里实时播放、换配色、镜像，也可以导出成任何引擎都能读的精灵图集。仓库里还附带一个 <code>pixelfx</code> Skill：它教 Claude Code 先在库里找现成的，找不到就像一个挑剔的像素画师那样做新的——起稿、渲染、看、再改。</div>
+
+<figure><img src="images/cover.webp" alt="15 格像素特效同时播放的拼贴：篝火、燃烧的骷髅、瀑布、等离子球、紫色传送门、角色身上的护盾、火焰龙卷、笼中能量核心、黑洞、旋风、绿色史莱姆、全息水晶、紫色光柱、水龙卷、绿色幽灵，背景为深紫灰的砖地" loading="lazy" width="792" height="416"><figcaption>仓库 README 顶部演示动图中的一帧（MIT，取单帧静图）。每一格都是代码实时画出来的，没有贴图。</figcaption></figure>
+
+<nav class="toc"><ol>
+<li><a href="#what">它是什么</a></li>
+<li><a href="#skill">重点：pixelfx Skill</a></li>
+<li><a href="#loop">Skill 的核心：起稿—渲染—看—改</a></li>
+<li><a href="#test">本站实测</a></li>
+<li><a href="#how">工作原理</a></li>
+<li><a href="#notes">核实与注记</a></li>
+<li><a href="#readme">附录一：README 全文中译</a></li>
+<li><a href="#skillmd">附录二：SKILL.md 全文中译</a></li>
+<li><a href="#license">附录三：许可证与声明原文</a></li>
+</ol></nav>
+
+<h2 id="what">它是什么</h2>
+<ul>
+<li><strong>规模：</strong>232 个特效，分 20 类（火、爆炸、水、冰、闪电、科幻、近战、受击、投射物、出生与死亡、奥术、神圣、暗影、状态、自然、天气、UI、拾取、转场、小动物）。本站数过源码文件，确是 232 个。</li>
+<li><strong>形态：</strong>每个特效就是 <code>src/fx/&lt;类别&gt;/&lt;名字&gt;.js</code> 一个文件，只依赖仓库自带的 <code>src/core</code>，没有第三方依赖，也没有图片素材。</li>
+<li><strong>两种用法：</strong>网页游戏（原生 canvas、Phaser、PixiJS、Kaplay、three.js）直接 import 代码；其他引擎（Godot、Unity、GameMaker、Defold、LÖVE、Bevy）用 <code>node tools/render.mjs &lt;id&gt; --sheet</code> 导出透明 PNG 图集 + Aseprite 格式的 JSON。</li>
+<li><strong>可调：</strong>任何特效都能传 <code>palette</code>（从暗到亮的一串颜色）换色，还有 <code>seed</code>（换一个等价的随机版本）、<code>flip</code>（朝左）、<code>angle</code>（旋转）、<code>light</code>（光晕强度），以及各特效自己的参数。</li>
+<li><strong>出处：</strong>方法来自 Hugo Duprez 两天前（2026-10-28）发表的博文；仓库的粒子模拟核心 <code>src/core/sim.js</code> 和相当一部分特效改编自他在 Sprite Fusion 开源的像素特效（同为 MIT），仓库在 README、NOTICE 和各文件开头都写明了。</li>
+<li><strong>发布方：</strong>Patch（patch.gg），GitHub 组织账号。仓库 2026-10-30 14:43（UTC+8）创建；截至 2026-10-31 11:45（UTC+8）约 378 星、46 个 fork（GitHub 官方 API）。</li>
+</ul>
+
+<h2 id="skill">重点：pixelfx Skill</h2>
+<p>README 里“the skill”一节只有几行，真正的内容在 <code>skills/pixelfx/SKILL.md</code>（124 行，见<a href="#skillmd">附录二</a>）。它把“用这个库”和“扩充这个库”写成了 Agent 可以照做的步骤。</p>
+
+<h3>安装</h3>
+<p>作为 Claude Code 插件安装（仓库自带 <code>.claude-plugin/marketplace.json</code> 与 <code>plugin.json</code>）：</p>
+<pre><code>/plugin marketplace add patch-gg/pixelfx
+/plugin install pixelfx@pixelfx</code></pre>
+<p>或者把 <code>skills/pixelfx</code> 整个目录复制到 <code>~/.claude/skills/</code>。运行环境只要 Node 18 以上；ffmpeg 可选，只在导出 GIF / MP4 预览时用到。</p>
+
+<h3>它负责四件事</h3>
+<ol>
+<li><strong>先找现成的。</strong><code>node tools/list.mjs &lt;关键词&gt;</code> 按 id、名称、标签和描述搜索。Skill 明说：大多数需求其实是“现成特效 + 不同参数”，比如蓝色火焰就是把火的 palette 换成冰的色阶。</li>
+<li><strong>放进游戏。</strong>JS 游戏直接用代码；其他引擎导出图集，按 JSON 里的 <code>meta.pixelfx.pivot</code> 设锚点、最近邻过滤、不压缩、按 <code>fps</code> 播放。Skill 还提醒：光晕会被“烘焙”成带透明度的颜色，在暗场景里看起来像叠加光，亮场景要换配色或放在暗层上。</li>
+<li><strong>做新的。</strong>先读 <code>docs/AUTHORING.md</code>（特效的接口约定、绘图 API 与质量标准），再走五步循环（见下节）。</li>
+<li><strong>移植成原生代码。</strong>游戏不能跑 JS、图集又不够用（比如特效要跟着移动目标，或每个实例颜色不同）时，照着 JS 原版移植，保留双缓冲、4×4 Bayer 抖动阈值和色阶查表，最后把 JS 原版和移植版并排渲染对比。</li>
+</ol>
+
+<h3>你可以这样跟它说</h3>
+<p>README 给的四个示例请求：</p>
+<ul>
+<li>“给我法师的大招加一个冰霜新星。”</li>
+<li>“给拾取金币的闪光做五个版本，挑最好的两个给我看。”</li>
+<li>“把火焰和爆炸两类导出成 Godot 用的精灵图集。”</li>
+<li>“这个受击特效发飘，让它更有力。”</li>
+</ul>
+
+<h2 id="loop">Skill 的核心：起稿—渲染—看—改</h2>
+<p>SKILL.md 开头一句话概括了它的立场：<em>“一次性提示词做出来的特效都很平庸；起稿、渲染、亲眼看、再改，才能做出好的。”</em> 这个方法来自 Hugo Duprez，三条原则是：代码是黏土、相信自己的眼睛、给足参考。</p>
+<p>关键在于“看”：Agent 不是凭想象写代码，而是每次渲染出一张<strong>接触印样</strong>（contact sheet，把动画按时间抽帧排成网格的 PNG），用读图能力去看它，再决定改哪里。做新特效的五步：</p>
+<ol>
+<li><strong>用一句话说清楚</strong>，带美术方向：是什么、怎么动、什么配色、多长时间。例如：“冰霜新星：冰晶从脚下向外成环爆开，中心一帧白闪，碎片旋出，地面结霜后慢慢消退。”</li>
+<li><strong>找参考。</strong>在库里搜最接近的两三个特效，读它们的代码借技法；也去看 Hugo Duprez 的同类特效——那是质量线：同样大小下，他的细节、光感、生气比你多，你的就还没做完。</li>
+<li><strong>起稿。</strong><code>node tools/new.mjs &lt;类别&gt;/&lt;名字&gt;</code> 生成一个能跑的起点。方向不确定时，写 3–5 个真正不同的草稿（<code>-a</code> 到 <code>-e</code>），全部渲染，逐张看过再选；用户在场就给他看最好的两三个。</li>
+<li><strong>看、判断、修。</strong>打开接触印样，像挑剔的像素画师那样挑毛病，<strong>只修最差的那一处</strong>，再渲染。最少三轮，重头戏更多。</li>
+<li><strong>检查。</strong><code>node tools/check.mjs &lt;id&gt;</code> 会查出画出画布、一次性特效结束时没清空、循环接缝、未使用种子的随机数、过慢的帧，一直修到全部通过；没选中的草稿删掉。</li>
+</ol>
+<p>Skill 里还有一张“看到什么 → 怎么修”的对照表，几乎是一份像素特效的审美清单，摘几条：</p>
+<table>
+<thead><tr><th>看到的问题</th><th>常用修法</th></tr></thead>
+<tbody>
+<tr><td>原尺寸下糊成一团</td><td>颜色更少、轮廓清楚、一个视觉焦点、形状更大</td></tr>
+<tr><td>发飘、没力度</td><td>快进慢出的缓动、1–2 帧白色“英雄帧”、总时长缩短</td></tr>
+<tr><td>僵硬、机械</td><td>每个粒子都有差异（大小、速度、延迟、寿命），加次级运动（火星、烟、碎屑）</td></tr>
+<tr><td>发灰、过曝</td><td>光晕减弱、边缘色阶加深，白色只留给最热的核心</td></tr>
+<tr><td>平</td><td>单侧打光：左上更亮、右下暗一阶，底部加一阶暗色</td></tr>
+<tr><td>平滑渐变、像矢量图</td><td>颜色用硬色阶，柔和只留给光和半透明的烟</td></tr>
+</tbody>
+</table>
+<p>另外几条硬约定：有方向的特效朝右，地面特效站在 y = 0，所有随机数来自种子（不许用 <code>Math.random</code>）；通用母题可以，<strong>不许复刻某个具体游戏的精灵、角色或标志</strong>。</p>
+
+<h2 id="test">本站实测</h2>
+<p>为核对 README 的说法，本站浅克隆了仓库（未安装任何依赖），在 Node 22 下跑了几条命令。⚠️ 本站<strong>没有</strong>在 Claude Code 里实际安装并驱动这个 Skill 做新特效，下面只验证了 Skill 依赖的命令行工具。</p>
+<ul>
+<li><code>node tools/list.mjs</code> 报告 232 个特效；<code>node tools/list.mjs frost</code> 返回 10 个相关特效。</li>
+<li><code>node tools/render.mjs ice/frost-nova</code> 不到 1 秒生成 103 帧的接触印样（下图）；<code>check.mjs</code> 结果 “1 pass, 0 fail”。</li>
+<li><code>--sheet</code> 导出 <code>frost-nova.png</code> + <code>frost-nova.json</code>，JSON 的 <code>meta.pixelfx</code> 写着 fps 30、单次播放、帧尺寸 288×192、锚点 (144, 150)、9 列——与 README 描述一致。</li>
+<li>用 README 里的那串蓝紫色 palette 重渲 <code>fire/torch</code>，同一支火把变成冷色火焰，代码一行没改。</li>
+</ul>
+<figure><img src="images/frost-nova-contact.webp" alt="冰霜新星的接触印样：16 个时间点排成网格，一个小人站在地面上，先有白光爆闪，然后一圈蓝白冰晶从脚下向外扩散成椭圆环，冰晶逐渐变少、化成地面上的霜点，最后只剩小人" loading="lazy" width="1200" height="727"><figcaption>本站运行 <code>node tools/render.mjs ice/frost-nova</code> 得到的接触印样（缩小后转 webp）。这就是 Skill 让 Agent 每一轮都要“看”的那张图：左上角标着 id、尺寸、时长、帧数和是否循环，每格标帧号与秒数。</figcaption></figure>
+<figure><img src="images/torch-recolor.webp" alt="四支像素火把并排：左边两支是橙黄色火焰，右边两支是同一火把换成蓝紫白色的冷火，火星和烟的位置一致" loading="lazy" width="1192" height="496"><figcaption>左两格：<code>fire/torch</code> 默认配色的第 0、20 帧；右两格：传入 <code>palette: ["#102","#215","#43a","#8cf","#cff","#fff"]</code> 后的同两帧（本站从导出图集中裁出，放大 4 倍）。同一个种子，所以火星、烟的位置一样。</figcaption></figure>
+
+<h2 id="how">工作原理</h2>
+<ul>
+<li><strong>两种特效，都不用图片。</strong>“纯”特效导出 <code>draw(p, t, o)</code>，第 t 秒的画面只由 t 决定，所以循环首尾无缝；“模拟”特效导出 <code>create(o)</code>，以 120 Hz 步进真实的粒子、碎屑和光源，帧率变了，火星的弹跳、烟的翻滚也不变。</li>
+<li><strong>两块缓冲。</strong><code>color</code> 放像素（不透明、抖动或真正半透明），<code>light</code> 放叠加光晕。热的东西看起来热，靠的是光缓冲。</li>
+<li><strong>一切都有种子。</strong>同一个种子，第 40 帧永远是同一张图。</li>
+<li><strong>局部坐标。</strong>特效围绕自己的原点作画，由 painter 负责摆放、镜像、旋转；有个 24×38 的“替身小人”用于状态、光环和受击类特效。</li>
+<li><strong>与 Sprite Fusion 同一帧格式</strong>（<code>{ w, h, ox, oy, color, light }</code>），两个库的特效可以画进同一帧。</li>
+</ul>
+
+<h2 id="notes">核实与注记</h2>
+<ul>
+<li>✅ MIT 许可（LICENSE 原文，版权人 Patch 与 Hugo Duprez；GitHub API 亦识别为 MIT）。<strong>例外</strong>：<code>gallery/fonts</code> 里的 Patch Pixel 字体是 Patch 自有、保留所有权利，不在 MIT 范围内。本页未转载该字体。</li>
+<li>✅ 232 个特效、20 个类别：源码文件计数与 <code>list.mjs</code> 输出一致。</li>
+<li>✅ 方法出处博文存在，发表于 2026-10-28（Sprite Fusion 博客）。</li>
+<li>⚠️ 推断：<strong>改编比例相当高。</strong>本站用文本搜索粗略统计，232 个特效文件中约 183 个在开头注明“改编自”或“沿用” Sprite Fusion（Hugo Duprez）的配方。仓库对此署名清楚、许可兼容，并无冲突；但“232 个”里很大一部分是在 Duprez 开源特效基础上扩展的，并非全部从零原创。</li>
+<li>⚠️ 推广：README 末尾“Made by Patch”，patch.gg 目前是一个写着“Mashups, mods and browser games… Coming soon”的预告页。这个库客观上也是 Patch 品牌的预热，⚠️ 推断，未见付费推广标注。</li>
+<li>⚠️ 未实测：Skill 在 Claude Code 里的实际效果（做新特效能否达到“手绘感”）、以插件方式安装的流程、Godot/Unity 导入流程，本站都没有验证。<code>--gif</code> / <code>--mp4</code> 需要 ffmpeg，本站未运行。</li>
+<li>⚠️ 星数是快照：第三方聚合站在不同时间抓到 75、267 等数字；本页以 GitHub 官方 API 在 2026-10-31 11:45（UTC+8）的 378 为准，仍在快速变化。</li>
+<li>Skill 名义上是 Claude Code Skill，但 SKILL.md 本身是通用的 Markdown 步骤说明，⚠️ 推断其他能读 Skill 的编程 Agent 也能照做，README 未声明。</li>
+</ul>
+<p>相关阅读（本站）：<a href="../asynkimo-ai-pixel-art-sprite/">把 AI 像素画修成能进游戏的精灵图（Kimo 六步流程）</a>——那篇讲把生成图修成干净像素，pixelfx 则完全绕开图像模型，直接用代码画；<a href="../lawrencew-dimensional-drawing/">dimensional-drawing：让 Agent 画出 Apple 式尺寸图</a>——同样是“渲染出来再看、再改”的 Agent Skill。</p>
+
+<h2 id="readme">附录一：README 全文中译</h2>
+<details open><summary>展开 / 收起 README 中译</summary>
+<p><em>〔顶部为演示动图：一格格像素特效同时播放——篝火、燃烧的骷髅、瀑布、等离子球、传送门、龙卷风等。〕</em></p>
+<h3>pixelfx.</h3>
+<p><strong>232 个像素风特效与动画，每一个都是一小段代码。</strong>火焰、爆炸、魔法、天气、UI、拾取物、小动物等等。可以实时播放，可以换色、镜像，可以直接放进浏览器游戏，也可以给任何引擎导出精灵图集。另外还有一个 Claude Code Skill，像一个挑剔的像素画师那样做新特效：起稿、渲染、看、打磨。</p>
+<p><strong><a href="https://patch-gg.github.io/pixelfx/" rel="noopener">打开图库</a></strong> · <a href="https://github.com/patch-gg/pixelfx/blob/main/docs/CATALOG.md" rel="noopener">目录</a> · <a href="#readme-skill">Skill</a> · <a href="#readme-make">自己做</a> · <a href="#readme-how">工作原理</a></p>
+<p>方法是 <a href="https://x.com/HugoDuprez" rel="noopener">Hugo Duprez</a> 的，出自《<a href="https://www.spritefusion.com/blog/how-to-make-good-pixel-art-effects-with-claude" rel="noopener">How to make (good) pixel art effects with Claude</a>（如何用 Claude 做出〔好的〕像素特效）》：代码是黏土，相信你的眼睛，给足参考。他在 Sprite Fusion 的<a href="https://www.spritefusion.com/pixel-art-vfx" rel="noopener">开源特效</a>立下了标杆，<code>src/core/sim.js</code> 以及文件开头注明了的那些特效改编自他的代码。这个仓库是我们把这个想法做到“库”的规模的版本，再配一个 Skill 让它继续长下去。</p>
+
+<h4>里面有什么。</h4>
+<table>
+<thead><tr><th>类别</th><th>数量</th><th>举几个</th></tr></thead>
+<tbody>
+<tr><td><strong>火</strong></td><td>12</td><td>火盆、篝火、蜡烛、喷火、火环、火焰龙卷……</td></tr>
+<tr><td><strong>爆炸</strong></td><td>12</td><td>油桶爆炸、大爆炸、漫画“POW”、土爆、烟花绽放、烟花火箭……</td></tr>
+<tr><td><strong>水</strong></td><td>12</td><td>气泡、水滴、喷泉、间歇泉、雨水飞溅、涟漪……</td></tr>
+<tr><td><strong>冰</strong></td><td>10</td><td>暴雪漩涡、冻结、冰霜吐息、冰霜新星、冰晶、冰枪……</td></tr>
+<tr><td><strong>闪电</strong></td><td>11</td><td>球状闪电、连锁闪电、蓄力、带电、落雷、等离子球……</td></tr>
+<tr><td><strong>科幻</strong></td><td>12</td><td>EMP 冲击、能量核心、力场、故障、全息投影、喷气背包……</td></tr>
+<tr><td><strong>近战</strong></td><td>12</td><td>爪击、匕首连刺、双重斩、锤击、重劈、镰刀收割……</td></tr>
+<tr><td><strong>受击</strong></td><td>11</td><td>钝击、子弹命中、暴击、砸地、重落地、受击闪白……</td></tr>
+<tr><td><strong>投射物</strong></td><td>13</td><td>箭、子弹曳光、炮弹、能量盘、信号弹、追踪导弹……</td></tr>
+<tr><td><strong>出生与死亡</strong></td><td>10</td><td>掉落金币、解体、溶解燃尽、破壳、噗的消失、重生光束……</td></tr>
+<tr><td><strong>奥术</strong></td><td>12</td><td>奥术光束、奥术飞弹、奥术宝珠、闪现入、闪现出、法阵施法……</td></tr>
+<tr><td><strong>神圣</strong></td><td>10</td><td>祝福、神圣护盾、羽毛迸散、光环、治疗、治疗之环……</td></tr>
+<tr><td><strong>暗影</strong></td><td>12</td><td>黑洞、诅咒、暗影爆炸、日食、抓握之手、咒印……</td></tr>
+<tr><td><strong>状态</strong></td><td>13</td><td>流血、燃烧、魅惑、混乱、被诅咒、冰冻……</td></tr>
+<tr><td><strong>自然</strong></td><td>13</td><td>酸液飞溅、巨石、地刺、治愈花开、落叶风暴、毒云……</td></tr>
+<tr><td><strong>天气</strong></td><td>12</td><td>极光、暴雪、樱花、云、落叶、萤火虫……</td></tr>
+<tr><td><strong>UI</strong></td><td>12</td><td>成就、收集金币、连击计数、彩纸、倒计时、暴击数字……</td></tr>
+<tr><td><strong>拾取</strong></td><td>11</td><td>开宝箱、旋转金币、收集迸发、水晶碎片、旋转宝石、拾取爱心……</td></tr>
+<tr><td><strong>转场</strong></td><td>10</td><td>百叶窗、燃烧消散、CRT 关机、菱形擦除、故障擦除、光圈……</td></tr>
+<tr><td><strong>小动物</strong></td><td>12</td><td>蝙蝠、鸟、蝴蝶、眼球、鱼群、飞行骷髅……</td></tr>
+</tbody>
+</table>
+<p>每个特效都是 <code>src/fx/&lt;类别&gt;/&lt;名字&gt;.js</code> 里的一个文件。<a href="https://github.com/patch-gg/pixelfx/blob/main/docs/CATALOG.md" rel="noopener">目录</a>列出了全部。</p>
+
+<h4>用一个。</h4>
+<p><strong>在浏览器游戏里</strong>（canvas、Phaser、PixiJS、Kaplay、three.js），直接用代码。没有依赖。</p>
+<pre><code>import { createFrame, clearFrame, createFx, composite } from "pixelfx";
+import * as frostNova from "pixelfx/fx/ice/frost-nova";
+
+const frame = createFrame(320, 180);                   // 你游戏的像素分辨率
+const img = new ImageData(320, 180);
+const fx = createFx(frostNova, { x: 160, y: 140 });   // 还可以传：flip、angle、seed、palette、light……
+
+function tick(dt) {
+  fx.update(dt);
+  clearFrame(frame);
+  fx.draw(frame, "back");                              // 画在角色后面的部分
+  drawCharacters();
+  fx.draw(frame, "front");
+  composite(frame, img.data, backgroundColor);         // 先合成颜色，再叠加光
+  ctx.putImageData(img, 0, 0);                         // 用 image-rendering: pixelated 放大
+}</code></pre>
+<p>用 <code>npm i github:patch-gg/pixelfx</code> 从 GitHub 安装，或者把 <code>src/core</code> 和你要的特效复制过去。</p>
+<p><strong>在任何引擎里</strong>（Godot、Unity、GameMaker、Defold、LÖVE、Bevy），用精灵图集：</p>
+<pre><code>node tools/render.mjs ice/frost-nova --sheet</code></pre>
+<p>它会写出一张把每一帧排成网格的透明 PNG，以及一个 Aseprite 风格的 JSON（帧矩形、时长，以及 <code>meta.pixelfx</code> 里的 fps、是否循环、列数和锚点）。Phaser 的图集加载器和 Godot、Unity 的 Aseprite 导入器都能读它。<code>node tools/sheets.mjs</code> 会把整个库导出到 <code>sheets/</code>。</p>
+<p>任何特效都接受 <code>palette</code>（一串从暗到亮的十六进制颜色），所以火可以烧成蓝色，治疗可以发粉光，不用改它的代码：</p>
+<pre><code>node tools/render.mjs fire/torch --gif --opts '{"palette": ["#102","#215","#43a","#8cf","#cff","#fff"]}'</code></pre>
+
+<h4 id="readme-skill">Skill。</h4>
+<p><code>pixelfx</code> Skill 教 Claude Code 查找、使用、导出和制作特效。作为插件安装：</p>
+<pre><code>/plugin marketplace add patch-gg/pixelfx
+/plugin install pixelfx@pixelfx</code></pre>
+<p>或者把 <code>skills/pixelfx</code> 复制到 <code>~/.claude/skills/</code>。然后直接说你要什么：</p>
+<ul>
+<li>“给我法师的大招加一个冰霜新星。”</li>
+<li>“给拾取金币的闪光做五个版本，挑最好的两个给我看。”</li>
+<li>“把火焰和爆炸两类导出成 Godot 用的精灵图集。”</li>
+<li>“这个受击特效发飘，让它更有力。”</li>
+</ul>
+
+<h4 id="readme-make">自己做。</h4>
+<pre><code>node tools/new.mjs arcane/my-spell       # 一个能跑的起点（循环特效加 --loop）
+node tools/render.mjs arcane/my-spell    # 写出 records/arcane/my-spell/contact.png：去看它
+node tools/check.mjs arcane/my-spell     # 越界、接缝、未用种子的随机数、过慢的帧</code></pre>
+<p>然后一轮一轮来：看接触印样，修最差的一处，再渲染。<code>--gif</code> 和 <code>--mp4</code> 展示动态，<code>--all</code> 展示每一帧。<a href="https://github.com/patch-gg/pixelfx/blob/main/docs/AUTHORING.md" rel="noopener">docs/AUTHORING.md</a> 里有接口约定、绘图 API 和质量标准。<code>node tools/serve.mjs</code> 会在本地跑起图库，里面包括你自己的特效。</p>
+
+<h4 id="readme-how">工作原理。</h4>
+<ul>
+<li><strong>两种特效，没有图片。</strong>纯特效导出 <code>draw(p, t, o)</code>，第 <code>t</code> 秒的画面只由 <code>t</code> 算出，所以循环首尾拼接没有接缝。模拟特效导出 <code>create(o)</code>，以 120 Hz 步进真实的粒子、碎屑和光源，所以无论帧率多少，火星的弹跳和烟的翻滚都一样。</li>
+<li><strong>两块缓冲。</strong><code>color</code> 接收像素：不透明的、抖动的或真正半透明的。<code>light</code> 接收叠加的光晕，加在最上面。热的东西之所以看起来热，靠的就是光缓冲。</li>
+<li><strong>一切都有种子。</strong>每个随机数都来自特效的种子，所以第 40 帧每次都一样。</li>
+<li><strong>局部坐标。</strong>特效围绕自己的原点作画；painter 负责摆放、镜像和旋转。有方向的特效朝右。一个 24×38 的替身角色用于状态、光环和受击类特效。</li>
+<li><strong>与 Sprite Fusion 的 VFX 帧结构相同</strong>（<code>{ w, h, ox, oy, color, light }</code>），所以两个库可以画进同一帧。</li>
+</ul>
+
+<h4>许可证。</h4>
+<p>MIT，代码和特效都是。用在任何地方都行，包括商业用途。部分内容改编自 Hugo Duprez 的 MIT 特效；<code>gallery/fonts</code> 里的 Patch Pixel 字体是 Patch 自有的，不在许可范围内：见 <a href="https://github.com/patch-gg/pixelfx/blob/main/NOTICE.md" rel="noopener">NOTICE.md</a>。</p>
+<p>由 <a href="https://patch.gg" rel="noopener">Patch</a> 制作。</p>
+</details>
+
+<h2 id="skillmd">附录二：SKILL.md 全文中译</h2>
+<details><summary>展开 skills/pixelfx/SKILL.md 中译</summary>
+<p><em>〔文件头元数据〕名称：pixelfx。描述：用 pixelfx 库以代码制作像素风特效和精灵动画。库里有 232 个现成特效（火、爆炸、水、冰、闪电、科幻、近战、受击、投射物、出生与死亡、奥术、神圣、暗影、状态、自然、天气、UI、拾取、转场、小动物），可以直接放进游戏、换色、导出精灵图集或改造；另有一套“起稿、渲染、看、打磨”的循环，让新特效看起来像手绘动画。适用于：有人想要像素风 VFX、精灵动画或精灵图集、游戏“手感”（game juice）、某个具体特效（“给我的法师一个冰霜新星”“一个拾取金币的闪光”），想在 Godot、Unity、Phaser 或 canvas 游戏里使用或导出 pixelfx 特效，或者想让自己的像素特效更好看。许可：MIT。兼容性：Node 18 或更新；ffmpeg 可选（用于 GIF 和 MP4 预览）。</em></p>
+<h3>pixelfx</h3>
+<p>以代码表达的像素特效。每个特效是一个文件 <code>src/fx/&lt;类别&gt;/&lt;名字&gt;.js</code>，画进两块缓冲：<strong>color</strong>（像素：不透明、抖动或真正半透明）和 <strong>light</strong>（叠加光晕）。没有图片，所以特效可以实时播放、换色、镜像、换种子，并渲染成任何引擎可用的精灵图集。</p>
+<p>方法是 Hugo Duprez 的（《<a href="https://www.spritefusion.com/blog/how-to-make-good-pixel-art-effects-with-claude" rel="noopener">How to make (good) pixel art effects with Claude</a>》）：代码是黏土，相信你的眼睛，给足参考。一次性提示词只能做出平庸的特效。你渲染出来、看过、再打磨的草稿，才能变成好特效。</p>
+<h4>开始之前</h4>
+<ol>
+<li>在一个 pixelfx 检出目录里工作。如果当前工作目录里没有 <code>tools/render.mjs</code>，就在项目旁边克隆一份：<code>git clone https://github.com/patch-gg/pixelfx</code>。不需要安装步骤：这些工具只用 Node。</li>
+<li>确认能跑：<code>node tools/render.mjs fire/torch</code> 会写出 <code>records/fire/torch/contact.png</code>。用你的读图工具打开这张 PNG。从现在起，你就是通过接触印样来看每一个特效的。</li>
+</ol>
+<h4>1. 先找现成的特效</h4>
+<p><code>node tools/list.mjs &lt;关键词&gt;</code> 会搜索 id、名称、标签和描述（<code>node tools/list.mjs frost</code>、<code>node tools/list.mjs slash loop</code>）。<code>docs/CATALOG.md</code> 按类别列出全部。把候选都渲染出来，看过再选。大多数需求其实是某个现成特效加上不同的参数：</p>
+<ul>
+<li><code>palette</code>：主色阶，从暗到亮的十六进制字符串。可以用 <code>src/core/color.js</code> 里任意一条 <code>PAL</code> 色阶（fire ember lava smoke dust ice water electric volt poison holy heal arcane shadow blood earth stone gold leaf wood metal bone neon cyber matrix candy night），也可以自己配。蓝色的火就是 <code>{"palette": PAL.ice}</code>。</li>
+<li><code>seed</code> 得到另一个不同但等价的版本；<code>flip</code> 朝左；<code>angle</code> 旋转；<code>light</code>（0 到 1 以上）控制光晕强度；外加每个特效在 <code>meta.options</code> 里自己的参数（尺寸、数量、半径、文字、高度……）。</li>
+<li>不改代码也能试参数：<code>node tools/render.mjs fire/torch --opts '{"palette":["#102","#215","#43a","#8cf","#fff"]}'</code>。</li>
+</ul>
+<h4>2. 放进游戏</h4>
+<p><strong>JS 或 TS 写的 Canvas / WebGL 游戏</strong>（原生 canvas、Phaser、PixiJS、Kaplay、three.js）：直接用代码。它没有依赖；把 <code>src/core</code> 和需要的特效文件复制过去，或者依赖这个仓库。</p>
+<pre><code>import { createFrame, clearFrame, createFx, composite } from "pixelfx";   // src/core/index.js
+import * as frostNova from "pixelfx/fx/ice/frost-nova";                   // src/fx/ice/frost-nova.js
+
+const frame = createFrame(320, 180);            // 游戏的像素分辨率；ox、oy 随相机滚动它
+const img = new ImageData(320, 180);
+const fx = createFx(frostNova, { x: hero.x, y: hero.y, flip: hero.facing &lt; 0 });
+
+// 每个 tick
+fx.update(dt);
+clearFrame(frame);
+fx.draw(frame, "back");    // 画在角色后面的部分
+drawCharacters();          // 你自己的精灵，或者自己把它们画进 frame.color
+fx.draw(frame, "front");
+composite(frame, img.data, background);   // 颜色叠在背景上再加光；传 null 则透明
+ctx.putImageData(img, 0, 0);              // 然后用 image-rendering: pixelated 放大画布
+if (fx.done()) removeIt();               // 一次性特效会自己结束；fx.stop() 让循环特效淡出</code></pre>
+<p>多个特效可以共用一帧。在 WebGL 引擎里，每帧把合成好的 RGBA 上传到一张纹理；或者一次性把特效渲染成精灵图集（见下），像别的动画一样播放。</p>
+<p><strong>任何引擎</strong>（Godot、Unity、GameMaker、Defold、LÖVE、Bevy、Construct）：导出精灵图集。<code>node tools/render.mjs ice/frost-nova --sheet</code> 会写出 <code>records/ice/frost-nova/frost-nova.png</code>（排成网格的透明帧）和 <code>frost-nova.json</code>（Aseprite 风格的帧数据，所以 Phaser 的图集加载器、Godot 和 Unity 的 Aseprite 导入器以及大多数工具都能读；<code>meta.pixelfx</code> 里有 fps、是否循环、帧尺寸、列数和锚点）。把锚点设为 <code>meta.pixelfx.pivot</code>（特效的原点，比如脚底），用最近邻过滤、不压缩导入，按 <code>meta.pixelfx.fps</code> 播放。光晕会被烘焙进图集，成为带透明度的颜色，叠在暗场景上读起来像叠加光；亮场景请渲染一个换色版本，或者把特效放在一个暗的图层上。</p>
+<p>整个库：<code>node tools/render.mjs &lt;类别&gt; --sheet</code> 一次导出整个类别。</p>
+<h4>3. 做一个新的</h4>
+<p>先读 <code>docs/AUTHORING.md</code>：那是接口约定（meta；纯特效用 <code>draw(p, t, o)</code>，模拟特效用 <code>create(o)</code>；局部坐标；无缝循环；结束时清空）、工具箱、painter API 和质量标准。然后：</p>
+<ol>
+<li><strong>用一句话说出来</strong>，带美术方向：它是什么、怎么动、什么配色、什么节奏。“冰霜新星：冰晶从脚下向外成环爆开，中心一帧白闪，碎片旋出，地面保持结霜然后消退。”</li>
+<li><strong>在库里找参考</strong>：<code>node tools/list.mjs &lt;关键词&gt;</code>，然后读最接近的两三个特效文件，借用它们的技法（火星、烟、碎屑用 <code>src/core/sim.js</code> 里的 <code>Particles</code> 和 <code>Bits</code>，半透明体积用 <code>p.disc</code>，无缝粒子用 <code>cycle</code>，火焰和水用 <code>tileFbm</code> 滚动）。也去看看 <a href="https://www.spritefusion.com/pixel-art-vfx" rel="noopener">Hugo Duprez 的特效</a>里最接近的那个：它们是质量线。如果同样的屏幕尺寸下他的有更多细节、光感或生气，你的就还没做完。</li>
+<li><strong>起稿。</strong><code>node tools/new.mjs &lt;类别&gt;/&lt;名字&gt;</code>（循环特效加 <code>--loop</code>）给你一个能跑的文件。方向还没定的时候，写 3 到 5 个真正不同的草稿（<code>&lt;名字&gt;-a.js</code> 到 <code>-e.js</code>），全部渲染（<code>node tools/render.mjs "&lt;类别&gt;/&lt;名字&gt;-*"</code>），每张接触印样都看过再选。如果用户在，给他看最强的两三个（<code>--gif</code> 能做出可分享的动图）。</li>
+<li><strong>看、判断、修。</strong>渲染，打开 <code>records/&lt;id&gt;/contact.png</code>，像一个挑剔的像素画师那样评判。修最差的那一处，再渲染。最少三轮；重头戏要更多。<code>--all</code> 显示每一帧，<code>--mp4</code> 以全速显示动态。</li>
+<li><strong>检查。</strong><code>node tools/check.mjs &lt;id&gt;</code> 能抓到画出画布、一次性特效结束时没清空、循环接缝、未用种子的随机数和过慢的帧。一直修到干净通过。没留下的草稿删掉。</li>
+</ol>
+<p>该看什么，以及通常的修法：</p>
+<table>
+<thead><tr><th>你看到</th><th>修法</th></tr></thead>
+<tbody>
+<tr><td>原尺寸下糊成一团</td><td>更少的颜色、清楚的轮廓、一个焦点、更大的形状</td></tr>
+<tr><td>斑点：形状内部孤立的噪点像素</td><td>噪声阈值放宽些，用 <code>at()</code> 量化，小形状上不加噪声</td></tr>
+<tr><td>发飘，没力度</td><td>快进慢出（<code>ease.outQuart</code> / <code>outExpo</code>），1 到 2 帧白色英雄帧，缩短总时长</td></tr>
+<tr><td>僵硬或机械</td><td>每个粒子都有变化（大小、速度、延迟、寿命），加次级运动（火星、烟、碎屑）</td></tr>
+<tr><td>发灰过曝</td><td>光晕减弱（k 取 0.2 到 0.5），边缘色阶更暗，白色只留给最热的核心</td></tr>
+<tr><td>平</td><td>从一侧打光：左上更亮，右下暗一阶；底部加一阶更暗的色阶</td></tr>
+<tr><td>平滑渐变，矢量感</td><td>颜色用硬色阶；柔和只留在光和半透明的烟里</td></tr>
+<tr><td>该是烟的地方成了棋盘格</td><td>用 <code>SMOKE</code>、<code>VAPOUR</code> 或 <code>DUST</code> 粒子，或 <code>p.disc</code>：真正半透明，上面再打光</td></tr>
+<tr><td>循环回绕处有接缝</td><td><code>cycle</code>、<code>loopNoise(phase)</code>、整格的 <code>tileNoise</code> 滚动、<code>sin(phase * TAU * n)</code></td></tr>
+<tr><td>一次性特效突然消失</td><td>在 t = duration 之前让它缩小、抖动消散或落下</td></tr>
+</tbody>
+</table>
+<p>有方向的特效朝右，地面特效站在 y = 0，角色特效包住 <code>o.actor</code>（一个 24 × 38 替身角色的遮罩和像素），并且任何地方都不用 <code>Math.random</code>。通用母题可以；绝不复刻某个具体游戏的精灵、角色或标志。</p>
+<h4>4. 用原生代码代替 JS</h4>
+<p>如果游戏跑不了 JS，而精灵图集又不够（比如特效要跟随移动目标，或者运行时每个实例要不同颜色），就移植这个特效。纯特效是时间的函数；模拟特效在 <code>src/core/sim.js</code> 里步进粒子。保留双缓冲的思路、用于抖动透明度的 4×4 Bayer 阈值，以及色阶查表。把 JS 原版和你的移植版并排渲染，检查二者一致。</p>
+</details>
+
+<h2 id="license">附录三：许可证与声明原文</h2>
+<details><summary>展开 MIT License 与 NOTICE</summary>
+<pre>MIT License
+
+Copyright (c) 2026 Patch
+Copyright (c) 2026 Hugo Duprez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+<pre># Notices
+
+**Hugo Duprez.** `src/core/sim.js` and the effects that say so at the top of their file adapt Sprite Fusion's
+open-source pixel art VFX (https://www.spritefusion.com/pixel-art-vfx), Copyright (c) 2026 Hugo Duprez, MIT License.
+
+**Patch Pixel.** The font in `gallery/fonts` is Patch's own and is not covered by this repository's MIT license. See
+`gallery/fonts/NOTICE.md`.</pre>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>项目 pixelfx © 2026 Patch、© 2026 Hugo Duprez，MIT 许可；README 与 SKILL.md 中译、演示动图单帧、本站用仓库工具渲染的接触印样与换色示例均依 MIT 许可转载/生成。Patch Pixel 字体不在 MIT 范围内，本页未使用。方法出处：Hugo Duprez，Sprite Fusion。原项目：<a href="https://github.com/patch-gg/pixelfx" rel="noopener">github.com/patch-gg/pixelfx</a>。导读、实测与注记由 Grok Bot 整理。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/patch-gg/pixelfx" rel="noopener">github.com/patch-gg/pixelfx</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

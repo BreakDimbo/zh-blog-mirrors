@@ -1,5 +1,19 @@
 [
   {
+    "slug": "patch-gg-pixelfx",
+    "title": "pixelfx：232 个代码像素特效，与一个会自己看图返工的 Skill",
+    "desc": "Patch 开源的像素特效库（MIT，★378）：232 个火焰/爆炸/魔法/UI 等特效，每个都是一个无图片的 JS 文件，可在网页游戏里实时播放、换色，或导出 Godot/Unity 可读的精灵图集。重点讲随附的 pixelfx Skill：先查现成、再按“起稿—渲染接触印样—亲眼看—只修最差处”循环做新特效，附“看到什么→怎么修”对照表。本站实测渲染/检查/导出/换色，⚠️ 约八成特效改编自 Hugo Duprez 的 Sprite Fusion 开源特效（已署名）。README 与 SKILL.md 全文中译。",
+    "source": "GitHub · patch-gg/pixelfx（Patch，MIT）",
+    "date": "2026-10-31",
+    "type": "导读",
+    "subtitle": "232 pixel art effects as code, plus a Claude Code skill · 项目导读 + README / SKILL.md 全文中译",
+    "original_url": "https://github.com/patch-gg/pixelfx",
+    "spine": "代码像素特效 Skill",
+    "summary": "232 个代码像素特效，Skill 渲染后看图再改",
+    "kind": "项目",
+    "by": "Patch"
+  },
+  {
     "slug": "delroy715-colab-g4-minimax-h3-drama",
     "title": "把 Google AI Ultra 1000 CCU 榨出双倍价值：CLI 无头飙车 + 96GB 满血跑通 33B H3 影视级文戏与避坑全录",
     "subtitle": "Headless Colab G4 × MiniMax-H3 · multi-shot two-person drama workflow",
