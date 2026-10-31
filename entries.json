@@ -1,5 +1,19 @@
 [
   {
+    "slug": "eianlu-grok-bot-resources",
+    "title": "Grok Bot 资源四站：官方市场、需求检索、社区榜单与开源清单",
+    "subtitle": "4 places to find ready-made Grok Bots · 原帖照录 + 逐站核对",
+    "type": "全文镜像",
+    "kind": "资源",
+    "date": "2026-11-01",
+    "by": "Eian",
+    "source": "Eian @EianLu · X",
+    "original_url": "https://x.com/EianLu/status/2116394532657103163",
+    "spine": "Grok Bot 资源站",
+    "summary": "官方市场、需求检索、热榜、开源清单四站",
+    "desc": "Eian @EianLu 原帖照录：找现成 Grok Bot 模板的 4 个网站——x.ai 官方 Marketplace、Grok Bot Index（一句话描述需求即可搜，现 604 个模板）、Grokdex（按票数与添加点击排序的热榜）、Awesome Grok Bot（182 段完整设置提示词）。逐站核对运营方与排序规则；⚠️ 原帖 GitHub 链接 404（应为单数 awesome-grok-bot），该仓库 README 写 MIT 却无 LICENSE 文件；Grokdex 免账号投票，站长自荐与联盟链接已披露。"
+  },
+  {
     "slug": "hyz317-hairdeck",
     "title": "HairDeck：一张角色图，生成一套能动起来的发片",
     "subtitle": "HairDeck · Animation-Ready Stylized Hair Cards from a Single Image · 项目导读 + README 全文中译",
