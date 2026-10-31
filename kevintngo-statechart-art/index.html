@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>珍珠奶茶店的生意：四张过了模型检查的手绘状态图 · statechart art 全文中译</title>
+<meta name="description" content="Kevin T. Ngo 的 statechart-art《The business of boba》全文中译：四张关于经营一家珍珠奶茶店的状态图——一张订单、一天、店员与锅同时运行、一个被 TLC 找到的“老珍珠”bug。每张图都是一个 TLA+ 小模型，经 TLC 穷举检查，由 pele 排版，再用代码以钢笔加彩铅“手绘”。MIT 许可。附 README 全文中译、本站复算与英文原文。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-31">2026.10.31</time></p>
+<h1 class="za-title">珍珠奶茶店的生意：四张过了模型检查的手绘状态图</h1>
+<p class="za-sub" lang="en" data-za-gen>The business of boba · statechart art · 全文中译 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub Pages · kevintngo/statechart-art（Kevin T. Ngo，MIT）</span><span>收录 · 2026-10-31</span><span><a href="https://kevintngo.github.io/statechart-art/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Kevin T. Ngo（GitHub <a href="https://github.com/kevintngo" rel="noopener">@kevintngo</a> · X <a href="https://x.com/kevin_t_ngo" rel="noopener">@kevin_t_ngo</a> · <a href="https://kevintngo.com/" rel="noopener">kevintngo.com</a>）· 原页：<a href="https://kevintngo.github.io/statechart-art/" rel="noopener">kevintngo.github.io/statechart-art</a> · 源码：<a href="https://github.com/kevintngo/statechart-art" rel="noopener">github.com/kevintngo/statechart-art</a>（MIT；本页对照提交 <code>292f54c</code>，2026-10-31 15:08 UTC+8）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>一位“创意技术人”把形式化方法画成了插画：先用 TLA+ 写四个关于奶茶店的小模型，让模型检查器 TLC 把每一种可能的走法都试一遍，再把结果排成状态图，最后用程序模拟钢笔和彩色铅笔，把状态画成点单小票、店门木牌、玻璃上的便条——第四张图里，TLC 找到了一条让过期珍珠被端给顾客的最短路径，用红线描了出来。作者把代码、模型、画和字体一并以 MIT 许可公开。</div>
+
+<figure><img src="images/cover.webp" alt="原页分享图：左侧标题 The business of boba（珍珠奶茶店的生意）与“四张状态图，手绘”，右侧并排四张钢笔彩铅小图：一张订单、一天、同时进行、珍珠 bug" loading="lazy" width="1200" height="630"><figcaption>原页分享图（og.png，MIT，转 webp）。</figcaption></figure>
+
+<nav class="toc"><ol>
+<li><a href="#what">它是什么</a></li>
+<li><a href="#plates">正文全译 · 四张图</a></li>
+<li><a href="#how">正文全译 · 它们是怎么做出来的</a></li>
+<li><a href="#notes">核实与注记（本站）</a></li>
+<li><a href="#readme">附录一：README 全文中译</a></li>
+<li><a href="#en">附录二：英文原文</a></li>
+<li><a href="#license">附录三：许可证原文</a></li>
+</ol></nav>
+
+<h2 id="what">它是什么</h2>
+<ul>
+<li><strong>作品：</strong>《The business of boba》（珍珠奶茶店的生意），四张正方形“图版”，每张对应一种状态图写法：平面图（带分支和回环）、父状态、并行区域、一条会被打破的规则。</li>
+<li><strong>流程：</strong>TLA+ 模型 → <code>/statechart</code> Skill 调 TLC 穷举检查并写出 Mermaid 状态图 → <a href="https://pele.run" rel="noopener">pele</a> 排版并按画里用的字体测量每个词 → 每张图一段 JavaScript，用模拟的纸、钢笔、彩铅逐像素画出，并在状态图周围画满奶茶店的物件。</li>
+<li><strong>为什么值得看：</strong>状态图通常是写给工程师的，这里把它变成给“懂业务的人”看的画——而画里的每个框和每根线都对应一个被机器穷举检查过的模型，不是凭空画的示意图。第四张图把“规则被打破”和“怎么一步步走到那里”直接画进图里。</li>
+<li><strong>许可：</strong>MIT，作者明确写明覆盖“代码、模型、画和字体”全部内容。因此本页可以全文翻译并转载四张图（转 webp）。</li>
+</ul>
+<figure><img src="images/live-top.webp" alt="原页截图：米白纸色背景，打字机风格衬线大标题 The business of boba，下方导语，再下面并排两张图版：一张订单、一天" loading="lazy" width="1000" height="703"><figcaption>原页首屏（本站 2026-10-31 截图，1280 px 宽视口）。字体是作者从 Hershey 1967 年矢量字描出的 Kevin Serif / Kevin Sans。</figcaption></figure>
+
+<h2 id="plates">正文全译 · 四张图</h2>
+<p class="caption">以下按原页顺序全文翻译。图中的英文文字保留原样；图注下方的“画面”是原页图片替代文字（alt）的译文。</p>
+<blockquote>
+<p><small>statechart art</small></p>
+<p><strong>珍珠奶茶店的生意</strong></p>
+<p>四张关于经营一家珍珠奶茶店的状态图，<code>/statechart</code> 能画的四种图各一张：一张平面图，一个父状态，两个同时运行的区域，以及一条会被打破的规则。每一张都是一个小小的 TLA+ 模型，由 <a href="#tlc">TLC</a> 检查，由 pele 排版，再由代码用钢笔和彩色铅笔“手绘”出来。</p>
+<p>代码、模型和画都在 GitHub 上：<a href="https://github.com/kevintngo/statechart-art" rel="noopener">kevintngo/statechart-art</a></p>
+</blockquote>
+
+<figure><img src="images/order.webp" alt="钢笔彩铅画《一张订单：从排队到你手里》，状态是用图钉钉起的点单小票，由红线相连" loading="lazy" width="1000" height="1000"><figcaption><strong>I　一张订单</strong> · 从排队到你手里<br>一张平面图，带一个分支和一个回环。每个状态是一张钉起来的点单小票，每一步是两枚图钉之间的一根红线，每一步的说明写在线旁。</figcaption></figure>
+<p class="caption">画面：钢笔与彩铅画，标题“一张订单，从排队到你手里”。状态图画成用彩色图钉钉起、由红线相连的纸质点单小票：排队中；你点单，到已点单；你付款，到已付款。从已付款出发，如果还有珍珠，店员开始做，到制作中；如果珍珠卖完了，退钱，到已退款。从制作中，叫到你的号，到可取餐。从可取餐，做错了饮料就回到制作中，你取走则到“在你手里”。图的周围：三位排队的顾客；柜台后的收银员，收银机显示 5.50，旁边几枚硬币；在服务铃和一杯做好的饮料旁摇饮料的店员；架子上一罐标着“售罄”的珍珠和一枚硬币；还有一个短黑卷发、穿米色 polo 衫、头顶一杯冰咖啡的人，举着一杯珍珠奶茶。</p>
+
+<figure><img src="images/day.webp" alt="钢笔彩铅画《一天：店里，早 7 点到晚 9 点》，状态图画成店面，营业中是条纹遮阳棚下的橱窗" loading="lazy" width="1000" height="1000"><figcaption><strong>II　一天</strong> · 店里，早 7 点到晚 9 点<br>带父状态的图。“营业中”是一个父状态，里面有三个状态，所以把它画成店铺橱窗：清闲、忙碌和高峰是贴在玻璃上的便条，其他状态是木牌。</figcaption></figure>
+<p class="caption">画面：钢笔与彩铅画，标题“一天，店里，早 7 点到晚 9 点”。状态图画成一个店面。打烊、准备中、收尾是木牌；营业中是条纹遮阳棚下的橱窗，清闲、忙碌、高峰是贴在玻璃上的便条。早 7 点，打烊变为准备中；茶和珍珠备好，进入营业中，到清闲；有人进来，到忙碌；放学了，到高峰；人少下来，回到清闲；晚 9 点、若清闲，到收尾；钱箱点完，回到打烊。图的周围：日出；架子上，炉子上的水壶和一锅珍珠；月亮和星星；桶里的拖把；一株牵牛花藤，以及窗下的一盆花。</p>
+
+<figure><img src="images/counter.webp" alt="钢笔彩铅画《同时进行：店员与锅》，菜单板下两个并排区域：店员和锅" loading="lazy" width="1000" height="1000"><figcaption><strong>III　同时进行</strong> · 店员与锅<br>两个区域，同时运行。店员和锅各走各的，并排前进。需要等另一个区域的那一步，会在方括号里写明，并涂成它所等的那个区域的颜色。</figcaption></figure>
+<p class="caption">画面：钢笔与彩铅画，标题“同时进行，店员与锅”。在一块菜单板下，状态图在一个标着“同时”的框里并排画出两个区域。店员：店员空闲；来了一单（除非正在煮珍珠），到做饮料；摇好封口，到叫号；被取走，回到店员空闲。锅：珍珠满满；珍珠快没了，到所剩不多；煮新一锅（当店员空闲时），到煮珍珠中；又 Q 弹了，回到珍珠满满。每个条件都涂成它所指区域的颜色。下方，柜台后一位店员在摇饮料，旁边两杯做好的饮料和一个取餐呼叫器；炉子上放着一锅珍珠和一个水壶。</p>
+
+<figure><img src="images/bug.webp" alt="钢笔彩铅画《珍珠 bug：TLC 发现老珍珠是怎么被端出去的》，从刚煮好到端出老珍珠的路径用红色描出" loading="lazy" width="1000" height="1000"><figcaption><strong>IV　珍珠 bug</strong> · TLC 发现老珍珠是怎么被端出去的<br>一条会被打破的规则，以及通往它的路。TLC 找到了打破规则的办法：高峰时段，没人检查珍珠放了多久。图上标出了违反规则的状态，通往它的最短路径用红色描出。</figcaption></figure>
+<p class="caption">画面：钢笔与彩铅画，标题“珍珠 bug，TLC 发现老珍珠是怎么被端出去的”。一张卡片写着规则：煮好超过 4 小时的珍珠绝不出售。状态图：刚煮好；过了一小时，到 Q 弹，这里还会再过几小时；过了一小时，到开始变硬；过了一小时，到太老了，这时来了一波高峰。从太老了出发，“倒掉”通向已倒掉，“煮新一锅”又回到刚煮好；但“高峰中端出一杯”通向“端出了一杯老珍珠”，这个状态上盖着“规则被打破”的章。TLC 找到的路径——从刚煮好、经过太老了、到那杯老珍珠——用红色描出。图的周围：一只瓢虫、一个沙漏、一只罩在一杯老珍珠上的放大镜、炉子上的一锅珍珠，以及一罐老珍珠。</p>
+
+<h2 id="how">正文全译 · 它们是怎么做出来的</h2>
+<h3 id="tlc">TLC 是什么</h3>
+<p>每张图都从一个 TLA+ 模型开始。TLA+ 是一种描述事物如何一步一步运作的语言：从哪里开始，下一步可以走哪些步。<a href="https://github.com/tlaplus/tlaplus" rel="noopener">TLC</a> 是检查 TLA+ 模型的程序。</p>
+<p>测试只试几种情况，TLC 把所有情况都试一遍。它从第一个状态出发，走每一个可能发生的步，再走那之后每一个可能的步，直到见过模型能到达的每一个状态。在每个状态里，它都检查规则，比如“每一杯正在做的饮料都已经付过钱”。如果某条规则会被打破，TLC 会找出打破它的最短步骤序列。珍珠 bug 上的红色路径就是这样来的：高峰时段，没人检查珍珠放了多久。</p>
+<ol>
+<li><strong>建模。</strong>几行 TLA+ 写下店里可能发生什么，以及哪些规则必须始终成立。</li>
+<li><strong>检查。</strong><code>/statechart</code> 让 <a href="#tlc">TLC</a> 走遍模型能到达的每一个状态，并在每个状态里检查每条规则。某条规则被打破时，它找出通往那里的最短路径。</li>
+<li><strong>选词。</strong>一个“视图”规定读者在每个状态、每一步看到什么话。它也决定图的种类：平面图返回一个词，父状态返回一个列表，并行区域返回一个对象。</li>
+<li><strong>排版。</strong>pele 为 Mermaid 图排版，用画里实际使用的字体去量每一个词。</li>
+<li><strong>作画。</strong>一个程序把 pele 的方框和线画成奶茶店里的东西——小票、木牌、便条、卡片——用模拟的钢笔和彩色铅笔，并在周围画满店里的景物。文字落在干净的纸面上，箭头在碰到所指之物前停住。下面每张图的最后一格，把 pele 的方框和线用蓝色叠在成画上。</li>
+</ol>
+<figure><img src="images/live-how.webp" alt="原页截图：第三张图的制作过程，左为 Mermaid 代码，中为 pele 的朴素排版，右为蓝色方框叠在成画上；下方是第四张图的规则与 TLC 找到的路径" loading="lazy" width="1000" height="703"><figcaption>原页“怎么做出来的”部分（本站截图）：第 3 格 Mermaid 图、第 4 格 pele 排版、第 5 格蓝色叠图；下方是珍珠 bug 的 TLC 路径。</figcaption></figure>
+
+<h3 id="made-order">I 一张订单</h3>
+<p>TLC 走到了 13 个状态、17 步。</p>
+<ul><li>✓ 每一杯正在做、已做好或已交出的饮料都付过钱。<code>PaidForEveryDrink</code></li><li>✓ 退款的订单拿回了钱。<code>RefundsGiveMoneyBack</code></li></ul>
+
+<details><summary>1. 模型（TLA+，<code>Order.tla</code>）</summary><figure><pre><code>---- MODULE Order ----
+EXTENDS Naturals
+VARIABLES order, paid, pearls, remakes
+
+vars == &lt;&lt;order, paid, pearls, remakes&gt;&gt;
+
+Init ==
+  /\ order = &quot;in line&quot;
+  /\ paid = FALSE
+  /\ pearls = &quot;plenty&quot;
+  /\ remakes = 0
+
+YouOrder ==
+  /\ order = &quot;in line&quot;
+  /\ order&#x27; = &quot;ordered&quot;
+  /\ UNCHANGED &lt;&lt;paid, pearls, remakes&gt;&gt;
+
+YouPay ==
+  /\ order = &quot;ordered&quot;
+  /\ order&#x27; = &quot;paid&quot;
+  /\ paid&#x27; = TRUE
+  /\ UNCHANGED &lt;&lt;pearls, remakes&gt;&gt;
+
+PearlsRunOut ==
+  /\ pearls = &quot;plenty&quot;
+  /\ order \in {&quot;in line&quot;, &quot;ordered&quot;, &quot;paid&quot;}
+  /\ pearls&#x27; = &quot;out&quot;
+  /\ UNCHANGED &lt;&lt;order, paid, remakes&gt;&gt;
+
+BaristaStarts ==
+  /\ order = &quot;paid&quot;
+  /\ pearls = &quot;plenty&quot;
+  /\ order&#x27; = &quot;being made&quot;
+  /\ UNCHANGED &lt;&lt;paid, pearls, remakes&gt;&gt;
+
+MoneyBack ==
+  /\ order = &quot;paid&quot;
+  /\ pearls = &quot;out&quot;
+  /\ order&#x27; = &quot;refunded&quot;
+  /\ paid&#x27; = FALSE
+  /\ UNCHANGED &lt;&lt;pearls, remakes&gt;&gt;
+
+NumberCalled ==
+  /\ order = &quot;being made&quot;
+  /\ order&#x27; = &quot;ready&quot;
+  /\ UNCHANGED &lt;&lt;paid, pearls, remakes&gt;&gt;
+
+WrongDrink ==
+  /\ order = &quot;ready&quot;
+  /\ remakes &lt; 1
+  /\ order&#x27; = &quot;being made&quot;
+  /\ remakes&#x27; = remakes + 1
+  /\ UNCHANGED &lt;&lt;paid, pearls&gt;&gt;
+
+YouPickItUp ==
+  /\ order = &quot;ready&quot;
+  /\ order&#x27; = &quot;in your hand&quot;
+  /\ UNCHANGED &lt;&lt;paid, pearls, remakes&gt;&gt;
+
+Done ==
+  /\ order \in {&quot;in your hand&quot;, &quot;refunded&quot;}
+  /\ UNCHANGED vars
+
+Next ==
+  \/ YouOrder \/ YouPay \/ PearlsRunOut \/ BaristaStarts \/ MoneyBack
+  \/ NumberCalled \/ WrongDrink \/ YouPickItUp \/ Done
+
+Spec == Init /\ [][Next]_vars
+
+TypeOK ==
+  /\ order \in {&quot;in line&quot;, &quot;ordered&quot;, &quot;paid&quot;, &quot;being made&quot;, &quot;ready&quot;, &quot;in your hand&quot;, &quot;refunded&quot;}
+  /\ paid \in BOOLEAN
+  /\ pearls \in {&quot;plenty&quot;, &quot;out&quot;}
+  /\ remakes \in 0..1
+
+PaidForEveryDrink == order \in {&quot;being made&quot;, &quot;ready&quot;, &quot;in your hand&quot;} =&gt; paid
+RefundsGiveMoneyBack == order = &quot;refunded&quot; =&gt; ~paid
+NoDrinkWithoutPearls == order = &quot;being made&quot; =&gt; pearls = &quot;plenty&quot; \/ remakes &gt; 0
+====</code></pre><figcaption>1. TLA+ 写的模型（原文代码，未翻译）</figcaption></figure></details>
+<details><summary>2. 视图：读者在每个状态、每一步看到的文字</summary><figure><pre><code>export const title = &quot;an order of boba&quot;;
+
+export const state = (v) =&gt; v.order;
+
+const STEPS = {
+  YouOrder: &quot;you order&quot;,
+  YouPay: &quot;you pay&quot;,
+  PearlsRunOut: &quot;the pearls run out&quot;,
+  BaristaStarts: &quot;the barista starts [if there are pearls]&quot;,
+  MoneyBack: &quot;money back [if the pearls ran out]&quot;,
+  NumberCalled: &quot;your number is called&quot;,
+  WrongDrink: &quot;it&#x27;s the wrong drink&quot;,
+  YouPickItUp: &quot;you pick it up&quot;,
+  Done: &quot;you drink it&quot;,
+};
+
+export const step = (action) =&gt; STEPS[action];</code></pre><figcaption>2. 视图（<code>view.mjs</code>）：给每个状态和每一步配上读者看到的话</figcaption></figure></details>
+<details><summary>3. /statechart 写出的图（Mermaid）</summary><figure><pre><code>---
+title: &quot;an order of boba&quot;
+config:
+  state:
+    rankSpacing: 26
+    nodeSpacing: 60
+---
+stateDiagram-v2
+  s0: in line
+  s1: ordered
+  s2: paid
+  s3: being made
+  s4: ready
+  s5: refunded
+  s6: in your hand
+  [*] --&gt; s0
+  s0 --&gt; s1: you order
+  s1 --&gt; s2: you pay
+  s2 --&gt; s3: the barista starts [if there are pearls]
+  s3 --&gt; s4: your number is called
+  s2 --&gt; s5: money back [if the pearls ran out]
+  s4 --&gt; s3: it&#x27;s the wrong drink
+  s4 --&gt; s6: you pick it up</code></pre><figcaption>3. /statechart 写出的 Mermaid 状态图，外加一行给 pele 的排版设置</figcaption></figure></details>
+<p class="caption">原页每张图还有第 4、5 格：pele 的朴素排版（画就照着它来），以及把 pele 的方框和线用蓝色叠在成画上。这两格是原页内嵌的 SVG，本页不重绘，见上方原页截图或<a href="https://kevintngo.github.io/statechart-art/#made-order" rel="noopener">原页对应处</a>。</p>
+
+<h3 id="made-day">II 一天</h3>
+<p>TLC 走到了 8 个状态、9 步。</p>
+<ul><li>✓ 只有茶泡好、珍珠煮好之后才开门营业。<code>OpenOnlyWhenReady</code></li><li>✓ 只有店里没人时才收尾。<code>CloseOnlyWhenEmpty</code></li><li>✓ 拖完地才点钱箱。<code>CountAfterMopping</code></li></ul>
+
+<details><summary>1. 模型（TLA+，<code>Day.tla</code>）</summary><figure><pre><code>---- MODULE Day ----
+VARIABLES phase, teaReady, pearlsReady, crowd, mopped
+
+vars == &lt;&lt;phase, teaReady, pearlsReady, crowd, mopped&gt;&gt;
+
+Phases == {&quot;closed&quot;, &quot;brewing&quot;, &quot;boiling&quot;, &quot;quiet&quot;, &quot;busy&quot;, &quot;rush&quot;, &quot;cleaning&quot;, &quot;counting&quot;}
+
+Init ==
+  /\ phase = &quot;closed&quot;
+  /\ teaReady = FALSE
+  /\ pearlsReady = FALSE
+  /\ crowd = 0
+  /\ mopped = FALSE
+
+Unlock ==
+  /\ phase = &quot;closed&quot;
+  /\ phase&#x27; = &quot;brewing&quot;
+  /\ UNCHANGED &lt;&lt;teaReady, pearlsReady, crowd, mopped&gt;&gt;
+
+TeaSteeped ==
+  /\ phase = &quot;brewing&quot;
+  /\ phase&#x27; = &quot;boiling&quot;
+  /\ teaReady&#x27; = TRUE
+  /\ UNCHANGED &lt;&lt;pearlsReady, crowd, mopped&gt;&gt;
+
+DoorsOpen ==
+  /\ phase = &quot;boiling&quot;
+  /\ phase&#x27; = &quot;quiet&quot;
+  /\ pearlsReady&#x27; = TRUE
+  /\ UNCHANGED &lt;&lt;teaReady, crowd, mopped&gt;&gt;
+
+PeopleComeIn ==
+  /\ phase = &quot;quiet&quot;
+  /\ phase&#x27; = &quot;busy&quot;
+  /\ crowd&#x27; = 1
+  /\ UNCHANGED &lt;&lt;teaReady, pearlsReady, mopped&gt;&gt;
+
+SchoolLetsOut ==
+  /\ phase = &quot;busy&quot;
+  /\ phase&#x27; = &quot;rush&quot;
+  /\ crowd&#x27; = 2
+  /\ UNCHANGED &lt;&lt;teaReady, pearlsReady, mopped&gt;&gt;
+
+RushPasses ==
+  /\ phase = &quot;rush&quot;
+  /\ phase&#x27; = &quot;quiet&quot;
+  /\ crowd&#x27; = 0
+  /\ UNCHANGED &lt;&lt;teaReady, pearlsReady, mopped&gt;&gt;
+
+DoorsClose ==
+  /\ phase = &quot;quiet&quot;
+  /\ crowd = 0
+  /\ phase&#x27; = &quot;cleaning&quot;
+  /\ UNCHANGED &lt;&lt;teaReady, pearlsReady, crowd, mopped&gt;&gt;
+
+FloorMopped ==
+  /\ phase = &quot;cleaning&quot;
+  /\ phase&#x27; = &quot;counting&quot;
+  /\ mopped&#x27; = TRUE
+  /\ UNCHANGED &lt;&lt;teaReady, pearlsReady, crowd&gt;&gt;
+
+TillAddsUp ==
+  /\ phase = &quot;counting&quot;
+  /\ phase&#x27; = &quot;closed&quot;
+  /\ teaReady&#x27; = FALSE
+  /\ pearlsReady&#x27; = FALSE
+  /\ mopped&#x27; = FALSE
+  /\ UNCHANGED crowd
+
+Next ==
+  \/ Unlock \/ TeaSteeped \/ DoorsOpen \/ PeopleComeIn \/ SchoolLetsOut
+  \/ RushPasses \/ DoorsClose \/ FloorMopped \/ TillAddsUp
+
+Spec == Init /\ [][Next]_vars
+
+TypeOK ==
+  /\ phase \in Phases
+  /\ teaReady \in BOOLEAN
+  /\ pearlsReady \in BOOLEAN
+  /\ crowd \in {0, 1, 2}
+  /\ mopped \in BOOLEAN
+
+OpenOnlyWhenReady == phase \in {&quot;quiet&quot;, &quot;busy&quot;, &quot;rush&quot;} =&gt; teaReady /\ pearlsReady
+CloseOnlyWhenEmpty == phase \in {&quot;cleaning&quot;, &quot;counting&quot;} =&gt; crowd = 0
+CountAfterMopping == phase = &quot;counting&quot; =&gt; mopped
+====</code></pre><figcaption>1. TLA+ 写的模型（原文代码，未翻译）</figcaption></figure></details>
+<details><summary>2. 视图：读者在每个状态、每一步看到的文字</summary><figure><pre><code>export const title = &quot;a day at the shop&quot;;
+
+const PATH = {
+  closed: [&quot;closed&quot;],
+  brewing: [&quot;getting ready&quot;],
+  boiling: [&quot;getting ready&quot;],
+  quiet: [&quot;open&quot;, &quot;quiet&quot;],
+  busy: [&quot;open&quot;, &quot;busy&quot;],
+  rush: [&quot;open&quot;, &quot;a rush&quot;],
+  cleaning: [&quot;closing up&quot;],
+  counting: [&quot;closing up&quot;],
+};
+
+export const state = (v) =&gt; PATH[v.phase];
+
+const STEPS = {
+  Unlock: &quot;7 am&quot;,
+  TeaSteeped: &quot;tea steeped&quot;,
+  DoorsOpen: &quot;tea and pearls ready&quot;,
+  PeopleComeIn: &quot;people come in&quot;,
+  SchoolLetsOut: &quot;school&#x27;s out&quot;,
+  RushPasses: &quot;it calms down&quot;,
+  DoorsClose: &quot;9 pm [if quiet]&quot;,
+  FloorMopped: &quot;floor mopped&quot;,
+  TillAddsUp: &quot;till counted&quot;,
+};
+
+export const step = (action) =&gt; STEPS[action];</code></pre><figcaption>2. 视图（<code>view.mjs</code>）：给每个状态和每一步配上读者看到的话</figcaption></figure></details>
+<details><summary>3. /statechart 写出的图（Mermaid）</summary><figure><pre><code>---
+title: &quot;a day at the shop&quot;
+config:
+  state:
+    rankSpacing: 26
+    nodeSpacing: 34
+---
+stateDiagram-v2
+  direction TB
+  s0: closed
+  s1: getting ready
+  state &quot;open&quot; as s2 {
+    direction TB
+    s3: quiet
+    s4: busy
+    s5: a rush
+  }
+  s6: closing up
+  [*] --&gt; s0
+  s0 --&gt; s1: 7 am
+  s1 --&gt; s3: tea and pearls ready
+  s3 --&gt; s6: 9 pm [if quiet]
+  s3 --&gt; s4: people come in
+  s4 --&gt; s5: school&#x27;s out
+  s6 --&gt; s0: till counted
+  s5 --&gt; s3: it calms down</code></pre><figcaption>3. /statechart 写出的 Mermaid 状态图，外加一行给 pele 的排版设置</figcaption></figure></details>
+<p class="caption">原页每张图还有第 4、5 格：pele 的朴素排版（画就照着它来），以及把 pele 的方框和线用蓝色叠在成画上。这两格是原页内嵌的 SVG，本页不重绘，见上方原页截图或<a href="https://kevintngo.github.io/statechart-art/#made-day" rel="noopener">原页对应处</a>。</p>
+
+<h3 id="made-counter">III 同时进行</h3>
+<p>TLC 走到了 7 个状态、11 步。</p>
+<ul><li>✓ 锅里在煮珍珠时，店员绝不在做饮料。<code>NoDrinkWhileCooking</code></li></ul>
+
+<details><summary>1. 模型（TLA+，<code>Counter.tla</code>）</summary><figure><pre><code>---- MODULE Counter ----
+VARIABLES barista, pot
+
+vars == &lt;&lt;barista, pot&gt;&gt;
+
+Init ==
+  /\ barista = &quot;free&quot;
+  /\ pot = &quot;full&quot;
+
+OrderComesIn ==
+  /\ barista = &quot;free&quot;
+  /\ pot # &quot;cooking&quot;
+  /\ barista&#x27; = &quot;making&quot;
+  /\ UNCHANGED pot
+
+ShakenAndSealed ==
+  /\ barista = &quot;making&quot;
+  /\ barista&#x27; = &quot;calling&quot;
+  /\ UNCHANGED pot
+
+PickedUp ==
+  /\ barista = &quot;calling&quot;
+  /\ barista&#x27; = &quot;free&quot;
+  /\ UNCHANGED pot
+
+PearlsRunLow ==
+  /\ pot = &quot;full&quot;
+  /\ pot&#x27; = &quot;low&quot;
+  /\ UNCHANGED barista
+
+NewBatch ==
+  /\ pot = &quot;low&quot;
+  /\ barista = &quot;free&quot;
+  /\ pot&#x27; = &quot;cooking&quot;
+  /\ UNCHANGED barista
+
+ChewyAgain ==
+  /\ pot = &quot;cooking&quot;
+  /\ pot&#x27; = &quot;full&quot;
+  /\ UNCHANGED barista
+
+Next == OrderComesIn \/ ShakenAndSealed \/ PickedUp \/ PearlsRunLow \/ NewBatch \/ ChewyAgain
+
+Spec == Init /\ [][Next]_vars
+
+TypeOK ==
+  /\ barista \in {&quot;free&quot;, &quot;making&quot;, &quot;calling&quot;}
+  /\ pot \in {&quot;full&quot;, &quot;low&quot;, &quot;cooking&quot;}
+
+NoDrinkWhileCooking == barista # &quot;free&quot; =&gt; pot # &quot;cooking&quot;
+====</code></pre><figcaption>1. TLA+ 写的模型（原文代码，未翻译）</figcaption></figure></details>
+<details><summary>2. 视图：读者在每个状态、每一步看到的文字</summary><figure><pre><code>export const title = &quot;behind the counter&quot;;
+
+const BARISTA = { free: &quot;barista free&quot;, making: &quot;making a drink&quot;, calling: &quot;calling a number&quot; };
+const POT = { full: &quot;full of pearls&quot;, low: &quot;running low&quot;, cooking: &quot;cooking pearls&quot; };
+
+export const state = (v) =&gt; ({ &quot;the barista&quot;: BARISTA[v.barista], &quot;the pot&quot;: POT[v.pot] });
+
+const STEPS = {
+  OrderComesIn: &quot;an order comes in&quot;,
+  ShakenAndSealed: &quot;shaken and sealed&quot;,
+  PickedUp: &quot;picked up&quot;,
+  PearlsRunLow: &quot;pearls run low&quot;,
+  NewBatch: &quot;a new batch&quot;,
+  ChewyAgain: &quot;chewy again&quot;,
+};
+
+export const step = (action) =&gt; STEPS[action];</code></pre><figcaption>2. 视图（<code>view.mjs</code>）：给每个状态和每一步配上读者看到的话</figcaption></figure></details>
+<details><summary>3. /statechart 写出的图（Mermaid）</summary><figure><pre><code>---
+title: &quot;behind the counter&quot;
+config:
+  state:
+    rankSpacing: 24
+    nodeSpacing: 30
+---
+stateDiagram-v2
+  direction LR
+  state &quot;At the same time&quot; as all {
+    state &quot;the barista&quot; as r0 {
+      s0: barista free
+      s1: making a drink
+      s2: calling a number
+      [*] --&gt; s0
+      s0 --&gt; s1: an order comes in [unless cooking pearls]
+      s1 --&gt; s2: shaken and sealed
+      s2 --&gt; s0: picked up
+    }
+    --
+    state &quot;the pot&quot; as r1 {
+      s3: full of pearls
+      s4: running low
+      s5: cooking pearls
+      [*] --&gt; s3
+      s3 --&gt; s4: pearls run low
+      s4 --&gt; s5: a new batch [when barista free]
+      s5 --&gt; s3: chewy again
+    }
+  }</code></pre><figcaption>3. /statechart 写出的 Mermaid 状态图，外加一行给 pele 的排版设置</figcaption></figure></details>
+<p class="caption">原页每张图还有第 4、5 格：pele 的朴素排版（画就照着它来），以及把 pele 的方框和线用蓝色叠在成画上。这两格是原页内嵌的 SVG，本页不重绘，见上方原页截图或<a href="https://kevintngo.github.io/statechart-art/#made-counter" rel="noopener">原页对应处</a>。</p>
+
+<h3 id="made-bug">IV 珍珠 bug</h3>
+<p>TLC 走到了 36 个状态、90 步。</p>
+<ul><li>✗ 珍珠绝不在煮好 4 小时以后端出。<strong>被打破。</strong><code>NeverServeOldPearls</code></li></ul>
+<p><strong>TLC 找到的路径</strong></p>
+<pre><code>最短路径共 6 步：
+0. 刚煮好（just boiled）
+1. 过了一小时：Q 弹（chewy）
+2. 过了一小时：Q 弹（chewy）
+3. 过了一小时：开始变硬（getting firm）
+4. 过了一小时：太老了（too old）
+5. 来了一波高峰：太老了（too old）
+6. 端出一杯 [在高峰中]：端出了一杯老珍珠（an old cup is served）</code></pre>
+<details><summary>1. 模型（TLA+，<code>Bug.tla</code>）</summary><figure><pre><code>---- MODULE Bug ----
+EXTENDS Naturals
+VARIABLES age, batch, rush, served
+
+vars == &lt;&lt;age, batch, rush, served&gt;&gt;
+
+Init ==
+  /\ age = 0
+  /\ batch = &quot;in the pot&quot;
+  /\ rush = FALSE
+  /\ served = &quot;nothing yet&quot;
+
+AnHourPasses ==
+  /\ batch = &quot;in the pot&quot;
+  /\ age &lt; 4
+  /\ age&#x27; = age + 1
+  /\ UNCHANGED &lt;&lt;batch, rush, served&gt;&gt;
+
+ServeACup ==
+  /\ batch = &quot;in the pot&quot;
+  /\ served # &quot;an old cup&quot;
+  /\ (age &lt; 4 \/ rush)
+  /\ served&#x27; = IF age &lt; 4 THEN &quot;a fresh cup&quot; ELSE &quot;an old cup&quot;
+  /\ UNCHANGED &lt;&lt;age, batch, rush&gt;&gt;
+
+RushStarts ==
+  /\ ~rush
+  /\ rush&#x27; = TRUE
+  /\ UNCHANGED &lt;&lt;age, batch, served&gt;&gt;
+
+RushEnds ==
+  /\ rush
+  /\ rush&#x27; = FALSE
+  /\ UNCHANGED &lt;&lt;age, batch, served&gt;&gt;
+
+ThrowOut ==
+  /\ batch = &quot;in the pot&quot;
+  /\ age = 4
+  /\ batch&#x27; = &quot;thrown out&quot;
+  /\ UNCHANGED &lt;&lt;age, rush, served&gt;&gt;
+
+NewBatch ==
+  /\ batch = &quot;thrown out&quot;
+  /\ batch&#x27; = &quot;in the pot&quot;
+  /\ age&#x27; = 0
+  /\ UNCHANGED &lt;&lt;rush, served&gt;&gt;
+
+Next == AnHourPasses \/ ServeACup \/ RushStarts \/ RushEnds \/ ThrowOut \/ NewBatch
+
+Spec == Init /\ [][Next]_vars
+
+TypeOK ==
+  /\ age \in 0..4
+  /\ batch \in {&quot;in the pot&quot;, &quot;thrown out&quot;}
+  /\ rush \in BOOLEAN
+  /\ served \in {&quot;nothing yet&quot;, &quot;a fresh cup&quot;, &quot;an old cup&quot;}
+
+NeverServeOldPearls == served # &quot;an old cup&quot;
+====</code></pre><figcaption>1. TLA+ 写的模型（原文代码，未翻译）</figcaption></figure></details>
+<details><summary>2. 视图：读者在每个状态、每一步看到的文字</summary><figure><pre><code>export const title = &quot;the pearl bug&quot;;
+
+const AGE = [&quot;just boiled&quot;, &quot;chewy&quot;, &quot;chewy&quot;, &quot;getting firm&quot;, &quot;too old&quot;];
+
+export const state = (v) =&gt;
+  v.served === &quot;an old cup&quot; ? &quot;an old cup is served&quot;
+  : v.batch === &quot;thrown out&quot; ? &quot;thrown out&quot;
+  : AGE[v.age];
+
+const STEPS = {
+  AnHourPasses: &quot;an hour passes&quot;,
+  ServeACup: &quot;a cup is served&quot;,
+  RushStarts: &quot;a rush starts&quot;,
+  RushEnds: &quot;the rush ends&quot;,
+  ThrowOut: &quot;thrown out&quot;,
+  NewBatch: &quot;a new batch is boiled&quot;,
+};
+
+export const step = (action, from, to) =&gt;
+  action === &quot;ServeACup&quot; &amp;&amp; to.served === &quot;an old cup&quot; ? &quot;a cup is served [in a rush]&quot; : STEPS[action];</code></pre><figcaption>2. 视图（<code>view.mjs</code>）：给每个状态和每一步配上读者看到的话</figcaption></figure></details>
+<details><summary>3. /statechart 写出的图（Mermaid）</summary><figure><pre><code>---
+title: &quot;the pearl bug&quot;
+config:
+  state:
+    rankSpacing: 26
+    nodeSpacing: 40
+---
+stateDiagram-v2
+  state &quot;Legend&quot; as legend {
+    lg0: Breaks NeverServeOldPearls
+    lg1: Path to the NeverServeOldPearls bug
+  }
+  class lg0 breaks
+  class lg1 bugPath
+  s0: just boiled
+  s1: chewy
+  s2: getting firm
+  s3: too old
+  s4: thrown out
+  s5: an old cup is served
+  [*] --&gt; s0
+  s0 --&gt; s1: an hour passes
+  s1 --&gt; s1: an hour passes
+  s1 --&gt; s2: an hour passes
+  s2 --&gt; s3: an hour passes
+  s3 --&gt; s3: a rush starts
+  s3 --&gt; s4: thrown out
+  s3 --&gt; s5: a cup is served [in a rush]
+  s4 --&gt; s0: a new batch is boiled
+  classDef breaks fill:#ffecee,stroke:#e72e3b,stroke-width:2.5px,color:#cd2834
+  class s0 bugPath
+  class s1 bugPath
+  class s2 bugPath
+  class s3 bugPath
+  class s5 breaks
+  class s5 bugPath</code></pre><figcaption>3. /statechart 写出的 Mermaid 状态图，外加一行给 pele 的排版设置</figcaption></figure></details>
+<p class="caption">原页每张图还有第 4、5 格：pele 的朴素排版（画就照着它来），以及把 pele 的方框和线用蓝色叠在成画上。这两格是原页内嵌的 SVG，本页不重绘，见上方原页截图或<a href="https://kevintngo.github.io/statechart-art/#made-bug" rel="noopener">原页对应处</a>。</p>
+
+
+<p>模型用 <a href="https://github.com/tlaplus/tlaplus" rel="noopener">TLC</a>（MIT）检查。图由 <a href="https://pele.run" rel="noopener">pele</a>（MIT）排版。字体是 Kevin Serif 和 Kevin Sans，描自 A. V. Hershey 1967 年的字体（公有领域）。代码、模型和画都在 GitHub 上，以 MIT 许可发布。</p>
+
+<h2 id="notes">核实与注记（本站）</h2>
+<ul>
+<li><strong>作者 ✅</strong>：仓库全部 6 次提交的作者都署名“Kevin T. Ngo”（GitHub 账号 kevintngo），LICENSE 写 “Copyright (c) 2026 Kevin T. Ngo”，原页 <code>twitter:creator</code> 为 @kevin_t_ngo。个人站 kevintngo.com（自称 Creative technologist，作品为 2026 年的短片、生成艺术和小游戏）链接到同一个 X 账号，并使用同一套 Kevin Serif / Kevin Sans 字体 → 同一人 ⚠️ 推断（证据较强）。</li>
+<li><strong>时间与热度</strong>：仓库建于 2026-10-31 04:00（UTC+8），最后推送 2026-10-31 15:08（UTC+8）；本站核对时（约 15:45 UTC+8）★41、6 个 fork，无 issue。</li>
+<li><strong>AI 协作 ✅</strong>：每一次提交信息都带 <code>Co-Authored-By: Claude Opus 5.5</code>。也就是说，这套“用代码手绘”的工具链是作者和编码智能体一起写的，原页没有特别说明这一点。</li>
+<li><strong><code>/statechart</code> 从哪来 ⚠️</strong>：原页和 README 都没写出处。经核，它是 <a href="https://github.com/cursor/plugins/tree/main/pstack" rel="noopener">cursor/plugins 里的 pstack 插件</a>中的一个 Skill（作者 Lauren Tan / poteto，MIT，v0.15.36），说明为“检查一个 TLA+ 模型，把用户看到的东西画成 Mermaid 状态图，标出每个违反规则的状态，并给出通往每一个的最短路径”。README 里的命令路径是 <code>~/.claude/skills/statechart/…</code>，说明作者把它当 Claude Code Skill 安装 ⚠️ 推断。另一处旁证：April Zhu 的 Field Notes 页写着“Rules checked with /statechart by poteto”。</li>
+<li><strong>pele</strong>：pele.run 自述为零依赖的 Mermaid→SVG 渲染器，“为 Obsidian 开发”，支持 Mermaid 12.1.0 的全部图种，体积和速度对比数字为官方自报 ⚠️ 未核实。</li>
+<li><strong>本站复算 ✅（不是跑 TLC）</strong>：本机没有 Java，所以没有运行 TLC 本身。本站把四个 TLA+ 模型逐条改写成 Python，从初始状态做广度优先穷举：可达状态数 13 / 8 / 7 / 36 与原页完全一致；“步数”在把自环也计入时（订单图里终态的 <code>Done</code> 停顿、珍珠 bug 里重复端出鲜杯）为 17 / 9 / 11 / 90，也一致；<code>NeverServeOldPearls</code> 的最短反例正好 6 步，路径与原页相同；其余规则在全部可达状态里都成立。</li>
+<li><strong>一个小细节</strong>：Order 模型里还定义了第三条规则 <code>NoDrinkWithoutPearls</code>（在做的饮料要么还有珍珠、要么是重做），但原页只列了两条。本站复算它同样成立；它是否写进了 TLC 的配置（<code>.cfg</code>），本站没有核对 ⚠️。</li>
+<li><strong>同仓库新作</strong>：2026-10-31 14:35（UTC+8）提交了姊妹页 <a href="https://kevintngo.github.io/statechart-art/one-becomes-two/" rel="noopener">One becomes two</a>：把一个细胞的分裂周期画成一面竖向滚动的状态图墙（提交信息称 61 个状态、77 步，本站未核 ⚠️）；最后一次提交还加了配乐和“方形滚动视频”渲染器（本站未下载任何视频）。本页以《The business of boba》为中心。</li>
+<li><strong>下游</strong>：April Zhu 的 Field Notes 页注明其“钢笔、铅笔和小人”改编自 statechart-art——本站收录过她的 <a href="../april-zhu-openhouse-skill/">Open House skill</a>。</li>
+<li><strong>推广</strong>：未见付费、联盟链接或 utm；纯个人作品页。</li>
+</ul>
+
+<h2 id="readme">附录一：README 全文中译</h2>
+<p class="caption">译自仓库 README.md（MIT）。命令与路径保留原文。</p>
+<h3>珍珠奶茶店的生意</h3>
+<p>四张关于经营一家珍珠奶茶店的状态图，由代码用钢笔和彩色铅笔“手绘”。每张图都是一个由 TLC 检查的小型 TLA+ 模型，每张的画法都不一样：红线串起的点单小票、一个店面、并排的两张卡片，以及一个用红色描出的 bug。</p>
+<p>在线观看：<a href="https://kevintngo.github.io/statechart-art/" rel="noopener">https://kevintngo.github.io/statechart-art/</a></p>
+<div class="table-wrap"><table><thead><tr><th></th><th>图版</th><th>图的种类</th></tr></thead><tbody>
+<tr><td>I</td><td>一张订单，从排队到你手里</td><td>带分支和回环的平面图</td></tr>
+<tr><td>II</td><td>一天，店里，早 7 点到晚 9 点</td><td>父状态</td></tr>
+<tr><td>III</td><td>同时进行，店员与锅</td><td>同时运行的两个区域</td></tr>
+<tr><td>IV</td><td>珍珠 bug，TLC 发现老珍珠是怎么被端出去的</td><td>一条会被打破的规则，以及通往它的路</td></tr>
+</tbody></table></div>
+<p>每张图版都是正方形，大小适合在手机上看。给 x.com 用的图片在 <code>docs/img/</code>。</p>
+<h3>怎么做的</h3>
+<ol>
+<li><strong>模型。</strong>一份 TLA+ 规格写下店里可能发生什么，它的配置文件列出必须成立的规则。</li>
+<li><strong>图。</strong>/statechart Skill 用 TLA+ 模型检查器 TLC 检查规格：从模型能到达的每个状态出发走每一步，并在每个状态里检查每条规则。它用 Mermaid 写出状态图，使用 <code>view.mjs</code> 给每个状态和每一步的说法，并写一份报告，列出哪些规则成立、哪些被打破。</li>
+<li><strong>排版。</strong>pele 为图排版，并按 Kevin Serif Bold 测量每个词。<code>layout.mmd</code> 是加上了 pele 间距和方向设置的图。</li>
+<li><strong>作画。</strong>每张图版一个脚本，在纸上用钢笔和彩铅画出 pele 的排版，并在周围画上奶茶店。</li>
+</ol>
+<h3>重新画出来</h3>
+<p>作画需要 Node（制作时用的是 Node 24）。先安装一次：</p>
+<pre><code>cd tools &amp;&amp; npm install</code></pre>
+<p>画一张图版：</p>
+<pre><code>node business/art/order.js</code></pre>
+<p>图版脚本是 <code>order.js</code>、<code>day.js</code>、<code>counter.js</code> 和 <code>bug.js</code>。每个脚本输出 <code>business/out/&lt;plate&gt;.png</code>（2160 px）、<code>&lt;plate&gt;-x.jpg</code>（2048 px，给 x.com）、<code>&lt;plate&gt;-preview.png</code>（1080 px），以及 <code>&lt;plate&gt;-pele.json</code>——pele 的方框和线在图版上的实际位置，网站据此用蓝色把它们叠在图上。加 <code>--fast</code> 会以一半尺寸画出同样的文件，方便快速预览。作画用了固定随机种子，同样的代码画出同样的画。</p>
+<p>四张图版画完后，画图标和分享卡：</p>
+<pre><code>node business/art/cards.js</code></pre>
+<p>把网站构建到 <code>docs/</code>，在 http://localhost:5297 查看：</p>
+<pre><code>node site/build.js
+node site/serve.mjs</code></pre>
+<p><code>SITE</code> 设定分享链接里的地址，<code>REPO</code> 设定指向代码的链接：</p>
+<pre><code>SITE=https://example.com/boba/ REPO=https://github.com/you/boba node site/build.js</code></pre>
+<p>要检查一个模型并重新写出它的图，运行 /statechart Skill。它只写入新的或空的文件夹，所以给它一个新文件夹，再和 <code>chart/</code> 比较：</p>
+<pre><code>~/.claude/skills/statechart/scripts/statechart business/order/Order.tla --view business/order/view.mjs --out business/order/chart-new</code></pre>
+<p>bug 模型会以退出码 1 结束，因为它的规则被打破了——这正是预期的。图有变化时，把它复制进 <code>layout.mmd</code>，并保留 <code>config</code> 和 <code>direction</code> 这两行。</p>
+<h3>文件</h3>
+<div class="table-wrap"><table><thead><tr><th>路径</th><th>是什么</th></tr></thead><tbody>
+<tr><td><code>business/&lt;chart&gt;/</code></td><td>模型（<code>.tla</code> 和 <code>.cfg</code>）、给它配文字的视图（<code>view.mjs</code>）、/statechart 写出的图（<code>chart/</code>），以及 <code>layout.mmd</code></td></tr>
+<tr><td><code>business/art/</code></td><td>每张图版一个脚本、店里的物件（<code>shop.js</code>），以及图标和分享卡（<code>cards.js</code>）</td></tr>
+<tr><td><code>tools/lib/</code></td><td>钢笔彩铅的图版、字体、小人，以及把 pele 的排版变成小票、木牌和卡片的状态图绘制器</td></tr>
+<tr><td><code>tools/kit/</code></td><td>干性画材：纸、铅笔、钢笔和蜡笔，逐像素落笔</td></tr>
+<tr><td><code>tools/fonts/</code></td><td>Kevin Serif 和 Kevin Sans</td></tr>
+<tr><td><code>site/</code></td><td>网站的构建、样式和一个本地服务器</td></tr>
+<tr><td><code>docs/</code></td><td>构建好的网站，由 GitHub Pages 托管</td></tr>
+</tbody></table></div>
+<h3>鸣谢</h3>
+<p>模型由 <a href="https://github.com/tlaplus/tlaplus" rel="noopener">TLC</a>（MIT）检查。图由 <a href="https://pele.run" rel="noopener">pele</a>（MIT）排版，用 <a href="https://github.com/Brooooooklyn/canvas" rel="noopener">@napi-rs/canvas</a>（MIT）绘制。字体是 Kevin Serif 和 Kevin Sans：A. V. Hershey 1967 年的字形（公有领域），由一支模拟的笔写出。</p>
+<h3>许可证</h3>
+<p>MIT，适用于这里的一切：代码、模型、画和字体。见 <a href="https://github.com/kevintngo/statechart-art/blob/main/LICENSE" rel="noopener">LICENSE</a>。</p>
+
+<h2 id="en">附录二：英文原文</h2>
+<details><summary>展开原页英文正文（代码块同正文，略）</summary>
+<pre lang="en">The business of boba · statechart art
+
+statechart art
+
+The business of boba
+
+Four statecharts about running a boba shop, one for each kind of chart /statechart makes: a flat chart, a parent state, two regions at the same time, and a rule that breaks. Each one is a small TLA+ model checked by TLC, laid out by pele, and drawn by hand in pen and coloured pencil, by code.
+
+The code, the models and the drawings are on GitHub: kevintngo/statechart-art
+
+[Image: Pen and coloured pencil drawing titled An order, from the line to your hand. The statechart is drawn as paper order tickets pinned up with coloured pushpins and joined by red thread: in line; you order, to ordered; you pay, to paid. From paid, the barista starts if there are pearls, to being made, or money back if the pearls ran out, to refunded. From being made, your number is called, to ready. From ready, it is the wrong drink goes back to being made, and you pick it up leads to in your hand. Around the chart: three customers waiting in line, a cashier at a counter with a till showing 5.50 and coins, a barista shaking a drink beside a service bell and a finished cup, a jar of pearls labelled sold out with a coin on a shelf, and a person with short wavy black hair, a beige polo and an iced coffee on their head holding up a cup of boba milk tea.]
+
+I
+An order
+from the line to your hand
+A flat chart with a branch and a loop. Each state is an order ticket pinned up, and each step is a red thread between the pins. The words for each step sit beside its thread.
+
+[Image: Pen and coloured pencil drawing titled A day, at the shop, 7 am to 9 pm. The statechart is drawn as a shop front. Closed, getting ready and closing up are wooden signs. Open is the shop window under a striped awning, with quiet, busy and a rush as notes taped to the glass. At 7 am, closed goes to getting ready; tea and pearls ready leads into open, to quiet; people come in, to busy; school is out, to a rush; it calms down, back to quiet; at 9 pm, if quiet, to closing up; till counted, back to closed. Around the chart: a sunrise, a kettle and a pot of pearls on a stove on a shelf, a moon and stars, a mop in a bucket, a morning glory vine and a planter of flowers under the window.]
+
+II
+A day
+at the shop, 7 am to 9 pm
+A chart with a parent state. Open is a parent state with three states inside, so it is drawn as the shop window: quiet, busy and a rush are notes taped to the glass, and the other states are wooden signs.
+
+[Image: Pen and coloured pencil drawing titled Two at once, the barista and the pot. Under a menu board, the statechart shows two regions side by side inside a frame marked at the same time. The barista: barista free; an order comes in, unless cooking pearls, to making a drink; shaken and sealed, to calling a number; picked up, back to barista free. The pot: full of pearls; pearls run low, to running low; a new batch, when barista free, to cooking pearls; chewy again, back to full of pearls. Each condition is coloured like the region it names. Below, a barista shakes a drink behind the counter beside two finished cups and a pager, and a pot of pearls and a kettle sit on a stove.]
+
+III
+Two at once
+the barista and the pot
+Two regions, at the same time. The barista and the pot each move on their own, side by side. A step that waits on the other region says so in brackets, coloured like the region it waits on.
+
+[Image: Pen and coloured pencil drawing titled The pearl bug, TLC finds how old pearls get served. A card states the rule: never serve pearls more than 4 hours old. The statechart: just boiled; an hour passes, to chewy, where more hours pass; an hour passes, to getting firm; an hour passes, to too old, where a rush starts. From too old, thrown out leads to thrown out, and a new batch is boiled leads back to just boiled; but a cup is served in a rush leads to an old cup is served, which is stamped rule broken. The path TLC found, from just boiled through too old to the old cup, is traced in red. Around the chart: a ladybug, an hourglass, a magnifying glass over a cup of old pearls, a pot of pearls on a stove and a jar of old pearls.]
+
+IV
+The pearl bug
+TLC finds how old pearls get served
+A rule that breaks, and the path to it. TLC finds a way to break the rule: in a rush, nobody checks how old the pearls are. The chart marks the state that breaks it, and the shortest path to it is traced in red.
+
+How they were made
+
+What TLC is
+
+Each chart starts as a model in TLA+, a language for saying how something works one step at a time: where it starts, and which steps can come next. TLC is the program that checks a TLA+ model.
+
+A test tries a few cases. TLC tries all of them. From the first state it takes every step that can happen, then every step after those, until it has seen every state the model can reach. In each state it checks the rules, such as &quot;every drink being made has been paid for&quot;. If a rule can break, TLC finds the shortest list of steps that breaks it. That&#x27;s the red path on the pearl bug: in a rush, nobody checks how old the pearls are.
+
+Model it. A few lines of TLA+ say what can happen in the shop, and which rules must always hold.
+
+Check it. /statechart runs TLC over every state the model can reach and checks each rule in each one. When a rule breaks, it finds the shortest path to the break.
+
+Choose the words. A view says what the reader sees in each state and each step. It picks the kind of chart too: a word for a flat chart, a list for parent states, an object for regions.
+
+Lay it out. pele lays out the Mermaid chart, measuring every word in the letters the drawing uses.
+
+Draw it. A program draws pele&#x27;s boxes and lines as things from a boba shop, tickets, signs, notes and cards, in a simulated pen and coloured pencils, and fills the space around them with the shop. Words sit on clean paper, and arrows stop short of what they point at. The last picture for each plate below puts pele&#x27;s boxes and lines, in blue, over the finished drawing.
+
+I An order
+
+TLC reached 13 states and 17 steps.
+
+Every drink being made, ready or handed over has been paid for. PaidForEveryDrink
+A refunded order has its money back. RefundsGiveMoneyBack
+
+[code: The model, Order.tla — see the code blocks above]
+1. The model, in TLA+
+
+[code: The view for An order — see the code blocks above]
+2. The view: the reader&#x27;s words for each state and step
+
+[code: The Mermaid chart for An order — see the code blocks above]
+3. The chart /statechart wrote, with a line of layout for pele
+
+4. pele&#x27;s plain layout, which the drawing follows
+
+5. pele&#x27;s boxes and lines, in blue, on the drawing
+
+II A day
+
+TLC reached 8 states and 9 steps.
+
+The shop is open only once the tea is brewed and the pearls are boiled. OpenOnlyWhenReady
+The shop closes up only when no one is inside. CloseOnlyWhenEmpty
+The till is counted only after the floor is mopped. CountAfterMopping
+
+[code: The model, Day.tla — see the code blocks above]
+1. The model, in TLA+
+
+[code: The view for A day — see the code blocks above]
+2. The view: the reader&#x27;s words for each state and step
+
+[code: The Mermaid chart for A day — see the code blocks above]
+3. The chart /statechart wrote, with a line of layout for pele
+
+4. pele&#x27;s plain layout, which the drawing follows
+
+5. pele&#x27;s boxes and lines, in blue, on the drawing
+
+III Two at once
+
+TLC reached 7 states and 11 steps.
+
+The barista is never making a drink while a batch of pearls is cooking. NoDrinkWhileCooking
+
+[code: The model, Counter.tla — see the code blocks above]
+1. The model, in TLA+
+
+[code: The view for Two at once — see the code blocks above]
+2. The view: the reader&#x27;s words for each state and step
+
+[code: The Mermaid chart for Two at once — see the code blocks above]
+3. The chart /statechart wrote, with a line of layout for pele
+
+4. pele&#x27;s plain layout, which the drawing follows
+
+5. pele&#x27;s boxes and lines, in blue, on the drawing
+
+IV The pearl bug
+
+TLC reached 36 states and 90 steps.
+
+Pearls are never served more than 4 hours after boiling. It breaks. NeverServeOldPearls
+
+The path TLC found
+
+[code: The path TLC found to the broken rule — see the code blocks above]
+
+[code: The model, Bug.tla — see the code blocks above]
+1. The model, in TLA+
+
+[code: The view for The pearl bug — see the code blocks above]
+2. The view: the reader&#x27;s words for each state and step
+
+[code: The Mermaid chart for The pearl bug — see the code blocks above]
+3. The chart /statechart wrote, with a line of layout for pele
+
+4. pele&#x27;s plain layout, which the drawing follows
+
+5. pele&#x27;s boxes and lines, in blue, on the drawing
+
+The models are checked with TLC (MIT). The charts are laid out by pele (MIT). The letters are Kevin Serif and Kevin Sans, traced from A. V. Hershey&#x27;s 1967 fonts (public domain). The code, the models and the drawings are on GitHub, under the MIT license.</pre>
+</details>
+<details><summary>展开 README.md 英文原文</summary>
+<pre lang="en"># The business of boba
+
+Four statecharts about running a boba shop, drawn by hand in pen and coloured pencil, by code. Each chart is a small
+TLA+ model that TLC checks, and each one is drawn a different way: order tickets on red thread, a shop front, two
+cards side by side, and a bug traced in red.
+
+See them at https://kevintngo.github.io/statechart-art/
+
+| | plate | chart |
+|---|---|---|
+| I | An order, from the line to your hand | a flat chart with a branch and a loop |
+| II | A day, at the shop, 7 am to 9 pm | a parent state |
+| III | Two at once, the barista and the pot | two regions at the same time |
+| IV | The pearl bug, TLC finds how old pearls get served | a rule that breaks, and the path to it |
+
+Each plate is a square, sized to read on a phone. The images for x.com are in `docs/img/`.
+
+## How they are made
+
+1. **Model.** A TLA+ spec says what can happen in the shop, and its config lists the rules that must hold.
+2. **Chart.** The /statechart skill checks the spec with TLC, the TLA+ model checker: it takes every step from every
+   state the model can reach and checks each rule in each one. It writes the chart in Mermaid, in the words that
+   `view.mjs` gives each state and step, and a report of the rules that hold and the rules that break.
+3. **Lay out.** pele lays the chart out and measures every word in Kevin Serif Bold. `layout.mmd` is the chart with
+   pele&#x27;s spacing and direction added.
+4. **Draw.** A script for each plate draws pele&#x27;s layout in pen and coloured pencil on paper, with the shop around it.
+
+## Make them again
+
+The drawing needs Node (made with Node 24). Install it once:
+
+```bash
+cd tools &amp;&amp; npm install
+```
+
+Draw a plate:
+
+```bash
+node business/art/order.js
+```
+
+The plate scripts are `order.js`, `day.js`, `counter.js` and `bug.js`. Each one writes `business/out/&lt;plate&gt;.png`
+(2160 px), `&lt;plate&gt;-x.jpg` (2048 px, for x.com), `&lt;plate&gt;-preview.png` (1080 px), and `&lt;plate&gt;-pele.json`, pele&#x27;s
+boxes and lines where the plate puts them, which the site draws in blue over the plate. With `--fast`, it draws the same
+files at half the size, for a quick look. The drawing is seeded, so the same code draws the same picture.
+
+After the four plates, draw the icons and the share card:
+
+```bash
+node business/art/cards.js
+```
+
+Build the site into `docs/`, and look at it at http://localhost:5297:
+
+```bash
+node site/build.js
+node site/serve.mjs
+```
+
+`SITE` sets the address in the share links, and `REPO` sets the link to the code:
+
+```bash
+SITE=https://example.com/boba/ REPO=https://github.com/you/boba node site/build.js
+```
+
+To check a model and write its chart again, run the /statechart skill. It writes only to a new or empty folder, so
+give it a new one and compare that with `chart/`:
+
+```bash
+~/.claude/skills/statechart/scripts/statechart business/order/Order.tla --view business/order/view.mjs --out business/order/chart-new
+```
+
+The bug model exits with 1, because its rule breaks, as it should. When a chart changes, copy it into `layout.mmd`
+and keep the `config` and `direction` lines.
+
+## Files
+
+| path | what it is |
+|---|---|
+| `business/&lt;chart&gt;/` | the model (`.tla` and `.cfg`), the view that words it (`view.mjs`), the chart /statechart wrote (`chart/`), and `layout.mmd` |
+| `business/art/` | a script for each plate, the things in the shop (`shop.js`), and the icons and share card (`cards.js`) |
+| `tools/lib/` | the plate in pen and coloured pencil, the letters, the people, and the chart drawer that turns pele&#x27;s layout into tickets, signs and cards |
+| `tools/kit/` | the dry media: paper, pencil, pen and crayon, laid down pixel by pixel |
+| `tools/fonts/` | Kevin Serif and Kevin Sans |
+| `site/` | the site&#x27;s build, its style, and a local server |
+| `docs/` | the built site, served by GitHub Pages |
+
+## Credits
+
+The models are checked by [TLC](https://github.com/tlaplus/tlaplus) (MIT). The charts are laid out by
+[pele](https://pele.run) (MIT) and drawn with [@napi-rs/canvas](https://github.com/Brooooooklyn/canvas) (MIT). The
+letters are Kevin Serif and Kevin Sans, A. V. Hershey&#x27;s 1967 letters (public domain) written by a simulated pen.
+
+## License
+
+MIT, for everything here: the code, the models, the drawings and the fonts. See [LICENSE](LICENSE).
+</pre>
+</details>
+
+<h2 id="license">附录三：许可证原文</h2>
+<details><summary>展开 LICENSE（MIT）</summary>
+<pre lang="en">MIT License
+
+Copyright (c) 2026 Kevin T. Ngo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原作《The business of boba》（statechart art）© 2026 Kevin T. Ngo，MIT 许可（代码、模型、画与字体）；本页的正文与 README 中译、四张图版与分享图（转 webp）、原页截图均依 MIT 许可转载。TLC（MIT）、pele（MIT）、/statechart（pstack，© Lauren Tan，MIT）为各自作者所有。原页：<a href="https://kevintngo.github.io/statechart-art/" rel="noopener">kevintngo.github.io/statechart-art</a>；源码：<a href="https://github.com/kevintngo/statechart-art" rel="noopener">github.com/kevintngo/statechart-art</a>。翻译、复算与注记由 Grok Bot 整理。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://kevintngo.github.io/statechart-art/" rel="noopener">kevintngo.github.io/statechart-art/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

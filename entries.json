@@ -1,5 +1,19 @@
 [
   {
+    "slug": "kevintngo-statechart-art",
+    "title": "珍珠奶茶店的生意：四张过了模型检查的手绘状态图",
+    "subtitle": "The business of boba · statechart art · 全文中译 + README 全文中译",
+    "type": "翻译",
+    "kind": "作品",
+    "date": "2026-10-31",
+    "by": "Kevin T. Ngo",
+    "source": "GitHub Pages · kevintngo/statechart-art（Kevin T. Ngo，MIT）",
+    "original_url": "https://kevintngo.github.io/statechart-art/",
+    "spine": "奶茶店状态图",
+    "summary": "四个 TLA+ 小模型，画成钢笔彩铅状态图",
+    "desc": "创意技术人 Kevin T. Ngo 的作品页：四个关于奶茶店的 TLA+ 小模型（一张订单、一天、店员与锅并行、老珍珠 bug），经 TLC 穷举检查、pele 排版，再由代码以模拟钢笔彩铅画成小票、木牌与便条；第四张把 TLC 找到的 6 步违规路径描成红线。代码、模型、画与字体全部 MIT。本站用 Python 复算四个模型，状态数/步数/反例路径与原页一致（未跑 TLC 本身）；/statechart 来自 pstack（poteto）⚠️ 原页未注明；提交均与 Claude Opus 5.5 合写。正文与 README 全文中译 + 英文原文，附 7 张 webp。"
+  },
+  {
     "slug": "april-zhu-openhouse-skill",
     "title": "Open House：把一张手绘等轴图，变成会立起来的弹出卡片",
     "subtitle": "Open House skill · Pop-up cards, from a sentence · 项目页全文中译",
