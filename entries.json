@@ -1,5 +1,19 @@
 [
   {
+    "slug": "elvar-teardown",
+    "title": "teardown：把任何机器变成一台可以拆开的 3D 模拟器",
+    "subtitle": "teardown · A Claude Code skill that turns any machine into a 3D simulator you can take apart · 项目导读 + 长文 / README / SKILL.md 全文中译",
+    "type": "导读",
+    "date": "2026-10-31",
+    "source": "Elvar @elvar_official · GitHub elvarofficial/teardown（MIT）",
+    "original_url": "https://github.com/elvarofficial/teardown",
+    "desc": "Elvar 开源的 Claude Code Skill teardown（MIT，基于 whaleyxbt/claude-motion）：一个纯函数模型驱动零件、仪表与标签，单个约 800 KB 的离线 HTML 页面可绕转、剖切、单独拆出每个子系统、无人操作时自动巡游，并能逐帧录成 60 fps 视频、配同步程序化音效。自带 V8、塞斯纳 337 起落架、Strandbeest 三台。附 Elvar 发布长文全文中译（9 段提示词英中对照）与 README、SKILL.md 全文中译；⚠️ 3.79M 浏览等数字未核实，visual-learning.app 为作者自站，本站未实跑。",
+    "spine": "机器拆解 3D 模拟器",
+    "summary": "Claude Skill：把机器造成可拆开的 3D 模拟器",
+    "kind": "项目",
+    "by": "Elvar"
+  },
+  {
     "slug": "kevintngo-statechart-art",
     "title": "珍珠奶茶店的生意：四张过了模型检查的手绘状态图",
     "subtitle": "The business of boba · statechart art · 全文中译 + README 全文中译",
