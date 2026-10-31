@@ -1,5 +1,19 @@
 [
   {
+    "slug": "hyz317-hairdeck",
+    "title": "HairDeck：一张角色图，生成一套能动起来的发片",
+    "subtitle": "HairDeck · Animation-Ready Stylized Hair Cards from a Single Image · 项目导读 + README 全文中译",
+    "type": "导读",
+    "kind": "项目",
+    "date": "2026-11-01",
+    "by": "何宇泽 等",
+    "source": "清华 / CMU / 港中文 · GitHub hyz317/HairDeck（Apache-2.0）",
+    "original_url": "https://github.com/hyz317/HairDeck",
+    "spine": "单图生成二次元发片",
+    "summary": "一张图生成带弹簧骨骼的发片，导出 VRM",
+    "desc": "清华、CMU、港中文团队开源的 HairDeck（代码与权重 Apache-2.0，arXiv 2610.40599）导读：输入一张角色图，生成逐片独立、带 UV 的风格化发片，并同时生成驱动头发摆动的弹簧骨骼链，可导出 GLB 或 VRM。每片发片一个 token，集合扩散 Transformer 一次生成整套发型。附 README 全文中译、英文原文与许可证。⚠️ 对比基线 CHARM 出自同一团队，指标均为自报；本站未实跑。"
+  },
+  {
     "slug": "slashui-17-motion-assets",
     "title": "17 个动效创作素材站：挑素材，交给 Claude 写动画",
     "subtitle": "17 asset sources for your own motion studio · 原帖照录 + 逐站许可核对",

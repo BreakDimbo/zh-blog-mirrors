@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HairDeck：一张图生成能动起来的二次元发片 · 项目导读 + README 全文中译</title>
+<meta name="description" content="清华、CMU、港中文团队的 HairDeck（Apache-2.0）导读：输入一张角色图，生成由一片片独立发片组成、带逐片 UV 的风格化三维发型，并同时生成驱动头发摆动的弹簧骨骼链，可导出 GLB 或 VRM。每片发片一个 token，用集合扩散 Transformer 一次生成整套发型。附 README 全文中译、英文原文与许可证。" />
+<meta property="og:image" content="images/video-poster.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-01">2026.11.01</time></p>
+<h1 class="za-title">HairDeck：一张角色图，生成一套能动起来的发片</h1>
+<p class="za-sub" lang="en" data-za-gen>HairDeck · Animation-Ready Stylized Hair Cards from a Single Image · 项目导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · 清华 / CMU / 港中文 · GitHub hyz317/HairDeck（Apache-2.0）</span><span>收录 · 2026-11-01</span><span><a href="https://github.com/hyz317/HairDeck" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/hyz317/HairDeck" rel="noopener">github.com/hyz317/HairDeck</a>（何宇泽 Yuze He、魏一翔 Yixiang Wei 等，清华大学 / 卡内基梅隆大学 / 香港中文大学；代码与权重 Apache-2.0；本页对照仓库提交 <code>07a7370</code>，2026-10-31 23:17 UTC+8）· 论文：<a href="https://arxiv.org/abs/2610.40599" rel="noopener">arXiv:2610.40599</a>（2026-10-29 提交）· 项目页：<a href="https://hyzcluster.github.io/HairDeck" rel="noopener">hyzcluster.github.io/HairDeck</a> · 模型：<a href="https://huggingface.co/hyz317/HairDeck" rel="noopener">Hugging Face hyz317/HairDeck</a> · 在线演示：<a href="https://huggingface.co/spaces/hyz317/HairDeck" rel="noopener">HF Space</a> · 如需撤下：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>游戏和虚拟形象里的二次元头发，通常不是一整块网格，而是美术师一片片摆上去的“发片”（hair cards），再挂上弹簧骨骼让它随动作摆动。HairDeck 做的事情是：给它<strong>一张角色图</strong>，它直接生成这样一套<strong>逐片独立、带 UV 的发片</strong>，外加<strong>驱动它们的弹簧骨骼链</strong>，导出成 GLB，或绑到自带的身体上导出 VRM 角色。关键想法只有一句：发型是一组没有先后顺序的发片，那就把每片发片编码成一个 token，用集合扩散 Transformer 一次把整组发片生成出来。本页以项目为中心：先讲它是什么、怎么工作、数字从哪来、怎么跑起来、我们核过什么，最后附 README 全文中译、英文原文与许可证。</div>
+
+<figure><img src="images/teaser.webp" alt="HairDeck 题图：蜂巢状排列的彩色六边形小隔间，每格里有一张二次元角色插画和放在白色头模上的生成发型；中央放大的一格是一位蓝发女仆角色的插画与对应的蓝色长发三维发型，墙上写着 Hair Deck" loading="lazy" width="1280" height="583"><figcaption>项目题图（Hugging Face 仓库 <code>assets/teaser.jpg</code>）：每个格子是“输入插画 + 生成的发片发型”。</figcaption></figure>
+
+<nav class="toc"><ol>
+<li><a href="#what">它是什么</a></li>
+<li><a href="#how">怎么工作：一片发片，一个 token</a></li>
+<li><a href="#results">结果与数字</a></li>
+<li><a href="#run">怎么跑起来</a></li>
+<li><a href="#license-notes">许可与第三方依赖</a></li>
+<li><a href="#notes">核实与注记</a></li>
+<li><a href="#readme">附录一：README 全文中译</a></li>
+<li><a href="#original">附录二：README 英文原文</a></li>
+<li><a href="#license">附录三：许可证原文</a></li>
+</ol></nav>
+
+<h2 id="what">它是什么</h2>
+<ul>
+<li><strong>要解决的问题：</strong>风格化角色（动漫、手游、VTuber 形象）的头发由“发片”构成——美术师手工摆放的一条条带状面片，几何本身就是看到的头发，再用弹簧骨骼（spring bones）驱动摆动。论文摘要指出，现有基于图像的方法要么生成写实发丝，要么生成一整块融合的网格；而此前唯一能生成风格化发片的方法 CHARM，是把发型当成一长串控制点<strong>自回归</strong>地逐个吐出来。</li>
+<li><strong>HairDeck 的回答：</strong>发型是一组<strong>无序</strong>的、美术意义上的基本单元，所以应该“作为一个集合整体生成”——每片发片压成一个 token，集合扩散 Transformer 对所有发片同时去噪。</li>
+<li><strong>产出：</strong>独立的发片（不是融成一块）、每片自带 UV 坐标与发色；一组弹簧骨骼链，经几何蒙皮绑到发片上；可导出 <code>.glb</code>（带或不带头部代理），也可接到自带的角色身体上导出 VRM 0.x 角色，并渲染一段转头预览视频。</li>
+<li><strong>条件输入：</strong>图像（主用途：单张角色图）或点云（用于和 CHARM 在其测试集上对比）。</li>
+<li><strong>发布方：</strong>何宇泽、魏一翔（共同一作）、赵望、陈楚皓、周燕宁、刘永进（后两位为通讯作者）；单位为清华大学、卡内基梅隆大学、香港中文大学。论文 2026-10-29 上 arXiv（27 页、23 幅图），GitHub 仓库 2026-10-30 01:16（UTC+8）创建；截至 2026-11-01 凌晨（UTC+8）约 232 星。</li>
+</ul>
+
+<h2 id="how">怎么工作：一片发片，一个 token</h2>
+<figure><img src="images/method.webp" alt="HairDeck 方法流程图，分三栏：左栏“Hair Cards as Tokens”展示彩色发片头模和一片发片的控制点（位置、宽度、厚度），下方写着 One Card = One Token，token 由根位置、根法向、Card VAE 潜变量、类型、存在位组成；中栏“Set Diffusion”显示点云经 Dora 编码器或图像经 DINOv3 编码器，作为条件送进 Set DiT，对一组带噪 token 去噪，空位标记 Exist = −1，再经 Card VAE 解码；右栏“Cards and Spring Bones”显示生成的发片经 Chain DiT 得到橙色弹簧骨骼链" loading="lazy" width="1400" height="360"><figcaption>方法总览（<code>assets/method.png</code>）。左：发片 token 的组成；中：以图像（DINOv3）或点云（Dora）为条件的集合扩散；右：第二个 Transformer 生成弹簧骨骼链。</figcaption></figure>
+<ol>
+<li><strong>一片发片 = 一个 token。</strong>一个紧凑的 token 记录这片发片的几何（经 Card VAE 编码的潜变量）、根部位置与朝向；流程图里还能看到“类型”和“存在位”两个字段——存在位为 −1 表示这个槽位是空的，所以模型可以生成数量不定的发片。</li>
+<li><strong>整组一起生成。</strong>集合扩散 Transformer（Set DiT）以图像或点云为条件，对所有发片 token 联合去噪；不像自回归那样有先后顺序，也就不会出现“越往后越乱”的长序列问题（⚠️ 推断：这是我们对“集合 vs. 自回归”的通俗理解，原文的说法是发型本身就是无序集合）。</li>
+<li><strong>让它动起来。</strong>第二个 Transformer（Chain DiT，README 称 chain diffusion model）根据生成的发片生成弹簧骨骼链，再用几何蒙皮把发片绑上去，最后借 Blender 4.2 + VRM Add-on 导出 VRM。</li>
+</ol>
+<p>预处理一端用了 SAM 3（分割）、BiRefNet（抠图）和 DINOv3（图像编码），点云一端用 Dora-VAE 的编码器。</p>
+
+<h2 id="results">结果与数字</h2>
+<p>项目页给出的点云基准（在 CHARM 自己的 100 个测试发型上对比 CHARM）：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>指标</th><th>CHARM</th><th>HairDeck</th><th>变化</th></tr></thead>
+<tbody>
+<tr><td>Chamfer 距离（越低越好）</td><td>0.0117</td><td>0.0066</td><td>低 44%</td></tr>
+<tr><td>发片朝向误差</td><td>40.0°</td><td>16.8°</td><td>降到一半以下</td></tr>
+<tr><td>发片生成耗时（不含网格化）</td><td>33.7 s</td><td>1.01 s</td><td>快约 33 倍</td></tr>
+</tbody></table></div>
+<p>我们按表中数字复算：(0.0117 − 0.0066) / 0.0117 ≈ 43.6%，33.7 / 1.01 ≈ 33.4，与“44%”“33 倍”的写法一致。以上全部是作者自报 ⚠️，本站没有复现。单图条件下，摘要称 HairDeck 优于 CHARM、图像转 3D 流程和基于发丝（strand）的方法，具体数字在论文里，本页未逐项核对 ⚠️。</p>
+<figure><img src="images/cmp-pc.webp" alt="点云条件下的对比图，七列：输入点云、CHARM、MeshAnything V2、DeepMesh、BPT、Ours（HairDeck）、GT（美术师真值），三行不同发型；CHARM 与 HairDeck 的发片按片着彩色，MeshAnything、DeepMesh、BPT 的结果为灰色破碎网格" loading="lazy" width="1280" height="615"><figcaption>点云条件对比（<code>assets/cmp_pc.jpg</code>）：CHARM、HairDeck 与真值按发片逐片着色；通用网格生成方法（MeshAnything V2、DeepMesh、BPT）给出的是破碎的整块网格。</figcaption></figure>
+<figure><img src="images/spring.webp" alt="弹簧骨骼效果对比：左侧是带橙色骨骼链的彩色发片头模，右侧两行是同一个蓝色长发角色转头 0 到 1 秒的连续帧，上行有弹簧骨骼，头发随转头甩动并逐渐回落，橙色描边标出无骨骼时同一帧的头发位置；下行无骨骼，头发像头盔一样跟着头转" loading="lazy" width="1280" height="305"><figcaption>转头 1 秒内的连续帧（<code>assets/spring.jpg</code>）：上行带生成的弹簧骨骼，下行没有；上行的橙色描边是同一帧“没有骨骼时”的头发轮廓。</figcaption></figure>
+<figure><img src="images/supp-style.webp" alt="不同画风的鲁棒性：两组角色，蓝发少年与红发角色，每组四张输入插画分别为 original、gacha、thick paint、semi-real 四种画风，下方是各自生成的蓝色或红色发型，四种画风生成的发型形状基本一致" loading="lazy" width="1280" height="349"><figcaption>同一角色换四种画风（原图、抽卡风、厚涂、半写实）输入，生成的发型基本一致（<code>assets/supp_style.jpg</code>）。展示用发色从输入图采样。</figcaption></figure>
+
+<h2 id="run">怎么跑起来</h2>
+<ul>
+<li><strong>环境门槛：</strong>Linux x86-64、Python 3.12、一张 NVIDIA CUDA 显卡；作者用 PyTorch 2.8 + CUDA 12.8 测试。预览视频要 <code>ffmpeg</code>。显存要求 README 没写 ⚠️。</li>
+<li><strong>权重：</strong>放在 Hugging Face <code>hyz317/HairDeck</code>。SAM 3 与 DINOv3 是“门控”模型，要先到各自页面接受许可条款，再 <code>hf auth login</code>；下载脚本会顺带装好 Blender 4.2 LTS 和 VRM Add-on（默认 Linux 版）。作者自己的简体中文 README 补了一句“国内可考虑从 ModelScope 下载”（英文版没有这句）。</li>
+<li><strong>最短路径：</strong><code>python scripts/image_to_hair.py character.png --out results/my_character --n 4</code> 生成 4 个候选；<code>python -m hairdeck.vrm.export results/my_character/character 0</code> 把第 0 个导出成 VRM 并渲染转头视频。<code>--no-chains</code> 只要发片、不要骨骼。</li>
+<li><strong>不想装：</strong>直接用 <a href="https://huggingface.co/spaces/hyz317/HairDeck" rel="noopener">Hugging Face 在线演示</a>，或本地 <code>python demo/app.py --port 7860</code> 起 Gradio 式界面（⚠️ 界面框架为推断）。</li>
+<li><strong>训练：</strong>从 CHARM 数据集和角色 VRM 文件开始，依次训 Card VAE → 点云 DiT → 图像 DiT → 骨骼链 DiT。注意：已发布的图像模型训练时用了一批“风格化重渲染图像”，这批数据<strong>不在本次发布里</strong>，所以从零复训未必能完全复现发布的图像模型。</li>
+</ul>
+<p>完整命令见下文附录一。本站<strong>没有</strong>下载权重或实跑（需要 GPU、权重体积大），也没有实测在线演示 ⚠️。</p>
+
+<h2 id="license-notes">许可与第三方依赖</h2>
+<ul>
+<li><strong>HairDeck 本身：</strong>代码与权重 Apache-2.0（仓库 LICENSE 为标准 Apache 2.0 全文；HF 模型卡元数据也标 <code>license: apache-2.0</code>）。可商用、可修改，需保留许可与声明。</li>
+<li><strong>第三方各守各的许可（README 原话：“Third-party models, code and datasets retain their respective licences”）：</strong>
+<ul>
+<li>CHARM 数据集：Hugging Face 上标 <strong>GPL-3.0</strong>——用于训练时要留意，和 HairDeck 的 Apache-2.0 不同。</li>
+<li>SAM 3、DINOv3：Meta 的门控模型，需先接受各自的许可条款；商用与否要看那两份条款，本页未逐条核 ⚠️。</li>
+<li>Dora-VAE、BiRefNet、Blender（GPL）、VRM Add-on：各自许可，本页未逐条核 ⚠️。</li>
+</ul></li>
+<li><strong>你的输入图：</strong>拿别人画的角色图生成发型再商用，插画本身的著作权与角色 IP 问题不因模型是 Apache-2.0 而消失（⚠️ 一般性提醒，非法律意见）。</li>
+</ul>
+
+<h2 id="notes">核实与注记</h2>
+<ul>
+<li>✅ 许可：仓库 <code>LICENSE</code> 为 Apache License 2.0 全文；README 写“代码与权重 Apache-2.0”；HF 模型卡 <code>license: apache-2.0</code>（核 2026-11-01）。</li>
+<li>✅ 论文：arXiv 2610.40599 标题、六位作者与摘要和 README 一致，2026-10-29 提交，27 页 23 图（核 2026-11-01）。</li>
+<li>✅ 仓库：2026-10-30 凌晨（UTC+8）创建，最新提交 <code>07a7370</code>（2026-10-31 23:17 UTC+8）；约 232 星（GitHub 仓库页，2026-11-01 凌晨 UTC+8）。星数会变。</li>
+<li>⚠️ 自报：44%、16.8°、33 倍等全部来自作者论文/项目页，本站只做了算术复核，没有复现。</li>
+<li>⚠️ 利益相关：对比的主要基线 CHARM 也出自同一团队（CHARM 论文一作同为何宇泽，周燕宁、赵望、刘永进也在作者列表），而且基准用的是 CHARM 自己的测试集——这是“新方法 vs. 自家旧方法”，不是第三方评测。</li>
+<li>⚠️ 未实跑：本站没下载权重、没跑 Space 演示；显存需求、单图生成耗时（项目页的 1.01 s 只是点云条件下“网格化之前”的发片生成时间）未知。</li>
+<li>⚠️ 复现缺口：发布的图像模型用到的风格化重渲染图像池未公开（README 原文明说）。</li>
+<li>⚠️ 推广：本页无商业推广；仓库与项目页是作者团队的学术宣传，素材均为作者精选结果（cherry-pick 可能性未知）。</li>
+<li>⚠️ 演示视频与插画：项目演示视频未转载，本页只用了海报帧与几张结果图；图中输入插画的作者/来源原页面未注明 ❓。</li>
+</ul>
+<figure><img src="images/video-poster.webp" alt="HairDeck 演示视频海报帧：左上大字 HairDeck，副标题 Rigged hair cards from a single image，左下是一张蓝色长发女仆角色插画，右侧是对应生成的半透明蓝色长发三维发型，发片上插着一串串橙色弹簧骨骼链" loading="lazy" width="1280" height="720"><figcaption>演示视频的海报帧（<code>assets/video-poster.jpg</code>）；视频本身未下载、未转载，可在<a href="https://hyzcluster.github.io/HairDeck" rel="noopener">项目页</a>观看。</figcaption></figure>
+
+<h2 id="readme">附录一：README 全文中译</h2>
+<p class="caption">据仓库提交 <code>07a7370</code> 的英文 README.md 翻译（Apache-2.0）。作者另有官方<a href="https://github.com/hyz317/HairDeck/blob/main/README_zh-CN.md" rel="noopener">简体中文 README</a>，措辞与本译稍有不同，以英文原文为准。徽章、语言切换行与视频播放器从略。</p>
+
+<h3>HairDeck：从单张图像生成可直接用于动画的风格化发片</h3>
+<p>何宇泽<sup>1,*</sup> · 魏一翔<sup>1,*</sup> · 赵望<sup>1</sup> · 陈楚皓<sup>2</sup> · 周燕宁<sup>3,†</sup> · 刘永进<sup>1,†</sup><br><sup>1</sup>清华大学 <sup>2</sup>卡内基梅隆大学 <sup>3</sup>香港中文大学 · <sup>*</sup>同等贡献 <sup>†</sup>通讯作者</p>
+<p>链接：<a href="https://hyzcluster.github.io/HairDeck" rel="noopener">项目页</a> · <a href="https://arxiv.org/abs/2610.40599" rel="noopener">arXiv: 2610.40599</a> · <a href="https://huggingface.co/hyz317/HairDeck" rel="noopener">Hugging Face 模型权重</a> · <a href="https://huggingface.co/spaces/hyz317/HairDeck" rel="noopener">在线演示</a> · 视频</p>
+
+<h4>视频</h4>
+<p>（README 此处嵌入演示视频，本页未转载。）</p>
+
+<h4>概述</h4>
+<p><strong>HairDeck 从单张图像生成风格化发片，以及驱动这些发片的弹簧骨骼链。</strong>每片发片用一个 token 表示，由一个集合扩散 Transformer 联合生成所有发片。生成的发型可以导出为 GLB 网格，也可以挂到角色身上导出为 VRM。</p>
+<ul>
+<li><strong>发片作为集合。</strong>Card VAE 编码每一片发片，条件集合扩散把发型作为一个整体生成。</li>
+<li><strong>带 UV 的几何。</strong>输出保留每一片独立的发片，并为每片提供 UV 坐标。</li>
+<li><strong>弹簧骨骼动画。</strong>一个链式扩散模型生成驱动发片的骨骼，并完成蒙皮与 VRM 导出。</li>
+</ul>
+<p>（此处为方法总览图：发片 token、以图像或点云为条件的集合扩散、生成的发片与弹簧骨骼链。见正文第二节。）</p>
+
+<h4>开始使用</h4>
+<p>🛠️ 安装 · 🤗 模型权重 · 🚀 快速上手 · 🖼️ 本地演示 · 📦 输出 · 📊 评估 · 🏋️ 训练 · 📝 引用</p>
+
+<h4>🛠️ 安装</h4>
+<p>请使用 Linux x86-64、Python 3.12 和一张 NVIDIA CUDA 显卡。本次发布在 PyTorch 2.8 与 CUDA 12.8 下测试。视频预览还需要 <code>PATH</code> 中有 <code>ffmpeg</code>。</p>
+<pre><code>git clone https://github.com/hyz317/HairDeck.git
+cd HairDeck
+
+python -m pip install -r requirements.txt
+python -m pip install --no-deps pyrender==0.1.45  # 不带它那条老旧的 PyOpenGL 版本锁</code></pre>
+<p>以下命令都在仓库根目录、同一个 Python 环境中运行。</p>
+
+<h4>🤗 模型权重</h4>
+<p>我们的检查点和配套资源托管在 <a href="https://huggingface.co/hyz317/HairDeck" rel="noopener">hyz317/HairDeck</a>。SAM 3 和 DINOv3 是门控模型：先在 <a href="https://huggingface.co/facebook/sam3" rel="noopener">facebook/sam3</a> 和 <a href="https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m" rel="noopener">facebook/dinov3-vitl16-pretrain-lvd1689m</a> 上接受它们的许可，然后登录：</p>
+<pre><code>hf auth login
+export HAIRDECK_ROOT=/path/to/workspace  # 权重、数据、第三方权重和输出都放这里
+python scripts/setup/download_weights.py</code></pre>
+<p>下载脚本会准备好 HairDeck 检查点、预处理与图像编码器权重、配套数据，以及 Blender 4.2 LTS 和 VRM Add-on。默认下载的 Blender 是 Linux x86-64 版。如要使用已有的、已启用 VRM Add-on 的 Blender 4.2 LTS，把 <code>HAIRDECK_BLENDER</code> 设为它的启动命令即可。</p>
+<p>默认的工作区布局：</p>
+<pre><code>$HAIRDECK_ROOT/
+├── ckpt/                       # HairDeck 权重与潜变量统计量
+├── data/                       # 归一化统计量、角色身体与演示样例
+└── third_party/
+    ├── weights/
+    │   ├── dinov3/             # facebook/dinov3-vitl16-pretrain-lvd1689m
+    │   ├── sam3/               # facebook/sam3
+    │   └── birefnet_matting/    # ZhengPeng7/BiRefNet-matting
+    ├── dinov3_src/             # DINOv3 源码
+    ├── sam3_src/               # SAM 3 源码
+    └── blender/                # Blender 与 VRM Add-on</code></pre>
+<p>各个位置也可以通过环境变量或 JSON 文件单独配置，见 <code>configs/paths.example.json</code> 和 <code>hairdeck/paths.py</code>。</p>
+
+<h4>🚀 快速上手</h4>
+<p>从一张角色图生成四个变体，然后把第 0 个变体导出为 VRM 角色和一段转头视频：</p>
+<pre><code>python scripts/image_to_hair.py character.png --out results/my_character --n 4
+python -m hairdeck.vrm.export results/my_character/character 0</code></pre>
+<p>结果写到 <code>OUT/&lt;图片名&gt;/</code>，这里是 <code>results/my_character/character/</code>。<code>--n</code> 接受 1–4 个变体；<code>--seed</code> 设置第一个随机种子。用 <code>--no-chains</code> 只生成发片。使用自定义模型时，传入 <code>--ckpt</code> 和一个用同一 Card VAE 训练的配套 <code>--chain_ckpt</code>。</p>
+
+<h4>🖼️ 本地演示</h4>
+<pre><code>python -m pip install -r requirements-demo.txt
+python demo/app.py --port 7860</code></pre>
+<p>打开 <code>http://127.0.0.1:7860</code> 即可生成头发、查看各个变体，并导出 VRM 或动画预览。也可以试用<a href="https://huggingface.co/spaces/hyz317/HairDeck" rel="noopener">托管演示</a>。</p>
+
+<h4>📦 输出</h4>
+<p>种子 0 对应的主要文件：</p>
+<pre><code>results/my_character/character/
+├── input.png                   # 输入图像
+├── prep.png                    # 预处理掩码与裁剪
+├── model_input.png             # 模型实际使用的裁剪图
+├── cards_seed0.json             # 发片几何
+├── chains_seed0.json            # 生成的弹簧骨骼链
+├── hair_seed0.glb               # 带头部代理、逐发片 UV 与发色的头发
+├── hair_seed0_nohead.glb         # 不带头部代理的头发
+├── info.json                    # 生成设置与结果元数据
+├── avatar_seed0.vrm             # 由 VRM 导出命令生成
+└── turn_seed0.mp4               # 由转头预览命令生成</code></pre>
+<p>其他变体在文件名中使用各自的种子。使用 <code>--no-chains</code> 时不输出骨骼链文件。</p>
+
+<h4>📊 测试集评估</h4>
+<p>下载评估资源，然后运行点云测试和骨骼链测试。每项测试会采样种子 0、1、2，打印对应的论文指标，并把逐样本结果及其均值保存到 <code>eval.json</code>。</p>
+<pre><code>python scripts/setup/download_weights.py --only test_data charm_test_pc dora
+python scripts/test.py pointcloud
+python scripts/test.py chains                                # 在美术师制作的发片上
+python scripts/test.py chains --cards results/pointcloud     # 在点云模型生成的发片上</code></pre>
+<p><code>results/pointcloud</code> 这类评估路径遵循 <code>HAIRDECK_ROOT</code> 下的工作区布局及其路径覆盖设置。</p>
+
+<h4>🏋️ 训练</h4>
+<p>从 CHARM 数据集和这些角色的 VRM 文件开始：</p>
+<pre><code>python scripts/setup/download_weights.py --only dora test_data charm_test_pc
+python scripts/data.py DATASET_DIR VRM_DIR
+bash scripts/train/launch_vae.sh
+bash scripts/train/launch_pc_dit.sh &amp;&amp; bash scripts/train/launch_img_dit.sh &amp;&amp; bash scripts/train/launch_chain_dit.sh</code></pre>
+<p>启动脚本写入 <code>ckpt/train_*</code>，与下载的检查点分开。当前的图像训练配方包含合成外观增强；发布的图像模型所用的风格化重渲染图像池不包含在本次发布中。</p>
+
+<h4>📝 引用</h4>
+<pre><code>@misc{hairdeck2026,
+  title         = {HairDeck: Animation-Ready Stylized Hair Cards from a Single Image},
+  author        = {Yuze He and Yixiang Wei and Wang Zhao and Chuhao Chen and Yanning Zhou and Yong-Jin Liu},
+  year          = {2026},
+  eprint        = {2610.40599},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  doi           = {10.48550/arXiv.2610.40599},
+  url           = {https://arxiv.org/abs/2610.40599}
+}</code></pre>
+
+<h4>致谢</h4>
+<p>HairDeck 使用了 <a href="https://huggingface.co/datasets/hyz317/CHARM" rel="noopener">CHARM</a>、<a href="https://huggingface.co/Seed3D/Dora-VAE-1.1" rel="noopener">Dora-VAE</a>、<a href="https://github.com/facebookresearch/dinov3" rel="noopener">DINOv3</a>、<a href="https://github.com/facebookresearch/sam3" rel="noopener">SAM 3</a>、<a href="https://huggingface.co/ZhengPeng7/BiRefNet-matting" rel="noopener">BiRefNet</a> 和 <a href="https://github.com/saturday06/VRM-Addon-for-Blender" rel="noopener">VRM Add-on for Blender</a>。感谢这些资源的作者将其公开。</p>
+
+<h4>许可证</h4>
+<p>HairDeck 的代码与检查点采用 Apache-2.0 许可。第三方模型、代码和数据集保留各自的许可。</p>
+
+<h2 id="original">附录二：README 英文原文</h2>
+<details><summary>展开 / 收起 README.md（英文原文，提交 07a7370）</summary>
+<pre>&lt;h1 align="center"&gt;HairDeck: Animation-Ready Stylized Hair Cards&lt;br&gt;from a Single Image&lt;/h1&gt;
+
+&lt;p align="center"&gt;&lt;a href="https://hyzcluster.github.io/"&gt;Yuze He&lt;/a&gt;&lt;sup&gt;1,*&lt;/sup&gt; &amp;nbsp; Yixiang Wei&lt;sup&gt;1,*&lt;/sup&gt; &amp;nbsp; &lt;a href="https://thuzhaowang.github.io/"&gt;Wang Zhao&lt;/a&gt;&lt;sup&gt;1&lt;/sup&gt; &amp;nbsp; &lt;a href="https://czzzzh.github.io/"&gt;Chuhao Chen&lt;/a&gt;&lt;sup&gt;2&lt;/sup&gt; &amp;nbsp; &lt;a href="https://amandaynzhou.github.io/"&gt;Yanning Zhou&lt;/a&gt;&lt;sup&gt;3,†&lt;/sup&gt; &amp;nbsp; &lt;a href="https://yongjinliu.github.io/"&gt;Yong-Jin Liu&lt;/a&gt;&lt;sup&gt;1,†&lt;/sup&gt;&lt;/p&gt;
+&lt;p align="center"&gt;&lt;sup&gt;1&lt;/sup&gt;Tsinghua University &amp;nbsp; &lt;sup&gt;2&lt;/sup&gt;Carnegie Mellon University &amp;nbsp; &lt;sup&gt;3&lt;/sup&gt;The Chinese University of Hong Kong&lt;/p&gt;
+&lt;p align="center"&gt;&lt;sup&gt;*&lt;/sup&gt;Equal contribution. &amp;nbsp; &lt;sup&gt;†&lt;/sup&gt;Corresponding authors.&lt;/p&gt;
+
+&lt;p align="center"&gt;
+  &lt;a href="https://hyzcluster.github.io/HairDeck"&gt;&lt;img src="https://img.shields.io/badge/Project-Page-426b92" alt="Project page"&gt;&lt;/a&gt;
+  &lt;a href="https://arxiv.org/abs/2610.40599"&gt;&lt;img src="https://img.shields.io/badge/arXiv-2610.40599-b31b1b" alt="arXiv: 2610.40599"&gt;&lt;/a&gt;
+  &lt;a href="https://huggingface.co/hyz317/HairDeck"&gt;&lt;img src="https://img.shields.io/badge/%F0%9F%A4%97%20Models-Hugging%20Face-ffd21e" alt="Model weights on Hugging Face"&gt;&lt;/a&gt;
+  &lt;a href="https://huggingface.co/spaces/hyz317/HairDeck"&gt;&lt;img src="https://img.shields.io/badge/%F0%9F%A4%97%20Demo-Try%20it-ffd21e" alt="Try the online demo"&gt;&lt;/a&gt;
+  &lt;a href="#video"&gt;&lt;img src="https://img.shields.io/badge/Video-Watch-426b92" alt="Watch the demonstration"&gt;&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p align="center"&gt;&lt;strong&gt;English&lt;/strong&gt; · &lt;a href="README_zh-CN.md"&gt;简体中文&lt;/a&gt; · &lt;a href="README_ja.md"&gt;日本語&lt;/a&gt;&lt;/p&gt;
+
+&lt;a name="video"&gt;&lt;/a&gt;
+
+## Video
+
+https://github.com/user-attachments/assets/3eec4de5-ed21-4b75-b7d7-4bd599cbfeb2
+
+## Overview
+
+**HairDeck generates stylized hair cards and the spring-bone chains that animate them from a single image.**
+Each hair card is represented by one token, and a set diffusion transformer generates the cards jointly.
+The generated hairstyle can be exported as a GLB mesh or attached to an avatar and exported as VRM.
+
+- **Hair cards as a set.** A card VAE encodes each card, and conditional set diffusion generates the hairstyle as a whole.
+- **Geometry with UVs.** The output preserves individual hair cards and provides per-card UV coordinates.
+- **Spring-bone animation.** A chain diffusion model generates the bones that drive the cards, with skinning and VRM export.
+
+&lt;p align="center"&gt;
+  &lt;img src="https://huggingface.co/hyz317/HairDeck/resolve/main/assets/method.png" width="100%" alt="HairDeck pipeline: hair-card tokens, image- or point-cloud-conditioned set diffusion, and generated cards with spring-bone chains."&gt;
+&lt;/p&gt;
+
+## Getting started
+
+[🛠️ Installation](#installation) · [🤗 Model weights](#model-weights) · [🚀 Quick start](#quick-start) · [🖼️ Local demo](#local-demo) · [📦 Outputs](#outputs) · [📊 Evaluation](#test-set-evaluation) · [🏋️ Training](#training) · [📝 Citation](#citation)
+
+&lt;a name="installation"&gt;&lt;/a&gt;
+
+### 🛠️ Installation
+
+Use Linux x86-64, Python 3.12 and one NVIDIA CUDA GPU. The release was tested with PyTorch 2.8 and CUDA 12.8.
+The video preview also needs `ffmpeg` on your `PATH`.
+
+```bash
+git clone https://github.com/hyz317/HairDeck.git
+cd HairDeck
+
+python -m pip install -r requirements.txt
+python -m pip install --no-deps pyrender==0.1.45  # without its old PyOpenGL pin
+```
+
+Run the commands below from the repository root, in the same Python environment.
+
+&lt;a name="model-weights"&gt;&lt;/a&gt;
+
+### 🤗 Model weights
+
+Our checkpoints and supporting assets are hosted at [hyz317/HairDeck](https://huggingface.co/hyz317/HairDeck).
+SAM 3 and DINOv3 are gated: first accept their licences on [facebook/sam3](https://huggingface.co/facebook/sam3)
+and [facebook/dinov3-vitl16-pretrain-lvd1689m](https://huggingface.co/facebook/dinov3-vitl16-pretrain-lvd1689m), then log in:
+
+```bash
+hf auth login
+export HAIRDECK_ROOT=/path/to/workspace  # checkpoints, data, third-party weights and outputs
+python scripts/setup/download_weights.py
+```
+
+The downloader sets up the HairDeck checkpoints, preprocessing and image-encoder weights, supporting data,
+and Blender 4.2 LTS with the VRM Add-on. The default Blender download is for Linux x86-64.
+To use an existing Blender 4.2 LTS installation with the VRM Add-on enabled, set `HAIRDECK_BLENDER` to its command.
+
+The default workspace layout is:
+
+```text
+$HAIRDECK_ROOT/
+├── ckpt/                       # HairDeck checkpoints and latent statistics
+├── data/                       # Normalization statistics, avatar and demo examples
+└── third_party/
+    ├── weights/
+    │   ├── dinov3/             # facebook/dinov3-vitl16-pretrain-lvd1689m
+    │   ├── sam3/               # facebook/sam3
+    │   └── birefnet_matting/    # ZhengPeng7/BiRefNet-matting
+    ├── dinov3_src/             # DINOv3 source
+    ├── sam3_src/               # SAM 3 source
+    └── blender/                # Blender and the VRM Add-on
+```
+
+Individual locations can be configured through environment variables or a JSON file; see
+[configs/paths.example.json](configs/paths.example.json) and [hairdeck/paths.py](hairdeck/paths.py).
+
+&lt;a name="quick-start"&gt;&lt;/a&gt;
+
+### 🚀 Quick start
+
+Generate four variations from a character image, then export variation 0 as a VRM avatar and a head-turn video:
+
+```bash
+python scripts/image_to_hair.py character.png --out results/my_character --n 4
+python -m hairdeck.vrm.export results/my_character/character 0
+```
+
+Results are written to `OUT/&lt;image name&gt;/`, here `results/my_character/character/`.
+`--n` accepts 1–4 variations; `--seed` sets the first seed. Use `--no-chains` to generate cards only.
+For custom models, pass `--ckpt` and a matching `--chain_ckpt` trained with the same card VAE.
+
+&lt;a name="local-demo"&gt;&lt;/a&gt;
+
+### 🖼️ Local demo
+
+```bash
+python -m pip install -r requirements-demo.txt
+python demo/app.py --port 7860
+```
+
+Open [http://127.0.0.1:7860](http://127.0.0.1:7860) to generate hair, inspect variations, and export a VRM or animation preview.
+You can also try the [hosted demo](https://huggingface.co/spaces/hyz317/HairDeck).
+
+&lt;a name="outputs"&gt;&lt;/a&gt;
+
+## 📦 Outputs
+
+The main files for seed 0 are:
+
+```text
+results/my_character/character/
+├── input.png                   # Input image
+├── prep.png                    # Preprocessing masks and crop
+├── model_input.png             # Image crop used by the model
+├── cards_seed0.json             # Hair-card geometry
+├── chains_seed0.json            # Generated spring-bone chains
+├── hair_seed0.glb               # Hair with a head proxy, per-card UVs and hair color
+├── hair_seed0_nohead.glb         # Hair without the head proxy
+├── info.json                    # Generation settings and result metadata
+├── avatar_seed0.vrm             # Created by the VRM export command
+└── turn_seed0.mp4               # Created by the head-turn preview command
+```
+
+Other variations use their corresponding seed in the filename. The chains file is omitted with `--no-chains`.
+
+&lt;a name="test-set-evaluation"&gt;&lt;/a&gt;
+
+## 📊 Test-set evaluation
+
+Download the evaluation assets, then run the point-cloud and chain tests. Each test samples seeds 0, 1 and 2,
+prints the corresponding paper metrics, and saves per-sample results and their means in `eval.json`.
+
+```bash
+python scripts/setup/download_weights.py --only test_data charm_test_pc dora
+python scripts/test.py pointcloud
+python scripts/test.py chains                                # On the artists' cards
+python scripts/test.py chains --cards results/pointcloud     # On the point-cloud model's cards
+```
+
+Evaluation paths such as `results/pointcloud` follow the workspace layout under `HAIRDECK_ROOT` and its path overrides.
+
+&lt;a name="training"&gt;&lt;/a&gt;
+
+## 🏋️ Training
+
+Start from the CHARM dataset and the characters' VRM files:
+
+```bash
+python scripts/setup/download_weights.py --only dora test_data charm_test_pc
+python scripts/data.py DATASET_DIR VRM_DIR
+bash scripts/train/launch_vae.sh
+bash scripts/train/launch_pc_dit.sh &amp;&amp; bash scripts/train/launch_img_dit.sh &amp;&amp; bash scripts/train/launch_chain_dit.sh
+```
+
+The launchers write to `ckpt/train_*`, separately from the downloaded checkpoints. The current image-training
+recipe includes synthetic appearance augmentation; the restyled-render pool used for the released image model
+is not included in this release.
+
+&lt;a name="citation"&gt;&lt;/a&gt;
+
+## 📝 Citation
+
+```bibtex
+@misc{hairdeck2026,
+  title         = {HairDeck: Animation-Ready Stylized Hair Cards from a Single Image},
+  author        = {Yuze He and Yixiang Wei and Wang Zhao and Chuhao Chen and Yanning Zhou and Yong-Jin Liu},
+  year          = {2026},
+  eprint        = {2610.40599},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  doi           = {10.48550/arXiv.2610.40599},
+  url           = {https://arxiv.org/abs/2610.40599}
+}
+```
+
+## Acknowledgments
+
+HairDeck uses [CHARM](https://huggingface.co/datasets/hyz317/CHARM), [Dora-VAE](https://huggingface.co/Seed3D/Dora-VAE-1.1), [DINOv3](https://github.com/facebookresearch/dinov3), [SAM 3](https://github.com/facebookresearch/sam3), [BiRefNet](https://huggingface.co/ZhengPeng7/BiRefNet-matting), and the [VRM Add-on for Blender](https://github.com/saturday06/VRM-Addon-for-Blender). We thank their authors for making these resources available.
+
+## License
+
+HairDeck code and checkpoints are licensed under [Apache-2.0](LICENSE).
+Third-party models, code and datasets retain their respective licences.
+</pre>
+</details>
+
+<h2 id="license">附录三：许可证原文</h2>
+<details><summary>展开 / 收起 LICENSE（Apache License 2.0）</summary>
+<pre>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>HairDeck © 2026 何宇泽（Yuze He）、魏一翔（Yixiang Wei）、赵望（Wang Zhao）、陈楚皓（Chuhao Chen）、周燕宁（Yanning Zhou）、刘永进（Yong-Jin Liu），代码与权重 Apache-2.0；README 中译与英文原文、LICENSE 依 Apache-2.0 转载，本页中译为非官方译文。配图取自作者 Hugging Face 仓库 <code>hyz317/HairDeck</code> 的 <code>assets/</code>（项目页同款），已缩放转为 webp；图中输入插画版权归各自权利人。演示视频未转载。项目：<a href="https://github.com/hyz317/HairDeck" rel="noopener">github.com/hyz317/HairDeck</a>；论文：<a href="https://arxiv.org/abs/2610.40599" rel="noopener">arXiv:2610.40599</a>。导读、核实与注记由 Grok Bot 整理（2026-11-01）。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/hyz317/HairDeck" rel="noopener">github.com/hyz317/HairDeck</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
