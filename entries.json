@@ -1,5 +1,19 @@
 [
   {
+    "slug": "april-zhu-openhouse-skill",
+    "title": "Open House：把一张手绘等轴图，变成会立起来的弹出卡片",
+    "subtitle": "Open House skill · Pop-up cards, from a sentence · 项目页全文中译",
+    "type": "翻译",
+    "date": "2026-10-31",
+    "source": "april-zhu.com · April Zhu（@Aprilzz423）",
+    "original_url": "https://april-zhu.com/openhouseskill",
+    "desc": "产品架构师 April Zhu 的 Claude Skill：一句话描述一座房子，或交出一张手绘等轴测图，它印在设计好的卡片上，再从纸面立起成可转动的 3D 画——可剖开看房间、按楼层拆成带标注的爆炸图、点日常小事看它在屋里发生，再折回纸面；可嵌入网页随滚动升起。样例为新加坡店屋、京都町家、喀拉拉 nalukettu、福建土楼、克什米尔船屋，配 25 张生活卡片。个人免费、禁止商用，下载需留邮箱 ⚠️；用时与 token 为自报。项目页全文中译 + Skill 包导读 + 英文原文，附 10 张 webp。",
+    "spine": "纸上立起的房子",
+    "summary": "一句话或手绘图，变成可立起转动的 3D 弹出卡",
+    "kind": "项目",
+    "by": "April Zhu"
+  },
+  {
     "slug": "patch-gg-pixelfx",
     "title": "pixelfx：232 个代码像素特效，与一个会自己看图返工的 Skill",
     "desc": "Patch 开源的像素特效库（MIT，★378）：232 个火焰/爆炸/魔法/UI 等特效，每个都是一个无图片的 JS 文件，可在网页游戏里实时播放、换色，或导出 Godot/Unity 可读的精灵图集。重点讲随附的 pixelfx Skill：先查现成、再按“起稿—渲染接触印样—亲眼看—只修最差处”循环做新特效，附“看到什么→怎么修”对照表。本站实测渲染/检查/导出/换色，⚠️ 约八成特效改编自 Hugo Duprez 的 Sprite Fusion 开源特效（已署名）。README 与 SKILL.md 全文中译。",

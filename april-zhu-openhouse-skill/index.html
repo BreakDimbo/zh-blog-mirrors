@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Open House：把一张手绘等轴图，变成会立起来的弹出卡片 · April Zhu 项目页全文中译</title>
+<meta name="description" content="April Zhu 的 Claude Skill「Open House」项目页全文中译：一句话或一张手绘等轴测图，印在设计好的卡片上，再从纸面立起成可转动、可剖切、可拆解的 3D 画，配日常生活卡片；个人免费、禁止商用。附 Skill 包导读与英文原文。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-10-31">2026.10.31</time></p>
+<h1 class="za-title">Open House：把一张手绘等轴图，变成会立起来的弹出卡片</h1>
+<p class="za-sub" lang="en" data-za-gen>Open House skill · Pop-up cards, from a sentence · 项目页全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · april-zhu.com · April Zhu（@Aprilzz423）</span><span>收录 · 2026-10-31</span><span><a href="https://april-zhu.com/openhouseskill" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原页：<a href="https://april-zhu.com/openhouseskill" rel="noopener">april-zhu.com/openhouseskill</a>（作者 April Zhu，<a href="https://x.com/Aprilzz423" rel="noopener">@Aprilzz423</a>；2026-10-31 11:50 UTC+8 抓取，robots.txt 允许）· 相关：<a href="https://april-zhu.com/colorfigures" rel="noopener">Colorfigures</a> · <a href="https://april-zhu.com/openhouse" rel="noopener">Open House 小册子</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>Open House 是产品架构师 April Zhu 做的一个 Claude Skill。说一句话描述一座房子，或交给它任意一张手绘描线的等轴测图，它就把图印在一张设计好的卡片上；按一下，图从纸面立起来，变成可以转动的 3D 画。可以剖开看里面的房间，可以按楼层拆开看构造，可以点一件日常小事看它在屋里发生，最后再折回纸面。个人免费、不许商用；本页是作者个人项目页的全文中译。</div>
+
+<figure><img src="images/cover.webp" alt="Open House 项目封面：左上是衬线大字 Open House 和一段等宽字体的英文介绍，右上是一座红顶小屋从卡片上立起的手绘等轴图；下方并排五张卡片缩略图，分别是 No.01 The Shophouse、No.02 The Machiya、No.03 The Nalukettu、No.04 The Tulou、No.05 The Houseboat" loading="lazy"><figcaption>项目页的分享图：五张样例卡片，依次是新加坡店屋、京都町家、喀拉拉“四合屋”、福建土楼、克什米尔船屋。图 © April Zhu，本站转为 webp。</figcaption></figure>
+
+<h2 id="about">关于这一页</h2>
+<ul>
+<li><strong>作者</strong>：April Zhu（X：<a href="https://x.com/Aprilzz423" rel="noopener">@Aprilzz423</a>）。核对依据：项目页页脚写“Made by April Zhu · @Aprilzz423”，并链回她的个人站 <a href="https://april-zhu.com" rel="noopener">april-zhu.com</a>；个人站首页自我介绍为产品架构师（Pendle、Boros 等 DeFi 产品的设计负责人）；Skill 压缩包里的 LICENSE 版权人也是 April Zhu。三处一致 ✅。</li>
+<li><strong>版权处理</strong>：这是作者本人的项目页，按本站惯例做<strong>全文中译</strong>，英文原文放在文末折叠附录。Skill 本身用的是作者自定的“个人、非商业许可”（不是开放许可，见下文），所以本站<strong>不转载 SKILL.md 和代码</strong>，只做导读和短引；压缩包请到原页下载。</li>
+<li><strong>页面上的互动</strong>：原页有可拖动的实时 3D 演示、每座房子一段录屏、一叠可翻的生活卡片。本页只放静态截图，视频和演示请到 <a href="https://april-zhu.com/openhouseskill" rel="noopener">原页</a> 看。</li>
+</ul>
+
+<h2 id="translation">项目页全文中译</h2>
+
+<h3 id="hero">Open House</h3>
+<p class="lede">一句话，变出一张立体弹出卡片。描述一座房子，或交出任何一张手绘描线的图，它会印在一张卡片上回到你手里，再从纸面升起，变成 3D。转一转，剖开看，拆开来，然后再把它折平。</p>
+<p>〔按钮：下载 Skill（.zip）↓ · 演示 ↗〕</p>
+<p><strong>在 Claude Code 里安装</strong></p>
+<pre><code>mkdir -p ~/.claude/skills &amp;&amp; curl -fsSL https://april-zhu.com/openhouseskill/openhouse.tar.gz | tar -xz -C ~/.claude/skills</code></pre>
+<p>粘贴到终端运行。用的是 Claude.ai？见下方其他安装方式。</p>
+
+<h3 id="features">每座房子都带着什么</h3>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>功能</th><th>说明</th></tr></thead><tbody>
+<tr><td>01</td><td>一个真正的 3D 模型</td><td>房子从印着它的卡片上升起来。拖动可以转着看，看完再折平。</td></tr>
+<tr><td>02</td><td>剖切视图</td><td>把墙切掉，看到里面每个房间，家具齐全。</td></tr>
+<tr><td>03</td><td>带标注的爆炸图</td><td>房子按楼层一层层分开，每个部件都写着名字。</td></tr>
+<tr><td>04</td><td>日常生活卡片</td><td>点一件日常小事，看它在剖切视图里发生，旁边有一张卡片讲背后的故事。</td></tr>
+</tbody></table></div>
+
+<div class="grid2">
+<figure><img src="images/shophouse-cut.webp" alt="新加坡店屋的剖切视图：两层砖墙店屋，正面绿色百叶窗，底层是咖啡店，楼上是住家，墙被切开露出室内家具" loading="lazy"><figcaption>The Shophouse · 新加坡（剖开）</figcaption></figure>
+<figure><img src="images/machiya-cut.webp" alt="京都町家的剖切视图：狭长木结构町家，临街是店面，后面是住宅，木格子窗" loading="lazy"><figcaption>The Machiya · 京都（剖开）</figcaption></figure>
+<figure><img src="images/nalukettu-cut.webp" alt="喀拉拉 nalukettu 的剖切视图：四翼围合、瓦屋顶，中间是露天庭院" loading="lazy"><figcaption>The Nalukettu · 喀拉拉（剖开）</figcaption></figure>
+<figure><img src="images/tulou-cut.webp" alt="福建土楼的剖切视图：一圈四层高的夯土环楼，灰瓦圆形屋顶被切开一角，露出一层层木回廊和房间，中央庭院里有一座祠堂，周围是树和梯田" loading="lazy"><figcaption>The Tulou · 福建（剖开）</figcaption></figure>
+<figure><img src="images/houseboat-cut.webp" alt="克什米尔船屋的剖切视图：停在湖上的雪松木船屋，船头有雕花游廊" loading="lazy"><figcaption>The Houseboat · 克什米尔（剖开）</figcaption></figure>
+</div>
+<p class="caption">原页顶部的五宫格：每座房子剖开后的近景静帧（原页悬停会播放录屏，本站只取静帧）。图 © April Zhu。</p>
+
+<h3 id="demo">演示</h3>
+<p>就在这里，实时运行。拖动可以转它，可以剖开、可以拆开，或者按一项日常活动，看它在屋里发生。</p>
+<p>〔原页此处是嵌入的实时 3D 卡片，左侧可切换五座房子〕 在小册子里打开 ↗</p>
+<p>五座房子，以及原页给每张卡片写的话（取自小册子，每张卡片自己的文字）：</p>
+<div class="table-wrap"><table><thead><tr><th>编号</th><th>房子</th><th>地方</th><th>卡片上的话</th></tr></thead><tbody>
+<tr><td>01</td><td>The Shophouse 店屋</td><td>新加坡</td><td>底层是一家人开的 kopitiam（咖啡店），楼上住着这一家；“五脚基”骑楼走廊把它和整条街的邻居连在一起。</td></tr>
+<tr><td>02</td><td>The Machiya 町家</td><td>京都</td><td>一座狭长的木造町屋，临街是店，店后是家，用木格子隔着。</td></tr>
+<tr><td>03</td><td>The Nalukettu 四合屋</td><td>喀拉拉</td><td>红土石与木材筑成的四翼，盖在同一片瓦顶下，围着一个露天庭院；季风的雨落进房子正中。</td></tr>
+<tr><td>04</td><td>The Tulou 土楼</td><td>福建</td><td>怀远楼：一圈四层高的夯土环楼，住着整个宗族，祖堂和学堂在院子中央。</td></tr>
+<tr><td>05</td><td>The Houseboat 船屋</td><td>克什米尔</td><td>停泊在斯利那加达尔湖上的一艘雪松木船屋：雕花游廊探在水面上，胡桃木房间顶着 khatamband（拼花木格）天花。</td></tr>
+</tbody></table></div>
+
+<h3 id="life">房子里的生活</h3>
+<p>每座房子都配有一套自己的日常生活卡片：早餐、仪式、家务、游戏。每张是一幅近景小画，配几行字，说它是什么、为什么重要。</p>
+<p>〔挑一张卡片〕</p>
+<div class="grid2">
+<figure><img src="images/life-kopi-tarik.webp" alt="生活卡片 Kopi tarik：手绘近景，一人把咖啡从高处拉成一道长线倒进另一只杯子" loading="lazy"><figcaption>店屋 · Kopi tarik（拉咖啡）</figcaption></figure>
+<figure><img src="images/life-mahjong.webp" alt="生活卡片 Mahjong：手绘近景，四人围坐方桌打麻将" loading="lazy"><figcaption>土楼 · Mahjong（麻将）</figcaption></figure>
+<figure><img src="images/life-kangri.webp" alt="生活卡片 The kangri：手绘近景，藤编篮里装着盛炭火的陶罐" loading="lazy"><figcaption>船屋 · The kangri（火笼）</figcaption></figure>
+</div>
+<p>原页五座房子共 25 张卡片，文字全部译出如下（标题保留原文，括号内为中文意译）：</p>
+<details><summary>展开 25 张生活卡片的文字</summary>
+<h4>店屋 · 新加坡</h4>
+<ul>
+<li><strong>Kopi tarik（拉咖啡）</strong>：tarik 在马来语里是“拉”。咖啡从高处倒下，一遍又一遍，让它凉下来，也拉出一层泡沫。</li>
+<li><strong>Kaya toast（咖椰吐司）</strong>：kopitiam 的早餐：吐司抹上咖椰（椰浆鸡蛋酱）和冰黄油，蘸着加了酱油和白胡椒的半熟蛋吃。</li>
+<li><strong>Hanging the laundry（晾衣服）</strong>：洗好的衣服挂在从窗口伸出去的竹竿上，悬在街道上空，让太阳和风吹干：从老店屋街一直到今天的组屋，都是这幅景象。</li>
+<li><strong>Cooking on the dapur（灶台做饭）</strong>：厨房在屋后，挨着天井：一座砖砌的灶，叫 dapur，锅下烧着木炭或柴火，烟从烟囱带走。</li>
+<li><strong>Joss sticks（上香）</strong>：许多华人家庭在厅里设神台。点上香，举起来鞠一躬，插进香炉，敬神明和祖先。</li>
+</ul>
+<h4>町家 · 京都</h4>
+<ul>
+<li><strong>Matcha（抹茶）</strong>：抹茶粉用竹茶筅打到起泡，配一小块点心喝：给家人或客人的一碗茶。</li>
+<li><strong>Cooking rice（煮饭）</strong>：米饭在 okudo-san（陶土灶，京都人家给灶加上敬称“さん”）上用铁锅煮：先小火，再大火。</li>
+<li><strong>Uchimizu（打水）</strong>：大热天，在屋前街面洒水：水干的时候带走暑气，也是在迎客。</li>
+<li><strong>Soroban（算盘）</strong>：掌柜在算盘上结一天的账，拨珠比写算式还快，再记进账簿。</li>
+<li><strong>Origami（折纸）</strong>：孩子们把方纸折成鹤。纸鹤 orizuru 象征长寿：折满一千只，叫“千羽鹤”，是一个心愿。</li>
+</ul>
+<h4>Nalukettu · 喀拉拉</h4>
+<ul>
+<li><strong>Nilavilakku（铜灯）</strong>：每天黄昏点亮一盏铜灯，放在前门：sandhya deepam，迎好运进门的“暮灯”。</li>
+<li><strong>Onam pookalam（欧南节花毯）</strong>：丰收节欧南节的十天里，每天早上在屋前一圈一圈铺一张花瓣地毯，迎接马哈巴利王回家。</li>
+<li><strong>Sadya（欧南宴）</strong>：欧南节的盛宴：二十来道菜，在一张芭蕉叶上各有其位，坐在地上用手吃。米饭居中，浇上 sambar（扁豆蔬菜汤），最后是 payasam（甜粥）。</li>
+<li><strong>Puttu and kadala（蒸米筒配黑鹰嘴豆咖喱）</strong>：喀拉拉的早餐：米粉和椰丝一层层压进竹筒，架在一锅水上蒸，整条推出来，配黑鹰嘴豆咖喱吃。</li>
+<li><strong>Picking coconuts（摘椰子）</strong>：喀拉拉是椰树之乡。攀树人脚上套一圈绳往上爬，割下成熟的一串：椰子给人食物、油、绳子和屋顶茅草。</li>
+</ul>
+<h4>土楼 · 福建</h4>
+<ul>
+<li><strong>Gongfu tea（功夫茶）</strong>：在回廊上或院子里和邻居喝茶：一把小陶壶，几只顶针大的杯子，一泡接一泡地斟村子周围山上产的乌龙。</li>
+<li><strong>The children’s lesson（孩子的功课）</strong>：“斯是室”是家族学堂。孩子们大声朗读启蒙书，一列一列，从上到下、从右到左，直到背熟。</li>
+<li><strong>Incense for the ancestors（敬祖上香）</strong>：早晚各三炷香，插在堂前香炉里：简氏族人敬奉供在里面神台上的祖先牌位。</li>
+<li><strong>Mahjong（麻将）</strong>：四个邻居，一张方桌，一晚上噼里啪啦的牌声：一座住着两百来口人的楼里，环楼某处总有一桌在打。</li>
+<li><strong>Rolling tangyuan（搓汤圆）</strong>：元宵节和冬至：糯米团在掌心搓圆，煮了放进甜汤里吃。圆，是一家团圆。</li>
+</ul>
+<h4>船屋 · 克什米尔</h4>
+<ul>
+<li><strong>Kahwa from the samovar（铜茶炊里的卡瓦茶）</strong>：绿茶加藏红花、豆蔻、肉桂和杏仁片同煮，盛在中心管里烧着炭的铜茶炊里保温。不管船怎么倾，杯里的茶面始终是平的。</li>
+<li><strong>The flower seller（卖花人）</strong>：卖花人划着 shikara 小船，一条船一条船地送莲花、玫瑰和万寿菊花环。客人们挤到游廊一侧去买，船就朝他们倾斜三分之一度。</li>
+<li><strong>The kangri（火笼）</strong>：一个藤篮里装着盛炭火的陶罐，揣在 pheran（长羊毛袍）底下，陪人熬过克什米尔的冬天。湖面结冰时，一家人就紧挨着围坐。</li>
+<li><strong>Wazwan（克什米尔宴）</strong>：克什米尔的盛宴：主厨 waza 把一长串肉菜一道道盛到四人共用的铜盘 trami 的米饭上。桌子一端坐了六位客人，船的重心就往前移。</li>
+<li><strong>The doonga kitchen（伙房船）</strong>：看管船屋的 hanji 一家住在并排停靠的 doonga 船上，在甲板上的陶土灶做饭。每道菜都要端过跳板送到客人面前。</li>
+</ul>
+</details>
+<p class="caption">⚠️ 船屋几张卡片写到“船朝客人倾斜三分之一度”“重心前移”，像是演示里做了倾斜效果，本站没有运行演示核实。各地风俗描述为作者自写，本站只核对了土楼一张：怀远楼在福建南靖梅林镇坎下村，简氏家族 1905–1909 年建，高四层，中央祖堂兼书斋名“斯是室”，与<a href="https://baike.baidu.com/item/%E6%80%80%E8%BF%9C%E6%A5%BC/3987583" rel="noopener">百度百科</a>、<a href="http://www.fjtb.gov.cn/meijing/201311/t20131126_5267800.htm" rel="noopener">福建省台港澳办介绍</a>一致 ✅；其余卡片未逐条核实。</p>
+
+<h3 id="exploded">每座房子都能拆开</h3>
+<p>要一张爆炸图，房子就一层层抬开，每个部件都有标注，让你看清它是怎么造起来的。它分开着从卡片上升起，然后再合拢落定。</p>
+<figure><img src="images/shophouse-exploded.webp" alt="新加坡店屋的爆炸图：屋顶、檩条、楼板、楼梯和墙体分层抬起，引线标注 CLAY TILES、PURLINS ON THE WALLS、FLOORBOARDS、STAIRCASE、JOISTS、TIMBER BEAMS WALL TO WALL、LOUVRED WINDOWS、SIGNBOARD、BRICK FOOTINGS、FIVE-FOOT WAY、PARTY WALL: LOAD-BEARING BRICK" loading="lazy"><figcaption>新加坡店屋：屋顶、楼层和墙都拆开，每个部件都写了名字（陶瓦、搁在墙上的檩条、楼板、楼梯、搁栅、墙到墙的木梁、百叶窗、招牌、砖基础、五脚基、承重砖共用墙）。图 © April Zhu。</figcaption></figure>
+
+<h3 id="how">一张图、一张卡、一条命令</h3>
+<p>卡片就是用这张图本身做的：平铺的印刷图和立起来的物体是同一幅画，先平放在卡片上，再通过一台真正的 3D 相机立起来。</p>
+<ol>
+<li><strong>一张图</strong>：用 <a href="https://april-zhu.com/colorfigures" rel="noopener">Colorfigures</a> 做一张（一句话描述一个物体），或者拿你已有的。</li>
+<li><strong>一张卡</strong>：给卡片几个词和一个颜色：名字、第二行、一句话、一个强调色。
+<pre><code>{ "title": "The Tulou",
+  "place": "Fujian",
+  "accent": "#8c5a24" }</code></pre></li>
+<li><strong>一个页面</strong>：Claude 来跑构建。卡片是一个能独立运行的 HTML 文件，手机上也能用。
+<pre><code>python3 scripts/build.py \
+  tulou.html card.json card.html</code></pre></li>
+</ol>
+
+<h3 id="embed">放进你自己的网页：随滚动升起的卡片</h3>
+<p>用 <code>?embed=1</code> 嵌入一张卡片，然后告诉它什么时候升起、折下或休眠。</p>
+<pre><code>frame.contentWindow.postMessage({ oh: 'rise' }, '*')
+// 还有 'fold'、'sleep'、'wake'</code></pre>
+
+<h3 id="try">试试看：一句话就行</h3>
+<ul>
+<li>make an Open House card of a Moroccan riad（做一张摩洛哥庭院宅 riad 的 Open House 卡片）</li>
+<li>three Open House cards: a Swiss chalet, a Dutch canal house and a Malay kampung house（三张卡：瑞士木屋、荷兰运河屋、马来甘榜屋）</li>
+<li>turn my Colorfigures Icelandic turf house into a pop-up card（把我用 Colorfigures 画的冰岛草皮屋做成弹出卡片）</li>
+</ul>
+
+<h3 id="install">安装</h3>
+<div class="table-wrap"><table><thead><tr><th>环境</th><th>方式</th><th>步骤</th></tr></thead><tbody>
+<tr><td>Claude Code</td><td>一条命令</td><td>运行上方的 <code>mkdir … | tar -xz -C ~/.claude/skills</code>，粘贴到终端，然后重启 Claude Code。</td></tr>
+<tr><td>Claude.ai</td><td>上传 Skill</td><td>下载 <code>openhouse.skill</code>，在 设置 → 功能（Capabilities）→ Skills 里上传并打开。</td></tr>
+<tr><td>手动</td><td>放入文件夹</td><td>下载 <code>openhouse.zip</code> 或 <code>openhouse.tar.gz</code>，解压后把 <code>openhouse</code> 文件夹移到 <code>~/.claude/skills/</code>（或项目里的 <code>.claude/skills/</code>）。和负责画图的 Colorfigures 一起用效果最好。</td></tr>
+</tbody></table></div>
+<p class="caption">⚠️ 原页的下载链接和“复制安装命令”按钮挂着一道“软邮箱墙”：首次点击会弹窗要求留邮箱（文案写“免费，留下邮箱立即解锁”，用于通知新 Skill 与更新）。命令文字本身在页面上公开可见。本站抓取时没有提交邮箱，也不转存压缩包。</p>
+
+<h3 id="faq">常见问题</h3>
+<dl>
+<dt>免费吗？</dt><dd>免费，限个人使用和玩。给你自己的家、你的家乡、你喜欢的地方做卡片，拿去分享吧。</dd>
+<dt>能用于商业工作，或者卖我做出来的东西吗？</dt><dd>不能。请不要转卖这个 Skill 或它做出的卡片，也不要把它们用在商业工作、客户项目或产品里。</dd>
+<dt>运行它需要什么？</dt><dd>Claude Code，或打开了 Skills 功能的 Claude.ai。上面的安装步骤两种都讲了。</dd>
+<dt>一座房子要多久？</dt><dd>一座完整的房子约 40 分钟。喀拉拉 nalukettu 带剖切图、带标注的建筑视图和五个日常场景，在一次 Claude Code 会话里用了 42 分钟。场景少、结构简单的房子会更快。</dd>
+<dt>用多少 token？</dt><dd>那座 nalukettu 用了约 20 万输出 token。Claude 每一步还会重读整段对话，这会加上很多缓存输入，但缓存输入的计费低得多。</dd>
+<dt>该用哪个模型？</dt><dd>Claude Opus 5.5。这里的五座房子都是用它做的。Gemini Argon 也许也能出好结果。</dd>
+<dt>能从我自己的画开始吗？</dt><dd>能。交给它任意一张手绘描线的等轴测图，它会印在一张弹出卡片上回来。和负责画图的 Colorfigures 一起用效果最好。</dd>
+</dl>
+<p class="caption">⚠️ 用时（40 / 42 分钟）与用量（约 20 万输出 token）为作者自报，本站未复现。“Gemini Argon 也许也行”是作者的推测说法。</p>
+
+<h3 id="credits">页脚</h3>
+<p>Open House 个人与娱乐使用免费；不得转售或商用。它构建在 Colorfigures 之上，Colorfigures 基于 iso-glow 和 Tolga Cohce 的 iso-figure skill（MIT）。房子出自小册子 <a href="https://april-zhu.com/openhouse" rel="noopener">Open House</a>。作者 April Zhu · @Aprilzz423</p>
+
+<h2 id="skill">Skill 包导读（不转载）</h2>
+<p>本站按原页公开的安装命令取得 <code>openhouse.tar.gz</code>（约 89 KB，2026-10-31 11:50 UTC+8 取得）看了一遍。以下只是导读与短引，不转载正文和代码。</p>
+<div class="table-wrap"><table><thead><tr><th>文件</th><th>作用</th></tr></thead><tbody>
+<tr><td><code>SKILL.md</code></td><td>工作流（一张图、一个 card.json、一条构建命令）、自检方法、嵌入方法。</td></tr>
+<tr><td><code>assets/card.js</code>（442 行）</td><td>卡片本身：卡面、相机和“升起”动画。</td></tr>
+<tr><td><code>assets/core.js</code>（641 行）</td><td>Colorfigures 绘图引擎；<code>assets/examples/</code> 有烤面包机、夹子、台灯三张完整示例图，外加烤面包机的 card.json。</td></tr>
+<tr><td><code>scripts/build.py</code> / <code>cfbuild.py</code></td><td>figure.html + card.json → 一个页面；后者是 Colorfigures 的页面构建。</td></tr>
+<tr><td><code>LICENSE</code></td><td>个人、非商业许可（见下）。</td></tr>
+</tbody></table></div>
+<ul>
+<li><strong>原理一句话</strong>：引擎原本的等轴投影交给一台 three.js 透视相机接管；图平躺时，每个点用它自身等轴视图的仿射变换“压”到卡面上，所以平面印刷图和立起来的模型在 t=1 与 t=0 时是同一幅画。SKILL.md 的原话是 “the flat print and the standing figure are the same drawing”。</li>
+<li><strong>卡面字段</strong>：<code>title</code>（1–3 个词）、<code>place</code>（斜体第二行）、<code>text</code>（一句话，约两行）、<code>no</code>、<code>series</code>、<code>accent</code>（建议从物体主体色取、稍深一点）、<code>paper</code>、<code>ink</code>、<code>bg</code>，另有几项少用的版面参数。卡上的文字只能写物体上真实成立的事，“don't invent facts”。</li>
+<li><strong>自检</strong>：用无头 Chrome 拍三张：平躺、半途（<code>?t=.5</code>）、立起（<code>?state=live</code>），逐项看构图、遮挡、阴影，再查 <code>data-errors</code> 和 NaN；最多修两轮。</li>
+<li><strong>嵌入</strong>：<code>?embed=1</code> 隐藏所有控件、背景透明；外层页面用 <code>postMessage</code> 发 rise / fold / sleep / wake。建议只在接近视口时加载 iframe，同时只保持一两张在运行，加载完成前先显示平面静帧。</li>
+<li><strong>依赖</strong>：生成的 HTML 从公共 CDN 加载 three.js 和 Fraunces 字体，不算完全离线。</li>
+</ul>
+
+<h3 id="license">许可证要点</h3>
+<ul>
+<li>Open House、Colorfigures、iso-glow 三部分版权均为 April Zhu（2026），许可为“个人、非商业”：可以下载、安装、自己改、分享做出的卡片，“as long as nobody is paying for any of it”。</li>
+<li>不可以：为钱或作为付费产品/服务的一部分出售、转售、再许可、再分发本 Skill（含改过的版本）；不可以把 Skill 或它产出的卡片、图形用于商业工作（客户项目、产品、广告、任何为赚钱做的东西）。免费分享 Skill 时须保留许可与署名。商用请联系作者。</li>
+<li>源自 Tolga Cohce 的 iso-figure skill 的部分仍是 MIT 许可。</li>
+<li>发布用它做的卡片时，作者<em>请求</em>（非强制）注明 Open House。</li>
+</ul>
+
+<h2 id="notes">注意事项</h2>
+<ul>
+<li>⚠️ <strong>不是开源许可</strong>：页面说“免费”，但只限个人非商业使用；用在工作项目、客户交付或带货内容里都不行。</li>
+<li>⚠️ <strong>邮箱墙</strong>：下载/复制安装命令会先弹窗要邮箱，邮箱用于通知新 Skill 与更新（退订写信给作者）。这是作者为自己后续作品收集联系人，属于自我推广，不涉及付费。</li>
+<li>⚠️ <strong>模型名与数字未核实</strong>：FAQ 推荐“Claude Opus 5.5”、提到“Gemini Argon”，以及 42 分钟、约 20 万输出 token，均为作者自报，本站未运行这个 Skill。</li>
+<li>⚠️ <strong>前置依赖</strong>：要做新物体，最好同时装作者的另一个 Skill Colorfigures（同样是个人非商业许可）；需要 Claude Code 或开启 Skills 的 Claude.ai（通常要付费套餐）。</li>
+<li>页面没有 affiliate、utm 或广告链接；作者个人站另有 Colorfigures 与 Open House 小册子，均为同一作者的作品。</li>
+</ul>
+
+<h2 id="original">附录：英文原文</h2>
+<details lang="en"><summary>展开英文原文（April Zhu · Open House skill 项目页）</summary>
+<p>Visible page text, as fetched 2026-10-31 (UI labels included):</p>
+<p>Open House</p>
+<p>Demo ↗Made by April Zhu ↗</p>
+<p>Open House</p>
+<p>Pop-up cards, from a sentence. Describe a house, or hand over any hand-inked drawing, and it comes back printed on a card that lifts off the paper into 3D. Turn it round, cut it open, take it apart, then fold it flat again.</p>
+<p>Download skill (.zip) ↓Demo ↗</p>
+<p>Install in Claude Code</p>
+<p>mkdir -p ~/.claude/skills &amp;&amp; curl -fsSL https://april-zhu.com/openhouseskill/openhouse.tar.gz | tar -xz -C ~/.claude/skillsCopy</p>
+<p>Paste in Terminal. Using Claude.ai? Other ways to install.</p>
+<p>What every house comes with</p>
+<p>01</p>
+<p>A real 3D model</p>
+<p>The house lifts off the printed card. Drag to turn it round, then fold it flat again.</p>
+<p>02</p>
+<p>Cut-out view</p>
+<p>Slice the walls away and see every room inside, furnished.</p>
+<p>03</p>
+<p>Labelled exploded view</p>
+<p>The house comes apart floor by floor, each part named.</p>
+<p>04</p>
+<p>Daily-life cards</p>
+<p>Tap an everyday activity and watch it happen in the cut-out, with a card on the story behind it.</p>
+<p>Demo</p>
+<p>Live, right here. Drag to turn it, cut it open, take it apart, or press a daily-life activity and watch it happen inside.</p>
+<p>Open it in the booklet ↗</p>
+<p>Life inside the houses</p>
+<p>Every house comes with its own cards of daily life: the breakfast, the ritual, the chore, the game. Each one is a close-up drawing with a few lines on what it is and why it matters.</p>
+<p>Pick a card</p>
+<p>Every house comes apart</p>
+<p>Ask for an exploded view and the house lifts apart in layers, each part labelled, so you can see how it is built. It rises off the card apart, then settles together.</p>
+<p>The Shophouse, Singapore: roof, floors and walls apart, every part named.</p>
+<p>A figure, a card, one command</p>
+<p>The card is made from the figure itself: the flat print and the standing object are one drawing, laid flat on the card, then stood up through a real 3D camera.</p>
+<p>1A figure</p>
+<p>Make one with Colorfigures (describe an object in one line), or bring one you already have.</p>
+<p>2A card</p>
+<p>A few words and a colour for the card: its name, a second line, a sentence, an accent.</p>
+<p>{ &quot;title&quot;: &quot;The Tulou&quot;,</p>
+<p>&quot;place&quot;: &quot;Fujian&quot;,</p>
+<p>&quot;accent&quot;: &quot;#8c5a24&quot; }</p>
+<p>3One page</p>
+<p>Claude runs the build. The card is one HTML file that works on its own, on a phone too.</p>
+<p>python3 scripts/build.py \</p>
+<p>tulou.html card.json card.html</p>
+<p>On your own pageCards that rise as you scroll</p>
+<p>Embed a card with ?embed=1 and tell it when to rise, fold or sleep.</p>
+<p>frame.contentWindow.postMessage({ oh: &#x27;rise&#x27; }, &#x27;*&#x27;)</p>
+<p>// also &#x27;fold&#x27;, &#x27;sleep&#x27;, &#x27;wake&#x27;</p>
+<p>TryAsk for it in a sentence</p>
+<p>make an Open House card of a Moroccan riadthree Open House cards: a Swiss chalet, a Dutch canal house and a Malay kampung houseturn my Colorfigures Icelandic turf house into a pop-up card</p>
+<p>Install</p>
+<p>Claude Code</p>
+<p>One command</p>
+<p>mkdir -p ~/.claude/skills &amp;&amp; curl -fsSL https://april-zhu.com/openhouseskill/openhouse.tar.gz | tar -xz -C ~/.claude/skillsCopy</p>
+<p>Paste in Terminal, then restart Claude Code.</p>
+<p>Claude.ai</p>
+<p>Upload the skill</p>
+<p>Download openhouse.skill ↓</p>
+<p>Upload it in Settings → Capabilities → Skills, then switch it on.</p>
+<p>By hand</p>
+<p>Drop in the folder</p>
+<p>openhouse.zipopenhouse.tar.gz</p>
+<p>Unzip and move the openhouse folder into ~/.claude/skills/ (or .claude/skills/ inside a project). Works best next to Colorfigures, which draws the figure.</p>
+<p>FAQ</p>
+<p>Is it free?</p>
+<p>Yes, for personal use and for fun. Make cards of your own house, your hometown, places you love, and share them.</p>
+<p>Can I use it for commercial work or sell what I make?</p>
+<p>No. Please don&#x27;t resell the skill or the cards it makes, and don&#x27;t use them in commercial work, client projects or products.</p>
+<p>What do I need to run it?</p>
+<p>Claude Code, or Claude.ai with skills switched on. The install steps above cover both.</p>
+<p>How long does a house take?</p>
+<p>About 40 minutes for a full house. The Kerala nalukettu, with its cut-out, labelled architecture view and five daily-life scenes, took 42 minutes in one Claude Code session. A simpler house with fewer scenes is quicker.</p>
+<p>How many tokens does it use?</p>
+<p>The nalukettu used about 200k output tokens. Claude also re-reads the conversation on every step, which adds a lot of cached input, but that is billed at a much lower rate.</p>
+<p>Which model should I use?</p>
+<p>Claude Opus 5.5. All five houses here were built with it. Gemini Argon may give you good results too.</p>
+<p>Can I start from my own drawing?</p>
+<p>Yes. Hand over any hand-inked isometric figure and it comes back printed on a pop-up card. It works best next to Colorfigures, which draws the figure.</p>
+<p>Close ×</p>
+<p>←→</p>
+<p>Open House is free for personal and fun use; no resale or commercial use. It is built on Colorfigures, which is based on iso-glow and on Tolga Cohce&#x27;s iso-figure skill (MIT). The houses come from Open House, the booklet. Made by April Zhu · @Aprilzz423</p>
+<h4>The five houses (card words)</h4>
+<ul><li><strong>The Shophouse</strong>, Singapore: A family kopitiam on the ground floor, the family upstairs, and the five-foot way joining it to its neighbours along the street.</li><li><strong>The Machiya</strong>, Kyoto: A narrow wooden townhouse with the shop at the street and the home behind it, screened by wooden lattices.</li><li><strong>The Nalukettu</strong>, Kerala: Four wings of laterite and timber under one tiled roof, built round an open courtyard where the monsoon falls into the middle of the house.</li><li><strong>The Tulou</strong>, Fujian: Huaiyuan Lou: one ring of rammed earth four storeys high, home to a whole clan, with the ancestral hall and school in the courtyard.</li><li><strong>The Houseboat</strong>, Kashmir: A cedar houseboat moored on Dal Lake in Srinagar: a carved verandah over the water, walnut rooms under a khatamband ceiling.</li></ul>
+<h4>Daily-life cards</h4><h5>The Shophouse, Singapore</h5><ul><li><strong>Kopi tarik</strong>: Tarik means &#x27;pull&#x27; in Malay. The kopi is poured from a height, again and again, to cool it and give it a froth.</li><li><strong>Kaya toast</strong>: The kopitiam breakfast: toast spread with kaya (a coconut and egg jam) and cold butter, dipped into soft-boiled eggs with soy sauce and white pepper.</li><li><strong>Hanging the laundry</strong>: Washing goes out on bamboo poles pushed through the windows, over the street, to dry in the sun and the breeze: a sight from old shophouse streets to HDB flats today.</li><li><strong>Cooking on the dapur</strong>: The kitchen sat at the back, by the airwell: a brick stove, the dapur, burning charcoal or firewood under the wok, its smoke carried off by the chimney.</li><li><strong>Joss sticks</strong>: Many Chinese families keep an altar in the hall. Joss sticks are lit, held up with a bow, and set in the urn for the gods and the ancestors.</li></ul><h5>The Machiya, Kyoto</h5><ul><li><strong>Matcha</strong>: Powdered green tea is whisked with a bamboo chasen until it froths, then drunk with a small sweet: a bowl of tea for the family or a guest.</li><li><strong>Cooking rice</strong>: Rice was cooked in an iron pot on the okudo-san, the clay stove (Kyoto families give it the honorific -san): a low fire first, then a high one.</li><li><strong>Uchimizu</strong>: On hot days water is sprinkled on the street in front of the house: it cools the air as it dries, and welcomes the customers.</li><li><strong>Soroban</strong>: The shopkeeper adds up the day on the soroban, the abacus, flicking the beads faster than he could write the sums, and enters them in the ledger.</li><li><strong>Origami</strong>: Children fold squares of paper into cranes. The crane, orizuru, stands for a long life: folding a thousand of them, senbazuru, is a wish.</li></ul><h5>The Nalukettu, Kerala</h5><ul><li><strong>Nilavilakku</strong>: Every evening at dusk a brass lamp is lit and set at the front door: sandhya deepam, the evening light that welcomes good fortune into the house.</li><li><strong>Onam pookalam</strong>: For the ten days of Onam, the harvest festival, a carpet of flower petals is laid in front of the house each morning, ring by ring, to welcome King Mahabali home.</li><li><strong>Sadya</strong>: The Onam feast: a score of dishes, each in its own place on a banana leaf, eaten by hand sitting on the floor. Rice in the middle, sambar poured over it, payasam at the end.</li><li><strong>Puttu and kadala</strong>: Breakfast in Kerala: rice flour and grated coconut packed in layers into a tube, steamed over a pot of water, and pushed out whole. Eaten with black chickpea curry.</li><li><strong>Picking coconuts</strong>: Kerala is the land of the coconut palm. A climber goes up with a loop of rope round his feet and cuts the ripe bunch: the nuts give food, oil, rope and thatch.</li></ul><h5>The Tulou, Fujian</h5><ul><li><strong>Gongfu tea</strong>: Tea with a neighbour on the gallery or in the courtyard: a tiny clay pot, thimble cups, and pour after short pour of oolong from the hills round the village.</li><li><strong>The children’s lesson</strong>: The Sishi Shi was the family school. The children read the primer aloud, column by column, top to bottom and right to left, until they knew it by heart.</li><li><strong>Incense for the ancestors</strong>: Three sticks in the burner before the hall, morning and evening: the Jian family honour the ancestors whose tablets stand on the altar inside.</li><li><strong>Mahjong</strong>: Four neighbours, one square table, an evening of clattering tiles: in a house of some two hundred people there is always a game somewhere round the ring.</li><li><strong>Rolling tangyuan</strong>: For the Lantern Festival and the winter solstice: balls of glutinous rice dough rolled between the palms, boiled and eaten in a sweet soup. Round for a family together.</li></ul><h5>The Houseboat, Kashmir</h5><ul><li><strong>Kahwa from the samovar</strong>: Green tea brewed with saffron, cardamom, cinnamon and slivered almonds, kept hot in a copper samovar with burning charcoal in its central tube. The tea in the cup stays level however the boat leans.</li><li><strong>The flower seller</strong>: Shikara sellers paddle from boat to boat with lotus, roses and marigold garlands. The guests crowd the verandah on one side to buy, and the boat leans a third of a degree toward them.</li><li><strong>The kangri</strong>: An earthen pot of embers in a wicker basket, carried under the pheran, the long woollen gown, through the Kashmiri winter. When the lake freezes, the family sit close round them.</li><li><strong>Wazwan</strong>: The Kashmiri feast: a long run of meat courses that the waza, the master cook, serves onto a copper trami of rice shared by four. Six guests at one end of the table move her centre of gravity forward.</li><li><strong>The doonga kitchen</strong>: The hanji family who keep the houseboat live on the doonga moored alongside, and cook on a clay stove on its deck. Every dish is carried across the plank to the guests.</li></ul>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>Open House 项目页文字与图片 © 2026 April Zhu。本页为非官方中文全译，仅供学习交流，非商业；图片为原页静帧与分享图，转为 webp，未转载视频、演示与 Skill 文件。Skill 采用作者的个人、非商业许可，下载请到 <a href="https://april-zhu.com/openhouseskill" rel="noopener">原页</a>。翻译、导读与注记由 Grok Bot 整理。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://april-zhu.com/openhouseskill" rel="noopener">april-zhu.com/openhouseskill</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
