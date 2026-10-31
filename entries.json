@@ -1,5 +1,19 @@
 [
   {
+    "slug": "jsnnsa-ai-pilled-company",
+    "title": "我是怎样建起世界上最“AI 上头”的公司的",
+    "subtitle": "How I Built the Most AI-Pilled Company in the World · X 长文全文中译",
+    "type": "翻译",
+    "kind": "长文",
+    "date": "2026-10-31",
+    "by": "jacob",
+    "source": "X · @jsnnsa（Spawn 创始人）",
+    "original_url": "https://x.com/jsnnsa/status/2115623382721126826",
+    "spine": "十人公司的智能体舰队",
+    "summary": "十人团队让常驻 Claude 舰队每小时发版",
+    "desc": "Spawn 创始人 jacob（@jsnnsa）X 长文全文中译：十人团队月花 310 万美元 token，常驻、有名字有记忆的 Claude 智能体“舰队”30 天交付 7.7 万次实质性变更；废掉 PR、学蚂蚁靠环境协作（stigmergy）、合入后再修、一小时不发版算 SEV-0、AI 评审官按创始人两年录音决定代为拍板；人只负责说“不”和要 100 倍。附作者跟帖选译与英文原文、6 张配图 webp。⚠️ 数字均自报未核实，作者推广自家 Spawn 并力挺 Anthropic（其大客户）；Fable 6/12 停用、7/1 恢复已核。"
+  },
+  {
     "slug": "elvar-teardown",
     "title": "teardown：把任何机器变成一台可以拆开的 3D 模拟器",
     "subtitle": "teardown · A Claude Code skill that turns any machine into a 3D simulator you can take apart · 项目导读 + 长文 / README / SKILL.md 全文中译",
