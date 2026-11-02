@@ -1,0 +1,568 @@
+diff -u src.orig/renderer.ts src/renderer.ts
+--- src.orig/renderer.ts	2026-11-03 00:10:55.307979429 +0800
++++ src/renderer.ts	2026-11-03 01:04:48.711929260 +0800
+@@ -25,6 +25,24 @@
+ 
+ const ACCENTS = ["#e0892c", "#e03a32", "#b44ae0", "#33c8cc", "#3cb54a", "#3150e8", "#d9c14a"];
+ 
++// [zh-blog-mirrors] Hub palette. The original paints light-on-black; on the hub every
++// colour is re-expressed as a "prominence" v in [0,1] and drawn as mix(bg, ink, v), so
++// the same code reads ink-on-paper in light mode and paper-on-ink in dark mode.
++export interface HubPalette {
++  bg: [number, number, number];
++  ink: [number, number, number];
++  acc: [number, number, number];
++  /** Global prominence scale: keeps the sharks quieter than the original's full contrast. */
++  strength: number;
++  /** Grid line alpha (original: 0.055 white on black). */
++  grid: number;
++}
++const DEFAULT_PALETTE: HubPalette = { bg: [0, 0, 0], ink: [230, 238, 255], acc: [198, 164, 106], strength: 1, grid: 0.055 };
++function rgbStr(c: number[], a?: number) {
++  const r = Math.round(c[0]), g = Math.round(c[1]), b = Math.round(c[2]);
++  return a === undefined ? `rgb(${r},${g},${b})` : `rgba(${r},${g},${b},${a.toFixed(3)})`;
++}
++
+ // Sparse glyphs on bright skin, dense glyphs in shadow, so the texture
+ // reinforces the shading instead of fighting it.
+ const SKIN_RAMP = ":;t%SX8#@";
+@@ -248,9 +266,9 @@
+ }
+ 
+ /** Visible dark-grey cell grid, snapped to device pixels. Shared with the sidebar backdrop. */
+-export function paintGrid(g: CanvasRenderingContext2D, W: number, H: number, cw: number, ch: number, dpr: number) {
++export function paintGrid(g: CanvasRenderingContext2D, W: number, H: number, cw: number, ch: number, dpr: number, stroke = "rgba(255,255,255,0.055)") {
+   g.setTransform(1, 0, 0, 1, 0, 0);
+-  g.strokeStyle = "rgba(255,255,255,0.055)";
++  g.strokeStyle = stroke;
+   g.lineWidth = 1;
+   g.beginPath();
+   for (let c = 0; c <= Math.ceil(W / cw); c++) {
+@@ -277,6 +295,14 @@
+   private cols = 0;
+   private rows = 0;
+   private fontFamily = "ui-monospace, Menlo, monospace";
++  // [zh-blog-mirrors] On the hub the world is page-sized and the canvas is a window onto it:
++  // viewTop/viewH (css px; viewTop a whole number of rows) choose the rows drawn, gridBottom
++  // keeps the cell grid to the hero. viewH = 0 is the original whole-canvas behaviour.
++  private viewTop = 0;
++  private viewH = 0;
++  private gridBottom = Infinity;
++  /** [zh-blog-mirrors] opacity of the grid layer (the theme tween cross-fades it). */
++  gridAlpha = 1;
+ 
+   private dotKind = new Uint8Array(0); // 0 none, 1 blue, 2 green, 3 red, 4 pale
+   private dotPhase = new Float32Array(0);
+@@ -317,19 +343,48 @@
+   private fishBuckets: number[][] = FISH_ALPHAS.map(() => []);
+   private fishStyles = FISH_ALPHAS.map((a) => `rgba(230,238,255,${a})`);
+ 
++  // [zh-blog-mirrors] palette state + cached colour strings (256-step tone ramp).
++  private pal: HubPalette = DEFAULT_PALETTE;
++  private toneLUT: string[] = [];
++  private accStyle = "";
++  private accSoftStyle = "";
++  private heatStyles: string[] = [];
++
+   constructor(private canvas: HTMLCanvasElement) {
+-    const ctx = canvas.getContext("2d", { alpha: false });
++    // [zh-blog-mirrors] transparent canvas: the page's own paper shows through.
++    const ctx = canvas.getContext("2d", { alpha: true });
+     if (!ctx) throw new Error("2D canvas unavailable");
+     this.ctx = ctx;
+     this.bg = document.createElement("canvas");
++    this.setPalette(DEFAULT_PALETTE);
++  }
+ 
++  /** [zh-blog-mirrors] Re-derive every colour from the hub palette. */
++  setPalette(p: HubPalette, repaintGrid = true) {
++    this.pal = p;
++    const { bg, ink, acc, strength } = p;
++    const mix = (v: number) => bg.map((b, k) => b + (ink[k] - b) * clamp(v, 0, 1));
++    this.toneLUT = [];
++    for (let l = 0; l < 256; l++) this.toneLUT.push(rgbStr(mix((l / 255) * strength)));
++    this.accStyle = rgbStr(acc.map((a, k) => a + (bg[k] - a) * 0.15));
++    this.accSoftStyle = rgbStr(acc.map((a, k) => a + (bg[k] - a) * 0.45));
++    this.fishStyles = FISH_ALPHAS.map((a) => rgbStr(ink, a * (0.55 + 0.45 * strength)));
++    this.heatStyles = [];
++    for (let l = 0; l <= 20; l++) this.heatStyles.push(rgbStr(acc, (l / 20) * 0.85));
++    this.dotStyles = [];
+     for (let c = 0; c < DOT_RGB.length; c++) {
+-      const [r, g, b] = DOT_RGB[c];
+       for (let l = 0; l < ALPHA_LEVELS; l++) {
+         const a = (DOT_BASE_ALPHA[c] * (l + 1)) / ALPHA_LEVELS;
+-        this.dotStyles.push(`rgba(${r},${g},${b},${a.toFixed(3)})`);
++        // The cyan wake becomes a faint ink stipple.
++        this.dotStyles.push(rgbStr(ink, a * 0.42 * strength));
+       }
+     }
++    if (this.width && repaintGrid) this.paintBackground();
++  }
++
++  /** [zh-blog-mirrors] prominence (0..255 on the original's black scale) → hub colour. */
++  private tone(level: number) {
++    return this.toneLUT[clamp(Math.round(level), 0, 255)];
+   }
+ 
+   get cellWidth() {
+@@ -356,7 +411,7 @@
+     this.rows = Math.ceil(height / this.ch);
+ 
+     this.canvas.width = Math.round(width * dpr);
+-    this.canvas.height = Math.round(height * dpr);
++    this.canvas.height = Math.round((this.viewH || height) * dpr); // [zh-blog-mirrors] window height
+     this.bg.width = this.canvas.width;
+     this.bg.height = this.canvas.height;
+ 
+@@ -390,14 +445,73 @@
+     this.paintBackground();
+   }
+ 
++  /** [zh-blog-mirrors] Move/resize the window (css px). Returns true when the canvas was resized. */
++  setView(top: number, height: number, gridBottom = this.gridBottom) {
++    const resized = height !== this.viewH;
++    if (!resized && top === this.viewTop && gridBottom === this.gridBottom) return false;
++    this.viewTop = top;
++    this.viewH = height;
++    this.gridBottom = gridBottom;
++    if (resized && this.width) {
++      this.canvas.height = Math.round(height * this.dpr);
++      this.bg.height = this.canvas.height;
++    }
++    if (this.width) this.paintBackground();
++    return resized;
++  }
++
++  /** [zh-blog-mirrors] Cell range [i0, i1) of the rows inside the window. */
++  private rowSpan(): [number, number] {
++    if (!this.viewH) return [0, this.cols * this.rows];
++    const r0 = Math.max(0, Math.floor(this.viewTop / this.ch));
++    const r1 = Math.min(this.rows, Math.ceil((this.viewTop + this.viewH) / this.ch));
++    return [r0 * this.cols, Math.max(r0, r1) * this.cols];
++  }
++
+   private paintBackground() {
+     const g = this.bg.getContext("2d");
+     if (!g) return;
+-    const { width: W, height: H, dpr, cw, ch } = this;
+-    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+-    g.fillStyle = "#000";
+-    g.fillRect(0, 0, W, H);
+-    paintGrid(g, W, H, cw, ch, dpr);
++    const { width: W, dpr, cw, ch } = this;
++    // [zh-blog-mirrors] No black fill: the page's paper shows through. The cell grid is drawn
++    // in --ink at low alpha, only over the hero (gridBottom), feathered out at its edges.
++    g.setTransform(1, 0, 0, 1, 0, 0);
++    g.clearRect(0, 0, this.bg.width, this.bg.height);
++    const top = this.viewTop;
++    const gb = Math.min(this.gridBottom, this.height);
++    const yEnd = Math.min(gb, top + (this.viewH || this.height));
++    if (this.pal.grid <= 0 || yEnd <= top) return;
++    g.strokeStyle = rgbStr(this.pal.ink, this.pal.grid);
++    g.lineWidth = 1;
++    g.beginPath();
++    const yPx = Math.round((yEnd - top) * dpr);
++    for (let c = 0; c <= Math.ceil(W / cw); c++) {
++      const x = Math.round(c * cw * dpr) + 0.5;
++      g.moveTo(x, 0);
++      g.lineTo(x, yPx);
++    }
++    for (let r = Math.ceil(top / ch); r * ch <= yEnd; r++) {
++      const y = Math.round((r * ch - top) * dpr) + 0.5;
++      g.moveTo(0, y);
++      g.lineTo(W * dpr, y);
++    }
++    g.stroke();
++    g.setTransform(dpr, 0, 0, dpr, 0, -top * dpr);
++    g.globalCompositeOperation = "destination-in";
++    const fy = g.createLinearGradient(0, 0, 0, gb);
++    fy.addColorStop(0, "rgba(0,0,0,0)");
++    fy.addColorStop(0.32, "#000");
++    fy.addColorStop(0.62, "#000");
++    fy.addColorStop(1, "rgba(0,0,0,0)");
++    g.fillStyle = fy;
++    g.fillRect(0, top, W, yEnd - top);
++    const fx = g.createLinearGradient(0, 0, W, 0);
++    fx.addColorStop(0, "rgba(0,0,0,0)");
++    fx.addColorStop(0.14, "#000");
++    fx.addColorStop(0.86, "#000");
++    fx.addColorStop(1, "rgba(0,0,0,0)");
++    g.fillStyle = fx;
++    g.fillRect(0, top, W, yEnd - top);
++    g.globalCompositeOperation = "source-over";
+   }
+ 
+   render(world: World, dt: number) {
+@@ -411,8 +525,13 @@
+     this.diffuse(dt);
+ 
+     ctx.setTransform(1, 0, 0, 1, 0, 0);
+-    ctx.drawImage(this.bg, 0, 0);
+-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
++    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // [zh-blog-mirrors] transparent
++    if (this.gridAlpha > 0.004) {
++      ctx.globalAlpha = this.gridAlpha;
++      ctx.drawImage(this.bg, 0, 0);
++      ctx.globalAlpha = 1;
++    }
++    ctx.setTransform(dpr, 0, 0, dpr, 0, -this.viewTop * dpr); // [zh-blog-mirrors] window offset
+ 
+     this.markFish(world);
+     this.drawDots(t);
+@@ -752,8 +871,8 @@
+ 
+   private drawSharks(t: number) {
+     const { ctx, cols, rows, cw, ch, sharkFlag, sharkShade, sharkKey, sharkDepth, sharkKind } = this;
+-    const n = cols * rows;
+-    for (let i = 0; i < n; i++) {
++    const [i0, n] = this.rowSpan(); // [zh-blog-mirrors] only rows in the window
++    for (let i = i0; i < n; i++) {
+       const flag = sharkFlag[i];
+       if (!flag) continue;
+       const col = i % cols;
+@@ -773,10 +892,8 @@
+         // Soft, anti-aliased silhouette: no block, just a light glyph.
+         const set = shade >= 0.5 ? EDGE_HEAVY : EDGE_LIGHT;
+         const g = (70 + shade * 80) * dim;
+-        ctx.fillStyle =
+-          roll < 0.07
+-            ? ACCENTS[key % ACCENTS.length]
+-            : `rgb(${Math.round(g * tr)},${Math.round(g * tg)},${Math.min(255, Math.round(g * tb + 6))})`;
++        // [zh-blog-mirrors] accents → hub brass; tint dropped (hub ink is already warm).
++        ctx.fillStyle = roll < 0.07 ? this.accSoftStyle : this.tone(g);
+         ctx.fillText(set[(key >>> 8) % set.length], x + cw / 2, y + ch / 2 + 1);
+         continue;
+       }
+@@ -802,15 +919,16 @@
+       }
+       level *= dim;
+       // Tinted per species; the classic tint is a cool blue-grey, like a back seen through deep water.
+-      ctx.fillStyle = `rgb(${Math.min(255, Math.round(level * tr))},${Math.min(255, Math.round(level * tg))},${Math.min(255, Math.round(level * tb + 4))})`;
++      ctx.fillStyle = this.tone(level); // [zh-blog-mirrors]
+       ctx.fillRect(x + 1, y + 1, cw - 1, ch - 1);
+ 
+       let color: string;
+-      if (flag === FLAG_EYE) color = "#9aa0ad";
+-      else if (flag === FLAG_MARK) color = `rgb(${Math.round(70 * tr)},${Math.round(70 * tg)},${Math.round(70 * tb)})`;
+-      else if (roll < 0.09) color = ACCENTS[key % ACCENTS.length];
+-      else if (roll < 0.13) color = "#ffffff";
+-      else color = shade > 0.55 ? "#0e0f13" : "#1b1d24";
++      // [zh-blog-mirrors] same roll thresholds; colours re-expressed in the hub palette.
++      if (flag === FLAG_EYE) color = this.tone(0x9a);
++      else if (flag === FLAG_MARK) color = this.tone(70);
++      else if (roll < 0.09) color = (key >>> 3) % 3 === 0 ? this.accSoftStyle : this.accStyle;
++      else if (roll < 0.13) color = this.tone(255);
++      else color = shade > 0.55 ? this.tone(14) : this.tone(27);
+       ctx.fillStyle = color;
+       ctx.fillText(glyph, x + cw / 2, y + ch / 2 + 1);
+     }
+@@ -842,11 +960,13 @@
+ 
+   private drawFish() {
+     const { ctx, cw, ch, cols, fishBuckets } = this;
++    const [i0, i1] = this.rowSpan(); // [zh-blog-mirrors]
+     for (let b = 0; b < fishBuckets.length; b++) {
+       const bucket = fishBuckets[b];
+       if (!bucket.length) continue;
+       ctx.fillStyle = this.fishStyles[b];
+       for (const i of bucket) {
++        if (i < i0 || i >= i1) continue; // [zh-blog-mirrors] outside the window
+         ctx.fillText("-", (i % cols) * cw + cw / 2, ((i / cols) | 0) * ch + ch / 2 + 1);
+       }
+     }
+@@ -854,12 +974,13 @@
+ 
+   private drawHeat() {
+     const { ctx, heat, cols, cw, ch } = this;
+-    for (let i = 0; i < heat.length; i++) {
++    const [i0, n] = this.rowSpan(); // [zh-blog-mirrors]
++    for (let i = i0; i < n; i++) {
+       const h = heat[i];
+       if (h < 0.08) continue;
+       const col = i % cols;
+       const row = (i / cols) | 0;
+-      ctx.fillStyle = h > 0.5 ? `rgba(255,120,60,${h.toFixed(2)})` : `rgba(220,40,40,${(h * 1.6).toFixed(2)})`;
++      ctx.fillStyle = this.heatStyles[clamp(Math.round(Math.min(1, h > 0.5 ? h : h * 1.6) * 20), 0, 20)]; // [zh-blog-mirrors] red/orange → brass
+       ctx.fillText(h > 0.6 ? "*" : "·", col * cw + cw / 2, row * ch + ch / 2 + 1);
+     }
+   }
+@@ -872,11 +993,11 @@
+   private drawDots(t: number) {
+     const { ctx, cols, rows, cw, ch, dotKind, dotPhase, dotFreq, energy, sharkFlag, sharkShadow, fishStamp, frameId } = this;
+     const { bucketOf, bucketOrder, bucketCounts } = this;
+-    const n = cols * rows;
++    const [i0, n] = this.rowSpan(); // [zh-blog-mirrors]
+     const SKIP = bucketCounts.length - 1;
+     bucketCounts.fill(0);
+ 
+-    for (let i = 0; i < n; i++) {
++    for (let i = i0; i < n; i++) {
+       const e = energy[i];
+       const kind = dotKind[i];
+       if (sharkFlag[i] || fishStamp[i] === frameId || (kind === 0 && e < 0.45)) {
+@@ -905,7 +1026,7 @@
+     const starts = new Int32Array(bucketCounts.length);
+     for (let b = 1; b < bucketCounts.length; b++) starts[b] = starts[b - 1] + bucketCounts[b - 1];
+     const cursor = starts.slice();
+-    for (let i = 0; i < n; i++) {
++    for (let i = i0; i < n; i++) {
+       const b = bucketOf[i];
+       if (b !== SKIP) bucketOrder[cursor[b]++] = i;
+     }
+diff -u src.orig/world.ts src/world.ts
+--- src.orig/world.ts	2026-11-03 00:10:55.307979429 +0800
++++ src/world.ts	2026-11-03 01:04:48.711929260 +0800
+@@ -73,6 +73,20 @@
+   depth: number;
+ }
+ 
++/** [zh-blog-mirrors] Page-layout hooks, all in world px. */
++export interface Rect {
++  l: number;
++  t: number;
++  r: number;
++  b: number;
++}
++export interface Ellipse {
++  x: number;
++  y: number;
++  rx: number;
++  ry: number;
++}
++
+ export interface WorldEvent {
+   kind: "eat" | "splash";
+   x: number;
+@@ -108,6 +122,14 @@
+   private lastSpawn = 0;
+   private tmp = { x: 0, y: 0 };
+ 
++  /** [zh-blog-mirrors] Home water: where sharks start and patrol (null: the whole world, as upstream). */
++  home: Rect | null = null;
++  /** [zh-blog-mirrors] Sharks' keep-clear ellipses (null: the original centred headline zone). */
++  clearZones: Ellipse[] | null = null;
++  /** [zh-blog-mirrors] Solid keep-out rects (the hub's bookshelves); fish and sharks steer round them. */
++  obstacles: Rect[] = [];
++  private ob = { x: 0, y: 0 };
++
+   /** fishCount overrides the area-based population (the sidebar wants a single small school). */
+   constructor(
+     private sharkSpecs: SharkSpec[] = DEFAULT_SHARKS,
+@@ -136,7 +158,11 @@
+ 
+   seed() {
+     const { width: W, height: H } = this;
+-    const minSide = Math.min(W, H);
++    // [zh-blog-mirrors] size and place the sharks by their home water.
++    const hm = this.home ?? { l: 0, t: 0, r: W, b: H };
++    const HW = hm.r - hm.l;
++    const HH = hm.b - hm.t;
++    const minSide = Math.min(HW, HH);
+     const baseLength = clamp(minSide * 0.44, 170, 430);
+     const sharkCount = this.sharkSpecs.length;
+ 
+@@ -147,8 +173,8 @@
+       const orbitRadius = minSide * rand(0.28, 0.4);
+       const a = (i / sharkCount) * TAU + rand(-0.4, 0.4);
+       const orbitDir: 1 | -1 = i % 2 === 0 ? 1 : -1;
+-      const x = W / 2 + Math.cos(a) * orbitRadius * (W / minSide) * 0.9;
+-      const y = H / 2 + Math.sin(a) * orbitRadius;
++      const x = hm.l + HW / 2 + Math.cos(a) * orbitRadius * (HW / minSide) * 0.9;
++      const y = hm.t + HH / 2 + Math.sin(a) * orbitRadius;
+       const heading = a + (orbitDir * Math.PI) / 2;
+       const nodes = new Float32Array(SHARK_NODES * 2);
+       const seg = length / (SHARK_NODES - 1);
+@@ -184,8 +210,13 @@
+       const sp = SPECIES[species];
+       const size = Math.min(randInt(sp.schoolSize[0], sp.schoolSize[1]), total - this.fish.length);
+       const millDir: 1 | -1 = Math.random() < 0.5 ? 1 : -1;
+-      const cx = rand(W * 0.06, W * 0.94);
+-      const cy = rand(H * 0.08, H * 0.92);
++      let cx = rand(W * 0.06, W * 0.94);
++      let cy = rand(H * 0.08, H * 0.92);
++      // [zh-blog-mirrors] schools start in open water, never on a shelf.
++      for (let k = 0; k < 60 && !this.isFree(cx, cy, 40); k++) {
++        cx = rand(W * 0.02, W * 0.98);
++        cy = rand(H * 0.02, H * 0.98);
++      }
+       // Mostly level headings: fish cruise sideways far more than up or down.
+       const dir = (Math.random() < 0.5 ? 0 : Math.PI) + rand(-0.5, 0.5);
+       for (let k = 0; k < size; k++) {
+@@ -208,6 +239,49 @@
+     this.bucketNext = new Int32Array(this.fish.length);
+   }
+ 
++  /**
++   * [zh-blog-mirrors] Depth of (x, y) inside the nearest obstacle grown by pad (0 = outside);
++   * the outward normal of that obstacle's closest edge is left in this.ob.
++   */
++  private obstacleDepth(x: number, y: number, pad: number) {
++    let best = 0;
++    for (const o of this.obstacles) {
++      const l = o.l - pad;
++      const t = o.t - pad;
++      const r = o.r + pad;
++      const b = o.b + pad;
++      if (x <= l || x >= r || y <= t || y >= b) continue;
++      let d = x - l;
++      let nx = -1;
++      let ny = 0;
++      if (r - x < d) (d = r - x), (nx = 1), (ny = 0);
++      if (y - t < d) (d = y - t), (nx = 0), (ny = -1);
++      if (b - y < d) (d = b - y), (nx = 0), (ny = 1);
++      if (d > best) {
++        best = d;
++        this.ob.x = nx;
++        this.ob.y = ny;
++      }
++    }
++    return best;
++  }
++
++  /** [zh-blog-mirrors] Open water at (x, y), at least pad away from every obstacle. */
++  isFree(x: number, y: number, pad = 0) {
++    return this.obstacleDepth(x, y, pad) === 0;
++  }
++
++  /** [zh-blog-mirrors] A straight swim from a to b stays pad clear of the shelves. */
++  private reachable(ax: number, ay: number, bx: number, by: number, pad: number) {
++    if (!this.obstacles.length) return true;
++    if (!this.isFree(bx, by, pad)) return false;
++    const n = Math.ceil(Math.hypot(bx - ax, by - ay) / 28);
++    for (let k = 1; k < n; k++) {
++      if (!this.isFree(ax + ((bx - ax) * k) / n, ay + ((by - ay) * k) / n, pad * 0.7)) return false;
++    }
++    return true;
++  }
++
+   splash(x: number, y: number) {
+     this.events.push({ kind: "splash", x, y });
+     const r = 240;
+@@ -424,6 +498,20 @@
+       else if (f.x > W - m) ax -= (f.x - (W - m)) * 7;
+       if (f.y < m) ay += (m - f.y) * 7;
+       else if (f.y > H - m) ay -= (f.y - (H - m)) * 7;
++      // [zh-blog-mirrors] Shelves are solid too: look a little ahead and veer off like at the walls;
++      // a fish caught inside (the layout moved) is pushed straight out.
++      if (this.obstacles.length) {
++        const ahead = this.obstacleDepth(f.x + f.vx * 0.3, f.y + f.vy * 0.3, 26);
++        if (ahead > 0) {
++          ax += this.ob.x * ahead * 9;
++          ay += this.ob.y * ahead * 9;
++        }
++        const inside = this.obstacleDepth(f.x, f.y, 2);
++        if (inside > 0) {
++          ax += this.ob.x * (inside + 30) * 24;
++          ay += this.ob.y * (inside + 30) * 24;
++        }
++      }
+ 
+       // Ambient current and a little individual restlessness.
+       current(f.x, f.y, time, cur);
+@@ -458,9 +546,12 @@
+ 
+   private stepSharks(dt: number) {
+     const { sharks, width: W, height: H, time } = this;
+-    const minSide = Math.min(W, H);
+-    const cxW = W / 2;
+-    const cyW = H / 2;
++    // [zh-blog-mirrors] patrol (and come back) around the home water, not the page centre.
++    const hm = this.home ?? { l: 0, t: 0, r: W, b: H };
++    const minSide = Math.min(hm.r - hm.l, hm.b - hm.t);
++    const aspect = (hm.r - hm.l) / minSide;
++    const cxW = (hm.l + hm.r) / 2;
++    const cyW = (hm.t + hm.b) / 2;
+ 
+     for (const sh of sharks) {
+       const L = sh.length;
+@@ -499,7 +590,7 @@
+         closing = clamp(1 - d / (L * 0.9), 0, 1);
+       } else {
+         // Patrol: a lazy circuit around the headline.
+-        const rx = (hx - cxW) / (W / minSide);
++        const rx = (hx - cxW) / aspect;
+         const ry = hy - cyW;
+         const r = Math.hypot(rx, ry) || 1;
+         const radius = sh.orbitRadius * (1 + 0.15 * Math.sin(time * 0.05 + sh.id));
+@@ -525,14 +616,35 @@
+       }
+ 
+       // Keep the headline mostly clear: a soft elliptical no-swim zone.
+-      const ex = (hx - cxW) / (W * 0.3);
+-      const ey = (hy - cyW) / (H * 0.16);
+-      const e2 = ex * ex + ey * ey;
+-      if (e2 < 1) {
+-        const e = Math.sqrt(e2) || 1e-3;
+-        const w = (1 - e) * (hunting ? 1 : 2.5);
+-        dx += (ex / e) * w;
+-        dy += (ey / e) * w;
++      // [zh-blog-mirrors] the hub supplies its own zones (title block, shelf hint).
++      for (const z of this.clearZones ?? [{ x: W / 2, y: H / 2, rx: W * 0.3, ry: H * 0.16 }]) {
++        const ex = (hx - z.x) / z.rx;
++        const ey = (hy - z.y) / z.ry;
++        const e2 = ex * ex + ey * ey;
++        if (e2 < 1) {
++          const e = Math.sqrt(e2) || 1e-3;
++          const w = (1 - e) * (hunting ? 1 : 2.5);
++          dx += (ex / e) * w;
++          dy += (ey / e) * w;
++        }
++      }
++
++      // [zh-blog-mirrors] Steer round the shelves: probe along the heading, push off the nearest
++      // edge and slide along it the way the shark is already going, so it arcs round corners.
++      if (this.obstacles.length) {
++        const pad = L * 0.2 + 12;
++        const fx = Math.cos(sh.heading);
++        const fy = Math.sin(sh.heading);
++        for (let k = 0; k <= 2; k++) {
++          const d = this.obstacleDepth(hx + fx * L * 0.25 * k, hy + fy * L * 0.25 * k, pad);
++          if (d <= 0) continue;
++          const nx = this.ob.x;
++          const ny = this.ob.y;
++          const side = -ny * fx + nx * fy >= 0 ? 1 : -1;
++          const w = clamp(d / (pad * 0.5), 0.2, 1) * (k === 0 ? 3.5 : 2.2 - k * 0.5);
++          dx += (nx * 0.9 - ny * side) * w;
++          dy += (ny * 0.9 + nx * side) * w;
++        }
+       }
+ 
+       // Turn back once the snout leaves the frame, so bodies dip off-screen
+@@ -620,6 +732,8 @@
+       if (cos < 0.2) continue;
+       const crowd = this.bucketCount[this.bucketOf(f.x, f.y)];
+       const score = d * (1 + (1 - cos) * 0.8) * (1 + crowd * 0.07);
++      // [zh-blog-mirrors] fish tucked beside a shelf are out of reach: too tight for a shark.
++      if (score < bestScore && f !== sh.target && !this.reachable(hx, hy, f.x, f.y, sh.length * 0.2 + 12)) continue;
+       if (score < bestScore) {
+         bestScore = score;
+         best = f;
+@@ -627,7 +741,7 @@
+       if (f === sh.target) currentScore = score;
+     }
+     // Stick with the current target unless something is clearly better.
+-    if (sh.target && currentScore < bestScore * 1.3) return sh.target;
++    if (sh.target && currentScore < bestScore * 1.3 && this.reachable(hx, hy, sh.target.x, sh.target.y, sh.length * 0.2 + 12)) return sh.target;
+     return best;
+   }
+ 
+@@ -644,7 +758,18 @@
+     const along = rand(0.15, 0.85);
+     const x = side === 0 ? -20 : side === 1 ? W + 20 : along * W;
+     const y = side === 2 ? -20 : side === 3 ? H + 20 : along * H;
+-    const inward = Math.atan2(H / 2 - y, W / 2 - x) + rand(-0.5, 0.5);
++    let inward = Math.atan2(H / 2 - y, W / 2 - x) + rand(-0.5, 0.5);
++    // [zh-blog-mirrors] on a page with shelves, swim in towards nearby open water instead.
++    if (this.obstacles.length) {
++      for (let k = 0; k < 40; k++) {
++        const tx = clamp(x + rand(-420, 420), 0, W);
++        const ty = clamp(y + rand(-420, 420), 0, H);
++        if (this.isFree(tx, ty, 40)) {
++          inward = Math.atan2(ty - y, tx - x);
++          break;
++        }
++      }
++    }
+     const species = pickSpecies();
+     const sp = SPECIES[species];
+     const millDir: 1 | -1 = Math.random() < 0.5 ? 1 : -1;

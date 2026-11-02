@@ -1,0 +1,12 @@
+/* ascii-sharks (MIT, (c) 2026 drewdi; see ./LICENSE) — page-wide water behind the hub, decorative only.
+   The canvas is a window onto a page-sized world; hub.ts sets its top/height and the mask
+   (shelves cut out, text thinned) as inline styles. */
+body{isolation:isolate} /* lets the z-index:-1 water paint above the page background */
+.ash-ocean{position:absolute;left:0;top:0;width:100%;height:0;z-index:-1;pointer-events:none;display:block;
+  font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  opacity:0;transition:opacity 2.6s cubic-bezier(.33,0,.15,1)}
+.ash-ocean.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.ash-ocean{transition:opacity .6s linear}}
+@media (max-width:720px){html.js header.hero{padding-bottom:150px}}
+@media print{.ash-ocean{display:none}}
