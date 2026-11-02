@@ -1,5 +1,19 @@
 [
   {
+    "slug": "leonxlnx-athenaion",
+    "title": "Athenaion：一座全由代码造出的古希腊世界",
+    "desc": "Leonxlnx/athenaion 项目导读：零外部素材，用 three.js 程序化生成整座古希腊世界——悬崖卫城、帕特农式神庙、SDF 雕刻的雅典娜巨像、57 道沿地形追踪的瀑布、约 14.9 万棵树、港城与雪山；作者称由 Claude Code 指挥 55 个子 agent 约两天对照 9 张 AI 参考图搭成，集成显卡离线渲染 4K。原理拆解（引擎先行、美术圣经与亮度百分位目标、模块契约与文件归属、12 agent 渲染-比对-修正循环、导演 agent 反解机位、累积采样 + AgX 调色）、自报数字逐项核对、与同作者 Shanshui 对比、启发。MIT，附 README 全文中文翻译。",
+    "source": "Leonxlnx/athenaion（GitHub）",
+    "date": "2026-11-02",
+    "type": "导读",
+    "subtitle": "A massive ancient Greek world built entirely in code with three.js",
+    "original_url": "https://github.com/Leonxlnx/athenaion",
+    "spine": "代码造古希腊世界",
+    "summary": "零素材 three.js 古希腊城，多 agent 两天搭成",
+    "kind": "项目",
+    "by": "Leon Lin"
+  },
+  {
     "slug": "eianlu-grok-bot-resources",
     "title": "Grok Bot 资源四站：官方市场、需求检索、社区榜单与开源清单",
     "subtitle": "4 places to find ready-made Grok Bots · 原帖照录 + 逐站核对",
