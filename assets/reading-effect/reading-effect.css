@@ -5,7 +5,11 @@
 @font-face { font-family: "Geist Mono"; src: url("fonts/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: block; }
 
 /* boot: hide the normal layout only while the effect is setting type (a 4s failsafe lives in <head>) */
-html.re-js:not(.re-ready) .za-page { display: none; } /* not laid out twice: the script builds the sheet first */
+html.re-js:not(.re-ready):not(.re-prep) .za-page { display: none; } /* not laid out twice: the script builds the sheet first */
+/* re-prep: the sheet is being set (laid out, not shown); the page keeps its loading look until it is ready */
+html.re-js.re-prep .za-page { visibility: hidden; }
+html.re-js.re-prep.re-on { background: none; }
+html.re-js.re-prep.re-on body { background: var(--bg); color: var(--ink); }
 html.re-js:not(.re-ready) .za-foot { opacity: 0; }
 html.re-ready .re-stage { animation: re-arrive .5s var(--re-ease-out, ease-out) both; }
 @keyframes re-arrive { from { opacity: 0; } }
@@ -25,7 +29,7 @@ html.re-on {
   --re-label: 500 9.5px/1.4 var(--re-mono);
   --re-serif: "Geist Serif", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
   --re-mono: "Geist Mono", ui-monospace, Menlo, Consolas, "Noto Serif SC", monospace;
-  --re-tex: url("paper-grain.png"); --re-cockle: url("paper-cockle.png"); --re-crease-hi: rgba(255,255,255,.4); --re-crease-lo: rgba(40,30,15,.075);
+  --re-tex: url("paper-grain.webp"); --re-cockle: url("paper-cockle.webp"); --re-crease-hi: rgba(255,255,255,.4); --re-crease-lo: rgba(40,30,15,.075);
   background: var(--re-stage);
 }
 /* night edition: follows the OS unless the reader picked one (localStorage zbm-theme → html[data-theme]) */
@@ -40,7 +44,7 @@ html.re-on {
     --re-hair: rgba(230, 225, 214, .1);
     --re-blue: #9ea8f0;
     --re-edge: #121315;
-    --re-tex: url("paper-grain-d.png"); --re-cockle: url("paper-cockle-d.png"); --re-crease-hi: rgba(255,255,255,.035); --re-crease-lo: rgba(0,0,0,.28);
+    --re-tex: url("paper-grain-d.webp"); --re-cockle: url("paper-cockle-d.webp"); --re-crease-hi: rgba(255,255,255,.035); --re-crease-lo: rgba(0,0,0,.28);
   }
 }
 html.re-on[data-theme=dark] {
@@ -53,7 +57,7 @@ html.re-on[data-theme=dark] {
     --re-hair: rgba(230, 225, 214, .1);
     --re-blue: #9ea8f0;
     --re-edge: #121315;
-    --re-tex: url("paper-grain-d.png"); --re-cockle: url("paper-cockle-d.png"); --re-crease-hi: rgba(255,255,255,.035); --re-crease-lo: rgba(0,0,0,.28);
+    --re-tex: url("paper-grain-d.webp"); --re-cockle: url("paper-cockle-d.webp"); --re-crease-hi: rgba(255,255,255,.035); --re-crease-lo: rgba(0,0,0,.28);
 }
 html.re-on[data-theme=dark] { color-scheme: dark; } html.re-on[data-theme=light] { color-scheme: light; }
 html.re-on body { background: var(--re-stage); color: var(--re-ink); }
@@ -119,6 +123,8 @@ html.re-on .za-toc { display: none !important; }
 .re-band.re-live { content-visibility: visible; }
 /* long code listings, tables and embeds below the fold skip layout and paint until they come near */
 .re-page .re-solid { content-visibility: auto; contain-intrinsic-size: auto 480px; }
+/* the children of a very large block (a whole article kept as one solid) do the same, one by one */
+.re-page [data-re-cv] { content-visibility: auto; }
 .re-band.re-pending { visibility: hidden; }
 /* text not yet set stays out of layout; only pictures (whose heights are needed) are laid out */
 .re-band.re-pending > :not(.re-ob) { display: none; }
@@ -263,7 +269,7 @@ html.re-on[data-theme=dark] .re-fshadow { box-shadow: 0 0 0 .5px rgba(0,0,0,.4),
     linear-gradient(180deg, transparent calc(var(--hh) - 6px), var(--re-crease-hi) calc(var(--hh) - 3px), var(--re-crease-lo) var(--hh), transparent calc(var(--hh) + 4px)) no-repeat; }
 .re-clone { pointer-events: none; }
 .re-clone, .re-clone * { animation: none !important; transition: none !important; will-change: auto !important; }
-.re-clone .re-band, .re-clone .re-solid { content-visibility: visible; }
+.re-clone .re-band, .re-clone .re-solid, .re-clone [data-re-cv] { content-visibility: visible; }
 .re-clone .re-corner { display: none; }
 .re-unfold { position: fixed; z-index: 61; border: 0; padding: 0; background: transparent; cursor: grab; touch-action: none; }
 .re-hint { position: fixed; z-index: 62; left: 0; right: 0; bottom: 26px; margin: 0; text-align: center; font: var(--re-label); letter-spacing: .16em; text-transform: uppercase; color: var(--re-mute); transition: opacity .5s ease; animation: re-arrive 1.2s .5s ease both; }
@@ -299,7 +305,7 @@ html.re-ctl-off .re-ctl-hint { display: block; position: fixed; right: 18px; bot
 .re-lb-x { position: absolute; top: 4px; right: 8px; font: 400 22px/1 var(--re-serif); background: none; border: 0; color: var(--re-ink); cursor: pointer; padding: 4px 8px; }
 
 /* the nav pill from nav.css, toned to the paper */
-html.re-on .zbm-nav { font-family: var(--re-mono) !important; }
+html.re-on:not(.re-prep) .zbm-nav { font-family: var(--re-mono) !important; }
 
 @media (max-width: 899px) { .re-stats { grid-template-columns: repeat(4, 1fr); } .re-stats > div:nth-child(5) { border-left: 0; padding-left: 0; } }
 @media (max-width: 640px) {

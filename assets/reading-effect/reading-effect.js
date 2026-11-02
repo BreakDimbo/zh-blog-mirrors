@@ -16,6 +16,8 @@ const RM = matchMedia('(prefers-reduced-motion: reduce)');
 const qs = (s, el = D) => el.querySelector(s), qsa = (s, el = D) => [...el.querySelectorAll(s)];
 const h = (tag, cls, attrs) => { const e = D.createElement(tag); if (cls) e.className = cls; if (attrs) for (const k in attrs) { if (k === 'text') e.textContent = attrs[k]; else if (k === 'html') e.innerHTML = attrs[k]; else e.setAttribute(k, attrs[k]); } return e; };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+// 12345 → "12,345" (what toLocaleString('zh-CN') gives for integers, without its first-call cost)
+const group3 = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 const raf = () => new Promise(r => requestAnimationFrame(() => r()));
 
 /* ---------- type scale (must match reading-effect.css) ---------- */
@@ -37,35 +39,67 @@ const EASE = { paper: 'cubic-bezier(.6,.02,.28,1)', out: 'cubic-bezier(.2,.7,.2,
 /* ---------- boot ---------- */
 const page = qs('.za-page'), content = qs('.za-content'), headEl = qs('.za-head'), footEl = qs('.za-foot');
 const off = !page || !content || D.body.hasAttribute('data-re-off') || /[?&]re=off\b/.test(location.search);
-if (off) root.classList.remove('re-js'); else boot().catch(err => { console.error('[reading-effect]', err); root.classList.remove('re-js', 're-on'); });
+if (off) root.classList.remove('re-js'); else boot().catch(err => { console.error('[reading-effect]', err); root.classList.remove('re-js', 're-on', 're-prep'); });
 
 const S = { pages: [], cur: 0, cols: 0, sheetW: 0, linesSet: 0, t0: performance.now(), figN: 0 };
 
 async function boot() {
   await fontsReady();
   build();
-  root.classList.add('re-on');
+  // re-prep: the sheet is laid out but not shown yet (and the page keeps its loading look), so the
+  // first screen and the folded paper can be prepared over several short tasks and then appear together
+  root.classList.add('re-on', 're-prep');
   const hashPage = location.hash ? pageOf(safeTarget(location.hash)) : -1;
   S.cur = hashPage >= 0 ? hashPage : 0;
   showPage(S.cur);
   const fold = hashPage < 0 && !RM.matches && !sessionStorage.getItem('re-opened:' + location.pathname);
-  // set the first screen now; the rest of the page is set in small slices so nothing blocks for long
-  const job = layoutPage(S.cur, { sliced: true });
-  root.classList.add('re-ready');
+  await yieldTask();
+  chunkSolids();
+  await yieldTask();
+  // set the first screen (in slices); the rest of the page follows in small slices so nothing blocks for long
+  const job = layoutPage(S.cur, { sliced: true, prep: true });
+  await job.shown;
   bindGlobal();
   tickStats();
-  job.done.then(() => idle(prelayoutNeighbours));
+  let F = null;
+  if (fold) { scrollTo({ top: 0, behavior: 'instant' }); F = foldOverlay(false, await foldSnaps()); scrollTo({ top: 0, behavior: 'instant' }); }
+  root.classList.remove('re-prep'); root.classList.add('re-ready');
+  job.done.then(() => { idle(prelayoutNeighbours); warmPage(); });
   if (hashPage >= 0) { await job.done; const t = safeTarget(location.hash); t && t.scrollIntoView(); }
-  else if (fold) await foldIntro();
+  else if (F) await foldInteract(F);
   else requestAnimationFrame(() => developVisible(true));
 }
-const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 400));
+// After a page is set, quiet moments are used to get ahead: the plates' tone fields are computed and the
+// deferred children of very large blocks (data-re-cv) are laid out one at a time, so a later scroll or a
+// jump to the end does not have to lay out thousands of boxes at once. Never while the reader is scrolling,
+// turning or unfolding.
+const busy = () => turning || S.foldAnim || performance.now() - (S.lastInput || 0) < 400;
+function warmPage() {
+  const p = S.pages[S.cur]; if (!p || p.warm) return; p.warm = 1;
+  // small blocks first, a few per idle period; a block too big to split (a long table) goes last, alone, in a full idle period
+  const all = qsa('[data-re-cv]', p.el), big = e => e.getElementsByTagName('*').length >= 400;
+  const list = all.filter(e => !big(e)).concat(all.filter(big));
+  const plates = (p.mosaics || []).filter(Boolean);
+  let k = 0;
+  const step = dl => {
+    if (!p.el.isConnected || p.el.hidden) { p.warm = 0; return; }
+    if (busy()) return void setTimeout(() => idle(step), 300);
+    const t0 = performance.now(), room = () => (dl.didTimeout ? 6 : Math.min(10, dl.timeRemaining())) - (performance.now() - t0) > 0;
+    for (const M of plates) if (!M.field && !ensureField(M, performance.now() + 6)) return void idle(step);
+    while (k < list.length && room()) { const e = list[k];
+      if (big(e) && !dl.didTimeout && dl.timeRemaining() < 40) break; k++; e.removeAttribute('data-re-cv'); e.style.removeProperty('contain-intrinsic-size'); if (!e.getAttribute('style')) e.removeAttribute('style'); void e.offsetHeight; }
+    if (k < list.length) idle(step);
+  };
+  idle(step);
+}
+const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(() => fn({ didTimeout: true, timeRemaining: () => 0 }), 400));
 // yield to the browser between slices of work (input and frames get a chance to run)
 const yieldTask = () => new Promise(r => (window.scheduler && scheduler.yield ? scheduler.yield().then(r) : setTimeout(r, 0)));
 function prelayoutNeighbours() {
   for (const j of [S.cur + 1, S.cur - 1]) { const p = S.pages[j]; if (p && !p.laid) { layoutPage(j, { sliced: true, syncPx: 0 }); return void p.pendingDone.then(() => idle(prelayoutNeighbours)); } }
 }
-const isDark = () => { const t = root.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; };
+const DARK_MQ = matchMedia('(prefers-color-scheme: dark)'); // one live query (isDark runs every animation frame)
+const isDark = () => { const t = root.getAttribute('data-theme'); return t ? t === 'dark' : DARK_MQ.matches; };
 
 function fontsReady() {
   const txt = (content.textContent + (headEl ? headEl.textContent : '')).replace(/\s+/g, '');
@@ -236,7 +270,73 @@ function storyEl(st, isLead, pi, si) {
   a._lead = isLead;
   return a;
 }
-function prepSolid(n) { qsa('figure', n).forEach(f => f.querySelector('img') && prepFigure(f, true)); if (n.tagName === 'FIGURE' && n.querySelector('img')) prepFigure(n, true); }
+function prepSolid(n) { qsa('figure', n).forEach(f => f.querySelector('img') && prepFigure(f, true)); if (n.tagName === 'FIGURE' && n.querySelector('img')) prepFigure(n, true); if (n.getElementsByTagName('*').length >= CHUNK_MIN) (S.chunkQ || (S.chunkQ = [])).push(n); }
+// A whole article kept as one block (some mirrors wrap everything in <article>) would be laid out in one go
+// — thousands of boxes — as soon as any of it is near the screen. Its children skip layout and paint until
+// they come near instead (content-visibility, like the bands); an estimate holds their place until then.
+// Containment must not move anything once a block is on screen, so a child is only deferred when it
+// cannot: a plain block (no list marker), whose children's margins do not collapse through its edges, with
+// no floats, out-of-flow boxes or counters inside that would reach past it. (Run once the page styles apply.)
+const CHUNK_MIN = 300, NO_CHUNK = /^(TABLE|THEAD|TBODY|TFOOT|TR|UL|OL|DL|PRE|SUMMARY|PICTURE|VIDEO|IFRAME|svg|SVG)$/;
+function chunkSolids() {
+  const q = S.chunkQ || [], marks = []; S.chunkQ = null;
+  // margins and paddings are read as computed values (typed OM): the resolved ones getComputedStyle gives
+  // would lay the whole page out first. Without typed OM the blocks are simply not deferred.
+  if (!q.length || !D.body.computedStyleMap) return;
+  q.forEach(n => chunkSolid(n, marks)); // all reads first (one style pass) …
+  for (const c of marks) { c.setAttribute('data-re-cv', ''); c.style.setProperty('contain-intrinsic-size', `auto ${chunkEst(c)}px`); } // … then the writes
+}
+function chunkSafe(c, cs) {
+  if (!/^(block|flow-root|flex|grid)$/.test(cs.display) || cs.position === 'fixed' || cs.position === 'sticky' || cs.cssFloat !== 'none') return false;
+  if (!c.textContent.trim() && !c.querySelector('img,svg,canvas,video,iframe')) return false;
+  const bfc = cs.display !== 'block' || cs.overflowX !== 'visible' || cs.overflowY !== 'visible';
+  // margin/padding as computed: px, or NaN when it depends on layout (a percentage) — treated as a margin that
+  // collapses. (Border widths come from getComputedStyle: they need no layout and are 0 when there is no border.)
+  const px = (el, prop) => { const v = el.computedStyleMap().get(prop);
+    if (v instanceof CSSUnitValue) return v.unit === 'px' || !v.value ? v.value : NaN;
+    return v && String(v) === 'auto' && prop.startsWith('margin') ? 0 : NaN; };
+  const has = (el, prop) => px(el, prop) !== 0; // non-zero, or unknown
+  // a child margin that would collapse through the top or bottom edge
+  const through = (el, top, d) => {
+    let ch = top ? el.firstElementChild : el.lastElementChild;
+    for (let n = top ? el.firstChild : el.lastChild; n; n = top ? n.nextSibling : n.previousSibling) { if (n.nodeType === 3 && n.textContent.trim()) return false; if (n.nodeType === 1) { ch = n; break; } }
+    if (!ch) return false; const k = getComputedStyle(ch);
+    if (k.display === 'none' || k.position === 'absolute' || k.position === 'fixed' || k.cssFloat !== 'none') return true;
+    if (/^inline/.test(k.display)) return false;
+    if (has(ch, top ? 'margin-top' : 'margin-bottom')) return true;
+    if (px(ch, top ? 'padding-top' : 'padding-bottom') > 0 || parseFloat(top ? k.borderTopWidth : k.borderBottomWidth) > 0 || k.display !== 'block' || k.overflowY !== 'visible') return false;
+    return d > 6 || through(ch, top, d + 1);
+  };
+  if (!bfc && ((!(px(c, 'padding-top') > 0) && !(parseFloat(cs.borderTopWidth) > 0) && through(c, true, 0)) || (!(px(c, 'padding-bottom') > 0) && !(parseFloat(cs.borderBottomWidth) > 0) && through(c, false, 0)))) return false;
+  const positioned = cs.position !== 'static';
+  for (const e of c.getElementsByTagName('*')) {
+    const k = getComputedStyle(e);
+    if (k.cssFloat !== 'none' && !bfc) return false;
+    if (k.position === 'fixed' || k.position === 'sticky') return false;
+    if (k.position === 'absolute' && !positioned) { let a = e.parentElement, ok = false; while (a && a !== c) { if (getComputedStyle(a).position !== 'static') { ok = true; break; } a = a.parentElement; } if (!ok) return false; }
+    for (const v of [k.counterReset, k.counterIncrement, k.counterSet]) if (v && v !== 'none' && !/^list-item(\s+-?\d+)?$/.test(v)) return false;
+  }
+  return true;
+}
+function chunkSolid(n, marks) {
+  if (n.getElementsByTagName('*').length < CHUNK_MIN || NO_CHUNK.test(n.tagName)) return;
+  const kids = [...n.children];
+  // a float among the children would wrap around a deferred block differently
+  if (kids.some(c => getComputedStyle(c).cssFloat !== 'none')) return;
+  for (const c of kids) {
+    if (c.tagName === 'SUMMARY' || c.tagName === 'SCRIPT' || c.tagName === 'STYLE') continue;
+    if (chunkSafe(c, getComputedStyle(c))) marks.push(c);
+    if (c.getElementsByTagName('*').length >= CHUNK_MIN && !NO_CHUNK.test(c.tagName) && c.tagName !== 'DETAILS') chunkSolid(c, marks);
+  }
+}
+function chunkEst(c) {
+  const img = c.tagName === 'IMG' ? c : c.querySelector('img'), t = c.textContent, W = 1000;
+  let cjk = 0; for (let k = 0; k < t.length; k++) if (t.charCodeAt(k) > 0x2e7f) cjk++;
+  const em = cjk + (t.length - cjk) * .55, lines = c.tagName === 'PRE' ? t.split('\n').length : Math.ceil(em * 17 / W);
+  let hgt = lines * (c.tagName === 'PRE' ? 22 : 30) + 24;
+  if (img) { const w = +img.getAttribute('width'), hh = +img.getAttribute('height'); hgt += w && hh ? Math.min(880, w) * hh / w : 360; }
+  return Math.round(Math.min(hgt, 6000));
+}
 function prepFigure(f, solid) {
   if (f._re) return; f._re = 1;
   const img = qs('img', f); if (!img) return;
@@ -248,6 +348,7 @@ function prepFigure(f, solid) {
   f.tabIndex = 0;
   f.setAttribute('aria-label', `图 ${n}：${img.alt || ''}。按回车查看大图${solid ? '' : '；方向键可移动插图，正文随之重排'}`);
   f._img = img;
+  if (!img.hasAttribute('decoding')) img.decoding = 'async';
   // a gentle fade-in once the picture has actually arrived; already-cached images just appear
   if (img.complete && img.naturalWidth) wrap.classList.add('re-in', 're-now');
   else {
@@ -516,23 +617,35 @@ function layoutPage(i, opt = {}) {
     if (p.gen !== gen) return;
     p.pending = null; p.lines = all.reduce((a, b) => a + (b.lines || 0), 0);
     S.linesSet = S.pages.reduce((a, q) => a + (q.lines || 0), 0);
-    if (i === S.cur) setStat('lines', cols === 1 ? '流式 · 单栏' : `${S.linesSet.toLocaleString('zh-CN')} · ${cols} 栏`);
+    if (i === S.cur) setStat('lines', cols === 1 ? '流式 · 单栏' : `${group3(S.linesSet)} · ${cols} 栏`);
   };
   // 3) set type band by band: what is on (or near) the first screen right away, the rest in slices
   const pd = p.pending = { all, k: 0, gen };
   const syncPx = opt.sliced ? (opt.syncPx ?? innerHeight * 1.4) : Infinity;
   let y = i === 0 ? 420 : 120;
-  while (pd.k < all.length && y < syncPx) { y += all[pd.k].estH || 0; renderBand(all[pd.k++]); }
-  if (pd.k >= all.length) { finish(); p.pendingDone = Promise.resolve(); return { done: p.pendingDone }; }
-  p.pendingDone = (async () => {
+  const rest = async () => {
     while (p.gen === gen && pd.k < all.length) {
       await yieldTask();
       const t0 = performance.now();
       while (p.gen === gen && pd.k < all.length && performance.now() - t0 < 9) renderBand(all[pd.k++]);
     }
     finish();
-  })();
-  return { done: p.pendingDone };
+  };
+  if (opt.prep) { // not on screen yet: the first screen is set in slices as well
+    const shown = (async () => {
+      let t0 = performance.now();
+      while (p.gen === gen && pd.k < all.length && y < syncPx) {
+        if (performance.now() - t0 > 8) { await yieldTask(); t0 = performance.now(); }
+        y += all[pd.k].estH || 0; renderBand(all[pd.k++]);
+      }
+    })();
+    p.pendingDone = shown.then(rest);
+    return { done: p.pendingDone, shown };
+  }
+  while (pd.k < all.length && y < syncPx) { y += all[pd.k].estH || 0; renderBand(all[pd.k++]); }
+  if (pd.k >= all.length) { finish(); p.pendingDone = Promise.resolve(); return { done: p.pendingDone, shown: p.pendingDone }; }
+  p.pendingDone = rest();
+  return { done: p.pendingDone, shown: Promise.resolve() };
 }
 // finish any bands still waiting (e.g. before a snapshot or a jump to an anchor)
 function flushPage(p) { const pd = p && p.pending; if (!pd) return; while (pd.k < pd.all.length) renderBand(pd.all[pd.k++]); }
@@ -685,10 +798,15 @@ function mosaicFigure(scene, seed, mode, size) {
 }
 function setCaption(M) { M.cap.textContent = `装饰插图 · ${SCENES[M.scene].zh} — ${MODES[M.mode].label}`; }
 // tone field, one sample per 2 css px (the finest cell), computed the first time the plate inks
-function ensureField(M) {
-  if (M.field) return; const sc = SCENES[M.scene], f = sc.make(rng(M.seed)), fw = Math.ceil(M.w / 2), fh = Math.ceil(M.h / 2), field = new Float32Array(fw * fh);
-  for (let j = 0; j < fh; j++) for (let i = 0; i < fw; i++) field[j * fw + i] = f((i * 2 + 1) / M.w, (j * 2 + 1) * sc.ar / M.h);
-  M.field = field; M.fw = fw; M.fh = fh;
+// the tone field, row by row; with a deadline it stops when time is up and carries on at the next call
+function ensureField(M, until) {
+  if (M.field) return true;
+  if (!M._fd || M._fd.w !== M.w || M._fd.h !== M.h) { const sc = SCENES[M.scene], fw = Math.ceil(M.w / 2), fh = Math.ceil(M.h / 2);
+    M._fd = { w: M.w, h: M.h, sc, f: sc.make(rng(M.seed)), fw, fh, field: new Float32Array(fw * fh), j: 0 }; }
+  const d = M._fd, { f, fw, fh, field, sc } = d;
+  for (; d.j < fh; d.j++) { const j = d.j; for (let i = 0; i < fw; i++) field[j * fw + i] = f((i * 2 + 1) / M.w, (j * 2 + 1) * sc.ar / M.h);
+    if (until && performance.now() > until && d.j + 1 < fh) { d.j++; return false; } }
+  M.field = field; M.fw = fw; M.fh = fh; M._fd = null; return true;
 }
 function toneAt(M, x, y) { const i = clamp((x / 2) | 0, 0, M.fw - 1), j = clamp((y / 2) | 0, 0, M.fh - 1); return M.field[j * M.fw + i]; }
 // the silhouette the text wraps: per ROW-px row, the extent of cells that carry ink at this bias
@@ -699,22 +817,29 @@ function silhouette(M) {
     rows.push(l <= r ? [l, r] : null); }
   return rows;
 }
+// the plates' ink (--re-blue) only changes with the theme; reading it every frame would force a style pass
+let _ink = null;
+function inkBlue() { const k = isDark(); if (!_ink || _ink.k !== k) _ink = { k, v: getComputedStyle(S.sheet || root).getPropertyValue('--re-blue').trim() || '#2638b4' }; return _ink.v; }
 function drawMosaic(M) {
   const cv = M.cv, dpr = Math.min(2, devicePixelRatio || 1), W = Math.round(M.w * dpr), H = Math.round(M.h * dpr);
   if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
   const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, M.w, M.h);
   if (M.bias <= -.999) return;
   ensureField(M);
-  const cs = getComputedStyle(S.sheet || root); c.fillStyle = cs.getPropertyValue('--re-blue').trim() || '#2638b4';
+  c.fillStyle = inkBlue();
   const cell = M.cell, b = M.bias, mode = MODES[M.mode].id;
   c.beginPath();
   if (mode === 'tone') { // 45° screen: dots on a rotated lattice, area ∝ tone
     const sp = cell * 1.25, R = M.w + M.h, k = Math.SQRT1_2;
-    for (let v = -R; v < R; v += sp) for (let u = -R; u < R; u += sp) {
+    for (let v = -R; v < R; v += sp) {
+      // u where both x and y can fall inside [-sp, size + sp]; start one lattice step early, the test below still decides
+      const lo = Math.max(v + (-sp - M.w / 2) / k, -v + (-sp - M.h / 2) / k), n0 = Math.max(0, Math.floor((lo + R) / sp) - 1);
+      const hi = Math.min(v + (M.w / 2 + sp) / k, -v + (M.h / 2 + sp) / k);
+      for (let u = -R + n0 * sp; u < R && u <= hi + sp; u += sp) {
       const x = (u - v) * k + M.w / 2, y = (u + v) * k + M.h / 2; if (x < -sp || y < -sp || x > M.w + sp || y > M.h + sp) continue;
       const t = toneAt(M, x, y); if (t < 0) continue; const tt = t + b; if (tt <= .02) continue;
       const r = sp * .62 * Math.sqrt(Math.min(1, tt)); c.moveTo(x + r, y); c.arc(x, y, r, 0, 6.2832);
-    }
+    } }
   } else if (mode === 'line') { // engraving: horizontal rules that swell with the tone and ride a gentle wave
     const sp = Math.max(2.5, cell * 1.3);
     for (let y0 = sp / 2; y0 < M.h; y0 += sp) for (let x = 0; x < M.w; x += Math.max(1, cell / 2)) {
@@ -805,9 +930,15 @@ function reflowMosaic(M, final) {
 }
 // plates on screen print in, a little staggered (after the sheet opens, or on load when it is already open)
 function developVisible(stagger) {
-  const p = S.pages[S.cur]; if (!p || !p.mosaics) return; let i = 0;
-  for (const M of p.mosaics) { if (!M || !M.fig.isConnected || M.state === 'done' || M.state === 'running') continue;
-    const r = M.fig.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) { _mosaicIO && _mosaicIO.unobserve(M.fig); develop(M, stagger ? 240 + 210 * i++ : 0); } }
+  const p = S.pages[S.cur]; if (!p || !p.mosaics) return;
+  const ms = p.mosaics.filter(M => M && M.fig.isConnected && M.state !== 'done' && M.state !== 'running'); if (!ms.length) return;
+  if (!('IntersectionObserver' in window)) { let i = 0; for (const M of ms) { const r = M.fig.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) develop(M, stagger ? 240 + 210 * i++ : 0); } return; }
+  // the observer reports with the next frame, without forcing a layout now; the stagger keeps its timing
+  const t = performance.now();
+  const io = new IntersectionObserver(es => { io.disconnect(); const late = performance.now() - t; let i = 0;
+    const on = new Set(es.filter(e => e.isIntersecting && e.boundingClientRect.bottom > 0 && e.boundingClientRect.top < innerHeight).map(e => e.target));
+    for (const M of ms) { if (!on.has(M.fig) || M.state === 'done' || M.state === 'running') continue; _mosaicIO && _mosaicIO.unobserve(M.fig); develop(M, stagger ? Math.max(0, 240 + 210 * i++ - late) : 0); } });
+  ms.forEach(M => io.observe(M.fig));
 }
 function redrawMosaics() { for (const p of S.pages) for (const M of p.mosaics || []) if (M && M.state === 'done') drawMosaic(M); }
 
@@ -943,13 +1074,15 @@ async function turnTo(i, opt = {}) {
   const fwd = i > S.cur, animate = opt.animate !== false && !RM.matches;
   let overlay = null;
   if (animate) overlay = snapshotOverlay();
+  // read while the current page is still laid out: the sheet's top and the column width are the same on every page
+  const top = S.sheet.getBoundingClientRect().top + scrollY - 12, bw = S.pages[S.cur].body.clientWidth;
   showPage(i);
-  if (!S.pages[i].laid || S.pages[i].w !== S.pages[i].body.clientWidth) layoutPage(i, { sliced: true });
-  const top = S.sheet.getBoundingClientRect().top + scrollY - 12;
+  if (!S.pages[i].laid || S.pages[i].w !== bw) layoutPage(i, { sliced: true });
   if (!opt.keepScroll) scrollTo({ top: Math.max(0, top), behavior: 'instant' });
   if (overlay) await rollAway(overlay, fwd);
   else if (opt.animate !== false && RM.matches) { S.sheet.animate([{ opacity: .55 }, { opacity: 1 }], { duration: 240, easing: 'ease-out' }); }
   turning = false;
+  S.pages[i].pendingDone ? S.pages[i].pendingDone.then(warmPage) : warmPage();
   if (opt.focus !== false) { const p = S.pages[i].el; p.tabIndex = -1; p.focus({ preventScroll: true }); }
 }
 // A lightweight copy of what is on screen of the current page (sheet coordinates y0..y1): bands, boxes and
@@ -961,31 +1094,39 @@ function copyCanvases(src, dst) { const a = qsa('canvas', src), b = qsa('canvas'
 function sheetSnapshot(y0, y1, x0 = -1e9, x1 = 1e9) {
   const pg = S.pages[S.cur].el, r = S.sheet.getBoundingClientRect(), M = 40;
   const ax = r.left + x0 - M, bx = r.left + x1 + M, ay = r.top + y0 - M, by = r.top + y1 + M;
-  // read only: no attribute marks on the live page, so several snapshots in a row cost one layout
-  const cut = [], path = [];
-  const walk = (el, d) => {
-    let k = 0;
-    for (const ch of el.children) {
-      path[d] = k++;
-      const b = ch.getBoundingClientRect();
-      if (!b.width && !b.height) { if (d < 14 && ch.children.length) walk(ch, d + 1); continue; }
-      if (b.bottom < ay || b.top > by || b.right < ax || b.left > bx) { if (!/^inline/.test(getComputedStyle(ch).display)) cut.push([path.slice(0, d + 1), b.width, b.height]); continue; }
-      if (b.top >= ay && b.bottom <= by && b.left >= ax && b.right <= bx) continue;
-      if (d < 14 && ch.children.length) walk(ch, d + 1);
+  // the copy is built while walking (read only on the live page, so several snapshots in a row cost one
+  // layout): boxes wholly inside the window are cloned whole, boxes outside keep their size but lose their
+  // contents, and only boxes straddling the edge are opened up. Nothing outside the window is ever cloned.
+  const pairs = [];
+  const whole = o => { const c = o.cloneNode(true); if (o.children.length || /^(CANVAS|VIDEO|IFRAME)$/.test(o.tagName)) pairs.push([o, c]); return c; };
+  const fill = (el, cl, d) => {
+    for (const n of el.childNodes) {
+      if (n.nodeType !== 1) { cl.append(n.cloneNode(true)); continue; }
+      const ch = n, b = ch.getBoundingClientRect();
+      const open = () => { const c = ch.cloneNode(false); fill(ch, c, d + 1); cl.append(c); };
+      if (!b.width && !b.height) { if (d < 14 && ch.children.length) open(); else cl.append(whole(ch)); continue; }
+      if (b.bottom < ay || b.top > by || b.right < ax || b.left > bx) {
+        if (/^inline/.test(getComputedStyle(ch).display)) { cl.append(whole(ch)); continue; }
+        // a box outside the window keeps its size (so nothing around it re-flows) but loses its contents
+        const e = /^(IMG|SVG|CANVAS|VIDEO|IFRAME|svg)$/.test(ch.tagName) ? whole(ch) : ch.cloneNode(false);
+        e.style.cssText += `;box-sizing:border-box;width:${b.width}px;height:${b.height}px;min-height:0;max-height:none;min-width:0;max-width:none;flex:none;visibility:hidden;overflow:hidden;padding:0;border-color:transparent`;
+        cl.append(e); continue;
+      }
+      if (b.top >= ay && b.bottom <= by && b.left >= ax && b.right <= bx) { cl.append(whole(ch)); continue; }
+      if (d < 14 && ch.children.length) open(); else cl.append(whole(ch));
     }
   };
-  walk(pg, 0);
-  const media = qsa('video, iframe', pg);
-  const c = pg.cloneNode(true);
-  copyCanvases(pg, c);
-  const cmedia = qsa('video, iframe', c);
-  const at = pt => { let e = c; for (const k of pt) { e = e.children[k]; if (!e) return null; } return e; };
-  // a box outside the window keeps its size (so nothing around it re-flows) but loses its contents
-  cut.map(([pt, w, hh]) => [at(pt), w, hh]).forEach(([e, w, hh]) => { if (!e) return; if (!/^(IMG|SVG|CANVAS|VIDEO|IFRAME|svg)$/.test(e.tagName)) e.replaceChildren();
-    e.style.cssText += `;box-sizing:border-box;width:${w}px;height:${hh}px;min-height:0;max-height:none;min-width:0;max-width:none;flex:none;visibility:hidden;overflow:hidden;padding:0;border-color:transparent`; });
+  const c = pg.cloneNode(false); fill(pg, c, 0);
+  const self = (e, sel) => (e.matches(sel) ? [e] : []).concat(qsa(sel, e));
+  const media = [], cmedia = [];
+  for (const [o, k] of pairs) {
+    const a = self(o, 'canvas'), b = self(k, 'canvas');
+    b.forEach((cv, j) => { const s = a[j]; if (s && s.width) { cv.width = s.width; cv.height = s.height; cv.getContext('2d').drawImage(s, 0, 0); } });
+    media.push(...self(o, 'video, iframe')); cmedia.push(...self(k, 'video, iframe'));
+  }
   c.removeAttribute('hidden'); c.removeAttribute('id'); qsa('[id]', c).forEach(e => e.removeAttribute('id'));
   // moving pictures become a still of their current frame (a cloned <video> would start blank)
-  cmedia.forEach((e, k) => { if (!e.isConnected && !c.contains(e)) return; const o = media[k], w = o.offsetWidth, hh = o.offsetHeight;
+  cmedia.forEach((e, k) => { const o = media[k], w = o.offsetWidth, hh = o.offsetHeight;
     const cv = h('canvas', 're-clone-media'); cv.className = o.className; cv.style.cssText = o.style.cssText + `;width:${w}px;height:${hh}px;display:block`;
     if (o.tagName === 'VIDEO' && o.readyState >= 2) { cv.width = Math.min(800, w); cv.height = Math.round(cv.width * hh / Math.max(1, w)); try { cv.getContext('2d').drawImage(o, 0, 0, cv.width, cv.height); } catch (_) {} }
     e.replaceWith(cv); });
@@ -1035,9 +1176,19 @@ function rollAway(ov, fwd) {
  * first step, down for the second) or the wheel; shading follows each panel's angle to the light, and the
  * creases stay faintly on the sheet afterwards. Everything is transforms + opacity on a few layers. */
 const PI = Math.PI, LIGHT = (() => { const v = [-.3, -.55, 1], n = Math.hypot(...v); return v.map(x => x / n); })();
-function foldOverlay(open) {
+function foldGeom() {
   const r = S.sheet.getBoundingClientRect();
-  const W = Math.round(r.width), Hs = Math.round(Math.max(240, Math.min(r.height, innerHeight - Math.max(0, r.top) - 18))), hw = W / 2, hh = Hs / 2;
+  const W = Math.round(r.width), Hs = Math.round(Math.max(240, Math.min(r.height, innerHeight - Math.max(0, r.top) - 18)));
+  return { r, W, Hs, hw: W / 2, hh: Hs / 2 };
+}
+// the four quarters' copies, one short task each (used while the sheet is still being prepared off screen)
+async function foldSnaps() {
+  const g = foldGeom(), snaps = [];
+  for (const [qx, qy] of [[0, 0], [g.hw, 0], [0, g.hh], [g.hw, g.hh]]) { snaps.push(sheetSnapshot(qy, qy + g.hh, qx, qx + g.hw).el); await yieldTask(); }
+  return { g, snaps };
+}
+function foldOverlay(open, pre) {
+  const g = pre ? pre.g : foldGeom(), { r, W, Hs, hw, hh } = g; let qi = 0;
   const ov = h('div', 're-fold', { 'aria-hidden': 'true' });
   ov.style.cssText = `left:${r.left}px;top:${Math.max(0, r.top)}px;width:${W}px;height:${Hs}px`;
   const shadow = h('div', 're-fshadow'); shadow.style.cssText = `width:${W}px;height:${Hs}px`;
@@ -1045,7 +1196,7 @@ function foldOverlay(open) {
   // a quarter panel: front (a window onto the snapshot), a plain back, angle shade and crease marks
   const quarter = (qx, qy, cls) => {
     const q = h('div', 're-q ' + cls); q.style.cssText = `width:${hw}px;height:${hh}px`;
-    const f = h('div', 're-qf'); const c = sheetSnapshot(qy, qy + hh, qx, qx + hw).el; c.style.left = -qx + 'px'; c.style.top = -qy + 'px'; f.append(c);
+    const f = h('div', 're-qf'); const c = pre ? pre.snaps[qi++] : sheetSnapshot(qy, qy + hh, qx, qx + hw).el; c.style.left = -qx + 'px'; c.style.top = -qy + 'px'; f.append(c);
     const sh = h('div', 're-qs'), cr = h('div', 're-qc');
     f.append(sh, cr); q.append(f, h('div', 're-qb'));
     q._shade = sh; q._crease = cr; return q;
@@ -1093,9 +1244,9 @@ function foldTargets(F) {
   return [thT, phT];
 }
 function runFold(F) {
-  if (F.running) return; F.running = true; let last = performance.now();
+  if (F.running) return; F.running = S.foldAnim = true; let last = performance.now();
   const tick = now => {
-    if (F.dead) return;
+    if (F.dead) { S.foldAnim = false; return; }
     let dt = Math.min(.05, (now - last) / 1000); last = now;
     const k = F.drag ? 170 : 46, steps = 4, h2 = dt / steps;
     for (let s = 0; s < steps; s++) {
@@ -1108,7 +1259,7 @@ function runFold(F) {
     renderFold(F);
     const [thT, phT] = foldTargets(F);
     const still = Math.abs(F.th - thT) < .002 && Math.abs(F.ph - phT) < .002 && Math.abs(F.vth) + Math.abs(F.vph) < .01 && Math.abs(F.lx - F.tlx) < .02 && Math.abs(F.ly - F.tly) < .02 && Math.abs(F.lift - F.tlift) < .05 && !F.drag;
-    if (still) { F.th = thT; F.ph = phT; renderFold(F); F.running = false; F.onRest && F.onRest(); return; }
+    if (still) { F.th = thT; F.ph = phT; renderFold(F); F.running = S.foldAnim = false; F.onRest && F.onRest(); return; }
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
@@ -1172,10 +1323,6 @@ function foldInteract(F) {
   });
 }
 function addCreases(F) { let c = qs('.re-creases', S.sheet); if (!c) { c = h('div', 're-creases', { 'aria-hidden': 'true' }); S.sheet.append(c); } c.style.height = F.Hs + 'px'; c.style.setProperty('--hh', F.hh + 'px'); }
-function foldIntro() {
-  scrollTo({ top: 0, behavior: 'instant' });
-  return foldInteract(foldOverlay(false));
-}
 let folding = false;
 async function foldUp() {
   if (RM.matches || turning || folding || root.classList.contains('re-folded')) return;
@@ -1247,16 +1394,19 @@ function bindGlobal() {
   // find-in-page (hidden=until-found)
   S.pages.forEach((p, i) => p.el.addEventListener('beforematch', () => { if (i !== S.cur) { showPage(i); if (!p.laid) layoutPage(i); } }));
   // resize → re-set type
-  let rw = S.sheet.clientWidth, pend = 0;
-  new ResizeObserver(() => { if (pend) return; pend = requestAnimationFrame(() => { pend = 0; const w = S.sheet.clientWidth; if (Math.abs(w - rw) < 1) return; rw = w; S.pages.forEach(p => p.laid = false); layoutPage(S.cur, { sliced: true }); }); }).observe(S.sheet);
+  // the width comes with the observation (reading clientWidth here would force a layout)
+  let rw = -1, pend = 0, nw = 0;
+  new ResizeObserver(es => { const e = es[es.length - 1]; nw = e.contentBoxSize && e.contentBoxSize[0] ? e.contentBoxSize[0].inlineSize : e.contentRect.width;
+    if (rw < 0) { rw = nw; return; } if (pend) return; pend = requestAnimationFrame(() => { pend = 0; if (Math.abs(nw - rw) < 1) return; rw = nw; S.pages.forEach(p => p.laid = false); layoutPage(S.cur, { sliced: true }); }); }).observe(S.sheet);
   let fT = 0;
   // re-set only if a face we set type with arrived after the first layout (not for the batch we already waited on)
   const seen = new Set([...D.fonts].filter(f => f.status === 'loaded'));
   D.fonts.addEventListener && D.fonts.addEventListener('loadingdone', e => { if (!(e.fontfaces || []).some(f => !seen.has(f) && /Geist Serif|Noto Serif SC/.test(f.family))) return; (e.fontfaces || []).forEach(f => seen.add(f)); clearTimeout(fT); fT = setTimeout(() => { S.pages.forEach(p => { p.laid = false; qsa('.re-run', p.el).forEach(r => r._run.blocks.forEach(b => b.units && b.units.forEach(u => u.prep = null))); }); layoutPage(S.cur, { sliced: true }); }, 350); });
-  addEventListener('scroll', () => { if (!statPend) statPend = requestAnimationFrame(() => { statPend = 0; readStat(); }); }, { passive: true });
+  for (const ev of ['wheel', 'keydown', 'touchmove', 'pointerdown', 'pointermove']) addEventListener(ev, () => { S.lastInput = performance.now(); }, { passive: true, capture: true });
+  addEventListener('scroll', () => { S.lastInput = performance.now(); if (!statPend) statPend = requestAnimationFrame(() => { statPend = 0; readStat(); }); }, { passive: true });
   addEventListener('beforeprint', () => S.pages.forEach(p => p.el.removeAttribute('hidden')));
   addEventListener('afterprint', () => showPage(S.cur));
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (!root.getAttribute('data-theme')) setTheme(null, false); });
+  DARK_MQ.addEventListener('change', () => { if (!root.getAttribute('data-theme')) setTheme(null, false); });
   addEventListener('storage', e => { if (e.key === 'zbm-theme') syncTheme(); });
   addEventListener('pageshow', syncTheme);
   // fold it back up: double-click the masthead / running head, or keep pulling up at the very top
@@ -1283,7 +1433,7 @@ function tickStats() {
   setStat('moon', Math.round(mp.illum * 100) + '%' + (mp.waxing ? ' 盈' : ' 亏'));
   setStat('figs', S.figN ? `${S.figN} 幅` : '无');
   const chars = S.chars;
-  setStat('chars', chars > 10000 ? (chars / 10000).toFixed(1) + ' 万' : chars.toLocaleString('zh-CN'));
+  setStat('chars', chars > 10000 ? (chars / 10000).toFixed(1) + ' 万' : group3(chars));
   readStat();
   const pm = S.plateMoon; if (pm) { const css = Math.round(parseFloat(getComputedStyle(pm).width) || 80); pm._css = css; pm.style.height = css + 'px'; drawMoon(pm, css, mp); }
   const t = () => { const s = Math.floor((performance.now() - S.t0) / 1000); setStat('since', `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`); };
