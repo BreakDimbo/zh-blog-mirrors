@@ -1,5 +1,19 @@
 [
   {
+    "slug": "leo-xiaolei-grok-bot-team-guide",
+    "title": "解读 Lauren 的 Grok Bot 团队打造指南：七条要点与评论区拆解",
+    "subtitle": "How Lauren (@poteto) builds a Grok Bot team · 原文照录 + 逐条回查",
+    "type": "全文镜像",
+    "kind": "长文",
+    "date": "2026-11-02",
+    "by": "刘老板",
+    "source": "刘老板 @leo_xiaolei · X 长文",
+    "original_url": "https://x.com/leo_xiaolei/status/2116768469090025909",
+    "spine": "Bot 团队打造指南",
+    "summary": "少而精、写技能、像带实习生一样带 Bot",
+    "desc": "刘老板 @leo_xiaolei 的 X 长文全文照录：拆解 Grok Bot 团队成员 Lauren（@poteto）的团队打造指南七条——dr eggbot 设计 Bot、少而精、边做边写 Skill、接满工具与独立邮箱、消灭手工复制粘贴、像带实习生一样介绍自己、语音倾倒后让它复述；再梳理评论区的最小权限与验证、主动性（SOUL.md）讨论和真实槽点。本站逐条回查原帖与评论，补上文章遗漏的「more tips」（Routine 最频繁每小时一次等）；⚠️「工程负责人」头衔、「单月上千 PR」、pstack 原句、@sergehere 评论未核实；作者简介含付费社群引流。"
+  },
+  {
     "slug": "leonxlnx-athenaion",
     "title": "Athenaion：一座全由代码造出的古希腊世界",
     "desc": "Leonxlnx/athenaion 项目导读：零外部素材，用 three.js 程序化生成整座古希腊世界——悬崖卫城、帕特农式神庙、SDF 雕刻的雅典娜巨像、57 道沿地形追踪的瀑布、约 14.9 万棵树、港城与雪山；作者称由 Claude Code 指挥 55 个子 agent 约两天对照 9 张 AI 参考图搭成，集成显卡离线渲染 4K。原理拆解（引擎先行、美术圣经与亮度百分位目标、模块契约与文件归属、12 agent 渲染-比对-修正循环、导演 agent 反解机位、累积采样 + AgX 调色）、自报数字逐项核对、与同作者 Shanshui 对比、启发。MIT，附 README 全文中文翻译。",
