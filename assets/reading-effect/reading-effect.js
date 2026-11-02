@@ -70,28 +70,62 @@ async function boot() {
   else requestAnimationFrame(() => developVisible(true));
 }
 // After a page is set, quiet moments are used to get ahead: the plates' tone fields are computed and the
-// deferred children of very large blocks (data-re-cv) are laid out one at a time, so a later scroll or a
+// deferred children of very large blocks (data-re-cv) are laid out in small batches, so a later scroll or a
 // jump to the end does not have to lay out thousands of boxes at once. Never while the reader is scrolling,
-// turning or unfolding.
-const busy = () => turning || S.foldAnim || performance.now() - (S.lastInput || 0) < 400;
+// turning or unfolding, nor while a plate is printing in, nor for a while after any input or motion has ended.
+const busy = () => turning || S.foldAnim || S.devN > 0 || performance.now() - Math.max(S.lastInput || 0, S.calmAt || 0) < 700;
+// (the sheet's own entrance, before the reader has done anything, needs no pause after it)
+const calm = () => { if (S.lastInput) S.calmAt = performance.now(); };
 function warmPage() {
   const p = S.pages[S.cur]; if (!p || p.warm) return; p.warm = 1;
   // small blocks first, a few per idle period; a block too big to split (a long table) goes last, alone, in a full idle period
   const all = qsa('[data-re-cv]', p.el), big = e => e.getElementsByTagName('*').length >= 400;
   const list = all.filter(e => !big(e)).concat(all.filter(big));
   const plates = (p.mosaics || []).filter(Boolean);
-  let k = 0;
+  // the page's pictures for its first screens start loading now (as the old one-pass layout used to start
+  // them), so they do not arrive, and re-flow, mid-scroll. Found by an observer (no forced layout); a picture
+  // inside a deferred block is found by the block's placeholder box, since its own box is not laid out
+  // (only once the reader is idle, so that a page just turned to does not fetch and decode during the turn)
+  let eager = 'IntersectionObserver' in window;
+  const loadAhead = () => {
+    eager = false; const boxes = new Map();
+    for (const im of p.el.getElementsByTagName('img')) if (im.loading === 'lazy') { const b = im.closest('[data-re-cv]') || im; (boxes.get(b) || boxes.set(b, []).get(b)).push(im); }
+    if (boxes.size) { const io = new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting) { io.unobserve(e.target); boxes.get(e.target).forEach(im => { im.loading = 'eager'; }); } setTimeout(() => io.disconnect(), 0); },
+      { rootMargin: `0px 0px ${22 * innerHeight}px 0px` }); boxes.forEach((_, b) => io.observe(b)); }
+  };
+  let k = 0, pc = 0, fix = 1e9, ok = 0;
+  const wt = e => e.textContent.length + 60 * e.getElementsByTagName('*').length + 1;
+  const release = e => { e.removeAttribute('data-re-cv'); e.style.removeProperty('contain-intrinsic-size'); if (!e.getAttribute('style')) e.removeAttribute('style'); };
   const step = dl => {
     if (!p.el.isConnected || p.el.hidden) { p.warm = 0; return; }
     if (busy()) return void setTimeout(() => idle(step), 300);
-    const t0 = performance.now(), room = () => (dl.didTimeout ? 6 : Math.min(10, dl.timeRemaining())) - (performance.now() - t0) > 0;
+    if (eager) loadAhead();
+    const t0 = performance.now(), left = () => (dl.didTimeout ? 6 : Math.min(W.budget, dl.timeRemaining())) - (performance.now() - t0);
     for (const M of plates) if (!M.field && !ensureField(M, performance.now() + 6)) return void idle(step);
-    while (k < list.length && room()) { const e = list[k];
-      if (big(e) && !dl.didTimeout && dl.timeRemaining() < 40) break; k++; e.removeAttribute('data-re-cv'); e.style.removeProperty('contain-intrinsic-size'); if (!e.getAttribute('style')) e.removeAttribute('style'); void e.offsetHeight; }
+    while (k < list.length && left() > 1) {
+      if (big(list[k])) { if (!dl.didTimeout && dl.timeRemaining() < 40) break; release(list[k++]); void p.el.offsetHeight; continue; }
+      // the cost of a layout follows the boxes and text set; batches are sized from the cost per unit so far,
+      // and a block that would not fit what is left of this idle period waits for the next one
+      // (while the sheet still lies folded nothing on it moves, so batches may be larger)
+      const room = Math.min(folded() ? W.fold : W.hi, left()), t1 = performance.now(); let ch = 0;
+      while (k < list.length && !big(list[k])) { const c = wt(list[k]);
+        if (ch ? (!pc || fix + (ch + c) * pc > room || ch + c > Math.max(1500, 2 * ok)) : (pc && fix + c * pc > left() && t1 - t0 > 1)) break; ch += c; release(list[k++]); }
+      if (!ch) break;
+      void p.el.offsetHeight;
+      // a layout has a fixed part (the smallest seen) and a part per unit
+      const dt = performance.now() - t1; fix = Math.min(fix, dt); const r = Math.max(dt - fix, 0.5) / ch;
+      pc = !pc ? r : dt > Math.max(room, 10) * 1.5 ? Math.max(pc, r) : pc * 0.6 + r * 0.4;
+      // the estimate is rough (a few blocks cost far more than their size suggests), so a batch grows to at most
+      // twice the largest one that has fitted, and shrinks back after one that overran
+      if (dt <= room) ok = Math.max(ok, ch); else if (dt > room * 1.5) ok = Math.min(ok, ch / 2);
+    }
     if (k < list.length) idle(step);
   };
   idle(step);
 }
+// idle-time budgets (ms): per idle period, per batch, per batch while the sheet lies folded
+const W = { budget: 40, hi: 16, fold: 30 };
+const folded = () => root.classList.contains('re-folded');
 const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(() => fn({ didTimeout: true, timeRemaining: () => 0 }), 400));
 // yield to the browser between slices of work (input and frames get a chance to run)
 const yieldTask = () => new Promise(r => (window.scheduler && scheduler.yield ? scheduler.yield().then(r) : setTimeout(r, 0)));
@@ -911,15 +945,15 @@ function placeMosaicsFlow(p, pi) {
 function develop(M, delay) {
   if (!M || M.state === 'running' || M.state === 'done') return;
   if (RM.matches) { M.state = 'done'; M.e = 1; M.cell = 2; M.bias = 0; drawMosaic(M); reflowMosaic(M, true); return; }
-  M.state = 'running'; const t0 = performance.now() + delay; let lastCell = 0, slow = false;
+  M.state = 'running'; S.devN = (S.devN || 0) + 1; const t0 = performance.now() + delay; let lastCell = 0, slow = false;
   const step = now => {
-    if (!M.fig.isConnected) { M.state = 'blank'; return; }
+    if (!M.fig.isConnected) { M.state = 'blank'; S.devN--; calm(); return; }
     const e = clamp((now - t0) / DEV_MS, 0, 1); M.e = e;
     if (now < t0) return void requestAnimationFrame(step);
     M.cell = CELLS[Math.min(CELLS.length - 1, Math.floor(e * CELLS.length))]; M.bias = -Math.pow(1 - e, 3);
     drawMosaic(M);
     if (M.cell !== lastCell) { lastCell = M.cell; if (!slow) { const a = performance.now(); reflowMosaic(M, false); slow = performance.now() - a > 22; } }
-    if (e < 1) requestAnimationFrame(step); else { M.state = 'done'; reflowMosaic(M, true); }
+    if (e < 1) requestAnimationFrame(step); else { M.state = 'done'; S.devN--; calm(); reflowMosaic(M, true); }
   };
   requestAnimationFrame(step);
 }
@@ -1081,7 +1115,7 @@ async function turnTo(i, opt = {}) {
   if (!opt.keepScroll) scrollTo({ top: Math.max(0, top), behavior: 'instant' });
   if (overlay) await rollAway(overlay, fwd);
   else if (opt.animate !== false && RM.matches) { S.sheet.animate([{ opacity: .55 }, { opacity: 1 }], { duration: 240, easing: 'ease-out' }); }
-  turning = false;
+  turning = false; calm();
   S.pages[i].pendingDone ? S.pages[i].pendingDone.then(warmPage) : warmPage();
   if (opt.focus !== false) { const p = S.pages[i].el; p.tabIndex = -1; p.focus({ preventScroll: true }); }
 }
@@ -1246,7 +1280,7 @@ function foldTargets(F) {
 function runFold(F) {
   if (F.running) return; F.running = S.foldAnim = true; let last = performance.now();
   const tick = now => {
-    if (F.dead) { S.foldAnim = false; return; }
+    if (F.dead) { S.foldAnim = false; calm(); return; }
     let dt = Math.min(.05, (now - last) / 1000); last = now;
     const k = F.drag ? 170 : 46, steps = 4, h2 = dt / steps;
     for (let s = 0; s < steps; s++) {
@@ -1259,7 +1293,7 @@ function runFold(F) {
     renderFold(F);
     const [thT, phT] = foldTargets(F);
     const still = Math.abs(F.th - thT) < .002 && Math.abs(F.ph - phT) < .002 && Math.abs(F.vth) + Math.abs(F.vph) < .01 && Math.abs(F.lx - F.tlx) < .02 && Math.abs(F.ly - F.tly) < .02 && Math.abs(F.lift - F.tlift) < .05 && !F.drag;
-    if (still) { F.th = thT; F.ph = phT; renderFold(F); F.running = S.foldAnim = false; F.onRest && F.onRest(); return; }
+    if (still) { F.th = thT; F.ph = phT; renderFold(F); F.running = S.foldAnim = false; calm(); F.onRest && F.onRest(); return; }
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
