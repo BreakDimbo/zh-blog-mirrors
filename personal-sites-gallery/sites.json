@@ -1,7 +1,18 @@
 {
- "updated": "2026-11-02T10:05:54.282308+08:00",
+ "updated": "2026-11-02T18:00:48.386212+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "uche-ucodes.vercel.app",
+   "url": "https://uche-ucodes.vercel.app/",
+   "title": "Uchenna Egbuedo | Full-Stack Developer",
+   "description": "Uchenna Egbuedo is a Nigeria-based full-stack developer building user-focused web applications, websites, and digital products.",
+   "shared_by": "@djuchevic",
+   "reply": "https://x.com/djuchevic/status/2117162027869147444",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "portoblankson.vercel.app",
    "url": "https://portoblankson.vercel.app/",
