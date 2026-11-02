@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ascii-sharks：用字符画在网页里养一片会捕食的海（项目导读）</title>
-<meta name="description" content="stackedlol/ascii-sharks 项目导读：零依赖 TypeScript，用 Canvas 把鱼群 boids 与 8 种鲨鱼的追猎模拟逐格栅格化成 ASCII 字符动画。工作原理拆解、快速上手、本站本地运行截图与对代码即影片的启发。仓库未声明许可证，本页为导读与短引用。" />
+<meta name="description" content="stackedlol/ascii-sharks 项目导读：零依赖 TypeScript，用 Canvas 把鱼群 boids 与 8 种鲨鱼的追猎模拟逐格栅格化成 ASCII 字符动画。工作原理拆解、快速上手、本站本地运行截图与对代码即影片的启发。仓库已于 2026-10-25 加入 MIT 许可（本页 2026-11-03 更正，此前误写为未声明许可证），本页仍为导读。" />
 <meta property="og:image" content="images/demo-classic.webp" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
@@ -27,8 +27,9 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>零依赖的 TypeScript 小引擎，在网页 Canvas 上跑一套鱼群与鲨鱼的人工生命模拟，再把每一帧逐格“翻译”成等宽字符，所以你看到的是一片会游、会逃、会被吃掉的 ASCII 海洋。</div>
 
-<p><span class="tag">★ 58 stars</span> <span class="tag">4 forks</span> <span class="tag">TypeScript</span> <span class="tag">未声明许可证</span> <span class="tag">零运行时依赖</span> <span class="tag">Canvas 2D · 浏览器</span></p>
+<p><span class="tag">★ 58 stars</span> <span class="tag">4 forks</span> <span class="tag">TypeScript</span> <span class="tag">MIT（2026-10-25 起）</span> <span class="tag">零运行时依赖</span> <span class="tag">Canvas 2D · 浏览器</span></p>
 <p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-20 10:20（UTC+8）。仓库建于 2026-10-20 05:54（UTC+8），共 2 个提交（first commit / chill readme），最后推送 05:58（UTC+8）。作者 X 上的演示帖（2026-10-20 03:01 UTC+8）约 3,000 赞、1,400 收藏。</p>
+<div class="related-guide" id="update-2026-11-03"><strong>2026-11-03 更正（许可证）：</strong>作者已于 2026-10-25 00:05（UTC+8）在提交 <a href="https://github.com/stackedlol/ascii-sharks/commit/a0074c16a106f0abc665fe9712ca445f8f98ad8e" rel="noopener"><code>a0074c1</code></a>「add MIT license」中为仓库加入 <a href="https://github.com/stackedlol/ascii-sharks/blob/main/LICENSE" rel="noopener">MIT 许可证</a>（Copyright (c) 2026 drewdi），GitHub API 的 license 字段现为 MIT。本页 10-20 写的“未声明许可证”当时属实，已过时；下文「许可说明」已据此更新。其余统计数字仍是 10-20 的快照（2026-11-03 复查时为 ★1,336 / 96 forks）。</div>
 
 <figure><img src="images/demo-classic.webp" alt="ascii-sharks 默认场景：四条同种鲨鱼在黑色字符网格中游动，周围是由短横线组成的小鱼群" loading="lazy"><figcaption>默认场景：四条 classic 鲨鱼，大小不同代表远近；散落的短横线是鱼群。本站在本地 <code>vite build</code> 后用无头 Chrome 截图（2026-10-20）。</figcaption></figure>
 
@@ -154,10 +155,11 @@ const engine = new OceanEngine(canvas, [{ kind: "hammerhead", size: 1 }]);
 <p>相关阅读：<a href="../prompt-motion/">Prompt Motion 画廊</a> · <a href="../anatomy-skill/">Anatomy：会动的机器解释图</a> · <a href="../vibe-knowledge-film/">vibe-knowledge-film</a> · <a href="../mg-styles-15/">15 种 MG 风格</a></p>
 
 <h2 id="license">许可说明</h2>
-<p>截至 2026-10-20，仓库<strong>没有 LICENSE 文件</strong>，GitHub API 的 license 字段为空。按默认规则，这意味着作者保留全部权利：可以阅读和学习，但复制代码进自己的产品或再分发之前，应先征得作者同意。因此本页只做导读，正文中的英文短句和几段代码片段（每段不超过几行）仅为评述而引用，没有翻译或转载 README 全文和源码；配图是本站自己运行项目后截取的画面，没有转载作者的图片或视频。</p></main><!-- /za:content -->
+<p><strong>现状（2026-11-03 核）：</strong>仓库自 2026-10-25（UTC+8）起采用 <a href="https://github.com/stackedlol/ascii-sharks/blob/main/LICENSE" rel="noopener">MIT 许可证</a>，版权声明为 “Copyright (c) 2026 drewdi”。MIT 允许使用、复制、修改、合并、发布与再分发代码，条件是在副本中保留上述版权声明和许可文本。</p>
+<p><strong>本页写作时（2026-10-20）：</strong>仓库还没有 LICENSE 文件，GitHub API 的 license 字段为空，按默认规则作者保留全部权利，所以本页当时只做导读：正文中的英文短句和几段代码片段（每段不超过几行）仅为评述而引用，没有翻译或转载 README 全文和源码；配图是本站自己运行项目后截取的画面，没有转载作者的图片或视频。许可变更后本页仍保持导读形式，未补 README 译文。</p></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/stackedlol/ascii-sharks" rel="noopener">stackedlol/ascii-sharks</a>，作者 stacked（<a href="https://github.com/stackedlol" rel="noopener">GitHub @stackedlol</a> / <a href="https://x.com/stackedlol" rel="noopener">X @stackedlol</a>），未声明开源许可证，版权归作者所有。统计数据取自公开 GitHub API（2026-10-20），X 帖子信息取自公开帖子。截图为本站在本地构建并运行该项目后自行截取（2026-10-20）。导读、原理拆解与“对我们的启发”为本站整理。</p>
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/stackedlol/ascii-sharks" rel="noopener">stackedlol/ascii-sharks</a>，作者 stacked（<a href="https://github.com/stackedlol" rel="noopener">GitHub @stackedlol</a> / <a href="https://x.com/stackedlol" rel="noopener">X @stackedlol</a>），2026-10-25 起以 MIT 许可证发布（Copyright (c) 2026 drewdi；本页 10-20 首发时仓库尚未声明许可证，2026-11-03 更正）。统计数据取自公开 GitHub API（2026-10-20），X 帖子信息取自公开帖子。截图为本站在本地构建并运行该项目后自行截取（2026-10-20）。导读、原理拆解与“对我们的启发”为本站整理。</p>
 <p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/stackedlol/ascii-sharks" rel="noopener">github.com/stackedlol/ascii-sharks</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
