@@ -1,7 +1,7 @@
 # reading-effect: credits and licences
 
-`reading-effect.css` + `reading-effect.js` give an article page a "two-ink broadsheet" reading mode:
-a folded sheet that opens, justified columns set line by line, dithered blue-ink figures that print in,
+`reading-effect.css` + `reading-effect.js` give an article page a broadsheet reading mode:
+a folded sheet that opens, justified columns set line by line, original figures (no re-inking),
 text that reflows around figures you drag, and a corner you take to turn the page.
 
 ## Inspiration (no code used)

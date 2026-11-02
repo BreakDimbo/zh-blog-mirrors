@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Re-wrap text/article sub-pages in templates/article.html + assets/article.css (idempotent).
 Usage: python3 tools/restyle_articles.py [slug ...]   (no args = all pages listed below as articles)
-Then run tools/inject_nav.py (adds the back pill) and tools/build_hub.py.
+Then run tools/inject_nav.py (adds the back pill), tools/inject_reading_effect.py (broadsheet reading mode) and tools/build_hub.py.
 - Extracts: <head> extras (title/meta/og/scripts), header (h1 + source/meta lines/cover/CTA),
   body content (everything between header and footer), original footer notes.
 - Page <style> blocks: generic rules AND components now provided by assets/article.css (cards, grids, CTA,
@@ -45,6 +45,7 @@ def extract(s):
     css = '\n'.join(re.findall(r'<style[^>]*>(.*?)</style>', s, re.S | re.I))
     head = re.sub(r'<style[^>]*>.*?</style>', '', head, flags=re.S | re.I)
     head = re.sub(r'<!-- zbm-nav:head -->.*?<!-- /zbm-nav:head -->', '', head, flags=re.S)
+    head = re.sub(r'<!-- re:head -->.*?<!-- /re:head -->', '', head, flags=re.S)  # re-added after render
     head = re.sub(r'<link rel="preconnect"[^>]*>|<link href="https://fonts.googleapis.com[^>]*>|<link rel="stylesheet" href="[./]*assets/article.css">|<script defer src="[./]*assets/article.js"></script>', '', head)
     head = re.sub(r'<meta charset[^>]*>\s*', '', head, flags=re.I)
     head = '<meta charset="utf-8">\n' + re.sub(r'\n\s*\n+', '\n', head).strip()
@@ -112,6 +113,9 @@ def main():
         # keep the nav pill if present so inject_nav stays a no-op on re-runs
         nav = re.search(r'<!-- zbm-nav:head -->.*?<!-- /zbm-nav:head -->', s, re.S)
         if nav: out = out.replace('</head>', nav.group(0) + '\n</head>', 1)
+        # keep the reading-effect block too (tools/inject_reading_effect.py owns it)
+        rh = re.search(r'<!-- re:head -->.*?<!-- /re:head -->', s, re.S)
+        if rh: out = out.replace('</head>', rh.group(0) + '\n</head>', 1)
         pill = re.search(r'<!-- zbm-nav -->.*?<!-- /zbm-nav -->', s, re.S)
         if pill: out = out.replace('<body class="za">', '<body class="za">\n' + pill.group(0), 1)
         if out != s: open(p, 'w', encoding='utf-8').write(out); n += 1; print('restyled', slug)

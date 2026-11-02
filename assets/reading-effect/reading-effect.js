@@ -1,10 +1,10 @@
-/*! zh-blog-mirrors · reading-effect v1 ("two-ink broadsheet")
+/*! zh-blog-mirrors · reading-effect v2 ("broadsheet")
  * A newspaper reading mode for article pages, after keshav (@kshvbgde)'s "The Blue Hour" experiment
  * (https://x.com/kshvbgde/status/2116270360417243293, https://kshv.me/experiments/blue-hour).
  * That demo's source is not published under a licence, so nothing here is copied from it: this is an
- * independent re-implementation of the behaviour seen in its video (folded sheet that opens, two inks,
- * justified columns set line by line, dithered blue-ink figures that "print in", text that re-flows live
- * around figures you drag, a page you turn by its corner).
+ * independent re-implementation of the behaviour seen in its video (folded sheet that opens, justified
+ * columns set line by line, text that re-flows live around figures you drag, a page you turn by its
+ * corner). Figures are shown as the original images (no re-inking).
  * Line layout: @chenglou/pretext (MIT, ./pretext.js, bundled unmodified). Obstacle carving is our own
  * code, in the spirit of pretext's MIT-licensed dynamic-layout demo.
  * Progressive enhancement: without JS / module support the page keeps the normal article layout.
@@ -31,7 +31,8 @@ const TYPES = {
   q: { size: 15.5, lh: 27, gap: 5, indent: 0, pad: 1.3, quote: 1 },
 };
 const INLINE_OK = new Set(['A', 'STRONG', 'B', 'EM', 'I', 'CODE', 'SUP', 'SUB', 'BR', 'SPAN', 'SMALL', 'MARK', 'ABBR', 'TIME', 'KBD', 'U', 'S', 'DEL', 'INS', 'Q', 'CITE', 'DFN', 'VAR', 'SAMP', 'WBR']);
-const INKS = [['BAYER 8×8', 'bayer'], ['HALFTONE 45°', 'halftone'], ['IGN NOISE', 'noise'], ['LINE ENGRAVING', 'engrave']];
+const NARROW = () => innerWidth < 640;
+const EASE = { paper: 'cubic-bezier(.6,.02,.28,1)', out: 'cubic-bezier(.2,.7,.2,1)', settle: 'cubic-bezier(.3,0,.4,1)' };
 
 /* ---------- boot ---------- */
 const page = qs('.za-page'), content = qs('.za-content'), headEl = qs('.za-head'), footEl = qs('.za-foot');
@@ -52,8 +53,7 @@ async function boot() {
   bindGlobal();
   tickStats();
   if (hashPage >= 0) { const t = safeTarget(location.hash); t && t.scrollIntoView(); }
-  else if (!RM.matches && !sessionStorage.getItem('re-opened:' + location.pathname)) await foldIntro();
-  printInVisible();
+  else if (!RM.matches && !NARROW() && !sessionStorage.getItem('re-opened:' + location.pathname)) await foldIntro();
 }
 
 function fontsReady() {
@@ -139,7 +139,7 @@ function build() {
     if (i === pages.length - 1) {
       const col = h('div', 're-colophon'); if (footEl) col.append(footEl);
       const base = new URL('./', import.meta.url).href;
-      col.append(h('p', 're-credit', { html: `版式说明：双色报纸阅读模式，灵感来自 keshav 的 <a href="https://kshv.me/experiments/blue-hour" rel="noopener">The Blue Hour</a>（独立重写，未使用其代码）· 逐行排字 <a href="https://github.com/chenglou/pretext" rel="noopener">pretext</a>（MIT）· 字体 Geist Serif / Geist Mono（SIL OFL 1.1）· <a href="${base}LICENSES.md">许可与致谢</a> · <a href="?re=off">切换回普通版式</a>` }));
+      col.append(h('p', 're-credit', { html: `版式说明：报纸阅读模式，灵感来自 keshav 的 <a href="https://kshv.me/experiments/blue-hour" rel="noopener">The Blue Hour</a>（独立重写，未使用其代码）· 逐行排字 <a href="https://github.com/chenglou/pretext" rel="noopener">pretext</a>（MIT）· 字体 Geist Serif / Geist Mono（SIL OFL 1.1）· <a href="${base}LICENSES.md">许可与致谢</a> · <a href="?re=off">切换回普通版式</a>` }));
       body.append(col);
     }
     sec.append(body, folioEl(i, pages.length));
@@ -175,17 +175,17 @@ function cnDate(iso) {
 function masthead(meta) {
   const m = h('header', 're-mast');
   const top = h('div', 're-toprow');
-  top.append(h('span', '', { text: `${meta.type || '文章'} · 双色印刷 · PRINTED IN TWO INKS` }),
+  top.append(h('span', '', { text: `${meta.type || '文章'} · 中文镜像文库 · READING EDITION` }),
     h('span', 're-quote', { text: meta.sub ? `“${meta.sub.textContent.trim()}”` : '' }),
     h('span', '', { text: cnDate(meta.date) }));
   const plate = h('div', 're-plate', { role: 'presentation' });
   plate.innerHTML = '<span>中文镜像</span>';
-  const moon = h('canvas', 're-moon re-ink', { 'aria-hidden': 'true', width: 10, height: 10 });
+  const moon = h('canvas', 're-moon', { 'aria-hidden': 'true', width: 10, height: 10 });
   plate.append(moon, h('span', '', { text: '文库' }));
   S.plateMoon = moon;
   const stats = h('dl', 're-stats', { 'aria-label': '版面数据' });
   const cell = (k, id, up = '▲') => { const d = h('div'); d.append(h('dt', '', { html: `<i aria-hidden="true">${up}</i>${k}` }), h('dd', '', { id: 're-st-' + id, text: '—' })); return d; };
-  stats.append(cell('月相 · 亮面', 'moon'), cell('排字行数', 'lines'), cell('版面', 'pages'), cell('油墨', 'inks'),
+  stats.append(cell('月相 · 亮面', 'moon'), cell('排字行数', 'lines'), cell('版面', 'pages'), cell('插图 · 原图', 'figs'),
     cell('全文字数', 'chars'), cell('已读', 'read', '▼'), cell('付印以来', 'since'));
   m.append(top, plate, stats);
   return m;
@@ -230,17 +230,20 @@ function prepSolid(n) { qsa('figure', n).forEach(f => f.querySelector('img') && 
 function prepFigure(f, solid) {
   if (f._re) return; f._re = 1;
   const img = qs('img', f); if (!img) return;
-  const n = ++S.figN; const ink = INKS[(n - 1) % INKS.length];
-  f.classList.add('re-fig'); f.dataset.ink = ink[1];
+  const n = ++S.figN;
+  f.classList.add('re-fig');
   const wrap = h('div', 're-plate-img'); img.replaceWith(wrap); wrap.append(img);
-  const cv = h('canvas', 're-ink', { 'aria-hidden': 'true' }); wrap.append(cv);
   let cap = qs('figcaption', f); if (!cap) { cap = h('figcaption'); f.append(cap); }
-  cap.prepend(h('span', 're-fign', { text: `图 ${n} — ` }));
-  cap.append(h('span', 're-figink', { 'aria-hidden': 'true', text: ` · ${ink[0]} · 蓝墨` }));
+  cap.prepend(h('span', 're-fign', { 'aria-hidden': 'true', text: `图 ${n}` }));
   f.tabIndex = 0;
-  f.setAttribute('aria-label', `图 ${n}：${img.alt || ''}。按回车查看原图${solid ? '' : '；方向键可移动插图，正文随之重排'}`);
-  f._img = img; f._cv = cv; f._ink = ink[1];
-  if (!img.complete) img.addEventListener('load', () => { f._printed = 0; if (f.closest('.re-band')) relayoutBandOf(f); queuePrint(f); }, { once: true });
+  f.setAttribute('aria-label', `图 ${n}：${img.alt || ''}。按回车查看大图${solid ? '' : '；方向键可移动插图，正文随之重排'}`);
+  f._img = img;
+  // a gentle fade-in once the picture has actually arrived; already-cached images just appear
+  if (img.complete && img.naturalWidth) wrap.classList.add('re-in', 're-now');
+  else {
+    img.addEventListener('load', () => { wrap.classList.add('re-in'); if (f.closest('.re-band') && !f._ar) relayoutBandOf(f); }, { once: true });
+    img.addEventListener('error', () => wrap.classList.add('re-in', 're-err'), { once: true });
+  }
 }
 function folioEl(i, n) {
   const f = h('footer', 're-folio');
@@ -346,8 +349,8 @@ function layBand(band, H, render) {
           if (c >= cols) { out.fail = 1; return; }
           const colX = c * (colW + gutter);
           if (isDC && first && !u.dcRect) {
-            const dcH = lh * 3 - 4, dcW = Math.ceil(measureW(u.dcChar, `400 ${Math.round(dcH * 0.96)}px ${SERIF}`)) + 8;
-            u.dcRect = { x: colX + padL, y: y + 2, w: dcW, h: dcH, pad: 0, shape: 'rect', dc: 1 };
+            const m = dropCapMetrics(u.dcChar, T);
+            u.dcRect = { x: colX + padL, y, w: m.w, h: lh * 3, pad: 0, shape: 'rect', dc: 1, m };
             obs.push(u.dcRect);
           }
           const segs = freeSegs(colX + padL, colX + colW, y, y + lh, obs, em * 3);
@@ -376,19 +379,48 @@ function layBand(band, H, render) {
   for (const ob of band.obstacles) maxY = Math.max(maxY, ob.y + ob.h + (ob.cap ? ob.cap.h : 0));
   return { ok: !out.fail, h: maxY, out };
 }
-let _mc; function measureW(t, font) { _mc = _mc || D.createElement('canvas').getContext('2d'); _mc.font = font; return _mc.measureText(t).width; }
+let _mc; function ctx2d() { return (_mc = _mc || D.createElement('canvas').getContext('2d')); }
+function measureW(t, font) { const c = ctx2d(); c.font = font; return c.measureText(t).width; }
+// A three-line drop cap whose ink sits exactly between the first line's ink top and the third line's
+// baseline (CJK: the third line's ideographic bottom), measured from the real glyphs rather than guessed.
+const _dcm = new Map();
+function dropCapMetrics(ch, T) {
+  const key = ch + T.size + '/' + T.lh; if (_dcm.has(key)) return _dcm.get(key);
+  const c = ctx2d(), cjk = /[\u3400-\u9fff\uf900-\ufaff]/.test(ch);
+  c.font = `400 ${T.size}px ${SERIF}`;
+  const ref = c.measureText(cjk ? '国' : 'H');
+  const FA = ref.fontBoundingBoxAscent || T.size * .9, FD = ref.fontBoundingBoxDescent || T.size * .25;
+  const base = k => k * T.lh + (T.lh - (FA + FD)) / 2 + FA; // baseline of line k inside the band
+  const top = base(0) - ref.actualBoundingBoxAscent, bottom = base(2) + (cjk ? ref.actualBoundingBoxDescent : 0);
+  c.font = `400 100px ${SERIF}`;
+  const g = c.measureText(ch), inkH = (g.actualBoundingBoxAscent + (cjk ? g.actualBoundingBoxDescent : 0)) / 100 || .72;
+  const size = (bottom - top) / inkH;
+  c.font = `400 ${size}px ${SERIF}`;
+  const G = c.measureText(ch);
+  const gFA = G.fontBoundingBoxAscent || size * .9, gFD = G.fontBoundingBoxDescent || size * .25;
+  // span with line-height = size: its baseline sits at (size - (gFA + gFD)) / 2 + gFA from its top
+  const baseInSpan = (size - (gFA + gFD)) / 2 + gFA;
+  const spanTop = top + G.actualBoundingBoxAscent - baseInSpan;
+  const w = Math.ceil((G.actualBoundingBoxRight || G.width) - Math.min(0, -(G.actualBoundingBoxLeft || 0))) + Math.round(T.size * (cjk ? .55 : .5));
+  const m = { size, top: spanTop, w, left: -(Math.min(0, -(G.actualBoundingBoxLeft || 0))) };
+  _dcm.set(key, m); return m;
+}
 
 function fitBand(band) {
-  let lo = 0, hi = 400;
-  for (const ob of band.obstacles) lo = Math.max(lo, ob.y + ob.h);
+  let lo = 0;
+  for (const ob of band.obstacles) lo = Math.max(lo, ob.y + ob.h + (ob.cap ? ob.cap.h : 0));
+  let hi = Math.max(400, lo + 1);
   while (!layBand(band, hi, false).ok) { hi *= 1.6; if (hi > 60000) break; }
   // lower bound from area
   for (let i = 0; i < 18 && hi - lo > 2; i++) { const mid = (lo + hi) / 2; if (layBand(band, mid, false).ok) hi = mid; else lo = mid; }
   return Math.ceil(hi);
 }
-function renderBand(band) {
-  const H = fitBand(band);
-  const res = layBand(band, H, true);
+function renderBand(band, live) {
+  // while a figure is being dragged keep the band height steady (no jumping page) unless it no longer fits
+  const obBottom = band.obstacles.reduce((m, ob) => Math.max(m, ob.y + ob.h + (ob.cap ? ob.cap.h : 0)), 0);
+  let H = live && band.H >= obBottom ? band.H : 0, res = H ? layBand(band, H, true) : null;
+  if (!res || !res.ok) { H = fitBand(band); res = layBand(band, H, true); }
+  band.H = H;
   // clear unit DOM
   for (const blk of band.blocks) if (blk.kind === 'prose') blk.units.forEach(u => u.el.replaceChildren());
   const linkFirst = new Map(); let n = 0;
@@ -416,15 +448,34 @@ function renderBand(band) {
     L.u.el.append(line); n++;
   }
   for (const d of res.out.dcs || []) {
-    const dc = h('span', 're-dc', { text: d.u.dcChar });
-    dc.style.cssText = `left:${d.rect.x}px;top:${d.rect.y}px;height:${d.rect.h}px;font-size:${Math.round(d.rect.h * 0.96)}px;line-height:${d.rect.h}px`;
+    const m = d.rect.m, dc = h('span', 're-dc', { text: d.u.dcChar });
+    dc.style.cssText = `left:${(d.rect.x + m.left).toFixed(2)}px;top:${(d.rect.y + m.top).toFixed(2)}px;font-size:${m.size.toFixed(2)}px;line-height:${m.size.toFixed(2)}px`;
     d.u.el.prepend(dc);
   }
+  drawRules(band, H);
   band.el.style.height = H + 'px';
   band.lines = n;
   // place figures
   for (const ob of band.obstacles) if (ob.el) { ob.el.style.left = ob.x + 'px'; ob.el.style.top = ob.y + 'px'; }
   return n;
+}
+
+// hairline column rules, interrupted wherever a figure or the moon crosses the gutter
+function drawRules(band, H) {
+  let box = band.rules; if (!box) { box = band.rules = h('div', 're-rules', { 'aria-hidden': 'true' }); }
+  if (box.parentNode !== band.el) band.el.prepend(box);
+  const segs = [];
+  for (let c = 1; c < band.cols; c++) {
+    const x = c * (band.colW + band.gutter) - band.gutter / 2;
+    let parts = [[0, H]];
+    for (const ob of band.obstacles) {
+      const x0 = ob.x - 6, x1 = ob.x + ob.w + 6; if (x < x0 || x > x1) continue;
+      const y0 = ob.y - 14, y1 = ob.y + ob.h + (ob.cap ? ob.cap.h : 0) + 14;
+      parts = parts.flatMap(([a, b]) => (y1 <= a || y0 >= b) ? [[a, b]] : [[a, y0], [y1, b]].filter(([p, q]) => q - p > 24));
+    }
+    for (const [a, b] of parts) segs.push(`<i style="left:${x.toFixed(1)}px;top:${a.toFixed(0)}px;height:${(b - a).toFixed(0)}px"></i>`);
+  }
+  box.innerHTML = segs.join('');
 }
 
 /* ---------- page layout ---------- */
@@ -438,17 +489,20 @@ function layoutPage(i) {
   qsa('.re-run', p.body).forEach(runEl => { lines += layoutRun(runEl._run, bodyW, cols, p); });
   p.lines = lines; S.linesSet = S.pages.reduce((a, q) => a + (q.lines || 0), 0);
   setStat('lines', cols === 1 ? '流式 · 单栏' : `${S.linesSet.toLocaleString('zh-CN')} · ${cols} 栏`);
-  queuePrintPage(p);
 }
 function layoutRun(run, W, cols, p) {
   const el = run.el;
   // tear down
   el.replaceChildren(); el.classList.toggle('re-flow', cols === 1);
   if (cols === 1) {
-    for (const b of run.blocks) { if (b.kind === 'prose') b.units.forEach(restoreUnit); el.append(b.el); if (b.kind === 'figure') { b.el.classList.remove('re-ob'); b.el.style.cssText = ''; } }
+    for (const b of run.blocks) { if (b.kind === 'prose') b.units.forEach(restoreUnit); el.append(b.el); if (b.kind === 'figure') { b.el.classList.remove('re-ob'); b.el.style.cssText = ''; qs('.re-plate-img', b.el)?.style.removeProperty('height'); } }
+    // single column: a CSS drop cap (initial-letter) on the story's opening paragraph
+    const story = el.closest('.re-story'), firstRun = el.parentElement && el === qs('.re-run', el.parentElement);
+    const fb = run.blocks.find(b => b.kind === 'prose'), fu = fb && fb.units[0];
+    if (firstRun && fu && fu.type === 'p' && fb === run.blocks[0] && story && (story === qs('.re-story', story.parentElement) || story.querySelector(':scope > h2.re-hl'))) fu.el.classList.add('re-dropflow');
     return 0;
   }
-  const gutter = 26, colW = (W - gutter * (cols - 1)) / cols;
+  const gutter = 30, colW = (W - gutter * (cols - 1)) / cols;
   const capH = Math.max(320, Math.min(innerHeight * 0.82, 760));
   const bands = []; let band = null, est = 0;
   const newBand = () => { band = { el: h('div', 're-band'), blocks: [], obstacles: [], cols, colW, gutter, W }; band.el._band = band; bands.push(band); est = 0; };
@@ -501,8 +555,11 @@ function measureObstacles(band) {
     if (ob.moon) continue;
     const img = ob.el._img; const ar = img && img.naturalWidth ? img.naturalHeight / img.naturalWidth : (img && +img.getAttribute('height') / +img.getAttribute('width')) || 0.6;
     const pw = ob.w; ob.el.style.width = pw + 'px';
+    if (img && img.naturalWidth) ob.el._ar = 1;
     const plate = qs('.re-plate-img', ob.el); if (plate) plate.style.height = Math.round(pw * ar) + 'px';
-    ob.h = ob.el.offsetHeight || Math.round(pw * ar + 40);
+    // measure once per size; reading offsetHeight on every drag frame would force layout each time
+    if (ob._mw !== pw || ob._mar !== ar) { ob._mh = ob.el.offsetHeight || Math.round(pw * ar + 40); ob._mw = pw; ob._mar = ar; }
+    ob.h = ob._mh;
     ob.x = clamp(ob.x, 0, band.W - ob.w); ob.y = Math.max(0, ob.y);
   }
 }
@@ -520,8 +577,8 @@ function addMoonOrnament(band) {
   fig.tabIndex = 0;
   const mp = moonPhase();
   fig.setAttribute('aria-label', `装饰插图：今夜月相，亮面约 ${Math.round(mp.illum * 100)}%。可用方向键或拖动移动，正文随之重排`);
-  const cv = h('canvas', 're-ink', { 'aria-hidden': 'true' }); cv.style.width = cv.style.height = size + 'px';
-  const cap = h('figcaption', '', { 'aria-hidden': 'true', text: `今夜月相 · 亮面 ${Math.round(mp.illum * 100)}% · BAYER 8×8` });
+  const cv = h('canvas', 're-mooncv', { 'aria-hidden': 'true' }); cv.style.width = cv.style.height = size + 'px';
+  const cap = h('figcaption', '', { 'aria-hidden': 'true', text: `今夜月相 · 亮面 ${Math.round(mp.illum * 100)}%${mp.waxing ? ' · 盈' : ' · 亏'}` });
   fig.append(cv, cap); fig._moon = cv; fig.style.width = size + 'px';
   band.el.append(fig);
   // straddle the gutter between columns 2 and 3 so the text runs on both sides
@@ -530,94 +587,36 @@ function addMoonOrnament(band) {
   cap.style.cssText = `position:absolute;left:50%;top:${size + 4}px;width:${ob.cap.w}px;transform:translateX(-50%);margin:0 !important`;
   band.obstacles.push(ob); fig._ob = ob;
   band.blocks.push({ kind: 'orn', el: fig, ob });
-  requestAnimationFrame(() => drawMoon(cv, size, mp, RM.matches ? 1 : 0));
-}
-function moonCoverage(size, mp) {
-  // coverage 0..1 (ink) — shadow side solid, lit side textured with maria
-  const n = size, cov = new Float32Array(n * n); const k = Math.cos(mp.ph * 2 * Math.PI);
-  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
-    const x = (i + .5) / n * 2 - 1, y = (j + .5) / n * 2 - 1, r2 = x * x + y * y;
-    if (r2 > 1) { cov[j * n + i] = -1; continue; }
-    const s = Math.sqrt(1 - y * y), lit = mp.waxing ? x > s * k : x < -s * k;
-    const edge = Math.abs(x - (mp.waxing ? s * k : -s * k));
-    const maria = fbm(x * 2.2 + 3.1, y * 2.2 - 1.7) * 0.9 + fbm(x * 7 + 9, y * 7) * 0.25;
-    const limb = Math.sqrt(1 - r2);
-    let c = lit ? 0.18 + 0.42 * clamp(maria, 0, 1) + 0.15 * (1 - limb) : 0.96;
-    if (lit && edge < 0.08) c = c + (0.96 - c) * (1 - edge / 0.08) * 0.6;
-    cov[j * n + i] = clamp(c, 0, 1);
-  }
-  return cov;
+  requestAnimationFrame(() => drawMoon(cv, size, mp));
 }
 function hash2(x, y) { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
   return (hash2(xi, yi) * (1 - u) + hash2(xi + 1, yi) * u) * (1 - v) + (hash2(xi, yi + 1) * (1 - u) + hash2(xi + 1, yi + 1) * u) * v; }
 function fbm(x, y) { let a = 0, f = 1, amp = .55; for (let o = 0; o < 4; o++) { a += amp * vnoise(x * f, y * f); f *= 2.03; amp *= .5; } return a; }
-function drawMoon(cv, css, mp, instant) {
-  const dpr = Math.min(2, devicePixelRatio || 1), n = Math.round(css * dpr); cv.width = cv.height = n;
-  const cov = moonCoverage(n, mp);
-  // on the night edition the ink is light, so the lit side carries the ink
-  if (matchMedia('(prefers-color-scheme: dark)').matches) for (let k = 0; k < cov.length; k++) if (cov[k] >= 0) cov[k] = 1 - cov[k] * .9;
-  const steps = instant ? [1] : [10, 6, 3, 1];
-  let i = 0; const go = () => { ditherTo(cv, cov, n, n, Math.max(1, Math.round(steps[i] * dpr)), 'bayer', Math.max(1, Math.round(1.5 * dpr))); if (++i < steps.length) setTimeout(go, 140); };
-  go();
-}
-
-/* ---------- ink printing (dither) ---------- */
-const BAYER8 = (() => { const m = [[0, 32, 8, 40, 2, 34, 10, 42], [48, 16, 56, 24, 50, 18, 58, 26], [12, 44, 4, 36, 14, 46, 6, 38], [60, 28, 52, 20, 62, 30, 54, 22], [3, 35, 11, 43, 1, 33, 9, 41], [51, 19, 59, 27, 49, 17, 57, 25], [15, 47, 7, 39, 13, 45, 5, 37], [63, 31, 55, 23, 61, 29, 53, 21]]; return m.map(r => r.map(v => (v + .5) / 64)); })();
-function threshold(kind, u, v) { // u, v in "screen-dot" units
-  if (kind === 'halftone') { const p = 3.2, a = (u + v) / Math.SQRT2 / p, b = (u - v) / Math.SQRT2 / p; const fa = a - Math.floor(a) - .5, fb = b - Math.floor(b) - .5; return clamp(Math.sqrt(fa * fa + fb * fb) * 1.414, 0, 1); }
-  if (kind === 'noise') { const t = 52.9829189 * ((0.06711056 * Math.floor(u) + 0.00583715 * Math.floor(v)) % 1); return t - Math.floor(t); }
-  if (kind === 'engrave') { const s = Math.sin((v + u * 0.18) / 3.4 * Math.PI * 2); return (s + 1) / 2; }
-  return BAYER8[Math.floor(v) & 7][Math.floor(u) & 7];
-}
-function inkRGB() { const s = getComputedStyle(S.sheet || root); const v = s.getPropertyValue('--re-blue').trim() || '#2434cc'; const c = D.createElement('canvas').getContext('2d'); c.fillStyle = v; const hex = c.fillStyle; return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]; }
-function ditherTo(cv, cov, w, hgt, cell, kind, unit) {
-  // cell: block size of this print pass (device px). unit: size of one screen dot (device px).
-  const ctx = cv.getContext('2d'); const id = ctx.createImageData(w, hgt); const d = id.data; const [R, G, B] = inkRGB();
-  const U = Math.max(cell, unit), st = Math.max(1, cell >> 2);
-  for (let y = 0; y < hgt; y += cell) for (let x = 0; x < w; x += cell) {
-    let s = 0, inside = 0;
-    for (let yy = y; yy < Math.min(y + cell, hgt); yy += st) for (let xx = x; xx < Math.min(x + cell, w); xx += st) { const c = cov[yy * w + xx]; if (c >= 0) { s += c; inside++; } }
-    if (!inside) continue;
-    if (s / inside <= threshold(kind, x / U, y / U)) continue;
-    for (let yy = y; yy < Math.min(y + cell, hgt); yy++) for (let xx = x; xx < Math.min(x + cell, w); xx++) { if (cov[yy * w + xx] < 0) continue; const o = (yy * w + xx) * 4; d[o] = R; d[o + 1] = G; d[o + 2] = B; d[o + 3] = 240; }
+const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+function cssRGB(v) { const c = ctx2d(); c.fillStyle = '#000'; c.fillStyle = v; const x = c.fillStyle; return x[0] === '#' ? [1, 3, 5].map(i => parseInt(x.slice(i, i + 2), 16)) : (x.match(/\d+/g) || [0, 0, 0]).slice(0, 3).map(Number); }
+// A clean, continuous-tone moon: a lit sphere (Lambert, soft terminator, faint maria, gentle limb
+// darkening) for tonight's phase. No dithering. Light edition: shadow in deep ink-blue, lit side pale;
+// night edition: lit side warm paper-white, shadow barely above the paper with a little earthshine.
+function drawMoon(cv, css, mp) {
+  const dpr = Math.min(2, devicePixelRatio || 1), n = Math.round(css * dpr); if (!n) return; cv.width = cv.height = n;
+  const cs = getComputedStyle(S.sheet || root), dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const blue = cssRGB(cs.getPropertyValue('--re-blue').trim() || '#2434cc'), paper = cssRGB(cs.getPropertyValue('--re-paper').trim() || '#f1eee6');
+  const litC = dark ? [236, 231, 219] : [paper[0] * .93 + blue[0] * .07, paper[1] * .93 + blue[1] * .07, paper[2] * .93 + blue[2] * .07];
+  const mariaC = dark ? [176, 172, 165] : [blue[0] * .3 + paper[0] * .7, blue[1] * .3 + paper[1] * .7, blue[2] * .3 + paper[2] * .7];
+  const darkC = dark ? [paper[0] + 9, paper[1] + 10, paper[2] + 14] : blue.map(v => v * .92);
+  const th = mp.ph * 2 * Math.PI, Lx = Math.sin(th), Lz = -Math.cos(th);
+  const c = cv.getContext('2d'), id = c.createImageData(n, n), d = id.data;
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+    const x = (i + .5) / n * 2 - 1, y = (j + .5) / n * 2 - 1, r2 = x * x + y * y; if (r2 > 1.02) continue;
+    const z = Math.sqrt(Math.max(0, 1 - r2)), ndl = x * Lx + z * Lz;
+    const lit = smooth(-.035, .085, ndl), limb = .82 + .18 * Math.pow(z, .6);
+    const maria = clamp(smooth(.42, .78, fbm(x * 2.1 + 3.1, y * 2.1 - 1.7)) * .85 + (fbm(x * 9 + 9, y * 9) - .5) * .12, 0, 1);
+    const k = (o, ch) => { const L = litC[ch] + (mariaC[ch] - litC[ch]) * maria; const lv = L * (.86 + .14 * clamp(ndl * 1.6, 0, 1)) * limb; return darkC[ch] + (lv - darkC[ch]) * lit; };
+    const o = (j * n + i) * 4; d[o] = k(o, 0); d[o + 1] = k(o, 1); d[o + 2] = k(o, 2);
+    d[o + 3] = 255 * clamp((1 - Math.sqrt(r2)) * n / 2 + .5, 0, 1); // antialiased rim
   }
-  ctx.putImageData(id, 0, 0);
-}
-const printQ = new Set(); let io;
-function queuePrint(f) { if (!io) io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); printFigure(e.target); } }), { rootMargin: '0px 0px -12% 0px' }); io.observe(f); }
-function queuePrintPage(p) { qsa('figure.re-fig', p.el).forEach(f => { if (!f._printed) queuePrint(f); }); }
-function printInVisible() { S.pages[S.cur] && queuePrintPage(S.pages[S.cur]); }
-function printFigure(f) {
-  const img = f._img, cv = f._cv; if (!img || !cv) return;
-  if (!img.complete || !img.naturalWidth) { img.addEventListener('load', () => printFigure(f), { once: true }); return; }
-  const plate = cv.parentElement; const cw = plate.clientWidth, ch = plate.clientHeight; if (!cw || !ch) return;
-  const dpr = Math.min(2, devicePixelRatio || 1); const w = Math.round(cw * dpr), hh = Math.round(ch * dpr);
-  cv.width = w; cv.height = hh;
-  const tmp = D.createElement('canvas'); tmp.width = w; tmp.height = hh; const tc = tmp.getContext('2d', { willReadFrequently: true });
-  // object-fit: contain
-  const ar = img.naturalWidth / img.naturalHeight; let dw = w, dh = w / ar; if (dh > hh) { dh = hh; dw = hh * ar; }
-  const ox = (w - dw) / 2, oy = (hh - dh) / 2;
-  tc.fillStyle = '#fff'; tc.fillRect(0, 0, w, hh); tc.drawImage(img, ox, oy, dw, dh);
-  let data; try { data = tc.getImageData(0, 0, w, hh).data; } catch (e) { f.classList.add('re-noink'); return; }
-  // luminance → ink coverage. Dark artwork (screenshots, covers) is printed as a negative so the
-  // paper stays paper, and levels are stretched (2nd–98th percentile) so flat diagrams keep contrast.
-  const cov = new Float32Array(w * hh), hist = new Uint32Array(256); let inside = 0;
-  for (let i = 0, j = 0; i < cov.length; i++, j += 4) {
-    const x = i % w, y = (i / w) | 0;
-    if (x < Math.ceil(ox) || x >= Math.floor(ox + dw) || y < Math.ceil(oy) || y >= Math.floor(oy + dh)) { cov[i] = -1; continue; }
-    const L = (0.2126 * data[j] + 0.7152 * data[j + 1] + 0.0722 * data[j + 2]) / 255;
-    cov[i] = L; hist[Math.round(L * 255)]++; inside++;
-  }
-  const pct = q => { let acc = 0; for (let k = 0; k < 256; k++) { acc += hist[k]; if (acc >= q * inside) return k / 255; } return 1; };
-  const lo = pct(.02), hi = Math.max(lo + .1, pct(.98)), mid = pct(.5), neg = mid < .42;
-  for (let i = 0; i < cov.length; i++) { if (cov[i] < 0) continue; const n = clamp((cov[i] - lo) / (hi - lo), 0, 1); cov[i] = clamp(Math.pow(neg ? n : 1 - n, 1.1), 0, 1); }
-  f.dataset.neg = neg ? '1' : '';
-  f._printed = 1; f.classList.add('re-printing');
-  const kind = f._ink; const unit = Math.max(1, Math.round(1.25 * dpr));
-  const steps = RM.matches ? [1] : [24, 12, 6, 3, 1];
-  let i = 0; const go = () => { ditherTo(cv, cov, w, hh, Math.max(1, Math.round(steps[i] * dpr)), kind, unit); if (++i < steps.length) setTimeout(go, 130); else f.classList.remove('re-printing'); };
-  go();
+  c.putImageData(id, 0, 0);
 }
 
 /* ---------- dragging figures (live reflow) ---------- */
@@ -637,7 +636,7 @@ function bindDrag() {
     if (!drag.moved) { drag.moved = true; drag.f.classList.add('re-dragging'); root.classList.add('re-grabbing'); }
     drag.ob.x = clamp(drag.ox + dx, 0, drag.band.W - drag.ob.w);
     drag.ob.y = clamp(drag.oy + dy, 0, Math.max(0, parseFloat(drag.band.el.style.height) - drag.ob.h * 0.35));
-    if (!pend) pend = requestAnimationFrame(() => { pend = 0; if (drag) { renderBand(drag.band); remember(drag); } });
+    if (!pend) pend = requestAnimationFrame(() => { pend = 0; if (drag) { renderBand(drag.band, true); remember(drag); } });
   });
   const end = e => {
     if (!drag || e.pointerId !== drag.id) return;
@@ -653,7 +652,7 @@ function bindDrag() {
     const st = e.shiftKey ? 48 : 12; const mv = { ArrowLeft: [-st, 0], ArrowRight: [st, 0], ArrowUp: [0, -st], ArrowDown: [0, st] }[e.key]; if (!mv) return;
     e.preventDefault(); e.stopPropagation();
     ob.x = clamp(ob.x + mv[0], 0, band.W - ob.w); ob.y = clamp(ob.y + mv[1], 0, parseFloat(band.el.style.height));
-    renderBand(band); remember({ f, ob, band });
+    renderBand(band, true); remember({ f, ob, band });
   });
 }
 function remember(d) { const blk = d.band.blocks.find(b => b.el === d.f); if (blk) blk.pos = { x: d.ob.x, y: d.ob.y, W: d.band.W }; }
@@ -663,13 +662,13 @@ let lb;
 function openLightbox(f) {
   const img = f._img; if (!img) return;
   if (!lb) {
-    lb = h('dialog', 're-lb', { 'aria-label': '原图' });
+    lb = h('dialog', 're-lb', { 'aria-label': '大图' });
     lb.innerHTML = '<button type="button" class="re-lb-x" aria-label="关闭">×</button><img alt=""><p></p>';
     lb.addEventListener('click', e => { if (e.target === lb || e.target.closest('.re-lb-x')) lb.close(); });
     D.body.append(lb);
   }
   qs('img', lb).src = img.currentSrc || img.src; qs('img', lb).alt = img.alt;
-  const cap = qs('figcaption', f); qs('p', lb).textContent = cap ? cap.textContent.replace(/ · [A-Z0-9× °]+ · 蓝墨$/, '') + ' · 原色' : '';
+  const cap = qs('figcaption', f); qs('p', lb).textContent = cap ? cap.textContent.replace(/^图 (\d+)/, '图 $1 — ') : '';
   lb.showModal(); lb._from = f;
   lb.addEventListener('close', () => lb._from && lb._from.focus(), { once: true });
 }
@@ -697,9 +696,8 @@ async function turnTo(i, opt = {}) {
   if (!S.pages[i].laid || S.pages[i].w !== S.pages[i].body.clientWidth) layoutPage(i);
   const top = S.sheet.getBoundingClientRect().top + scrollY - 12;
   if (!opt.keepScroll) scrollTo({ top: Math.max(0, top), behavior: 'instant' });
-  printInVisible();
   if (overlay) await rollAway(overlay, fwd);
-  else if (opt.animate !== false && RM.matches) { S.sheet.animate([{ opacity: .4 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' }); }
+  else if (opt.animate !== false && RM.matches) { S.sheet.animate([{ opacity: .55 }, { opacity: 1 }], { duration: 240, easing: 'ease-out' }); }
   turning = false;
   if (opt.focus !== false) { const p = S.pages[i].el; p.tabIndex = -1; p.focus({ preventScroll: true }); }
 }
@@ -711,22 +709,30 @@ function snapshotOverlay() {
   const paper = h('div', 're-turn-paper');
   const clone = S.sheet.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('re-clone');
   qsa('[id]', clone).forEach(e => e.removeAttribute('id'));
-  qsa('canvas', clone).forEach((c, k) => { /* canvases clone blank: copy pixels */ });
   const srcC = qsa('canvas', S.sheet), dstC = qsa('canvas', clone);
   dstC.forEach((c, k) => { const s = srcC[k]; if (s && s.width) { c.width = s.width; c.height = s.height; c.getContext('2d').drawImage(s, 0, 0); } });
   clone.style.cssText = `position:absolute;left:${r.left - vx}px;top:${r.top - vy}px;width:${r.width}px;margin:0`;
-  paper.append(clone); ov.append(paper, h('div', 're-roll'));
+  paper.append(clone, h('div', 're-lift')); ov.append(h('div', 're-cast'), paper, h('div', 're-roll'));
   D.body.append(ov);
   return ov;
 }
 function rollAway(ov, fwd) {
-  const W = ov.clientWidth, paper = qs('.re-turn-paper', ov), roll = qs('.re-roll', ov);
-  const dur = 950, ease = 'cubic-bezier(.5,.04,.24,1)';
+  // The old page rolls up from its leading edge into a soft cylinder that travels across and away.
+  // Timing: a slow lift, then the roll gathers pace and eases out (≈820 ms). Shading is a matte
+  // cylinder (no specular), plus the paper just ahead of the roll darkening as it lifts, and a soft
+  // contact shadow cast on the page being revealed.
+  const W = ov.clientWidth, paper = qs('.re-turn-paper', ov), roll = qs('.re-roll', ov), lift = qs('.re-lift', ov), cast = qs('.re-cast', ov);
+  const dur = 820, ease = 'cubic-bezier(.58,.02,.22,1)';
   if (!fwd) ov.classList.add('rev');
-  const a1 = paper.animate(fwd ? [{ clipPath: 'inset(0 0 0 0)' }, { clipPath: `inset(0 ${W}px 0 0)` }] : [{ clipPath: 'inset(0 0 0 0)' }, { clipPath: `inset(0 0 0 ${W}px)` }], { duration: dur, easing: ease, fill: 'forwards' });
-  const R = 22;
-  roll.animate(fwd ? [{ transform: `translateX(${W - R}px) scaleX(.4)`, opacity: 0 }, { transform: `translateX(${W * .93 - R}px) scaleX(.6)`, opacity: 1, offset: .07 }, { transform: `translateX(${-R}px) scaleX(1)`, opacity: 1 }] :
-    [{ transform: `translateX(${-R}px) scaleX(.4)`, opacity: 0 }, { transform: `translateX(${W * .07 - R}px) scaleX(.6)`, opacity: 1, offset: .07 }, { transform: `translateX(${W - R}px) scaleX(1)`, opacity: 1 }], { duration: dur, easing: ease, fill: 'forwards' });
+  const o = { duration: dur, easing: ease, fill: 'forwards' };
+  const R = 21, at = (p) => fwd ? W * (1 - p) : W * p; // x of the roll's axis at progress p
+  const a1 = paper.animate(fwd ? [{ clipPath: 'inset(0 0 0 0)' }, { clipPath: `inset(0 ${W}px 0 0)` }] : [{ clipPath: 'inset(0 0 0 0)' }, { clipPath: `inset(0 0 0 ${W}px)` }], o);
+  const tr = (p, s) => `translateX(${(at(p) - R).toFixed(1)}px) scaleX(${s})`;
+  roll.animate([{ transform: tr(0, .35), opacity: 0 }, { transform: tr(.06, .7), opacity: 1, offset: .08 }, { transform: tr(.92, 1), opacity: 1, offset: .9 }, { transform: tr(1, 1), opacity: 0 }], o);
+  const lt = p => `translateX(${(fwd ? at(p) - R - 90 : at(p) + R).toFixed(1)}px)`;
+  lift.animate([{ transform: lt(0), opacity: 0 }, { transform: lt(.06), opacity: 1, offset: .08 }, { transform: lt(.92), opacity: 1, offset: .9 }, { transform: lt(1), opacity: 0 }], o);
+  const ct = p => `translateX(${(fwd ? at(p) + R - 6 : at(p) - R - 64).toFixed(1)}px)`;
+  cast.animate([{ transform: ct(0), opacity: 0 }, { transform: ct(.06), opacity: .9, offset: .08 }, { transform: ct(.9), opacity: .7, offset: .9 }, { transform: ct(1), opacity: 0 }], o);
   return a1.finished.then(() => ov.remove(), () => ov.remove());
 }
 
@@ -773,21 +779,24 @@ function foldIntro() {
   });
 }
 function unfold(F, reverse) {
-  const dur = 1250, ease = 'cubic-bezier(.62,.02,.26,1)';
+  // The flap swings over its hinge, lands, and settles with a small paper-like rebound. Shading
+  // follows the angle to the light: each face darkens as it turns edge-on (~90°), the left half
+  // takes the flap's shadow while it is raised, and nothing ever glows.
+  const dur = 1380;
   const flap = qs('.re-fold-flap', F.ov);
-  const kf = [{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(180deg)' }];
-  const o = { duration: dur, easing: ease, fill: 'forwards', direction: reverse ? 'reverse' : 'normal' };
+  const o = { duration: dur, fill: 'forwards', direction: reverse ? 'reverse' : 'normal' };
+  const E = EASE.paper, S2 = EASE.settle;
   const anims = [
-    flap.animate(kf, o),
-    F.ov.animate([{ transform: `translateX(${F.half / 2}px)` }, { transform: 'translateX(0)' }], o),
-    qs('.re-back .re-shade', F.ov).animate([{ opacity: 0 }, { opacity: .32, offset: .5 }, { opacity: .32 }], o),
-    qs('.re-front .re-shade', F.ov).animate([{ opacity: .3 }, { opacity: .3, offset: .5 }, { opacity: 0 }], o),
-    qs('.re-castshadow', F.ov).animate([{ opacity: .55 }, { opacity: .25, offset: .45 }, { opacity: 0 }], o),
+    flap.animate([{ transform: 'rotateY(0deg)', easing: E }, { transform: 'rotateY(180deg)', offset: .8, easing: 'cubic-bezier(.25,.6,.4,1)' }, { transform: 'rotateY(176.2deg)', offset: .89, easing: S2 }, { transform: 'rotateY(180deg)' }], o),
+    F.ov.animate([{ transform: `translateX(${F.half / 2}px)`, easing: E }, { transform: 'translateX(0)', offset: .8 }, { transform: 'translateX(0)' }], o),
+    qs('.re-back .re-shade', F.ov).animate([{ opacity: 0, easing: 'ease-in' }, { opacity: .34, offset: .4 }, { opacity: .34 }], o),
+    qs('.re-front .re-shade', F.ov).animate([{ opacity: .3 }, { opacity: .3, offset: .4, easing: 'ease-out' }, { opacity: .02, offset: .8 }, { opacity: .07, offset: .89 }, { opacity: 0 }], o),
+    qs('.re-castshadow', F.ov).animate([{ opacity: .5, easing: 'ease-in' }, { opacity: .22, offset: .42 }, { opacity: 0, offset: .8 }, { opacity: .05, offset: .89 }, { opacity: 0 }], o),
   ];
   return anims[0].finished.then(() => { if (!reverse) { F.ov.remove(); root.classList.remove('re-folded'); } });
 }
 async function foldUp() {
-  if (RM.matches || turning) return;
+  if (RM.matches || turning || NARROW()) return;
   scrollTo({ top: 0, behavior: 'smooth' }); await new Promise(r => setTimeout(r, 380));
   const F = foldOverlay(); root.classList.add('re-folded'); D.body.append(F.ov);
   await unfold(F, true);
@@ -803,7 +812,6 @@ function controls() {
   c.innerHTML = `<button type="button" data-a="prev" aria-label="上一版">←</button>
 <label class="re-sel"><span class="sr">版面</span><select data-a="go"></select></label>
 <button type="button" data-a="next" aria-label="下一版">→</button>
-<button type="button" data-a="ink" aria-pressed="false" title="切换双色印刷 / 原图">原图</button>
 <button type="button" data-a="fold" title="把报纸折起来">折起</button>
 <button type="button" data-a="hide" aria-label="隐藏控制（H）" title="隐藏（H）">×</button>`;
   const sel = qs('select', c);
@@ -811,16 +819,13 @@ function controls() {
   c.addEventListener('click', e => {
     const a = e.target.closest('button')?.dataset.a;
     if (a === 'prev') turnTo(S.cur - 1); else if (a === 'next') turnTo(S.cur + 1);
-    else if (a === 'ink') setInk(!root.classList.contains('re-orig'));
     else if (a === 'fold') foldUp(); else if (a === 'hide') toggleCtl(false);
   });
   sel.addEventListener('change', () => turnTo(+sel.value));
   const hint = h('p', 're-ctl-hint', { 'aria-hidden': 'true', text: '按 H 显示控制' });
   D.body.append(c, hint); S.ctl = c; S.ctlHint = hint;
-  if (localStorage.getItem('re-ink') === 'orig') setInk(true);
   if (localStorage.getItem('re-ctl') === 'off') toggleCtl(false);
 }
-function setInk(orig) { root.classList.toggle('re-orig', orig); localStorage.setItem('re-ink', orig ? 'orig' : 'ink'); const b = S.ctl && qs('[data-a=ink]', S.ctl); if (b) { b.setAttribute('aria-pressed', orig); b.textContent = orig ? '双色' : '原图'; } }
 function toggleCtl(on) { on = on ?? root.classList.contains('re-ctl-off'); root.classList.toggle('re-ctl-off', !on); localStorage.setItem('re-ctl', on ? 'on' : 'off'); }
 function updateControls() { if (!S.ctl) return; qs('select', S.ctl).value = S.cur; qs('[data-a=prev]', S.ctl).disabled = S.cur === 0; qs('[data-a=next]', S.ctl).disabled = S.cur === S.pages.length - 1; }
 
@@ -858,7 +863,7 @@ function bindGlobal() {
   addEventListener('scroll', () => { if (!statPend) statPend = requestAnimationFrame(() => { statPend = 0; readStat(); }); }, { passive: true });
   addEventListener('beforeprint', () => S.pages.forEach(p => p.el.removeAttribute('hidden')));
   addEventListener('afterprint', () => showPage(S.cur));
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { qsa('figure.re-fig', S.sheet).forEach(f => { f._printed = 0; queuePrint(f); }); if (S.plateMoon) drawMoon(S.plateMoon, S.plateMoon._css, moonPhase(), 1); qsa('.re-moonfig', S.sheet).forEach(f => drawMoon(f._moon, parseFloat(f._moon.style.width), moonPhase(), 1)); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => requestAnimationFrame(() => { if (S.plateMoon) drawMoon(S.plateMoon, S.plateMoon._css, moonPhase()); qsa('.re-moonfig', S.sheet).forEach(f => drawMoon(f._moon, parseFloat(f._moon.style.width), moonPhase())); }));
 }
 function nearBottom(px = 140) { return innerHeight + scrollY >= S.sheet.getBoundingClientRect().bottom + scrollY - px; }
 
@@ -875,11 +880,11 @@ function readStat() {
 function tickStats() {
   const mp = moonPhase();
   setStat('moon', Math.round(mp.illum * 100) + '%' + (mp.waxing ? ' 盈' : ' 亏'));
-  setStat('inks', '2 · 黑 / 蓝');
+  setStat('figs', S.figN ? `${S.figN} 幅` : '无');
   const chars = S.chars;
   setStat('chars', chars > 10000 ? (chars / 10000).toFixed(1) + ' 万' : chars.toLocaleString('zh-CN'));
   readStat();
-  const pm = S.plateMoon; if (pm) { const css = Math.round(parseFloat(getComputedStyle(pm).width) || 80); pm._css = css; pm.style.height = css + 'px'; drawMoon(pm, css, mp, RM.matches ? 1 : 0); }
+  const pm = S.plateMoon; if (pm) { const css = Math.round(parseFloat(getComputedStyle(pm).width) || 80); pm._css = css; pm.style.height = css + 'px'; drawMoon(pm, css, mp); }
   const t = () => { const s = Math.floor((performance.now() - S.t0) / 1000); setStat('since', `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`); };
   t(); setInterval(t, 1000);
 }
