@@ -10,10 +10,11 @@
 .zbm-nav:hover .zbm-arrow{transform:translateX(-2px)}
 .zbm-nav:focus-visible{outline:2px solid #8a6d3b;outline-offset:2px}
 .zbm-nav.zbm-hide{transform:translateY(-140%);opacity:0;pointer-events:none}
-@media (prefers-color-scheme:dark){.zbm-nav{color:#ece8e1!important;background:rgba(28,27,25,.62);border-color:rgba(255,255,255,.16)}
-  .zbm-nav:hover{background:rgba(38,37,34,.85);border-color:rgba(255,255,255,.3)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .zbm-nav{color:#ece8e1!important;background:rgba(28,27,25,.62);border-color:rgba(255,255,255,.16)}
+  :root:not([data-theme=light]) .zbm-nav:hover{background:rgba(38,37,34,.85);border-color:rgba(255,255,255,.3)}}
 [data-theme=dark] .zbm-nav,.dark .zbm-nav{color:#ece8e1!important;background:rgba(28,27,25,.62);border-color:rgba(255,255,255,.16)}
 [data-theme=light] .zbm-nav{color:#2b2925!important;background:rgba(250,248,244,.72);border-color:rgba(40,36,30,.14)}
 @media (max-width:600px){.zbm-nav{top:10px;left:10px;font-size:12px;padding:.38em .8em .38em .65em}}
 @media print{.zbm-nav{display:none}}
 @media (prefers-reduced-motion:reduce){.zbm-nav,.zbm-nav .zbm-arrow{transition:none}}
+[data-theme=dark] .zbm-nav:hover{background:rgba(38,37,34,.85);border-color:rgba(255,255,255,.3)}

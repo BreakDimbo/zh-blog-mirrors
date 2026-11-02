@@ -21,8 +21,10 @@ def block(depth):
             f'<link rel="preload" href="{a}fonts/GeistSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>'
             f'<link rel="preload" href="{a}fonts/GeistMono-Variable.woff2" as="font" type="font/woff2" crossorigin>'
             f'<link rel="stylesheet" href="{a}reading-effect.css">'
-            '<script>(function(d){if(/[?&]re=off\\b/.test(location.search)||!("noModule" in d.createElement("script")))return;'
-            'var r=d.documentElement;r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script>'
+            # shared site theme (same key as the hub), applied before first paint; an explicit choice beats the OS
+            '<script>(function(d){var r=d.documentElement;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t)}catch(e){}'
+            'if(/[?&]re=off\\b/.test(location.search)||!("noModule" in d.createElement("script")))return;'
+            'r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script>'
             f'<script type="module" src="{a}reading-effect.js"></script>'
             '<!-- /re:head -->')
 def galleries():

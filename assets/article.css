@@ -6,7 +6,9 @@
 --measure:700px;--r:4px;--card-bg:var(--paper);--warn-bg:#f6eedc;--warn-rule:#e2cf9f;--on-acc:#fbf9f5;
 /* legacy aliases so page-specific component CSS keeps working */
 --fg:var(--ink);--muted:var(--mute);--border:var(--rule);--link:var(--acc);--accent:var(--acc);--code-bg:var(--soft);--card:var(--paper);--max:var(--measure)}
-@media (prefers-color-scheme:dark){:root{--bg:#151412;--ink:#ebe6de;--mute:#948e85;--rule:#33302b;--soft:#1e1d1a;--paper:#1b1a17;--acc:#c9a96e;--warn-bg:#2a2419;--warn-rule:#5a4a2c;--on-acc:#151412;--acc-soft:rgba(201,169,110,.4)}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#151412;--ink:#ebe6de;--mute:#948e85;--rule:#33302b;--soft:#1e1d1a;--paper:#1b1a17;--acc:#c9a96e;--warn-bg:#2a2419;--warn-rule:#5a4a2c;--on-acc:#151412;--acc-soft:rgba(201,169,110,.4)}}
+:root[data-theme=dark]{--bg:#151412;--ink:#ebe6de;--mute:#948e85;--rule:#33302b;--soft:#1e1d1a;--paper:#1b1a17;--acc:#c9a96e;--warn-bg:#2a2419;--warn-rule:#5a4a2c;--on-acc:#151412;--acc-soft:rgba(201,169,110,.4)}
+:root[data-theme=dark]{color-scheme:dark}:root[data-theme=light]{color-scheme:light}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body.za{margin:0;background:var(--bg);color:var(--ink);font:17px/1.85 var(--sans);-webkit-font-smoothing:antialiased;letter-spacing:.01em}
@@ -78,7 +80,8 @@ body.za{margin:0;background:var(--bg);color:var(--ink);font:17px/1.85 var(--sans
 /* images: one radius, one frame */
 .za-content img{border-radius:var(--r)!important}
 :where(.za-content) figure>img,:where(.za-content) figure>a>img,:where(.za-content) p>img{max-height:80vh;object-fit:contain}
-@media (prefers-color-scheme:dark){:where(.za-content) figure>img,:where(.za-content) figure>a>img,:where(.za-content) p>img{background:#e9e6e0}}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) :where(.za-content) figure>img,:root:not([data-theme=light]) :where(.za-content) figure>a>img,:root:not([data-theme=light]) :where(.za-content) p>img{background:#e9e6e0}}
+:root[data-theme=dark] :where(.za-content) figure>img,:root[data-theme=dark] :where(.za-content) figure>a>img,:root[data-theme=dark] :where(.za-content) p>img{background:#e9e6e0}
 /* buttons / CTA row */
 .za .cta{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
 .za .cta a{display:inline-block;padding:.5em 1.1em;border:1px solid var(--rule);border-radius:var(--r);font:500 13px/1.4 var(--sans);letter-spacing:.04em;color:var(--ink);background:none;text-decoration:none;transition:border-color .2s,color .2s,background .2s}

@@ -48,13 +48,24 @@ async function boot() {
   const hashPage = location.hash ? pageOf(safeTarget(location.hash)) : -1;
   S.cur = hashPage >= 0 ? hashPage : 0;
   showPage(S.cur);
-  layoutPage(S.cur);
+  const fold = hashPage < 0 && !RM.matches && !sessionStorage.getItem('re-opened:' + location.pathname);
+  // set the first screen now; the rest of the page is set in small slices so nothing blocks for long
+  const job = layoutPage(S.cur, { sliced: true });
   root.classList.add('re-ready');
   bindGlobal();
   tickStats();
-  if (hashPage >= 0) { const t = safeTarget(location.hash); t && t.scrollIntoView(); }
-  else if (!RM.matches && !NARROW() && !sessionStorage.getItem('re-opened:' + location.pathname)) await foldIntro();
+  job.done.then(() => idle(prelayoutNeighbours));
+  if (hashPage >= 0) { await job.done; const t = safeTarget(location.hash); t && t.scrollIntoView(); }
+  else if (fold) await foldIntro();
+  else requestAnimationFrame(() => developVisible(true));
 }
+const idle = fn => (window.requestIdleCallback ? requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 400));
+// yield to the browser between slices of work (input and frames get a chance to run)
+const yieldTask = () => new Promise(r => (window.scheduler && scheduler.yield ? scheduler.yield().then(r) : setTimeout(r, 0)));
+function prelayoutNeighbours() {
+  for (const j of [S.cur + 1, S.cur - 1]) { const p = S.pages[j]; if (p && !p.laid) { layoutPage(j, { sliced: true, syncPx: 0 }); return void p.pendingDone.then(() => idle(prelayoutNeighbours)); } }
+}
+const isDark = () => { const t = root.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; };
 
 function fontsReady() {
   const txt = (content.textContent + (headEl ? headEl.textContent : '')).replace(/\s+/g, '');
@@ -125,7 +136,6 @@ function build() {
   }
   const stage = h('div', 're-stage');
   const sheet = h('div', 're-sheet', { id: 're-sheet' });
-  sheet.append(h('div', 're-grain', { 'aria-hidden': 'true' }));
   stage.append(sheet);
   const meta = readMeta();
   S.meta = meta;
@@ -241,7 +251,7 @@ function prepFigure(f, solid) {
   // a gentle fade-in once the picture has actually arrived; already-cached images just appear
   if (img.complete && img.naturalWidth) wrap.classList.add('re-in', 're-now');
   else {
-    img.addEventListener('load', () => { wrap.classList.add('re-in'); if (f.closest('.re-band') && !f._ar) relayoutBandOf(f); }, { once: true });
+    img.addEventListener('load', () => { wrap.classList.add('re-in'); const bd = f.closest('.re-band')?._band, ob = bd && bd.obstacles.find(o => o.el === f); if (ob && ob._mar && Math.abs(ob._mar - img.naturalHeight / img.naturalWidth) > .004) dirtyBand(bd); }, { once: true });
     img.addEventListener('error', () => wrap.classList.add('re-in', 're-err'), { once: true });
   }
 }
@@ -302,6 +312,12 @@ function blocked(ob, y0, y1) {
     return c ? [Math.min(c[0], r[0]), Math.max(c[1], r[1])] : r;
   }
   if (y1 <= ob.y - ob.pad || y0 >= ob.y + ob.h + ob.pad) return null;
+  if (ob.shape === 'rows') { // a silhouette: per-row ink extents (every ROW px) read back from the plate
+    const R = ob.rows; if (!R) return null; let l = Infinity, r = -Infinity;
+    const a0 = Math.max(0, Math.floor((y0 - ob.pad - ob.y) / ROW)), a1 = Math.min(R.length - 1, Math.floor((y1 + ob.pad - ob.y) / ROW));
+    for (let k = a0; k <= a1; k++) { const sp = R[k]; if (sp) { if (sp[0] < l) l = sp[0]; if (sp[1] > r) r = sp[1]; } }
+    return l <= r ? [ob.x + l - ob.pad, ob.x + r + ob.pad] : null;
+  }
   if (ob.shape === 'circle') {
     const cy = ob.y + ob.h / 2, r = ob.h / 2 + ob.pad;
     const dy = cy < y0 ? y0 - cy : cy > y1 ? cy - y1 : 0;
@@ -416,6 +432,7 @@ function fitBand(band) {
   return Math.ceil(hi);
 }
 function renderBand(band, live) {
+  for (const blk of band.blocks) if (blk.kind === 'prose') blk.units.forEach(prepUnitFresh);
   // while a figure is being dragged keep the band height steady (no jumping page) unless it no longer fits
   const obBottom = band.obstacles.reduce((m, ob) => Math.max(m, ob.y + ob.h + (ob.cap ? ob.cap.h : 0)), 0);
   let H = live && band.H >= obBottom ? band.H : 0, res = H ? layBand(band, H, true) : null;
@@ -453,7 +470,7 @@ function renderBand(band, live) {
     d.u.el.prepend(dc);
   }
   drawRules(band, H);
-  band.el.style.height = H + 'px';
+  band.el.style.height = H + 'px'; band.el.classList.remove('re-pending'); band.estH = H;
   band.lines = n;
   // place figures
   for (const ob of band.obstacles) if (ob.el) { ob.el.style.left = ob.x + 'px'; ob.el.style.top = ob.y + 'px'; }
@@ -480,16 +497,45 @@ function drawRules(band, H) {
 
 /* ---------- page layout ---------- */
 function columnsFor(w) { return w >= 900 ? 3 : w >= 600 ? 2 : 1; }
-function layoutPage(i) {
-  const p = S.pages[i]; if (!p) return;
+function layoutPage(i, opt = {}) {
+  const p = S.pages[i]; if (!p) return { done: Promise.resolve() };
+  const gen = p.gen = (p.gen || 0) + 1;
+  // while planning, the article's own paragraphs stay out of layout (only the column width is read)
+  p.body.classList.add('re-planning');
   const bodyW = p.body.clientWidth;
   const cols = columnsFor(bodyW);
   p.cols = cols; p.w = bodyW; p.laid = true; p.moon = 0;
-  let lines = 0;
-  qsa('.re-run', p.body).forEach(runEl => { lines += layoutRun(runEl._run, bodyW, cols, p); });
-  p.lines = lines; S.linesSet = S.pages.reduce((a, q) => a + (q.lines || 0), 0);
-  setStat('lines', cols === 1 ? '流式 · 单栏' : `${S.linesSet.toLocaleString('zh-CN')} · ${cols} 栏`);
+  // 1) plan every run into bands (DOM moves only — no text measuring yet)
+  const all = [];
+  qsa('.re-run', p.body).forEach(runEl => { for (const bd of layoutRun(runEl._run, bodyW, cols, p)) all.push(bd); });
+  p.body.classList.remove('re-planning');
+  // 2) read every figure height in one go (one forced layout instead of one per band)
+  measureAll(all);
+  placeMosaics(p, all, cols, bodyW);
+  const finish = () => {
+    if (p.gen !== gen) return;
+    p.pending = null; p.lines = all.reduce((a, b) => a + (b.lines || 0), 0);
+    S.linesSet = S.pages.reduce((a, q) => a + (q.lines || 0), 0);
+    if (i === S.cur) setStat('lines', cols === 1 ? '流式 · 单栏' : `${S.linesSet.toLocaleString('zh-CN')} · ${cols} 栏`);
+  };
+  // 3) set type band by band: what is on (or near) the first screen right away, the rest in slices
+  const pd = p.pending = { all, k: 0, gen };
+  const syncPx = opt.sliced ? (opt.syncPx ?? innerHeight * 1.4) : Infinity;
+  let y = i === 0 ? 420 : 120;
+  while (pd.k < all.length && y < syncPx) { y += all[pd.k].estH || 0; renderBand(all[pd.k++]); }
+  if (pd.k >= all.length) { finish(); p.pendingDone = Promise.resolve(); return { done: p.pendingDone }; }
+  p.pendingDone = (async () => {
+    while (p.gen === gen && pd.k < all.length) {
+      await yieldTask();
+      const t0 = performance.now();
+      while (p.gen === gen && pd.k < all.length && performance.now() - t0 < 9) renderBand(all[pd.k++]);
+    }
+    finish();
+  })();
+  return { done: p.pendingDone };
 }
+// finish any bands still waiting (e.g. before a snapshot or a jump to an anchor)
+function flushPage(p) { const pd = p && p.pending; if (!pd) return; while (pd.k < pd.all.length) renderBand(pd.all[pd.k++]); }
 function layoutRun(run, W, cols, p) {
   const el = run.el;
   // tear down
@@ -500,13 +546,13 @@ function layoutRun(run, W, cols, p) {
     const story = el.closest('.re-story'), firstRun = el.parentElement && el === qs('.re-run', el.parentElement);
     const fb = run.blocks.find(b => b.kind === 'prose'), fu = fb && fb.units[0];
     if (firstRun && fu && fu.type === 'p' && fb === run.blocks[0] && story && (story === qs('.re-story', story.parentElement) || story.querySelector(':scope > h2.re-hl'))) fu.el.classList.add('re-dropflow');
-    return 0;
+    run.bands = [];
+    return [];
   }
   const gutter = 30, colW = (W - gutter * (cols - 1)) / cols;
   const capH = Math.max(320, Math.min(innerHeight * 0.82, 760));
   const bands = []; let band = null, est = 0;
-  const newBand = () => { band = { el: h('div', 're-band'), blocks: [], obstacles: [], cols, colW, gutter, W }; band.el._band = band; bands.push(band); est = 0; };
-  let leadDone = !el.closest('.re-leadstory') || el.previousElementSibling?.classList.contains('re-run');
+  const newBand = () => { band = { el: h('div', 're-band re-pending'), blocks: [], obstacles: [], cols, colW, gutter, W, est: 0, first: !bands.length }; band.el._band = band; bands.push(band); est = 0; };
   run.blocks.forEach((b, bi) => {
     if (b.kind === 'figure') {
       const next = run.blocks[bi + 1];
@@ -519,51 +565,251 @@ function layoutRun(run, W, cols, p) {
       const ob = { el: b.el, x: colW + gutter, y: 0, w: fw, h: 0, pad: 12, shape: 'rect' };
       if (b.pos && b.pos.W === W) { ob.x = b.pos.x; ob.y = b.pos.y; }
       band.obstacles.push(ob); b.ob = ob; ob.band = band;
-      est += 0;
+      band.est += fw * 0.6 * cols;
       return;
     }
     b.units.forEach(u => { u.dropcap = false; u.noIndent = false; });
     if (!band || (est > capH * cols * 0.9 && band.blocks.some(x => x.kind === 'prose'))) newBand();
     band.blocks.push(b); band.el.append(b.el);
-    b.units.forEach(u => { prepUnitFresh(u); est += estimate(u, colW); });
+    b.units.forEach(u => { const e = estimate(u, colW); est += e; band.est += e; });
   });
   // drop cap + no-indent on the first paragraph of each story's first run
   const firstRun = el.parentElement && el === qs('.re-run', el.parentElement);
+  run.first = firstRun;
   if (firstRun) {
     const fb = bands.find(bd => !bd.solid && bd.blocks.some(x => x.kind === 'prose'));
     const fu = fb && fb.blocks.find(x => x.kind === 'prose')?.units[0];
     const story = el.closest('.re-story');
     const firstOfPage = story && story === qs('.re-story', story.parentElement);
-    if (fu && fu.type === 'p') { fu.noIndent = true; if (firstOfPage || (story && story.querySelector(':scope > h2.re-hl'))) { fu.dropcap = true; prepUnitFresh(fu); } }
+    if (fu && fu.type === 'p') { fu.noIndent = true; if (firstOfPage || (story && story.querySelector(':scope > h2.re-hl'))) fu.dropcap = true; }
   }
   // the moon ornament in the lead story (page 1) — a circle the text flows around on both sides
   if (cols === 3 && firstRun && !p.moon) {
     const fb = bands.find(bd => !bd.solid && !bd.obstacles.length && bd.blocks.reduce((a, x) => a + (x.units ? x.units.reduce((q, u) => q + u.orig.textContent.length, 0) : 0), 0) > 900);
     if (fb && S.pages.indexOf(p) === 0) { addMoonOrnament(fb); p.moon = 1; }
   }
-  let lines = 0;
-  for (const bd of bands) { el.append(bd.el); if (!bd.solid) { measureObstacles(bd); lines += renderBand(bd); } }
+  const out = [];
+  for (const bd of bands) {
+    el.append(bd.el);
+    if (!bd.solid) { bd.estH = Math.round(bd.est / cols) + 18; bd.el.style.height = bd.estH + 'px'; bd.story = el.closest('.re-story'); bd.runFirst = firstRun; out.push(bd); }
+  }
   run.bands = bands;
-  return lines;
+  return out;
 }
 function prepUnitFresh(u) { if (!u.prep || u._dcState !== !!u.dropcap) { u.prep = null; prepUnit(u); u._dcState = !!u.dropcap; } }
-function estimate(u, colW) { const chars = u.el.textContent.length || u.orig.textContent.length; return Math.ceil(chars * u.T.size / colW + 0.5) * u.T.lh + u.T.gap; }
+function estimate(u, colW) { const chars = u.orig.textContent.length; return Math.ceil(chars * u.T.size / colW + 0.5) * u.T.lh + u.T.gap; }
 function restoreUnit(u) { u.el.replaceChildren(...u.orig.cloneNode(true).childNodes); }
+function figAR(ob) { const img = ob.el._img; return img && img.naturalWidth ? img.naturalHeight / img.naturalWidth : (img && +img.getAttribute('height') / +img.getAttribute('width')) || 0.6; }
+function measureAll(bands) {
+  const obs = [];
+  for (const bd of bands) for (const ob of bd.obstacles) if (ob.el && !ob.moon && !ob.mosaic) obs.push(ob);
+  for (const ob of obs) { const ar = ob._ar = figAR(ob); ob.el.style.width = ob.w + 'px'; const plate = qs('.re-plate-img', ob.el); if (plate) plate.style.height = Math.round(ob.w * ar) + 'px'; }
+  for (const ob of obs) if (ob._mw !== ob.w || ob._mar !== ob._ar) { ob._mh = ob.el.offsetHeight || Math.round(ob.w * ob._ar + 40); ob._mw = ob.w; ob._mar = ob._ar; }
+  for (const bd of bands) for (const ob of bd.obstacles) { if (ob._mh) ob.h = ob._mh; ob.x = clamp(ob.x, 0, bd.W - ob.w); ob.y = Math.max(0, ob.y); }
+}
 function measureObstacles(band) {
   for (const ob of band.obstacles) {
-    if (!ob.el) continue;
-    if (ob.moon) continue;
-    const img = ob.el._img; const ar = img && img.naturalWidth ? img.naturalHeight / img.naturalWidth : (img && +img.getAttribute('height') / +img.getAttribute('width')) || 0.6;
+    if (!ob.el || ob.moon || ob.mosaic) continue;
+    const ar = ob._ar = figAR(ob);
     const pw = ob.w; ob.el.style.width = pw + 'px';
-    if (img && img.naturalWidth) ob.el._ar = 1;
     const plate = qs('.re-plate-img', ob.el); if (plate) plate.style.height = Math.round(pw * ar) + 'px';
     // measure once per size; reading offsetHeight on every drag frame would force layout each time
     if (ob._mw !== pw || ob._mar !== ar) { ob._mh = ob.el.offsetHeight || Math.round(pw * ar + 40); ob._mw = pw; ob._mar = ar; }
     ob.h = ob._mh;
     ob.x = clamp(ob.x, 0, band.W - ob.w); ob.y = Math.max(0, ob.y);
   }
+  keepPlatesClear(band);
 }
+// a decorative plate never sits on a real picture: if a picture grew (late image load), push the plate down
+function keepPlatesClear(band) {
+  for (const m of band.obstacles) if (m.mosaic && !m.dragged) for (const o of band.obstacles) if (!o.mosaic && o.x < m.x + m.w + 20 && m.x < o.x + o.w + 20 && o.y < m.y + m.h + 40 && m.y < o.y + o.h + 40) m.y = o.y + o.h + 70;
+}
+// re-set bands whose figures turned out a different shape once loaded — batched, at most ~8ms a frame
+const _dirty = new Set(); let _dirtyRaf = 0;
+function dirtyBand(bd) { _dirty.add(bd); if (!_dirtyRaf) _dirtyRaf = requestAnimationFrame(flushDirty); }
+function flushDirty() { _dirtyRaf = 0; const t0 = performance.now(); for (const bd of _dirty) { _dirty.delete(bd); if (bd.el.isConnected && !bd.el.classList.contains('re-pending')) { measureObstacles(bd); renderBand(bd); } if (performance.now() - t0 > 8) break; } if (_dirty.size) _dirtyRaf = requestAnimationFrame(flushDirty); }
 function relayoutBandOf(el) { const bandEl = el.closest('.re-band'); const band = bandEl && bandEl._band; if (!band) return; measureObstacles(band); renderBand(band); }
+
+/* ---------- decorative mosaic plates (装饰插图) ----------
+ * Our own procedural pictures, printed in blue ink with an ordered dither, a blue-noise (R2) dither, a 45°
+ * halftone or a line engraving. They are decoration only (aria-hidden, captioned 装饰插图 with the method),
+ * live in their own canvases and never touch the article's original figures. On first view they "develop":
+ * the cell size steps from coarse to fine while the ink rises from blank, and the text wraps the
+ * silhouette as it grows. Double-click one to re-print it with the next method; drag it to re-flow. */
+const ROW = 4, CELLS = [20, 16, 13, 11, 9, 7, 6, 5, 4, 3, 2], DEV_MS = 1500;
+const MODES = [
+  { id: 'bayer', label: 'BAYER 8×8 有序抖动' }, { id: 'r2', label: 'R2 蓝噪声抖动' },
+  { id: 'tone', label: '45° 半调网点' }, { id: 'line', label: '线刻' },
+];
+const BAYER = (() => { let m = [[0]]; for (let n = 1; n < 8; n *= 2) { const z = []; for (let y = 0; y < n * 2; y++) { z.push([]); for (let x = 0; x < n * 2; x++) z[y].push(4 * m[y % n][x % n] + [0, 2, 3, 1][(y >= n) * 2 + (x >= n)]); } m = z; } return m; })();
+function strHash(t) { let x = 2166136261; for (let i = 0; i < t.length; i++) { x ^= t.charCodeAt(i); x = Math.imul(x, 16777619); } return x >>> 0; }
+function rng(seed) { let a = seed >>> 0 || 1; return () => { a ^= a << 13; a ^= a >>> 17; a ^= a << 5; return (a >>> 0) / 4294967296; }; }
+// scenes: tone(x, y) in unit square → ink 0..1, or -1 for "no paper here" (outside the silhouette)
+const SCENES = {
+  moonrise: { zh: '月出', ar: 1, make: r => { const cx = .5, cy = .46, R = .34, cl = [0, 1, 2].map(() => [r() * .8 + .1, .55 + r() * .3, .1 + r() * .12]);
+    return (x, y) => { const dx = (x - cx) / R, dy = (y - cy) / R, d2 = dx * dx + dy * dy; let v = -1;
+      if (d2 < 1) { const z = Math.sqrt(1 - d2), lit = clamp(dx * -.55 + dy * -.35 + z * .76, 0, 1); v = .16 + (1 - lit) * .62 + smooth(.45, .8, fbm(x * 7 + 2, y * 7)) * .3; }
+      for (const [a, b, w] of cl) { const q = ((x - a) / (w * 1.9)) ** 2 + ((y - b) / w) ** 2 + (fbm(x * 9, y * 9) - .5) * .5; if (q < 1) v = Math.max(v, (1 - q) * .55 + .05); }
+      return v > 1 ? 1 : v; }; } },
+  stars: { zh: '星野', ar: 1, make: r => { const st = []; for (let i = 0; i < 70; i++) st.push([r(), r(), r() ** 3 * .02 + .004]);
+    return (x, y) => { const dx = x - .5, dy = y - .5, d = Math.sqrt(dx * dx + dy * dy) * 2; if (d > 1) return -1;
+      const band = Math.exp(-(((y - .5) - (x - .5) * .55) ** 2) / .018) * (.25 + .5 * fbm(x * 6, y * 6)); let v = .06 + band * (1 - smooth(.75, 1, d));
+      for (const [a, b, s] of st) { const q = (x - a) ** 2 + (y - b) ** 2; if (q < s * s) v = 1; }
+      return d > .93 ? v * (1 - smooth(.93, 1, d)) - .001 : v; }; } },
+  orbit: { zh: '轨道', ar: .82, make: r => { const tilt = -.32 + r() * .2;
+    return (x, y) => { const cx = .5, cy = .5, R = .3, dx = (x - cx) / R, dy = (y - cy) / R, d2 = dx * dx + dy * dy;
+      const rx = (x - cx) * Math.cos(tilt) + (y - cy) * Math.sin(tilt), ry = -(x - cx) * Math.sin(tilt) + (y - cy) * Math.cos(tilt);
+      const e = (rx / .47) ** 2 + (ry / .11) ** 2, ring = e > .62 && e < 1 ? .5 + .4 * Math.sin(e * 40) * .5 : -1;
+      if (d2 < 1) { const z = Math.sqrt(1 - d2), lit = clamp(dx * -.6 + dy * -.4 + z * .7, 0, 1); const v = .1 + (1 - lit) * .85 + Math.sin((dy + dx * .2) * 14) * .06;
+        return ring >= 0 && ry > 0 ? Math.max(ring, .2) : clamp(v, 0, 1); }
+      return ring; }; } },
+  tide: { zh: '潮汐', ar: .78, make: r => { const ph = r() * 6;
+    return (x, y) => { const dx = x - .5, dy = y - .62; if (dy > .02 + .3 * Math.sqrt(Math.max(0, .25 - dx * dx))) return -1; if (dx * dx + (y - .5) ** 2 > .245) return -1;
+      const sun = (x - .5) ** 2 + (y - .42) ** 2 < .022 ? .92 : -1; if (y < .5) return sun > 0 ? sun : .05 + y * .1;
+      const w = Math.sin(x * 26 + ph + Math.sin(y * 30) * 1.4) * .5 + .5; return clamp(.25 + (y - .5) * 1.6 + w * .35 * (1 - (y - .5) * 2), 0, 1); }; } },
+  title: { zh: '题图构成', ar: 1, make: r => { const sh = []; for (let i = 0; i < 4; i++) sh.push({ x: .26 + r() * .48, y: .26 + r() * .48, R: .13 + r() * .17, t: .25 + r() * .7, q: (r() * 4) | 0 });
+    return (x, y) => { let v = -1;
+      for (const c of sh) { const dx = x - c.x, dy = y - c.y; if (dx * dx + dy * dy < c.R * c.R) { const quarter = c.q === 0 || (c.q === 1 ? dx > 0 : c.q === 2 ? dy < 0 : dx * dy < 0); if (quarter) v = v < 0 ? c.t : Math.min(1, Math.abs(v - c.t) + .15); } }
+      return v; }; } },
+};
+function mosaicFigure(scene, seed, mode, size) {
+  const sc = SCENES[scene], w = size, hgt = Math.round(size * sc.ar);
+  const fig = h('figure', 're-mosaic re-ob', { 'aria-hidden': 'true' });
+  const cv = h('canvas', 're-mosaic-cv'); cv.style.width = w + 'px'; cv.style.height = hgt + 'px';
+  const cap = h('figcaption', 're-mosaic-cap');
+  fig.append(cv, cap); fig.style.width = w + 'px';
+  const M = { fig, cv, cap, scene, seed, mode, w, h: hgt, e: 0, cell: CELLS[0], bias: -1, state: 'blank' };
+  fig._m = M;
+  setCaption(M);
+  return M;
+}
+function setCaption(M) { M.cap.textContent = `装饰插图 · ${SCENES[M.scene].zh} — ${MODES[M.mode].label}`; }
+// tone field, one sample per 2 css px (the finest cell), computed the first time the plate inks
+function ensureField(M) {
+  if (M.field) return; const sc = SCENES[M.scene], f = sc.make(rng(M.seed)), fw = Math.ceil(M.w / 2), fh = Math.ceil(M.h / 2), field = new Float32Array(fw * fh);
+  for (let j = 0; j < fh; j++) for (let i = 0; i < fw; i++) field[j * fw + i] = f((i * 2 + 1) / M.w, (j * 2 + 1) * sc.ar / M.h);
+  M.field = field; M.fw = fw; M.fh = fh;
+}
+function toneAt(M, x, y) { const i = clamp((x / 2) | 0, 0, M.fw - 1), j = clamp((y / 2) | 0, 0, M.fh - 1); return M.field[j * M.fw + i]; }
+// the silhouette the text wraps: per ROW-px row, the extent of cells that carry ink at this bias
+function silhouette(M) {
+  ensureField(M); const rows = [], th = .03 - M.bias;
+  for (let y = 0; y < M.h; y += ROW) { let l = Infinity, r = -Infinity;
+    for (let yy = y; yy < Math.min(M.h, y + ROW); yy += 2) for (let x = 0; x < M.w; x += 2) if (toneAt(M, x, yy) > th) { if (x < l) l = x; if (x > r) r = x + 2; }
+    rows.push(l <= r ? [l, r] : null); }
+  return rows;
+}
+function drawMosaic(M) {
+  const cv = M.cv, dpr = Math.min(2, devicePixelRatio || 1), W = Math.round(M.w * dpr), H = Math.round(M.h * dpr);
+  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+  const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, M.w, M.h);
+  if (M.bias <= -.999) return;
+  ensureField(M);
+  const cs = getComputedStyle(S.sheet || root); c.fillStyle = cs.getPropertyValue('--re-blue').trim() || '#2638b4';
+  const cell = M.cell, b = M.bias, mode = MODES[M.mode].id;
+  c.beginPath();
+  if (mode === 'tone') { // 45° screen: dots on a rotated lattice, area ∝ tone
+    const sp = cell * 1.25, R = M.w + M.h, k = Math.SQRT1_2;
+    for (let v = -R; v < R; v += sp) for (let u = -R; u < R; u += sp) {
+      const x = (u - v) * k + M.w / 2, y = (u + v) * k + M.h / 2; if (x < -sp || y < -sp || x > M.w + sp || y > M.h + sp) continue;
+      const t = toneAt(M, x, y); if (t < 0) continue; const tt = t + b; if (tt <= .02) continue;
+      const r = sp * .62 * Math.sqrt(Math.min(1, tt)); c.moveTo(x + r, y); c.arc(x, y, r, 0, 6.2832);
+    }
+  } else if (mode === 'line') { // engraving: horizontal rules that swell with the tone and ride a gentle wave
+    const sp = Math.max(2.5, cell * 1.3);
+    for (let y0 = sp / 2; y0 < M.h; y0 += sp) for (let x = 0; x < M.w; x += Math.max(1, cell / 2)) {
+      const y = y0 + Math.sin(x * .045 + y0 * .11) * sp * .18, t = toneAt(M, x, y); if (t < 0) continue; const tt = t + b; if (tt <= .03) continue;
+      const th = sp * .92 * Math.min(1, tt); c.rect(x, y - th / 2, Math.max(1, cell / 2) + .25, th);
+    }
+  } else {
+    for (let y = 0, cy = 0; y < M.h; y += cell, cy++) for (let x = 0, cx = 0; x < M.w; x += cell, cx++) {
+      const t = toneAt(M, x + cell / 2, y + cell / 2); if (t < 0) continue;
+      const thr = mode === 'bayer' ? (BAYER[cy & 7][cx & 7] + .5) / 64 : ((.7548776662 * cx + .56984029 * cy) % 1);
+      if (t + b > thr) c.rect(x, y, cell, cell);
+    }
+  }
+  c.fill();
+}
+const _mosaicIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting && e.intersectionRatio > .3 && !root.classList.contains('re-folded')) { _mosaicIO.unobserve(e.target); develop(e.target._m, 0); } }, { threshold: [0, .35] }) : null;
+// pick 1–3 roomy bands on the page (section openers first) and stand a plate in a column gutter
+function placeMosaics(p, bands, cols, W) {
+  const pi = S.pages.indexOf(p);
+  p.mosaics = p.mosaics || [];
+  if (cols === 1) { placeMosaicsFlow(p, pi); return; }
+  // a band can take a plate if it has text to spare below any picture already in it
+  const below = bd => bd.obstacles.reduce((m, o) => Math.max(m, o.y + o.h + 70), 0);
+  const roomy = bands.filter(bd => bd.blocks && bd.obstacles.length <= 1 && bd.blocks.filter(b => b.kind === 'prose').length >= 2 && bd.est - below(bd) > (cols === 3 ? 1150 : 800));
+  if (!roomy.length) return;
+  const want = Math.min(3, pi === 0 ? 2 : Math.max(1, Math.floor(roomy.length / 3) + 1));
+  const opener = roomy.filter(bd => bd.first && bd.runFirst), rest = roomy.filter(bd => !opener.includes(bd));
+  const pick = [];
+  for (const bd of opener.concat(rest)) { if (pick.length >= want) break; if (pick.some(q => Math.abs(bands.indexOf(q) - bands.indexOf(bd)) < 2)) continue; pick.push(bd); }
+  pick.sort((a, b) => bands.indexOf(a) - bands.indexOf(b));
+  const sceneList = pi === 0 ? ['title', 'stars', 'orbit', 'tide', 'moonrise'] : ['moonrise', 'stars', 'orbit', 'tide', 'title'];
+  const h0 = strHash(location.pathname + ':' + pi);
+  pick.forEach((bd, k) => {
+    let M = p.mosaics[k];
+    const size = Math.round(Math.min(cols === 3 ? 228 : 210, bd.colW * (cols === 3 ? .78 : .66)));
+    if (!M || M.w !== size) {
+      const scene = sceneList[(k + (pi === 0 ? 0 : h0)) % sceneList.length], old = M;
+      M = mosaicFigure(scene, h0 + k * 977, old ? old.mode : (h0 + k) % MODES.length, size);
+      if (old && old.state === 'done') { M.state = 'done'; M.e = 1; M.cell = 2; M.bias = 0; }
+      p.mosaics[k] = M;
+    }
+    const fo = bd.obstacles.find(o => !o.mosaic), fx = fo ? (fo.x + fo.w / 2) / W : -1;
+    const gut = cols === 3 ? (fo ? (fx < .5 ? 2 : 1) : ((k + h0) % 2 ? 1 : 2)) : 1;
+    const ob = { el: M.fig, mosaic: M, x: gut * (bd.colW + bd.gutter) - bd.gutter / 2 - M.w / 2, y: Math.round((fo ? below(bd) : 28) + ((h0 >> (k * 3)) % 5) * 22), w: M.w, h: M.h, pad: 11, shape: 'rows', band: bd };
+    ob.x = clamp(ob.x, 0, W - ob.w);
+    if (M.pos && M.pos.W === W) { ob.x = M.pos.x; ob.y = M.pos.y; ob.dragged = true; }
+    ob.cap = { w: Math.min(M.w + 60, bd.colW), h: 26 };
+    M.cap.style.cssText = `position:absolute;left:50%;top:${M.h + 6}px;width:${ob.cap.w}px;transform:translateX(-50%)`;
+    M.ob = ob; M.rows = null; ob.rows = M.state === 'done' ? (M.finalRows || (M.finalRows = silhouette(M))) : (M.bias <= -.999 ? null : silhouette(M));
+    bd.el.append(M.fig); bd.obstacles.push(ob); bd.blocks.push({ kind: 'orn', el: M.fig, ob });
+    bd.est += (M.w + 22) * (M.h + 32) / bd.colW;
+    requestAnimationFrame(() => { drawMosaic(M); if (M.state !== 'done' && M.state !== 'running' && _mosaicIO) _mosaicIO.observe(M.fig); });
+  });
+}
+function placeMosaicsFlow(p, pi) {
+  // one column (phones): float a plate beside an opening paragraph; CSS shape-outside wraps the text
+  const h0 = strHash(location.pathname + ':' + pi); let k = 0;
+  for (const st of qsa('.re-story', p.body)) {
+    if (k >= (pi === 0 ? 1 : 2)) break;
+    const run = qs('.re-run', st); const paras = run ? qsa(':scope > p', run) : []; if (paras.length < 3) continue;
+    let M = p.mosaics[k]; const size = Math.round(Math.min(150, innerWidth * .4));
+    if (!M || M.w !== size) { M = p.mosaics[k] = mosaicFigure(['moonrise', 'stars', 'orbit', 'title'][(h0 + k) % 4], h0 + k * 977, (h0 + k) % MODES.length, size); }
+    M.fig.style.cssText = `width:${size}px`; M.fig.classList.add('re-flowplate'); M.fig.classList.remove('re-ob'); M.cap.style.cssText = ''; M.ob = null;
+    paras[1].before(M.fig); k++;
+    requestAnimationFrame(() => { drawMosaic(M); if (M.state !== 'done' && M.state !== 'running' && _mosaicIO) _mosaicIO.observe(M.fig); });
+  }
+}
+// print-in: CELLS coarse → fine, ink rising from blank (bias −1 → 0, cubic ease), text re-flowing as it grows
+function develop(M, delay) {
+  if (!M || M.state === 'running' || M.state === 'done') return;
+  if (RM.matches) { M.state = 'done'; M.e = 1; M.cell = 2; M.bias = 0; drawMosaic(M); reflowMosaic(M, true); return; }
+  M.state = 'running'; const t0 = performance.now() + delay; let lastCell = 0, slow = false;
+  const step = now => {
+    if (!M.fig.isConnected) { M.state = 'blank'; return; }
+    const e = clamp((now - t0) / DEV_MS, 0, 1); M.e = e;
+    if (now < t0) return void requestAnimationFrame(step);
+    M.cell = CELLS[Math.min(CELLS.length - 1, Math.floor(e * CELLS.length))]; M.bias = -Math.pow(1 - e, 3);
+    drawMosaic(M);
+    if (M.cell !== lastCell) { lastCell = M.cell; if (!slow) { const a = performance.now(); reflowMosaic(M, false); slow = performance.now() - a > 22; } }
+    if (e < 1) requestAnimationFrame(step); else { M.state = 'done'; reflowMosaic(M, true); }
+  };
+  requestAnimationFrame(step);
+}
+function reflowMosaic(M, final) {
+  const ob = M.ob; if (!ob || !ob.band || !ob.band.el.isConnected) return;
+  ob.rows = final ? (M.finalRows || (M.finalRows = silhouette(M))) : silhouette(M);
+  renderBand(ob.band, !final);
+}
+// plates on screen print in, a little staggered (after the sheet opens, or on load when it is already open)
+function developVisible(stagger) {
+  const p = S.pages[S.cur]; if (!p || !p.mosaics) return; let i = 0;
+  for (const M of p.mosaics) { if (!M || !M.fig.isConnected || M.state === 'done' || M.state === 'running') continue;
+    const r = M.fig.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) { _mosaicIO && _mosaicIO.unobserve(M.fig); develop(M, stagger ? 240 + 210 * i++ : 0); } }
+}
+function redrawMosaics() { for (const p of S.pages) for (const M of p.mosaics || []) if (M && M.state === 'done') drawMosaic(M); }
 
 /* ---------- moon ---------- */
 function moonPhase(date = new Date()) {
@@ -589,7 +835,9 @@ function addMoonOrnament(band) {
   band.blocks.push({ kind: 'orn', el: fig, ob });
   requestAnimationFrame(() => drawMoon(cv, size, mp));
 }
-function hash2(x, y) { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); }
+// lattice noise from a fixed table (fast; the same values on every load)
+const _HT = (() => { const t = new Float32Array(65536); let a = 0x9e3779b9; for (let i = 0; i < t.length; i++) { a ^= a << 13; a ^= a >>> 17; a ^= a << 5; t[i] = (a >>> 0) / 4294967296; } return t; })();
+function hash2(x, y) { return _HT[(x & 255) | ((y & 255) << 8)]; }
 function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
   return (hash2(xi, yi) * (1 - u) + hash2(xi + 1, yi) * u) * (1 - v) + (hash2(xi, yi + 1) * (1 - u) + hash2(xi + 1, yi + 1) * u) * v; }
 function fbm(x, y) { let a = 0, f = 1, amp = .55; for (let o = 0; o < 4; o++) { a += amp * vnoise(x * f, y * f); f *= 2.03; amp *= .5; } return a; }
@@ -598,9 +846,12 @@ function cssRGB(v) { const c = ctx2d(); c.fillStyle = '#000'; c.fillStyle = v; c
 // A clean, continuous-tone moon: a lit sphere (Lambert, soft terminator, faint maria, gentle limb
 // darkening) for tonight's phase. No dithering. Light edition: shadow in deep ink-blue, lit side pale;
 // night edition: lit side warm paper-white, shadow barely above the paper with a little earthshine.
+const _moonCache = new Map();
 function drawMoon(cv, css, mp) {
   const dpr = Math.min(2, devicePixelRatio || 1), n = Math.round(css * dpr); if (!n) return; cv.width = cv.height = n;
-  const cs = getComputedStyle(S.sheet || root), dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const key = n + '/' + isDark() + '/' + mp.ph.toFixed(3), hit = _moonCache.get(key);
+  if (hit) { cv.getContext('2d').putImageData(hit, 0, 0); return; }
+  const cs = getComputedStyle(S.sheet || root), dark = isDark();
   const blue = cssRGB(cs.getPropertyValue('--re-blue').trim() || '#2434cc'), paper = cssRGB(cs.getPropertyValue('--re-paper').trim() || '#f1eee6');
   const litC = dark ? [236, 231, 219] : [paper[0] * .93 + blue[0] * .07, paper[1] * .93 + blue[1] * .07, paper[2] * .93 + blue[2] * .07];
   const mariaC = dark ? [176, 172, 165] : [blue[0] * .3 + paper[0] * .7, blue[1] * .3 + paper[1] * .7, blue[2] * .3 + paper[2] * .7];
@@ -616,7 +867,7 @@ function drawMoon(cv, css, mp) {
     const o = (j * n + i) * 4; d[o] = k(o, 0); d[o + 1] = k(o, 1); d[o + 2] = k(o, 2);
     d[o + 3] = 255 * clamp((1 - Math.sqrt(r2)) * n / 2 + .5, 0, 1); // antialiased rim
   }
-  c.putImageData(id, 0, 0);
+  c.putImageData(id, 0, 0); _moonCache.set(key, id);
 }
 
 /* ---------- dragging figures (live reflow) ---------- */
@@ -633,14 +884,14 @@ function bindDrag() {
     if (!drag || e.pointerId !== drag.id) return;
     const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
     if (!drag.moved && Math.hypot(dx, dy) < 5) return;
-    if (!drag.moved) { drag.moved = true; drag.f.classList.add('re-dragging'); root.classList.add('re-grabbing'); }
+    if (!drag.moved) { drag.moved = true; drag.f.classList.add('re-dragging'); drag.band.el.classList.add('re-live'); root.classList.add('re-grabbing'); }
     drag.ob.x = clamp(drag.ox + dx, 0, drag.band.W - drag.ob.w);
     drag.ob.y = clamp(drag.oy + dy, 0, Math.max(0, parseFloat(drag.band.el.style.height) - drag.ob.h * 0.35));
     if (!pend) pend = requestAnimationFrame(() => { pend = 0; if (drag) { renderBand(drag.band, true); remember(drag); } });
   });
   const end = e => {
     if (!drag || e.pointerId !== drag.id) return;
-    const d = drag; drag = null; root.classList.remove('re-grabbing'); d.f.classList.remove('re-dragging');
+    const d = drag; drag = null; root.classList.remove('re-grabbing'); d.f.classList.remove('re-dragging'); d.band.el.classList.remove('re-live');
     if (!d.moved && !d.ob.moon) openLightbox(d.f);
     else { renderBand(d.band); remember(d); }
   };
@@ -655,7 +906,7 @@ function bindDrag() {
     renderBand(band, true); remember({ f, ob, band });
   });
 }
-function remember(d) { const blk = d.band.blocks.find(b => b.el === d.f); if (blk) blk.pos = { x: d.ob.x, y: d.ob.y, W: d.band.W }; }
+function remember(d) { if (d.ob.mosaic) { d.ob.dragged = true; d.ob.mosaic.pos = { x: d.ob.x, y: d.ob.y, W: d.band.W }; return; } const blk = d.band.blocks.find(b => b.el === d.f); if (blk) blk.pos = { x: d.ob.x, y: d.ob.y, W: d.band.W }; }
 
 /* ---------- lightbox ---------- */
 let lb;
@@ -693,7 +944,7 @@ async function turnTo(i, opt = {}) {
   let overlay = null;
   if (animate) overlay = snapshotOverlay();
   showPage(i);
-  if (!S.pages[i].laid || S.pages[i].w !== S.pages[i].body.clientWidth) layoutPage(i);
+  if (!S.pages[i].laid || S.pages[i].w !== S.pages[i].body.clientWidth) layoutPage(i, { sliced: true });
   const top = S.sheet.getBoundingClientRect().top + scrollY - 12;
   if (!opt.keepScroll) scrollTo({ top: Math.max(0, top), behavior: 'instant' });
   if (overlay) await rollAway(overlay, fwd);
@@ -701,17 +952,56 @@ async function turnTo(i, opt = {}) {
   turning = false;
   if (opt.focus !== false) { const p = S.pages[i].el; p.tabIndex = -1; p.focus({ preventScroll: true }); }
 }
+// A lightweight copy of what is on screen of the current page (sheet coordinates y0..y1): bands, boxes and
+// lines outside that window are left out, so a snapshot of a long page costs about one screen of DOM.
+function copyCanvases(src, dst) { const a = qsa('canvas', src), b = qsa('canvas', dst); b.forEach((c, k) => { const s = a[k]; if (s && s.width) { c.width = s.width; c.height = s.height; c.getContext('2d').drawImage(s, 0, 0); } }); }
+// clone just the part of the current page inside a sheet-space rect: whole subtrees outside it are dropped
+// (walks the live page once, reading rects only where a box straddles the edge), so a fold or turn
+// composites a few hundred nodes rather than the whole article
+function sheetSnapshot(y0, y1, x0 = -1e9, x1 = 1e9) {
+  const pg = S.pages[S.cur].el, r = S.sheet.getBoundingClientRect(), M = 40;
+  const ax = r.left + x0 - M, bx = r.left + x1 + M, ay = r.top + y0 - M, by = r.top + y1 + M;
+  // read only: no attribute marks on the live page, so several snapshots in a row cost one layout
+  const cut = [], path = [];
+  const walk = (el, d) => {
+    let k = 0;
+    for (const ch of el.children) {
+      path[d] = k++;
+      const b = ch.getBoundingClientRect();
+      if (!b.width && !b.height) { if (d < 14 && ch.children.length) walk(ch, d + 1); continue; }
+      if (b.bottom < ay || b.top > by || b.right < ax || b.left > bx) { if (!/^inline/.test(getComputedStyle(ch).display)) cut.push([path.slice(0, d + 1), b.width, b.height]); continue; }
+      if (b.top >= ay && b.bottom <= by && b.left >= ax && b.right <= bx) continue;
+      if (d < 14 && ch.children.length) walk(ch, d + 1);
+    }
+  };
+  walk(pg, 0);
+  const media = qsa('video, iframe', pg);
+  const c = pg.cloneNode(true);
+  copyCanvases(pg, c);
+  const cmedia = qsa('video, iframe', c);
+  const at = pt => { let e = c; for (const k of pt) { e = e.children[k]; if (!e) return null; } return e; };
+  // a box outside the window keeps its size (so nothing around it re-flows) but loses its contents
+  cut.map(([pt, w, hh]) => [at(pt), w, hh]).forEach(([e, w, hh]) => { if (!e) return; if (!/^(IMG|SVG|CANVAS|VIDEO|IFRAME|svg)$/.test(e.tagName)) e.replaceChildren();
+    e.style.cssText += `;box-sizing:border-box;width:${w}px;height:${hh}px;min-height:0;max-height:none;min-width:0;max-width:none;flex:none;visibility:hidden;overflow:hidden;padding:0;border-color:transparent`; });
+  c.removeAttribute('hidden'); c.removeAttribute('id'); qsa('[id]', c).forEach(e => e.removeAttribute('id'));
+  // moving pictures become a still of their current frame (a cloned <video> would start blank)
+  cmedia.forEach((e, k) => { if (!e.isConnected && !c.contains(e)) return; const o = media[k], w = o.offsetWidth, hh = o.offsetHeight;
+    const cv = h('canvas', 're-clone-media'); cv.className = o.className; cv.style.cssText = o.style.cssText + `;width:${w}px;height:${hh}px;display:block`;
+    if (o.tagName === 'VIDEO' && o.readyState >= 2) { cv.width = Math.min(800, w); cv.height = Math.round(cv.width * hh / Math.max(1, w)); try { cv.getContext('2d').drawImage(o, 0, 0, cv.width, cv.height); } catch (_) {} }
+    e.replaceWith(cv); });
+  const wrap = h('div', 're-sheet re-clone'); wrap.append(c);
+  wrap.style.cssText = `position:absolute;left:0;top:0;width:${r.width}px;margin:0;box-sizing:border-box;max-width:none`;
+  return { el: wrap, r };
+}
+function cloneSnap(sn) { const c = sn.el.cloneNode(true); copyCanvases(sn.el, c); return c; }
 function snapshotOverlay() {
   const r = S.sheet.getBoundingClientRect();
   const vx = Math.max(0, r.left), vy = Math.max(0, r.top), vw = Math.min(innerWidth, r.right) - vx, vh = Math.min(innerHeight, r.bottom) - vy;
   const ov = h('div', 're-turn', { 'aria-hidden': 'true' });
   ov.style.cssText = `left:${vx}px;top:${vy}px;width:${vw}px;height:${vh}px`;
   const paper = h('div', 're-turn-paper');
-  const clone = S.sheet.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('re-clone');
-  qsa('[id]', clone).forEach(e => e.removeAttribute('id'));
-  const srcC = qsa('canvas', S.sheet), dstC = qsa('canvas', clone);
-  dstC.forEach((c, k) => { const s = srcC[k]; if (s && s.width) { c.width = s.width; c.height = s.height; c.getContext('2d').drawImage(s, 0, 0); } });
-  clone.style.cssText = `position:absolute;left:${r.left - vx}px;top:${r.top - vy}px;width:${r.width}px;margin:0`;
+  const sn = sheetSnapshot(vy - r.top, vy - r.top + vh), clone = sn.el;
+  clone.style.left = (r.left - vx) + 'px'; clone.style.top = (r.top - vy) + 'px';
   paper.append(clone, h('div', 're-lift')); ov.append(h('div', 're-cast'), paper, h('div', 're-roll'));
   D.body.append(ov);
   return ov;
@@ -736,74 +1026,165 @@ function rollAway(ov, fwd) {
   return a1.finished.then(() => ov.remove(), () => ov.remove());
 }
 
-/* ---------- fold / unfold ---------- */
-function foldOverlay() {
+/* ---------- fold / unfold: the sheet arrives folded in quarters ----------
+ * The first screen of the sheet (W × Hs) is folded twice: the bottom half up behind the top, then the right
+ * half back behind the left. So the folded paper shows the FRONT of its top-left quarter (the masthead) and
+ * nothing is ever seen from behind. Opening reverses that, one crease at a time: the right half swings out
+ * from behind (θ: π → 0), then the bottom half swings down from behind (φ: π → 0). Folding up goes φ first,
+ * then θ. Both angles are damped springs (k 46, ζ .94), driven by click / Enter, a drag (sideways for the
+ * first step, down for the second) or the wheel; shading follows each panel's angle to the light, and the
+ * creases stay faintly on the sheet afterwards. Everything is transforms + opacity on a few layers. */
+const PI = Math.PI, LIGHT = (() => { const v = [-.3, -.55, 1], n = Math.hypot(...v); return v.map(x => x / n); })();
+function foldOverlay(open) {
   const r = S.sheet.getBoundingClientRect();
-  const vh = Math.min(r.height, innerHeight - Math.max(0, r.top) - 24), W = r.width, half = W / 2;
-  const ov = h('div', 're-fold');
-  ov.style.cssText = `left:${r.left}px;top:${Math.max(0, r.top)}px;width:${W}px;height:${vh}px`;
-  const mk = () => { const c = S.sheet.cloneNode(true); c.removeAttribute('id'); c.classList.add('re-clone'); qsa('[id]', c).forEach(e => e.removeAttribute('id'));
-    const sc = qsa('canvas', S.sheet), dc = qsa('canvas', c); dc.forEach((cv, k) => { const s = sc[k]; if (s && s.width) { cv.width = s.width; cv.height = s.height; cv.getContext('2d').drawImage(s, 0, 0); } });
-    c.style.cssText = `position:absolute;left:0;top:${Math.min(0, r.top)}px;width:${W}px;margin:0`; return c; };
-  const left = h('div', 're-fold-left'); left.append(mk());
-  const flap = h('div', 're-fold-flap');
-  const back = h('div', 're-face re-back'); const show = mk(); show.classList.add('re-showthrough'); show.style.transformOrigin = `${half}px 0`; show.style.transform = 'scaleX(-1)'; back.append(show, h('div', 're-shade'));
-  const front = h('div', 're-face re-front'); const fr = mk(); fr.style.left = -half + 'px'; front.append(fr, h('div', 're-shade'));
-  flap.append(back, front);
-  left.append(h('div', 're-castshadow'));
-  ov.append(left, flap);
-  return { ov, W, half, vh };
+  const W = Math.round(r.width), Hs = Math.round(Math.max(240, Math.min(r.height, innerHeight - Math.max(0, r.top) - 18))), hw = W / 2, hh = Hs / 2;
+  const ov = h('div', 're-fold', { 'aria-hidden': 'true' });
+  ov.style.cssText = `left:${r.left}px;top:${Math.max(0, r.top)}px;width:${W}px;height:${Hs}px`;
+  const shadow = h('div', 're-fshadow'); shadow.style.cssText = `width:${W}px;height:${Hs}px`;
+  const stage = h('div', 're-fstage'); stage.style.cssText = `width:${W}px;height:${Hs}px`;
+  // a quarter panel: front (a window onto the snapshot), a plain back, angle shade and crease marks
+  const quarter = (qx, qy, cls) => {
+    const q = h('div', 're-q ' + cls); q.style.cssText = `width:${hw}px;height:${hh}px`;
+    const f = h('div', 're-qf'); const c = sheetSnapshot(qy, qy + hh, qx, qx + hw).el; c.style.left = -qx + 'px'; c.style.top = -qy + 'px'; f.append(c);
+    const sh = h('div', 're-qs'), cr = h('div', 're-qc');
+    f.append(sh, cr); q.append(f, h('div', 're-qb'));
+    q._shade = sh; q._crease = cr; return q;
+  };
+  const TL = quarter(0, 0, 'tl'), TR = quarter(hw, 0, 'tr'), BL = quarter(0, hh, 'bl'), BR = quarter(hw, hh, 'br');
+  const pBL = h('div', 're-piv re-pv-b'); pBL.style.cssText = `left:0;top:${hh}px;width:${hw}px;height:${hh}px`; pBL.append(BL);
+  const pR = h('div', 're-piv re-pv-r'); pR.style.cssText = `left:${hw}px;top:0;width:${hw}px;height:${Hs}px`;
+  const pBR = h('div', 're-piv re-pv-b'); pBR.style.cssText = `left:0;top:${hh}px;width:${hw}px;height:${hh}px`; pBR.append(BR);
+  pR.append(TR, pBR);
+  stage.append(TL, pBL, pR);
+  ov.append(shadow, stage);
+  const F = { ov, stage, shadow, TL, TR, BL, BR, pBL, pR, pBR, W, Hs, hw, hh, r,
+    th: open ? 0 : PI, ph: open ? 0 : PI, vth: 0, vph: 0, u: open ? 2 : 0, lx: 0, ly: 0, tlx: 0, tly: 0, lift: 0, tlift: 0, drag: null };
+  renderFold(F);
+  return F;
 }
-function foldIntro() {
+// shading: Lambert against an upper-left light, relative to a flat sheet; plus a valley along each crease
+function litOf(n) { return Math.max(0, n[0] * LIGHT[0] + n[1] * LIGHT[1] + n[2] * LIGHT[2]) / LIGHT[2]; }
+function renderFold(F) {
+  const { th, ph, hw, hh } = F;
+  const ox = (hw / 2) * (th / PI), oy = (hh / 2) * (ph / PI) * .9;
+  const foldedness = (th + ph) / (2 * PI);
+  F.stage.style.transform = `translate3d(${ox.toFixed(2)}px,${oy.toFixed(2)}px,0) translateZ(${F.lift.toFixed(2)}px) rotateX(${(F.ly * foldedness).toFixed(3)}deg) rotateY(${(F.lx * foldedness).toFixed(3)}deg)`;
+  F.pR.style.transform = `translateZ(${(-3 * th / PI).toFixed(3)}px) rotateY(${th.toFixed(4)}rad)`;
+  const b = `translateZ(${(-1 * ph / PI).toFixed(3)}px) rotateX(${(-ph).toFixed(4)}rad)`;
+  F.pBL.style.transform = b; F.pBR.style.transform = b;
+  const st = Math.sin(th), ct = Math.cos(th), sp = Math.sin(ph), cp = Math.cos(ph);
+  const nTR = [st, 0, ct], nBL = [0, sp, cp], nBR = [cp * st, sp, cp * ct];
+  const dark = isDark() ? .75 : 1;
+  const shade = n => (clamp(1 - litOf(n), 0, 1) * .55 * dark).toFixed(3);
+  F.TL._shade.style.opacity = (F.lift > .5 ? .02 : 0); F.TR._shade.style.opacity = shade(nTR); F.BL._shade.style.opacity = shade(nBL); F.BR._shade.style.opacity = shade(nBR);
+  // crease valleys: strong while a crease is bent, a faint residue once flat
+  const cv = .3 + .7 * Math.sin(Math.min(th, PI - .001) / 2), chz = .3 + .7 * Math.sin(Math.min(ph, PI - .001) / 2);
+  for (const q of [F.TL, F.TR, F.BL, F.BR]) { q._crease.style.setProperty('--cv', cv.toFixed(3)); q._crease.style.setProperty('--ch', chz.toFixed(3)); }
+  // the paper's shadow on the desk grows with what is open
+  const ex = hw + hw * Math.max(0, ct), ey = hh + hh * Math.max(0, cp);
+  F.shadow.style.transform = `translate3d(${ox.toFixed(1)}px,${(oy + 4 + F.lift * .6).toFixed(1)}px,0) scale(${(ex / F.W).toFixed(4)},${(ey / F.Hs).toFixed(4)})`;
+  F.shadow.style.opacity = (.75 + F.lift * .02).toFixed(3);
+}
+function spring(x, v, target, k, dt) { const c = 2 * .94 * Math.sqrt(k); const a = -k * (x - target) - c * v; v += a * dt; x += v * dt; return [x, v]; }
+function foldTargets(F) {
+  let thT = PI * (1 - clamp(F.u, 0, 1)), phT = PI * (1 - clamp(F.u - 1, 0, 1));
+  if (thT > F.th + 1e-3 && F.ph < .82 * PI) thT = F.th;  // folding up: the bottom half goes first
+  if (phT < F.ph - 1e-3 && F.th > .2 * PI) phT = F.ph;   // opening: the right half first
+  return [thT, phT];
+}
+function runFold(F) {
+  if (F.running) return; F.running = true; let last = performance.now();
+  const tick = now => {
+    if (F.dead) return;
+    let dt = Math.min(.05, (now - last) / 1000); last = now;
+    const k = F.drag ? 170 : 46, steps = 4, h2 = dt / steps;
+    for (let s = 0; s < steps; s++) {
+      const [thT, phT] = foldTargets(F);
+      [F.th, F.vth] = spring(F.th, F.vth, thT, k, h2); [F.ph, F.vph] = spring(F.ph, F.vph, phT, k, h2);
+      [F.lx, F.tlxv] = spring(F.lx, F.tlxv || 0, F.tlx, 60, h2); [F.ly, F.tlyv] = spring(F.ly, F.tlyv || 0, F.tly, 60, h2);
+      [F.lift, F.liftv] = spring(F.lift, F.liftv || 0, F.tlift, 120, h2);
+    }
+    F.th = clamp(F.th, 0, PI); F.ph = clamp(F.ph, 0, PI);
+    renderFold(F);
+    const [thT, phT] = foldTargets(F);
+    const still = Math.abs(F.th - thT) < .002 && Math.abs(F.ph - phT) < .002 && Math.abs(F.vth) + Math.abs(F.vph) < .01 && Math.abs(F.lx - F.tlx) < .02 && Math.abs(F.ly - F.tly) < .02 && Math.abs(F.lift - F.tlift) < .05 && !F.drag;
+    if (still) { F.th = thT; F.ph = phT; renderFold(F); F.running = false; F.onRest && F.onRest(); return; }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+function setHint(F) {
+  if (!F.hint) return; const st = F.u < .5 ? 0 : F.u < 1.5 ? 1 : 2;
+  F.hint.textContent = st === 0 ? '轻点、滚动或向右拖动 —— 打开右半版 · 按 H 显示控制' : st === 1 ? '再轻点或向下拖动 —— 展开下半版' : '';
+  F.btn && F.btn.setAttribute('aria-label', st === 0 ? '展开报纸：先打开右半版（回车、空格、点按或滚动）' : '继续展开下半版（回车、空格、点按或滚动）');
+}
+// interaction while the sheet is (partly) folded; resolves once it lies fully open
+function foldInteract(F) {
   return new Promise(resolve => {
-    scrollTo({ top: 0, behavior: 'instant' });
-    const F = foldOverlay();
-    const btn = h('button', 're-unfold', { type: 'button', 'aria-label': '展开这份报纸（回车、空格、点按或滚动）' });
-    btn.style.cssText = `left:${F.ov.style.left};top:${F.ov.style.top};width:${F.half}px;height:${F.vh}px`;
-    const hint = h('p', 're-hint', { 'aria-hidden': 'true', text: '轻点展开 · 按 H 显示/隐藏控制' });
     root.classList.add('re-folded');
-    F.ov.style.transform = `translateX(${F.half / 2}px)`; btn.style.transform = `translateX(${F.half / 2}px)`;
-    D.body.append(F.ov, btn, hint);
+    const btn = F.btn = h('button', 're-unfold', { type: 'button' });
+    btn.style.cssText = `left:${F.ov.style.left};top:${F.ov.style.top};width:${F.W}px;height:${F.Hs}px`;
+    const hint = F.hint = h('p', 're-hint', { 'aria-hidden': 'true' });
+    D.body.append(F.ov, btn, hint); setHint(F);
     btn.focus({ preventScroll: true });
-    let done = false;
-    const go = () => {
-      if (done) return; done = true;
-      ['wheel', 'touchmove', 'keydown'].forEach(t => removeEventListener(t, onAny, true));
-      btn.remove(); hint.classList.add('out');
-      sessionStorage.setItem('re-opened:' + location.pathname, '1');
-      unfold(F).then(() => { hint.remove(); resolve(); });
+    const step = d => { F.u = clamp(Math.round(F.u) + d, 0, 2); setHint(F); runFold(F); };
+    let wheelT = 0;
+    const onWheel = e => { if (e.cancelable) e.preventDefault(); F.u = clamp(F.u + e.deltaY * .0032, 0, 2); runFold(F);
+      clearTimeout(wheelT); wheelT = setTimeout(() => { const fl = Math.floor(F.u), fr = F.u - fl; F.u = fr > .3 ? Math.min(2, fl + 1) : fl; setHint(F); runFold(F); }, 200); };
+    const onKey = e => { if (/^(Tab|Shift|Alt|Control|Meta|h|H)$/.test(e.key)) return;
+      if (/^(Enter| |ArrowDown|ArrowRight|PageDown)$/.test(e.key)) { e.preventDefault(); step(1); }
+      else if (/^(ArrowUp|ArrowLeft|PageUp)$/.test(e.key)) { e.preventDefault(); step(-1); } };
+    const onDown = e => { if (e.button !== 0 || e.target.closest('.zbm-nav, .re-ctl')) return; F.drag = { x: e.clientX, y: e.clientY, u: F.u, moved: false, id: e.pointerId }; F.tlift = 10; runFold(F); };
+    const onMove = e => {
+      if (!F.drag) { // lean towards the pointer while folded
+        F.tlx = (e.clientX / innerWidth - .5) * 9; F.tly = -(e.clientY / innerHeight - .5) * 7; runFold(F); return; }
+      if (e.pointerId !== F.drag.id) return;
+      const dx = e.clientX - F.drag.x, dy = e.clientY - F.drag.y; if (!F.drag.moved && Math.hypot(dx, dy) > 6) F.drag.moved = true;
+      if (!F.drag.moved) return;
+      const u0 = F.drag.u;
+      if (u0 < 1) { const a = clamp(u0 + dx / F.hw, 0, 1); F.u = a >= 1 ? clamp(1 + Math.max(0, dy) / F.hh, 1, 2) : a; }
+      else F.u = clamp(u0 + dy / F.hh, 1, 2);
+      runFold(F);
     };
-    const onAny = e => { if (e.type === 'keydown' && /^(Tab|Shift|Alt|Control|Meta|h|H)$/.test(e.key)) return; if (e.cancelable) e.preventDefault(); go(); };
-    btn.addEventListener('click', go);
-    ['wheel', 'touchmove', 'keydown'].forEach(t => addEventListener(t, onAny, { capture: true, passive: false }));
+    const onUp = e => { if (!F.drag || e.pointerId !== F.drag.id) return; const d = F.drag; F.drag = null; F.tlift = 0;
+      if (!d.moved) step(1); else { const fl = Math.floor(F.u), fr = F.u - fl; F.u = fr > .2 ? Math.min(2, fl + 1) : fl; setHint(F); }
+      runFold(F); };
+    const opts = { capture: true, passive: false };
+    addEventListener('wheel', onWheel, opts); addEventListener('keydown', onKey, true);
+    addEventListener('pointerdown', onDown, true); addEventListener('pointermove', onMove, true); addEventListener('pointerup', onUp, true); addEventListener('pointercancel', onUp, true);
+    const touch = e => { if (e.cancelable) e.preventDefault(); }; addEventListener('touchmove', touch, opts);
+    const hold = () => { if (scrollY) scrollTo(0, 0); }; addEventListener('scroll', hold, { passive: true });
+    btn.addEventListener('click', e => e.preventDefault());
+    F.onRest = () => {
+      if (F.u < 2 || F.th > .002 || F.ph > .002) return;
+      removeEventListener('wheel', onWheel, opts); removeEventListener('keydown', onKey, true);
+      removeEventListener('pointerdown', onDown, true); removeEventListener('pointermove', onMove, true); removeEventListener('pointerup', onUp, true); removeEventListener('pointercancel', onUp, true);
+      removeEventListener('touchmove', touch, opts);
+      removeEventListener('scroll', hold, { passive: true });
+      F.dead = true; btn.remove(); hint.classList.add('out'); setTimeout(() => hint.remove(), 600);
+      F.ov.remove(); root.classList.remove('re-folded');
+      sessionStorage.setItem('re-opened:' + location.pathname, '1');
+      addCreases(F);
+      requestAnimationFrame(() => developVisible(true));
+      resolve();
+    };
+    runFold(F);
   });
 }
-function unfold(F, reverse) {
-  // The flap swings over its hinge, lands, and settles with a small paper-like rebound. Shading
-  // follows the angle to the light: each face darkens as it turns edge-on (~90°), the left half
-  // takes the flap's shadow while it is raised, and nothing ever glows.
-  const dur = 1380;
-  const flap = qs('.re-fold-flap', F.ov);
-  const o = { duration: dur, fill: 'forwards', direction: reverse ? 'reverse' : 'normal' };
-  const E = EASE.paper, S2 = EASE.settle;
-  const anims = [
-    flap.animate([{ transform: 'rotateY(0deg)', easing: E }, { transform: 'rotateY(180deg)', offset: .8, easing: 'cubic-bezier(.25,.6,.4,1)' }, { transform: 'rotateY(176.2deg)', offset: .89, easing: S2 }, { transform: 'rotateY(180deg)' }], o),
-    F.ov.animate([{ transform: `translateX(${F.half / 2}px)`, easing: E }, { transform: 'translateX(0)', offset: .8 }, { transform: 'translateX(0)' }], o),
-    qs('.re-back .re-shade', F.ov).animate([{ opacity: 0, easing: 'ease-in' }, { opacity: .34, offset: .4 }, { opacity: .34 }], o),
-    qs('.re-front .re-shade', F.ov).animate([{ opacity: .3 }, { opacity: .3, offset: .4, easing: 'ease-out' }, { opacity: .02, offset: .8 }, { opacity: .07, offset: .89 }, { opacity: 0 }], o),
-    qs('.re-castshadow', F.ov).animate([{ opacity: .5, easing: 'ease-in' }, { opacity: .22, offset: .42 }, { opacity: 0, offset: .8 }, { opacity: .05, offset: .89 }, { opacity: 0 }], o),
-  ];
-  return anims[0].finished.then(() => { if (!reverse) { F.ov.remove(); root.classList.remove('re-folded'); } });
+function addCreases(F) { let c = qs('.re-creases', S.sheet); if (!c) { c = h('div', 're-creases', { 'aria-hidden': 'true' }); S.sheet.append(c); } c.style.height = F.Hs + 'px'; c.style.setProperty('--hh', F.hh + 'px'); }
+function foldIntro() {
+  scrollTo({ top: 0, behavior: 'instant' });
+  return foldInteract(foldOverlay(false));
 }
+let folding = false;
 async function foldUp() {
-  if (RM.matches || turning || NARROW()) return;
-  scrollTo({ top: 0, behavior: 'smooth' }); await new Promise(r => setTimeout(r, 380));
-  const F = foldOverlay(); root.classList.add('re-folded'); D.body.append(F.ov);
-  await unfold(F, true);
-  const btn = h('button', 're-unfold', { type: 'button', 'aria-label': '再次展开报纸' });
-  btn.style.cssText = `left:${F.ov.style.left};top:${F.ov.style.top};width:${F.half}px;height:${F.vh}px;transform:translateX(${F.half / 2}px)`;
-  D.body.append(btn); btn.focus();
-  btn.addEventListener('click', () => { btn.remove(); unfold(F); }, { once: true });
+  if (RM.matches || turning || folding || root.classList.contains('re-folded')) return;
+  folding = true;
+  if (scrollY > 0) { scrollTo({ top: 0, behavior: scrollY < innerHeight * 2 ? 'smooth' : 'instant' }); await new Promise(r => { const t0 = performance.now(); const w = () => (scrollY < 1 || performance.now() - t0 > 900) ? r() : requestAnimationFrame(w); w(); }); }
+  flushPage(S.pages[S.cur]);
+  const F = foldOverlay(true); F.u = 0;
+  folding = false;
+  await foldInteract(F);
 }
 
 /* ---------- controls (H) ---------- */
@@ -812,20 +1193,29 @@ function controls() {
   c.innerHTML = `<button type="button" data-a="prev" aria-label="上一版">←</button>
 <label class="re-sel"><span class="sr">版面</span><select data-a="go"></select></label>
 <button type="button" data-a="next" aria-label="下一版">→</button>
-<button type="button" data-a="fold" title="把报纸折起来">折起</button>
+<button type="button" data-a="fold" title="把报纸折起来（或双击报头）">折起</button>
+<button type="button" data-a="theme" aria-label="切换日间 / 夜间版" title="日间 / 夜间">日 · 夜</button>
 <button type="button" data-a="hide" aria-label="隐藏控制（H）" title="隐藏（H）">×</button>`;
   const sel = qs('select', c);
   S.pages.forEach((p, i) => sel.append(h('option', '', { value: i, text: `${p.folio} · ${p.title.slice(0, 28)}` })));
   c.addEventListener('click', e => {
     const a = e.target.closest('button')?.dataset.a;
     if (a === 'prev') turnTo(S.cur - 1); else if (a === 'next') turnTo(S.cur + 1);
-    else if (a === 'fold') foldUp(); else if (a === 'hide') toggleCtl(false);
+    else if (a === 'fold') foldUp(); else if (a === 'hide') toggleCtl(false); else if (a === 'theme') setTheme(isDark() ? 'light' : 'dark', true);
   });
   sel.addEventListener('change', () => turnTo(+sel.value));
   const hint = h('p', 're-ctl-hint', { 'aria-hidden': 'true', text: '按 H 显示控制' });
   D.body.append(c, hint); S.ctl = c; S.ctlHint = hint;
   if (localStorage.getItem('re-ctl') === 'off') toggleCtl(false);
 }
+// one theme for the whole site: the hub and every article read and write localStorage 'zbm-theme'
+// (an explicit choice beats prefers-color-scheme; the <head> snippet applies it before first paint)
+function setTheme(t, save) {
+  if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
+  if (save) try { localStorage.setItem('zbm-theme', t); } catch (e) {}
+  requestAnimationFrame(() => { if (S.plateMoon) drawMoon(S.plateMoon, S.plateMoon._css, moonPhase()); qsa('.re-moonfig', S.sheet).forEach(f => drawMoon(f._moon, parseFloat(f._moon.style.width), moonPhase())); redrawMosaics(); });
+}
+function syncTheme() { let t = null; try { t = localStorage.getItem('zbm-theme'); } catch (e) {} if (t !== 'light' && t !== 'dark') t = null; if (t !== root.getAttribute('data-theme')) setTheme(t, false); }
 function toggleCtl(on) { on = on ?? root.classList.contains('re-ctl-off'); root.classList.toggle('re-ctl-off', !on); localStorage.setItem('re-ctl', on ? 'on' : 'off'); }
 function updateControls() { if (!S.ctl) return; qs('select', S.ctl).value = S.cur; qs('[data-a=prev]', S.ctl).disabled = S.cur === 0; qs('[data-a=next]', S.ctl).disabled = S.cur === S.pages.length - 1; }
 
@@ -858,12 +1248,23 @@ function bindGlobal() {
   S.pages.forEach((p, i) => p.el.addEventListener('beforematch', () => { if (i !== S.cur) { showPage(i); if (!p.laid) layoutPage(i); } }));
   // resize → re-set type
   let rw = S.sheet.clientWidth, pend = 0;
-  new ResizeObserver(() => { if (pend) return; pend = requestAnimationFrame(() => { pend = 0; const w = S.sheet.clientWidth; if (Math.abs(w - rw) < 1) return; rw = w; S.pages.forEach(p => p.laid = false); layoutPage(S.cur); }); }).observe(S.sheet);
-  D.fonts.addEventListener && D.fonts.addEventListener('loadingdone', () => { S.pages.forEach(p => { p.laid = false; qsa('.re-run', p.el).forEach(r => r._run.blocks.forEach(b => b.units && b.units.forEach(u => u.prep = null))); }); layoutPage(S.cur); });
+  new ResizeObserver(() => { if (pend) return; pend = requestAnimationFrame(() => { pend = 0; const w = S.sheet.clientWidth; if (Math.abs(w - rw) < 1) return; rw = w; S.pages.forEach(p => p.laid = false); layoutPage(S.cur, { sliced: true }); }); }).observe(S.sheet);
+  let fT = 0;
+  // re-set only if a face we set type with arrived after the first layout (not for the batch we already waited on)
+  const seen = new Set([...D.fonts].filter(f => f.status === 'loaded'));
+  D.fonts.addEventListener && D.fonts.addEventListener('loadingdone', e => { if (!(e.fontfaces || []).some(f => !seen.has(f) && /Geist Serif|Noto Serif SC/.test(f.family))) return; (e.fontfaces || []).forEach(f => seen.add(f)); clearTimeout(fT); fT = setTimeout(() => { S.pages.forEach(p => { p.laid = false; qsa('.re-run', p.el).forEach(r => r._run.blocks.forEach(b => b.units && b.units.forEach(u => u.prep = null))); }); layoutPage(S.cur, { sliced: true }); }, 350); });
   addEventListener('scroll', () => { if (!statPend) statPend = requestAnimationFrame(() => { statPend = 0; readStat(); }); }, { passive: true });
   addEventListener('beforeprint', () => S.pages.forEach(p => p.el.removeAttribute('hidden')));
   addEventListener('afterprint', () => showPage(S.cur));
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => requestAnimationFrame(() => { if (S.plateMoon) drawMoon(S.plateMoon, S.plateMoon._css, moonPhase()); qsa('.re-moonfig', S.sheet).forEach(f => drawMoon(f._moon, parseFloat(f._moon.style.width), moonPhase())); }));
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (!root.getAttribute('data-theme')) setTheme(null, false); });
+  addEventListener('storage', e => { if (e.key === 'zbm-theme') syncTheme(); });
+  addEventListener('pageshow', syncTheme);
+  // fold it back up: double-click the masthead / running head, or keep pulling up at the very top
+  S.sheet.addEventListener('dblclick', e => { if (e.target.closest('.re-mast, .re-running')) { e.preventDefault(); foldUp(); } });
+  let pull = 0, pullT = 0;
+  addEventListener('wheel', e => { if (root.classList.contains('re-folded') || scrollY > 0 || e.deltaY >= 0) { pull = 0; return; } pull += -e.deltaY; clearTimeout(pullT); pullT = setTimeout(() => pull = 0, 500); if (pull > 900) { pull = 0; foldUp(); } }, { passive: true });
+  // mosaics: double-click re-prints with the next method
+  S.sheet.addEventListener('dblclick', e => { const f = e.target.closest('.re-mosaic'); const M = f && f._m; if (!M || M.state === 'running') return; e.preventDefault(); M.mode = (M.mode + 1) % MODES.length; setCaption(M); M.state = 'blank'; M.finalRows = null; develop(M, 0); });
 }
 function nearBottom(px = 140) { return innerHeight + scrollY >= S.sheet.getBoundingClientRect().bottom + scrollY - px; }
 
@@ -886,5 +1287,5 @@ function tickStats() {
   readStat();
   const pm = S.plateMoon; if (pm) { const css = Math.round(parseFloat(getComputedStyle(pm).width) || 80); pm._css = css; pm.style.height = css + 'px'; drawMoon(pm, css, mp); }
   const t = () => { const s = Math.floor((performance.now() - S.t0) / 1000); setStat('since', `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`); };
-  t(); setInterval(t, 1000);
+  t(); setInterval(() => { if (!D.hidden && scrollY < innerHeight * 1.5) t(); }, 1000);
 }

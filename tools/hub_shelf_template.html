@@ -558,6 +558,8 @@ q.addEventListener('input',function(){apply()});
 var vb=$('#view');function syncView(){var l=root.classList.contains('list-view');vb.setAttribute('aria-pressed',l);$('span',vb).textContent=l?'书架视图':'列表视图'}
 vb.addEventListener('click',function(){root.classList.toggle('list-view');if(root.classList.contains('list-view'))closeCase();try{localStorage.setItem('zbm-view',root.classList.contains('list-view')?'list':'shelf')}catch(_){}syncView();if(!root.classList.contains('list-view')){measure();redraw()}});
 $('#theme').addEventListener('click',function(){var cur=root.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),n=cur==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('zbm-theme',n)}catch(_){}});
+// the articles share this key: pick up a choice made there when coming back (bfcache) or from another tab
+function syncTheme(){try{var t=localStorage.getItem('zbm-theme');if(t==='light'||t==='dark')root.setAttribute('data-theme',t)}catch(_){}}addEventListener('pageshow',syncTheme);addEventListener('storage',function(e){if(e.key==='zbm-theme')syncTheme()});
 var rz=0;addEventListener('resize',function(){cancelAnimationFrame(rz);rz=requestAnimationFrame(function(){geom();fitSpines();measure();redraw()})});
 geom();render();syncView();
 if(doc.fonts&&doc.fonts.ready)doc.fonts.ready.then(function(){fitSpines();measure();redraw()});
