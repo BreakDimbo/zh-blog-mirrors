@@ -1,7 +1,62 @@
 {
- "updated": "2026-10-30T13:57:36.663056+08:00",
+ "updated": "2026-11-02T10:05:54.282308+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "portoblankson.vercel.app",
+   "url": "https://portoblankson.vercel.app/",
+   "title": "PortoBlknszzz",
+   "description": "Product designer from Accra, Ghana. I design products that make sense the very first time you use them.",
+   "shared_by": "@ob11zz",
+   "reply": "https://x.com/ob11zz/status/2116523343587553702",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "tolani.xyz",
+   "url": "https://www.tolani.xyz/",
+   "title": "Tolani Fagbenja — Frontend Engineer",
+   "description": "Tolani Fagbenja is a frontend engineer building fast, accessible web apps with React, Next.js, TypeScript, and React Native.",
+   "shared_by": "@V_annyyy",
+   "reply": "https://x.com/V_annyyy/status/2116169707460210975",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "basteau.be",
+   "url": "https://basteau.be/",
+   "title": "basteau · full-stack developer",
+   "description": "Full-stack developer building web apps at KU Leuven and creator of sebdev. Vue, TypeScript and PHP, with a soft spot for developer tooling.",
+   "shared_by": "@itsbasteau",
+   "reply": "https://x.com/itsbasteau/status/2116165799253807217",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "sreehari.tech",
+   "url": "https://sreehari.tech/",
+   "title": "Sreehari S J - Portfolio | GenAI & ML Enthusiast",
+   "description": "Portfolio of Sreehari S J — AI/ML Developer. Research Assistant at IISER Bhopal, Intern at TetherUp Robotics. India Book of Records Holder.",
+   "shared_by": "@sreehar_sj",
+   "reply": "https://x.com/sreehar_sj/status/2116158627191177247",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "terryhu.cn",
+   "url": "https://terryhu.cn/",
+   "title": "Terry's Home",
+   "description": "Welcome! It",
+   "shared_by": "@21Terrence1",
+   "reply": "https://x.com/21Terrence1/status/2116135987520917520",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "susheyyy.github.io",
    "url": "https://susheyyy.github.io/Portfolio/",
