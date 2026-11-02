@@ -1,5 +1,19 @@
 [
   {
+    "slug": "open-index-hacker-news",
+    "title": "Hacker News 完整存档：open-index/hacker-news 数据集导读",
+    "desc": "Hugging Face 数据集 open-index/hacker-news 中文导读：2006-10 至 2026-08 共 239 个月、4,932 万条 HN 条目（评论 4,306 万、故事 627 万）的按月 Parquet 镜像，约 12.4 GB，ODC-By 1.0；16 列 schema、ClickHouse + HN API 构建管线、DuckDB / datasets 免下载查询。核对发现：实时更新自 2026-08-23 起停止、卡片开头条数与得分统计自相矛盾 ⚠️；HN 原文权利归各作者。附卡片全文中译与英文原文。",
+    "source": "OpenIndex（open-index）· Hugging Face",
+    "date": "2026-11-02",
+    "type": "导读",
+    "subtitle": "Hacker News - Complete Archive",
+    "original_url": "https://huggingface.co/datasets/open-index/hacker-news",
+    "spine": "HN 全量数据集",
+    "summary": "二十年 HN 四千九百万条，按月 Parquet",
+    "kind": "数据",
+    "by": "OpenIndex"
+  },
+  {
     "slug": "deepseekharness-super-agent",
     "title": "DeepSeek Harness：Super-agent 设计探索",
     "desc": "DeepSeek Harness 团队 X 长文全文中译：常驻 Router 只管对人交互与分派、隔离 Worker 并发执行的双层架构；Trigger 两级过滤（Fast/Slow Path）、Thread 订阅直通、Inline & Spill 与链式召回、投机执行“静默复现并修复”；异步 start()/stop() 全双工 ReAct、IM 回复限 100 词；计算/状态/执行环境两级分离（云端 Agent Loop + BYOM 端点 daemon）、外置 Watchdog；自测实验（p50 12.4 分钟 vs 单会话 20.4）与开放问题。附原型 dsh-superagent-prototype（MIT）导读与 README 全译；实验数字自报 ⚠️。",
