@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Stickman Video Director：让 AI 编程代理当火柴人动画的导演（项目导读）</title>
-<meta name="description" content="kaomei/stickman-video-director 项目导读：一个装进 Claude Code / Codex / Cursor 的 Agent Skill，把话题、文章或脚本变成「不露脸」YouTube 火柴人视频——A 导演模式出分镜与逐段视频提示词，B 全自动模式本地合成带配音、字幕、微动画的成片；6 种画风；软件 MIT 免费，但生图、配音、视频生成按第三方服务计费；附官方简中 README 全文与英文原文。" />
+<meta name="description" content="kaomei/stickman-video-director 项目导读：一个装进 Claude Code / Codex / Cursor 的 Agent Skill，把话题、文章或脚本变成「不露脸」YouTube 火柴人视频——A 导演模式出分镜与逐段视频提示词，B 全自动模式本地合成带配音、字幕、微动画的成片；8 种画风（2026-11-02 更新：新增 A6 暖金暗影风、B2 彩色手绘风）；软件 MIT 免费，但生图、配音、视频生成按第三方服务计费；附官方简中 README 全文与英文原文。" />
 <meta property="og:title" content="Stickman Video Director：让 AI 编程代理当火柴人动画的导演" />
-<meta property="og:description" content="kaomei/stickman-video-director 项目导读：一个装进 Claude Code / Codex / Cursor 的 Agent Skill，把话题、文章或脚本变成「不露脸」YouTube 火柴人视频——A 导演模式出分镜与逐段视频提示词，B 全自动模式本地合成带配音、字幕、微动画的成片；6 种画风；软件 MIT 免费，但生图、配音、视频生成按第三方服务计费；附官方简中 README 全文与英文原文。" />
+<meta property="og:description" content="kaomei/stickman-video-director 项目导读：一个装进 Claude Code / Codex / Cursor 的 Agent Skill，把话题、文章或脚本变成「不露脸」YouTube 火柴人视频——A 导演模式出分镜与逐段视频提示词，B 全自动模式本地合成带配音、字幕、微动画的成片；8 种画风（2026-11-02 更新：新增 A6 暖金暗影风、B2 彩色手绘风）；软件 MIT 免费，但生图、配音、视频生成按第三方服务计费；附官方简中 README 全文与英文原文。" />
 <meta property="og:image" content="images/cover.webp" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
@@ -33,12 +33,59 @@
 <!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/kaomei/stickman-video-director" rel="noopener">github.com/kaomei/stickman-video-director</a> · 作者 CrazyKaomei（<a href="https://github.com/kaomei" rel="noopener">GitHub @kaomei</a> / <a href="https://x.com/CrazyKaomei" rel="noopener">X @CrazyKaomei</a>）· MIT 许可 · A5 画风由 <a href="https://github.com/leksautomate" rel="noopener">Lawal Ridwan / @leksautomate</a> 贡献</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>这不是一个视频生成模型，而是一份装进 AI 编程代理（Claude Code、Codex、Cursor 等）的 <strong>Agent Skill</strong>：它把“怎么把一个话题拍成火柴人短片”写成了一套导演规则、画风库和本地合成脚本。A 模式只出分镜和逐段视频提示词，由你自己去 Google Flow、Kling 之类的工具生成、再剪；B 模式在本地把 AI 生成的插画、配音、字幕、微动画和音效拼成完整 MP4。代码 MIT 免费，但<strong>画面和声音仍要靠第三方付费服务</strong>。</div>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>这不是一个视频生成模型，而是一份装进 AI 编程代理（Claude Code、Codex、Cursor 等）的 <strong>Agent Skill</strong>：它把“怎么把一个话题拍成火柴人短片”写成了一套导演规则、画风库和本地合成脚本。A 模式只出分镜和逐段视频提示词，由你自己去 Google Flow、Kling 之类的工具生成、再剪；B 模式在本地把 AI 生成的插画、配音、字幕、微动画和音效拼成完整 MP4。代码 MIT 免费，但<strong>画面和声音仍要靠第三方付费服务</strong>。<br><strong>2026-11-02 更新：</strong>作者 10-30 至 11-01 新增了 A6「暖金暗影风」（由 Agent 操作 Google Flow 或 Renoise MCP 生成片段、再本地配音加字幕，交付成片）和 B2「彩色手绘风」（全自动模式第二种画风），并把封面与发布工具包改成成片确认后的可选收尾。详见<a href="#update-2026-11-02">本次更新小节</a>；附录里的 README 已同步到最新提交 <code>d19705d</code>。</div>
 
-<p class="hero-tags"><span class="tag">★ 3,344</span> <span class="tag">501 forks</span> <span class="tag">MIT</span> <span class="tag">Agent Skill</span> <span class="tag">Node 20+ · FFmpeg</span> <span class="tag">8 种语言 README</span></p>
-<p class="caption">数据来自公开 GitHub API，取于 2026-10-30 11:50（UTC+8）。仓库建于 2026-08-03 15:44（UTC+8），作者账号建于 2026-07-22；最近一次推送 2026-10-30 11:05（UTC+8，提交 <code>439682a</code>）。本站<strong>没有</strong>实际安装运行这个 Skill（需要第三方 API 账号与付费额度），下文对效果的描述均来自仓库文档与作者样片。</p>
+<p class="hero-tags"><span class="tag">★ 3,821</span> <span class="tag">570 forks</span> <span class="tag">MIT</span> <span class="tag">Agent Skill</span> <span class="tag">Node 20+ · FFmpeg</span> <span class="tag">8 种语言 README</span></p>
+<p class="caption">星标与 fork 数取自公开 GitHub API，2026-11-02 21:33（UTC+8）复核（首次收录时 10-30 11:50 为 ★3,344 / 501 forks）；最新提交 <code>d19705d</code>，推送于 2026-11-01 21:33（UTC+8）。以下为首次收录时的记录：仓库建于 2026-08-03 15:44（UTC+8），作者账号建于 2026-07-22；最近一次推送 2026-10-30 11:05（UTC+8，提交 <code>439682a</code>）。本站<strong>没有</strong>实际安装运行这个 Skill（需要第三方 API 账号与付费额度），下文对效果的描述均来自仓库文档与作者样片。</p>
 
 <figure><img src="images/cover.webp" alt="手绘火柴人抱头惊慌，旁边写着 YOUR CHANNEL. NOT YOUR FACE.，左侧是红色 YouTube 图标和一台小摄像机，底部字幕：Want a YouTube channel without being on camera?" loading="lazy"><figcaption>B1「极简手绘风」样片的海报帧（仓库 <code>assets/readme/b1-minimal-handdrawn-poster.png</code>，MIT），本站转为 WebP。画面中的 YouTube 标志属于其权利人。</figcaption></figure>
+
+
+<h2 id="update-2026-11-02">2026-11-02 更新：新增 A6、B2 两种画风，发布工具包改为可选收尾</h2>
+<p>本页 10-30 收录后，作者又推了 5 个提交（10-30 19:36 至 11-01 21:33，UTC+8）：<code>828b865</code> 加入 A6 暖金暗影风，<code>09fbcb4</code> 把 A6 预览图固定到不可变 CDN 地址，<code>a7f13ef</code> / <code>d6271a5</code> 加入 B2 彩色手绘风的样片、参考图与 8 种语言的 README 画廊，<code>d19705d</code> 合并 PR #78。README 的口号随之从“6 大画风 · 8 种视觉方案”改成“<strong>8 大画风 · 10 种视觉方案</strong>”。许可证没有变化，仍是 MIT。</p>
+
+<h3>A6「暖金暗影风」：第一个交付成片的导演模式画风</h3>
+<p>画面是暖琥珀色灯光配深紫暗影，角色是黑色圆头、穿红橙色连帽衫的火柴人，适合“如果……会怎样”类的电影感小故事。它挂在 A（导演）模式下，但<strong>不走 A1–A5 那套“逐段 10 秒提示词”合同</strong>，有一份独立的 <code>references/amber-noir.md</code>，主要区别有这些：</p>
+<ul>
+<li><strong>交付的是成片，不只是提示词。</strong>A1–A5 只给你提示词，生成和剪辑自己做；A6 要求在你批准提案、完成登录与付费授权后，由 Agent 接着做完参考图 → 片段生成与质检 → 独立配音 → 组装与音效 → 标题与字幕 → 最终 MP4。</li>
+<li><strong>两条执行路线。</strong>推荐路线是 Agent 操作浏览器里的 Google Flow（作者实测用的是 <strong>Veo 3.1 Fast · 720p · 每段最多 8 秒</strong>，所以 30 秒成片至少 4 段、60 秒至少 8 段）；另一条是装 Renoise MCP，把参考图或视频链接交给 Agent。文档反复强调：登录、创意确认和每一笔计费都要你本人决定，Agent 不得代填密码、切换账号或充值。</li>
+<li><strong>每段先给“首帧参考图”再写动作提示词</strong>，旁白文字不进视频提示词，角色全程不开口；配音单独用 Gemini TTS 的 Puck 音色生成。</li>
+<li><strong>本地收尾脚本 <code>a6_finish.py</code>。</strong>输入剪好的无字画面、批准的混音和逐词时间轴，用 Pillow + FFmpeg 烧录左上角纯白标题、全大写描边字幕（当前词用琥珀色高亮、短语出现时有 3 帧弹入），并导出 SRT、样张联系表和哈希清单；混音参考值约 −16 LUFS、峰值不超过 −1 dBTP。脚本本身不生成画面、不合成语音，默认也不加作者水印。</li>
+</ul>
+<div class="shots">
+<figure><img src="images/frame-a6-amber-noir-mcp.webp" alt="A6 暖金暗影风样片的一帧：穿红橙色连帽衫的黑色圆头火柴人带着一群人在暮色街头奔跑，底部字幕 So does everyone else." loading="lazy"><figcaption>A6 样片 1「如果所有东西都便宜一万倍？」（README 标为 Renoise MCP 示例 · 20 秒）</figcaption></figure>
+<figure><img src="images/frame-a6-amber-noir-flow.webp" alt="A6 暖金暗影风样片的一帧：连帽衫火柴人站在亮着暖光的店铺橱窗外看手机" loading="lazy"><figcaption>A6 样片 2「值得跑去抢的好价」（README 标为 Google Flow 示例 · 8 秒）</figcaption></figure>
+</div>
+<p class="caption">均为仓库 <code>assets/readme/previews/</code> 预览动图（480×270）中的单帧，MIT；本站未下载样片 MP4。</p>
+
+<h3>B2「彩色手绘风」：全自动模式的第二种画风</h3>
+<p>暖色纸面、略带抖动的细墨线、柔和配色的生活场景，配手写场景标题，字幕是深色字印在一小块米白纸签上。适合日常心理、习惯、注意力一类的旁白解说。和 B1 一样由编程代理在本地合成整片，本地运行时现在接受 <code>style: B1</code> 和 <code>style: B2</code>（<code>init DIR --style B2</code>），但 B2 不能用 B1 的三姿势角色图集，每个故事要自己画分层 PNG。默认英文旁白用 Gemini 的 Fola 音色，一次生成整条、不加风格描述、不改语速。</p>
+<p>B2 的文档有一段值得一提的“反偷懒”要求：新故事开工前先写一张场景表，和最近几支片子的开场与主体构图逐一比较；如果只是“同一个房间、同一个站着讲话的人，换了几样道具”，就必须重新设计；手拿手机或钥匙时手要真的碰到物体，道具不能穿过手指或桌面瞬移。</p>
+<div class="shots">
+<figure><img src="images/frame-b2-colorful-sleep.webp" alt="B2 彩色手绘风样片的一帧：深蓝夜色中的闹钟显示 3:08 A.M." loading="lazy"><figcaption>B2 样片 1「让一个念头慢慢飘走」</figcaption></figure>
+<figure><img src="images/frame-b2-colorful-phone.webp" alt="B2 彩色手绘风样片的一帧：米色纸面上的闹钟，手写标题 12 MINUTES LATER，底部米白字幕签 Twelve minutes later," loading="lazy"><figcaption>B2 样片 2「你刚才为什么解锁手机？」</figcaption></figure>
+</div>
+<figure><img src="images/b2-style-board.webp" alt="B2 彩色手绘风已确认样片的 12 格参考板：火柴人出门前拿起手机、刷到洗地毯视频、天气预报被通知淹没、解锁前写下要做的事，最后锁屏" loading="lazy"><figcaption>B2 已确认参考板（仓库 <code>skills/directing-stickman-videos/assets/b2/approved-style-board.jpg</code>，MIT）：从 v4 成片每 5 秒取一帧。附带的说明写着这一版于 2026-10-31 由“用户”确认，确认前删掉了一个只有细线手臂的特写。</figcaption></figure>
+
+<h3>封面与发布工具包：从“一键提示词”改成真出图、少承诺</h3>
+<ul>
+<li>以前是“确认脚本或成片后，发一段话要提示词”；现在是<strong>你确认成片满意之后，AI 助手主动问一次</strong>要不要做，可以跳过，跳过不影响交付。</li>
+<li>以前交付“封面提示词”，现在在有可用生图工具、并且你批准费用时，<strong>直接生成 1 张 16:9 封面图</strong>；没有工具就说明缺口，先交文字部分。</li>
+<li>时间戳只在有最终成片或已核对的时间轴时才给；置顶评论从“带动互动与留存”改成“1 个邀请真实交流的问题”；发布前检查清单删掉了“Content-ID 准备情况”，改为明确写“<strong>不保证通过 Content-ID 或获得平台变现资格</strong>”，也不会自动上传或发布。</li>
+</ul>
+
+<h3>本次更新的核实与提醒</h3>
+<ul>
+<li>⚠️ <strong>推广链接：</strong><code>amber-noir.md</code> 里给 Renoise MCP 的安装链接带有追踪参数 <code>utm_source=crazykaomei-aini-202610</code>，并要求“把这个安装 / 推广链接留在 README 之外”，只在用户选了 A6 之后才出示。作者与 Renoise 是否有合作或分成，仓库没有披露 ⚠️ 推断。Renoise 是按额度计费的第三方服务（站内 <a href="../andyhuo520-digital-human-koubo/">digital-human-koubo</a> 也用它）；本站没有访问 renoise.ai。</li>
+<li>⚠️ <strong>样片出处说法冲突（待审）：</strong>README 把 A6 样片 1 标为“Renoise MCP 示例 · 20 秒”，而 <code>amber-noir.md</code> 写的是“已批准的完整样片用 Google Flow · Veo 3.1 Fast 制作”，并说明 Renoise 路线“尚未实测”。可能是参考文档没跟上后来补做的样片，本站无法判断。</li>
+<li>⚠️ <strong>样片与文档写的标准对不上（推断）：</strong><code>a6-finishing.md</code> 规定的是 720×1280 竖屏、全大写 Impact 字幕加琥珀色逐词高亮；但从样片 1 预览动图抽到的帧是横屏、句首大写的小号白字字幕。这是根据 480×270 预览动图的少数几帧判断的，不排除样片早于这份标准。</li>
+<li>⚠️ <strong>字体许可：</strong>A6 收尾脚本要求 Impact 与 DIN Condensed Bold，这两款仓库<strong>没有附带</strong>，都是商业字体，需要你自己有合法授权或换用获批的替代字体；B 系列附带的 Caveat / Noto Sans 是 SIL OFL。</li>
+<li>⚠️ <strong>模型名与可用性未核实：</strong>“Veo 3.1 Fast”“<code>gemini-3.8-flash-tts</code>”（B2 开发测试所用）以及文档举例的“Seedance 2.5”，都是仓库自述，本站没有逐一核对当前是否可用、怎么收费；文档本身也提醒先查清可用模型再选。</li>
+<li>⚠️ <strong>让 Agent 操作你的 Flow 账号：</strong>A6 推荐路线由 Agent 在你已登录的浏览器里提交生成任务、消耗你账户里的额度。文档要求每次提交前核对设置并得到明确同意，但自动化操作是否符合服务条款、额度消耗多少，需要你自己确认 ⚠️ 未核实。</li>
+<li>⚠️ <strong>文档内部的新矛盾：</strong>工具包清单已改口“不保证获得平台变现资格”，但同一份 README 的 FAQ 第 2 条仍写“完全可以……符合 YPP 与 TikTok 创作者基金的变现标准”。以前者为准更稳妥。</li>
+<li>⚠️ <strong>利益相关（延续）：</strong>README 仍以“5,000 Stars 解锁”下一个 A7 / B3 画风来征集 Star；三天里星标从 3,344 涨到 3,821，来源构成未核。</li>
+<li>本次同样<strong>没有运行</strong>该 Skill，也没有下载样片 MP4；新增的 5 张图是仓库预览动图的单帧和 B2 参考板，转为 WebP。</li>
+</ul>
 
 <h2 id="what">它是什么</h2>
 <p>仓库的自我介绍是：“将任何脚本变成适合不露脸 YouTube 频道的多画风爆款火柴人动画视频。”所谓“不露脸频道”（faceless channel），指的是创作者本人不出镜、只用旁白加画面做内容的 YouTube 号，常见于科普、心理学、历史故事一类。</p>
@@ -53,8 +100,8 @@
 <tr><td>适合</td><td>30 秒到 3 分钟、讲究角色动作的短片</td><td>5～10 分钟以上的旁白长片</td></tr>
 </tbody></table>
 
-<h2 id="styles">六种画风</h2>
-<p>A 系列有五种：A1 经典黑白（白底黑人 / 黑底白人两种）、A2 现代潮酷（红色冷帽黄 T 恤的固定角色，分“极简科技”和“彩色故事”两套环境）、A3 史前洞穴（兽皮、篝火、职场讽刺式反转）、A4 治愈故事（彩色日常场景）、A5 历史卡通（江户、古埃及等时代服饰）。B 系列目前只有 B1 极简手绘风，而且<strong>本地运行时目前只接受 <code>style: B1</code></strong>，换其他画风代号并不会自动获得支持。下面是各画风样片的中间一帧（取自仓库 README 预览动图，MIT）：</p>
+<h2 id="styles">最初的六种画风（10-30 版）</h2>
+<p>A 系列有五种：A1 经典黑白（白底黑人 / 黑底白人两种）、A2 现代潮酷（红色冷帽黄 T 恤的固定角色，分“极简科技”和“彩色故事”两套环境）、A3 史前洞穴（兽皮、篝火、职场讽刺式反转）、A4 治愈故事（彩色日常场景）、A5 历史卡通（江户、古埃及等时代服饰）。B 系列目前只有 B1 极简手绘风，而且<strong>本地运行时目前只接受 <code>style: B1</code></strong>，换其他画风代号并不会自动获得支持（2026-11-02 更新：运行时已加入 B2，另新增 A6，见<a href="#update-2026-11-02">更新小节</a>）。下面是各画风样片的中间一帧（取自仓库 README 预览动图，MIT）：</p>
 <div class="shots">
 <figure><img src="images/frame-dark-theme-demo.webp" alt="A1.2 黑底白火柴人样片中的一帧" loading="lazy"><figcaption>A1.2 黑底白火柴人</figcaption></figure>
 <figure><img src="images/frame-style-2a-demo.webp" alt="A2.1 红帽黄衣火柴人在纯白科技空间中划出一道青蓝光线" loading="lazy"><figcaption>A2.1 现代潮酷 · 极简科技</figcaption></figure>
@@ -72,7 +119,7 @@
 <p>流程是：检查配置 → 确认脚本、画风、声音 → 做约 20 秒有声样片 → 你确认样片并授权剩余费用 → 自动完成整片。本地运行时（<code>scripts/autopilot.mjs</code>）提供 <code>doctor</code>、<code>init</code>、<code>validate</code>、<code>preview</code>、<code>approve</code>、<code>render</code> 等命令；项目用一个 <code>project.json</code> 描述配音文件、字幕时间轴、每个镜头的图层（图片、三姿势角色、文字、线条、箭头）和音效点，用 <code>@napi-rs/canvas</code> 绘制、FFmpeg 合成。</p>
 <p>可选的 Gemini 适配器（<code>gemini-media.mjs</code>）用来生图和 TTS 配音，写得相当克制：必须显式加 <code>--allow-network</code>，密钥只读环境变量，<strong>每次只发一个请求、不自动重试</strong>，先写一份请求回执，失败时提示你去服务商后台查历史再决定要不要重试——这是为了防止代理在报错循环里反复烧钱。字幕对齐可选用本地 Whisper，且默认不自动下载模型。</p>
 <h3>收尾：封面与发布工具包</h3>
-<p>README 还附带一个“高点击率封面与发布工具包”：按视频画风给出封面生图提示词、5 个标题、YouTube 简介与标签、置顶评论问题和发布前检查清单。</p>
+<p>README 还附带一个“高点击率封面与发布工具包”（以下为 10-30 版描述，11-02 已改版，见<a href="#update-2026-11-02">更新小节</a>）：按视频画风给出封面生图提示词、5 个标题、YouTube 简介与标签、置顶评论问题和发布前检查清单。</p>
 <div class="shots">
 <figure><img src="images/thumb-no-camera.webp" alt="封面样例 NO CAMERA?：表情生动的手绘火柴人与打叉的相机" loading="lazy"><figcaption>B1 风封面样例「NO CAMERA?」</figcaption></figure>
 <figure><img src="images/thumb-first-job.webp" alt="封面样例 THE FIRST JOB：史前角色面对巨大的石块障碍" loading="lazy"><figcaption>A3 风封面样例「THE FIRST JOB」</figcaption></figure>
@@ -112,7 +159,7 @@
 </ul>
 
 <h2 id="appendix-1">附录一　README 全文（简体中文版）</h2>
-<p class="caption">以下为作者在仓库中提供的官方简体中文版 <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.zh-CN.md" rel="noopener">README.zh-CN.md</a>（提交 <code>439682a</code>），依 MIT 许可完整转载。与英文版逐节对应（章节结构一致），个别措辞以英文原文为准。原文中的动图与图片未转载，以〔〕标出其说明文字，可点击链接到仓库查看；页内锚点已改为本页内跳转。</p>
+<p class="caption">以下为作者在仓库中提供的官方简体中文版 <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.zh-CN.md" rel="noopener">README.zh-CN.md</a>（提交 <code>d19705d</code>，2026-11-02 按最新版同步；首次收录时为 <code>439682a</code>），依 MIT 许可完整转载。与英文版逐节对应（章节结构一致），个别措辞以英文原文为准。原文中的动图与图片未转载，以〔〕标出其说明文字，可点击链接到仓库查看；页内锚点已改为本页内跳转。</p>
 <div class="readme-zh">
 <p><a href="https://github.com/kaomei/stickman-video-director/blob/main/README.en.md">🇺🇸 EN</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.zh-CN.md"><strong>🇨🇳 简中</strong></a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.ja.md">🇯🇵 日本語</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.ko.md">🇰🇷 한국어</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.fr.md">🇫🇷 FR</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.pt-BR.md">🇧🇷 PT-BR</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.tr.md">🇹🇷 TR</a> · <a href="https://github.com/kaomei/stickman-video-director/blob/main/README.id.md">🇮🇩 ID</a></p>
 <h3>🎬 Stickman Video Director</h3>
@@ -153,9 +200,19 @@
 <a href="#zh-b1"><span class="imgnote">〔原文此处为图：极简手绘风火柴人视频：生动角色、重点文字与微动画〕</span></a>
 </td>
 </tr>
+<tr>
+<td width="50%" align="center">
+<strong>暖金暗影风</strong><br>
+<a href="#zh-a6"><span class="imgnote">〔原文此处为图：暖金暗影风火柴人动画：暖光与深邃暗影中的城市，主角身穿橙色连帽衫〕</span></a>
+</td>
+<td width="50%" align="center">
+<strong>彩色手绘风</strong><br>
+<a href="#zh-b2"><span class="imgnote">〔原文此处为图：彩色手绘风：安静的卧室与沿河漂走的念头〕</span></a>
+</td>
+</tr>
 </table>
 
-<p><strong>6 大画风 · 8 种视觉方案 · 实测样片 · 免费开源</strong></p>
+<p><strong>8 大画风 · 10 种视觉方案 · 实测样片 · 免费开源</strong></p>
 <p>⭐ <strong>为项目点个 Star，及时关注下一批画风和新功能解锁。</strong></p>
 <p><a href="#zh-quick-start">开始使用</a> · <a href="#zh-a-styles">导演模式画风</a> · <a href="#zh-b-styles">全自动模式画风</a> · <a href="#zh-faq">常见问题</a> · <a href="#zh-road-to-10000-stars--creator-ecosystem">路线图</a></p>
 <p><a id="zh-creation-modes"></a></p>
@@ -248,6 +305,7 @@ https://github.com/kaomei/stickman-video-director
 <p><strong>流程：给出话题、内容或需求 → 确认视频脚本 → 确认 20 秒有声样片 → 自动制作整片 → 拿到完整视频</strong></p>
 <p>AI 助手会根据内容设计分镜，生成画面与旁白，配好字幕和音效，再按配音节奏合成为完整视频。你主要负责确认脚本和样片，不用逐段生成、手动拼装。</p>
 <p>首次使用会先检查所需配置，缺什么、怎么补都会逐步说明。画面或声音不满意，可以只调整对应片段，保留已经确认的部分。</p>
+<p><strong>两种模式都可选的收尾步骤：</strong>确认成片满意后，可继续制作<a href="#zh-thumbnail-publishing-kit">封面与发布工具包</a>，获取匹配画风的封面和上传文案，也可以直接结束。无需切换模式或重新安装。</p>
 <p><a id="zh-style-gallery"></a></p>
 <p><a id="zh-a-styles"></a></p>
 <h4>🎨 A · 导演模式画风一览</h4>
@@ -390,7 +448,23 @@ https://github.com/kaomei/stickman-video-director
 <p>画风与提示词贡献：<a href="https://github.com/leksautomate">Lawal Ridwan / @leksautomate</a>。</p>
 <hr>
 <p><a id="zh-a6"></a></p>
-<h5>A6：待更新…</h5>
+<h5>A6：暖金暗影风</h5>
+<p>暖金色灯光、深邃暗影，以及穿着橙色连帽衫的黑色圆头角色。把一个令人好奇的“如果”变成电影感小故事，用富有表现力的动作讲述，而不是让角色对镜头口播。</p>
+<ul>
+<li><strong>视觉风格</strong>：暖琥珀色高光与深紫暗影形成对比，搭配简洁剪影、柔和明暗的城市场景和克制的镜头运动。</li>
+<li><strong>适合内容</strong>：“如果”主题、心理学、现代寓言、意外发现，以及带反转的短故事。</li>
+<li><strong>适合这样选</strong>：你想用电影感动画场景搭配独立旁白。在支持浏览器操作的智能体中，确认后的片段可以继续组装，加入配音、音效、醒目的全大写字幕和简洁的白色标题。</li>
+</ul>
+<table>
+<thead><tr><th style="text-align: center;">示例 1：如果所有东西都便宜一万倍？</th><th style="text-align: center;">示例 2：值得跑去抢的好价</th></tr></thead>
+<tbody>
+<tr><td style="text-align: center;"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/style-6-amber-noir-mcp.mp4"><span class="imgnote">〔原文此处为图：暖金暗影风：物价一夜骤降的 20 秒故事〕</span></a></td><td style="text-align: center;"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/style-6-amber-noir-flow.mp4"><span class="imgnote">〔原文此处为图：暖金暗影风：橙色连帽衫角色在商店外的 8 秒动画〕</span></a></td></tr>
+<tr><td style="text-align: center;">Renoise MCP 示例 · 20 秒</td><td style="text-align: center;">Google Flow 示例 · 8 秒</td></tr>
+</tbody>
+</table>
+<hr>
+<p><a id="zh-a7"></a></p>
+<h5>A7：待更新…</h5>
 <p>新的专用导演画风正在训练中。<a href="#zh-road-to-10000-stars--creator-ecosystem">为项目点个 Star</a>，一起在 5,000 Stars 时解锁！</p>
 <hr>
 <p><a id="zh-b-styles"></a></p>
@@ -404,7 +478,6 @@ https://github.com/kaomei/stickman-video-director
 <li><strong>适合内容</strong>：YouTube 知识讲解、心理成长、职场故事、教育科普与产品宣传。</li>
 <li><strong>怎么选</strong>：想把一个话题、一段文案或故事脚本做成带配音、字幕的完整视频，可以选这一风格。画面跟随语音节奏编排，适合持续讲解和长篇叙事。</li>
 </ul>
-<p>点击动图，查看或下载有声样片。</p>
 <table width="100%">
   <tr>
     <th width="50%" align="center">案例 1：不露脸做 YouTube</th>
@@ -422,7 +495,31 @@ https://github.com/kaomei/stickman-video-director
 
 <hr>
 <p><a id="zh-b2"></a></p>
-<h5>B2：待更新…</h5>
+<h5>B2：彩色手绘风</h5>
+<p>让日常故事有自己的个性。温暖纸感、彩色场景、简洁火柴人与手写标题，把熟悉的生活片段变成生动的旁白解说。</p>
+<ul>
+<li><strong>视觉风格</strong>：纤细自然、略带不规则的墨线，柔和配色，以及贴合故事的环境。通过特写、视角切换、插画图解和小幅场景或道具动效推进叙事，避免人物过度活动。深色字幕搭配紧凑的米白纸片底。</li>
+<li><strong>适合题材</strong>：日常心理、习惯、注意力、个人成长，以及有共鸣的 YouTube 解说。</li>
+<li><strong>选择建议</strong>：想要更丰富的插画场景、Gemini 配音、按语义断句的字幕与动作音效，直接拿到完整成片时选择。由你的编程 Agent 在本地制作并组装。</li>
+</ul>
+<table width="100%">
+  <tr>
+    <th width="50%" align="center">示例 1：让一个念头慢慢飘走</th>
+    <th width="50%" align="center">示例 2：你刚才为什么解锁手机？</th>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/b2-colorful-sleep.mp4"><span class="imgnote">〔原文此处为图：B2 彩色手绘风：安静的卧室、河上的纸船与放松的睡前时刻〕</span></a></td>
+    <td width="50%" align="center"><a href="https://github.com/kaomei/stickman-video-director/blob/main/assets/readme/b2-colorful-phone-weather.mp4"><span class="imgnote">〔原文此处为图：B2 彩色手绘风：查看手机时的走神，配有旁白、米白字幕与插画场景〕</span></a></td>
+  </tr>
+  <tr>
+    <td align="center">睡前思绪 · 场景切换 · 轻柔动效</td>
+    <td align="center">日常分心 · 彩色场景 · Fola 配音</td>
+  </tr>
+</table>
+
+<hr>
+<p><a id="zh-b3"></a></p>
+<h5>B3：待更新…</h5>
 <p>新的全自动画风和程序化动画正在训练中。<a href="#zh-road-to-10000-stars--creator-ecosystem">为项目点个 Star</a>，一起在 5,000 Stars 时解锁！</p>
 <p><a id="zh-thumbnail-publishing-kit"></a></p>
 <h4>🖼️ 高点击率封面与发布工具包</h4>
@@ -457,20 +554,22 @@ https://github.com/kaomei/stickman-video-director
 <p><em>所有封面构思都围绕经过验证的 YouTube 包装心理学设计：鲜明的视觉反差、清晰的轮廓，以及手机端易读的字体。</em></p>
 <h5>工具包包含：</h5>
 <ul>
-<li><strong>一键封面提示词</strong>: 匹配视频的角色画风、配色与核心冲突，可直接用于 Midjourney、Google Flow 或 DALL-E 生图。</li>
+<li><strong>封面图片</strong>: 1 张匹配已确认角色、画风、配色与核心冲突的 16:9 横版封面。有可用生图工具且所需费用获准后，直接生成图片。</li>
 <li><strong>5 个高点击率标题方案</strong>: 兼顾搜索意图、好奇心缺口与广泛的观众吸引力。</li>
-<li><strong>YouTube Studio 简介与 SEO</strong>: 包含视频时间戳、主题摘要和相关标签。</li>
-<li><strong>置顶评论互动钩子</strong>: 用有讨论度的问题激发观众交流，带动互动与留存。</li>
-<li><strong>发布前检查清单</strong>: 核对手机端安全区、画面对比度与 Content-ID 准备情况。</li>
+<li><strong>YouTube Studio 简介与 SEO</strong>: 包含主题摘要、相关标签，以及有最终成片或已核实时间轴支持的时间戳。</li>
+<li><strong>置顶评论互动钩子</strong>: 1 个与视频相关、邀请观众真实交流的问题。</li>
+<li><strong>发布前检查清单</strong>: 核对手机端安全区、对比度、内容准确性和素材权利审核状态，不保证通过 Content-ID 或获得平台变现资格。</li>
 </ul>
 <h5>如何触发：</h5>
-<p>确认视频脚本或最终成片后，只需向 AI 助手发送：</p>
+<p>你确认成片满意后，AI 助手会询问是否需要这个可选收尾包。同意即可继续，也可以跳过，不影响视频交付，无需复制提示词。你也可以直接说：</p>
 <pre><code class="language-text">为这个视频生成封面与发布工具包：
-- 1 条匹配当前画风的 16:9 横版封面提示词
-- 5 个爆款 YouTube 标题方案 + 简介草稿
+- 1 张匹配已确认画风的 16:9 横版封面图
+- 5 个 YouTube 标题方案
+- 简介、相关标签，以及有依据时提供的已核实时间戳
 - 1 个用于置顶评论的互动问题
+- 发布前检查清单，明确标注待核对项
 </code></pre>
-<p><em>交付内容可直接用于制作与发布，拖放进 YouTube Studio 或 TikTok 即可。</em></p>
+<p><em>生图需要可用工具及必要的费用授权；工具不可用时，AI 助手会说明缺口，并先交付文字包。也可以在脚本确认后提前请求草稿，但依赖最终成片的检查仍会标为待核对。下载封面、按需将文案复制到 YouTube Studio 或 TikTok；不会自动上传或发布。</em></p>
 <p><a id="zh-faq"></a></p>
 <h4>❓ 常见问题解答 (FAQ)</h4>
 <h5>Q1. 这真的是 100% 免费的吗？有没有隐藏收费？</h5>
@@ -546,8 +645,8 @@ https://github.com/kaomei/stickman-video-director
 </div>
 
 <h2 id="appendix-2">附录二　英文原文与许可证</h2>
-<details><summary>README.md 英文原文（Markdown 源码，提交 439682a）</summary>
-<pre><code>&lt;div align=&quot;center&quot;&gt;
+<details><summary>README.md 英文原文（Markdown 源码，提交 d19705d）</summary>
+<pre>&lt;div align=&quot;center&quot;&gt;
 
 [**🇺🇸 EN**](README.en.md) · [🇨🇳 简中](README.zh-CN.md) · [🇯🇵 日本語](README.ja.md) · [🇰🇷 한국어](README.ko.md) · [🇫🇷 FR](README.fr.md) · [🇧🇷 PT-BR](README.pt-BR.md) · [🇹🇷 TR](README.tr.md) · [🇮🇩 ID](README.id.md)
 
@@ -597,11 +696,21 @@ Continually updated visual styles for **science explainers, dark psychology, tec
 &lt;a href=&quot;#b1&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@fa0a68d1ccf9fd057230abab2af832f768debe86/assets/readme/previews/b1-minimal-handdrawn.gif&quot; alt=&quot;Minimal hand-drawn stickman video: expressive characters, key text, and subtle animation&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
 &lt;/td&gt;
 &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Amber Noir&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#a6&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@828b865b37cbff61464b9c00e04bce79f79b3b5c/assets/readme/previews/style-6-amber-noir-flow.gif&quot; alt=&quot;Amber Noir stickman animation: an orange-hoodie character in a warm-lit city with deep shadows&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;
+&lt;strong&gt;Colorful Hand-Drawn&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&quot;#b2&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@a7f13ef5cd023e0e4fa637ec9f658582a2c211fe/assets/readme/previews/b2-colorful-sleep.gif&quot; alt=&quot;Colorful hand-drawn stickman video: a quiet bedroom and a thought drifting along a river&quot; width=&quot;90%&quot;&gt;&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
 &lt;/table&gt;
 
 &lt;div align=&quot;center&quot;&gt;
 
-**6 styles · 8 visual options · Tested examples · Free and open source**
+**8 styles · 10 visual options · Tested examples · Free and open source**
 
 ⭐ **Star the project to catch the next style drop and feature unlocks.**
 
@@ -692,6 +801,8 @@ After I approve it, build the full video with visuals timed to the narration. De
 The AI assistant plans the scenes, generates the visuals and narration, adds captions and sound effects, and renders a complete video to the voiceover&#x27;s timing. You approve the script and preview; you do not have to generate and assemble every scene yourself.
 
 On first use, it checks the required setup and walks you through anything missing. If a visual or voiceover section needs work, revise just that section and keep what you have already approved.
+
+**Optional finishing for either mode:** once you confirm the final video, continue with the [Thumbnail &amp; Publishing Kit](#thumbnail-publishing-kit) for a matching cover and upload copy—or finish here. No new mode or installation is needed.
 
 &lt;a id=&quot;style-gallery&quot;&gt;&lt;/a&gt;
 
@@ -791,7 +902,24 @@ Style and prompt contribution: [Lawal Ridwan / @leksautomate](https://github.com
 
 &lt;a id=&quot;a6&quot;&gt;&lt;/a&gt;
 
-### A6: Coming soon…
+### A6: Amber Noir
+
+Warm golden light, deep shadows, and a black round-headed character in an orange hoodie. Turn a curious “what if” into a small cinematic story, told through expressive actions rather than a talking presenter.
+
+- **Visual style**: warm amber highlights against deep plum shadows, simple silhouettes, softly shaded city scenes, and restrained camera movement.
+- **Best for**: “what if” scenarios, psychology, modern fables, unexpected discoveries, and short stories with a twist.
+- **Choose this when**: you want cinematic animated scenes with an independent narrator. In a browser-enabled agent, approved clips can be assembled with voiceover, sound effects, bold uppercase captions, and a clean white title.
+
+| Example 1: What if everything cost 10,000 times less? | Example 2: A bargain worth running for |
+|:---:|:---:|
+| &lt;a href=&quot;assets/readme/style-6-amber-noir-mcp.mp4&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@828b865b37cbff61464b9c00e04bce79f79b3b5c/assets/readme/previews/style-6-amber-noir-mcp.gif&quot; alt=&quot;Amber Noir: a 20-second story about a world where prices fall overnight; click to watch with sound&quot; width=&quot;360&quot;&gt;&lt;/a&gt; | &lt;a href=&quot;assets/readme/style-6-amber-noir-flow.mp4&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@828b865b37cbff61464b9c00e04bce79f79b3b5c/assets/readme/previews/style-6-amber-noir-flow.gif&quot; alt=&quot;Amber Noir: an 8-second animated scene of an orange-hoodie character outside a shop; click to watch with sound&quot; width=&quot;360&quot;&gt;&lt;/a&gt; |
+| Renoise MCP example · 20 seconds | Google Flow example · 8 seconds |
+
+---
+
+&lt;a id=&quot;a7&quot;&gt;&lt;/a&gt;
+
+### A7: Coming soon…
 
 New specialized director styles are currently in training. [Star the project](#road-to-10000-stars--creator-ecosystem) to unlock them at 5,000 Stars!
 
@@ -813,8 +941,6 @@ Let the narration lead. Expressive stick figures, colorful hand-drawn props, and
 - **Best for**: YouTube explainers, psychology and personal growth, workplace stories, educational videos, and product promotion.
 - **Choose this when**: you want a complete narrated, captioned video from a topic, copy, or story script. The visuals follow the voiceover&#x27;s natural rhythm, making it a good fit for sustained explanations and long-form storytelling.
 
-Click a GIF to view or download the preview with sound.
-
 &lt;table width=&quot;100%&quot;&gt;
   &lt;tr&gt;
     &lt;th width=&quot;50%&quot; align=&quot;center&quot;&gt;Example 1: YouTube without showing your face&lt;/th&gt;
@@ -834,7 +960,34 @@ Click a GIF to view or download the preview with sound.
 
 &lt;a id=&quot;b2&quot;&gt;&lt;/a&gt;
 
-### B2: Coming soon…
+### B2: Colorful Hand-Drawn
+
+Everyday stories, drawn with personality. Warm paper, colorful scenes, simple stick figures, and handwritten headings turn familiar moments into engaging narrated explainers.
+
+- **Visual style**: fine, irregular ink lines, muted colors, and story-specific environments. Closeups, changing viewpoints, illustrated diagrams, and small scene or prop movements carry the story without excessive character animation. Dark captions sit on compact ivory paper labels.
+- **Best for**: everyday psychology, habits, attention, personal growth, and relatable YouTube explainers.
+- **Choose this when**: you want a finished video with richer illustrated settings, Gemini narration, semantic captions, and action sound effects. Your coding agent builds and assembles it locally.
+
+&lt;table width=&quot;100%&quot;&gt;
+  &lt;tr&gt;
+    &lt;th width=&quot;50%&quot; align=&quot;center&quot;&gt;Example 1: Let one thought drift past&lt;/th&gt;
+    &lt;th width=&quot;50%&quot; align=&quot;center&quot;&gt;Example 2: Why did you unlock your phone?&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/b2-colorful-sleep.mp4&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@a7f13ef5cd023e0e4fa637ec9f658582a2c211fe/assets/readme/previews/b2-colorful-sleep.gif&quot; alt=&quot;B2 Colorful Hand-Drawn: a quiet bedroom, a paper boat on a river, and a calmer bedtime moment&quot; width=&quot;360&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+    &lt;td width=&quot;50%&quot; align=&quot;center&quot;&gt;&lt;a href=&quot;assets/readme/b2-colorful-phone-weather.mp4&quot;&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/kaomei/stickman-video-director@a7f13ef5cd023e0e4fa637ec9f658582a2c211fe/assets/readme/previews/b2-colorful-phone-weather.gif&quot; alt=&quot;B2 Colorful Hand-Drawn: a phone-checking detour, with narration, ivory captions, and illustrated scenes&quot; width=&quot;360&quot;&gt;&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td align=&quot;center&quot;&gt;Bedtime thoughts · Scenic cutaways · Gentle motion&lt;/td&gt;
+    &lt;td align=&quot;center&quot;&gt;Everyday distractions · Colorful scenes · Fola narration&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+---
+
+&lt;a id=&quot;b3&quot;&gt;&lt;/a&gt;
+
+### B3: Coming soon…
 
 New Autopilot styles and procedural animations are currently in training. [Star the project](#road-to-10000-stars--creator-ecosystem) to unlock them at 5,000 Stars!
 
@@ -877,24 +1030,26 @@ An integrated finishing pack for both **Director and Autopilot Mode**: generates
 
 ### What the kit delivers:
 
-- **1-Click Thumbnail Prompt**: Matched to your video’s exact character style, color palette, and core conflict. Ready to generate in Midjourney, Google Flow, or DALL-E.
+- **Thumbnail Image**: One landscape 16:9 cover matched to your video’s approved character style, color palette, and core conflict. Generated directly when a suitable image tool is available and any required cost is approved.
 - **5 High-CTR Title Variants**: Formulated for search intent, curiosity gaps, and broad viewer appeal.
-- **YouTube Studio Description &amp; SEO**: Complete with video timestamps, topic summary, and relevant tags.
-- **Pinned Comment Hook**: A provocative question designed to trigger viewer debates and algorithm retention.
-- **Pre-Publish Checklist**: Safe-zone verification for mobile, contrast check, and Content-ID readiness.
+- **YouTube Studio Description &amp; SEO**: Topic summary, relevant tags, and timestamps when supported by the final cut or a verified timeline.
+- **Pinned Comment Hook**: One relevant question inviting genuine viewer discussion.
+- **Pre-Publish Checklist**: Mobile safe zones, contrast, content accuracy, and media-rights review status. Content-ID clearance and monetization eligibility are not guaranteed.
 
 ### How to trigger it:
 
-Once you approve your video script or final cut, simply send to your AI assistant:
+After you confirm the final video, your assistant will ask whether you want this optional finishing pack. Say yes to continue, or skip it without delaying video delivery. No need to copy a prompt. You can also ask directly:
 
 ```text
 Generate the Thumbnail &amp; Publishing Kit for this video:
-- 1 landscape 16:9 thumbnail prompt matching the current art style
-- 5 viral YouTube title options + description draft
+- 1 landscape 16:9 thumbnail image matching the approved art style
+- 5 YouTube title options
+- A description, relevant tags, and verified timestamps if available
 - 1 engagement question for the pinned comment
+- A pre-publish checklist with any pending checks clearly marked
 ```
 
-*Outputs are production-ready to drag &amp; drop directly into YouTube Studio or TikTok.*
+*Image generation requires an available tool and any necessary cost approval; if unavailable, the assistant explains the gap and still delivers the text pack. An early request based on an approved script produces drafts, with final-cut checks pending. Download the cover and copy the text into YouTube Studio or TikTok as appropriate; nothing is uploaded or published automatically.*
 
 &lt;!-- thumbnail-publishing-kit:end --&gt;
 
@@ -1029,7 +1184,7 @@ SOFTWARE.
 </code></pre></details></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/kaomei/stickman-video-director" rel="noopener">kaomei/stickman-video-director</a>，作者 CrazyKaomei（GitHub @kaomei），MIT 许可，Copyright (c) 2026 Stickman Video Director contributors。A5 画风与提示词由 Lawal Ridwan（@leksautomate）贡献。README 中文版与英文原文依 MIT 许可转载并保留版权与许可声明；图片取自仓库（MIT），其中出现的 YouTube 等第三方标志归其权利人所有。统计数据取自公开 GitHub API（2026-10-30 11:50 UTC+8）。导读、核实与风险提示为本站整理，未实际运行该项目。</p>
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/kaomei/stickman-video-director" rel="noopener">kaomei/stickman-video-director</a>，作者 CrazyKaomei（GitHub @kaomei），MIT 许可，Copyright (c) 2026 Stickman Video Director contributors。A5 画风与提示词由 Lawal Ridwan（@leksautomate）贡献。README 中文版与英文原文依 MIT 许可转载并保留版权与许可声明；图片取自仓库（MIT），其中出现的 YouTube 等第三方标志归其权利人所有。统计数据取自公开 GitHub API（首次 2026-10-30 11:50，复核 2026-11-02 21:33，UTC+8）；README 转载版本已同步到提交 d19705d。导读、核实与风险提示为本站整理，未实际运行该项目。</p>
 <p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/kaomei/stickman-video-director" rel="noopener">github.com/kaomei/stickman-video-director</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
