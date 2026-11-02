@@ -1,5 +1,19 @@
 [
   {
+    "slug": "deepseekharness-super-agent",
+    "title": "DeepSeek Harness：Super-agent 设计探索",
+    "desc": "DeepSeek Harness 团队 X 长文全文中译：常驻 Router 只管对人交互与分派、隔离 Worker 并发执行的双层架构；Trigger 两级过滤（Fast/Slow Path）、Thread 订阅直通、Inline & Spill 与链式召回、投机执行“静默复现并修复”；异步 start()/stop() 全双工 ReAct、IM 回复限 100 词；计算/状态/执行环境两级分离（云端 Agent Loop + BYOM 端点 daemon）、外置 Watchdog；自测实验（p50 12.4 分钟 vs 单会话 20.4）与开放问题。附原型 dsh-superagent-prototype（MIT）导读与 README 全译；实验数字自报 ⚠️。",
+    "source": "DeepSeek Harness @DeepSeekHarness · X",
+    "date": "2026-11-02",
+    "type": "翻译",
+    "subtitle": "Exploring Super-agent Design: Towards a More Autonomous Agent System",
+    "original_url": "https://x.com/DeepSeekHarness/status/2116857257245987236",
+    "spine": "Super-agent 架构",
+    "summary": "Router 分派、Worker 并发，让 Agent 不绑会话",
+    "kind": "长文",
+    "by": "DeepSeek Harness"
+  },
+  {
     "slug": "leo-xiaolei-grok-bot-team-guide",
     "title": "解读 Lauren 的 Grok Bot 团队打造指南：七条要点与评论区拆解",
     "subtitle": "How Lauren (@poteto) builds a Grok Bot team · 原文照录 + 逐条回查",
