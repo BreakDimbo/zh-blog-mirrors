@@ -204,6 +204,12 @@ h1 em{font:italic 400 .56em/1 var(--latin);color:var(--mute);letter-spacing:.01e
 .case-fig.lt .prn{color:#2b2621}
 .case-fig img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.84) contrast(.97) sepia(.06)}
 .case-fig .prn::after{content:"";position:absolute;inset:0;pointer-events:none;background:url(%%TEX%%paper.webp) 0 0/180px;mix-blend-mode:multiply;opacity:.5;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.12)}
+/* the pulled-out tape and its sleeve are one link into the article: click / tap again to read */
+.case-go{position:absolute;inset:0;z-index:2;display:block;cursor:pointer;border-radius:1px;-webkit-tap-highlight-color:transparent}
+.case-hint{position:absolute;right:10px;bottom:10px;padding:5px 9px 6px;font:500 12.5px/1 var(--serif);letter-spacing:.08em;color:rgba(248,242,230,.96);background:rgba(24,18,12,.52);border-radius:2px;opacity:.82;transition:opacity .3s,background .3s}
+.case-go:hover .case-hint,.case-go:focus-visible .case-hint{opacity:1;background:rgba(24,18,12,.72)}
+.case-tx{cursor:pointer}.case-tx .case-act{cursor:auto}
+.tape[aria-expanded="true"]{cursor:pointer}
 .case-k{margin:0 0 12px;font:500 11.5px/1 var(--sans);letter-spacing:.2em;color:var(--acc)}
 .case h3{margin:0;font:600 clamp(20px,2.3vw,26px)/1.4 var(--serif);letter-spacing:.02em}
 .case-sub{margin:8px 0 0;font:italic 400 16px/1.5 var(--latin);color:var(--mute)}
@@ -261,7 +267,7 @@ footer .pv{display:block;margin-top:10px;font:italic 400 14px/1.6 var(--latin)}
 <h1 class="rise">中文镜像文库<em>a tape library</em></h1>
 <p class="intro rise">每一篇文章是一盒录像带，按类别排上书架。把它抽出来，翻到封面，再决定要不要放进机器里。</p>
 </div>
-<p class="howto js-only rise"><span class="k"><kbd>←</kbd><kbd>→</kbd> 挑选 · <kbd>Enter</kbd> 抽出 · <kbd>Esc</kbd> 放回 · 拖动书架</span><span class="t">左右滑动书架 · 轻点抽出</span></p>
+<p class="howto js-only rise"><span class="k"><kbd>←</kbd><kbd>→</kbd> 挑选 · <kbd>Enter</kbd> 抽出 / 再按阅读 · <kbd>Esc</kbd> 放回 · 拖动书架</span><span class="t">左右滑动书架 · 轻点抽出 · 再点阅读</span></p>
 </header>
 <div class="bar rise">
 <div class="l"><div class="seg js-only" role="group" aria-label="书架分组"><button type="button" data-g="type" aria-pressed="true">按类别</button><button type="button" data-g="month" aria-pressed="false">按月份</button></div>
@@ -272,7 +278,7 @@ footer .pv{display:block;margin-top:10px;font:italic 400 14px/1.6 var(--latin)}
 <main>
 <div class="shelves" id="shelves" aria-label="录像带书架"></div>
 <section id="case" class="case" hidden aria-labelledby="case-t" aria-live="polite">
-<div class="case-in"><figure class="case-fig"><span class="slv" aria-hidden="true"></span><span class="prn"></span></figure>
+<div class="case-in"><figure class="case-fig"><span class="slv" aria-hidden="true"></span><span class="prn"></span><a class="case-go" href="#" tabindex="-1" aria-hidden="true"><span class="case-hint">阅读 →</span></a></figure>
 <div class="case-tx"><p class="case-k ln"></p><h3 id="case-t" class="ln"></h3><p class="case-sub ln" lang="en"></p><p class="case-d ln"></p><p class="case-src ln"></p>
 <p class="case-act ln"><a class="open" href="#">打开中文页 →</a><a class="orig" href="#" target="_blank" rel="noopener">原文 ↗</a><button type="button" class="close">放回书架</button></p></div></div>
 </section>
@@ -499,15 +505,15 @@ function fillCase(e){caseEl.style.setProperty('--c',e.col);fig.classList.toggle(
  $('.case-k',caseEl).textContent=(e.k&&e.k!==e.ty?e.k+' · ':'')+e.ty+' · '+e.d.replace(/-/g,'.')+' · No.'+pad(e.no);$('#case-t').textContent=e.t;
  var sub=$('.case-sub',caseEl);sub.textContent=e.sub;sub.hidden=!e.sub;
  $('.case-d',caseEl).textContent=e.desc;$('.case-src',caseEl).textContent='— '+e.src;
- $('.open',caseEl).href='%%P%%'+e.s+'/';var o=$('.orig',caseEl);o.hidden=!e.u;if(e.u)o.href=e.u}
+ $('.open',caseEl).href=$('.case-go',caseEl).href='%%P%%'+e.s+'/';var o=$('.orig',caseEl);o.hidden=!e.u;if(e.u)o.href=e.u}
 function openCase(){closeTok++;caseEl.hidden=false;
  CB.jump({o:0,y:-8});CB.to({o:1,y:0},SP.ui);
  PR.jump({x:-54,y:4,r:-1.4,o:0});PR.to({o:1},SP.ui,60);PR.to({x:0,y:0,r:0},SP.pull,90);
  LN.forEach(function(b,n){b.jump({o:0,y:12});b.to({o:1,y:0},SP.ui,150+n*55)})}
-function pull(t,quiet){if(!t)return;if(pulled===t){closeCase();return}
+function pull(t,quiet,ev){if(!t)return;if(pulled===t){read(ev);return}
  var s=t.__s,tr=s.T.tr,e=IT[+t.dataset.i],sh=t.closest('.shelf');
- if(pulled){var ps=pulled.__s,ptr=ps.T.tr;pulled.setAttribute('aria-expanded','false');ptr.pullS=null;if(ptr!==tr)layout(ptr,'back')}
- pulled=t;pulledT=s.T;load(t);t.setAttribute('aria-expanded','true');tr.pullS=s;rove(tr.el,t);peekTo(tr,null);
+ if(pulled){var ps=pulled.__s,ptr=ps.T.tr;pulled.setAttribute('aria-expanded','false');pulled.removeAttribute('title');ptr.pullS=null;if(ptr!==tr)layout(ptr,'back')}
+ pulled=t;pulledT=s.T;load(t);t.setAttribute('aria-expanded','true');t.title='再点一次，进入阅读';tr.pullS=s;rove(tr.el,t);peekTo(tr,null);
  if(!tr.seen&&quiet){tr.seen=true;tr.slots.forEach(function(x){x.b.jump({o:1})})}
  layout(tr,'pull');
  fillCase(e);sh.appendChild(caseEl);openCase();
@@ -516,13 +522,13 @@ function pull(t,quiet){if(!t)return;if(pulled===t){closeCase();return}
   if(quiet)W.scrollTo(0,W.scrollY+st.top-90);else if(r.bottom>innerHeight)W.scrollBy({top:Math.min(r.bottom-innerHeight+28,st.top-8),behavior:RM?'auto':'smooth'})},quiet?0:120);
  try{history.replaceState(null,'','#t='+e.s)}catch(_){}}
 function closeCase(silent,instant){var t=pulled;
- if(t){var tr=t.__s.T.tr;t.setAttribute('aria-expanded','false');tr.pullS=null;if(!instant)layout(tr,'back')}
+ if(t){var tr=t.__s.T.tr;t.setAttribute('aria-expanded','false');t.removeAttribute('title');tr.pullS=null;if(!instant)layout(tr,'back')}
  pulled=null;pulledT=null;
  if(instant||RM||caseEl.hidden){caseEl.hidden=true}else{var tok=++closeTok;CB.to({o:0,y:-6},SP.out);setTimeout(function(){if(tok===closeTok)caseEl.hidden=true},230)}
  if(!silent){try{history.replaceState(null,'',location.pathname+location.search)}catch(_){}}}
 
 /* ---------- events ---------- */
-shelvesEl.addEventListener('click',function(ev){var t=ev.target.closest('.tape');if(t){pull(t);return}
+shelvesEl.addEventListener('click',function(ev){var t=ev.target.closest('.tape');if(t){if(t===pulled&&moved(ev))return;pull(t,false,ev);return}
  var b=ev.target.closest('.arr button');if(b){var tr=$('.track',b.closest('.shelf')).__tr;glide(tr,snapPos(tr,tr.el.scrollLeft+ +b.dataset.d*tr.el.clientWidth*.8))}});
 shelvesEl.addEventListener('focusin',function(ev){var t=ev.target.closest('.tape');if(!t)return;load(t);rove(t.parentNode,t);if(t.matches(':focus-visible'))setHover(t.__s.T.tr,t.__s)});
 shelvesEl.addEventListener('focusout',function(ev){var t=ev.target.closest('.tape');if(t&&t.__s.T.tr.hovS===t.__s&&!t.matches(':hover'))setHover(t.__s.T.tr,null)});
@@ -544,14 +550,31 @@ var leaving=0;
 function enter(){leaving=0;veil.style.transition='none';veil.classList.remove('on');void veil.offsetWidth;veil.style.transition='';
  CB.jump({o:1,y:0});PR.jump({x:0,y:0,r:0,o:1});LN.forEach(function(b){b.jump({o:1,y:0})});
  if(pulled){var t=pulled;pulled=null;pulledT=null;t.__s.T.tr.pullS=null;pull(t,true)}else tracks.forEach(function(tr){if(tr.on)layout(tr,'back')})}
-$('.open',caseEl).addEventListener('click',function(ev){var href=this.href;
- if(!href||/#$/.test(href)||ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey||RM||(this.target&&this.target!=='_self'))return;
- ev.preventDefault();if(leaving)return;leaving=1;
+function leave(href){if(leaving)return;if(RM){location.assign(href);return}leaving=1;
  setTimeout(function(){location.assign(href)},420);
  setTimeout(function(){if(leaving&&location.href.split('#')[0]!==href.split('#')[0])location.href=href},2500);
  try{var T=pulledT,b=T&&T.s&&T.s.b;
   if(b){b.to({z:-26,y:0},[170,22]);b.to({ry:-92},[150,20])}
-  LN.forEach(function(b,n){b.to({o:0,y:-6},SP.out,n*25)});PR.to({x:-30,o:0},SP.out);veil.classList.add('on')}catch(_){}});
+  LN.forEach(function(b,n){b.to({o:0,y:-6},SP.out,n*25)});PR.to({x:-30,o:0},SP.out);veil.classList.add('on')}catch(_){}}
+$('.open',caseEl).addEventListener('click',function(ev){var href=this.href;
+ if(!href||/#$/.test(href)||ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey||RM||(this.target&&this.target!=='_self'))return;
+ ev.preventDefault();leave(href)});
+/* the expanded tape / sleeve: a second click (or tap, or Enter on the tape) goes into the article.
+   The cover is a real <a href> (middle / cmd-click open a new tab natively); the tape and the text
+   column forward to it. A drag or scroll of >= 5px between press and release is not a click. */
+var down=null;
+doc.addEventListener('pointerdown',function(e){down={x:e.clientX,y:e.clientY,sy:W.scrollY}},true);
+function moved(ev){if(!down||!ev||ev.detail===0)return false;return Math.abs(ev.clientX-down.x)>=5||Math.abs(ev.clientY-down.y)>=5||Math.abs(W.scrollY-down.sy)>=5}
+function hrefNow(){var a=$('.case-go',caseEl);return pulled&&a&&!/#$/.test(a.href)?a.href:''}
+function read(ev,newTab){var href=hrefNow();if(!href)return;
+ if(newTab||(ev&&(ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button===1))){W.open(href,'_blank','noopener');return}leave(href)}
+$('.case-go',caseEl).addEventListener('click',function(ev){if(moved(ev)){ev.preventDefault();return}
+ if(ev.defaultPrevented||ev.button||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;ev.preventDefault();leave(this.href)});
+$('.case-tx',caseEl).addEventListener('click',function(ev){if(ev.target.closest('a,button,.case-act')||moved(ev))return;
+ var sel=W.getSelection&&W.getSelection();if(sel&&String(sel).length)return;read(ev)});
+function aux(ev){if(ev.button!==1||moved(ev))return;ev.preventDefault();read(ev,true)}
+$('.case-tx',caseEl).addEventListener('auxclick',function(ev){if(!ev.target.closest('a,button,.case-act'))aux(ev)});
+shelvesEl.addEventListener('auxclick',function(ev){var t=ev.target.closest('.tape');if(t&&t===pulled)aux(ev)});
 addEventListener('pageshow',function(e){if(e.persisted||leaving)enter()});
 $$('.chips button').forEach(function(b){b.addEventListener('click',function(){filt=b.dataset.f;$$('.chips button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});apply()})});
 $$('.seg button').forEach(function(b){b.addEventListener('click',function(){if(group===b.dataset.g)return;group=b.dataset.g;$$('.seg button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});render()})});
