@@ -275,10 +275,18 @@ else:
     footlink = '<span class="pv">也可按时间翻阅 <a href="./classic/">经典列表</a></span>'
 
 TPL = open(os.path.join(ROOT, 'tools', 'hub_shelf_template.html'), encoding='utf-8').read()
+# cache-busting token for the vendored ink-fish library: a hash of assets/ink-fish/*, so dropping in a new
+# ink-fish.js / ink-fish.css (e.g. a newer release) and rebuilding is all an upgrade needs
+import hashlib
+_fh = hashlib.sha1()
+for _n in ('ink-fish.js', 'ink-fish.css'):
+    _fh.update(open(os.path.join(ROOT, 'assets', 'ink-fish', _n), 'rb').read())
+FISHV = _fh.hexdigest()[:10]
 page = (TPL.replace('%%HEADMETA%%', head)
            .replace('%%TOPLINK%%', toplink)
            .replace('%%EYEBROW%%', eyebrow)
            .replace('%%FOOTLINK%%', footlink)
+           .replace('%%FISHV%%', FISHV)
            .replace('%%TEX%%', P + 'assets/shelf/')
            .replace('%%P%%', P)
            .replace('%%N%%', str(len(E)))

@@ -257,8 +257,12 @@ footer .pv{display:block;margin-top:10px;font:italic 400 14px/1.6 var(--latin)}
  .flat a{grid-template-columns:1fr}.flat time{grid-row:auto}}
 @media (hover:none){.howto .k{display:none}}@media (hover:none) and (pointer:coarse){.peek{display:none}}@media (hover:hover){.howto .t{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::after,*::before{transition:none!important;animation:none!important}.js .rise{opacity:1;transform:none}}
+/* ink-fish (vendored in assets/ink-fish, mounted at the end of the script): the pond is fixed to the viewport
+   under all content; its ink follows the page's --ink (light / dark / data-theme) */
+body{--ink-fish-ink:var(--ink)}
+@media (max-width:720px){html.js header.hero{padding-bottom:150px}}
 </style>
-<link rel="stylesheet" href="./assets/ink-fish/ink-fish.css"><script defer src="./assets/ink-fish/ink-fish.js"></script>
+<link rel="stylesheet" href="./assets/ink-fish/ink-fish.css?v=ecb25d6e1d"><script defer src="./assets/ink-fish/ink-fish.js?v=ecb25d6e1d"></script>
 <!-- zbm-nav:head --><link rel="stylesheet" href="./assets/nav.css"><script defer src="./assets/nav.js"></script><!-- /zbm-nav:head -->
 </head>
 <body>
@@ -731,6 +735,21 @@ if(doc.fonts&&doc.fonts.ready)doc.fonts.ready.then(function(){fitSpines();measur
 $$('.rise').forEach(function(el,n){el.style.transitionDelay=(n*70)+'ms';requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('in')})})});
 function fromHash(){var m=location.hash.match(/^#t=([\w-]+)/),t=m&&tapeOf(m[1]);if(t&&t!==pulled&&!root.classList.contains('list-view'))pull(t,true)}
 fromHash();addEventListener('hashchange',fromHash);
+/* ink-fish (https://github.com/BreakDimbo/ink-fish, v1.2.1 vendored): the library's own "reproduce the homepage"
+   settings, plus the fixed pond, cursor ripples and painted koi. The canvas never takes pointer events;
+   ripples come from the library's window-level pointer listeners. Its deferred script has run by
+   DOMContentLoaded. Reduced motion: the library keeps the water calm and turns ripples off.
+   assets/ink-fish/ink-fish.{js,css} are the library's src files, vendored verbatim: an upgrade is a drop-in copy
+   plus a rebuild (the ?v= token is a hash of those files); new library options go in FISH below. */
+var FISH={fixed:true,ripples:true,koi:true,
+ habitat:'.wrap',hero:'header.hero',title:'header.hero h1',
+ obstacles:'.shelves .unit, .flat, #case',bands:'.bar',
+ ignore:'a,button,input,label,.tape',
+ text:[{selector:'header.hero .eyebrow',keep:.3,feather:30},{selector:'header.hero h1',keep:.16,feather:44},
+  {selector:'header.hero .intro',keep:.24,feather:34},{selector:'header.hero .howto',keep:.26,feather:28},
+  {selector:'.top > *',keep:.3,feather:24},{selector:'body > footer, .wrap > footer, main > .empty',keep:.24,feather:30}]};
+function mountFish(){if(!W.InkFish||W.__zbmFish)return;W.__zbmFish=InkFish.mount(doc.body,FISH)}
+if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',mountFish,{once:true});else mountFish();
 })();
 </script>
 </body>

@@ -1,9 +1,12 @@
-/* ink-fish: decorative water behind the hub. The canvas is fixed to the viewport and sits under all
-   content (body is isolated, so z-index:-1 paints above the page background). */
-body{isolation:isolate}
-.ink-water{position:fixed;left:0;top:0;width:100%;height:100vh;z-index:-1;pointer-events:none;display:block;
-  opacity:0;transition:opacity 2.4s cubic-bezier(.33,0,.15,1)}
-.ink-water.on{opacity:1}
-@media (prefers-reduced-motion:reduce){.ink-water{transition:opacity .6s linear}}
-@media (max-width:720px){html.js header.hero{padding-bottom:150px}}
-@media print{.ink-water{display:none}}
+/* ink-fish — brush-ink fish swimming behind your content. https://github.com/BreakDimbo/ink-fish (MIT)
+   The canvas sits under all content of its host (the host is isolated, so z-index:-1 paints above the
+   host's own background but below everything inside it). Decorative only: never takes pointer events. */
+.ink-fish-host{isolation:isolate}
+.ink-fish{position:fixed;left:0;top:0;width:100%;height:100vh;z-index:-1;pointer-events:none;display:block;
+  opacity:0;transition:opacity 2.4s cubic-bezier(.33,0,.15,1);
+  /* its own compositor layer: redrawing the canvas never repaints the page and scrolling never repaints it */
+  will-change:transform;contain:strict}
+.ink-fish.ink-fish--local{position:absolute}
+.ink-fish.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.ink-fish{transition:opacity .6s linear}}
+@media print{.ink-fish{display:none}}
