@@ -627,13 +627,14 @@ if(doc.fonts&&doc.fonts.ready)doc.fonts.ready.then(function(){fitSpines();measur
 $$('.rise').forEach(function(el,n){el.style.transitionDelay=(n*70)+'ms';requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('in')})})});
 function fromHash(){var m=location.hash.match(/^#t=([\w-]+)/),t=m&&tapeOf(m[1]);if(t&&t!==pulled&&!root.classList.contains('list-view'))pull(t,true)}
 fromHash();addEventListener('hashchange',fromHash);
-/* ink-fish (https://github.com/BreakDimbo/ink-fish, v1.2.1 vendored): the library's own "reproduce the homepage"
-   settings, plus the fixed pond, cursor ripples and painted koi. The canvas never takes pointer events;
+/* ink-fish (https://github.com/BreakDimbo/ink-fish, v1.3.0 vendored): the library's own "reproduce the homepage"
+   settings, plus the fixed pond, cursor ripples, painted koi and real water (WebGL2; the library falls back to
+   the flat Canvas 2D water without WebGL2, on a slow device, and under reduced motion). The canvas never takes pointer events;
    ripples come from the library's window-level pointer listeners. Its deferred script has run by
    DOMContentLoaded. Reduced motion: the library keeps the water calm and turns ripples off.
    assets/ink-fish/ink-fish.{js,css} are the library's src files, vendored verbatim: an upgrade is a drop-in copy
    plus a rebuild (the ?v= token is a hash of those files); new library options go in FISH below. */
-var FISH={fixed:true,ripples:true,koi:true,
+var FISH={fixed:true,ripples:true,koi:true,water:'real',
  habitat:'.wrap',hero:'header.hero',title:'header.hero h1',
  obstacles:'.shelves .unit, .flat, #case',bands:'.bar',
  ignore:'a,button,input,label,.tape',

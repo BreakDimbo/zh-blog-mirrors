@@ -1,4 +1,4 @@
-/*! ink-fish v1.2.1 — brush-ink fish swimming behind your page. MIT © 2026 BreakDimbo
+/*! ink-fish v1.3.0 — brush-ink fish swimming behind your page. MIT © 2026 BreakDimbo
     https://github.com/BreakDimbo/ink-fish
 
    One Canvas 2D (DPR <= 1.5) and one rAF loop per instance, paused when the tab is hidden, the host is
@@ -11,7 +11,9 @@
    are erased from the canvas; ink under text is thinned. Layout is read only on resize/reflow, never
    inside the frame. Optional (v1.1): a fixed pond that stays put while the page scrolls over it,
    restrained water rings under the cursor that refract the fish they cross, and a few koi painted
-   in muted pigment washes.
+   in muted pigment washes. Optional (v1.3, water: "real"): one WebGL2 layer for real water: dispersive
+   Cauchy–Poisson rings, fish and shadows refracted by the slope, area-ratio caustics, a faint Fresnel
+   sky (methods after Ultra Water, MIT, see THIRD_PARTY_NOTICES.md); Canvas 2D stays the fallback.
 
    Usage:   var fish = InkFish.mount(document.body, { obstacles: ".card" });  …  fish.destroy();
    or:      <body data-ink-fish>   (options as JSON in the attribute value)                          */
@@ -44,7 +46,8 @@
     maxDpr: 1.5,
     fadeIn: true,
     fixed: false,             // page mode: true = the pond stays fixed while the page scrolls over it; false = scroll parallax
-    ripples: false,           // faint water rings under the cursor (and on tap/click) that refract the fish they cross
+    ripples: false,           // faint water rings under the cursor (and on tap/click) that refract the fish they cross; "real" = ripples + water "real"
+    water: false,             // false (flat, Canvas 2D) | "real": a WebGL2 surface (dispersive rings, refraction, caustics, Fresnel); falls back to flat
     adaptive: true,           // drop to DPR 1 if frames keep arriving late
     koi: false                // true (a few, by width) or a number: koi painted in muted pigment washes
   };
@@ -59,6 +62,232 @@
     for (var i = 1; i < arguments.length; i++) { var b = arguments[i]; if (b) for (var k in b) if (Object.prototype.hasOwnProperty.call(b, k)) a[k] = b[k]; }
     return a;
   };
+  // ── real water (v1.3, opt-in): one WebGL2 layer over the two Canvas 2D layers ─────────────────────
+  // The methods follow Humpalumps/Ultra-Water (MIT, see THIRD_PARTY_NOTICES.md) scaled down to a
+  // top-down pond a hand's depth deep; no code is copied from it.
+  //  · Ripples are Cauchy–Poisson rings: a point disturbance released on deep water, summed over
+  //    wavenumber with the capillary–gravity dispersion ω² = gk + (σ/ρ)k³ (σ/ρ = 7.4e-5 m³/s², the value
+  //    Ultra Water uses for its capillary band) and viscous damping e^(−2νk²t). Short waves run ahead,
+  //    so a ring is a train of finer wavelets in front of a quiet centre, and the finest die first.
+  //    The radial profile of each live ring is integrated on the GPU every frame from a Bessel table.
+  //  · A faint ambient swell is a dozen dispersive plane waves (a hand-picked Tessendorf-style spectrum).
+  //  · Caustics are Evan Wallace's area-ratio splat: a grid refracted through the smoothed (cubic
+  //    B-spline) slopes onto the floor, each triangle adding old area / new area, so the light only moves
+  //    around (mean 1) and the slopes never land as beads.
+  //  · The fish and their shadows are refracted by the slope (deeper layers shift further), seen through
+  //    a Beer–Lambert water column, and the surface adds a Fresnel-weighted reflection of a soft sky.
+  var WATER = (function () {
+    var S = 6e-4, G = 9.81, SR = 7.4e-5;   // metres per CSS px; g; σ/ρ
+    var SLOW = 0.22, ASLOW = 0.1;           // slow motion of the rings, of the ambient swell
+    var NU = 6e-6;                          // kinematic viscosity, ×6 for a pond's surface film
+    var SRC = 7, NK = 192, NR = 512, RMAX = 640, SLOTS = 8, SIM = 0.5, GRID = 4;
+    var DK = 4.2 / SRC / NK, KP = new Float32Array(NK), W = new Float32Array(NK), VD = new Float32Array(NK);
+    for (var i = 0; i < NK; i++) { var kp = (i + 0.5) * DK, km = kp / S; KP[i] = kp; W[i] = Math.sqrt(G * km + SR * km * km * km); VD[i] = 2 * NU * km * km; }
+    // Bessel J0, J1: Abramowitz & Stegun 9.4.1–9.4.6 (|error| < 1e-7)
+    var j0 = function (x) {
+      if (x < 3) { var y = x * x / 9; return 1 + y * (-2.2499997 + y * (1.2656208 + y * (-0.3163866 + y * (0.0444479 + y * (-0.0039444 + y * 0.00021))))); }
+      var z = 3 / x, f = 0.79788456 + z * (-0.00000077 + z * (-0.0055274 + z * (-0.00009512 + z * (0.00137237 + z * (-0.00072805 + z * 0.00014476)))));
+      var t = x - 0.78539816 + z * (-0.04166397 + z * (-0.00003954 + z * (0.00262573 + z * (-0.00054125 + z * (-0.00029333 + z * 0.00013558)))));
+      return f * Math.cos(t) / Math.sqrt(x);
+    };
+    var j1 = function (x) {
+      if (x < 3) { var y = x * x / 9; return x * (0.5 + y * (-0.56249985 + y * (0.21093573 + y * (-0.03954289 + y * (0.00443319 + y * (-0.00031761 + y * 0.00001109)))))); }
+      var z = 3 / x, f = 0.79788456 + z * (0.00000156 + z * (0.01659667 + z * (0.00017105 + z * (-0.00249511 + z * (0.00113653 - z * 0.00020033)))));
+      var t = x - 2.35619449 + z * (0.12499612 + z * (0.0000565 + z * (-0.00637879 + z * (0.00074348 + z * (0.00079824 - z * 0.00029166)))));
+      return f * Math.cos(t) / Math.sqrt(x);
+    };
+    var JT = null, NORM = 1;
+    // the spectrum of one ring at time t (s): source k·e^(−k²a²/4), phase ω·t, viscous decay
+    var spec = function (t, A, out, o) {
+      var tp = t * SLOW;
+      for (var k = 0; k < NK; k++) { var kp = KP[k]; out[o + k] = A * DK * kp * Math.exp(-kp * kp * SRC * SRC / 4 - VD[k] * tp) * Math.cos(W[k] * tp); }
+    };
+    var table = function () {
+      if (JT) return JT;
+      JT = new Float32Array(NR * NK * 2);
+      for (var k = 0; k < NK; k++) for (var r = 0; r < NR; r++) {
+        var x = KP[k] * r * RMAX / (NR - 1);
+        JT[(k * NR + r) * 2] = j0(x); JT[(k * NR + r) * 2 + 1] = -KP[k] * j1(x); // η and dη/dr kernels
+      }
+      // normalise: a unit ring has its steepest slope = 1 at t = 0.5 s
+      var F = new Float32Array(NK), mx = 0; spec(0.5, 1, F, 0);
+      for (var q = 0; q < NR; q++) { var s = 0; for (var kk = 0; kk < NK; kk++) s += F[kk] * JT[(kk * NR + q) * 2 + 1]; if (Math.abs(s) > mx) mx = Math.abs(s); }
+      NORM = 1 / mx;
+      return JT;
+    };
+    var HEAD = "#version 300 es\nprecision highp float;precision highp sampler2D;\n";
+    var VS_FULL = HEAD + "in vec2 a;out vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0.,1.);}";
+    // per ring: η(r) and dη/dr summed over wavenumber
+    var FS_PROF = HEAD + "uniform sampler2D J,F;out vec4 o;void main(){ivec2 c=ivec2(gl_FragCoord.xy);vec2 s=vec2(0.);" +
+      "for(int k=0;k<" + NK + ";k++)s+=texelFetch(F,ivec2(k,c.y),0).r*texelFetch(J,ivec2(c.x,k),0).rg;o=vec4(s,0.,1.);}";
+    // the surface at half resolution: height, slope (screen axes, y down) and where water shows
+    var FS_SIM = HEAD + "uniform sampler2D P;uniform vec2 vp;uniform vec4 I[" + SLOTS + "],A[16],R[32],K[32];uniform int nR;in vec2 v;out vec4 o;" +
+      "void main(){vec2 p=vec2(v.x,1.-v.y)*vp;float h=0.;vec2 s=vec2(0.);" +
+      "for(int i=0;i<16;i++){vec4 a=A[i];float t=dot(a.xy,p)-a.w;h+=a.z*sin(t);s+=a.z*cos(t)*a.xy;}" +
+      "for(int i=0;i<" + SLOTS + ";i++){vec4 q=I[i];if(q.z<=0.)continue;vec2 d=p-q.xy;float r=length(d);if(r>=" + RMAX.toFixed(1) + ")continue;" +
+      "vec2 e=texture(P,vec2(r*" + ((NR - 1) / NR / RMAX).toFixed(9) + "+" + (0.5 / NR).toFixed(9) + ",(float(i)+.5)/" + SLOTS.toFixed(1) + ")).rg;h+=e.x;s+=e.y*d/max(r,.001);}" +
+      "float m=1.;for(int i=0;i<32;i++){if(i>=nR)break;vec4 b=R[i];vec2 dd=max(max(b.xy-p,p-b.zw),0.);m=min(m,mix(K[i].x,1.,smoothstep(0.,K[i].y,length(dd))));}" +
+      "o=vec4(h,s,m);}";
+    // caustics (after Evan Wallace): a grid refracted onto the floor; each triangle adds old area / new area
+    var VS_CAU = HEAD + "in vec2 a;uniform sampler2D Wt;uniform vec2 ws,vp;uniform float D,E;out vec2 o0;" +
+      "vec4 bs(vec2 uv){vec2 x=uv*ws-.5,b=floor(x),f=x-b,f2=f*f,f3=f2*f;" +
+      "vec2 w0=(1.-3.*f+3.*f2-f3)/6.,w1=(4.-6.*f2+3.*f3)/6.,w2=(1.+3.*f+3.*f2-3.*f3)/6.,w3=f3/6.,g0=w0+w1,g1=w2+w3;" +
+      "vec2 h0=(b-.5+w1/g0)/ws,h1=(b+1.5+w3/g1)/ws;" +
+      "return g0.y*(g0.x*texture(Wt,h0)+g1.x*texture(Wt,vec2(h1.x,h0.y)))+g1.y*(g0.x*texture(Wt,vec2(h0.x,h1.y))+g1.x*texture(Wt,h1));}" +
+      "void main(){vec2 uv=mix(vec2(-E),vec2(1.+E),a);vec2 s=bs(uv).yz;vec2 p=vec2(uv.x,1.-uv.y)*vp,q=p+D*s;o0=p;" +
+      "gl_Position=vec4(q.x/vp.x*2.-1.,1.-q.y/vp.y*2.,0.,1.);}";
+    var FS_CAU = HEAD + "in vec2 o0;uniform float px;out vec4 o;void main(){vec2 x=dFdx(o0),y=dFdy(o0);o=vec4(min(abs(x.x*y.y-x.y*y.x)/px,10.),0.,0.,1.);}";
+    // composite (caustics softened by the sky's penumbra): refracted fish over the refracted shadow on the caustic-lit floor, then the reflection.
+    // Output is premultiplied "multiply the paper by (1−a), then add rgb", so the page shows through.
+    var FS_COMP = HEAD + "uniform sampler2D Fi,Sh,Wt,C;uniform vec2 vp,ss;uniform vec3 lit,ins,sky,tr;uniform vec4 k1,k2;uniform vec2 ld,cb;in vec2 v;out vec4 o;" +
+      "float cl(vec2 u){return min(texture(C,u).r,2.5);}" +
+      "void main(){vec2 p=vec2(v.x,1.-v.y)*vp;vec4 w=texture(Wt,v);vec2 s=w.yz;float m=w.w;" +
+      "vec4 f=texture(Fi,(p+k1.x*s)/vp);float sh=texture(Sh,(p+k1.y*s)*ss).a;" +
+      "float c=.4*cl(v)+.15*(cl(v+cb)+cl(v-cb)+cl(v+vec2(cb.x,-cb.y))+cl(v-vec2(cb.x,-cb.y)));" +
+      "float L=1.+(c-1.)*k1.z*m,e=(1.-sh)*L;" +
+      "float mul=min(e,1.);vec3 add=lit*max(e-1.,0.)+ins*sh*k2.y;" +
+      "add=add*(1.-f.a)+f.rgb*tr+ins*f.a*k2.x;mul*=1.-f.a;" +
+      "vec3 n=normalize(vec3(-s,1.));float F=.02+.98*pow(1.-n.z,5.);vec2 r=2.*n.z*n.xy;" +
+      "float q=(F*(1.+k2.w*dot(r,ld))-.02)*k1.w*m;add+=sky*max(q,0.);mul*=1.+min(q,0.);" +
+      "o=vec4(add,1.-mul);}";
+
+    function create(D) {
+      var c = D.createElement("canvas"), gl = null;
+      try { gl = c.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: "low-power" }); } catch (e) { gl = null; }
+      if (!gl || !gl.getExtension("EXT_color_buffer_float")) return null;
+      var sh = function (type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+      var prog = function (vs, fs) {
+        var p = gl.createProgram(), a = sh(gl.VERTEX_SHADER, vs), b = sh(gl.FRAGMENT_SHADER, fs);
+        gl.attachShader(p, a); gl.attachShader(p, b); gl.bindAttribLocation(p, 0, "a"); gl.linkProgram(p);
+        if (!gl.getProgramParameter(p, gl.LINK_STATUS)) return null;
+        var u = {}, n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
+        for (var i = 0; i < n; i++) { var nm = gl.getActiveUniform(p, i).name.replace(/\[0\]$/, ""); u[nm] = gl.getUniformLocation(p, nm); }
+        return { p: p, u: u };
+      };
+      var Pp = prog(VS_FULL, FS_PROF), Ps = prog(VS_FULL, FS_SIM), Pc = prog(VS_CAU, FS_CAU), Po = prog(VS_FULL, FS_COMP);
+      if (!Pp || !Ps || !Pc || !Po) return null;
+      var tex = function (fmt, w, h, filt, type, data, f2) {
+        var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filt); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filt);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        if (w) gl.texImage2D(gl.TEXTURE_2D, 0, fmt, w, h, 0, f2, type, data || null);
+        return t;
+      };
+      var fbo = function (t) { var f = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, f); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0); var ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE; gl.bindFramebuffer(gl.FRAMEBUFFER, null); return ok ? f : null; };
+      gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+      var tJ = tex(gl.RG32F, NR, NK, gl.NEAREST, gl.FLOAT, table(), gl.RG);
+      var tF = tex(gl.R32F, NK, SLOTS, gl.NEAREST, gl.FLOAT, null, gl.RED);
+      var tP = tex(gl.RGBA16F, NR, SLOTS, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fP = fbo(tP);
+      var tW = tex(gl.RGBA16F, 1, 1, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fW = fbo(tW);
+      var tC = tex(gl.RGBA16F, 1, 1, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fC = fbo(tC);
+      if (!fP || !fW || !fC) return null;
+      var tFi = tex(0, 0, 0, gl.LINEAR), tSh = tex(0, 0, 0, gl.LINEAR);
+      var tri = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, tri); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      var vaoT = gl.createVertexArray(); gl.bindVertexArray(vaoT); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      var vaoG = gl.createVertexArray(), gB = gl.createBuffer(), gI = gl.createBuffer(), gN = 0;
+      gl.bindVertexArray(vaoG); gl.bindBuffer(gl.ARRAY_BUFFER, gB); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gI); gl.bindVertexArray(null);
+
+      // ambient swell: wavelengths 56–240 px from a broad fan of directions (crossing trains make the
+      // caustic a cell network, not a weave), slopes a few thousandths
+      var AMB = new Float32Array(64), AW = [], seed = Math.random() * 6.283;
+      for (var a = 0; a < 16; a++) {
+        var lam = 56 * Math.pow(240 / 56, (a + Math.random()) / 16), k = 6.2832 / lam, km = k / S;
+        var dir = seed + (a * 0.618034 % 1 - 0.5) * 3.4 + (Math.random() - 0.5) * 0.4;
+        AW.push({ kx: Math.cos(dir) * k, ky: Math.sin(dir) * k, amp: (0.0042 + Math.random() * 0.003) / k, w: Math.sqrt(G * km + SR * km * km * km) * ASLOW, ph: Math.random() * 6.283 });
+      }
+      var Fd = new Float32Array(NK * SLOTS), Iu = new Float32Array(SLOTS * 4), Ru = new Float32Array(128), Ku = new Float32Array(128);
+      var W_ = 0, H_ = 0, sw = 0, shh = 0, fw = 0, fh = 0, shw = 0, shH = 0, lost = false, hadRings = true;
+      c.addEventListener("webglcontextlost", function (e) { e.preventDefault(); lost = true; api.onlost && api.onlost(); });
+      var resize = function (cssW, cssH, pw, ph) {
+        if (cssW === W_ && cssH === H_ && pw === c.width && ph === c.height) return;
+        W_ = cssW; H_ = cssH; c.width = pw; c.height = ph; c.style.width = cssW + "px"; c.style.height = cssH + "px";
+        sw = Math.max(2, Math.ceil(cssW * SIM)); shh = Math.max(2, Math.ceil(cssH * SIM));
+        [tW, tC].forEach(function (t) { gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, sw, shh, 0, gl.RGBA, gl.HALF_FLOAT, null); });
+        // the caustic grid: one vertex per GRID CSS px, reaching 4% past each edge
+        var E = 0.04, nx = Math.ceil(cssW * (1 + 2 * E) / GRID) + 1, ny = Math.ceil(cssH * (1 + 2 * E) / GRID) + 1;
+        var V = new Float32Array(nx * ny * 2), Ix = new Uint32Array((nx - 1) * (ny - 1) * 6), n = 0;
+        for (var y = 0; y < ny; y++) for (var x = 0; x < nx; x++) { V[(y * nx + x) * 2] = x / (nx - 1); V[(y * nx + x) * 2 + 1] = y / (ny - 1); }
+        for (var yy = 0; yy < ny - 1; yy++) for (var xx = 0; xx < nx - 1; xx++) { var i0 = yy * nx + xx; Ix[n++] = i0; Ix[n++] = i0 + 1; Ix[n++] = i0 + nx; Ix[n++] = i0 + 1; Ix[n++] = i0 + nx + 1; Ix[n++] = i0 + nx; }
+        gN = n;
+        gl.bindVertexArray(vaoG); gl.bindBuffer(gl.ARRAY_BUFFER, gB); gl.bufferData(gl.ARRAY_BUFFER, V, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gI); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Ix, gl.STATIC_DRAW); gl.bindVertexArray(null);
+      };
+      var upload = function (t, src, wh) {
+        gl.bindTexture(gl.TEXTURE_2D, t);
+        if (wh[0] !== src.width || wh[1] !== src.height) { wh[0] = src.width; wh[1] = src.height; gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); }
+        else gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, src);
+      };
+      var szF = [0, 0], szS = [0, 0];
+      var bindT = function (P, name, unit, t) { gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t); gl.uniform1i(P.u[name], unit); };
+      /* frame: fish/shadow canvases, rings [{x,y,t,s}], rects [{l,t,r,b,keep,f}] in CSS px of the canvas, time (s), look */
+      var draw = function (fishC, shC, SHs, rings, rects, T, sy, look) {
+        if (lost) return;
+        gl.disable(gl.BLEND);
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+        upload(tFi, fishC, szF); upload(tSh, shC, szS);
+        // 1 · ring profiles (only while rings are alive)
+        var nI = 0; Iu.fill(0);
+        for (var i = 0; i < rings.length && nI < SLOTS; i++) {
+          var R0 = rings[i], env = Math.min(1, R0.t / 0.5), life = R0.life;
+          env *= env * (3 - 2 * env) * (R0.t > life - 1.4 ? Math.max(0, (life - R0.t) / 1.4) : 1);
+          if (env <= 0) continue;
+          spec(R0.t, NORM * R0.s * look.ring * env, Fd, nI * NK);
+          Iu[nI * 4] = R0.x; Iu[nI * 4 + 1] = R0.y; Iu[nI * 4 + 2] = 1; nI++;
+        }
+        if (nI || hadRings) {
+          for (var z = nI; z < SLOTS; z++) Fd.fill(0, z * NK, z * NK + NK);
+          gl.bindTexture(gl.TEXTURE_2D, tF); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, NK, SLOTS, gl.RED, gl.FLOAT, Fd);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fP); gl.viewport(0, 0, NR, SLOTS); gl.useProgram(Pp.p);
+          bindT(Pp, "J", 0, tJ); bindT(Pp, "F", 1, tF);
+          gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+        }
+        hadRings = nI > 0;
+        // 2 · the surface
+        for (var a = 0; a < 16; a++) {
+          var w = AW[a], ph = (w.w * T + w.ph - w.ky * sy) % 6.283185;
+          AMB[a * 4] = w.kx; AMB[a * 4 + 1] = w.ky; AMB[a * 4 + 2] = w.amp * look.amb; AMB[a * 4 + 3] = ph;
+        }
+        var nR = Math.min(32, rects.n != null ? rects.n : rects.length);
+        for (var q = 0; q < nR; q++) { var b = rects[q]; Ru[q * 4] = b.l; Ru[q * 4 + 1] = b.t; Ru[q * 4 + 2] = b.r; Ru[q * 4 + 3] = b.b; Ku[q * 4] = b.keep; Ku[q * 4 + 1] = Math.max(1, b.f); }
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fW); gl.viewport(0, 0, sw, shh); gl.useProgram(Ps.p);
+        bindT(Ps, "P", 0, tP);
+        gl.uniform2f(Ps.u.vp, W_, H_); gl.uniform4fv(Ps.u.I, Iu); gl.uniform4fv(Ps.u.A, AMB);
+        gl.uniform4fv(Ps.u.R, Ru); gl.uniform4fv(Ps.u.K, Ku); gl.uniform1i(Ps.u.nR, nR);
+        gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+        // 3 · caustics
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fC); gl.viewport(0, 0, sw, shh);
+        gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+        gl.useProgram(Pc.p); bindT(Pc, "Wt", 0, tW);
+        gl.uniform2f(Pc.u.ws, sw, shh); gl.uniform2f(Pc.u.vp, W_, H_); gl.uniform1f(Pc.u.D, look.cd); gl.uniform1f(Pc.u.E, 0.04);
+        gl.uniform1f(Pc.u.px, (W_ / sw) * (H_ / shh));
+        gl.bindVertexArray(vaoG); gl.drawElements(gl.TRIANGLES, gN, gl.UNSIGNED_INT, 0);
+        gl.disable(gl.BLEND);
+        // 4 · composite
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, c.width, c.height); gl.useProgram(Po.p);
+        bindT(Po, "Fi", 0, tFi); bindT(Po, "Sh", 1, tSh); bindT(Po, "Wt", 2, tW); bindT(Po, "C", 3, tC);
+        gl.uniform2f(Po.u.vp, W_, H_); gl.uniform2f(Po.u.ss, SHs / shC.width, SHs / shC.height);
+        gl.uniform3fv(Po.u.lit, look.lit); gl.uniform3fv(Po.u.ins, look.ins); gl.uniform3fv(Po.u.sky, look.sky); gl.uniform3fv(Po.u.tr, look.tr);
+        gl.uniform4f(Po.u.k1, look.fd, look.sd, look.cs, look.fr); gl.uniform4f(Po.u.k2, look.fi, look.si, 0, look.sg);
+        gl.uniform2f(Po.u.ld, -0.6, -0.8);
+        // a soft sky is not a point: its penumbra blurs the floor light by about depth × its angular size
+        gl.uniform2f(Po.u.cb, look.cb / W_, look.cb / H_);
+        gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+        gl.bindVertexArray(null);
+      };
+      var api = {
+        canvas: c, resize: resize, draw: draw,
+        get lost() { return lost; },
+        destroy: function () { var x = gl.getExtension("WEBGL_lose_context"); if (x) x.loseContext(); if (c.parentNode) c.parentNode.removeChild(c); }
+      };
+      return api;
+    }
+    // the radius of a ring's steepest crest (CSS px) at t seconds, for the fish it nudges
+    var front = function (t) { return 14 + 68 * t; };
+    return { create: create, front: front, life: 5 };
+  })();
+
   var instances = [];
 
   function mount(host, options) {
@@ -75,6 +304,9 @@
     var MQ = function (s) { return Wn.matchMedia ? Wn.matchMedia(s) : { matches: false, addEventListener: function () {}, removeEventListener: function () {} }; };
     var RMQ = MQ("(prefers-reduced-motion: reduce)"), MOB = MQ(O.mobileQuery), DARKQ = MQ("(prefers-color-scheme: dark)");
     var RM = { get matches() { return O.reducedMotion === "auto" ? RMQ.matches : !!O.reducedMotion; } };
+    // real water: wanted unless reduced motion, or WebGL2 failed / the device proved too slow
+    var water = null, waterFail = false, realLive = false, booted = false;
+    var realWant = function () { return (O.water === "real" || O.ripples === "real") && !RM.matches && !waterFail; };
     var cv = D.createElement("canvas");
     cv.className = "ink-fish" + (page ? "" : " ink-fish--local");
     cv.setAttribute("aria-hidden", "true");
@@ -112,8 +344,16 @@
       if (t === "light") return false;
       return DARKQ.matches;
     };
+    // the paper under the pond (for the light the caustics add); read only with real water on
+    var paperOf = function (dark) {
+      if (realWant()) for (var e = page ? D.body : host; e && e.nodeType === 1; e = e.parentElement) {
+        var m = (getComputedStyle(e).backgroundColor || "").match(/[\d.]+/g);
+        if (m && m.length >= 3 && (m.length < 4 || +m[3] > 0.5)) return [m[0] / 255, m[1] / 255, m[2] / 255];
+      }
+      return dark ? [0.067, 0.063, 0.051] : [0.949, 0.929, 0.894];
+    };
     var readPal = function () {
-      var dark = isDark(), src = O.ink;
+      var dark = isDark(), src = O.ink, pp = paperOf(dark);
       var css = hex(getComputedStyle(host).getPropertyValue("--ink-fish-ink"));
       var ink = css || hex(typeof src === "string" ? src : (src && (dark ? src.dark : src.light))) || (dark ? [232, 226, 216] : [30, 28, 25]);
       var op = +O.opacity, sh = +O.shadow;
@@ -126,11 +366,17 @@
         ? { ink: [ink[0] * 0.94 + 10, ink[1] * 0.92 + 6, ink[2] * 0.86], a: 1.12 * op, sh: [0, 0, 0], sa: 0.26 * sh,
             rs: [0, 0, 0], rsa: 0.5 * op, rh: [ink[0] * 0.7, ink[1] * 0.78, ink[2] * 0.9], rha: 0.2 * op,
             cin: [168, 62, 42], cid: [110, 36, 26], och: [190, 148, 86], ocd: [146, 102, 48], sumi: [24, 22, 20], pa: 0.76 * op,
-            wh: [226, 220, 208], wb: 1.32, wl: 0.3, pc: 0.8, ob: 1.42, sp: 0.065, fn: 0.7, gr: 0, eye: [20, 18, 16] }
+            wh: [226, 220, 208], wb: 1.32, wl: 0.3, pc: 0.8, ob: 1.42, sp: 0.065, fn: 0.7, gr: 0, eye: [20, 18, 16],
+            // real water: caustic light, in-scatter, sky, fish transmittance; depths (px of shift per unit slope),
+            // caustic contrast, Fresnel gain, in-scatter on fish / shadow, sky gradient, ring and swell slopes
+            qlit: [pp[0] * 0.5 + 0.1, pp[1] * 0.5 + 0.095, pp[2] * 0.5 + 0.08], qins: [0.07, 0.1, 0.115], qsky: [0.62, 0.66, 0.7], qtr: [0.86, 0.95, 0.97],
+            qfd: 22, qsd: 40, qcd: 40, qcb: 5, qcs: 0.55, qfr: 2.3, qfi: 0.2, qsi: 0.5, qsg: 4, qring: 0.14, qamb: 1.1 }
         : { ink: [ink[0] + 8, ink[1] + 4, ink[2]], a: 1 * op, sh: [52, 38, 22], sa: 0.13 * sh,
             rs: [38, 48, 60], rsa: 0.15 * op, rh: [255, 255, 252], rha: 0.5 * op,
             cin: [178, 62, 38], cid: [132, 40, 24], och: [178, 130, 62], ocd: [140, 92, 34], sumi: [28, 26, 24], pa: 0.7 * op,
-            wh: [255, 253, 247], wb: 0.24, wl: 0.55, pc: 0.68, ob: 1, sp: 0.12, fn: 1, gr: 0.16, eye: [24, 22, 20] };
+            wh: [255, 253, 247], wb: 0.24, wl: 0.55, pc: 0.68, ob: 1, sp: 0.12, fn: 1, gr: 0.16, eye: [24, 22, 20],
+            qlit: [pp[0] * 0.9, pp[1] * 0.9, pp[2] * 0.9], qins: [0.34, 0.42, 0.45], qsky: [0.9, 0.93, 0.95], qtr: [0.86, 0.95, 0.97],
+            qfd: 22, qsd: 40, qcd: 40, qcb: 5, qcs: 0.14, qfr: 1.3, qfi: 0.1, qsi: 0.35, qsg: 4, qring: 0.11, qamb: 1.1 };
     };
     var mixPal = function (a, b, k) {
       var o = {};
@@ -214,6 +460,7 @@
         shc.width = M.ceil(W * SH); shc.height = M.ceil(H * SH);
         shc.style.width = shc.width / SH + "px"; shc.style.height = shc.height / SH + "px";
       }
+      if (water) water.resize(cw, ch, cv.width, cv.height);
     };
 
     // ── species and population ────────────────────────────────────────────────
@@ -378,11 +625,12 @@
     var on = function (t, ev, fn, o) { t.addEventListener(ev, fn, o); L_.push([t, ev, fn, o]); };
     // ── water rings: a few at a time, spawned by distance and time, never per mousemove ──
     var rip = [], ripLast = { x: -1e5, y: -1e5, t: -1e5 }, RIP_LIFE = 3.6, RIP_MAX = 5, fronts = [];
+    var ripLife = function () { return realLive ? WATER.life : RIP_LIFE; };
     var rpz = function () { return page && !O.fixed ? 1 : 0; }; // in parallax mode the rings ride on the page
     var addRipple = function (x, y, s) {
       if (!O.ripples || RM.matches) return;
-      if (rip.length >= RIP_MAX) rip.shift();
-      rip.push({ x: x, y: y + sy * rpz(), t: 0, s: s, q: rnd(0, TAU) });
+      if (rip.length >= (realLive ? 8 : RIP_MAX)) rip.shift();
+      rip.push({ x: x, y: y + sy * rpz(), t: 0, s: s, q: rnd(0, TAU), life: ripLife() });
       wake();
     };
     var kick = function (f, k) { f.mode = 1; f.tm = rnd(0.35, 0.6); f.thT = M.max(f.thT, k); };
@@ -422,13 +670,13 @@
     if (page) on(Wn, "scroll", function () { sy = Wn.scrollY || 0; wake(); }, { passive: true });
 
     // ── simulation ────────────────────────────────────────────────────────────
-    var ripR = function (r) { var t = r.t * (r.s >= 1 ? 1.12 : 1); return 78 * t / (1 + 0.2 * t); };
-    var ripEnv = function (r) { var u = r.t / RIP_LIFE; return M.min(1, r.t / 0.2) * M.pow(M.max(0, 1 - u), 1.7) * r.s; };
+    var ripR = function (r) { if (realLive) return WATER.front(r.t); var t = r.t * (r.s >= 1 ? 1.12 : 1); return 78 * t / (1 + 0.2 * t); };
+    var ripEnv = function (r) { var u = r.t / r.life; return M.min(1, r.t / 0.2) * M.pow(M.max(0, 1 - u), 1.7) * r.s; };
     var step = function (dt) {
       T += dt;
       var rm = RM.matches;
       ptr.idle += dt;
-      for (var ri = rip.length - 1; ri >= 0; ri--) { rip[ri].t += dt; if (rip[ri].t > RIP_LIFE || rm) rip.splice(ri, 1); }
+      for (var ri = rip.length - 1; ri >= 0; ri--) { rip[ri].t += dt; if (rip[ri].t > rip[ri].life || rm) rip.splice(ri, 1); }
       var gone = 0;
       for (var ci = 0; ci < fish.length; ci++) { fish[ci].hc = M.cos(fish[ci].a); fish[ci].hs = M.sin(fish[ci].a); } // headings, for schooling
       for (var i = 0; i < fish.length; i++) {
@@ -652,7 +900,7 @@
       return k;
     };
 
-    var stats = { n: 0, ms: 0, max: 0, drawn: 0, ring: new Float32Array(600), get dpr() { return dpr; } };
+    var stats = { n: 0, ms: 0, max: 0, drawn: 0, ring: new Float32Array(600), water: "flat", get dpr() { return dpr; } };
     // colour strings are cached per colour and alpha step (1/1000), so a frame builds almost none
     var RGBC = {}, RGBN = 0, inkG = null, inkGc = "";
     var rgba = function (c, a) {
@@ -878,7 +1126,7 @@
       var drawn = 0, alphaAll = pal.a;
       // ring wavefronts for this frame (screen space): each ring is a short train of three
       fronts.length = 0;
-      for (var ri = 0; ri < rip.length; ri++) {
+      for (var ri = 0; ri < (realLive ? 0 : rip.length); ri++) {
         var rp = rip[ri], r0 = ripR(rp), en = ripEnv(rp), ry = rp.y - sy * rpz();
         for (var wk = 0; wk < 3; wk++) {
           var rk = r0 - wk * (14 + r0 * 0.07);
@@ -998,6 +1246,52 @@
       stats.drawn = drawn;
     };
 
+    // ── real water: lifecycle and per-frame inputs ─────────────────────────────
+    var syncWater = function () {
+      var want = realWant() && booted;
+      if (want && !water) {
+        water = WATER.create(D);
+        if (!water) { waterFail = true; want = false; }
+        else {
+          var wc = water.canvas;
+          wc.className = cv.className + " ink-fish--water" + (cv.classList.contains("on") ? " on" : "");
+          if (!O.fadeIn) wc.style.transition = "none";
+          wc.setAttribute("aria-hidden", "true"); wc.style.pointerEvents = "none";
+          host.insertBefore(wc, cv.nextSibling);
+          water.onlost = function () { waterFail = true; syncWater(); };
+          water.resize(cw, ch, cv.width, cv.height);
+        }
+      }
+      var live = !!(want && water && !water.lost);
+      if (live !== realLive) for (var i = 0; i < rip.length; i++) rip[i].life = live ? WATER.life : RIP_LIFE;
+      realLive = live;
+      cv.style.display = shc.style.display = live ? "none" : "";
+      if (water) water.canvas.style.display = live ? "" : "none";
+      stats.water = live ? "real" : waterFail && (O.water === "real" || O.ripples === "real") ? "fallback" : "flat";
+    };
+    var wrects = [], wrings = [], wlook = {};
+    var paint = function () {
+      render();
+      if (!realLive) return;
+      // mask: none under the obstacles, thinned under text (screen coordinates)
+      var n = 0;
+      var put = function (l, t, r, b, keep, f) {
+        if (b < -f || t > vh + f || n >= 32) return;
+        var o = wrects[n] || (wrects[n] = {}); o.l = l; o.t = t; o.r = r; o.b = b; o.keep = keep; o.f = f; n++;
+      };
+      for (var i = 0; i < obs.length; i++) { var R = obs[i]; put(R.l - 2, R.t - sy - 2, R.r + 2, R.b - sy + 2, 0, 3); }
+      for (var j = 0; j < texts.length; j++) { var X = texts[j]; put(X.r.l, X.r.t - sy, X.r.r, X.r.b - sy, M.sqrt(X.keep), X.f); }
+      wrects.n = n;
+      wrings.length = 0;
+      for (var k = 0; k < rip.length; k++) {
+        var rp = rip[k], o2 = wrings[k] || {}; o2.x = rp.x; o2.y = rp.y - sy * rpz(); o2.t = rp.t; o2.s = rp.s; o2.life = rp.life; wrings.push(o2);
+      }
+      var L = wlook;
+      L.lit = pal.qlit; L.ins = pal.qins; L.sky = pal.qsky; L.tr = pal.qtr; L.fd = pal.qfd; L.sd = pal.qsd; L.cd = pal.qcd; L.cb = pal.qcb; L.cs = pal.qcs;
+      L.fr = pal.qfr; L.fi = pal.qfi; L.si = pal.qsi; L.sg = pal.qsg; L.ring = pal.qring; L.amb = pal.qamb;
+      water.draw(cv, shc, SH, wrings, wrects, T, sy * rpz(), L);
+    };
+
     // ── loop ──────────────────────────────────────────────────────────────────
     var STEP = 1 / 60, raf = 0, last = 0, acc = 0, running = false, shown = false, rmLast = 0;
     var waterOnScreen = function () {
@@ -1015,10 +1309,16 @@
       var dt = M.min(0.1, (now - last) / 1000);
       // adaptive resolution: if frames keep arriving late (a slow device rasterising a large canvas),
       // drop to 1 device pixel per CSS pixel, once
-      if (O.adaptive && !RM.matches && now - last < 100 && dprCap > 1) {
-        fema = fema * 0.96 + (now - last) * 0.04;
+      // (with real water on, slow frames count too, capped, so a GPU that only manages a few fps still trips it)
+      var gap = now - last;
+      if (O.adaptive && !RM.matches && gap < (realLive ? 1000 : 100) && (dprCap > 1 || realLive)) {
+        fema = fema * 0.96 + M.min(gap, 100) * 0.04;
         // the same signal also lightens the koi (no bleed, heart, grain or fin outlines)
-        if (++fcount > 60 && fema > 21 && dpr > 1) { dprCap = 1; koiLite = true; measure(); }
+        // with real water on, the first step is back to the flat Canvas 2D water
+        if (++fcount > (realLive ? 30 : 60) && fema > 21) {
+          if (realLive) { waterFail = true; syncWater(); fcount = 0; fema = 16.7; }
+          else if (dpr > 1) { dprCap = 1; koiLite = true; measure(); }
+        }
       }
       last = now;
       svel = page ? svel * 0.85 + ((sy - lastSy) / M.max(dt, 1 / 240)) * 0.15 : 0; lastSy = sy;
@@ -1032,8 +1332,9 @@
         while (acc >= STEP && n < 4) { step(STEP); acc -= STEP; n++; }
         if (n === 4) acc = 0;
       }
+      if (realWant() !== realLive) syncWater();
       tickPal(now);
-      render();
+      paint();
       var ms = performance.now() - t0;
       stats.ring[stats.n % 600] = ms; stats.n++; stats.ms += ms; if (ms > stats.max) stats.max = ms;
       if (!waterOnScreen() && palAt < 0) { running = false; return; } // nothing to see; scroll wakes it
@@ -1047,7 +1348,7 @@
     on(D, "visibilitychange", function () { if (!D.hidden) wake(); });
 
     // ── relayout ──────────────────────────────────────────────────────────────
-    var lastDims = "", lt = 0, lraf = 0, booted = false;
+    var lastDims = "", lt = 0, lraf = 0;
     var layout = function () {
       if (dead || !booted) return;
       var old = lastDims;
@@ -1055,13 +1356,14 @@
       var dims = vw + "x" + PH + "@" + mobile;
       lastDims = dims;
       if (!fish.length || dims.split("x")[0] !== old.split("x")[0] || mobile !== (old.indexOf("true") > 0)) populate();
-      if (shown) { tickPal(performance.now()); render(); wake(); }
+      if (shown) { tickPal(performance.now()); paint(); wake(); }
     };
     var relayout = function () { cancelAnimationFrame(lraf); lraf = requestAnimationFrame(layout); };
     var RO = Wn.ResizeObserver ? new ResizeObserver(function () { clearTimeout(lt); lt = setTimeout(relayout, 120); }) : null;
     if (RO) RO.observe(page ? (q(O.habitat) || D.body) : host);
     on(Wn, "resize", relayout);
-    var MO = new MutationObserver(syncPal);
+    // the page's own background may cross-fade with the theme: read it again once that has settled
+    var palT = 0, MO = new MutationObserver(function () { syncPal(); clearTimeout(palT); palT = setTimeout(syncPal, 900); });
     MO.observe(D.documentElement, { attributes: true, attributeFilter: ["data-theme", "class", "style"] });
     if (!page) MO.observe(host, { attributes: true, attributeFilter: ["class", "style"] });
     on(DARKQ, "change", syncPal);
@@ -1088,8 +1390,9 @@
         if (++warm < 8) return requestAnimationFrame(settle);
         for (var k = 0; k < fish.length; k++) fish[k].fade = 1;
         shown = true;
-        render();
-        [shc, cv].forEach(function (c) { if (!O.fadeIn) c.style.transition = "none"; c.classList.add("on"); });
+        syncWater();
+        paint();
+        [shc, cv].concat(water ? [water.canvas] : []).forEach(function (c) { if (!O.fadeIn) c.style.transition = "none"; c.classList.add("on"); });
         wake();
       };
       requestAnimationFrame(settle);
@@ -1102,6 +1405,8 @@
       stats: stats,
       get fish() { return fish; },
       get running() { return running; },
+      /** "real" while the WebGL water is drawing, "flat" (Canvas 2D), or "fallback" (asked for, not available). */
+      get water() { return stats.water; },
       /** Re-read layout (obstacles, text, sizes) after your page changes without a resize. */
       layout: layout,
       /** Change options at runtime, e.g. set({ theme: "dark" }) or set({ count: 20 }). */
@@ -1113,17 +1418,19 @@
         syncPal();
         if (!O.ripples) rip.length = 0;
         if (booted) {
+          if (shown) syncWater();
           measure();
           if (repop) { populate(); for (var k = 0; k < fish.length; k++) fish[k].fade = 1; }
           else if (recon) reconcile();
-          if (shown) { tickPal(performance.now()); render(); wake(); }
+          if (shown) { tickPal(performance.now()); paint(); wake(); }
         }
         return api;
       },
       destroy: function () {
         if (dead) return;
         dead = true; running = false;
-        cancelAnimationFrame(raf); cancelAnimationFrame(lraf); clearTimeout(lt);
+        cancelAnimationFrame(raf); cancelAnimationFrame(lraf); clearTimeout(lt); clearTimeout(palT);
+        if (water) { water.destroy(); water = null; }
         L_.forEach(function (l) { l[0].removeEventListener(l[1], l[2], l[3]); });
         if (RO) RO.disconnect(); MO.disconnect(); if (IO) IO.disconnect();
         if (cv.parentNode) cv.parentNode.removeChild(cv);
@@ -1154,5 +1461,5 @@
     else autoInit();
   }
 
-  return { mount: mount, init: autoInit, defaults: DEFAULTS, instances: instances, version: "1.2.1" };
+  return { mount: mount, init: autoInit, defaults: DEFAULTS, instances: instances, version: "1.3.0" };
 });
