@@ -1,0 +1,9 @@
+/* ink-fish: decorative water behind the hub. The canvas is fixed to the viewport and sits under all
+   content (body is isolated, so z-index:-1 paints above the page background). */
+body{isolation:isolate}
+.ink-water{position:fixed;left:0;top:0;width:100%;height:100vh;z-index:-1;pointer-events:none;display:block;
+  opacity:0;transition:opacity 2.4s cubic-bezier(.33,0,.15,1)}
+.ink-water.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.ink-water{transition:opacity .6s linear}}
+@media (max-width:720px){html.js header.hero{padding-bottom:150px}}
+@media print{.ink-water{display:none}}
