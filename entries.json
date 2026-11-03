@@ -1,5 +1,20 @@
 [
   {
+    "slug": "anthropics-cwc-workshops",
+    "title": "Code with Claude 工作坊合集：九个 Claude 智能体动手课（cwc-workshops 项目导读）",
+    "desc": "anthropics/cwc-workshops 项目导读：Anthropic 在 Code with Claude 活动上开的九个动手工作坊——Skill 审计评测并扫参选模型、用 Skills+MCP 拆掉 402 行提示词的库存智能体、Claude Code 从访谈到可验证组件、托管智能体值班看板（多智能体/记忆库/复盘 PDF）、Minecraft 智能体对战、记忆库与 Dreaming、评测驱动迭代 PPTX 智能体、并购 Deal Desk 与 SEC 研究台。Apache-2.0（11-03 现场核）；不维护、需 Managed Agents beta 与 API 费用、本站未实测 ⚠️。附 README 全文中译与英文原文、LICENSE。",
+    "description": "anthropics/cwc-workshops 项目导读：Anthropic 在 Code with Claude 活动上开的九个动手工作坊——Skill 审计评测并扫参选模型、用 Skills+MCP 拆掉 402 行提示词的库存智能体、Claude Code 从访谈到可验证组件、托管智能体值班看板（多智能体/记忆库/复盘 PDF）、Minecraft 智能体对战、记忆库与 Dreaming、评测驱动迭代 PPTX 智能体、并购 Deal Desk 与 SEC 研究台。Apache-2.0（11-03 现场核）；不维护、需 Managed Agents beta 与 API 费用、本站未实测 ⚠️。附 README 全文中译与英文原文、LICENSE。",
+    "source": "Anthropic · GitHub",
+    "date": "2026-11-03",
+    "type": "导读",
+    "subtitle": "cwc-workshops · Code with Claude workshop materials",
+    "original_url": "https://github.com/anthropics/cwc-workshops",
+    "spine": "Claude 工作坊",
+    "summary": "九个动手课，学会搭 Claude 托管智能体",
+    "kind": "教程",
+    "by": "Anthropic"
+  },
+  {
     "slug": "ayi-ainotes-ai-portrait-8d",
     "title": "AI 人像去塑料感：8 个维度的“摄影物理语言”提示词（AYi 原帖照录 + 导读）",
     "desc": "AYi（@AYi_AInotes）X 原帖全文照录 + 导读：用“摄影物理语言”代替空泛形容词写 AI 人像提示词——人设气质、面料、抓拍微表情、焦段光圈、侧光轮廓光与毛孔、散焦背景、克制审美、负面词，共 8 个维度；楼中 3 套“体育直播截图”式人像提示词全文。作者建议逐维单独试、负面词按症状补。主帖后半为 Flatkey 推介，未标是否合作 ⚠️；配图一与提示词一场景不符 ⚠️；“Fable 5.5”“纯 Prompt 直出”未核实 ⚠️。",

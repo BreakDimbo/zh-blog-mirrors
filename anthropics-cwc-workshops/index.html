@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code with Claude 工作坊合集：九个 Claude 智能体动手课（cwc-workshops 项目导读） · Anthropic</title>
+<meta name="description" content="anthropics/cwc-workshops 项目导读：Anthropic 在 Code with Claude 活动上的九个动手工作坊材料——挑模型、Skills+MCP 拆分多智能体、Claude Code 产品流程、托管智能体值班台、Minecraft 智能体对战、记忆库与 Dreaming、评测驱动开发、并购与 SEC 研究台。Apache-2.0，附 README 全文中译与原文、LICENSE。">
+<meta property="og:title" content="cwc-workshops · Code with Claude 工作坊合集导读">
+<meta property="og:image" content="images/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-03">2026.11.03</time></p>
+<h1 class="za-title">Code with Claude 工作坊合集：九个 Claude 智能体动手课</h1>
+<p class="za-sub" lang="en" data-za-gen>cwc-workshops · Code with Claude workshop materials</p>
+<p class="za-meta" data-za-gen><span>来源 · Anthropic · GitHub</span><span>收录 · 2026-11-03</span><span><a href="https://github.com/anthropics/cwc-workshops" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/anthropics/cwc-workshops" rel="noopener">anthropics/cwc-workshops</a>（发布方 Anthropic PBC，作者为 Anthropic 工作坊讲师团队）· Apache-2.0</p>
+<img class="cover" src="images/cover.webp" alt="cwc-workshops 九个工作坊目录（本站自制封面）" loading="eager"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>许可证 2026-11-03 现场核对：仓库根目录 <code>LICENSE</code> 是 Apache License 2.0 全文，GitHub API 的 <code>license</code> 字段为 <code>Apache-2.0</code>；README 与各工作坊 README 头部写有 <code>Copyright 2026 Anthropic PBC</code> 与 <code>SPDX-License-Identifier: Apache-2.0</code>。按本站规则（R7/R13），本页做<strong>项目导读 + 根目录 README 全文中译</strong>，附英文原文和 LICENSE 原文，保留版权声明。中译属于对原 README 的修改性翻译，特此注明（Apache-2.0 第 4(b) 条）。各子工作坊的 README 本页只做中文概述，没有全文转载。封面是本站自制的目录图，仓库本身不含图片。抓取方式：GitHub 公开页面、公开 API 与 <code>git clone</code>，均遵守 github.com 的 robots.txt。相关阅读：<a href="../anthropic-code-review/">Anthropic 谈 AI 代码评审</a>、<a href="../anthropic-source-control/">Anthropic：重新设计源代码管理</a>。</div>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#stats">仓库快照（2026-11-03 核）</a></li>
+<li><a href="#who">适合谁</a></li>
+<li><a href="#map">九个工作坊逐个看</a></li>
+<li><a href="#use">怎么用</a></li>
+<li><a href="#threads">贯穿的几条主线</a></li>
+<li><a href="#notes">核对与 ⚠️ 注记</a></li>
+<li><a href="#appendix">附录 A：README 全文中译</a></li>
+<li><a href="#readme-en">附录 B：README 英文原文</a></li>
+<li><a href="#license">附录 C：LICENSE（Apache-2.0）原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p><code>anthropics/cwc-workshops</code> 是 Anthropic 官方 GitHub 组织下的一个仓库，收着 Anthropic 在 <strong>Code with Claude</strong>（CwC）开发者活动上开设的动手工作坊材料。一个工作坊一个目录，现在有九个。每个目录里通常有一份带步骤的 README、可以跑的起始代码（starter）、参考答案（solution），还常带 Claude Code 用的 <code>CLAUDE.md</code>、Skill 或斜杠命令，学员可以让 Claude Code 当助教，一边做一边讲。</p>
+<p>九个里有七个围绕 <strong>Claude Managed Agents</strong>（Anthropic 托管的智能体运行服务：在云端配置模型、系统提示词、Skills、MCP 工具和沙箱环境，按会话运行）。另外两个讲怎么用 Claude Code：一个用 Skill 审计评测集、扫参数选模型，一个演示从需求访谈到可验证 React 组件的完整产品流程。</p>
+<p>README 第一行写明：这是工作坊材料，<strong>不维护，也不接受贡献</strong>。所以它更像一套可以照着做的课件和样例代码，而不是一个会持续更新的库。</p>
+
+<h2 id="stats">仓库快照（2026-11-03 22:47 UTC+8 核）</h2>
+<table>
+<tr><th>项</th><th>值</th></tr>
+<tr><td>Star / Fork</td><td>2,248 / 690</td></tr>
+<tr><td>创建 / 最近推送</td><td>2026-05-06 11:53 / 2026-10-17 06:26（UTC+8）</td></tr>
+<tr><td>最新提交</td><td><code>4c34ec4</code>（2026-10-17 06:23 UTC+8，Gagan Bhat：ship-your-first 增加三页面、多智能体、记忆库与文件输出）</td></tr>
+<tr><td>规模</td><td>9 个工作坊目录，约 400 个受版本管理的文件；Python（uv / pip）、TypeScript（Next.js、Vite + React、Node）混合</td></tr>
+<tr><td>提交者</td><td>Michael Cohen、Jeff Curry、Matthew Roknich、Gagan Bhat、Felix Becker、Gabe Cemaj、Tanveer Mittal、Rodrigo Olivares 等</td></tr>
+<tr><td>许可</td><td>Apache-2.0（根目录 LICENSE + API 字段 + 文件头 SPDX 三处一致）</td></tr>
+</table>
+
+<h2 id="who">适合谁</h2>
+<ul>
+<li><strong>准备在 Claude API 上做智能体的工程师</strong>：想看 Managed Agents 的会话、线程、Skills、自定义工具、记忆库、outcome 评分在真实小项目里怎么拼起来。</li>
+<li><strong>要选模型、控成本的团队</strong>：rightmodel 和 eval-driven 两个工作坊讲怎么先确认评测本身可靠，再按“质量/美元”“质量/秒”比较配置。</li>
+<li><strong>办活动、做内训的人</strong>：几个工作坊专门为“一屋子人共用一个 API key”、会场 Wi-Fi 这类情况设计，agent-battle 还附了主持人手册。</li>
+<li><strong>Claude Code 用户</strong>：how-we-claude-code 展示 Anthropic 内部的“访谈出规格 → 多方向设计稿 → 可在运行时验证的组件”流程。</li>
+</ul>
+<p>门槛：几乎都需要 Anthropic API key，并且会产生真实的 API 费用；Managed Agents 相关的工作坊需要账号开通对应 beta，记忆“Dreaming”还要加入研究预览。</p>
+
+<h2 id="map">九个工作坊逐个看</h2>
+<table>
+<tr><th>目录</th><th>主题</th><th>你会做什么</th></tr>
+<tr><td><code>rightmodel/</code></td><td>挑对模型</td><td>用 Claude Code 的 <code>eval-audit-and-sweep</code> Skill 分两步：先按清单审计评测集（任务设计、测试框架、指标、评分器，含 LLM 评委的偏差），再把评测放进“模型 × 扩展思考 × effort”网格里扫一遍，出三张对比图和一句话推荐。没有自带评测的，可用 tau2-bench 兜底。</td></tr>
+<tr><td><code>agent-decomposition/</code></td><td>用 Skills 和 MCP 组装多智能体（CwC 2026 · W5 · 45 分钟）</td><td>接手一个户外用品零售商的库存智能体 StockPilot：12 个工具、3 个写死的子智能体、402 行系统提示词。把它拆成 Skills + 代码执行 + 一个放对位置的子智能体，跑在 Managed Agents 上；每改一步跑一次 12 题评测，看哪些题从失败变成通过（基线约 71%）。</td></tr>
+<tr><td><code>how-we-claude-code/</code></td><td>我们怎么用 Claude Code</td><td>三个阶段：① 访谈式头脑风暴，产出一个免注册、按链接分账的 App 规格；② 四个不同视觉方向，各做成静态 HTML 稿并排比较；③ 一个 Vite + React 待办应用，每个组件声明夹具、不变量和机器可读的 DOM 契约，智能体或 CI 可以在运行时检查。前两段只给提示词（<code>PROMPT.MD</code>），第三段是成品。</td></tr>
+<tr><td><code>ship-your-first-managed-agent/</code></td><td>上线第一个托管智能体</td><td>一个虚构电商的值班看板（Streamlit），凌晨两点三个告警同时响。分四步让 Claude Code 写代码、你做判断：① 一个带 runbook Skill 和自定义工具的智能体；② 多智能体：事故指挥官给每个告警开一个调查员线程；③ 记忆库：团队历史 + 智能体自己的笔记本；④ 文件输出：可下载的事后复盘 PDF。设计成全场共用一个 API key。</td></tr>
+<tr><td><code>agent-battle/</code></td><td>智能体对战（Claude 玩 Minecraft）</td><td>45 分钟比赛：配置一个 Managed Agent（模型、系统提示词、Skills、MCP 服务器），让它通过 MCP 操控你本机的 Minecraft 机器人。挖到钻石最多者胜，token 少者优先；<code>--eval</code> 决策探针约 30 秒就能试一次配置，再决定要不要跑 5 分钟正式局。机器人主动外连活动服务器，本机不对外暴露端口。</td></tr>
+<tr><td><code>agents-that-remember/</code></td><td>会记事的智能体（CwC 2026 · W3 · 45 分钟）</td><td>从一个“跨会话就失忆”的智能体出发，一次加一种记忆：先用记忆库做跨会话持久化，再用 Dreaming 服务把过去的对话记录整理成记忆，用原文的说法是“45 分钟从金鱼变同事”。</td></tr>
+<tr><td><code>eval-driven-agent-development/</code></td><td>评测驱动的智能体开发</td><td>一个生成 PPTX 的 Managed Agent，迭代六个版本（朴素 → 视觉 → 字体 → 配色 → 信息密度 → 自检循环），每版用 10 题评测打分。评分器两层：程序化检查 <code>.pptx</code> 的 XML 指标，再让 LLM 评委看渲染出的幻灯片。目标是每次改提示词都有分数可看，不凭感觉。</td></tr>
+<tr><td><code>production-ready-agent/</code></td><td>Deal Desk：并购研究台</td><td>聊天式界面背后是一支多智能体并购研究团队：协调者并行派活给四个研究子智能体，从记忆库读过往交易教训，经 MCP + Vault 访问 Linear，最后产出带评分的投资论点；界面实时显示每个事件，需要确认的工具调用要人点头。<code>starter/</code> 留了待填的 API 路由，<code>solution/</code> 是完整版。公司与财务数据都是虚构的。</td></tr>
+<tr><td><code>research-desk/</code></td><td>SEC 研究台</td><td>用自托管的 Next.js 控制台搭一个读 SEC 文件的股票研究台：先跟一个空白智能体打招呼，再把它升级为“研究主管”，通过你自己服务器实现的自定义工具，为每只股票派一个分析师会话；分析师再分给子智能体专家，用 edgartools Skill 读财报，按 outcome 评分表打分，写入共享记忆库；最后用定时部署生成每周备忘录。仓库带 <code>/workshop</code> Skill 当助教。</td></tr>
+</table>
+
+<h2 id="use">怎么用</h2>
+<ol>
+<li><strong>克隆并进入一个工作坊目录</strong>：<code>git clone https://github.com/anthropics/cwc-workshops</code>，然后 <code>cd</code> 到你要做的那个目录。各目录相互独立，依赖不同。</li>
+<li><strong>按该目录 README 装环境</strong>：Python 的多用 <code>uv sync</code> 或 <code>pip install -r requirements.txt</code>；TypeScript 的用 <code>bun</code> 或 <code>npm</code>；Managed Agents 相关的要装 Anthropic 的 <code>ant</code> CLI；eval-driven 还要 Docker（在容器里用 LibreOffice 渲染幻灯片）；agent-battle 要 Java 和 Minecraft（需自行同意 Minecraft EULA）。</li>
+<li><strong>配置 API key</strong>：复制 <code>.env.example</code> 为 <code>.env</code> 填入 <code>ANTHROPIC_API_KEY</code>，或按 README 导出环境变量。</li>
+<li><strong>在目录里打开 Claude Code</strong>：多数工作坊带 <code>CLAUDE.md</code>、Skill 或斜杠命令（如 <code>/cwc-setup</code>、<code>/workshop act 1</code>），可以让 Claude Code 带你一步步做，也可以对照 <code>solution/</code> 自己写。</li>
+<li><strong>做完清理</strong>：这些工作坊会在你的 Anthropic 账号里创建智能体、环境、记忆库、文件和部署；有的带 <code>cleanup.py</code>，没有的要自己去控制台删，免得继续占资源或计费。</li>
+</ol>
+
+<h2 id="threads">贯穿的几条主线</h2>
+<ul>
+<li><strong>先有评测，再改智能体</strong>：agent-decomposition、eval-driven、rightmodel 都把“每改一步就跑评测、看分数变化”当成基本动作，rightmodel 还要求先审计评测本身。</li>
+<li><strong>拆而不是堆</strong>：把超长系统提示词和一堆工具，拆成按需加载的 Skills、代码执行和少数子智能体。StockPilot 那份 402 行的提示词就是反面例子。</li>
+<li><strong>记忆分层</strong>：会话内上下文、跨会话的记忆库、再到从旧对话里整理出的记忆（Dreaming），ship-your-first 和 research-desk 也都用到了共享记忆库。</li>
+<li><strong>人留在关键处</strong>：Deal Desk 的受控工具调用要人确认；ship-your-first 让 Claude Code 写代码、学员做判断。</li>
+<li><strong>为现场设计</strong>：共用 API key、机器人主动外连、可重复执行的初始化脚本，这些都是为会场环境准备的。</li>
+</ul>
+
+<h2 id="notes">核对与 ⚠️ 注记</h2>
+<ul>
+<li><strong>不维护</strong>：README 明说不维护、不接受贡献。Managed Agents 还在 beta，API、CLI 命令和字段可能已经变了，照做前先对照官方文档 ⚠️。</li>
+<li><strong>需要开通 beta 或预览</strong>：agents-that-remember 要求组织先加入研究预览才能用 Dreaming；production-ready-agent 要求 API key 开通 Managed Agents beta。本站没有账号权限，没有实际跑任何一个工作坊 ⚠️ 未实测。</li>
+<li><strong>费用</strong>：运行会调用真实 API。agent-decomposition 的基线评测就要约 9 分钟，ship-your-first 每次检查要 1–3 分钟，具体花费 README 没写 ⚠️。</li>
+<li><strong>活动时间地点</strong>：仓库只写了“Code with Claude 2026”和部分工作坊编号（W3、W5）。提交记录里有 London、Tokyo 场次的准备，但每个工作坊在哪场、哪天开过，仓库没有说明 ⚠️ 未核实。</li>
+<li><strong>agent-battle 单人能不能玩</strong>：比赛依赖主持人部署的活动服务器（<code>.env.event</code> 里的地址）。会后这个地址是否还在线本站没有核；单人练习大概要按 <code>HOST.md</code> 自己部署一套 ⚠️ 推断。另：该工作坊声明不是 Minecraft 官方活动，与 Microsoft / Mojang 无关联。</li>
+<li><strong>模型名</strong>：代码里出现的模型 ID 有 claude-sonnet-4-6、claude-haiku-4-5、claude-opus-4-7、claude-opus-5-5 等多代混用，用的时候请换成你账号里当前可用的模型 ⚠️。</li>
+<li>星数、提交数等是 2026-11-03 的快照，会变。</li>
+</ul>
+
+<h2 id="appendix">附录 A：README 全文中译</h2>
+<div class="related-guide">译自根目录 README.md（提交 <code>4c34ec4</code>，2026-11-03 抓取）。原文 Copyright 2026 Anthropic PBC，Apache-2.0；本译文为本站所作修改（翻译），非官方。</div>
+<h3>cwc-workshops</h3>
+<p>工作坊材料。不维护，也不接受贡献。</p>
+<p>由 Anthropic 举办的 <strong>Code with Claude</strong> 工作坊的材料。</p>
+<h4>工作坊</h4>
+<ul>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/rightmodel" rel="noopener"><code>rightmodel/</code></a> ——<em>挑对模型</em>：用 Claude Code 的一个 SKILL 审计 LLM 评测集，并在不同模型和推理参数（扩展思考、effort）上扫一遍，找出“质量/美元”和“质量/秒”最优的配置。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/agent-decomposition" rel="noopener"><code>agent-decomposition/</code></a> ——<em>用 Skills 和 MCP 组装多智能体系统</em>：把一个靠 400 行提示词撑着的库存智能体，在 Claude Managed Agents 上拆成 skills + 代码执行 + callable_agents，并用评测验证每一步。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/how-we-claude-code" rel="noopener"><code>how-we-claude-code/</code></a> ——<em>我们怎么用 Claude Code</em>：分三个阶段走一遍 AI 辅助的产品流程——从访谈到规格，四个发散的设计方向（静态 HTML），再到一个 Vite + React 应用，其组件会输出机器可读的 DOM 契约，供智能体（或 CI）在运行时验证。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/ship-your-first-managed-agent" rel="noopener"><code>ship-your-first-managed-agent/</code></a> ——<em>上线你的第一个托管智能体</em>：一个 Streamlit 值班看板，三个告警同时打开，SRE 智能体面板处于离线状态。由 Claude Code 一部分一部分地填写 <code>agent.py</code>，你来做判断：先是一个带 runbook Skill 和自定义工具的智能体，然后是多智能体（一名事故指挥官，每个告警配一个调查员线程）、记忆库（团队历史加智能体自己的笔记本），以及文件输出（一份可下载的事后复盘 PDF）。设计成全场共用一个 API key 也能跑。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/agent-battle" rel="noopener"><code>agent-battle/</code></a> ——<em>智能体对战</em>：45 分钟的比赛，配置一个 Claude Managed Agent（系统提示词、skills、MCP 服务器、模型），让它通过 MCP 驱动本地游戏机器人。钻石最多者获胜，token 最少者在平局时胜出；一个快速的 <code>--eval</code> 决策探针循环让你约 30 秒就能测试一次配置修改，再决定是否投入一局 5 分钟的正式运行。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/agents-that-remember" rel="noopener"><code>agents-that-remember/</code></a> ——<em>会记事的智能体</em>：从一个跨会话明显失忆的托管智能体开始，一次叠加一种记忆原语——先用记忆库实现跨会话持久化，再用 Dreaming 服务整合过去的对话记录——45 分钟“从金鱼变成同事”。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/eval-driven-agent-development" rel="noopener"><code>eval-driven-agent-development/</code></a> ——<em>评测驱动的智能体开发</em>：把一个生成 PPTX 的托管智能体迭代六个版本（朴素 → 视觉 → 字体 → 配色 → 密度 → 自检循环），每个版本都用 10 个任务的评测集打分，评分器分两层（程序化的 <code>.pptx</code> XML 指标 + 对渲染后幻灯片的 LLM 评委），让每一次提示词修改都有度量，而不是凭感觉。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/production-ready-agent" rel="noopener"><code>production-ready-agent/</code></a> ——<em>Deal Desk</em>：在 Claude Managed Agents 上的一支多智能体并购研究团队，前面是聊天优先的界面——协调者把任务委派给四个并行的研究子智能体，从记忆库读取过往交易的经验，经 MCP 访问 Linear，并产出一份带评分的投资论点；界面实时显示每个事件和每次受控的工具调用。</li>
+<li><a href="https://github.com/anthropics/cwc-workshops/tree/main/research-desk" rel="noopener"><code>research-desk/</code></a> ——<em>研究台</em>：在 Claude Managed Agents 上搭一个 SEC 文件研究台，前面是自托管的 Next.js 控制台——先和一个你自己接好的空白智能体打招呼，再把同一个智能体升级（版本化更新）为研究主管，由它通过一个由你的服务器实现的自定义工具，为每只股票派出一个分析师会话；还包括子智能体专家、一个 edgartools Skill、按 outcome 评分的计分卡、共享记忆库，以及一个每周备忘录的部署。</li>
+</ul>
+<h4>许可证</h4>
+<p>Apache License 2.0。见 <a href="https://github.com/anthropics/cwc-workshops/blob/main/LICENSE" rel="noopener">LICENSE</a>。</p>
+
+<h2 id="readme-en">附录 B：README 英文原文</h2>
+<details><summary>展开 README.md（英文原文）</summary><pre><code>&lt;!-- Copyright 2026 Anthropic PBC --&gt;
+&lt;!-- SPDX-License-Identifier: Apache-2.0 --&gt;
+
+# cwc-workshops
+
+Workshop materials. Not maintained and not accepting contributions.
+
+Materials from Anthropic-run **Code with Claude** workshops.
+
+## Workshops
+
+- [`rightmodel/`](./rightmodel) — *Picking the Right Model*: use a Claude Code SKILL to audit an LLM eval suite and sweep it across models and inference parameters (extended thinking, effort) to find the best quality-per-dollar and quality-per-second configuration.
+- [`agent-decomposition/`](./agent-decomposition) — *Compose Multi-Agent Systems with Skills and MCP*: decompose a 400-line-prompt inventory agent into skills + code execution + callable_agents on Claude Managed Agents, with evals to verify each step.
+- [`how-we-claude-code/`](./how-we-claude-code) — *How We Claude Code*: a three-phase walkthrough of an AI-assisted product workflow — interview to spec, four divergent design explorations as static HTML, and a Vite + React app whose components emit a machine-readable DOM contract so an agent (or CI) can verify them at runtime.
+- [`ship-your-first-managed-agent/`](./ship-your-first-managed-agent) — *Ship Your First Managed Agent*: a Streamlit on-call dashboard with three pages open and an offline SRE Agent panel. Claude Code fills in `agent.py` one part at a time while you make the judgment calls: one agent with a runbook Skill and custom tools, then multiagent (an incident commander with an investigator thread per page), memory stores (team history plus the agent&#x27;s own notebook), and file output (a postmortem PDF you download). Built to run with a whole room on one API key.
+- [`agent-battle/`](./agent-battle) — *Agent Battle*: a 45-minute competition to configure a Claude Managed Agent — system prompt, skills, MCP servers, model — that drives a local game bot over MCP. Most diamonds wins, fewest tokens breaks ties; a fast `--eval` decision-probe loop lets you test config changes in ~30s before committing to a 5-minute run.
+- [`agents-that-remember/`](./agents-that-remember) — *Agents That Remember*: start with a Managed Agent that&#x27;s visibly amnesiac across sessions, then layer in memory primitives one at a time — a memory store for cross-session persistence, then the Dreaming Service to consolidate past transcripts — going &quot;goldfish to colleague&quot; in 45 minutes.
+- [`eval-driven-agent-development/`](./eval-driven-agent-development) — *Eval-Driven Agent Development*: iterate a PPTX-generating Managed Agent through six variants (naive → visual → typography → palette → density → QA-loop), scoring each against a 10-task suite with a two-layer grader (programmatic `.pptx` XML metrics + LLM-as-judge on rendered slides) so every prompt change is measured, not vibed.
+- [`production-ready-agent/`](./production-ready-agent) — *Deal Desk*: a chat-first UI over a multi-agent M&amp;A research team on Claude Managed Agents — a coordinator delegates to four parallel research sub-agents, reads prior-deal lessons from a memory store, reaches Linear via MCP, and emits a graded investment thesis while the UI streams every event and gated tool call.
+- [`research-desk/`](./research-desk) — *The Research Desk*: build an SEC-filings research desk on Claude Managed Agents behind a self-hosted Next.js console — say hello to a bare agent you wire up yourself, then promote that same agent (versioned update) into a head of research that dispatches one analyst session per ticker through a custom tool your server fulfils, with sub-agent specialists, an edgartools Skill, outcome-graded scorecards, a shared memory store, and a weekly memo deployment.
+
+## License
+
+Apache License 2.0. See [LICENSE](./LICENSE).
+</code></pre></details>
+
+<h2 id="license">附录 C：LICENSE（Apache-2.0）原文</h2>
+<details><summary>展开 LICENSE</summary><pre><code>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</code></pre></details>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>发布方：Anthropic PBC（Copyright 2026 Anthropic PBC，Apache License 2.0）；工作坊作者见仓库提交记录。仓库：<a href="https://github.com/anthropics/cwc-workshops" rel="noopener">github.com/anthropics/cwc-workshops</a>。本页为非官方中文导读与 README 翻译，封面为本站自制；如需删除请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/anthropics/cwc-workshops" rel="noopener">github.com/anthropics/cwc-workshops</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
