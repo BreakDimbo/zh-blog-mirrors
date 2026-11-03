@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yarn World：在浏览器里“织”出一座毛线小岛（yarn-world 项目导读） · Kris Yang</title>
+<meta name="description" content="krisyangdev/yarn-world 项目导读：three.js 毛线微缩岛，拉线织出世界、拉线头拆回毛线球；程序化针织材质（不加载图片纹理）、壳层渲染羊毛绒、全岛共用一个风场、Verlet 绳子物理、流动的针织河、织入/拆线着色器；代码 MIT、音效 CC0。附 README 全文中译与英文原文、LICENSE。">
+<meta property="og:title" content="Yarn World · 毛线微缩岛（yarn-world 导读）">
+<meta property="og:image" content="images/island.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);if(on)localStorage.setItem("zbm-re","on");else if(off)localStorage.removeItem("zbm-re");else on=localStorage.getItem("zbm-re")==="on"}catch(e){}r.setAttribute("data-re",on?"on":"off");if(!on||off||!("noModule" in d.createElement("script")))return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回中文镜像文库首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>中文镜像文库</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-03">2026.11.03</time></p>
+<h1 class="za-title">Yarn World：在浏览器里“织”出一座毛线小岛</h1>
+<p class="za-sub" lang="en" data-za-gen>Yarn World · a knitted island in three.js</p>
+<p class="za-meta" data-za-gen><span>来源 · Kris Yang @krisyangdev · GitHub</span><span>收录 · 2026-11-03</span><span><a href="https://github.com/krisyangdev/yarn-world" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/krisyangdev/yarn-world" rel="noopener">krisyangdev/yarn-world</a>（作者 Kris Yang，<a href="https://x.com/krisyangdev" rel="noopener">@krisyangdev</a>）· 在线版：<a href="https://yarn.krisyang.dev" rel="noopener">yarn.krisyang.dev</a> · 代码 MIT / 音效 CC0</p>
+<img class="cover" src="images/island.webp" alt="Yarn World 毛线小岛 封面" loading="eager"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>许可证 2026-11-03 现场核对：仓库 <code>LICENSE</code> 为 MIT（Copyright (c) 2026 Kris Yang），GitHub API <code>license</code> 字段为 <code>MIT</code>；README 另写明音效为 CC0。按本站规则（R7/R13），本页是<strong>项目导读 + README 全文中译</strong>（附英文原文与 LICENSE）。文中截图是本站 2026-11-03 在在线版里实际操作时截取的（软件渲染，画质比真机略差），另有一张仓库自带的 og 图，均转为 webp。在线站点没有 robots.txt（请求该路径返回的是网页本身），本站只做了普通浏览。README 里的动图（4.2 MB）没有转载。相关阅读：<a href="../areadne-sheep-grazing/">areadne：水彩风可交互微缩牧场</a>。</div>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">是什么</a></li>
+<li><a href="#stats">仓库快照（2026-11-03 核）</a></li>
+<li><a href="#play">怎么玩</a></li>
+<li><a href="#tech">技术拆解</a></li>
+<li><a href="#run">本地运行与依赖</a></li>
+<li><a href="#notes">核对与 ⚠️ 注记</a></li>
+<li><a href="#takeaways">对我们的启发</a></li>
+<li><a href="#appendix">附录 A：README 全文中译</a></li>
+<li><a href="#readme-en">附录 B：README 英文原文</a></li>
+<li><a href="#mit">附录 C：LICENSE（MIT）原文</a></li>
+</ol></nav>
+
+<h2 id="what">是什么</h2>
+<p>Yarn World 是一个能在浏览器里玩的毛线微缩小岛，用 three.js 写成。岛上的东西全是毛线、毛毡和绒球：地面是拼布被子，河是一条针织带子，羊是一团羊毛。打开时只有一个毛线球，<strong>拉线</strong>就把整座岛“织”出来；拉被子边上的<strong>线头</strong>，又全部拆回毛线球。</p>
+<p>整个场景不加载任何图片纹理：针织纹理在启动时程序化生成。这是一个偏手工艺、偏“治愈系”的网页玩具，也是一份不错的 three.js 程序化材质与小型物理的参考实现。</p>
+<figure><img src="images/start.webp" alt="开场：毛线球放在垫子上，提示 Pull the thread" loading="lazy"><figcaption>开场：只有一个毛线球和提示“Pull the thread”。本站 2026-11-03 截自在线版</figcaption></figure>
+
+<h2 id="stats">仓库快照（2026-11-03 12:52 UTC+8 核）</h2>
+<table>
+<tr><th>项</th><th>值</th></tr>
+<tr><td>Star / Fork</td><td>1 / 1</td></tr>
+<tr><td>创建 / 最近推送</td><td>2026-11-01 14:06 / 14:27（UTC+8）</td></tr>
+<tr><td>提交</td><td>4 次，均在 11-01 14:06–14:25（UTC+8）；首个提交一次性导入全部代码，提交者显示为 Ryan-yang125</td></tr>
+<tr><td>规模</td><td><code>src/</code> 28 个 JS 文件，约 1.45 万行；依赖 three、three-mesh-bvh、vite</td></tr>
+<tr><td>许可</td><td>代码 MIT；音效 CC0（freesound.org，清单见 <code>public/sfx/SOURCES.txt</code>）</td></tr>
+</table>
+
+<h2 id="play">怎么玩</h2>
+<ul>
+<li><strong>拉线</strong>：拖动毛线球上的线，球从垫子上升起，被子从中心向外长出，岛上每样东西从球里飞到自己的位置。</li>
+<li><strong>拉线头</strong>：拖动垫子边上的线头，一切拆回毛线球。</li>
+<li><strong>拖动</strong>旋转视角，<strong>滚轮</strong>缩放。</li>
+<li><strong>戳</strong>任何东西：小屋开门敲门、风筝翻圈、风车转、菜园里蹦出胡萝卜、鸟飞走、水车溅水。</li>
+<li><strong>拎起一只羊</strong>再放下；拉羊背上的线能把羊毛拆掉，羊会害羞地跑开，羊毛慢慢长回来。</li>
+<li>快捷键：<code>R</code> 重播开场，<code>M</code> 静音。</li>
+</ul>
+<figure><img src="images/knitting.webp" alt="拉线后，被子从中心长出，物件从毛线球飞出" loading="lazy"><figcaption>拉线之后：被子从中心织出来，物件陆续就位。本站截图</figcaption></figure>
+<figure><img src="images/island.webp" alt="织完的毛线小岛：河、桥、小屋、羊、风筝、水车" loading="lazy"><figcaption>织完的小岛：针织河、拱桥、小屋、羊群、风筝和水车。本站截图</figcaption></figure>
+
+<h2 id="tech">技术拆解</h2>
+<ul>
+<li><strong>程序化针织材质</strong>：平针、罗纹、起伏针、桂花针、麻花针在启动时画成高度场，再转成法线、AO 和粗糙度贴图。本站在源码里没搜到任何图片加载调用，和“不加载图片纹理”的说法一致 ✅。</li>
+<li><strong>羊毛绒（壳层渲染）</strong>：同一网格沿法线往外推、画好几层，片元着色器里用纤维遮罩留下毛茸茸的边（<code>fuzz.js</code> 用 InstancedMesh 实现）。</li>
+<li><strong>全岛一个风场</strong>：草、树、晾的衣服、流苏、风车、风筝、烟、蒲公英和云影都读同一个风场，所以能看到一阵风从岛上扫过。</li>
+<li><strong>绳子物理</strong>：毛线球的线、羊毛线、开场和收尾的拉手都是带地面与球体碰撞的 Verlet 绳（<code>rope.js</code>）。</li>
+<li><strong>流动的针织河</strong>：涌浪条带顺流平移，用 flow map 的相位重置避免拉伸；岸边泡沫、深度着色、漂流纹理、带尾迹的鸭子和涟漪。</li>
+<li><strong>织入与拆线</strong>：地面的出现和消失由一个着色器“前沿”控制，阴影 pass 共用它，所以阴影始终跟着可见的被子走；开场动画就是拆线倒着放。</li>
+<li><strong>小生命</strong>：羊吃草、追滚动的毛线球、吃掉落的果子；小羊跟着妈妈；蝴蝶和鸟来来去去。</li>
+<li><strong>声音</strong>：每种互动都有各自的录音，另有风声、鸟叫和带方位的河水声。</li>
+</ul>
+
+<h2 id="run">本地运行与依赖</h2>
+<p><code>npm install</code> 后 <code>npm run dev</code>；加 <code>?debug=1</code> 显示帧率，并把场景对象挂到 <code>window</code> 上方便调试；<code>npm run build</code> 输出静态站到 <code>dist/</code>。依赖：three.js、three-mesh-bvh（相机自动对焦和“戳”的快速射线检测）、Vite。</p>
+
+<h2 id="notes">核对与 ⚠️ 注记</h2>
+<ul>
+<li><strong>非常新</strong>：仓库 11-01 才建，只有 1 星、4 次提交，代码是一次性导入的，看不到开发过程 ⚠️。</li>
+<li><strong>署名</strong>：LICENSE 版权人是 Kris Yang，GitHub 账号 krisyangdev（简介：用 AI Agent 做网页游戏、着色器和动效，并分享工作流和 Skill），提交者却显示为 Ryan-yang125。两者是不是同一人本站没有核实 ⚠️。</li>
+<li>作者简介提到用 AI Agent 创作，但 README 没说这个项目是否由 Agent 生成或怎么生成的 ⚠️ 未核实。</li>
+<li><strong>音效 CC0</strong>：<code>SOURCES.txt</code> 列出 46 条 freesound 链接，并写明“全部为 CC0 预览音频”。本站没有逐条打开 freesound 核对 ⚠️。</li>
+<li>在线版在本站的无 GPU 环境（SwiftShader）下能完整运行：拉线后约一分钟织完；真机应该快得多 ⚠️ 未测。</li>
+</ul>
+
+<h2 id="takeaways">对我们的启发</h2>
+<ul>
+<li><strong>材质用程序生成</strong>：针织纹理从高度场推导，零图片资源，也没有素材版权问题，适合做风格统一的小型网页作品。</li>
+<li><strong>一个共享场驱动所有动态</strong>：风场、拆线前沿都是“一处定义、多处读取”，画面自然统一。这个思路可以搬到其他微缩场景 ⚠️ 推断。</li>
+<li><strong>开场 = 退场倒放</strong>：用一套动画同时解决出场和退场，省工又有仪式感。</li>
+</ul>
+
+<h2 id="appendix">附录 A：README 全文中译</h2>
+<div class="related-guide">译自 README.md（提交 3e8401d，2026-11-03 抓取），作者 Kris Yang，MIT。动图未转载，改为链接。</div>
+<h3>Yarn World</h3>
+<p>一座可以在浏览器里玩的毛线小岛，用 three.js 打造。所有东西都由毛线、毛毡和绒球做成：地面是一床拼布被子，河是一条针织缎带，羊是羊毛做的。</p>
+<p><strong>在线体验：</strong><a href="https://yarn.krisyang.dev">yarn.krisyang.dev</a></p>
+<p>［动图：拉线，从毛线球里织出小岛——见<a href="https://github.com/krisyangdev/yarn-world/blob/main/docs/intro.webp">原仓库 docs/intro.webp</a>］</p>
+<h4>怎么玩</h4>
+<ul>
+<li><strong>拉毛线球上的线</strong>，把世界织出来。毛线球从垫子上升起，被子从中心向外生长，每样东西都从球里飞出来，落到自己的位置。</li>
+<li><strong>拉垫子边缘的线头</strong>，把一切拆回毛线球。</li>
+<li><strong>拖动</strong>旋转镜头，<strong>滚动</strong>缩放。</li>
+<li><strong>戳</strong>任何东西：房子会开门敲门，风筝会翻圈，风车会转，胡萝卜会从菜园里蹦出来，鸟会飞走，水车会溅起水花。</li>
+<li><strong>拎起一只羊</strong>再放下。拉羊背上的线可以把它的羊毛拆掉；它会害羞地跑开，羊毛会慢慢长回来。</li>
+<li>按键：<code>R</code> 重播开场，<code>M</code> 静音。</li>
+</ul>
+<h4>里面有什么</h4>
+<ul>
+<li><strong>程序化针织材质。</strong>平针、罗纹、起伏针、桂花针和麻花针在启动时被绘制成高度场，再转换为法线、AO 和粗糙度贴图。不加载任何图片纹理。</li>
+<li><strong>羊毛绒。</strong>羊和绒球使用壳层渲染：网格被绘制多次，每一层沿法线向外推，并用纤维遮罩留下一圈毛茸茸的光晕。</li>
+<li><strong>同一阵风。</strong>草、树、晾晒的衣物、流苏、风车、风筝、烟囱的烟、蒲公英绒毛和云影都读取同一个风场，所以你能看到一阵风从岛上吹过。</li>
+<li><strong>绳子物理。</strong>毛线球的线、羊的羊毛线以及开场和收尾的拉手，都是带地面和球体碰撞的 Verlet 绳。</li>
+<li><strong>流动的针织河。</strong>涌浪条带顺流平移并用 flow map 做相位重置，还有岸边泡沫、深度着色、漂流的条纹、拖着尾迹的鸭子和涟漪圈。</li>
+<li><strong>织入与拆解。</strong>地面的出现和移除由一个着色器前沿控制，阴影 pass 也共用它，所以阴影与可见的被子完全一致。开场就是拆解动画倒着播放。</li>
+<li><strong>小小的生命。</strong>羊会吃草、追滚动的毛线球、吃掉落的果子；小羊跟着妈妈；蝴蝶和鸟来来去去。</li>
+<li><strong>声音。</strong>每种互动都有自己录制的音效，另外还有风声、鸟鸣和带空间方位的河水声。</li>
+</ul>
+<h4>本地运行</h4>
+<pre><code>npm install
+npm run dev</code></pre>
+<p>打开终端打印的网址。加上 <code>?debug=1</code> 可以显示帧率计数器，并把场景对象挂到 <code>window</code> 上。</p>
+<p><code>npm run build</code> 会把静态站点输出到 <code>dist/</code>。</p>
+<h4>使用的技术</h4>
+<ul>
+<li><a href="https://threejs.org">three.js</a></li>
+<li><a href="https://github.com/gkjohnson/three-mesh-bvh">three-mesh-bvh</a>，用于快速射线检测（相机自动对焦、戳东西）</li>
+<li><a href="https://vite.dev">Vite</a></li>
+</ul>
+<h4>致谢</h4>
+<p>音效是来自 <a href="https://freesound.org">freesound.org</a> 的 CC0 录音，清单见 <a href="https://github.com/krisyangdev/yarn-world/blob/main/public/sfx/SOURCES.txt">public/sfx/SOURCES.txt</a>。</p>
+<h4>许可</h4>
+<p>代码采用 MIT 许可。音效文件为 CC0。</p>
+
+<h2 id="readme-en">附录 B：README 英文原文</h2>
+<details><summary>展开 README.md 原文</summary><pre><code># Yarn World
+
+A small knitted island you can play with in the browser, built with three.js. Everything is made of yarn, felt and pompoms: the ground is a patchwork quilt, the river is a knitted ribbon, the sheep are wool.
+
+**Live:** [yarn.krisyang.dev](https://yarn.krisyang.dev)
+
+![Pulling the thread knits the island out of the yarn ball](docs/intro.webp)
+
+## How to play
+
+- **Pull the thread** on the yarn ball to knit the world. The ball lifts off its mat, the quilt grows out from the center and every object flies out of the ball to its place.
+- **Pull the loose end** at the edge of the cushion to unravel it all back into the ball.
+- **Drag** to orbit the camera, **scroll** to zoom.
+- **Poke** anything: the house opens its door and knocks, the kite loops, the pinwheels spin, carrots pop out of the garden, birds fly off, the waterwheel splashes.
+- **Pick up a sheep** and drop it. Pull the thread on a sheep&#x27;s back to unravel its wool; it runs off embarrassed and the wool grows back.
+- Keys: `R` replays the intro, `M` mutes.
+
+## What&#x27;s in it
+
+- **Procedural knit materials.** Stockinette, rib, garter, seed and cable stitches are painted as height fields at startup and turned into normal, AO and roughness maps. No image textures are loaded.
+- **Wool fuzz.** Sheep and pompoms use shell rendering: the mesh is drawn several times, each shell pushed out along the normal, with a fiber mask that leaves a hairy halo.
+- **One shared wind.** Grass, trees, laundry, tassels, pinwheels, the kite, chimney smoke, dandelion fluff and cloud shadows all read the same wind field, so a gust visibly travels across the island.
+- **Rope physics.** The yarn ball&#x27;s thread, the sheep&#x27;s wool threads and the intro and outro handles are Verlet ropes with ground and sphere collisions.
+- **A flowing knitted river.** Swell bands advected downstream with a flow-map phase reset, bank foam, depth tint, drifting streaks, ducks with wakes and ripple rings.
+- **Knit-in and unravel.** The ground is revealed and removed by a shader front shared with the shadow pass, so shadows follow the visible quilt exactly. The intro is the unravel played backwards.
+- **Small lives.** Sheep graze, chase the rolling yarn ball and eat fallen fruit; a lamb follows its mother; butterflies and birds come and go.
+- **Sound.** Every interaction has its own recorded sound, plus wind, birdsong and a positional river.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open the printed URL. Add `?debug=1` for an fps counter and the scene objects on `window`.
+
+`npm run build` writes a static site to `dist/`.
+
+## Built with
+
+- [three.js](https://threejs.org)
+- [three-mesh-bvh](https://github.com/gkjohnson/three-mesh-bvh) for fast raycasts (camera autofocus, poking)
+- [Vite](https://vite.dev)
+
+## Credits
+
+Sound effects are CC0 recordings from [freesound.org](https://freesound.org), listed in [public/sfx/SOURCES.txt](public/sfx/SOURCES.txt).
+
+## License
+
+Code is MIT. Sound files are CC0.
+</code></pre></details>
+
+<h2 id="mit">附录 C：LICENSE（MIT）原文</h2>
+<details><summary>展开 LICENSE</summary><pre><code>MIT License
+
+Copyright (c) 2026 Kris Yang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre></details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>项目作者：Kris Yang（@krisyangdev）。仓库：<a href="https://github.com/krisyangdev/yarn-world" rel="noopener">github.com/krisyangdev/yarn-world</a>（代码 MIT，音效 CC0）。截图为本站在在线版中实际操作截取，og 图取自仓库；如需删除请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/krisyangdev/yarn-world" rel="noopener">github.com/krisyangdev/yarn-world</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

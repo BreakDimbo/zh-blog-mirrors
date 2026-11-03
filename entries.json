@@ -1,5 +1,20 @@
 [
   {
+    "slug": "krisyangdev-yarn-world",
+    "title": "Yarn World：在浏览器里“织”出一座毛线小岛（yarn-world 项目导读）",
+    "desc": "krisyangdev/yarn-world 项目导读：three.js 毛线微缩岛——拉线从毛线球织出整座岛，拉线头拆回去；可戳小屋、风筝、风车、水车，拎羊、拆羊毛。程序化针织材质（五种针法高度场→法线/AO/粗糙度，零图片纹理 ✅）、壳层渲染羊毛绒、全岛共用风场、Verlet 绳子物理、flow map 针织河、织入/拆线着色器前沿与阴影共用。代码 MIT（11-03 现场核）、音效 CC0；仓库 11-01 新建、1 星、署名与提交者不一致 ⚠️。附 README 全文中译与英文原文、LICENSE、在线版实机截图。",
+    "description": "krisyangdev/yarn-world 项目导读：three.js 毛线微缩岛——拉线从毛线球织出整座岛，拉线头拆回去；可戳小屋、风筝、风车、水车，拎羊、拆羊毛。程序化针织材质（五种针法高度场→法线/AO/粗糙度，零图片纹理 ✅）、壳层渲染羊毛绒、全岛共用风场、Verlet 绳子物理、flow map 针织河、织入/拆线着色器前沿与阴影共用。代码 MIT（11-03 现场核）、音效 CC0；仓库 11-01 新建、1 星、署名与提交者不一致 ⚠️。附 README 全文中译与英文原文、LICENSE、在线版实机截图。",
+    "source": "Kris Yang @krisyangdev · GitHub",
+    "date": "2026-11-03",
+    "type": "导读",
+    "subtitle": "Yarn World · a knitted island in three.js",
+    "original_url": "https://github.com/krisyangdev/yarn-world",
+    "spine": "毛线微缩岛",
+    "summary": "拉一根线，织出整座 three.js 小岛",
+    "kind": "项目",
+    "by": "Kris Yang"
+  },
+  {
     "slug": "deanchensj-jiangshan-map",
     "title": "江山时序：拖动时间轴的中国历史交互舆图（jiangshan-map 项目导读）",
     "desc": "DeanChensj/jiangshan-map（江山时序）项目导读：一张宣纸设色的中国历史交互舆图，前 403 年三家分晋至今 18 个时期——拖时间轴看疆域分合与朱砂残影、点城看两千年政区沿革与大事、点人重走秦皇/张骞/玄奘/苏轼等行迹、舆图寻址小游戏；year+place 零坐标深链、iframe 嵌入；本地 MCP Server（本站实测 ✅）、Agent Skill、window.atlasAPI、GeoJSON 导出（实测 187 快照）。GPL-3.0（11-03 现场核），CHGIS/Hartwell 派生边界仅限学术非商业 ⚠️；简介“164 快照”已过时 ⚠️。附作者中文 README 全文与 LICENSE。",
