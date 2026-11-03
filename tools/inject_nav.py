@@ -5,7 +5,7 @@ Markers: <!-- zbm-nav:head -->…<!-- /zbm-nav:head --> and <!-- zbm-nav -->…<
 Existing marked blocks are replaced (so edits here propagate). Root index.html (hub) is skipped."""
 import os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LABEL = '中文镜像文库'
+LABEL = '录像带书店'
 def blocks(depth):
     up = '../' * depth
     head = (f'<!-- zbm-nav:head --><link rel="stylesheet" href="{up}assets/nav.css">'

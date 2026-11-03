@@ -6,7 +6,7 @@
 3. 运行：
    ```bash
    python3 tools/restyle_articles.py   # 文字类页面套用 templates/article.html + assets/article.css（幂等；特殊交互页在脚本 SKIP 中）
-   python3 tools/inject_nav.py   # 给所有子页面幂等注入「← 中文镜像文库」返回链接（共享 assets/nav.css + nav.js）
+   python3 tools/inject_nav.py   # 给所有子页面幂等注入「← 录像带书店」返回链接（共享 assets/nav.css + nav.js）
    python3 tools/inject_reading_effect.py   # 给标准文章页幂等注入报纸阅读模式（assets/reading-effect/；画廊/交互页自动跳过）
    python3 tools/build_hub.py    # 由 entries.json 生成首页 index.html（新的在前）
    ```

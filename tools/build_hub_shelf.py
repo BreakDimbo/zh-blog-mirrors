@@ -256,9 +256,9 @@ chips = '<button type="button" data-f="" aria-pressed="true">全部<sup>%d</sup>
     f'<button type="button" data-f="{esc(t)}" aria-pressed="false">{esc(t)}<sup>{counts[t]}</sup></button>' for t in types)
 payload = json.dumps({'items': data, 'types': types, 'shelves': shelves}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 
-TITLE = '中文镜像文库 · zh-blog-mirrors'
+TITLE = '录像带书店 · Tape Store'
 DESC = '精选海外技术与创作长文的中文镜像、翻译、导读与评述，长期托管于 GitHub Pages。'
-OG_DESC = '精选海外技术与创作长文的中文镜像、翻译、导读与评述。'
+OG_DESC = '录像带书店（Tape Store）：精选海外技术与创作长文的中文镜像、翻译、导读与评述，一篇一盒录像带。'
 if PREVIEW:
     head = ('<title>中文镜像文库 · 录像带书架（预览）</title>\n'
             '<meta name="description" content="中文镜像文库的书架式首页预览：每篇文章是一盒录像带，抽出来看封套。">\n'
@@ -267,10 +267,10 @@ if PREVIEW:
     footlink = '<span class="pv">This is a preview of the shelf layout · <a href="../">返回首页</a></span>'
 else:
     head = (f'<title>{TITLE}</title>\n<meta name="description" content="{DESC}">\n<link rel="canonical" href="{URL}">\n'
-            '<meta property="og:type" content="website"><meta property="og:site_name" content="zh-blog-mirrors">\n'
-            f'<meta property="og:title" content="中文镜像文库"><meta property="og:description" content="{OG_DESC}">\n'
+            '<meta property="og:type" content="website"><meta property="og:site_name" content="录像带书店 · Tape Store">\n'
+            f'<meta property="og:title" content="录像带书店 · Tape Store"><meta property="og:description" content="{OG_DESC}">\n'
             f'<meta property="og:url" content="{URL}"><meta property="og:locale" content="zh_CN"><meta name="twitter:card" content="summary">\n'
-            f'<meta name="twitter:title" content="中文镜像文库"><meta name="twitter:description" content="{OG_DESC}">')
+            f'<meta name="twitter:title" content="录像带书店 · Tape Store"><meta name="twitter:description" content="{OG_DESC}">')
     toplink, eyebrow = '', ''
     footlink = '<span class="pv">也可按时间翻阅 <a href="./classic/">经典列表</a></span>'
 
@@ -300,7 +300,7 @@ if not PREVIEW:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>中文镜像文库 · 书架已上线</title>
+<title>录像带书店 · 书架已上线</title>
 <meta name="robots" content="noindex">
 <link rel="canonical" href="{URL}">
 <meta http-equiv="refresh" content="0; url=../">
@@ -310,7 +310,7 @@ if not PREVIEW:
 </head>
 <body>
 <!-- zbm-nav --><!-- /zbm-nav -->
-<p>录像带书架已成为首页 · <a href="../">前往中文镜像文库 →</a></p>
+<p>录像带书架已成为首页 · <a href="../">前往录像带书店 →</a></p>
 </body>
 </html>
 '''
