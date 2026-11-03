@@ -1,5 +1,20 @@
 [
   {
+    "slug": "ayi-ainotes-ai-portrait-8d",
+    "title": "AI 人像去塑料感：8 个维度的“摄影物理语言”提示词（AYi 原帖照录 + 导读）",
+    "desc": "AYi（@AYi_AInotes）X 原帖全文照录 + 导读：用“摄影物理语言”代替空泛形容词写 AI 人像提示词——人设气质、面料、抓拍微表情、焦段光圈、侧光轮廓光与毛孔、散焦背景、克制审美、负面词，共 8 个维度；楼中 3 套“体育直播截图”式人像提示词全文。作者建议逐维单独试、负面词按症状补。主帖后半为 Flatkey 推介，未标是否合作 ⚠️；配图一与提示词一场景不符 ⚠️；“Fable 5.5”“纯 Prompt 直出”未核实 ⚠️。",
+    "description": "AYi（@AYi_AInotes）X 原帖全文照录 + 导读：用“摄影物理语言”代替空泛形容词写 AI 人像提示词——人设气质、面料、抓拍微表情、焦段光圈、侧光轮廓光与毛孔、散焦背景、克制审美、负面词，共 8 个维度；楼中 3 套“体育直播截图”式人像提示词全文。作者建议逐维单独试、负面词按症状补。主帖后半为 Flatkey 推介，未标是否合作 ⚠️；配图一与提示词一场景不符 ⚠️；“Fable 5.5”“纯 Prompt 直出”未核实 ⚠️。",
+    "source": "AYi @AYi_AInotes · X",
+    "date": "2026-11-03",
+    "type": "全文镜像",
+    "subtitle": "Eight dimensions of photographic language for AI portraits",
+    "original_url": "https://x.com/AYi_AInotes/status/2117508777062584363",
+    "spine": "AI 人像提示词",
+    "summary": "把“漂亮”换成光位、焦段和面料",
+    "kind": "方法",
+    "by": "AYi"
+  },
+  {
     "slug": "addyosmani-critical-thinking-agents",
     "title": "智能体替你干活时，怎样保住批判性思维（Addy Osmani 长文中译）",
     "desc": "Addy Osmani（Claude Code @Anthropic）X 长文全文中译：认知卸载 → 顺从 → 认知投降的三档光谱；认知债与理解债；先写假设、请模型做盲点扫描；每个绿勾说清查了什么、没查什么，先看命令与输出再看总结；让智能体列出替你做的决定、读后自测；编排税、意图债、自己写需求说明；“不愿署名就不发”；监督悖论与每周不用智能体写一点代码。观点文无新数据；“理解债由 Jeremy Twei 提出”未核实 ⚠️，Pangram 检测图仅作自我声明 ⚠️。",
