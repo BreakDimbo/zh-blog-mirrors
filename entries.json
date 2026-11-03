@@ -1,5 +1,20 @@
 [
   {
+    "slug": "anlibili",
+    "title": "anlibili：被知乎、小红书网友反复安利的 B站 视频（导读）",
+    "desc": "anlibili 导读：一个长得像 B站首页、但不靠算法的第三方小站——照搬 Karpathy 的 HackerTube 思路，把知乎 / 小红书网友各自独立推荐过的 B站 视频聚起来：至少 3 人、3 个不同月份推荐才入选，按「推荐月份数 + 0.5 × 强烈推荐月份数」排序（强烈推荐 = 推荐段落自写 ≥ 30 字），每个视频附推荐原话与出处；另设「新近好评」补老视频占优的短板。当前展示 1,132 个视频（社区推荐 1,049 + 新近好评 83），偏知识区课程。作者未署名、托管于 Teamily、无许可声明 ⚠️，本页为导读、仅短引。",
+    "description": "anlibili 导读：一个长得像 B站首页、但不靠算法的第三方小站——照搬 Karpathy 的 HackerTube 思路，把知乎 / 小红书网友各自独立推荐过的 B站 视频聚起来：至少 3 人、3 个不同月份推荐才入选，按「推荐月份数 + 0.5 × 强烈推荐月份数」排序（强烈推荐 = 推荐段落自写 ≥ 30 字），每个视频附推荐原话与出处；另设「新近好评」补老视频占优的短板。当前展示 1,132 个视频（社区推荐 1,049 + 新近好评 83），偏知识区课程。作者未署名、托管于 Teamily、无许可声明 ⚠️，本页为导读、仅短引。",
+    "source": "anlibili（未署名）· teamily.run",
+    "date": "2026-11-03",
+    "type": "导读",
+    "subtitle": "anlibili · Bilibili videos the internet keeps recommending",
+    "original_url": "https://anlibili-site-bxlxh4ai.teamily.run/",
+    "spine": "B站安利榜",
+    "summary": "知乎网友反复安利的 B站 视频库",
+    "kind": "站点",
+    "by": "anlibili（未署名）"
+  },
+  {
     "slug": "anthropics-cwc-workshops",
     "title": "Code with Claude 工作坊合集：九个 Claude 智能体动手课（cwc-workshops 项目导读）",
     "desc": "anthropics/cwc-workshops 项目导读：Anthropic 在 Code with Claude 活动上开的九个动手工作坊——Skill 审计评测并扫参选模型、用 Skills+MCP 拆掉 402 行提示词的库存智能体、Claude Code 从访谈到可验证组件、托管智能体值班看板（多智能体/记忆库/复盘 PDF）、Minecraft 智能体对战、记忆库与 Dreaming、评测驱动迭代 PPTX 智能体、并购 Deal Desk 与 SEC 研究台。Apache-2.0（11-03 现场核）；不维护、需 Managed Agents beta 与 API 费用、本站未实测 ⚠️。附 README 全文中译与英文原文、LICENSE。",
