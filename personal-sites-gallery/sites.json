@@ -1,7 +1,40 @@
 {
- "updated": "2026-11-02T18:00:48.386212+08:00",
+ "updated": "2026-11-03T10:05:19.743416+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "ericboluwatife.com",
+   "url": "https://ericboluwatife.com/",
+   "title": "Eric Boluwatife | Web Designer & Developer for Startups",
+   "description": "Websites, brands and web apps designed, built and launched for founders in the US, UK, Europe and Africa. Framer, Webflow and code, with fixed-price quotes.",
+   "shared_by": "@blvckvisuals_",
+   "reply": "https://x.com/blvckvisuals_/status/2117412103195639988",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "anishmahanta.vercel.app",
+   "url": "https://anishmahanta.vercel.app/",
+   "title": "Anish Aniket Mahanta",
+   "description": "Anish Aniket Mahanta, atmospheric scientist and weather & climate data engineer: reanalysis pipelines, wind resource and climate-hazard analysis.",
+   "shared_by": "@anishmahanta",
+   "reply": "https://x.com/anishmahanta/status/2117298266668703935",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "abdul-website.vercel.app",
+   "url": "https://abdul-website.vercel.app/",
+   "title": "Abdul Qadir · Custom CRMs and portals for travel agencies",
+   "description": "Custom CRMs, portals and processes for travel agencies in India, built around your problem. First version in 2 weeks, projects from ₹34,999.",
+   "shared_by": "@messyfeet",
+   "reply": "https://x.com/messyfeet/status/2117288118915305639",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "uche-ucodes.vercel.app",
    "url": "https://uche-ucodes.vercel.app/",
