@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kevintngo-looseleaf",
+    "date": "2026-11-04",
+    "type": "导读",
+    "title": "Looseleaf：把 shadcn/ui 画在纸上",
+    "subtitle": "Looseleaf · shadcn/ui, drawn by hand · 导读 + README 全文中译",
+    "source": "GitHub · kevintngo/looseleaf（Kevin T. Ngo，MIT）",
+    "original_url": "https://github.com/kevintngo/looseleaf",
+    "desc": "Looseleaf 项目导读：Kevin T. Ngo 的“手绘版 shadcn/ui”——React 19 + Tailwind v4 + Radix 组件库兼 shadcn registry，沿用 shadcn 的部件名、props 与 data-slot，换上钢笔勾线、马克笔平涂、带齿纹的纸、贴纸与印章；123 个组件、61 个区块、代码绘制的图标/贴纸/吉祥物 Stubby 与手写字体 Kevin Sans。每一笔是带种子的纯函数 SVG，服务端与浏览器画出同一条线，状态靠 CSS 切换预画图层。MIT（11-04 现场核），附 README 全文中译与原文；组件/区块数与 registry.json 一致，图标数与“6,500+ 测试”为自报 ⚠️，未实装验证 ⚠️。",
+    "description": "Looseleaf 项目导读：Kevin T. Ngo 的“手绘版 shadcn/ui”——React 19 + Tailwind v4 + Radix 组件库兼 shadcn registry，沿用 shadcn 的部件名、props 与 data-slot，换上钢笔勾线、马克笔平涂、带齿纹的纸、贴纸与印章；123 个组件、61 个区块、代码绘制的图标/贴纸/吉祥物 Stubby 与手写字体 Kevin Sans。每一笔是带种子的纯函数 SVG，服务端与浏览器画出同一条线，状态靠 CSS 切换预画图层。MIT（11-04 现场核），附 README 全文中译与原文；组件/区块数与 registry.json 一致，图标数与“6,500+ 测试”为自报 ⚠️，未实装验证 ⚠️。",
+    "spine": "手绘组件库",
+    "summary": "像画在纸上的 shadcn/ui 组件库",
+    "kind": "项目",
+    "by": "Kevin T. Ngo"
+  },
+  {
     "slug": "anlibili",
     "title": "anlibili：被知乎、小红书网友反复安利的 B站 视频（导读）",
     "desc": "anlibili 导读：一个长得像 B站首页、但不靠算法的第三方小站——照搬 Karpathy 的 HackerTube 思路，把知乎 / 小红书网友各自独立推荐过的 B站 视频聚起来：至少 3 人、3 个不同月份推荐才入选，按「推荐月份数 + 0.5 × 强烈推荐月份数」排序（强烈推荐 = 推荐段落自写 ≥ 30 字），每个视频附推荐原话与出处；另设「新近好评」补老视频占优的短板。当前展示 1,132 个视频（社区推荐 1,049 + 新近好评 83），偏知识区课程。作者未署名、托管于 Teamily、无许可声明 ⚠️，本页为导读、仅短引。",

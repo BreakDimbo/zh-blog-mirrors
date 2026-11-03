@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Looseleaf：手绘版 shadcn/ui，123 个像画在纸上的 React 组件（项目导读） · Kevin T. Ngo</title>
+<meta name="description" content="kevintngo/looseleaf 项目导读：一套“画在纸上”的 React + Tailwind v4 + Radix 组件库兼 shadcn registry——沿用 shadcn/ui 的部件名、props 与 data-slot，换上钢笔线条、纸张纹理、贴纸和印章；123 个组件、61 个区块、自制手写字体 Kevin Sans。MIT，附 README 全文中译与原文、LICENSE。">
+<meta property="og:title" content="Looseleaf · 手绘版 shadcn/ui 导读">
+<meta property="og:image" content="images/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-04">2026.11.04</time></p>
+<h1 class="za-title">Looseleaf：把 shadcn/ui 画在纸上</h1>
+<p class="za-sub" lang="en" data-za-gen>Looseleaf · shadcn/ui, drawn by hand · 导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · kevintngo/looseleaf（Kevin T. Ngo，MIT）</span><span>收录 · 2026-11-04</span><span><a href="https://github.com/kevintngo/looseleaf" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/kevintngo/looseleaf" rel="noopener">kevintngo/looseleaf</a>（作者 Kevin T. Ngo，<a href="https://x.com/kevin_t_ngo" rel="noopener">@kevin_t_ngo</a>）· 文档站 <a href="https://kevintngo.github.io/looseleaf/" rel="noopener">kevintngo.github.io/looseleaf</a> · MIT</p>
+<img class="cover" src="images/cover.webp" alt="Looseleaf 的 Open Graph 图：左侧标题“shadcn/ui, drawn by hand.”，右侧是贴在方格纸上的手绘分段控件、开关、滑块与按钮" loading="eager"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>许可证于 2026-11-04 现场核对：仓库根目录 <code>LICENSE</code> 为 MIT 全文（<code>Copyright (c) 2026 Looseleaf contributors</code>），GitHub API 的 <code>license</code> 字段为 <code>MIT</code>；README 写明代码、美术和 Kevin Sans 字体都按 MIT 发布，IBM Plex Mono 为 SIL OFL 1.1。按本站规则（R7/R13），本页做<strong>项目导读 + README 全文中译</strong>，附英文原文与 LICENSE 原文，保留版权与许可声明。封面和三张配图取自项目自己的 Open Graph 图与文档站截图（同属 MIT 授权的作品），已转为 webp。抓取方式：GitHub 公开页面与公开 REST API、文档站的普通浏览与截图；github.com 的 robots.txt 已先读，kevintngo.github.io 没有 robots.txt（404，无限制）。同一作者的另一件作品：<a href="../kevintngo-statechart-art/">珍珠奶茶店的生意：四张过了模型检查的手绘状态图</a>。</div>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#stats">仓库快照（2026-11-04 核）</a></li>
+<li><a href="#who">适合谁</a></li>
+<li><a href="#tour">看一眼：桌面、区块与贴纸</a></li>
+<li><a href="#how">它是怎么画出来的</a></li>
+<li><a href="#use">怎么用</a></li>
+<li><a href="#laws">“手的十条规矩”摘要</a></li>
+<li><a href="#notes">核对与 ⚠️ 注记</a></li>
+<li><a href="#appendix">附录 A：README 全文中译</a></li>
+<li><a href="#readme-en">附录 B：README 英文原文</a></li>
+<li><a href="#license">附录 C：LICENSE（MIT）原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p><strong>Looseleaf</strong>（活页纸）是一套 React 组件库，同时也是一个 <a href="https://ui.shadcn.com/docs/registry" rel="noopener">shadcn registry</a>。一句话概括：<strong>shadcn/ui 的骨架，手绘的皮</strong>。按钮、输入框、日历、侧栏、图表，所有界面都像画在奶油色的纸上：深色毡头笔勾边，马克笔平涂填色，纸面有纹理，卡片用胶带、图钉或长尾夹固定，需要时还能贴贴纸、盖印章。</p>
+<p>关键是“换皮不换骨”。Looseleaf 沿用 shadcn/ui 的部件划分、props 和 <code>data-slot</code> 名称，底层仍是 Radix，所以原本用 shadcn 写的 JSX 不用改，换掉组件文件就能换上这身手绘风。作者的原话是：<em>“The charm is decoration; the semantics are ordinary Radix.”</em>（好看的是装饰，语义还是普通的 Radix。）</p>
+<p>规模上，README 列了 <strong>123 个组件</strong>（shadcn/ui 全部部件，外加纸张物件、标记、贴纸、画板和聊天组件）、<strong>61 个区块</strong>（侧栏、登录注册、仪表盘、设置、定价、聊天、笔记和落地页段落）、一套代码绘制的美术素材（160 个图标、48 个涂鸦、88 张贴纸，以及吉祥物铅笔头 Stubby 的 15 种姿势），还有作者自制的手写字体 <strong>Kevin Sans</strong>。</p>
+
+<h2 id="stats">仓库快照（2026-11-04 00:50 UTC+8 核）</h2>
+<table>
+<tr><th>项</th><th>值</th></tr>
+<tr><td>Star / Fork</td><td>270 / 0（GitHub API）</td></tr>
+<tr><td>创建 / 最近推送</td><td>2026-11-01 13:16 / 2026-11-02 02:25（UTC+8）</td></tr>
+<tr><td>提交</td><td>9 个，均由 Kevin T. Ngo 提交；首个提交 <code>41e6ad9</code>“Looseleaf: shadcn/ui, drawn by hand”，附 <code>Co-Authored-By: Claude Opus 5.5</code>；最新 <code>4bdb647</code>（让文档在手机上能给长单词断行）</td></tr>
+<tr><td>技术栈</td><td>TypeScript；React 19、Tailwind CSS v4、radix-ui、cmdk、vaul、sonner、react-day-picker、embla-carousel、react-hook-form + zod；Vite 构建文档站，Vitest 测试</td></tr>
+<tr><td>registry.json</td><td>213 项：ui 组件 123、区块 62（含 1 个“全部区块”合集，实际 61 个）、lib 19、hook 5、theme 2、style 1、font 1</td></tr>
+<tr><td>仓库规模</td><td>Git 树约 2,900 个条目；<code>src/docs</code> 1,236 个、<code>src/blocks</code> 317 个、<code>tests/</code> 下百余个测试文件</td></tr>
+<tr><td>许可</td><td>MIT（根 LICENSE + API 字段 + README 三处一致）；IBM Plex Mono 为 SIL OFL 1.1</td></tr>
+</table>
+
+<h2 id="who">适合谁</h2>
+<ul>
+<li><strong>已经在用 shadcn/ui 的前端团队</strong>：想给产品、内部工具或活动页换一身有温度的“笔记本”风格，又不想重写组件逻辑和无障碍处理。</li>
+<li><strong>做教育、笔记、手账、儿童或创意类产品的人</strong>：贴纸、印章、便利贴、拍立得、信封、票根、记分划线（tally）这类“纸上物件”组件可以直接用。</li>
+<li><strong>研究设计系统的人</strong>：它把“手绘感”拆成可检查的规则（十条规矩）和设计令牌（<code>--ll-*</code>），是“风格怎样工程化”的一个完整样本。</li>
+<li><strong>用 AI 写前端的人</strong>：组件以源码形式落进你的仓库，AI 助手能直接读、直接改；仓库本身也是作者与 Claude 合写的。</li>
+</ul>
+<p>门槛：React 19、Tailwind CSS v4、shadcn CLI 4.x，并且项目已经跑过 <code>shadcn init</code>、配好 <code>@/*</code> 路径别名；浏览器需要支持 <code>:has()</code>、SVG 分组上的 <code>clip-path</code> 和 <code>mix-blend-mode</code>（文档站说近两年的浏览器都行）。</p>
+
+<h2 id="tour">看一眼：桌面、区块与贴纸</h2>
+<figure><img src="images/home.webp" alt="Looseleaf 文档站首页：绿灰色桌面上铺着纸质侧栏，中间是大标题 Looseleaf，右侧是一张用胶带贴着的登录卡片，下方有手绘柱状图和设置面板" loading="lazy"><figcaption>文档站首页。作者写道：“This desk is made of real components.”（这张桌面就是用真组件搭的。）登录卡、柱状图、设置面板都是库里的组件。截图：本站，2026-11-04。</figcaption></figure>
+<figure><img src="images/block-dashboard.webp" alt="Dashboard 01 区块页面：纸质页面里预览一个后台，左侧栏挂着长尾夹，主区显示总收入 48,230 美元和新客户 1,234 的手绘卡片" loading="lazy"><figcaption>区块 Dashboard 01，对应 shadcn 的 dashboard-01：侧栏挂在长尾夹上，四个指标卡、面积图和可编辑表格。截图：本站，2026-11-04。</figcaption></figure>
+<figure><img src="images/stickers.webp" alt="Stickers & doodles 页面：方格纸上有星星、铅笔头吉祥物和 APPROVED 印章，下方是火箭、纸杯蛋糕、狐狸和 BEST 奖章贴纸" loading="lazy"><figcaption>贴纸与涂鸦页：模切贴纸、页边涂鸦、印章和吉祥物 Stubby，全部由代码画出。截图：本站，2026-11-04。</figcaption></figure>
+
+<h2 id="how">它是怎么画出来的</h2>
+<p>README 的“How it works”一节讲清了机制，可以拆成四点：</p>
+<ol>
+<li><strong>画和字分两层。</strong>凡是“画出来”的东西，都是放在真实 DOM 文字后面的一个 <code>&lt;svg data-ink&gt;</code>。按钮的文字、表单控件、焦点和键盘行为照旧由 Radix 或原生元素负责，画只是装饰层，不抢焦点也不接点击。</li>
+<li><strong>每一笔都是带种子的纯函数。</strong>每个组件有一份绘制“配方”（<code>src/lib/ink/recipes/&lt;组件&gt;-ink.ts</code>），输入种子，输出用 CSS 变量着色的 SVG。同一个种子，服务端和浏览器画出同一条线，SSR 水合不会对不上，截图也稳定。默认种子来自 <code>useId()</code>，也可以传 <code>seed</code> prop。所以两个按钮会略有不同，但同一个按钮每次都一样。</li>
+<li><strong>状态靠 CSS，不靠 React。</strong>悬停、按下、聚焦时要显示的笔触都预先画好，靠 CSS 切换图层，交互时不重新计算绘制。</li>
+<li><strong>一切皆令牌。</strong>颜色、笔宽、密度都是 <code>--ll-*</code> 令牌，并映射到 shadcn 的语义变量上。改一个 <code>--ll-marker</code>，主色就全局跟着变；还有三档密度，其中“calm”会让密集的仪表盘安静下来，动效也跟着关掉。</li>
+</ol>
+<p>文档站补了两个细节：控件的尺寸要在浏览器里测量，所以服务端渲染和首帧只显示一圈铅笔轮廓，挂载后才补全；图标、贴纸、印章、胶带和 Stubby 这类“固有尺寸”的美术不需要测量，服务端 HTML 里就是完整的。</p>
+
+<h2 id="use">怎么用</h2>
+<ol>
+<li><strong>准备一个 shadcn 项目</strong>：<code>npx shadcn@latest init</code>（React 19 + Tailwind v4，配好 <code>@/*</code> 别名）。</li>
+<li><strong>注册命名空间</strong>，每个项目一次。在 <code>components.json</code> 里加：
+<pre><code>{
+  "registries": { "@looseleaf": "https://kevintngo.github.io/looseleaf/r/{name}.json" }
+}</code></pre>
+也可以用命令 <code>npx shadcn@latest registry add "@looseleaf=https://kevintngo.github.io/looseleaf/r/{name}.json"</code>。不注册的话，每一项也能直接按 URL 安装。</li>
+<li><strong>按需添加</strong>：
+<pre><code>npx shadcn@latest add @looseleaf/button      # 单个组件
+npx shadcn@latest add @looseleaf/login-01    # 一个区块，落在 components/blocks/
+npx shadcn@latest add @looseleaf/looseleaf   # 全家桶：主题、字体、绘制引擎和全部组件</code></pre>
+注意：全家桶会用它的 Notebook 调色板<strong>替换</strong>你现有的 shadcn 颜色令牌（CLI 会先询问）；只装单个组件则保留你已有的令牌，只补上缺少的 Looseleaf 令牌。贴纸、图标、涂鸦等美术包是单独的项，只随用到它们的组件一起安装。</li>
+<li><strong>在根部挂 <code>InkProvider</code></strong>：
+<pre><code>import { InkProvider } from "@/lib/ink/react"
+import { Button } from "@/components/ui/button"
+
+export function App() {
+  return (
+    &lt;InkProvider&gt;
+      &lt;Button&gt;Save changes&lt;/Button&gt;
+    &lt;/InkProvider&gt;
+  )
+}</code></pre>
+用 Tooltip 和 toast 的话，按文档还要在根部放 <code>TooltipProvider</code> 和一个 <code>Toaster</code>。</li>
+<li><strong>检查效果</strong>：按文档的说法，正确时会看到一个“毡头笔轮廓里平涂赤陶色”的按钮；如果只是一个普通描边方框，说明绘制引擎没挂上，去看文档的排错一节。</li>
+</ol>
+<p>主题会自带 Kevin Sans 字体；想手动加载也可以 <code>@import url("https://kevintngo.github.io/looseleaf/fonts/kevin-sans.css");</code>。组件以源码形式进入你的仓库（<code>components/ui/*.tsx</code>、<code>lib/ink/*</code>），README 的说法是“your code, not a dependency”（是你的代码，不是依赖）。不用 CLI 的话，文档站每个组件页都有 Manual 标签页，给出完整源码。</p>
+
+<h2 id="laws">“手的十条规矩”摘要</h2>
+<p>文档站的 Principles 页把手绘感写成十条审查清单，每个组件都要过一遍。下面摘译前几条，看它怎样把“像手画的”变成能检查的规则：</p>
+<ul>
+<li><strong>线条是有压力的带子</strong>：从不用等宽描边。每条线都是宽度变化的填充形状，下笔处粗、提笔处细、墨干处断。</li>
+<li><strong>直线靠尺子画</strong>：横线保持水平，框要闭合，线头轻轻收尾；只有圈词这类“笔记”才会画过头。</li>
+<li><strong>没有两件东西完全相同</strong>：所有图形都由种子生成。</li>
+<li><strong>填色是单独一层</strong>：马克笔在勾线之后才涂，故意错开几个像素；悬停时错位变大，按下时对齐。</li>
+<li><strong>纸有齿纹</strong>：光从左上方来，一张浮雕纹理贴图适配所有纸色。</li>
+<li><strong>阴影是暖棕色、很短</strong>：不用灰色长模糊，那是“悬浮屏幕”的感觉，不是纸。</li>
+<li><strong>纸可以歪，字不能歪</strong>。</li>
+</ul>
+<p>颜色也各有分工：深色毡头笔写字和勾边，蓝色笔代表“你”（链接、输入的文字、焦点环），铅笔写说明，红铅笔表示纠错和危险（一定配文字、图标或阴影线，不单靠颜色），绿铅笔表示没问题，赤陶色马克笔只给一屏里唯一的主操作，黄色荧光笔用于强调与选中。贴纸那类“文具色”只做装饰，不用在文字和控件上。</p>
+
+<h2 id="notes">核对与 ⚠️ 注记</h2>
+<ul>
+<li><strong>数字是作者自报</strong>：123 个组件、61 个区块与 <code>registry.json</code> 的计数一致 ✅（本站自数）。160 个图标、48 个涂鸦、88 张贴纸、Stubby 15 种姿势，以及首页“6,500+ 个测试、每页跑 axe”，本站没有逐项清点或运行 ⚠️ 未核实。</li>
+<li><strong>无障碍承诺未实测</strong>：README 列了键盘、可见焦点、AA 对比度、24 px 点击区、减少动效、强制颜色（forced colors）、RTL 和三档密度。文档站的无障碍页自己注明：强制颜色模式的规则已写进样式表，但“还没有在真实浏览器里看过”。本站没有跑任何无障碍测试 ⚠️。</li>
+<li><strong>与 shadcn/ui 的兼容程度</strong>：“换文件、不改 JSX”是作者的说法。仓库带有 <code>.upstream/shadcn</code> 目录和 <code>tests/_official-parity-2</code>，看起来是拿 shadcn 官方源码做对照测试 ⚠️ 推断；本站没有在真实项目里安装验证 ⚠️ 未实测。registry 的 <code>button.json</code> 和字体 CSS 地址线上可访问（200）。</li>
+<li><strong>非 shadcn 官方</strong>：这是个人作品，与 shadcn/ui 及其作者没有关联迹象；只是用了 shadcn 的 registry 机制。</li>
+<li><strong>项目很新</strong>：2026-11-01 才公开，版本号 0.1.0，3 天内 9 个提交；API 和样式可能还会变 ⚠️。</li>
+<li><strong>字体与依赖</strong>：README 说 Kevin Sans 为 MIT、IBM Plex Mono 为 SIL OFL 1.1；<code>package.json</code> 里另有 Caveat、Kalam、Special Elite 等 @fontsource 字体包，各自有自己的许可，用于文档站还是组件、发布时是否随包分发，本站没细查 ⚠️。</li>
+<li><strong>AI 合写</strong>：首个提交附 <code>Co-Authored-By: Claude Opus 5.5</code>，与作者上一件作品 statechart-art 的做法相同。</li>
+<li>星数、提交数是 2026-11-04 00:50（UTC+8）的快照，会变。</li>
+</ul>
+
+<h2 id="appendix">附录 A：README 全文中译</h2>
+<div class="related-guide">译自仓库根目录 README.md（提交 <code>4bdb647</code>，2026-11-04 抓取）。原作 Copyright (c) 2026 Looseleaf contributors，MIT 许可；本译文为本站非官方翻译。</div>
+<h3>Looseleaf</h3>
+<p><strong>shadcn/ui，手绘版。</strong></p>
+<p><a href="https://kevintngo.github.io/looseleaf/" rel="noopener">kevintngo.github.io/looseleaf</a></p>
+<p>（此处原为 Open Graph 图，即本页封面。）</p>
+<p>Looseleaf 是一个基于 React + Tailwind v4 + Radix 的组件库，也是一个 <a href="https://ui.shadcn.com/docs/registry" rel="noopener">shadcn registry</a>。它的每个界面都是纸，每条线都用笔画出：干净的轮廓，平涂的颜色，需要时再加贴纸和印章。它保留了 shadcn/ui 的部件、props 和 <code>data-slot</code> 名称，所以你不用改 JSX 就能换上它。好看的是装饰，语义还是普通的 Radix。</p>
+<table>
+<tr><td><strong>123 个组件</strong></td><td>shadcn/ui 的每个部件，从按钮到侧栏再到图表，外加纸张物件、标记、贴纸、一块画板和一套聊天组件</td></tr>
+<tr><td><strong>61 个区块</strong></td><td>侧栏、登录、注册、仪表盘、设置、定价、聊天、笔记和落地页段落</td></tr>
+<tr><td><strong>美术</strong></td><td>160 个图标、48 个涂鸦、88 张贴纸、徽章和印章，以及 15 种姿势的 Stubby，全部用代码画出</td></tr>
+<tr><td><strong>Kevin Sans</strong></td><td>一款手写字体，针对三种角色调校：界面文字、标题和印章</td></tr>
+<tr><td><strong>无障碍</strong></td><td>键盘操作、可见焦点、AA 级文字对比度、24 px 点击区、减少动效、强制颜色、从右到左（RTL）和三档密度</td></tr>
+</table>
+<h4>安装</h4>
+<p>在 <code>components.json</code> 里添加一次 registry：</p>
+<pre><code>{
+  "registries": { "@looseleaf": "https://kevintngo.github.io/looseleaf/r/{name}.json" }
+}</code></pre>
+<p>然后按需添加：</p>
+<pre><code>npx shadcn@latest add @looseleaf/button
+npx shadcn@latest add @looseleaf/login-01
+npx shadcn@latest add @looseleaf/looseleaf</code></pre>
+<p>主题会自带 Kevin Sans。如果想手动加载字体：</p>
+<pre><code>@import url("https://kevintngo.github.io/looseleaf/fonts/kevin-sans.css");</code></pre>
+<pre><code>import { InkProvider } from "@/lib/ink/react"
+import { Button } from "@/components/ui/button"
+
+export function App() {
+  return (
+    &lt;InkProvider&gt;
+      &lt;Button&gt;Save changes&lt;/Button&gt;
+    &lt;/InkProvider&gt;
+  )
+}</code></pre>
+<p>组件以源码形式进入你的仓库（<code>components/ui/*.tsx</code>、<code>lib/ink/*</code>）：是你的代码，不是依赖。</p>
+<h4>开发</h4>
+<pre><code>npm install
+npm run dev              # 文档站
+npm run build            # 静态站点输出到 dist/
+npm test                 # vitest
+npm run registry:build   # 生成 registry.json 和 public/r/*.json</code></pre>
+<p>改完组件后运行 <code>npm run registry:build</code>，让 registry 提供新的源码。推送到 <code>main</code> 会把站点部署到 GitHub Pages。</p>
+<h4>工作原理</h4>
+<p>所有画出来的东西，都是放在真实 DOM 标签后面的一个 <code>&lt;svg data-ink&gt;</code>。绘制是一个纯粹的、带种子的 TypeScript 函数（<code>src/lib/ink/recipes/&lt;component&gt;-ink.ts</code>），它输出用 CSS 变量着色的 SVG，所以同一个种子在服务端和浏览器里画出同一条线。状态由 CSS 处理，不靠 React：悬停、按下和聚焦时显示的是事先画好的图层。每一种颜色、笔宽和密度都是一个令牌（<code>--ll-*</code>），并映射到 shadcn 的语义变量上。</p>
+<h4>许可证</h4>
+<p>MIT，适用于代码、美术和 Kevin Sans。IBM Plex Mono 采用 SIL OFL 1.1。</p>
+
+<h2 id="readme-en">附录 B：README 英文原文</h2>
+<details><summary>展开 README.md（英文原文）</summary><pre><code># Looseleaf
+
+**shadcn/ui, drawn by hand.**
+
+[kevintngo.github.io/looseleaf](https://kevintngo.github.io/looseleaf/)
+
+![Looseleaf](public/og.png)
+
+Looseleaf is a React + Tailwind v4 + Radix component library and [shadcn registry](https://ui.shadcn.com/docs/registry) where every surface is paper and every line is drawn with a pen: clean outlines and solid color, with stickers and stamps when you want them. It keeps shadcn/ui&#x27;s parts, props and `data-slot` names, so you can swap it in without touching your JSX. The charm is decoration; the semantics are ordinary Radix.
+
+| | |
+|---|---|
+| **123 components** | every shadcn/ui part, from button to sidebar to chart, plus paper objects, marks, stickers, a sketchpad and a chat kit |
+| **61 blocks** | sidebars, logins, sign-ups, dashboards, settings, pricing, chat, notes and landing sections |
+| **Art** | 160 icons, 48 doodles, 88 stickers, badges and stamps, and Stubby in 15 poses, all drawn in code |
+| **Kevin Sans** | one hand-drawn typeface, tuned for three roles: interface text, titles and stamps |
+| **Accessible** | keyboard, visible focus, AA text, 24 px targets, reduced motion, forced colors, RTL and three densities |
+
+## Install
+
+Add the registry to `components.json` once:
+
+```json
+{
+  &quot;registries&quot;: { &quot;@looseleaf&quot;: &quot;https://kevintngo.github.io/looseleaf/r/{name}.json&quot; }
+}
+```
+
+Then add what you need:
+
+```sh
+npx shadcn@latest add @looseleaf/button
+npx shadcn@latest add @looseleaf/login-01
+npx shadcn@latest add @looseleaf/looseleaf
+```
+
+The theme brings Kevin Sans with it. To load the font by hand instead:
+
+```css
+@import url(&quot;https://kevintngo.github.io/looseleaf/fonts/kevin-sans.css&quot;);
+```
+
+```tsx
+import { InkProvider } from &quot;@/lib/ink/react&quot;
+import { Button } from &quot;@/components/ui/button&quot;
+
+export function App() {
+  return (
+    &lt;InkProvider&gt;
+      &lt;Button&gt;Save changes&lt;/Button&gt;
+    &lt;/InkProvider&gt;
+  )
+}
+```
+
+Components land in your repo as source (`components/ui/*.tsx`, `lib/ink/*`): your code, not a dependency.
+
+## Develop
+
+```sh
+npm install
+npm run dev              # the documentation site
+npm run build            # static site in dist/
+npm test                 # vitest
+npm run registry:build   # registry.json and public/r/*.json
+```
+
+Run `npm run registry:build` after changing a component, so the registry serves the new source. Pushing to `main` deploys the site to GitHub Pages.
+
+## How it works
+
+Everything that is drawn is one `&lt;svg data-ink&gt;` behind the real DOM label. The drawing is a pure, seeded TypeScript function (`src/lib/ink/recipes/&lt;component&gt;-ink.ts`) that writes SVG colored by CSS variables, so the same seed draws the same line on the server and in the browser. States are CSS, not React: hover, press and focus reveal layers that were drawn ahead of time. Every color, pen width and density is a token (`--ll-*`), aliased onto shadcn&#x27;s semantic variables.
+
+## License
+
+MIT, for the code, the art and Kevin Sans. IBM Plex Mono is SIL OFL 1.1.
+</code></pre></details>
+
+<h2 id="license">附录 C：LICENSE（MIT）原文</h2>
+<details><summary>展开 LICENSE</summary><pre><code>MIT License
+
+Copyright (c) 2026 Looseleaf contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre></details>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>作者：Kevin T. Ngo（<a href="https://github.com/kevintngo" rel="noopener">GitHub kevintngo</a> · <a href="https://x.com/kevin_t_ngo" rel="noopener">X @kevin_t_ngo</a>）；Copyright (c) 2026 Looseleaf contributors，MIT License。仓库：<a href="https://github.com/kevintngo/looseleaf" rel="noopener">github.com/kevintngo/looseleaf</a>；文档站：<a href="https://kevintngo.github.io/looseleaf/" rel="noopener">kevintngo.github.io/looseleaf</a>。本页为非官方中文导读与 README 翻译，配图取自项目 Open Graph 图与文档站截图；如需删除请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/kevintngo/looseleaf" rel="noopener">github.com/kevintngo/looseleaf</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
