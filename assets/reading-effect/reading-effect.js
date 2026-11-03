@@ -267,13 +267,13 @@ function cnDate(iso) {
 function masthead(meta) {
   const m = h('header', 're-mast');
   const top = h('div', 're-toprow');
-  top.append(h('span', '', { text: `${meta.type || '文章'} · 中文镜像文库 · READING EDITION` }),
+  top.append(h('span', '', { text: `${meta.type || '文章'} · 录像带书店 · READING EDITION` }),
     h('span', 're-quote', { text: meta.sub ? `“${meta.sub.textContent.trim()}”` : '' }),
     h('span', '', { text: cnDate(meta.date) }));
   const plate = h('div', 're-plate', { role: 'presentation' });
-  plate.innerHTML = '<span>中文镜像</span>';
+  plate.innerHTML = '<span>录像带</span>';
   const moon = h('canvas', 're-moon', { 'aria-hidden': 'true', width: 10, height: 10 });
-  plate.append(moon, h('span', '', { text: '文库' }));
+  plate.append(moon, h('span', '', { text: '书店' }));
   S.plateMoon = moon;
   const stats = h('dl', 're-stats', { 'aria-label': '版面数据' });
   const cell = (k, id, up = '▲') => { const d = h('div'); d.append(h('dt', '', { html: `<i aria-hidden="true">${up}</i>${k}` }), h('dd', '', { id: 're-st-' + id, text: '—' })); return d; };
@@ -284,7 +284,7 @@ function masthead(meta) {
 }
 function runningHead(meta, folio, st) {
   const r = h('header', 're-running');
-  r.append(h('span', '', { text: `${folio} · 中文镜像文库` }),
+  r.append(h('span', '', { text: `${folio} · 录像带书店` }),
     h('span', 're-quote', { text: st.title ? `“${st.title}”` : '' }),
     h('span', '', { text: cnDate(meta.date) }));
   return r;
@@ -301,7 +301,7 @@ function leadBlock(meta) {
 }
 function storyEl(st, isLead, pi, si) {
   const a = h('article', 're-story' + (isLead ? ' re-leadstory' : ''));
-  if (st.h2) { st.h2.classList.add('re-hl'); a.append(st.h2); a.append(h('p', 're-byline', { 'aria-hidden': 'true', text: `第 ${pi + 1} 版 · 第 ${si + 1} 篇 · 中文镜像文库编辑部` })); }
+  if (st.h2) { st.h2.classList.add('re-hl'); a.append(st.h2); a.append(h('p', 're-byline', { 'aria-hidden': 'true', text: `第 ${pi + 1} 版 · 第 ${si + 1} 篇 · 录像带书店编辑部` })); }
   else if (st.cont) { a.classList.add('re-cont'); a.append(h('p', 're-contline', { text: `续前版 · CONTINUED — ${st.title}` })); }
   // blocks → runs (prose/figure) and solids
   let run = null; const flushRun = () => { if (run) { a.append(run.el); run = null; } };
