@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Idempotently add the (opt-in) broadsheet reading mode (assets/reading-effect/) to every standard article page.\nDefault view is the plain long-form layout; readers opt in with ?re=on or the「报纸版式」link (remembered).
+"""Idempotently add the broadsheet reading mode (assets/reading-effect/) to every standard article page.
+It is the default view; readers opt out with ?re=off or the「普通版式」link (remembered), ?re=on restores it.
 Usage: python3 tools/inject_reading_effect.py [--check] [--remove] [slug ...]
   (no slugs = all pages; --check = report only; --remove = strip the block again)
 Run after tools/inject_nav.py and before tools/build_hub.py.
@@ -17,16 +18,20 @@ MARK = '<!-- za:article v1 -->'
 BLOCK_RE = re.compile(r'\n?<!-- re:head -->.*?<!-- /re:head -->', re.S)
 def block(depth):
     up = '../' * depth; a = f'{up}assets/reading-effect/'
-    # The broadsheet is opt-in (readability first): the plain long-form layout (assets/article.css) is the default.
-    # Readers switch it on with ?re=on or the「报纸版式」link (assets/article.js); the choice is remembered in
-    # localStorage 'zbm-re' and ?re=off clears it. Its CSS/JS only load when it is on.
+    # The broadsheet is the default. Readers opt out with ?re=off or the「普通版式」link (assets/article.js); that
+    # choice is remembered in localStorage 'zbm-re2' ("off"), and ?re=on (or「报纸版式」) restores the default.
+    # The old opt-in-era key 'zbm-re' is dropped, so only an explicit 'off' under the new key keeps a reader on plain.
+    # No JS / no module support: data-re stays "off" and the plain long-form layout (assets/article.css) is shown.
     return ('<!-- re:head -->'
             # shared site theme (same key as the hub), applied before first paint; an explicit choice beats the OS
             '<script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\\b/.test(q),off=/[?&]re=off\\b/.test(q);'
+            'if(!off)on=true;'
             'try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);'
-            'if(on)localStorage.setItem("zbm-re","on");else if(off)localStorage.removeItem("zbm-re");else on=localStorage.getItem("zbm-re")==="on"}catch(e){}'
+            'localStorage.removeItem("zbm-re");'
+            'if(/[?&]re=on\\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}'
+            'if(!("noModule" in d.createElement("script")))on=false;'
             'r.setAttribute("data-re",on?"on":"off");'
-            'if(!on||off||!("noModule" in d.createElement("script")))return;'
+            'if(!on)return;'
             f'var b="{a}",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);'
             'var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);'
             'r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script>'
