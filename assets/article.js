@@ -8,3 +8,8 @@ hs.forEach(function(h,i){if(!h.id)h.id='s-'+(i+1);var a=document.createElement('
 t.appendChild(nav);t.classList.add('on');t.hidden=false;
 if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(l){l.classList.toggle('cur',l.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'0px 0px -70% 0px'});hs.forEach(function(h){io.observe(h)})}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
+/* opt-in broadsheet: pages carrying the re:head block (html[data-re=off]) get a quiet「报纸版式」link in the meta row */
+(function(){function init(){var r=document.documentElement;if(r.getAttribute('data-re')!=='off'||document.body.hasAttribute('data-re-off'))return;
+var m=document.querySelector('.za-meta')||document.querySelector('.za-kicker');if(!m||m.querySelector('.za-re'))return;
+var s=document.createElement('span');s.className='za-re';var a=document.createElement('a');a.href='?re=on';a.textContent='报纸版式';a.title='切换到报纸阅读模式（可随时切回）';s.appendChild(a);m.appendChild(s)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
