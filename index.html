@@ -420,9 +420,9 @@ IT.forEach(function(e,i){e.i=i;e.text=(e.sp+' '+e.sm+' '+e.k+' '+e.by+' '+e.t+' 
 
 /* ---------- damped springs (semi-implicit Euler, fixed 8ms substeps), rAF only while something moves ---------- */
 var SP={hover:[200,25],leave:[175,23.5],pull:[150,19.5],turn:[118,15.5],back:[205,19],part:[180,23],enter:[112,17],snap:[150,24],ui:[170,22],out:[300,32],ptr:[70,15.5]};
-var live=new Set(),raf=0,lastT=0;
+var live=new Set(),raf=0,lastT=0,placed=false;
 function Body(write){this.p={};this.v={};this.t={};this.c={};this.q=[];this.write=write}
-Body.prototype.jump=function(o){for(var k in o){this.p[k]=this.t[k]=o[k];this.v[k]=0}this.q=this.q.filter(function(e){for(var k in o)delete e.o[k];return Object.keys(e.o).length});this.write(this);return this};
+Body.prototype.jump=function(o){if(this.en){this.en=null;this.tick=null}for(var k in o){this.p[k]=this.t[k]=o[k];this.v[k]=0}this.q=this.q.filter(function(e){for(var k in o)delete e.o[k];return Object.keys(e.o).length});this.write(this);return this};
 Body.prototype.set=function(o,c){for(var k in o){if(this.p[k]==null){this.p[k]=o[k];this.v[k]=0}this.t[k]=o[k];this.c[k]=c}};
 Body.prototype.to=function(o,c,delay){if(RM)return this.jump(o);
  this.q=this.q.filter(function(e){for(var k in o)delete e.o[k];return Object.keys(e.o).length});
@@ -509,11 +509,36 @@ function shelfHTML(g,n){var body=g.parts.map(function(p,k){return (k?'<span clas
  return '<section class="shelf" aria-labelledby="sh-'+n+'"><div class="sh"><span class="no" aria-hidden="true">'+(ROMAN[n]||n+1)+'</span><h2 id="sh-'+n+'">'+esc(g.name)+'</h2><span class="cnt"><span class="c">'+g.n+'</span> 卷</span><span class="arr"><button type="button" data-d="-1" aria-label="向左翻">←</button><button type="button" data-d="1" aria-label="向右翻">→</button></span></div>'+
  '<div class="unit"><div class="track" role="group" aria-label="'+esc(g.name)+'">'+body+'</div><div class="board"></div><div class="ledge"></div><div class="lamp"></div><div class="peek" aria-hidden="true"><span class="pc"><b></b><span></span></span></div></div></section>'}
 
+/* ---------- first appearance: the books are placed on the shelf, one by one, from its right end ----------
+   Each visible slot (in shelf order) starts just past the track's visible right edge and is slid left into its
+   place on one decelerating curve that ends with a <=1.5px overshoot; its tilt is a damped pendulum driven by
+   that deceleration (top tips forward, rights itself). Stagger and duration are tuned so a book never catches
+   up with the one placed before it, so the row fills left to right. Rows that appear together start 160ms apart.
+   Runs once per shelf per page view (regrouping uses the short 'enter'); transform/opacity only, on the shared
+   rAF; it reads b.t live, so hover / pull / filter during the entrance still land correctly. */
+var ENT={a:520,b:.3,max:900,ov:1.5,s0:60,s1:85,span:1150,row:160,lead:90,fade:110,lean:.9,w:15,z:.5,h:4,tail:420},entNext=0;
+function entC(d){var lo=0,hi=d,c,i;for(i=0;i<36;i++){c=(lo+hi)/2;if(4*c*c*c/(27*(d+c)*(d+c))<ENT.ov)lo=c;else hi=c}return c}
+function entOff(e,u){var w=1-u;return w*w*((e.d+e.c)*w-e.c)}
+function place(tr,v){var now=performance.now(),t0=Math.max(now+ENT.lead,entNext),vr=tr.sl+tr.el.clientWidth,list=[];
+ v.forEach(function(s){if(s.ol<vr&&s!==tr.pullS)list.push(s);else s.b.jump({o:1})});
+ var n=list.length,sg=clamp(ENT.span/Math.max(1,n-1),ENT.s0,ENT.s1);entNext=t0+ENT.row;
+ list.forEach(function(s,k){var b=s.b,d=vr-s.ol+6,e={t0:t0+k*sg,d:d,c:entC(d),dur:Math.min(ENT.max,ENT.a+ENT.b*d),th:null};e.end=e.dur;
+  if(s.T){/* tilt: theta'' = -w^2 theta - 2 z w theta' - a_x(t), normalised to a peak lean of --lean deg */
+   var th=[],x=0,vv=0,pk=0,h=ENT.h/1000,W=ENT.w,i,t,a;for(i=0;(t=i*ENT.h)<e.dur+ENT.tail;i++){a=t<e.dur?(6*(e.d+e.c)*(1-t/e.dur)-2*e.c)/(e.dur*e.dur)*1e6:0;
+    vv+=(-W*W*x-2*ENT.z*W*vv-a)*h;x+=vv*h;th.push(x);if(Math.abs(x)>pk)pk=Math.abs(x)}
+   var L=ENT.lean*(.55+.45*Math.min(1,d/700))/(pk||1);e.th=th.map(function(q){return q*L});e.end=e.dur+ENT.tail}
+  b.en=e;b.tick=entTick;b.p.x=b.t.x+d;b.p.o=0;b.write(b);wake(b)})}
+function entTick(b,dt){var e=b.en,t=performance.now()-e.t0,m=step(b,dt),q;
+ if(t>=e.end){b.en=null;b.tick=null;b.p.x=b.t.x;b.v.x=0;b.p.o=b.t.o;if(b.T){b.p.rz=b.t.rz;b.v.rz=0}return m}
+ b.p.x=b.t.x+(t<=0?e.d:t<e.dur?entOff(e,t/e.dur):0);b.v.x=0;b.p.o=t<=0?0:Math.min(b.t.o,t/ENT.fade);
+ if(e.th){q=t/ENT.h;var i=q|0,th=t<=0?0:i+1<e.th.length?e.th[i]+(e.th[i+1]-e.th[i])*(q-i):0;b.p.rz=b.t.rz+th;b.v.rz=0}
+ return true}
+
 /* ---------- tracks ---------- */
 var io='IntersectionObserver' in W?new IntersectionObserver(function(es){es.forEach(function(en){var tr=en.target.__tr;if(!tr)return;tr.on=en.isIntersecting;
- if(tr.on){measure();if(!tr.seen){tr.seen=true;layout(tr,'enter')}else redrawTr(tr)}})},{rootMargin:'0px 0px -6% 0px'}):null;
+ if(tr.on){measure();if(!tr.seen){tr.seen=true;layout(tr,tr.place?'place':'enter')}else redrawTr(tr)}})},{rootMargin:'0px 0px -6% 0px'}):null;
 function redrawTr(tr){tr.slots.forEach(function(s){if(s.T)wTape(s.b)})}
-function Track(el){var tr=this;this.el=el;this.peek=$('.peek',el.parentNode);this.sl=0;this.rl=0;this.pt=0;this.pl=0;this.on=!io;this.seen=!io||RM;this.hovS=null;this.pullS=null;
+function Track(el){var tr=this;this.el=el;this.peek=$('.peek',el.parentNode);this.sl=0;this.rl=0;this.pt=0;this.pl=0;this.on=!io;this.seen=!io||RM;this.hovS=null;this.pullS=null;this.place=!placed;
  this.slots=$$('.slot',el).map(function(x){var s={el:x,g:+(x.dataset.g||0),ol:0,div:x.classList.contains('div')},b;
   if(x.classList.contains('tape')){var T={el:x,s:s,tr:tr,box:$('.box',x),cs:$('.cs',x),ds:$('.ds',x),sk:$('.sk',x),sh:$('.sp>.sh',x),sl:$('.sp>.sl',x),ocl:$('.oc.l',x),ocr:$('.oc.r',x),cvs:$('.cv>.sh',x),bks:$('.bk>.sh',x),tps:$('.tp>.sh',x),c:{},nl:null,nr:null,lo:1};b=new Body(wTape);b.T=T;s.T=T;x.__s=s;
    b.p={x:0,y:0,z:0,ry:0,rx:0,rz:0,py:0,pp:0,o:1};}else{b=new Body(wProp);b.el=x;b.p={x:0,o:1}}
@@ -550,11 +575,13 @@ function layout(tr,mode){var v=vis(tr),pi=v.indexOf(tr.pullS),hi=v.indexOf(tr.ho
   if(mode==='filter'){delay=Math.min(n++*14,360)}
   x+=base;if(!T){b.to({x:x,o:1},cfg,delay);return}
   var st=j===pi?'pull':j===hi?'hover':'',was=T.st;T.st=st;T.el.style.zIndex=st==='pull'?5:st==='hover'?4:'';
+  if(st==='pull'&&b.en)b.jump({o:1});
   if(st==='pull'){b.to({x:base,rz:0,y:-10,z:G.PZ,o:1},SP.pull,ent?delay:0);b.to({ry:-88,rx:0},SP.turn,ent?delay:0)}
   /* hover: slid ~16px out of the row, turned a few degrees toward the key light, rocked back 1deg on its heel;
      y only offsets the perspective drop so the base stays on the board (no levitation) */
   else if(st==='hover')b.to({x:x,rz:0,y:-3,z:16,ry:-4,rx:1,o:1},SP.hover)
-  else b.to({x:x,rz:rz,y:0,z:0,ry:0,rx:0,py:0,pp:0,o:1},was==='pull'?SP.back:was==='hover'?SP.leave:cfg,was?0:delay)})}
+  else b.to({x:x,rz:rz,y:0,z:0,ry:0,rx:0,py:0,pp:0,o:1},was==='pull'?SP.back:was==='hover'?SP.leave:cfg,was?0:delay)});
+ if(mode==='place')place(tr,v)}
 function snapPos(tr,s){var best=s,bd=1e9,max=tr.el.scrollWidth-tr.el.clientWidth;vis(tr).forEach(function(x){if(!x.T)return;var c=x.ol-tr.pl,dd=Math.abs(c-s);if(dd<bd){bd=dd;best=c}});return clamp(best,0,Math.max(0,max))}
 function glide(tr,s){var el=tr.el;s=clamp(s,0,Math.max(0,el.scrollWidth-el.clientWidth+G.C));
  if(RM){el.scrollLeft=s;return}halt(tr);tr.b.jump({s:el.scrollLeft});el.classList.add('anim');tr.b.to({s:s},SP.snap)}
@@ -576,7 +603,7 @@ function render(){var keep=pulled&&IT[+pulled.dataset.i];closeCase(true,true);
  shelvesEl.parentNode.insertBefore(caseEl,shelvesEl.nextSibling);
  if(io)tracks.forEach(function(tr){io.unobserve(tr.el.parentNode)});
  shelvesEl.innerHTML=groups().map(shelfHTML).join('');
- tracks=$$('.track',shelvesEl).map(function(el){return new Track(el)});
+ tracks=$$('.track',shelvesEl).map(function(el){return new Track(el)});placed=true;
  apply(true);measure();
  tracks.forEach(function(tr){tr.slots.forEach(function(s){if(s.T){if(!tr.seen)s.b.p.o=0;wTape(s.b)}else{if(!tr.seen)s.b.p.o=0;wProp(s.b)}});if(io)io.observe(tr.el.parentNode)});
  fitSpines();if(keep)pull(tapeOf(keep.s),true)}
