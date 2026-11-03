@@ -636,7 +636,7 @@ function closeCase(silent,instant){var t=pulled;
  if(!silent){try{history.replaceState(null,'',location.pathname+location.search)}catch(_){}}}
 
 /* ---------- events ---------- */
-shelvesEl.addEventListener('click',function(ev){var t=ev.target.closest('.tape');if(t){if(t===pulled&&moved(ev))return;pull(t,false,ev);return}
+shelvesEl.addEventListener('click',function(ev){var t=ev.target.closest('.tape');if(t){if(moved(ev))return;pull(t,false,ev);return}
  var b=ev.target.closest('.arr button');if(b){var tr=$('.track',b.closest('.shelf')).__tr;glide(tr,snapPos(tr,tr.el.scrollLeft+ +b.dataset.d*tr.el.clientWidth*.8))}});
 shelvesEl.addEventListener('focusin',function(ev){var t=ev.target.closest('.tape');if(!t)return;load(t);rove(t.parentNode,t);if(t.matches(':focus-visible'))setHover(t.__s.T.tr,t.__s)});
 shelvesEl.addEventListener('focusout',function(ev){var t=ev.target.closest('.tape');if(t&&t.__s.T.tr.hovS===t.__s&&!t.matches(':hover'))setHover(t.__s.T.tr,null)});
@@ -671,8 +671,14 @@ $('.open',caseEl).addEventListener('click',function(ev){var href=this.href;
    The cover is a real <a href> (middle / cmd-click open a new tab natively); the tape and the text
    column forward to it. A drag or scroll of >= 5px between press and release is not a click. */
 var down=null;
-doc.addEventListener('pointerdown',function(e){down={x:e.clientX,y:e.clientY,sy:W.scrollY}},true);
-function moved(ev){if(!down||!ev||ev.detail===0)return false;return Math.abs(ev.clientX-down.x)>=5||Math.abs(ev.clientY-down.y)>=5||Math.abs(W.scrollY-down.sy)>=5}
+var pressing=false;
+/* The largest displacement since pointerdown decides drag vs click: a touch that moves a few px still gets a click at the touchstart point. */
+doc.addEventListener('pointerdown',function(e){down={x:e.clientX,y:e.clientY,sy:W.scrollY,m:0};pressing=true},true);
+doc.addEventListener('pointermove',function(e){if(pressing&&down)down.m=Math.max(down.m,Math.abs(e.clientX-down.x),Math.abs(e.clientY-down.y))},{capture:true,passive:true});
+doc.addEventListener('pointercancel',function(){if(down)down.m=99;pressing=false},true);
+doc.addEventListener('pointerup',function(){pressing=false},true);
+doc.addEventListener('scroll',function(){if(pressing&&down)down.m=99},{capture:true,passive:true});
+function moved(ev){if(!down||!ev||ev.detail===0)return false;return down.m>=5||Math.abs(ev.clientX-down.x)>=5||Math.abs(ev.clientY-down.y)>=5||Math.abs(W.scrollY-down.sy)>=5}
 function hrefNow(){var a=$('.case-go',caseEl);return pulled&&a&&!/#$/.test(a.href)?a.href:''}
 function read(ev,newTab){var href=hrefNow();if(!href)return;
  if(newTab||(ev&&(ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button===1))){W.open(href,'_blank','noopener');return}leave(href)}
