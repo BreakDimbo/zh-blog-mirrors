@@ -23,14 +23,15 @@ const raf = () => new Promise(r => requestAnimationFrame(() => r()));
 /* ---------- type scale (must match reading-effect.css) ---------- */
 const SERIF = '"Geist Serif", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif';
 const MONO = '"Geist Mono", ui-monospace, Menlo, Consolas, monospace';
-const BODY = { size: 16, lh: 28 };
+// readable long-form CJK: 17px body on a 31px line (1.82), captions ≥ 13.5px, a clear head scale
+const BODY = { size: 17, lh: 31 };
 const TYPES = {
-  p: { size: 16, lh: 28, gap: 5, indent: 2 },
-  caption: { size: 13, lh: 22, gap: 4, indent: 0, mute: 1 },
-  h3: { size: 20, lh: 28, gap: 22, indent: 0, head: 1 },
-  h4: { size: 17, lh: 26, gap: 16, indent: 0, head: 1 },
-  li: { size: 16, lh: 28, gap: 3, indent: 0, pad: 1.6 },
-  q: { size: 15.5, lh: 27, gap: 5, indent: 0, pad: 1.3, quote: 1 },
+  p: { size: 17, lh: 31, gap: 10, indent: 2 },
+  caption: { size: 13.5, lh: 23, gap: 6, indent: 0, mute: 1 },
+  h3: { size: 21, lh: 32, gap: 26, indent: 0, head: 1 },
+  h4: { size: 18, lh: 30, gap: 18, indent: 0, head: 1 },
+  li: { size: 17, lh: 31, gap: 5, indent: 0, pad: 1.6 },
+  q: { size: 16.5, lh: 30, gap: 8, indent: 0, pad: 1.3, quote: 1 },
 };
 const INLINE_OK = new Set(['A', 'STRONG', 'B', 'EM', 'I', 'CODE', 'SUP', 'SUB', 'BR', 'SPAN', 'SMALL', 'MARK', 'ABBR', 'TIME', 'KBD', 'U', 'S', 'DEL', 'INS', 'Q', 'CITE', 'DFN', 'VAR', 'SAMP', 'WBR']);
 const NARROW = () => innerWidth < 640;
@@ -174,7 +175,20 @@ function classify(el) {
 }
 function unitOf(el, type, marker) { return { el, type, T: TYPES[type], marker, orig: el.cloneNode(true), prep: null, items: null }; }
 
+// many articles keep their whole text in one plain <article>/<main>/<section> wrapper; set as a single
+// block it would get no columns, so a bare wrapper that holds most of the text is opened up and its children
+// become the page's blocks (text and order unchanged; only the empty wrapper element goes)
+function unwrapBare() {
+  const total = content.textContent.length || 1;
+  for (let pass = 0; pass < 3; pass++) {
+    const w = [...content.children].find(el => /^(ARTICLE|MAIN|SECTION|DIV)$/.test(el.tagName) && !el.className && !el.id && !el.attributes.length
+      && el.textContent.length > total * 0.6 && el.querySelectorAll(':scope > p, :scope > h2, :scope > h3').length >= 3);
+    if (!w) return;
+    w.replaceWith(...w.childNodes);
+  }
+}
 function build() {
+  unwrapBare();
   S.chars = content.textContent.replace(/\s/g, '').length;
   const kids = [...content.childNodes].filter(n => n.nodeType === 1 || (n.nodeType === 3 && n.textContent.trim()));
   // group into stories at top-level h2
@@ -489,7 +503,7 @@ function layBand(band, H, render) {
       const T = u.T, lh = T.lh, em = T.size;
       const gapB = ui === 0 ? Math.max(T.gap, blk.gapTop || 0) : T.gap;
       if (y > 0) y += gapB;
-      if (T.head && y > 0 && y + lh * 3 > H) { c++; y = 0; }
+      if (T.head && y > 0 && y + lh + 3 * BODY.lh > H) { c++; y = 0; }
       const padL = T.pad ? T.pad * em : 0;
       u.lines.forEach((list, li) => {
         const prep = u.prep[li]; let cur; let first = li === 0; let lastLine = null; let guard = 0;
@@ -577,7 +591,7 @@ function renderBand(band, live) {
   for (const blk of band.blocks) if (blk.kind === 'prose') blk.units.forEach(u => u.el.replaceChildren());
   const linkFirst = new Map(); let n = 0;
   for (const L of res.out) {
-    const line = h('span', 're-l' + (L.last || L.loose ? '' : ' j') + (L.u.T.quote ? ' q' : '') + (L.u.T.head ? ' hd' : '') + (L.u.T.mute ? ' mu' : ''));
+    const line = h('span', 're-l' + (L.u.T.quote ? ' q' : '') + (L.u.T.head ? ' hd' : '') + (L.u.T.mute ? ' mu' : ''));
     line.style.cssText = `left:${L.x.toFixed(2)}px;top:${L.y}px;width:${L.w.toFixed(2)}px;height:${L.lh}px;line-height:${L.lh}px`;
     if (L.u.T.quote) line.style.setProperty('--qx', (L.x - L.colX - 3).toFixed(1) + 'px');
     const m = materializeRichInlineLineRange(L.prep, L.r);
@@ -631,7 +645,8 @@ function drawRules(band, H) {
 }
 
 /* ---------- page layout ---------- */
-function columnsFor(w) { return w >= 900 ? 3 : w >= 600 ? 2 : 1; }
+// columns: two on a wide sheet (each ≥ ~460px ≈ 27 CJK characters at 17px), otherwise one readable column
+function columnsFor(w) { return w >= 960 ? 2 : 1; }
 function layoutPage(i, opt = {}) {
   const p = S.pages[i]; if (!p) return { done: Promise.resolve() };
   const gen = p.gen = (p.gen || 0) + 1;
@@ -639,7 +654,7 @@ function layoutPage(i, opt = {}) {
   p.body.classList.add('re-planning');
   const bodyW = p.body.clientWidth;
   const cols = columnsFor(bodyW);
-  p.cols = cols; p.w = bodyW; p.laid = true; p.moon = 0;
+  p.cols = cols; p.w = bodyW; p.laid = true; p.moon = 0; p.el.dataset.cols = cols;
   // 1) plan every run into bands (DOM moves only — no text measuring yet)
   const all = [];
   qsa('.re-run', p.body).forEach(runEl => { for (const bd of layoutRun(runEl._run, bodyW, cols, p)) all.push(bd); });
@@ -686,24 +701,27 @@ function flushPage(p) { const pd = p && p.pending; if (!pd) return; while (pd.k 
 function layoutRun(run, W, cols, p) {
   const el = run.el;
   // tear down
-  el.replaceChildren(); el.classList.toggle('re-flow', cols === 1);
-  if (cols === 1) {
+  el.replaceChildren();
+  const gutter = 44, colW = (W - gutter * (cols - 1)) / cols;
+  const flow = cols === 1 || run.blocks.every(b => b.kind !== 'prose') ||
+    run.blocks.reduce((a, b) => a + (b.kind === 'prose' ? b.units.reduce((q, u) => q + estimate(u, colW), 0) : 0), 0) < BODY.lh * 12;
+  el.classList.toggle('re-flow', flow);
+  if (flow) {
     for (const b of run.blocks) { if (b.kind === 'prose') b.units.forEach(restoreUnit); el.append(b.el); if (b.kind === 'figure') { b.el.classList.remove('re-ob'); b.el.style.cssText = ''; qs('.re-plate-img', b.el)?.style.removeProperty('height'); } }
     // single column: a CSS drop cap (initial-letter) on the story's opening paragraph
     const story = el.closest('.re-story'), firstRun = el.parentElement && el === qs('.re-run', el.parentElement);
     const fb = run.blocks.find(b => b.kind === 'prose'), fu = fb && fb.units[0];
-    if (firstRun && fu && fu.type === 'p' && fb === run.blocks[0] && story && (story === qs('.re-story', story.parentElement) || story.querySelector(':scope > h2.re-hl'))) fu.el.classList.add('re-dropflow');
+    if (firstRun && fu && fu.type === 'p' && fb === run.blocks[0] && fu.orig.textContent.length * BODY.size > Math.min(W, 720) * 3.5 && story && (story === qs('.re-story', story.parentElement) || story.querySelector(':scope > h2.re-hl'))) fu.el.classList.add('re-dropflow');
     run.bands = [];
     return [];
   }
-  const gutter = 30, colW = (W - gutter * (cols - 1)) / cols;
   const capH = Math.max(320, Math.min(innerHeight * 0.82, 760));
   const bands = []; let band = null, est = 0;
   const newBand = () => { band = { el: h('div', 're-band re-pending'), blocks: [], obstacles: [], cols, colW, gutter, W, est: 0, first: !bands.length }; band.el._band = band; bands.push(band); est = 0; };
   run.blocks.forEach((b, bi) => {
     if (b.kind === 'figure') {
       const next = run.blocks[bi + 1];
-      if (cols < 3 || !next || next.kind !== 'prose') { if (band && band.blocks.length) band = null; const s = h('div', 're-band re-figrow'); s.append(b.el); b.el.classList.remove('re-ob'); b.el.style.cssText = ''; bands.push({ el: s, solid: 1 }); band = null; return; }
+      if (true) { if (band && band.blocks.length) band = null; const s = h('div', 're-band re-figrow'); s.append(b.el); b.el.classList.remove('re-ob'); b.el.style.cssText = ''; bands.push({ el: s, solid: 1 }); band = null; return; }
       newBand();
       const fw = colW * 2 + gutter;
       b.el.classList.add('re-ob'); b.el.style.width = fw + 'px';
@@ -890,55 +908,28 @@ function drawMosaic(M) {
   c.fill();
 }
 const _mosaicIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => { for (const e of es) if (e.isIntersecting && e.intersectionRatio > .3 && !root.classList.contains('re-folded')) { _mosaicIO.unobserve(e.target); develop(e.target._m, 0); } }, { threshold: [0, .35] }) : null;
-// pick 1–3 roomy bands on the page (section openers first) and stand a plate in a column gutter
+// one plate per page, standing on its own between paragraphs (centred, nothing wraps around it): an
+// ornament that never narrows the measure of the text beside it
 function placeMosaics(p, bands, cols, W) {
   const pi = S.pages.indexOf(p);
   p.mosaics = p.mosaics || [];
-  if (cols === 1) { placeMosaicsFlow(p, pi); return; }
-  // a band can take a plate if it has text to spare below any picture already in it
-  const below = bd => bd.obstacles.reduce((m, o) => Math.max(m, o.y + o.h + 70), 0);
-  const roomy = bands.filter(bd => bd.blocks && bd.obstacles.length <= 1 && bd.blocks.filter(b => b.kind === 'prose').length >= 2 && bd.est - below(bd) > (cols === 3 ? 1150 : 800));
-  if (!roomy.length) return;
-  const want = Math.min(3, pi === 0 ? 2 : Math.max(1, Math.floor(roomy.length / 3) + 1));
-  const opener = roomy.filter(bd => bd.first && bd.runFirst), rest = roomy.filter(bd => !opener.includes(bd));
-  const pick = [];
-  for (const bd of opener.concat(rest)) { if (pick.length >= want) break; if (pick.some(q => Math.abs(bands.indexOf(q) - bands.indexOf(bd)) < 2)) continue; pick.push(bd); }
-  pick.sort((a, b) => bands.indexOf(a) - bands.indexOf(b));
-  const sceneList = pi === 0 ? ['title', 'stars', 'orbit', 'tide', 'moonrise'] : ['moonrise', 'stars', 'orbit', 'tide', 'title'];
   const h0 = strHash(location.pathname + ':' + pi);
-  pick.forEach((bd, k) => {
-    let M = p.mosaics[k];
-    const size = Math.round(Math.min(cols === 3 ? 228 : 210, bd.colW * (cols === 3 ? .78 : .66)));
-    if (!M || M.w !== size) {
-      const scene = sceneList[(k + (pi === 0 ? 0 : h0)) % sceneList.length], old = M;
-      M = mosaicFigure(scene, h0 + k * 977, old ? old.mode : (h0 + k) % MODES.length, size);
-      if (old && old.state === 'done') { M.state = 'done'; M.e = 1; M.cell = 2; M.bias = 0; }
-      p.mosaics[k] = M;
-    }
-    const fo = bd.obstacles.find(o => !o.mosaic), fx = fo ? (fo.x + fo.w / 2) / W : -1;
-    const gut = cols === 3 ? (fo ? (fx < .5 ? 2 : 1) : ((k + h0) % 2 ? 1 : 2)) : 1;
-    const ob = { el: M.fig, mosaic: M, x: gut * (bd.colW + bd.gutter) - bd.gutter / 2 - M.w / 2, y: Math.round((fo ? below(bd) : 28) + ((h0 >> (k * 3)) % 5) * 22), w: M.w, h: M.h, pad: 11, shape: 'rows', band: bd };
-    ob.x = clamp(ob.x, 0, W - ob.w);
-    if (M.pos && M.pos.W === W) { ob.x = M.pos.x; ob.y = M.pos.y; ob.dragged = true; }
-    ob.cap = { w: Math.min(M.w + 60, bd.colW), h: 26 };
-    M.cap.style.cssText = `position:absolute;left:50%;top:${M.h + 6}px;width:${ob.cap.w}px;transform:translateX(-50%)`;
-    M.ob = ob; M.rows = null; ob.rows = M.state === 'done' ? (M.finalRows || (M.finalRows = silhouette(M))) : (M.bias <= -.999 ? null : silhouette(M));
-    bd.el.append(M.fig); bd.obstacles.push(ob); bd.blocks.push({ kind: 'orn', el: M.fig, ob });
-    bd.est += (M.w + 22) * (M.h + 32) / bd.colW;
-    requestAnimationFrame(() => { drawMosaic(M); if (M.state !== 'done' && M.state !== 'running' && _mosaicIO) _mosaicIO.observe(M.fig); });
-  });
-}
-function placeMosaicsFlow(p, pi) {
-  // one column (phones): float a plate beside an opening paragraph; CSS shape-outside wraps the text
-  const h0 = strHash(location.pathname + ':' + pi); let k = 0;
   for (const st of qsa('.re-story', p.body)) {
-    if (k >= (pi === 0 ? 1 : 2)) break;
-    const run = qs('.re-run', st); const paras = run ? qsa(':scope > p', run) : []; if (paras.length < 3) continue;
-    let M = p.mosaics[k]; const size = Math.round(Math.min(150, innerWidth * .4));
-    if (!M || M.w !== size) { M = p.mosaics[k] = mosaicFigure(['moonrise', 'stars', 'orbit', 'title'][(h0 + k) % 4], h0 + k * 977, (h0 + k) % MODES.length, size); }
+    const run = qs('.re-run', st); if (!run) continue;
+    let anchor = null;
+    if (run.classList.contains('re-flow')) { const paras = qsa(':scope > p', run); if (paras.length >= 4) anchor = paras[2]; }
+    else if (qsa(':scope > .re-band:not(.re-figrow)', run).length >= 2) anchor = run; // after the story's opening run
+    if (!anchor) continue;
+    let M = p.mosaics[0]; const size = cols === 1 ? Math.round(Math.min(150, innerWidth * .4)) : 176;
+    if (!M || M.w !== size) {
+      const old = M;
+      M = p.mosaics[0] = mosaicFigure(['moonrise', 'stars', 'orbit', 'tide', 'title'][(pi === 0 ? 0 : h0) % 5], h0, old ? old.mode : h0 % MODES.length, size);
+      if (old && old.state === 'done') { M.state = 'done'; M.e = 1; M.cell = 2; M.bias = 0; }
+    }
     M.fig.style.cssText = `width:${size}px`; M.fig.classList.add('re-flowplate'); M.fig.classList.remove('re-ob'); M.cap.style.cssText = ''; M.ob = null;
-    paras[1].before(M.fig); k++;
+    if (anchor === run) run.after(M.fig); else anchor.before(M.fig);
     requestAnimationFrame(() => { drawMosaic(M); if (M.state !== 'done' && M.state !== 'running' && _mosaicIO) _mosaicIO.observe(M.fig); });
+    break;
   }
 }
 // print-in: CELLS coarse → fine, ink rising from blank (bias −1 → 0, cubic ease), text re-flowing as it grows
