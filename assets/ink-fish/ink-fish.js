@@ -1,4 +1,4 @@
-/*! ink-fish v1.3.0 — brush-ink fish swimming behind your page. MIT © 2026 BreakDimbo
+/*! ink-fish v1.3.1 — brush-ink fish swimming behind your page. MIT © 2026 BreakDimbo
     https://github.com/BreakDimbo/ink-fish
 
    One Canvas 2D (DPR <= 1.5) and one rAF loop per instance, paused when the tab is hidden, the host is
@@ -46,6 +46,7 @@
     maxDpr: 1.5,
     fadeIn: true,
     fixed: false,             // page mode: true = the pond stays fixed while the page scrolls over it; false = scroll parallax
+    trail: true,              // with ripples on: press and drag in open water to draw one long water trail (a line source)
     ripples: false,           // faint water rings under the cursor (and on tap/click) that refract the fish they cross; "real" = ripples + water "real"
     water: false,             // false (flat, Canvas 2D) | "real": a WebGL2 surface (dispersive rings, refraction, caustics, Fresnel); falls back to flat
     adaptive: true,           // drop to DPR 1 if frames keep arriving late
@@ -80,7 +81,9 @@
     var S = 6e-4, G = 9.81, SR = 7.4e-5;   // metres per CSS px; g; σ/ρ
     var SLOW = 0.22, ASLOW = 0.1;           // slow motion of the rings, of the ambient swell
     var NU = 6e-6;                          // kinematic viscosity, ×6 for a pond's surface film
-    var SRC = 7, NK = 192, NR = 512, RMAX = 640, SLOTS = 8, SIM = 0.5, GRID = 4;
+    var SRC = 7, NK = 192, NR = 512, RMAX = 640, SLOTS = 8, SIM = 0.5;
+    // a press-and-drag trail is a line source: NA profile rows over its life LS (ages bunched young), up to NS points
+    var NA = 12, LS = 3.4, NS = 64, ROWS = SLOTS + NA;
     var DK = 4.2 / SRC / NK, KP = new Float32Array(NK), W = new Float32Array(NK), VD = new Float32Array(NK);
     for (var i = 0; i < NK; i++) { var kp = (i + 0.5) * DK, km = kp / S; KP[i] = kp; W[i] = Math.sqrt(G * km + SR * km * km * km); VD[i] = 2 * NU * km * km; }
     // Bessel J0, J1: Abramowitz & Stegun 9.4.1–9.4.6 (|error| < 1e-7)
@@ -96,12 +99,32 @@
       var t = x - 2.35619449 + z * (0.12499612 + z * (0.0000565 + z * (-0.00637879 + z * (0.00074348 + z * (0.00079824 - z * 0.00029166)))));
       return f * Math.cos(t) / Math.sqrt(x);
     };
-    var JT = null, NORM = 1;
+    var JT = null, JL = null, NORM = 1, NORML = 1;
     // the spectrum of one ring at time t (s): source k·e^(−k²a²/4), phase ω·t, viscous decay
     var spec = function (t, A, out, o) {
       var tp = t * SLOW;
       for (var k = 0; k < NK; k++) { var kp = KP[k]; out[o + k] = A * DK * kp * Math.exp(-kp * kp * SRC * SRC / 4 - VD[k] * tp) * Math.cos(W[k] * tp); }
     };
+    // a line impulse (the 1-D Cauchy–Poisson problem across the stroke): the same dispersion and decay, with
+    // cos(k·d) for J0(k·r) and without the radial measure k
+    var specL = function (t, A, out, o) {
+      var tp = t * SLOW;
+      for (var k = 0; k < NK; k++) { var kp = KP[k]; out[o + k] = A * DK * Math.exp(-kp * kp * SRC * SRC / 4 - VD[k] * tp) * Math.cos(W[k] * tp); }
+    };
+    var tableL = function () {
+      if (JL) return JL;
+      JL = new Float32Array(NR * NK * 2);
+      for (var k = 0; k < NK; k++) for (var r = 0; r < NR; r++) {
+        var x = KP[k] * r * RMAX / (NR - 1);
+        JL[(k * NR + r) * 2] = Math.cos(x); JL[(k * NR + r) * 2 + 1] = -KP[k] * Math.sin(x);
+      }
+      var F = new Float32Array(NK), mx = 0; specL(0.5, 1, F, 0);
+      for (var q = 0; q < NR; q++) { var s = 0; for (var kk = 0; kk < NK; kk++) s += F[kk] * JL[(kk * NR + q) * 2 + 1]; if (Math.abs(s) > mx) mx = Math.abs(s); }
+      NORML = 1 / mx;
+      return JL;
+    };
+    // the age of trail profile row i, and back (rows bunched toward the young end, where the profile changes fastest)
+    var rowAge = function (i) { var u = i / (NA - 1); return LS * u * u; };
     var table = function () {
       if (JT) return JT;
       JT = new Float32Array(NR * NK * 2);
@@ -121,35 +144,50 @@
     var FS_PROF = HEAD + "uniform sampler2D J,F;out vec4 o;void main(){ivec2 c=ivec2(gl_FragCoord.xy);vec2 s=vec2(0.);" +
       "for(int k=0;k<" + NK + ";k++)s+=texelFetch(F,ivec2(k,c.y),0).r*texelFetch(J,ivec2(c.x,k),0).rg;o=vec4(s,0.,1.);}";
     // the surface at half resolution: height, slope (screen axes, y down) and where water shows
-    var FS_SIM = HEAD + "uniform sampler2D P;uniform vec2 vp;uniform vec4 I[" + SLOTS + "],A[16],R[32],K[32];uniform int nR;in vec2 v;out vec4 o;" +
+    var FS_SIM = HEAD + "uniform sampler2D P;uniform vec2 vp;uniform vec4 I[" + SLOTS + "],A[16],R[32],K[32],S[" + NS + "];uniform int nR,nS;in vec2 v;out vec4 o;" +
       "void main(){vec2 p=vec2(v.x,1.-v.y)*vp;float h=0.;vec2 s=vec2(0.);" +
       "for(int i=0;i<16;i++){vec4 a=A[i];float t=dot(a.xy,p)-a.w;h+=a.z*sin(t);s+=a.z*cos(t)*a.xy;}" +
       "for(int i=0;i<" + SLOTS + ";i++){vec4 q=I[i];if(q.z<=0.)continue;vec2 d=p-q.xy;float r=length(d);if(r>=" + RMAX.toFixed(1) + ")continue;" +
-      "vec2 e=texture(P,vec2(r*" + ((NR - 1) / NR / RMAX).toFixed(9) + "+" + (0.5 / NR).toFixed(9) + ",(float(i)+.5)/" + SLOTS.toFixed(1) + ")).rg;h+=e.x;s+=e.y*d/max(r,.001);}" +
+      "vec2 e=texture(P,vec2(r*" + ((NR - 1) / NR / RMAX).toFixed(9) + "+" + (0.5 / NR).toFixed(9) + ",(float(i)+.5)/" + ROWS.toFixed(1) + ")).rg;h+=e.x;s+=e.y*d/max(r,.001);}" +
+      // the trail: the nearest point of the stroke polyline gives the distance, the age there and the strength
+      "if(nS>1){float bd=1e9,ba=0.,bs=0.;vec2 bv=vec2(0.);for(int i=1;i<" + NS + ";i++){if(i>=nS)break;vec4 a=S[i-1],b=S[i];if(a.w<=0.||b.w<=0.)continue;" +
+      "vec2 ab=b.xy-a.xy,ap=p-a.xy;float u=clamp(dot(ap,ab)/max(dot(ab,ab),1e-3),0.,1.);vec2 dv=ap-ab*u;float dd=dot(dv,dv);if(dd<bd){bd=dd;bv=dv;ba=mix(a.z,b.z,u);bs=mix(a.w,b.w,u);}}" +
+      "float r=sqrt(bd);if(r<" + RMAX.toFixed(1) + "){float u=sqrt(clamp(ba/" + LS.toFixed(2) + ",0.,1.))*" + (NA - 1).toFixed(1) + ";" +
+      "vec2 e=texture(P,vec2(r*" + ((NR - 1) / NR / RMAX).toFixed(9) + "+" + (0.5 / NR).toFixed(9) + ",(" + SLOTS.toFixed(1) + "+u+.5)/" + ROWS.toFixed(1) + ")).rg*bs;h+=e.x;s+=e.y*bv/max(r,.001);}}" +
       "float m=1.;for(int i=0;i<32;i++){if(i>=nR)break;vec4 b=R[i];vec2 dd=max(max(b.xy-p,p-b.zw),0.);m=min(m,mix(K[i].x,1.,smoothstep(0.,K[i].y,length(dd))));}" +
       "o=vec4(h,s,m);}";
     // caustics (after Evan Wallace): a grid refracted onto the floor; each triangle adds old area / new area
+    // (the slope is box-filtered over one grid cell first: a wavelength shorter than two cells would alias into dashes)
     var VS_CAU = HEAD + "in vec2 a;uniform sampler2D Wt;uniform vec2 ws,vp;uniform float D,E;out vec2 o0;" +
       "vec4 bs(vec2 uv){vec2 x=uv*ws-.5,b=floor(x),f=x-b,f2=f*f,f3=f2*f;" +
       "vec2 w0=(1.-3.*f+3.*f2-f3)/6.,w1=(4.-6.*f2+3.*f3)/6.,w2=(1.+3.*f+3.*f2-3.*f3)/6.,w3=f3/6.,g0=w0+w1,g1=w2+w3;" +
       "vec2 h0=(b-.5+w1/g0)/ws,h1=(b+1.5+w3/g1)/ws;" +
       "return g0.y*(g0.x*texture(Wt,h0)+g1.x*texture(Wt,vec2(h1.x,h0.y)))+g1.y*(g0.x*texture(Wt,vec2(h0.x,h1.y))+g1.x*texture(Wt,h1));}" +
-      "void main(){vec2 uv=mix(vec2(-E),vec2(1.+E),a);vec2 s=bs(uv).yz;vec2 p=vec2(uv.x,1.-uv.y)*vp,q=p+D*s;o0=p;" +
+      "uniform vec2 G;void main(){vec2 uv=mix(vec2(-E),vec2(1.+E),a),g=vec2(G.x,-G.y);vec2 s=.25*(bs(uv+G).yz+bs(uv-G).yz+bs(uv+g).yz+bs(uv-g).yz);vec2 p=vec2(uv.x,1.-uv.y)*vp,q=p+D*s;o0=p;" +
       "gl_Position=vec4(q.x/vp.x*2.-1.,1.-q.y/vp.y*2.,0.,1.);}";
     var FS_CAU = HEAD + "in vec2 o0;uniform float px;out vec4 o;void main(){vec2 x=dFdx(o0),y=dFdy(o0);o=vec4(min(abs(x.x*y.y-x.y*y.x)/px,10.),0.,0.,1.);}";
-    // composite (caustics softened by the sky's penumbra): refracted fish over the refracted shadow on the caustic-lit floor, then the reflection.
+    // the sky is not a point: its penumbra blurs the floor light by about depth × its angular size (half resolution);
+    // never less than one grid cell, so a young ring's tight wavelengths don't print the triangles as dashes
+    var FS_BLUR = HEAD + "uniform sampler2D C;uniform vec2 cb;in vec2 v;out vec4 o;float cl(vec2 u){return min(texture(C,u).r,2.5);}" +
+      "void main(){vec2 h=cb*.5,e=vec2(cb.x,-cb.y);" +
+      "o=vec4(.2*cl(v)+.12*(cl(v+cb)+cl(v-cb)+cl(v+e)+cl(v-e))+.08*(cl(v+vec2(h.x,0.))+cl(v-vec2(h.x,0.))+cl(v+vec2(0.,h.y))+cl(v-vec2(0.,h.y))),0.,0.,1.);}";
+    // composite: refracted fish over the refracted shadow on the caustic-lit floor, then the reflection.
+    // Refraction never reaches past the canvas (no smeared edge texels). Steep facets also catch the brighter
+    // sky away from the zenith (k2.z: a faint cool line on a ring's crests in a dark room). A blue-noise-ish
+    // dither of ±½ step keeps the smooth light from banding in 8 bits.
     // Output is premultiplied "multiply the paper by (1−a), then add rgb", so the page shows through.
-    var FS_COMP = HEAD + "uniform sampler2D Fi,Sh,Wt,C;uniform vec2 vp,ss;uniform vec3 lit,ins,sky,tr;uniform vec4 k1,k2;uniform vec2 ld,cb;in vec2 v;out vec4 o;" +
-      "float cl(vec2 u){return min(texture(C,u).r,2.5);}" +
+    var FS_COMP = HEAD + "uniform sampler2D Fi,Sh,Wt,B;uniform vec2 vp,ss;uniform vec3 lit,ins,sky,tr;uniform vec4 k1,k2;uniform vec2 ld;in vec2 v;out vec4 o;" +
+      "float inb(vec2 u){return step(0.,min(min(u.x,u.y),1.-max(u.x,u.y)));}" +
       "void main(){vec2 p=vec2(v.x,1.-v.y)*vp;vec4 w=texture(Wt,v);vec2 s=w.yz;float m=w.w;" +
-      "vec4 f=texture(Fi,(p+k1.x*s)/vp);float sh=texture(Sh,(p+k1.y*s)*ss).a;" +
-      "float c=.4*cl(v)+.15*(cl(v+cb)+cl(v-cb)+cl(v+vec2(cb.x,-cb.y))+cl(v-vec2(cb.x,-cb.y)));" +
+      "vec2 uf=(p+k1.x*s)/vp,us=(p+k1.y*s)*ss;vec4 f=texture(Fi,uf)*inb(uf);float sh=texture(Sh,us).a*inb(us);" +
+      "float c=texture(B,v).r;" +
       "float L=1.+(c-1.)*k1.z*m,e=(1.-sh)*L;" +
       "float mul=min(e,1.);vec3 add=lit*max(e-1.,0.)+ins*sh*k2.y;" +
       "add=add*(1.-f.a)+f.rgb*tr+ins*f.a*k2.x;mul*=1.-f.a;" +
       "vec3 n=normalize(vec3(-s,1.));float F=.02+.98*pow(1.-n.z,5.);vec2 r=2.*n.z*n.xy;" +
-      "float q=(F*(1.+k2.w*dot(r,ld))-.02)*k1.w*m;add+=sky*max(q,0.);mul*=1.+min(q,0.);" +
-      "o=vec4(add,1.-mul);}";
+      "float q=(F*(1.+k2.w*dot(r,ld))-.02)*k1.w*m,hz=min(k2.z*dot(s,s),.1)*m;add+=sky*(max(q,0.)+hz);mul*=(1.+min(q,0.))*(1.-hz);" +
+      "float d=(fract(52.9829189*fract(dot(gl_FragCoord.xy,vec2(.06711056,.00583715))))-.5)/255.;" +
+      "o=vec4(add+d,1.-mul+d);}";
 
     function create(D) {
       var c = D.createElement("canvas"), gl = null;
@@ -164,8 +202,8 @@
         for (var i = 0; i < n; i++) { var nm = gl.getActiveUniform(p, i).name.replace(/\[0\]$/, ""); u[nm] = gl.getUniformLocation(p, nm); }
         return { p: p, u: u };
       };
-      var Pp = prog(VS_FULL, FS_PROF), Ps = prog(VS_FULL, FS_SIM), Pc = prog(VS_CAU, FS_CAU), Po = prog(VS_FULL, FS_COMP);
-      if (!Pp || !Ps || !Pc || !Po) return null;
+      var Pp = prog(VS_FULL, FS_PROF), Ps = prog(VS_FULL, FS_SIM), Pc = prog(VS_CAU, FS_CAU), Pb = prog(VS_FULL, FS_BLUR), Po = prog(VS_FULL, FS_COMP);
+      if (!Pp || !Ps || !Pc || !Pb || !Po) return null;
       var tex = function (fmt, w, h, filt, type, data, f2) {
         var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filt); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filt);
@@ -176,11 +214,13 @@
       var fbo = function (t) { var f = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, f); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0); var ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE; gl.bindFramebuffer(gl.FRAMEBUFFER, null); return ok ? f : null; };
       gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
       var tJ = tex(gl.RG32F, NR, NK, gl.NEAREST, gl.FLOAT, table(), gl.RG);
-      var tF = tex(gl.R32F, NK, SLOTS, gl.NEAREST, gl.FLOAT, null, gl.RED);
-      var tP = tex(gl.RGBA16F, NR, SLOTS, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fP = fbo(tP);
+      var tJL = tex(gl.RG32F, NR, NK, gl.NEAREST, gl.FLOAT, tableL(), gl.RG);
+      var tF = tex(gl.R32F, NK, ROWS, gl.NEAREST, gl.FLOAT, null, gl.RED);
+      var tP = tex(gl.RGBA16F, NR, ROWS, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fP = fbo(tP);
       var tW = tex(gl.RGBA16F, 1, 1, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fW = fbo(tW);
       var tC = tex(gl.RGBA16F, 1, 1, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fC = fbo(tC);
-      if (!fP || !fW || !fC) return null;
+      var tB = tex(gl.RGBA16F, 1, 1, gl.LINEAR, gl.HALF_FLOAT, null, gl.RGBA), fB = fbo(tB);
+      if (!fP || !fW || !fC || !fB) return null;
       var tFi = tex(0, 0, 0, gl.LINEAR), tSh = tex(0, 0, 0, gl.LINEAR);
       var tri = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, tri); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
       var vaoT = gl.createVertexArray(); gl.bindVertexArray(vaoT); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
@@ -196,23 +236,31 @@
         var dir = seed + (a * 0.618034 % 1 - 0.5) * 3.4 + (Math.random() - 0.5) * 0.4;
         AW.push({ kx: Math.cos(dir) * k, ky: Math.sin(dir) * k, amp: (0.0042 + Math.random() * 0.003) / k, w: Math.sqrt(G * km + SR * km * km * km) * ASLOW, ph: Math.random() * 6.283 });
       }
-      var Fd = new Float32Array(NK * SLOTS), Iu = new Float32Array(SLOTS * 4), Ru = new Float32Array(128), Ku = new Float32Array(128);
-      var W_ = 0, H_ = 0, sw = 0, shh = 0, fw = 0, fh = 0, shw = 0, shH = 0, lost = false, hadRings = true;
+      var Fd = new Float32Array(NK * ROWS), Su = new Float32Array(NS * 4), Iu = new Float32Array(SLOTS * 4), Ru = new Float32Array(128), Ku = new Float32Array(128);
+      var W_ = 0, H_ = 0, sw = 0, shh = 0, lost = false, hadRings = true, Q = 0, RS = [0, 0, 0, 0];
+      // the surface and its caustics are re-simulated only when something moved them: every frame while rings
+      // live, on scroll or a layout change, else at ~30 Hz for the slow ambient swell (simT, simK)
+      var simT = -9, simK = NaN, work = { comp: 0, sim: 0, cau: 0, prof: 0, up: 0 };
       c.addEventListener("webglcontextlost", function (e) { e.preventDefault(); lost = true; api.onlost && api.onlost(); });
+      // quality 0: the device pixels of the 2D canvas, a caustic vertex every 6 CSS px; 1 (a slow GPU): 1 px per CSS px, every 8
       var resize = function (cssW, cssH, pw, ph) {
+        RS = [cssW, cssH, pw, ph];
+        if (Q) { pw = Math.max(1, Math.round(cssW)); ph = Math.max(1, Math.round(cssH)); }
         if (cssW === W_ && cssH === H_ && pw === c.width && ph === c.height) return;
+        grid = Q ? 8 : 6;
         W_ = cssW; H_ = cssH; c.width = pw; c.height = ph; c.style.width = cssW + "px"; c.style.height = cssH + "px";
         sw = Math.max(2, Math.ceil(cssW * SIM)); shh = Math.max(2, Math.ceil(cssH * SIM));
-        [tW, tC].forEach(function (t) { gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, sw, shh, 0, gl.RGBA, gl.HALF_FLOAT, null); });
-        // the caustic grid: one vertex per GRID CSS px, reaching 4% past each edge
-        var E = 0.04, nx = Math.ceil(cssW * (1 + 2 * E) / GRID) + 1, ny = Math.ceil(cssH * (1 + 2 * E) / GRID) + 1;
+        [tW, tC, tB].forEach(function (t) { gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, sw, shh, 0, gl.RGBA, gl.HALF_FLOAT, null); });
+        // the caustic grid reaches 4% past each edge
+        var E = 0.04, nx = Math.ceil(cssW * (1 + 2 * E) / grid) + 1, ny = Math.ceil(cssH * (1 + 2 * E) / grid) + 1;
         var V = new Float32Array(nx * ny * 2), Ix = new Uint32Array((nx - 1) * (ny - 1) * 6), n = 0;
         for (var y = 0; y < ny; y++) for (var x = 0; x < nx; x++) { V[(y * nx + x) * 2] = x / (nx - 1); V[(y * nx + x) * 2 + 1] = y / (ny - 1); }
         for (var yy = 0; yy < ny - 1; yy++) for (var xx = 0; xx < nx - 1; xx++) { var i0 = yy * nx + xx; Ix[n++] = i0; Ix[n++] = i0 + 1; Ix[n++] = i0 + nx; Ix[n++] = i0 + 1; Ix[n++] = i0 + nx + 1; Ix[n++] = i0 + nx; }
-        gN = n;
+        gN = n; gV = nx * ny; simK = NaN;
         gl.bindVertexArray(vaoG); gl.bindBuffer(gl.ARRAY_BUFFER, gB); gl.bufferData(gl.ARRAY_BUFFER, V, gl.STATIC_DRAW);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gI); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, Ix, gl.STATIC_DRAW); gl.bindVertexArray(null);
       };
+      var gV = 0, grid = 6;
       var upload = function (t, src, wh) {
         gl.bindTexture(gl.TEXTURE_2D, t);
         if (wh[0] !== src.width || wh[1] !== src.height) { wh[0] = src.width; wh[1] = src.height; gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); }
@@ -221,71 +269,94 @@
       var szF = [0, 0], szS = [0, 0];
       var bindT = function (P, name, unit, t) { gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t); gl.uniform1i(P.u[name], unit); };
       /* frame: fish/shadow canvases, rings [{x,y,t,s}], rects [{l,t,r,b,keep,f}] in CSS px of the canvas, time (s), look */
-      var draw = function (fishC, shC, SHs, rings, rects, T, sy, look) {
+      var draw = function (fishC, shC, SHs, rings, rects, T, sy, look, trail) {
         if (lost) return;
         gl.disable(gl.BLEND);
         gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
         upload(tFi, fishC, szF); upload(tSh, shC, szS);
-        // 1 · ring profiles (only while rings are alive)
-        var nI = 0; Iu.fill(0);
+        work.up = fishC.width * fishC.height + shC.width * shC.height; work.prof = work.sim = work.cau = 0;
+        // 1 · ring profiles, one row per live ring
+        var nI = 0;
         for (var i = 0; i < rings.length && nI < SLOTS; i++) {
           var R0 = rings[i], env = Math.min(1, R0.t / 0.5), life = R0.life;
           env *= env * (3 - 2 * env) * (R0.t > life - 1.4 ? Math.max(0, (life - R0.t) / 1.4) : 1);
-          if (env <= 0) continue;
+          if (env <= 0 || !(R0.s > 0)) continue;
           spec(R0.t, NORM * R0.s * look.ring * env, Fd, nI * NK);
           Iu[nI * 4] = R0.x; Iu[nI * 4 + 1] = R0.y; Iu[nI * 4 + 2] = 1; nI++;
         }
-        if (nI || hadRings) {
-          for (var z = nI; z < SLOTS; z++) Fd.fill(0, z * NK, z * NK + NK);
-          gl.bindTexture(gl.TEXTURE_2D, tF); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, NK, SLOTS, gl.RED, gl.FLOAT, Fd);
-          gl.bindFramebuffer(gl.FRAMEBUFFER, fP); gl.viewport(0, 0, NR, SLOTS); gl.useProgram(Pp.p);
+        for (var z = nI; z < SLOTS; z++) Iu[z * 4 + 2] = 0;
+        if (nI) {
+          gl.bindTexture(gl.TEXTURE_2D, tF); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, NK, nI, gl.RED, gl.FLOAT, Fd);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fP); gl.viewport(0, 0, NR, nI); gl.useProgram(Pp.p);
           bindT(Pp, "J", 0, tJ); bindT(Pp, "F", 1, tF);
           gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+          work.prof = NR * nI;
         }
-        hadRings = nI > 0;
-        // 2 · the surface
-        for (var a = 0; a < 16; a++) {
-          var w = AW[a], ph = (w.w * T + w.ph - w.ky * sy) % 6.283185;
-          AMB[a * 4] = w.kx; AMB[a * 4 + 1] = w.ky; AMB[a * 4 + 2] = w.amp * look.amb; AMB[a * 4 + 3] = ph;
+        // 1b · the trail's profiles: one row per age, a line source each
+        var nS = trail && trail.n > 1 ? Math.min(NS, trail.n) : 0;
+        if (nS) {
+          for (var ai = 0; ai < NA; ai++) {
+            var ag = rowAge(ai), en = Math.min(1, ag / 0.12 + 0.15) * Math.pow(Math.max(0, 1 - ag / LS), 1.7);
+            specL(ag, NORML * look.ring * en, Fd, (SLOTS + ai) * NK);
+          }
+          gl.bindTexture(gl.TEXTURE_2D, tF); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, SLOTS, NK, NA, gl.RED, gl.FLOAT, Fd.subarray(SLOTS * NK));
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fP); gl.viewport(0, SLOTS, NR, NA); gl.useProgram(Pp.p);
+          bindT(Pp, "J", 0, tJL); bindT(Pp, "F", 1, tF);
+          gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+          work.prof += NR * NA;
+          for (var si = 0; si < nS * 4; si++) Su[si] = trail.a[si];
         }
-        var nR = Math.min(32, rects.n != null ? rects.n : rects.length);
-        for (var q = 0; q < nR; q++) { var b = rects[q]; Ru[q * 4] = b.l; Ru[q * 4 + 1] = b.t; Ru[q * 4 + 2] = b.r; Ru[q * 4 + 3] = b.b; Ku[q * 4] = b.keep; Ku[q * 4 + 1] = Math.max(1, b.f); }
-        gl.bindFramebuffer(gl.FRAMEBUFFER, fW); gl.viewport(0, 0, sw, shh); gl.useProgram(Ps.p);
-        bindT(Ps, "P", 0, tP);
-        gl.uniform2f(Ps.u.vp, W_, H_); gl.uniform4fv(Ps.u.I, Iu); gl.uniform4fv(Ps.u.A, AMB);
-        gl.uniform4fv(Ps.u.R, Ru); gl.uniform4fv(Ps.u.K, Ku); gl.uniform1i(Ps.u.nR, nR);
-        gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
-        // 3 · caustics
-        gl.bindFramebuffer(gl.FRAMEBUFFER, fC); gl.viewport(0, 0, sw, shh);
-        gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
-        gl.useProgram(Pc.p); bindT(Pc, "Wt", 0, tW);
-        gl.uniform2f(Pc.u.ws, sw, shh); gl.uniform2f(Pc.u.vp, W_, H_); gl.uniform1f(Pc.u.D, look.cd); gl.uniform1f(Pc.u.E, 0.04);
-        gl.uniform1f(Pc.u.px, (W_ / sw) * (H_ / shh));
-        gl.bindVertexArray(vaoG); gl.drawElements(gl.TRIANGLES, gN, gl.UNSIGNED_INT, 0);
-        gl.disable(gl.BLEND);
+        // 2 · the surface, 3 · caustics, their penumbra: only when something moved them
+        var nR = Math.min(32, rects.n != null ? rects.n : rects.length), key = sy + look.amb * 7 + look.cd * 13 + look.cb * 17 + nR * 19;
+        for (var q = 0; q < nR; q++) { var b = rects[q]; key += b.l * 3 + b.t * 5 + b.r * 7 + b.b * 11 + b.keep; Ru[q * 4] = b.l; Ru[q * 4 + 1] = b.t; Ru[q * 4 + 2] = b.r; Ru[q * 4 + 3] = b.b; Ku[q * 4] = b.keep; Ku[q * 4 + 1] = Math.max(1, b.f); }
+        if (nI || nS || hadRings || key !== simK || T - simT >= 1 / 31 || T < simT) {
+          simT = T; simK = key;
+          for (var a = 0; a < 16; a++) {
+            var w = AW[a], ph = (w.w * T + w.ph - w.ky * sy) % 6.283185;
+            AMB[a * 4] = w.kx; AMB[a * 4 + 1] = w.ky; AMB[a * 4 + 2] = w.amp * look.amb; AMB[a * 4 + 3] = ph;
+          }
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fW); gl.viewport(0, 0, sw, shh); gl.useProgram(Ps.p);
+          bindT(Ps, "P", 0, tP);
+          gl.uniform2f(Ps.u.vp, W_, H_); gl.uniform4fv(Ps.u.I, Iu); gl.uniform4fv(Ps.u.A, AMB);
+          gl.uniform4fv(Ps.u.R, Ru); gl.uniform4fv(Ps.u.K, Ku); gl.uniform1i(Ps.u.nR, nR); gl.uniform1i(Ps.u.nS, nS); if (nS) gl.uniform4fv(Ps.u.S, Su);
+          gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fC); gl.viewport(0, 0, sw, shh);
+          gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+          gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+          gl.useProgram(Pc.p); bindT(Pc, "Wt", 0, tW);
+          gl.uniform2f(Pc.u.ws, sw, shh); gl.uniform2f(Pc.u.vp, W_, H_); gl.uniform1f(Pc.u.D, look.cd); gl.uniform1f(Pc.u.E, 0.04); gl.uniform2f(Pc.u.G, grid * 0.5 / W_, grid * 0.5 / H_);
+          gl.uniform1f(Pc.u.px, (W_ / sw) * (H_ / shh));
+          gl.bindVertexArray(vaoG); gl.drawElements(gl.TRIANGLES, gN, gl.UNSIGNED_INT, 0);
+          gl.disable(gl.BLEND);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, fB); gl.viewport(0, 0, sw, shh); gl.useProgram(Pb.p);
+          bindT(Pb, "C", 0, tC); var cr = Math.max(look.cb, grid); gl.uniform2f(Pb.u.cb, cr / W_, cr / H_);
+          gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
+          work.sim = sw * shh * 2; work.cau = gV;
+        }
+        hadRings = nI > 0 || nS > 0;
         // 4 · composite
         gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, c.width, c.height); gl.useProgram(Po.p);
-        bindT(Po, "Fi", 0, tFi); bindT(Po, "Sh", 1, tSh); bindT(Po, "Wt", 2, tW); bindT(Po, "C", 3, tC);
+        bindT(Po, "Fi", 0, tFi); bindT(Po, "Sh", 1, tSh); bindT(Po, "Wt", 2, tW); bindT(Po, "B", 3, tB);
         gl.uniform2f(Po.u.vp, W_, H_); gl.uniform2f(Po.u.ss, SHs / shC.width, SHs / shC.height);
         gl.uniform3fv(Po.u.lit, look.lit); gl.uniform3fv(Po.u.ins, look.ins); gl.uniform3fv(Po.u.sky, look.sky); gl.uniform3fv(Po.u.tr, look.tr);
-        gl.uniform4f(Po.u.k1, look.fd, look.sd, look.cs, look.fr); gl.uniform4f(Po.u.k2, look.fi, look.si, 0, look.sg);
+        gl.uniform4f(Po.u.k1, look.fd, look.sd, look.cs, look.fr); gl.uniform4f(Po.u.k2, look.fi, look.si, look.hz || 0, look.sg);
         gl.uniform2f(Po.u.ld, -0.6, -0.8);
-        // a soft sky is not a point: its penumbra blurs the floor light by about depth × its angular size
-        gl.uniform2f(Po.u.cb, look.cb / W_, look.cb / H_);
         gl.bindVertexArray(vaoT); gl.drawArrays(gl.TRIANGLES, 0, 3);
         gl.bindVertexArray(null);
+        work.comp = c.width * c.height;
       };
       var api = {
-        canvas: c, resize: resize, draw: draw,
+        canvas: c, resize: resize, draw: draw, work: work,
         get lost() { return lost; },
+        get quality() { return Q; },
+        setQuality: function (q) { q = q ? 1 : 0; if (q === Q) return; Q = q; W_ = -1; resize(RS[0], RS[1], RS[2], RS[3]); },
         destroy: function () { var x = gl.getExtension("WEBGL_lose_context"); if (x) x.loseContext(); if (c.parentNode) c.parentNode.removeChild(c); }
       };
       return api;
     }
     // the radius of a ring's steepest crest (CSS px) at t seconds, for the fish it nudges
     var front = function (t) { return 14 + 68 * t; };
-    return { create: create, front: front, life: 5 };
+    return { create: create, front: front, life: 5, trailLife: LS, trailN: NS };
   })();
 
   var instances = [];
@@ -366,17 +437,17 @@
         ? { ink: [ink[0] * 0.94 + 10, ink[1] * 0.92 + 6, ink[2] * 0.86], a: 1.12 * op, sh: [0, 0, 0], sa: 0.26 * sh,
             rs: [0, 0, 0], rsa: 0.5 * op, rh: [ink[0] * 0.7, ink[1] * 0.78, ink[2] * 0.9], rha: 0.2 * op,
             cin: [168, 62, 42], cid: [110, 36, 26], och: [190, 148, 86], ocd: [146, 102, 48], sumi: [24, 22, 20], pa: 0.76 * op,
-            wh: [226, 220, 208], wb: 1.32, wl: 0.3, pc: 0.8, ob: 1.42, sp: 0.065, fn: 0.7, gr: 0, eye: [20, 18, 16],
+            wh: [226, 220, 208], wb: 1.32, wl: 0.3, wn: 0, pc: 0.8, ob: 1.42, sp: 0.065, fn: 0.7, gr: 0, eye: [20, 18, 16],
             // real water: caustic light, in-scatter, sky, fish transmittance; depths (px of shift per unit slope),
             // caustic contrast, Fresnel gain, in-scatter on fish / shadow, sky gradient, ring and swell slopes
-            qlit: [pp[0] * 0.5 + 0.1, pp[1] * 0.5 + 0.095, pp[2] * 0.5 + 0.08], qins: [0.07, 0.1, 0.115], qsky: [0.62, 0.66, 0.7], qtr: [0.86, 0.95, 0.97],
-            qfd: 22, qsd: 40, qcd: 40, qcb: 5, qcs: 0.55, qfr: 2.3, qfi: 0.2, qsi: 0.5, qsg: 4, qring: 0.14, qamb: 1.1 }
+            qlit: [pp[0] * 0.5 + 0.1, pp[1] * 0.5 + 0.095, pp[2] * 0.5 + 0.08], qins: [0.07, 0.1, 0.115], qsky: [0.55, 0.64, 0.74], qtr: [0.86, 0.95, 0.97],
+            qfd: 22, qsd: 40, qcd: 40, qcb: 5, qcs: 0.3, qfr: 2.3, qfi: 0.2, qsi: 0.5, qsg: 4, qring: 0.14, qamb: 1.1, qhz: 9 }
         : { ink: [ink[0] + 8, ink[1] + 4, ink[2]], a: 1 * op, sh: [52, 38, 22], sa: 0.13 * sh,
             rs: [38, 48, 60], rsa: 0.15 * op, rh: [255, 255, 252], rha: 0.5 * op,
             cin: [178, 62, 38], cid: [132, 40, 24], och: [178, 130, 62], ocd: [140, 92, 34], sumi: [28, 26, 24], pa: 0.7 * op,
-            wh: [255, 253, 247], wb: 0.24, wl: 0.55, pc: 0.68, ob: 1, sp: 0.12, fn: 1, gr: 0.16, eye: [24, 22, 20],
+            wh: [255, 253, 247], wb: 0.24, wl: 0.55, wn: 1, pc: 0.68, ob: 1, sp: 0.12, fn: 1, gr: 0.16, eye: [24, 22, 20],
             qlit: [pp[0] * 0.9, pp[1] * 0.9, pp[2] * 0.9], qins: [0.34, 0.42, 0.45], qsky: [0.9, 0.93, 0.95], qtr: [0.86, 0.95, 0.97],
-            qfd: 22, qsd: 40, qcd: 40, qcb: 5, qcs: 0.14, qfr: 1.3, qfi: 0.1, qsi: 0.35, qsg: 4, qring: 0.11, qamb: 1.1 };
+            qfd: 22, qsd: 40, qcd: 40, qcb: 5, qcs: 0.14, qfr: 1.3, qfi: 0.1, qsi: 0.35, qsg: 4, qring: 0.11, qamb: 1.1, qhz: 6 };
     };
     var mixPal = function (a, b, k) {
       var o = {};
@@ -515,7 +586,8 @@
       var ue = R(0.48, 0.6), M0 = [line(-0.1, ue, 0, 0)], T0 = [line(ue - 0.1, ue + R(0.14, 0.24), R(-0.25, 0.25) * wk, 0)];
       if (r() < 0.6) M0.push(line(R(-0.1, 0.05), ue - R(0.05, 0.15), R(-1, 1) * wk * 0.45, 0));
       var C0 = [line(R(0.0, 0.1), R(0.3, 0.45), R(-0.3, 0.3) * wk, 0)], B0 = [];
-      for (var b = 0; b < 5; b++) B0.push(line(ue - R(0.0, 0.18), ue + R(0.16, 0.5), (b / 4 - 0.5) * wk * 1.2 + R(-0.1, 0.1) * wk, R(-0.03, 0.03)));
+      // the bristles split only at the very end of the stroke, so they don't scratch across the hi
+      for (var b = 0; b < 5; b++) B0.push(line(ue - R(0.0, 0.08), ue + R(0.12, 0.3), (b / 4 - 0.5) * wk * 1.2 + R(-0.1, 0.1) * wk, R(-0.03, 0.03)));
       return { c: 1, br: 1, m: M0, t: T0, k: C0, b: B0 };
     };
     var VARIETY = [
@@ -624,32 +696,101 @@
     var L_ = []; // listeners to remove on destroy
     var on = function (t, ev, fn, o) { t.addEventListener(ev, fn, o); L_.push([t, ev, fn, o]); };
     // ── water rings: a few at a time, spawned by distance and time, never per mousemove ──
-    var rip = [], ripLast = { x: -1e5, y: -1e5, t: -1e5 }, RIP_LIFE = 3.6, RIP_MAX = 5, fronts = [];
+    var rip = [], ripLast = { x: -1e5, y: -1e5, t: -1e5 }, RIP_LIFE = 3.6, RIP_MAX = 5, fronts = [], wakeN = 0;
     var ripLife = function () { return realLive ? WATER.life : RIP_LIFE; };
     var rpz = function () { return page && !O.fixed ? 1 : 0; }; // in parallax mode the rings ride on the page
-    var addRipple = function (x, y, s) {
-      if (!O.ripples || RM.matches) return;
-      if (rip.length >= (realLive ? 8 : RIP_MAX)) rip.shift();
-      rip.push({ x: x, y: y + sy * rpz(), t: 0, s: s, q: rnd(0, TAU), life: ripLife() });
+    // the surface holds about one firm ring's worth of disturbance (Σ strength × envelope ≤ RIP_SUM); past
+    // RIP_MAX rings the oldest is retired over 0.8 s, never cut. A click may exceed the budget; a move may not.
+    var RIP_SUM = 1.05;
+    var ripLoad = function () { var u = 0; for (var i = 0; i < rip.length; i++) { var r = rip[i]; if (!r.die) u += r.s * r.e * M.max(0, 1 - r.t / r.life); } return u; };
+    var addRipple = function (x, y, s, firm) {
+      if (!O.ripples || RM.matches) return false;
+      if (!firm) { s = M.min(s, RIP_SUM - ripLoad()); if (s < 0.12) return false; }
+      var live = 0;
+      for (var i = rip.length - 1; i >= 0; i--) if (!rip[i].die && ++live >= RIP_MAX) rip[i].die = 1;
+      rip.push({ x: x, y: y + sy * rpz(), t: 0, s: s, e: 1, q: rnd(0, TAU), life: ripLife() });
       wake();
+      return true;
+    };
+    // ── the trail: press and drag lays one long line source; each point keeps its own age, so the wave
+    // leaves the stroke on both sides as it is drawn and dies along it in the same order ──
+    // mouse/pen: starts after 6 px with the button held. touch: after a ~250 ms hold, or when the first move is
+    // clearly horizontal; a vertical swipe stays a scroll (we never preventDefault; if the browser takes the
+    // gesture it sends pointercancel and the stroke simply ends there)
+    var trl = [], press = null, TRL_LS = 3.4, TRL_N = 64, trA = { n: 0, a: new Float32Array(TRL_N * 4) };
+    var trOn = function () { return O.ripples && O.trail !== false && !RM.matches; };
+    var trCut = function () { if (trl.length && trl[trl.length - 1].s > 0) trl.push({ x: 0, y: 0, t: 0, s: 0 }); };
+    var trMove = function (x, y, sp, now) {
+      var P = press, py = y + sy * rpz();
+      if (!P.act) {
+        var dx = x - P.x0, dy = y - P.y0, d = hyp(dx, dy);
+        if (P.touch) {
+          if (d < 8) return;
+          if (!P.held && M.abs(dy) > M.abs(dx) * 0.8) { press = null; return; } // moved before the hold, and not sideways: a scroll
+        } else if (d < 6) return;
+        P.act = true; trCut();
+        if (P.ring && P.ring.t < 0.4) P.ring.s *= 0.55; // a press that becomes a stroke: a softer splash, the line carries it
+        trl.push(P.first = { x: P.x0, y: P.y0 + sy * rpz(), t: 0, s: P.s });
+        trl.push({ x: x, y: py, t: 0, s: P.s, h: 1 }); // the head follows the pointer until it is committed
+        wake(); return;
+      }
+      if (!inside(x, y) || !free(x, py, 6)) { if (trl.length && trl[trl.length - 1].h) trl[trl.length - 1].h = 0; trCut(); P.gap = 1; return; }
+      var st = clamp(0.36 + sp / 3200, 0.36, 0.62);
+      P.s = P.s * 0.8 + st * 0.2;
+      var H = trl[trl.length - 1];
+      if (P.gap || !H || !H.h) { P.gap = 0; trl.push({ x: x, y: py, t: 0, s: P.s }); trl.push({ x: x, y: py, t: 0, s: P.s, h: 1 }); wake(); return; }
+      var A = trl[trl.length - 2];
+      H.x = x; H.y = py; H.t = 0; H.s = P.s;
+      if (A && A.s > 0 && hyp(x - A.x, py - A.y) >= M.max(10, sp * 0.03)) { H.h = 0; trl.push({ x: x, y: py, t: 0, s: P.s, h: 1 }); }
+      if (trl.length > TRL_N) { // too long: thin out the older half, never the separators
+        var keep = [], half = trl.length >> 1;
+        for (var i = 0; i < trl.length; i++) if (i >= half || trl[i].s <= 0 || i % 2 === 0) keep.push(trl[i]);
+        trl = keep.length > TRL_N ? keep.slice(keep.length - TRL_N) : keep;
+      }
+      wake();
+    };
+    var trEnd = function () {
+      if (press && press.act) { ripLast.x = press.lx; ripLast.y = press.ly; ripLast.t = performance.now(); } // hover rings resume after fresh travel
+      if (press && trl.length && trl[trl.length - 1].h) trl[trl.length - 1].h = 0;
+      press = null;
     };
     var kick = function (f, k) { f.mode = 1; f.tm = rnd(0.35, 0.6); f.thT = M.max(f.thT, k); };
     var inside = function (x, y) { return page || (x >= 0 && y >= 0 && x <= vw && y <= vh); };
     on(Wn, "pointermove", function (e) {
       if (!O.interactive) return;
-      if (e.pointerType === "touch") { ptr.on = false; return; }
       var o = origin(), cx = e.clientX - o[0], cy = e.clientY - o[1];
-      var now = performance.now(), dt = M.max(8, now - ptr.t);
+      var now = performance.now();
+      if (press && e.pointerId === press.id) {
+        if (!press.touch && !(e.buttons & 1)) trEnd();
+        else { var pdt = M.max(8, now - press.t), psp = hyp(cx - press.lx, cy - press.ly) / pdt * 1000; press.sp = press.sp * 0.6 + psp * 0.4; press.lx = cx; press.ly = cy; press.t = now; trMove(cx, cy, press.sp, now); }
+      }
+      if (e.pointerType === "touch") { ptr.on = false; return; }
+      var dt = M.max(8, now - ptr.t);
       var sp = hyp(cx - ptr.x, cy - ptr.y) / dt * 1000;
       ptr.sp = ptr.sp * 0.7 + sp * 0.3; ptr.x = cx; ptr.y = cy; ptr.t = now; ptr.idle = 0;
       ptr.on = inside(cx, cy) && free(cx, cy + sy, 6);
-      if (ptr.on && O.ripples) {
-        var rd = hyp(cx - ripLast.x, cy - ripLast.y);
-        if (rd > 120 && now - ripLast.t > 340) { addRipple(cx, cy, clamp(0.34 + ptr.sp / 4200, 0.34, 0.62)); ripLast.x = cx; ripLast.y = cy; ripLast.t = now; }
+      if (ptr.on && O.ripples && !(press && press.act)) { // while a trail is drawn, the trail is the only source
+        // slow moves leave delicate rings ~130 px apart; a quick pass becomes one calm wake: sparser sources,
+        // each weaker than the last, which interfere into a single train behind the cursor
+        var rd = hyp(cx - ripLast.x, cy - ripLast.y), fw = clamp((ptr.sp - 450) / 900, 0, 1);
+        if (now - ripLast.t > 700 || ptr.sp < 300) wakeN = 0;
+        if (rd > 130 + 190 * fw && now - ripLast.t > 380 - 180 * fw) {
+          var s0 = fw > 0 ? 0.46 * M.pow(0.62, wakeN) : clamp(0.28 + ptr.sp / 3600, 0.28, 0.4);
+          if (addRipple(cx, cy, s0)) { if (fw > 0) wakeN++; ripLast.x = cx; ripLast.y = cy; ripLast.t = now; }
+        }
       }
       wake();
     }, { passive: true });
-    var off = function () { ptr.on = false; };
+    var off = function () { ptr.on = false; trEnd(); };
+    on(Wn, "pointerup", function (e) { if (press && e.pointerId === press.id) trEnd(); }, { passive: true });
+    on(Wn, "pointercancel", function (e) {
+      if (!press || e.pointerId !== press.id) return;
+      // the browser took the gesture (a scroll) right away: drop the stub rather than leave a dash
+      var i0 = press.first ? trl.indexOf(press.first) : -1, len = 0;
+      for (var i = i0 + 1; i0 >= 0 && i < trl.length; i++) if (trl[i].s > 0 && trl[i - 1].s > 0) len += hyp(trl[i].x - trl[i - 1].x, trl[i].y - trl[i - 1].y);
+      if (i0 >= 0 && len < 48) trl.length = i0;
+      trEnd();
+    }, { passive: true });
     on(D.documentElement, "pointerleave", off);
     on(Wn, "blur", off);
     var ignoreSel = function () { return [O.ignore, typeof O.obstacles === "string" ? O.obstacles : "", typeof O.bands === "string" ? O.bands : ""].filter(Boolean).join(","); };
@@ -660,7 +801,9 @@
       if (RM.matches || (sel && t && t.closest && t.closest(sel))) return;
       var o = origin(), x = e.clientX - o[0], y = e.clientY - o[1];
       if (!inside(x, y) || !free(x, y + sy, 4)) return;
-      addRipple(x, y, 1); // a single, slightly stronger ring (touch: ripples on tap only)
+      addRipple(x, y, 1, true); // a single, slightly stronger ring (touch: ripples on tap only)
+      if (trOn() && (e.pointerType !== "mouse" || e.button === 0)) press = { ring: rip[rip.length - 1], id: e.pointerId, touch: e.pointerType === "touch", x0: x, y0: y, t0: performance.now(), t: performance.now(), lx: x, ly: y, sp: 0, s: 0.4, act: false, gap: 0, held: false };
+      if (press && press.touch) { var P0 = press; setTimeout(function () { if (press === P0 && !P0.act) P0.held = true; }, 250); } // still for 250 ms = a hold
       ripLast.x = x; ripLast.y = y; ripLast.t = performance.now();
       for (var i = 0; i < fish.length; i++) {
         var f = fish[i], dx = f.x - x, dy = f.y - sy * f.pz - y, d = hyp(dx, dy);
@@ -671,12 +814,18 @@
 
     // ── simulation ────────────────────────────────────────────────────────────
     var ripR = function (r) { if (realLive) return WATER.front(r.t); var t = r.t * (r.s >= 1 ? 1.12 : 1); return 78 * t / (1 + 0.2 * t); };
-    var ripEnv = function (r) { var u = r.t / r.life; return M.min(1, r.t / 0.2) * M.pow(M.max(0, 1 - u), 1.7) * r.s; };
+    var ripEnv = function (r) { var u = r.t / r.life; return M.min(1, r.t / 0.2) * M.pow(M.max(0, 1 - u), 1.7) * r.s * r.e; };
     var step = function (dt) {
       T += dt;
       var rm = RM.matches;
       ptr.idle += dt;
-      for (var ri = rip.length - 1; ri >= 0; ri--) { rip[ri].t += dt; if (rip[ri].t > rip[ri].life || rm) rip.splice(ri, 1); }
+      for (var ri = rip.length - 1; ri >= 0; ri--) {
+        var rq = rip[ri]; rq.t += dt; if (rq.die) rq.e -= dt / 0.8;
+        if (rq.t > rq.life || rq.e <= 0 || rm) rip.splice(ri, 1);
+      }
+      if (rm || !trOn()) { trl.length = 0; press = null; }
+      for (var ti = 0; ti < trl.length; ti++) trl[ti].t += dt; // a held-still head ages too: no standing bump
+      while (trl.length && (trl[0].s <= 0 || trl[0].t > TRL_LS)) trl.shift();
       var gone = 0;
       for (var ci = 0; ci < fish.length; ci++) { fish[ci].hc = M.cos(fish[ci].a); fish[ci].hs = M.sin(fish[ci].a); } // headings, for schooling
       for (var i = 0; i < fish.length; i++) {
@@ -783,8 +932,9 @@
           ja = pa + clamp(wrapA(ja - pa), -0.2, 0.2);
           f.px[s2] = f.px[s2 - 1] - M.cos(ja) * f.seg; f.py[s2] = f.py[s2 - 1] - M.sin(ja) * f.seg;
         }
-        if (f.dying) { f.fade -= dt * 0.6; if (f.fade <= 0) { f.dead = 1; gone++; } }
-        else f.fade = M.min(1, f.fade + dt * 0.5);
+        // koi (k 3) answer a toggle in ~0.6 s out, 1 s in; the shoal changes slowly
+        if (f.dying) { f.fade -= dt * (f.k === 3 ? 1.6 : 0.6); if (f.fade <= 0) { f.dead = 1; gone++; } }
+        else f.fade = M.min(1, f.fade + dt * (f.k === 3 ? 1 : 0.5));
       }
       if (gone) fish = fish.filter(function (f) { return !f.dead; });
     };
@@ -900,7 +1050,7 @@
       return k;
     };
 
-    var stats = { n: 0, ms: 0, max: 0, drawn: 0, ring: new Float32Array(600), water: "flat", get dpr() { return dpr; } };
+    var stats = { n: 0, ms: 0, max: 0, drawn: 0, ring: new Float32Array(600), water: "flat", gw: { n: 0, comp: 0, sim: 0, cau: 0, prof: 0, up: 0 }, get dpr() { return dpr; }, get trail() { return trl.length; } };
     // colour strings are cached per colour and alpha step (1/1000), so a frame builds almost none
     var RGBC = {}, RGBN = 0, inkG = null, inkGc = "";
     var rgba = function (c, a) {
@@ -1040,8 +1190,9 @@
         g.fillStyle = rgba(ocdRGB, pa * pal.sp * 0.8); g.fill(band(F, 0.38));
       } else {
         // white koi: the back catches the light, the flanks keep the ink
+        // (on the dark pond only the broad band: the narrow one stacked on it read as a pale stripe down the spine)
         g.fillStyle = rgba(whRGB, fa * pal.wl * 0.36);
-        g.fill(band(F, 0.8)); if (!koiLite) g.fill(band(F, 0.42));
+        g.fill(band(F, 0.8)); if (!koiLite && pal.wn) g.fill(band(F, 0.42));
       }
       // pigment, one colour at a time (sumi over cinnabar): a soft bleed, the wash, a darker wet rim where
       // it dried, a paler heart, then granulation
@@ -1086,7 +1237,7 @@
         if (!koiLite) { g.strokeStyle = rgba(sumiRGB, sa * 0.1); g.lineWidth = F.L * 0.12; g.stroke(MP); }
         g.strokeStyle = rgba(sumiRGB, sa * pal.pc * 0.95); g.lineWidth = F.L * 0.088; g.stroke(MP);
         g.lineWidth = F.L * 0.05; g.stroke(TP);
-        if (!koiLite) { g.lineCap = "butt"; g.strokeStyle = rgba(sumiRGB, sa * pal.pc * 0.5); g.lineWidth = F.L * 0.006 + 0.35; g.stroke(DP); g.lineCap = "round"; }
+        if (!koiLite) { g.lineCap = "butt"; g.strokeStyle = rgba(sumiRGB, sa * pal.pc * 0.36); g.lineWidth = F.L * 0.006 + 0.35; g.stroke(DP); g.lineCap = "round"; }
         g.strokeStyle = rgba(sumiRGB, sa * pal.pc * 0.42); g.lineWidth = F.L * 0.05; g.stroke(KP);
         g.restore();
       }
@@ -1234,6 +1385,37 @@
           g.beginPath(); g.arc(W0.x - qx * 0.6, W0.y - qy * 0.6, W0.r + lw * 0.6, 0, TAU); g.stroke();
         }
       }
+      // the trail, flat: the stroke's two wavefronts leave it on both sides (a crest and a fainter trough line)
+      if (!realLive && trl.length > 1) {
+        var tsy2 = sy * rpz(), tnx = [], tny = [];
+        for (var a0 = 0; a0 < trl.length; a0++) {
+          var pa = trl[a0 - 1], pb = trl[a0 + 1], pc = trl[a0];
+          if (!pa || pa.s <= 0) pa = pc; if (!pb || pb.s <= 0) pb = pc;
+          var nx = -(pb.y - pa.y), ny = pb.x - pa.x, nl = hyp(nx, ny) || 1; tnx[a0] = nx / nl; tny[a0] = ny / nl;
+        }
+        g.lineCap = "round";
+        for (var wv = 0; wv < 2; wv++) for (var sd = -1; sd <= 1; sd += 2) for (var a1 = 1; a1 < trl.length; a1++) {
+          var A1 = trl[a1 - 1], B1 = trl[a1];
+          if (A1.s <= 0 || B1.s <= 0) continue;
+          var tm = (A1.t + B1.t) / 2, en2 = M.min(1, tm / 0.2) * M.pow(M.max(0, 1 - tm / TRL_LS), 1.7) * (A1.s + B1.s) / 2;
+          var rA = 78 * A1.t / (1 + 0.2 * A1.t) - wv * 14, rB = 78 * B1.t / (1 + 0.2 * B1.t) - wv * 14;
+          if (rA < 1 && rB < 1) continue;
+          var r2 = M.max(rA, rB), ak2 = en2 * [1, 0.5][wv] / (1 + r2 / 110);
+          if (ak2 < 0.004) continue;
+          var lw2 = 1 + r2 * 0.006;
+          rA = M.max(0, rA); rB = M.max(0, rB);
+          // like a ring's front: a hairline of shade on the stroke side, one of light outside it
+          for (var hl = wv ? 1 : 0; hl < 2; hl++) {
+            var oA = rA + (hl ? -lw2 * 0.6 : lw2 * 0.6) * (wv ? 0 : 1), oB = rB + (hl ? -lw2 * 0.6 : lw2 * 0.6) * (wv ? 0 : 1);
+            g.lineWidth = hl ? lw2 * 0.7 : lw2;
+            g.strokeStyle = rgba(hl ? rsRGB : rhRGB, ak2 * (hl ? pal.rsa : pal.rha));
+            g.beginPath();
+            g.moveTo(A1.x + tnx[a1 - 1] * M.max(0, oA) * sd, A1.y - tsy2 + tny[a1 - 1] * M.max(0, oA) * sd);
+            g.lineTo(B1.x + tnx[a1] * M.max(0, oB) * sd, B1.y - tsy2 + tny[a1] * M.max(0, oB) * sd);
+            g.stroke();
+          }
+        }
+      }
       // obstacles stay clean
       g.globalCompositeOperation = "destination-out";
       g.fillStyle = "#000";
@@ -1249,6 +1431,7 @@
     // ── real water: lifecycle and per-frame inputs ─────────────────────────────
     var syncWater = function () {
       var want = realWant() && booted;
+      if (want && !water && O.adaptive && remembered()) { waterFail = true; want = false; } // this tab already fell back
       if (want && !water) {
         water = WATER.create(D);
         if (!water) { waterFail = true; want = false; }
@@ -1264,6 +1447,7 @@
       }
       var live = !!(want && water && !water.lost);
       if (live !== realLive) for (var i = 0; i < rip.length; i++) rip[i].life = live ? WATER.life : RIP_LIFE;
+      if (live && !realLive) judgeReset(performance.now(), 1000); // shaders compile, textures settle
       realLive = live;
       cv.style.display = shc.style.display = live ? "none" : "";
       if (water) water.canvas.style.display = live ? "" : "none";
@@ -1284,19 +1468,90 @@
       wrects.n = n;
       wrings.length = 0;
       for (var k = 0; k < rip.length; k++) {
-        var rp = rip[k], o2 = wrings[k] || {}; o2.x = rp.x; o2.y = rp.y - sy * rpz(); o2.t = rp.t; o2.s = rp.s; o2.life = rp.life; wrings.push(o2);
+        var rp = rip[k], o2 = wrings[k] || {}; o2.x = rp.x; o2.y = rp.y - sy * rpz(); o2.t = rp.t; o2.s = rp.s * M.max(0, rp.e); o2.life = rp.life; wrings.push(o2);
       }
       var L = wlook;
       L.lit = pal.qlit; L.ins = pal.qins; L.sky = pal.qsky; L.tr = pal.qtr; L.fd = pal.qfd; L.sd = pal.qsd; L.cd = pal.qcd; L.cb = pal.qcb; L.cs = pal.qcs;
-      L.fr = pal.qfr; L.fi = pal.qfi; L.si = pal.qsi; L.sg = pal.qsg; L.ring = pal.qring; L.amb = pal.qamb;
-      water.draw(cv, shc, SH, wrings, wrects, T, sy * rpz(), L);
+      L.fr = pal.qfr; L.fi = pal.qfi; L.si = pal.qsi; L.sg = pal.qsg; L.ring = pal.qring; L.amb = pal.qamb; L.hz = pal.qhz;
+      var tn = 0, tsy = sy * rpz();
+      for (var q = 0; q < trl.length && tn < TRL_N; q++, tn++) {
+        var tp = trl[q], ta = trA.a;
+        ta[tn * 4] = tp.x; ta[tn * 4 + 1] = tp.y - tsy; ta[tn * 4 + 2] = tp.t; ta[tn * 4 + 3] = tp.s;
+      }
+      trA.n = tn;
+      water.draw(cv, shc, SH, wrings, wrects, T, sy * rpz(), L, trA);
+      stats.wq = water.quality;
+      // GPU work, summed (pixels shaded / uploaded, caustic vertices), for QA: divide by gw.n
+      var gw = stats.gw, wk = water.work; gw.n++; gw.comp += wk.comp; gw.sim += wk.sim; gw.cau += wk.cau; gw.prof += wk.prof; gw.up += wk.up;
+    };
+
+    // ── real water on a slow GPU: measure, try the cheaper quality, and only then fall back ──
+    // Judged on the median frame interval of 60-frame (or 2 s) windows, skipping a 1 s warm-up, resumes (> 1 s)
+    // and frames that followed a long main-thread task (the page's jank, not the GPU's). When slow, quality 1
+    // (1 px per CSS px) is tried for a window: if that is clearly faster the GPU was the limit, so keep it,
+    // or fall back to the flat water if it is still slow. If it is no faster (a 30 Hz power-saving cap, a busy
+    // page), real water stays and the test backs off (10 s, 20 s, … 2 min). Below ~25 fps with no gain from
+    // quality 1 (or at once, below ~12 fps), the flat water is tried once, for one window, the same way. A fallback is remembered for the tab
+    // session (30 min), so the next page of the site starts flat instead of janking again.
+    var AJ = { st: 0, buf: [], warm: 0, m0: 0, next: 0, back: 10000, slow: 0, sus: 0 }, longAt = -1e9, SKEY = "ink-fish:water-fallback", lobs = null;
+    try { if (typeof PerformanceObserver === "function") (lobs = new PerformanceObserver(function (l) { var e = l.getEntries(); for (var i = 0; i < e.length; i++) longAt = M.max(longAt, e[i].startTime + e[i].duration); })).observe({ type: "longtask" }); } catch (e) {}
+    var remembered = function () { try { var v = +Wn.sessionStorage.getItem(SKEY); return v > 0 && Date.now() - v < 18e5; } catch (e) { return false; } };
+    var judgeReset = function (now, ms) { AJ.buf.length = 0; AJ.warm = now + ms; };
+    // a gap over a second is a resume (sleep, a backgrounded tab): start again after a warm-up. A frame that
+    // follows someone else's long task (a script, a GC, the host's layout) is a hitch, not the water: skipped,
+    // unless nearly every frame is one, which is what a device that can't draw the water looks like (there the
+    // frame itself is the long task). Gaps are capped so a few-fps device still lands in the median
+    var judgeSkip = function (now, gap) {
+      if (gap > 1000) { judgeReset(now, 1000); AJ.sus = 0; return true; }
+      if (now < AJ.warm) return true;
+      if (longAt > last - 20) { if (++AJ.sus < 20) return true; } else AJ.sus = 0;
+      AJ.buf.push(M.min(gap, 250));
+      return false;
+    };
+    // the median of a window: 60 frames or two seconds; under ~12 fps, eight frames (and a second) are enough
+    var judgeMed = function () {
+      var B = AJ.buf, n = B.length, t = 0;
+      for (var i = 0; i < n; i++) t += B[i];
+      if (n < 8 || (n < 60 && t < 2000 && !(t > 800 && n >= 8))) return 0;
+      var m = B.slice().sort(function (x, y) { return x - y; })[n >> 1];
+      return n >= 60 || t >= 2000 || m > 80 ? m : 0;
+    };
+    var flatTrial = function (now) { AJ.st = 2; AJ.tried = 1; waterFail = true; syncWater(); judgeReset(now, 500); AJ.flat = 1; };
+    var judgeWater = function (now, gap) {
+      if (judgeSkip(now, gap)) return;
+      var m = judgeMed(); if (!m) return;
+      AJ.buf.length = 0;
+      var slow = m > 21;
+      if (AJ.st === 0) {
+        if (!slow) { AJ.slow = 0; return; }
+        if (now < AJ.next) return;
+        if (water.quality === 0 && m > 80 && !AJ.tried) { AJ.m0 = m; flatTrial(now); } // a few fps: straight to the flat trial
+        else if (water.quality === 0) { AJ.m0 = m; AJ.st = 1; water.setQuality(1); judgeReset(now, 500); }
+        else if (++AJ.slow >= 3) fallBack(); // quality 1 was kept earlier and is slow again, three windows running
+      } else if (AJ.st === 1) {
+        if (m < AJ.m0 * 0.85) { if (slow) fallBack(); else AJ.st = 0; }
+        else if (AJ.m0 > 40 && !AJ.tried) flatTrial(now);
+        else { water.setQuality(0); AJ.st = 0; AJ.next = now + AJ.back; AJ.back = M.min(AJ.back * 2, 12e4); judgeReset(now, 500); }
+      }
+    };
+    // the one-window flat trial (below ~25 fps): judged by the same median, now with real water off
+    var judgeFlat = function (now, gap) {
+      if (judgeSkip(now, gap)) return;
+      var m = judgeMed(); if (!m) return;
+      AJ.buf.length = 0; AJ.flat = 0;
+      if (m < AJ.m0 * 0.85) fallBack();
+      else { waterFail = false; water.setQuality(0); AJ.st = 0; AJ.next = now + AJ.back; AJ.back = M.min(AJ.back * 2, 12e4); syncWater(); judgeReset(now, 500); }
+    };
+    var fallBack = function () {
+      AJ.st = 3; waterFail = true; syncWater();
+      try { Wn.sessionStorage.setItem(SKEY, String(Date.now())); } catch (e) {}
     };
 
     // ── loop ──────────────────────────────────────────────────────────────────
     var STEP = 1 / 60, raf = 0, last = 0, acc = 0, running = false, shown = false, rmLast = 0;
     var waterOnScreen = function () {
       if (!onScreen) return false;
-      if (!page || fixedOn() || sy < heroB || rip.length) return true;
+      if (!page || fixedOn() || sy < heroB || rip.length || trl.length) return true;
       // below the hero: only the margins beside the obstacles show water
       var m = 0;
       for (var i = 0; i < obs.length; i++) { var r = obs[i]; if (r.b > sy && r.t < sy + vh) m = M.max(m, M.min(r.l, vw - r.r)); }
@@ -1311,14 +1566,12 @@
       // drop to 1 device pixel per CSS pixel, once
       // (with real water on, slow frames count too, capped, so a GPU that only manages a few fps still trips it)
       var gap = now - last;
-      if (O.adaptive && !RM.matches && gap < (realLive ? 1000 : 100) && (dprCap > 1 || realLive)) {
-        fema = fema * 0.96 + M.min(gap, 100) * 0.04;
+      if (O.adaptive && !RM.matches && realLive) judgeWater(now, gap);
+      else if (AJ.flat && O.adaptive && !RM.matches) judgeFlat(now, gap);
+      else if (O.adaptive && !RM.matches && gap < 100 && dprCap > 1) {
+        fema = fema * 0.96 + gap * 0.04;
         // the same signal also lightens the koi (no bleed, heart, grain or fin outlines)
-        // with real water on, the first step is back to the flat Canvas 2D water
-        if (++fcount > (realLive ? 30 : 60) && fema > 21) {
-          if (realLive) { waterFail = true; syncWater(); fcount = 0; fema = 16.7; }
-          else if (dpr > 1) { dprCap = 1; koiLite = true; measure(); }
-        }
+        if (++fcount > 60 && fema > 21 && dpr > 1) { dprCap = 1; koiLite = true; measure(); }
       }
       last = now;
       svel = page ? svel * 0.85 + ((sy - lastSy) / M.max(dt, 1 / 240)) * 0.15 : 0; lastSy = sy;
@@ -1417,6 +1670,7 @@
         assign(O, o);
         syncPal();
         if (!O.ripples) rip.length = 0;
+        if (!trOn()) { trl.length = 0; press = null; }
         if (booted) {
           if (shown) syncWater();
           measure();
@@ -1431,6 +1685,7 @@
         dead = true; running = false;
         cancelAnimationFrame(raf); cancelAnimationFrame(lraf); clearTimeout(lt); clearTimeout(palT);
         if (water) { water.destroy(); water = null; }
+        if (lobs) lobs.disconnect();
         L_.forEach(function (l) { l[0].removeEventListener(l[1], l[2], l[3]); });
         if (RO) RO.disconnect(); MO.disconnect(); if (IO) IO.disconnect();
         if (cv.parentNode) cv.parentNode.removeChild(cv);
@@ -1461,5 +1716,5 @@
     else autoInit();
   }
 
-  return { mount: mount, init: autoInit, defaults: DEFAULTS, instances: instances, version: "1.3.0" };
+  return { mount: mount, init: autoInit, defaults: DEFAULTS, instances: instances, version: "1.3.1" };
 });
