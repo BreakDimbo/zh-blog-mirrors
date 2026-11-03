@@ -1,5 +1,20 @@
 [
   {
+    "slug": "addyosmani-critical-thinking-agents",
+    "title": "智能体替你干活时，怎样保住批判性思维（Addy Osmani 长文中译）",
+    "desc": "Addy Osmani（Claude Code @Anthropic）X 长文全文中译：认知卸载 → 顺从 → 认知投降的三档光谱；认知债与理解债；先写假设、请模型做盲点扫描；每个绿勾说清查了什么、没查什么，先看命令与输出再看总结；让智能体列出替你做的决定、读后自测；编排税、意图债、自己写需求说明；“不愿署名就不发”；监督悖论与每周不用智能体写一点代码。观点文无新数据；“理解债由 Jeremy Twei 提出”未核实 ⚠️，Pangram 检测图仅作自我声明 ⚠️。",
+    "description": "Addy Osmani（Claude Code @Anthropic）X 长文全文中译：认知卸载 → 顺从 → 认知投降的三档光谱；认知债与理解债；先写假设、请模型做盲点扫描；每个绿勾说清查了什么、没查什么，先看命令与输出再看总结；让智能体列出替你做的决定、读后自测；编排税、意图债、自己写需求说明；“不愿署名就不发”；监督悖论与每周不用智能体写一点代码。观点文无新数据；“理解债由 Jeremy Twei 提出”未核实 ⚠️，Pangram 检测图仅作自我声明 ⚠️。",
+    "source": "Addy Osmani @addyosmani · X 长文",
+    "date": "2026-11-03",
+    "type": "翻译",
+    "subtitle": "Critical thinking when agents do the work",
+    "original_url": "https://x.com/addyosmani/status/2117512471930167377",
+    "spine": "智能体时代的思考",
+    "summary": "交出工作可以，别交出判断和责任",
+    "kind": "长文",
+    "by": "Addy Osmani"
+  },
+  {
     "slug": "krisyangdev-yarn-world",
     "title": "Yarn World：在浏览器里“织”出一座毛线小岛（yarn-world 项目导读）",
     "desc": "krisyangdev/yarn-world 项目导读：three.js 毛线微缩岛——拉线从毛线球织出整座岛，拉线头拆回去；可戳小屋、风筝、风车、水车，拎羊、拆羊毛。程序化针织材质（五种针法高度场→法线/AO/粗糙度，零图片纹理 ✅）、壳层渲染羊毛绒、全岛共用风场、Verlet 绳子物理、flow map 针织河、织入/拆线着色器前沿与阴影共用。代码 MIT（11-03 现场核）、音效 CC0；仓库 11-01 新建、1 星、署名与提交者不一致 ⚠️。附 README 全文中译与英文原文、LICENSE、在线版实机截图。",
