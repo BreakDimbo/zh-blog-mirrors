@@ -1,5 +1,20 @@
 [
   {
+    "slug": "xai-data-bot",
+    "title": "Data Bot：给每个团队配一位数据科学家（Grok Bot Team Bot 导读）",
+    "desc": "x.ai 官方新闻《Giving every team a data scientist with Grok Bot》中文导读：SpaceXSI 数据科学团队把核心指标口径、A/B 实验方法、图表与看板规范、dbt 与埋点约定写成共享技能，做成全公司共用的 Team Bot「Data Bot」——查数据仓库、跑分析、按个人偏好交付；共享记忆需管理员审核才生效；可进 Slack 频道定时汇报。PM、生命周期营销（Braze 活动转化）、营收增长三类用例。官方推广文，“上周约 70 小时”为自估 ⚠️；原文版权所有，仅导读短引、截图未转载。",
+    "description": "x.ai 官方新闻《Giving every team a data scientist with Grok Bot》中文导读：SpaceXSI 数据科学团队把核心指标口径、A/B 实验方法、图表与看板规范、dbt 与埋点约定写成共享技能，做成全公司共用的 Team Bot「Data Bot」——查数据仓库、跑分析、按个人偏好交付；共享记忆需管理员审核才生效；可进 Slack 频道定时汇报。PM、生命周期营销（Braze 活动转化）、营收增长三类用例。官方推广文，“上周约 70 小时”为自估 ⚠️；原文版权所有，仅导读短引、截图未转载。",
+    "source": "Sally Xu · SpaceXSI（x.ai/news）",
+    "date": "2026-11-03",
+    "type": "导读",
+    "subtitle": "Giving every team a data scientist with Grok Bot",
+    "original_url": "https://x.ai/news/data-bot",
+    "spine": "数据团队 Bot",
+    "summary": "把数据团队的经验写成技能，全员共用",
+    "kind": "产品",
+    "by": "Sally Xu（SpaceXSI）"
+  },
+  {
     "slug": "open-index-hacker-news",
     "title": "Hacker News 完整存档：open-index/hacker-news 数据集导读",
     "desc": "Hugging Face 数据集 open-index/hacker-news 中文导读：2006-10 至 2026-08 共 239 个月、4,932 万条 HN 条目（评论 4,306 万、故事 627 万）的按月 Parquet 镜像，约 12.4 GB，ODC-By 1.0；16 列 schema、ClickHouse + HN API 构建管线、DuckDB / datasets 免下载查询。核对发现：实时更新自 2026-08-23 起停止、卡片开头条数与得分统计自相矛盾 ⚠️；HN 原文权利归各作者。附卡片全文中译与英文原文。",
