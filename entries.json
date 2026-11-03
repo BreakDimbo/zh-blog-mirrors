@@ -1,5 +1,20 @@
 [
   {
+    "slug": "deanchensj-jiangshan-map",
+    "title": "江山时序：拖动时间轴的中国历史交互舆图（jiangshan-map 项目导读）",
+    "desc": "DeanChensj/jiangshan-map（江山时序）项目导读：一张宣纸设色的中国历史交互舆图，前 403 年三家分晋至今 18 个时期——拖时间轴看疆域分合与朱砂残影、点城看两千年政区沿革与大事、点人重走秦皇/张骞/玄奘/苏轼等行迹、舆图寻址小游戏；year+place 零坐标深链、iframe 嵌入；本地 MCP Server（本站实测 ✅）、Agent Skill、window.atlasAPI、GeoJSON 导出（实测 187 快照）。GPL-3.0（11-03 现场核），CHGIS/Hartwell 派生边界仅限学术非商业 ⚠️；简介“164 快照”已过时 ⚠️。附作者中文 README 全文与 LICENSE。",
+    "description": "DeanChensj/jiangshan-map（江山时序）项目导读：一张宣纸设色的中国历史交互舆图，前 403 年三家分晋至今 18 个时期——拖时间轴看疆域分合与朱砂残影、点城看两千年政区沿革与大事、点人重走秦皇/张骞/玄奘/苏轼等行迹、舆图寻址小游戏；year+place 零坐标深链、iframe 嵌入；本地 MCP Server（本站实测 ✅）、Agent Skill、window.atlasAPI、GeoJSON 导出（实测 187 快照）。GPL-3.0（11-03 现场核），CHGIS/Hartwell 派生边界仅限学术非商业 ⚠️；简介“164 快照”已过时 ⚠️。附作者中文 README 全文与 LICENSE。",
+    "source": "DeanChensj · GitHub",
+    "date": "2026-11-03",
+    "type": "导读",
+    "subtitle": "Chronicles of the Realm · Interactive Historical Atlas of China",
+    "original_url": "https://github.com/DeanChensj/jiangshan-map",
+    "spine": "中国历史舆图",
+    "summary": "拖动时间轴，看两千四百年疆域流转",
+    "kind": "项目",
+    "by": "DeanChensj"
+  },
+  {
     "slug": "xai-data-bot",
     "title": "Data Bot：给每个团队配一位数据科学家（Grok Bot Team Bot 导读）",
     "desc": "x.ai 官方新闻《Giving every team a data scientist with Grok Bot》中文导读：SpaceXSI 数据科学团队把核心指标口径、A/B 实验方法、图表与看板规范、dbt 与埋点约定写成共享技能，做成全公司共用的 Team Bot「Data Bot」——查数据仓库、跑分析、按个人偏好交付；共享记忆需管理员审核才生效；可进 Slack 频道定时汇报。PM、生命周期营销（Braze 活动转化）、营收增长三类用例。官方推广文，“上周约 70 小时”为自估 ⚠️；原文版权所有，仅导读短引、截图未转载。",
