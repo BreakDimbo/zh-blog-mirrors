@@ -1,0 +1,25 @@
+OK  real light empty-water drag from HEADER.hero trail pts 28 {'sel': '', 'drag': 0, 'url': 'http://127.0.0.1:8741/', 'water': 'fallback'}
+OK  real light margin drag selection ''
+OK  real light text drag selects: '每一篇文章是一盒录像带，按类别排上书'
+OK  real light bare-water click clears selection True blurs search True
+OK  real light book click: case shown True -> navigated http://127.0.0.1:8741/krisyangdev-yarn-world/ expected ./krisyangdev-yarn-world/
+BAD real light errors ['Failed to load resource: the server responded with a status of 404 (File not found)']
+OK  real dark empty-water drag from HEADER.hero trail pts 28 {'sel': '', 'drag': 0, 'url': 'http://127.0.0.1:8741/', 'water': 'fallback'}
+OK  real dark margin drag selection ''
+OK  real dark text drag selects: '每一篇文章是一盒录像带，按类别排上书'
+OK  real dark bare-water click clears selection True blurs search True
+OK  real dark book click: case shown True -> navigated http://127.0.0.1:8741/krisyangdev-yarn-world/ expected ./krisyangdev-yarn-world/
+OK  real dark errors []
+OK  nowebgl light empty-water drag from HEADER.hero trail pts 28 {'sel': '', 'drag': 0, 'url': 'http://127.0.0.1:8741/', 'water': 'fallback'}
+OK  nowebgl light margin drag selection ''
+OK  nowebgl light text drag selects: '每一篇文章是一盒录像带，按类别排上书'
+OK  nowebgl light bare-water click clears selection True blurs search True
+OK  nowebgl light book click: case shown True -> navigated http://127.0.0.1:8741/krisyangdev-yarn-world/ expected ./krisyangdev-yarn-world/
+BAD nowebgl light errors ['Failed to load resource: the server responded with a status of 404 (File not found)']
+OK  nowebgl dark empty-water drag from HEADER.hero trail pts 28 {'sel': '', 'drag': 0, 'url': 'http://127.0.0.1:8741/', 'water': 'fallback'}
+OK  nowebgl dark margin drag selection ''
+OK  nowebgl dark text drag selects: '每一篇文章是一盒录像带，按类别排上书'
+OK  nowebgl dark bare-water click clears selection True blurs search True
+OK  nowebgl dark book click: case shown True -> navigated http://127.0.0.1:8741/krisyangdev-yarn-world/ expected ./krisyangdev-yarn-world/
+OK  nowebgl dark errors []
+BAD 2

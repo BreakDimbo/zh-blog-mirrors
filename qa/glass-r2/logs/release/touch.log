@@ -1,0 +1,11 @@
+light book 1 tap->expanded true | spine drag8,0:stay spine drag0,8:stay cover drag8,0:stay cover drag0,8:stay | 2nd tap -> /kevintngo-looseleaf/ OK
+light book 8 tap->expanded true | spine drag8,0:stay spine drag0,8:stay cover drag8,0:stay cover drag0,8:stay | 2nd tap -> /anlibili/ OK
+light book 14 tap->expanded true | spine drag8,0:stay spine drag0,8:stay cover drag8,0:stay cover drag0,8:stay | 2nd tap -> /hyz317-hairdeck/ OK
+light 8px drag on collapsed book -> expanded: false
+light errors []
+dark book 1 tap->expanded true | spine drag8,0:stay spine drag0,8:stay cover drag8,0:stay cover drag0,8:stay | 2nd tap -> /kevintngo-looseleaf/ OK
+dark book 8 tap->expanded true | spine drag8,0:stay spine drag0,8:stay cover drag8,0:stay cover drag0,8:stay | 2nd tap -> /anlibili/ OK
+dark book 14 tap->expanded true | spine drag8,0:stay spine drag0,8:stay cover drag8,0:stay cover drag0,8:stay | 2nd tap -> /hyz317-hairdeck/ OK
+dark 8px drag on collapsed book -> expanded: false
+dark errors []
+BAD 0
