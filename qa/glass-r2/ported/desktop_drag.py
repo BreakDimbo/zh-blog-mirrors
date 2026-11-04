@@ -15,7 +15,8 @@ async def main():
             pg.on('pageerror',lambda e:errs.append(str(e))); pg.on('console',lambda m:errs.append(m.text) if m.type in('error','warning') and IGN not in m.text else None)
             await pg.goto(B,wait_until='networkidle'); await pg.wait_for_timeout(2500)
             # empty water: right part of the hero, away from text
-            x0,y0=1180,140
+            # glass-r2: 今日 now sits at (1180,140); scan the hero for an empty point instead
+            x0,y0=await pg.evaluate('''(()=>{const h=document.querySelector("header.hero").getBoundingClientRect();for(let y=Math.round(h.bottom-70);y>h.top+8;y-=6)for(let x=Math.round(h.right-40);x>h.left+20;x-=16){const e=document.elementFromPoint(x,y);if(e&&(e.matches("header.hero")||e===document.body||e.matches("main,.wrap,.today,.hero > div")))return [x,y]}return null})()''')
             el=await pg.evaluate(f'(()=>{{const e=document.elementFromPoint({x0},{y0});return e.tagName+"."+e.className}})()')
             await pg.mouse.move(x0,y0); await pg.mouse.down(); mx=0
             for i in range(1,31):

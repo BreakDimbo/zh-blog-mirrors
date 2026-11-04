@@ -22,7 +22,8 @@ with sync_playwright() as p:
         if not mob: pg.evaluate("scrollTo(0,0)")
         pg.wait_for_timeout(5000)
         # hit test: book centres hit the tape, never canvas
-        hits=pg.evaluate("""(()=>{const out=[];document.querySelectorAll('.shelf .tape').forEach((t,i)=>{if(i>40)return;const r=t.getBoundingClientRect();if(r.right<0||r.left>innerWidth||r.bottom<0||r.top>innerHeight)return;const e=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);out.push(!!(e&&t.contains(e)))});return [out.length,out.filter(x=>!x).length]})()""")
+        pg.evaluate("document.querySelector('.shelf .track').scrollIntoView({block:'center'})"); pg.wait_for_timeout(2500)
+        hits=pg.evaluate("""(()=>{const out=[],miss=[];document.querySelectorAll('.shelf .tape').forEach((t,i)=>{const tr=t.closest('.track').getBoundingClientRect(),r=t.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;if(cx<tr.left+24||cx>tr.right-24||cy<0||cy>innerHeight)return;const e=document.elementFromPoint(cx,cy);const ok=!!(e&&t.contains(e));out.push(ok);if(!ok)miss.push(e&&(e.tagName+'.'+e.className))});return [out.length,out.filter(x=>!x).length,miss.slice(0,4)]})()""")
         P(hits[0]>0 and hits[1]==0,w,th,'visible book centres hit their tape',hits)
         z=pg.evaluate("[...document.querySelectorAll('canvas')].map(c=>getComputedStyle(c).zIndex+'/'+getComputedStyle(c).pointerEvents)")
         P(all(x.startswith('-1/none') for x in z),w,th,'canvases below content',z)

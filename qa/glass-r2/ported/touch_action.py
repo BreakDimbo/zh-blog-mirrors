@@ -64,7 +64,8 @@ async def main():
                     mx=max(mx,await pg.evaluate('window.__zbmFish.stats.trail'))
                 await cdp.send('Input.dispatchTouchEvent',{'type':'touchEnd','touchPoints':[]}); await pg.wait_for_timeout(200)
                 return mx
-            free=await pg.evaluate('(()=>{const h=document.querySelector("header.hero").getBoundingClientRect();return [Math.round(h.left+60),Math.round(h.bottom-70)]})()')
+            # glass-r2: 今日 now fills the hero bottom, so scan the hero for a point with no text/link under it
+            free=await pg.evaluate('''(()=>{const h=document.querySelector("header.hero").getBoundingClientRect();for(let y=Math.round(h.bottom-70);y>h.top+8;y-=6)for(let x=Math.round(h.right-40);x>h.left+20;x-=16){const e=document.elementFromPoint(x,y);if(e&&(e.matches("header.hero")||e===document.body||e.matches("main,.wrap,.today,.hero > div")))return [x,y]}return null})()''')
             el=await pg.evaluate(f'(()=>{{const e=document.elementFromPoint({free[0]},{free[1]});return e.tagName+"."+e.className}})()')
             t1=await touchdrag(free[0],free[1],240,10,False); await pg.wait_for_timeout(3600)
             t2=await touchdrag(free[0],free[1],200,40,True); await pg.wait_for_timeout(3600)

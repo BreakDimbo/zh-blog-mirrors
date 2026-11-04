@@ -4,3 +4,38 @@ OK  1440 light canvases below content ['-1/none', '-1/none', '-1/none']
 OK  1440 light elements with backdrop-filter: []
 OK  1440 light chips ['全部110', '导读53', '全文镜像29', '翻译21', '画廊4', '评述3'] tapes all= 110 visible after chip2= 53
 OK  1440 light month grouping shelves/dividers/pressed [3, 0, 'true']
+OK  1440 light search Claude visible items 35
+OK  1440 light list view on [True, 'block', 'list']
+OK  1440 light list view off
+OK  1440 light page errors []
+OK  1440 dark theme applied pre-paint attr= dark
+BAD 1440 dark visible book centres hit their tape [23, 3]
+OK  1440 dark canvases below content ['-1/none', '-1/none', '-1/none']
+OK  1440 dark elements with backdrop-filter: []
+OK  1440 dark chips ['全部110', '导读53', '全文镜像29', '翻译21', '画廊4', '评述3'] tapes all= 110 visible after chip2= 53
+OK  1440 dark month grouping shelves/dividers/pressed [3, 0, 'true']
+OK  1440 dark search Claude visible items 35
+OK  1440 dark list view on [True, 'block', 'list']
+OK  1440 dark list view off
+OK  1440 dark page errors []
+OK  390 light theme applied pre-paint attr= light
+BAD 390 light visible book centres hit their tape [0, 0]
+OK  390 light canvases below content ['-1/none', '-1/none', '-1/none']
+OK  390 light elements with backdrop-filter: []
+OK  390 light chips ['全部110', '导读53', '全文镜像29', '翻译21', '画廊4', '评述3'] tapes all= 110 visible after chip2= 53
+OK  390 light month grouping shelves/dividers/pressed [3, 0, 'true']
+OK  390 light search Claude visible items 35
+OK  390 light list view on [True, 'block', 'list']
+OK  390 light list view off
+OK  390 light page errors []
+OK  390 dark theme applied pre-paint attr= dark
+BAD 390 dark visible book centres hit their tape [0, 0]
+OK  390 dark canvases below content ['-1/none', '-1/none', '-1/none']
+OK  390 dark elements with backdrop-filter: []
+OK  390 dark chips ['全部110', '导读53', '全文镜像29', '翻译21', '画廊4', '评述3'] tapes all= 110 visible after chip2= 53
+OK  390 dark month grouping shelves/dividers/pressed [3, 0, 'true']
+OK  390 dark search Claude visible items 35
+OK  390 dark list view on [True, 'block', 'list']
+OK  390 dark list view off
+OK  390 dark page errors []
+BAD 4
