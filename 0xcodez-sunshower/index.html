@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sunshower 狐の嫁入り：每一帧都由代码画出的 42 秒动画短片（项目导读）</title>
+<meta name="description" content="0xCodez/sunshower 项目导读：一部 42 秒的《机动警察》同人动画短片，不用视频模型、图像模型或手绘帧，全部由 three.js 代码渲染——赛璐璐角色 + 水粉背景的多通道管线、一拍二动画、纯时间函数的确定性渲染、Web Audio 合成配乐，最终打包成一个可离线播放的 HTML 文件。代码 MIT，附 README 全文中文翻译与许可证原文。" />
+<meta property="og:image" content="images/shelter.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.za-content .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.za-content .shots figure{margin:0}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-04">2026.11.04</time></p>
+<h1 class="za-title">Sunshower 狐の嫁入り：每一帧都由代码画出的 42 秒动画短片</h1>
+<p class="za-sub" lang="en" data-za-gen>A 42-second anime short where every frame is rendered by code</p>
+<p class="za-meta" data-za-gen><span>来源 · 0xCodez/sunshower（GitHub）</span><span>收录 · 2026-11-04</span><span><a href="https://github.com/0xCodez/sunshower" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/0xCodez/sunshower" rel="noopener">github.com/0xCodez/sunshower</a> · 作者 Beyond Dev（<a href="https://github.com/0xCodez" rel="noopener">GitHub @0xCodez</a>）· 代码 MIT 许可（机器人设计不在许可范围内）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<div class="related-guide"><strong>一句话：</strong>被淹没、长满植物的东京，一台警用劳动机器人齐腰站在水里，手上停着一只翠鸟。太阳雨落下，它抬起另一只手替小鸟挡雨；雨停，彩虹升起。这部 42 秒的动画短片没有用视频模型、图像模型或手绘帧——每一帧都是 three.js 代码渲染出来的，最后连同配乐打包成一个能离线打开的 HTML 文件。</div>
+
+<p class="hero-tags"><span class="tag">★ 12</span> <span class="tag">2 forks</span> <span class="tag">JavaScript</span> <span class="tag">MIT（代码）</span> <span class="tag">three.js r170 / WebGL2</span> <span class="tag">v1.0</span> <span class="tag">1 个提交</span></p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-11-04 21:45（UTC+8）。仓库建于 2026-11-04 00:46（UTC+8），只有 1 个整体提交（01e1eed）；Release v1.0 附 <code>sunshower.html</code>（约 78 MB）与 <code>sunshower.mp4</code>（约 30 MB）。仓库内 <code>dist/sunshower_lite.html</code> 约 26 MB；<code>src/</code> 下 41 个 JS 模块，本站计数约 1.47 万行。</p>
+
+<figure><img src="images/shelter.webp" alt="动画截图：白色警用机器人的巨大右手悬在左手上方，像一把伞，手掌下的翠鸟蓬起羽毛，雨水从指尖成串落下，背景是阳光下的绿色废墟" loading="lazy"><figcaption>第 7 镜「shelter」：手掌当伞（作者仓库 <code>docs/shelter.jpg</code>，缩小转为 WebP）</figcaption></figure>
+
+<h2 id="what">它是什么</h2>
+<p>Sunshower 是一部 42 秒、24 fps、1920×1040 的动画短片，片名取日语「狐の嫁入り」（狐狸出嫁，即太阳雨）。主角是《机动警察》（Patlabor）里的 AV-98 英格拉姆「阿尔冯斯」，作者明确标注这是同人致敬，机器人设计版权属 HEADGEAR / Sunrise，与官方无关。README 写明制作工具是 Claude Code。</p>
+<p>它的卖点是“像手绘动画，但全是代码”：用 three.js 搭一个 3D 场景，再用一条自定义的多通道渲染管线去模仿赛璐璐角色 + 手绘背景的制作方式；无头 Chrome 逐帧截取、ffmpeg 编码，最终交付物是一个把 MP4 以 base64 嵌进去的单文件播放器。项目在 README 结尾致谢了同类作品 <a href="https://github.com/ChetasLua/moss-keeper" rel="noopener">The Moss Keeper</a>。</p>
+
+<div class="shots">
+<figure><img src="images/plip.webp" alt="特写：翠鸟停在机器人指尖上，一滴雨落在它头顶，它眨眼抬头" loading="lazy"><figcaption>第 4 镜「plip」：雨滴打中小鸟</figcaption></figure>
+<figure><img src="images/umbrella.webp" alt="中景：机器人从水中抬起右手，慢慢盖到停着翠鸟的左手上方" loading="lazy"><figcaption>第 6 镜「umbrella」：右手出水</figcaption></figure>
+<figure><img src="images/rainbow.webp" alt="从机器人背后仰拍：雨停，被淹没的城市上空升起一道大彩虹" loading="lazy"><figcaption>第 8 镜「rainbow」：雨停虹起</figcaption></figure>
+</div>
+<p class="caption">以上为作者仓库 <code>docs/</code> 中的成片截图，依 MIT 许可转载代码仓库附带的图像并缩小压缩为 WebP；画面中的机器人造型属 HEADGEAR / Sunrise，不在 MIT 范围内，本站仅作介绍性引用。成片视频未下载、未转载。</p>
+
+<h2 id="how">它是怎么做出来的</h2>
+<h3>1. 一条模仿动画制作的渲染管线</h3>
+<p>场景先画出颜色和一张“数据缓冲”（视图法线、深度、材质 ID），后续每个通道按材质 ID 区别对待：背景像素走 8 扇区、深度感知的 Kuwahara 滤镜，变成水粉笔触；角色像素只描线，线条由 ID/深度/法线边缘检测而来，带压力噪声、随距离变细；水面是屏幕空间平面，做涂抹反射、折射到水下街道、焦散、手绘雨圈和闪光带；再叠雾、雨幕、光束，最后泛光、高调动画调色和胶片颗粒。</p>
+<h3>2. 角色：两阶赛璐璐 + 手写贴花</h3>
+<p>角色是两阶硬阴影的 3D 模型，阴影偏冷的薰衣草色，有单独的角色主光。机身上的「ALPHÔNSE」「特車2-1」「警視庁」、面板缝和螺栓都是 canvas 手写贴图，沿装甲投影以包住曲面。翠鸟是带骨骼的 3D 模型，眼睛是画出来的形状（眨眼、眯眼、开心的 ∩）。</p>
+<h3>3. 一拍二，且一切都是时间的纯函数</h3>
+<p>角色按一拍二（每秒 12 张）动，水面特效按一拍三，模仿电视和剧场动画；手臂用两骨 IK。所有模块都只从时间 <code>t</code> 和节拍表 <code>CUES</code> 推导状态，不跨帧累积、不用 <code>Math.random</code>（用种子随机）——任意帧可以按任意顺序渲染，所以无头渲染可断点续跑、结果确定。</p>
+<h3>4. 声音全部合成</h3>
+<p>蝉鸣、雨打水面与金属、警笛短鸣，以及钢琴/弦乐/长笛的小配乐，都用 Web Audio 的 <code>OfflineAudioContext</code> 合成，并锁定在 <code>src/shots.js</code> 的故事节拍上。</p>
+<h3>5. 多个智能体“部门”并行，靠一份制作圣经协作</h3>
+<p>仓库里的 <code>CONTRACT.md</code>（标题为 “Sunken Patrol — production contract”）是给并行工作的智能体看的制作合同：美术方向（明亮、高调、像剧场动画而非 3D/CGI）、10 个镜头的分秒表、世界坐标、渲染通道约定，以及按文件划分的六个“部门”——导演、环境、水与光特效、鸟类、声音、交付——<q>edit ONLY your files</q>。它还要求每次修改后渲出静帧、用 Read 工具亲眼看图。这是本站此前收录的<a href="../kerazcity-opus-motion-playbook/">渲染契约</a>思路在多智能体场景下的一个完整样本。</p>
+
+<h2 id="shots">十个镜头</h2>
+<table>
+<tr><th>#</th><th>镜头</th><th>时间（秒）</th><th>内容</th></tr>
+<tr><td>1</td><td>summer</td><td>0–5</td><td>低机位大全景：蓝天积云、被淹没的绿色城市、机器人居中</td></tr>
+<tr><td>2</td><td>friends</td><td>5–10</td><td>中近景：左手掌心向上托着翠鸟，小鸟理毛、跳动</td></tr>
+<tr><td>3</td><td>drops</td><td>10–13</td><td>贴水面：薄云遮日，第一批大雨滴打出涟漪</td></tr>
+<tr><td>4</td><td>plip</td><td>13–15.5</td><td>大特写：雨滴打中小鸟的头，它眨眼抬头</td></tr>
+<tr><td>5</td><td>shower</td><td>15.5–20</td><td>逆光太阳雨全景，机器人仰头看雨</td></tr>
+<tr><td>6</td><td>umbrella</td><td>20–25</td><td>右手出水，盖到小鸟上方成“屋顶”</td></tr>
+<tr><td>7</td><td>shelter</td><td>25–30.5</td><td>手掌下：雨帘从指尖流下，小鸟抖水、蓬毛，机器人眨眼</td></tr>
+<tr><td>8</td><td>rainbow</td><td>30.5–35</td><td>从背后仰拍：雨停、太阳出来、彩虹升起</td></tr>
+<tr><td>9</td><td>tip</td><td>35–39</td><td>肩头近景：手移开，小鸟跳到指尖，肩灯闪红两次</td></tr>
+<tr><td>10</td><td>goodbye</td><td>39–42</td><td>翠鸟飞向彩虹，机器人轻轻挥手，淡出到暖白</td></tr>
+</table>
+<p class="caption">据 <code>CONTRACT.md</code> 的镜头表整理。</p>
+
+<h2 id="run">快速上手</h2>
+<pre><code># 只想看：下载 dist/sunshower_lite.html（约 26 MB），用浏览器打开即可，离线可用
+git clone https://github.com/0xCodez/sunshower
+cd sunshower
+npm install          # 需 Node 18+、Google Chrome、ffmpeg
+npx serve .          # 打开 index.html?scale=1 进入工作台，拖动时间轴
+npm run build        # 配乐 → 分段渲染（可续跑）→ dist/ 单文件播放器</code></pre>
+
+<h2 id="take">启发</h2>
+<ul>
+<li><strong>“像不像动画”拆成了可实现的规则：</strong>一拍二、按材质 ID 分开描线与笔触、冷色阴影、手写贴花——每一条都能落到一个着色器或一个时间量化函数上。</li>
+<li><strong>确定性是工程前提：</strong>状态只由时间推出，才能随机访问任意帧、断点续跑、让多个智能体各改各的模块而互不干扰。</li>
+<li><strong>合同比提示词长：</strong>真正驱动多智能体协作的是一份写清坐标、时间、文件归属和自检方式的制作圣经，而不是一句提示词。</li>
+</ul>
+
+<h2 id="notes">⚠️ 核实与说明</h2>
+<ul>
+<li>⚠️ “没有视频模型、图像模型或手绘帧”是作者自述；本站读了源码结构（场景、通道、贴图均为代码生成），未逐文件排查是否混入外部图像素材。</li>
+<li>⚠️ 制作耗时、智能体数量、使用的具体模型与成本，仓库均未说明。<code>CONTRACT.md</code> 提到并行“部门（智能体）”，但没有过程记录。</li>
+<li>⚠️ 本站未在本地完整运行 <code>npm run build</code>，也未逐帧比对成片。</li>
+<li>许可：<code>LICENSE</code> 为 MIT（Copyright (c) 2026 Beyond Dev），附加说明称机器人设计与标记不在许可内、<code>vendor/</code> 中的 three.js 为 MIT；因附加文字，GitHub API 将其识别为 “Other”（2026-11-04 实时核对）。</li>
+<li>作者 GitHub 资料显示名称 Beyond Dev，关联 X 账号 @0xMovez；与本站此前收录的 X 作者 @0xCodila 名字相近，但没有证据表明是同一人。</li>
+</ul>
+
+<h2 id="readme">附录：README 全文中文翻译</h2>
+<blockquote>
+<h3>Sunshower · 狐の嫁入り</h3>
+<p>一部 42 秒的动画短片，每一帧都由代码渲染：没有视频模型，没有图像模型，没有手绘帧。一台警用劳动机器人齐腰站在被淹没、长满植物的东京，手上停着一只翠鸟。太阳雨落下，机器人抬起另一只手，像伞一样罩在小鸟上方。雨停了，一道彩虹在被淹没的城市上空展开。</p>
+<p>［图：shelter；summer、friends、plip、shower、umbrella、rainbow 六张截图］</p>
+<p><strong>观看：</strong>下载 <code>dist/sunshower_lite.html</code>（或从 Releases 下载全画质的 <code>sunshower.html</code> / MP4），用任意浏览器打开。它是一个自包含文件，可离线使用。</p>
+<p>《机动警察》同人致敬。机器人是 AV-98 英格拉姆「阿尔冯斯」（© HEADGEAR / Sunrise）。与官方无关。使用 Claude Code 制作。</p>
+<h4>它为什么看起来像动画</h4>
+<p>影片是一个 three.js（r170，WebGL2）场景，经由自定义的多通道管线绘制，模仿“赛璐璐 + 绘制背景”的制作方式：</p>
+<table>
+<tr><th>通道</th><th>作用</th></tr>
+<tr><td>阴影 / 反射</td><td>只针对角色的阴影贴图（绘制式布光，而非物理）；为水面准备的镜像相机</td></tr>
+<tr><td>主通道（MRT）</td><td>颜色 + 数据缓冲（视图法线、深度、材质 ID）</td></tr>
+<tr><td>绘画</td><td>只作用于背景像素的深度感知 8 扇区 Kuwahara “笔刷”滤镜 → 水粉质感</td></tr>
+<tr><td>描线</td><td>只作用于赛璐璐像素的手绘线条：ID / 深度 / 法线边缘，压力噪声，随距离变细</td></tr>
+<tr><td>水面</td><td>屏幕空间平面：涂抹的反射、清澈地折射到被淹的街道、焦散、手绘雨圈、闪光带、泡沫</td></tr>
+<tr><td>大气</td><td>薄雾、雨幕、光束</td></tr>
+<tr><td>叠加层</td><td>柔和精灵（雨丝、闪光、警灯光）</td></tr>
+<tr><td>泛光 / 调色</td><td>自发光物体的辉光、高调动画调色、胶片颗粒</td></tr>
+</table>
+<ul>
+<li><strong>角色是赛璐璐着色的 3D 模型</strong>，两阶硬色调、冷薰衣草色阴影、清晰高光，以及独立的角色主光。机器人的标记（<code>ALPHÔNSE</code>、<code>▶1</code>、<code>特車2-1</code>、<code>警視庁</code>、面板缝、螺栓）是手写的 canvas 贴图，沿装甲投影，从而包住弯曲的板件。翠鸟是带骨骼的 3D 模型，眼睛是画出来的形状（眨眼、眯眼、开心的 ∩）。</li>
+<li><strong>动画是一拍二</strong>（每秒 12 张）用于角色、一拍三用于水面特效，像电视/剧场动画一样。手臂动作使用一个小型两骨 IK，手腕跟随前臂。</li>
+<li><strong>一切都是时间的纯函数。</strong>任何一帧都可以按任意顺序渲染，这让无头渲染可以续跑且结果确定。</li>
+<li><strong>声音完全合成</strong>，使用 Web Audio <code>OfflineAudioContext</code>：蝉鸣、雨打水面与金属、一声警笛短鸣，以及一段锁定在故事节拍上的钢琴/弦乐/长笛小配乐（<code>src/shots.js</code> 中的 <code>CUES</code>）。</li>
+</ul>
+<h4>运行</h4>
+<p>要求：Node 18+、Google Chrome（或设置 <code>CHROME=/path/to/chrome</code>），以及 <code>PATH</code> 上的 <code>ffmpeg</code>。</p>
+<pre><code>npm install</code></pre>
+<p>打开工作台，实时拖动浏览影片。用任意静态服务器托管该目录即可；<code>index.html?scale=1</code> 更快：</p>
+<pre><code>npx serve .</code></pre>
+<p>渲染静帧以供审阅：</p>
+<pre><code>node tools/snap.mjs --scale 1 s:shelter t:26.4 "q:test=1&amp;cam=-6,2,-9&amp;at=0,1.8,0&amp;t=10=name:mycam"</code></pre>
+<p>完整构建：配乐 → 影片（可续跑的分段）→ <code>dist/</code> 中的单文件播放器：</p>
+<pre><code>npm run build</code></pre>
+<h4>目录结构</h4>
+<pre><code>src/shots.js        故事节拍（CUES）、相机、机器人表演、天气脚本
+src/robot.js        AV-98 绑定：凸包装甲、IK 手臂、锚点、投影贴花
+src/kingfisher3d.js 3D 翠鸟 + kf3d-*.js（羽毛、模型、飞行）
+src/world.js        被淹没的城市、水下街道、道具（+ bgmaterials.js、tex-foliage.js）
+src/engine.js       渲染通道；passes-env.js = 绘画 / 水面 / 大气着色器
+src/fx*.js          雨、水滴、水帘、涟漪、警灯、闪光
+src/birds*.js       鸟群、蜻蜓、燕子、乌鸦、白鹭
+src/audio*.js       合成配乐
+tools/              snap（静帧）、render（MP4）、render-audio（WAV）、build-player（HTML）、check
+player/player.html  单文件播放器模板
+CONTRACT.md         并行“部门”（智能体）共同遵循的制作圣经</code></pre>
+<p>灵感来自 The Moss Keeper。</p>
+</blockquote>
+
+<h2 id="license">附录：许可证原文</h2>
+<pre><code>MIT License
+
+Copyright (c) 2026 Beyond Dev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+This license covers the source code. The robot is a fan tribute to the AV-98
+Ingram from Patlabor (© HEADGEAR / Sunrise); that design and its markings are
+not covered by this license. three.js in vendor/ is MIT, see vendor/THREE-LICENSE.</code></pre>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/0xCodez/sunshower" rel="noopener">0xCodez/sunshower</a>，作者 Beyond Dev（<a href="https://github.com/0xCodez" rel="noopener">GitHub @0xCodez</a>），代码 MIT 许可，Copyright (c) 2026 Beyond Dev。README 译文与成片截图（<code>docs/</code>，已缩小并转为 WebP）依 MIT 许可转载并保留版权与许可声明；机器人设计 © HEADGEAR / Sunrise。短片视频未转载。统计取自公开 GitHub API（2026-11-04 21:45 UTC+8）。导读与“启发”为本站整理。</p>
+<p>如果你是作者或权利人并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/0xCodez/sunshower" rel="noopener">github.com/0xCodez/sunshower</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

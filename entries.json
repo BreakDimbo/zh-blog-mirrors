@@ -1,5 +1,20 @@
 [
   {
+    "slug": "0xcodez-sunshower",
+    "title": "Sunshower 狐の嫁入り：每一帧都由代码画出的 42 秒动画短片",
+    "desc": "0xCodez/sunshower 项目导读：一部 42 秒的《机动警察》同人动画短片——被淹没的东京，警用机器人用手为翠鸟挡太阳雨。不用视频模型、图像模型或手绘帧，three.js 多通道管线模仿赛璐璐角色 + 水粉背景（Kuwahara 笔触、按材质 ID 描线、屏幕空间水面），一拍二动画，纯时间函数确定性渲染，Web Audio 合成配乐，打包成单个离线 HTML；附十镜头表、多智能体制作合同解读与核实。代码 MIT，附 README 全文中文翻译与许可证原文。",
+    "description": "three.js 代码渲染的 42 秒赛璐璐风动画短片：机器人为翠鸟挡太阳雨；导读 + README 全译。",
+    "source": "0xCodez/sunshower（GitHub）",
+    "date": "2026-11-04",
+    "type": "导读",
+    "subtitle": "A 42-second anime short where every frame is rendered by code",
+    "original_url": "https://github.com/0xCodez/sunshower",
+    "spine": "代码动画短片",
+    "summary": "代码逐帧渲染的赛璐璐风太阳雨短片",
+    "kind": "项目",
+    "by": "Beyond Dev"
+  },
+  {
     "slug": "xikhar-sumiro-ai-game-24h",
     "title": "Sumiro：24 小时用 AI 做出一款水墨风 3D 网页游戏",
     "desc": "Shikhar @xikhar 帖串全译：Opus 5.5 + Flux 3 Max + GPT Image + Tripo + Blender + Three.js，约 24 小时做出水墨风 3D 解谜跑酷网页游戏 Sumiro。六步流程：生成参考视频 → Blender 重建场景进 Three.js → GPT Image 四视图 + Tripo 出角色、Opus 加布料与动画 → 试玩 → 概念图扩展关卡 → 代理迭代修 bug。附作者回复（成本、为何选 Three.js）与核实：时间与成本为自报，提示词未公开，游戏无公开源码。",
