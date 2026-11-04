@@ -1,7 +1,29 @@
 {
- "updated": "2026-11-03T10:05:19.743416+08:00",
+ "updated": "2026-11-04T09:57:05.867723+08:00",
  "post": "https://x.com/zarazhangrui/status/2108047745936466373",
  "sites": [
+  {
+   "domain": "resume.karankan19.com",
+   "url": "https://resume.karankan19.com/",
+   "title": "Guided Career Track — A Journey, Not a Résumé",
+   "description": null,
+   "shared_by": "@KKanchetty",
+   "reply": "https://x.com/KKanchetty/status/2117671446055112806",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
+  {
+   "domain": "v0-farid-portfolio-updated.vercel.app",
+   "url": "https://v0-farid-portfolio-updated.vercel.app/",
+   "title": "Hassan Farid — Data Scientist & Machine Learning Engineer",
+   "description": "Hassan Farid is a Data Scientist, Machine Learning Engineer and Data Analyst based in Abuja, Nigeria, working across machine learning research, topological data analysis and applied AI.",
+   "shared_by": "@TheRealFareed_4",
+   "reply": "https://x.com/TheRealFareed_4/status/2117574557896950117",
+   "recommended": false,
+   "owner": null,
+   "status": "ok"
+  },
   {
    "domain": "ericboluwatife.com",
    "url": "https://ericboluwatife.com/",
