@@ -274,6 +274,47 @@ else:
     toplink, eyebrow = '', ''
     footlink = '<span class="pv">也可按时间翻阅 <a href="./classic/">经典列表</a></span>'
 
+# ---------- 今日 (today) ----------
+# The newest day's additions, shown above the shelves. "Today" is the build date in Asia/Singapore; an entry's day
+# is its entries.json `date` (YYYY-MM-DD, written when the page is added). If nothing was added today, the most
+# recent earlier day is shown instead and labelled with its date. Items keep their entries.json order (newest
+# additions are prepended there). A tiny inline script re-checks the date in the visitor's browser (also in
+# Asia/Singapore), so a page built yesterday never claims "今日" for yesterday's tapes.
+try:
+    from zoneinfo import ZoneInfo
+    from datetime import datetime
+    TODAY = datetime.now(ZoneInfo('Asia/Singapore')).date().isoformat()
+except Exception:  # pragma: no cover - very old Python
+    import time
+    TODAY = time.strftime('%Y-%m-%d', time.gmtime(time.time() + 8 * 3600))
+TODAY_MAX = 4
+_raw = json.load(open(os.path.join(ROOT, 'entries.json'), encoding='utf-8'))
+_days = sorted({e['date'] for e in _raw if e.get('date') and e['date'] <= TODAY}, reverse=True)
+TDAY = _days[0] if _days else ''
+_byslug = {d['s']: d for d in data}
+
+def today_html():
+    if not TDAY:
+        return ''
+    day = [_byslug[e['slug']] for e in _raw if e.get('date') == TDAY and e['slug'] in _byslug]
+    m, d = int(TDAY[5:7]), int(TDAY[8:10])
+    is_today = TDAY == TODAY
+    lab = '今日' if is_today else '最近更新'
+    items = []
+    for x in day[:TODAY_MAX]:
+        meta = ' · '.join(t for t in (x['k'], x['by'], x['ty'] if x['ty'] != x['k'] else '') if t)
+        items.append(f'<li><a href="{P}{esc(x["s"])}/" title="{esc(x["t"])}" style="--c:{x["col"]}">'
+                     f'<span class="td-sw" aria-hidden="true"></span><span class="td-b"><b class="td-t">{esc(x["sp"])}</b>'
+                     f'<span class="td-s">{esc(x["sm"])}</span><span class="td-m">{esc(meta)}</span></span>'
+                     f'<span class="td-go" aria-hidden="true">→</span></a></li>')
+    more = len(day) - TODAY_MAX
+    more_html = f'<p class="td-more">同日另有 {more} 卷，见书架“按月份”。</p>' if more > 0 else ''
+    return (f'<section class="today rise" id="today" aria-labelledby="today-h" data-day="{TDAY}">'
+            f'<h2 class="td-h" id="today-h"><span class="td-k">{lab}</span><span class="td-d">{m:02d}月{d:02d}日</span>'
+            f'<span class="td-n">新到 {len(day)} 卷</span></h2><ol class="td-l">{"".join(items)}</ol>{more_html}</section>')
+
+TODAY_HTML = today_html()
+
 TPL = open(os.path.join(ROOT, 'tools', 'hub_shelf_template.html'), encoding='utf-8').read()
 # cache-busting token for the vendored ink-fish library: a hash of assets/ink-fish/*, so dropping in a new
 # ink-fish.js / ink-fish.css (e.g. a newer release) and rebuilding is all an upgrade needs
@@ -283,6 +324,7 @@ for _n in ('ink-fish.js', 'ink-fish.css'):
     _fh.update(open(os.path.join(ROOT, 'assets', 'ink-fish', _n), 'rb').read())
 FISHV = _fh.hexdigest()[:10]
 page = (TPL.replace('%%HEADMETA%%', head)
+           .replace('%%TODAY%%', TODAY_HTML)
            .replace('%%TOPLINK%%', toplink)
            .replace('%%EYEBROW%%', eyebrow)
            .replace('%%FOOTLINK%%', footlink)
@@ -300,6 +342,7 @@ os.makedirs(OUT_DIR, exist_ok=True)
 open(os.path.join(OUT_DIR, 'index.html'), 'w', encoding='utf-8').write(page)
 where = 'hub-preview/index.html' if PREVIEW else 'index.html'
 print(f'shelf hub built: {len(E)} tapes, {sum(1 for d in data if d["c"])} with covers -> {where}')
+print(f'today: {TDAY or "-"} ({"today" if TDAY == TODAY else "latest day"}, Asia/Singapore build date {TODAY})')
 
 if not PREVIEW:
     # the preview URL now just points at the live homepage (keeps old links / #t= deep links working)
