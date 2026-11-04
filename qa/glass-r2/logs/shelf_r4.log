@@ -1,0 +1,18 @@
+1440 book 1 step1 true case shown True | step2 tape -> /kevintngo-looseleaf/ expected /kevintngo-looseleaf/ OK
+1440 book 4 step1 true case shown True | step2 cover -> /krisyangdev-yarn-world/ expected /krisyangdev-yarn-world/ OK
+1440 book 12 step1 true case shown True | step2 text -> /leo-xiaolei-grok-bot-team-guide/ expected /leo-xiaolei-grok-bot-team-guide/ OK
+1440 book 16 step1 true case shown True | step2 enter -> /slashui-17-motion-assets/ expected /slashui-17-motion-assets/ OK
+1440 book 9 step1 true case shown True | step2 tape -> /addyosmani-critical-thinking-agents/ expected /addyosmani-critical-thinking-agents/ OK
+1440 book 18 step1 true case shown True | step2 cover -> /kevintngo-statechart-art/ expected /kevintngo-statechart-art/ OK
+1440 drag on expanded book -> stays on shelf: True
+1440 middle-click cover -> new tab: ['/kevintngo-looseleaf/'] shelf still True
+1440 page errors []
+390 book 1 step1 true case shown True | step2 tape -> /kevintngo-looseleaf/ expected /kevintngo-looseleaf/ OK
+390 book 4 step1 true case shown True | step2 cover -> /krisyangdev-yarn-world/ expected /krisyangdev-yarn-world/ OK
+390 book 12 step1 true case shown True | step2 text -> /leo-xiaolei-grok-bot-team-guide/ expected /leo-xiaolei-grok-bot-team-guide/ OK
+390 book 16 step1 true case shown True | step2 enter -> /slashui-17-motion-assets/ expected /slashui-17-motion-assets/ OK
+390 book 9 step1 true case shown True | step2 tape -> /addyosmani-critical-thinking-agents/ expected /addyosmani-critical-thinking-agents/ OK
+390 book 18 step1 true case shown True | step2 cover -> /kevintngo-statechart-art/ expected /kevintngo-statechart-art/ OK
+390 drag on expanded book -> stays on shelf: True
+390 page errors []
+FAILS 0

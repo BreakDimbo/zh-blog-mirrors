@@ -1,0 +1,17 @@
+OK  light touch-action {'html': 'auto', 'body': 'auto', 'top': 'pan-y pinch-zoom', 'hero': 'pan-y pinch-zoom', 'bar': 'auto', 'shelves': 'auto', 'track': 'auto', 'tape': 'pan-x pan-y', 'footer': 'pan-y pinch-zoom', 'docScrollX': 0}
+OK  light shelf swipe scrollLeft 0 -> 245 url /
+OK  light vertical scroll from shelf 536 -> 821
+OK  light vertical scroll from hero 0 -> 285
+OK  light pinch-zoom on hero scale 5
+OK  light pinch-zoom on footer scale 5
+BAD light touch trail at [78, 521] SPAN.td-s | sideways pts 0 | hold+drag pts 0 | vertical swipe pts 0 | control w/o pan-y sideways pts 0
+BAD light errors ["The resource http://127.0.0.1:8741/assets/shelf/wood.webp was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."]
+OK  dark touch-action {'html': 'auto', 'body': 'auto', 'top': 'pan-y pinch-zoom', 'hero': 'pan-y pinch-zoom', 'bar': 'auto', 'shelves': 'auto', 'track': 'auto', 'tape': 'pan-x pan-y', 'footer': 'pan-y pinch-zoom', 'docScrollX': 0}
+OK  dark shelf swipe scrollLeft 0 -> 245 url /
+OK  dark vertical scroll from shelf 536 -> 821
+OK  dark vertical scroll from hero 0 -> 285
+OK  dark pinch-zoom on hero scale 5
+OK  dark pinch-zoom on footer scale 5
+BAD dark touch trail at [78, 521] SPAN.td-s | sideways pts 0 | hold+drag pts 0 | vertical swipe pts 0 | control w/o pan-y sideways pts 0
+BAD dark errors ["The resource http://127.0.0.1:8741/assets/shelf/wood.webp was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."]
+BAD 4

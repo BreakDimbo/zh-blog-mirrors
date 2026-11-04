@@ -1,0 +1,6 @@
+OK  1440 light theme applied pre-paint attr= light
+BAD 1440 light visible book centres hit their tape [23, 3]
+OK  1440 light canvases below content ['-1/none', '-1/none', '-1/none']
+OK  1440 light elements with backdrop-filter: []
+OK  1440 light chips ['全部110', '导读53', '全文镜像29', '翻译21', '画廊4', '评述3'] tapes all= 110 visible after chip2= 53
+OK  1440 light month grouping shelves/dividers/pressed [3, 0, 'true']

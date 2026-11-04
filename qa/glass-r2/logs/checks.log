@@ -1,0 +1,8 @@
+1440 painted koi 4
+1440 before toggle {'theme': 'light', 'ink': '#1e1c19', 'lum': 73} after toggle {'theme': 'dark', 'ink': '#e8e2d8', 'lum': 178}
+1440 errors []
+390 painted koi 2
+390 before toggle {'theme': 'light', 'ink': '#1e1c19', 'lum': 71} after toggle {'theme': 'dark', 'ink': '#e8e2d8', 'lum': 178}
+390 errors []
+reduced motion {'mounted': False, 'running': None, 'fish': None} errors []
+BAD 0
