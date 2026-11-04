@@ -11,7 +11,7 @@ async def main():
             ctx=await b.new_context(viewport={'width':1440,'height':900})
             await ctx.add_init_script(f'localStorage.setItem("zbm-theme","{th}")')
             await ctx.add_init_script('window.__drag=0;addEventListener("dragstart",()=>window.__drag++,true)')
-            pg=await ctx.new_page(); errs=[]
+            pg=await ctx.new_page(); errs=[]; pg.on('response',lambda r: print('   404:',r.url,'from',pg.url) if r.status==404 else None)
             pg.on('pageerror',lambda e:errs.append(str(e))); pg.on('console',lambda m:errs.append(m.text) if m.type in('error','warning') and IGN not in m.text else None)
             await pg.goto(B,wait_until='networkidle'); await pg.wait_for_timeout(2500)
             # empty water: right part of the hero, away from text
@@ -36,8 +36,8 @@ async def main():
             sel=await pg.evaluate('getSelection().toString()'); ok=len(sel)>5; bad+=not ok
             print('OK ' if ok else 'BAD',label,th,'text drag selects:',repr(sel[:20]))
             # a click on bare water still clears that selection, and blurs a focused search box
-            await pg.mouse.click(1180,140); cleared=await pg.evaluate('getSelection().isCollapsed')
-            await pg.focus('#q'); await pg.mouse.click(1180,140); blurred=await pg.evaluate('document.activeElement.id!=="q"')
+            await pg.mouse.click(x0,y0); cleared=await pg.evaluate('getSelection().isCollapsed')
+            await pg.focus('#q'); await pg.mouse.click(x0,y0); blurred=await pg.evaluate('document.activeElement.id!=="q"')
             ok=cleared and blurred; bad+=not ok; print('OK ' if ok else 'BAD',label,th,'bare-water click clears selection',cleared,'blurs search',blurred)
             # click a book: first click pulls it out (case shown), second enters the article
             t=pg.locator('.tape').nth(3); await t.scroll_into_view_if_needed(); await pg.wait_for_timeout(600)

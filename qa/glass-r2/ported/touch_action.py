@@ -9,7 +9,7 @@ async def main():
         b=await p.chromium.launch(executable_path='/usr/bin/google-chrome')
         for th in ['light','dark']:
             ctx=await b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True,device_scale_factor=2)
-            await ctx.add_init_script(f'localStorage.setItem("zbm-theme","{th}")')
+            await ctx.add_init_script(f'try{{localStorage.setItem("zbm-theme","{th}")}}catch(e){{}}')  # glass-r2: guarded like the other harnesses
             pg=await ctx.new_page(); errs=[]
             pg.on('pageerror',lambda e:errs.append(str(e))); pg.on('console',lambda m:errs.append(m.text) if m.type in('error','warning') and IGN not in m.text else None)
             await pg.goto(B,wait_until='networkidle'); await pg.wait_for_timeout(2500)
