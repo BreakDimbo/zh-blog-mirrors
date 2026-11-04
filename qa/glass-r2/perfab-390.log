@@ -1,0 +1,4 @@
+main [599, 642, 687] median 642
+r2 [653, 648, 566] median 648
+r2-nopseudo [607, 741, 628] median 628
+r2-notoday [713, 671, 529] median 671
