@@ -1,0 +1,12 @@
+{"vp": "1440", "theme": "light", "phase": "idle", "frames": 25, "avg": 110.66, "p95": 200.1, "max": 233.3, "over20": 24, "task_ms": 68.3, "layouts": 1, "recalcs": 1, "errs": 0, "label": "main"}
+{"vp": "1440", "theme": "light", "phase": "scroll", "frames": 136, "avg": 81.98, "p95": 166.7, "max": 233.4, "over20": 121, "task_ms": 932.5, "layouts": 0, "recalcs": 69, "errs": 0, "label": "main"}
+{"vp": "1440", "theme": "light", "phase": "mouse", "frames": 60, "avg": 113.88, "p95": 250, "max": 266.6, "over20": 59, "task_ms": 766.1, "layouts": 70, "recalcs": 118, "errs": 0, "label": "main"}
+{"vp": "1440", "theme": "dark", "phase": "idle", "frames": 50, "avg": 57.67, "p95": 83.4, "max": 116.7, "over20": 48, "task_ms": 109.6, "layouts": 0, "recalcs": 0, "errs": 0, "label": "main"}
+{"vp": "1440", "theme": "dark", "phase": "scroll", "frames": 131, "avg": 73.92, "p95": 150.1, "max": 216.7, "over20": 116, "task_ms": 701.7, "layouts": 0, "recalcs": 70, "errs": 0, "label": "main"}
+{"vp": "1440", "theme": "dark", "phase": "mouse", "frames": 62, "avg": 83.6, "p95": 133.3, "max": 216.6, "over20": 60, "task_ms": 628.0, "layouts": 70, "recalcs": 119, "errs": 0, "label": "main"}
+{"vp": "390", "theme": "light", "phase": "idle", "frames": 79, "avg": 36.71, "p95": 50.1, "max": 66.7, "over20": 69, "task_ms": 118.6, "layouts": 0, "recalcs": 1, "errs": 0, "label": "main"}
+{"vp": "390", "theme": "light", "phase": "scroll", "frames": 158, "avg": 56.43, "p95": 116.7, "max": 166.7, "over20": 130, "task_ms": 791.2, "layouts": 0, "recalcs": 75, "errs": 0, "label": "main"}
+{"vp": "390", "theme": "light", "phase": "mouse", "frames": 139, "avg": 31.41, "p95": 66.6, "max": 83.4, "over20": 88, "task_ms": 769.9, "layouts": 9, "recalcs": 155, "errs": 0, "label": "main"}
+{"vp": "390", "theme": "dark", "phase": "idle", "frames": 67, "avg": 43.28, "p95": 83.4, "max": 116.7, "over20": 53, "task_ms": 102.3, "layouts": 0, "recalcs": 1, "errs": 0, "label": "main"}
+{"vp": "390", "theme": "dark", "phase": "scroll", "frames": 186, "avg": 36.2, "p95": 83.4, "max": 133.4, "over20": 112, "task_ms": 807.9, "layouts": 1, "recalcs": 97, "errs": 0, "label": "main"}
+{"vp": "390", "theme": "dark", "phase": "mouse", "frames": 116, "avg": 39.8, "p95": 66.6, "max": 66.7, "over20": 97, "task_ms": 637.4, "layouts": 9, "recalcs": 132, "errs": 0, "label": "main"}
