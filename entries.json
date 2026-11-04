@@ -1,5 +1,20 @@
 [
   {
+    "slug": "rewind02-unreal-claude-course",
+    "title": "用 Claude Opus 5.5 在虚幻引擎里做一款自己的游戏",
+    "desc": "rewind（@rewind02）X 长文全译：借 Unreal Engine 5.8 官方 MCP 服务器与 Epic 的 Claude Code 插件，把 Opus 5.5 接进运行中的编辑器，分四轮做出可玩小游戏——灰盒关卡、规则、敌人与战斗、外观；附安全网、六条提示习惯、四层测试、bug 报告格式与时间成本。模型发布日期、价格与第三方测试数据为作者转述 ⚠️。",
+    "description": "把 Opus 5.5 接进虚幻编辑器，四轮做出可玩小游戏的完整教程；X 长文全译。",
+    "source": "X · @rewind02",
+    "date": "2026-11-04",
+    "type": "全译",
+    "subtitle": "How to Build your own Game in Unreal Engine with Claude Opus 5.5",
+    "original_url": "https://x.com/rewind02/status/2107063404691132663",
+    "spine": "虚幻引擎教程",
+    "summary": "把 Opus 5.5 接进虚幻编辑器做出可玩小游戏",
+    "kind": "教程",
+    "by": "rewind"
+  },
+  {
     "slug": "juneyaooo-rea-video",
     "title": "rea-video：逐镜头逆向拆解一条视频是怎么做的",
     "desc": "JuneYaooo/rea-video 项目导读：给 Claude Code / Codex 用的视频逆向拆解 skill + CLI。逐镜判断实拍、AI 视频、数字人、3D、代码模板、录屏等 10 类画面，拆字幕花字、剪辑节奏、人声/配乐/音效来源，帧率与 AIGC 标识等硬证据优先于看图，再按目标模型能力写复刻方案。附作者自测准确率解读与核实；仓库无 LICENSE 文件，仅导读与短句引用。",

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>用 Claude Opus 5.5 在虚幻引擎里做一款自己的游戏（完整教程 · 全译）</title>
+<meta name="description" content="rewind（@rewind02）的 X 长文全译：用 Unreal Engine 5.8 官方 MCP 服务器加 Epic 的 Claude Code 插件，把 Opus 5.5 接进正在运行的编辑器，分四轮做出可玩的小游戏切片：灰盒关卡、规则、敌人与战斗、外观，并讲清安全、提示写法、测试和成本。" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全译</span><time datetime="2026-11-04">2026.11.04</time></p>
+<h1 class="za-title">用 Claude Opus 5.5 在虚幻引擎里做一款自己的游戏</h1>
+<p class="za-sub" lang="en" data-za-gen>How to Build your own Game in Unreal Engine with Claude Opus 5.5</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @rewind02</span><span>收录 · 2026-11-04</span><span><a href="https://x.com/rewind02/status/2107063404691132663" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原文：<a href="https://x.com/rewind02/status/2107063404691132663" rel="noopener">rewind @rewind02</a> 的 X 长文（2026-10-05 19:00 UTC+8 发布；截至 2026-11-04 约 48 万浏览 / 606 赞 / 1,503 收藏）· 作者本人文章，全文中译如下；文中配图请至原文查看</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
+<h2>导读</h2>
+<p>这是一篇手把手的长教程，主角是一条“活的连接”：据作者说，<strong>Unreal Engine 5.8</strong> 起编辑器自带官方 MCP 服务器（插件名 ModelContextProtocol，配合 AllToolsets 提供工具），Epic 还维护了一个 Claude Code 插件 <strong>Unreal Engine Skills for Claude Code</strong>。接上之后，Claude 不再丢给你一段脚本让你粘贴，而是直接读取你打开的关卡，当着你的面改。</p>
+<p>全文以一个刻意做小的游戏为例：第三人称角色沿小路走向村庄，收集三颗发光球，打败守门的敌人，有胜利画面，按 R 重开。路线分四轮构建，每轮都有一道“闸门”：灰盒关卡 → 规则 → 敌人与战斗 → 外观。文中最有用的不是“AI 能做游戏”，而是大量克制的工程习惯：开工前先提交、一个提示只做一个系统、写清“做完”的标准与“不许动”的清单、禁止悄悄绕路、连续两次修不好就回滚。</p>
+<p>作者也把局限摆在前面：引用的四个实测里，Opus 5.5 执行清晰指令很快，但从一句含糊的话凭空发明整套系统时明显吃力，也判断不了“手感对不对”；每次请求要等 5–15 分钟，长会话很烧额度。</p>
+<p class="warn">⚠️ 核实：本页为作者文章的翻译，下列说法均照录原文、本站未独立核实——Opus 5.5 于 2026-09-22 发布；UE 5.8 自带官方 MCP 服务器且被 Epic 标为“实验性”；Epic 插件免费、MIT 许可、上架 Anthropic 官方插件市场；Puget Systems 7 月用 Opus 4.8 的测试细节；NeoStack 作者自测的 5 项任务通过 3 项对 1 项；Opus 5.5 API 价格每百万 token 输入 4 美元 / 输出 20 美元；36 小时多人 RPG 折合约 2,400 美元；同一难题 low / medium / max 分别约 0.55 / 1.34 / 5.98 美元；文中“已验证”的会话钩子测试为作者自述。原文未附上述来源链接，所引的类魂、Boss 战、Tripo 演示等视频也未注明出处。</p>
+
+<h2>全文中译</h2>
+<p>从空项目到一款能玩的小游戏：把 Opus 5.5 接进正在运行的编辑器，搭关卡，加敌人和战斗，换上你自己的角色，再好好测试。</p>
+<p>Claude Opus 5.5 于 2026 年 9 月 22 日发布。不到一天，就有人晒出在虚幻引擎里用它做的游戏：带敌人 AI、锁定和闪避的类魂游戏，有飞扑重砸招式的 Boss 战，还有一个奇幻关卡，自定义角色从森林一路走进小镇。</p>
+<p>让这一切成为可能的是一条活的连接。从 Unreal Engine 5.8 起，编辑器自带官方 MCP 服务器，Epic 还维护了一个基于它的 Claude Code 插件。</p>
+<p>Claude 不会丢给你一段脚本让你粘贴。它读取你真实的关卡，当着你的面修改。这门教程把整条路线走一遍：配置、让项目随时可恢复的习惯、四轮拼成一个可玩切片的构建，以及如何测试做出来的东西。</p>
+<p>它也会直说这套工作流哪里慢、哪里会坏，因为展示惊艳成果的那些来源，同样展示了这一面。</p>
+
+<h3>哪些是真的，哪些不是</h3>
+<p>四个上手实测能给出公允的画面。开始前把它们放在一起读，它们决定了正确的预期。</p>
+<ul>
+<li><strong>类魂原型。</strong>一位创作者让 Opus 5.5 做出会巡逻、追击、攻击的敌人 AI，血条、锁定镜头、连招、闪避，以及一个用素材包搭的地牢关卡，素材由 Claude 在 Blender 里建模。他用了一个叫 NeoStack 的第三方编辑器插件，只手动修了一处动画设置。</li>
+<li><strong>Boss 战。</strong>另一位创作者做了一个有三种攻击的有翼恶魔 Boss。能跑。但也等了大约半天，第一个 3D 模型没法用，粒子特效还没做额度就用完了。</li>
+<li><strong>奇幻探索演示。</strong>Tripo 的教程搭了一条从森林到小镇的路线，有收集物和 HUD，然后换上自定义绑骨角色。它的核心建议是：每一批改动之后都到编辑器里检查结果。</li>
+<li><strong>一家硬件实验室的冷静测试。</strong>Puget Systems 7 月用更早的模型 Opus 4.8 试了 Epic 的 MCP。两个简单任务完成得很好；一个修改玩家操作的请求让游戏没法玩了，修复尝试也没修好；一个程序化城市的请求，产出的却是手摆的网格体，而不是真正的程序化图。</li>
+</ul>
+<p>规律很一致：Opus 5.5 在编辑器里执行清晰指令很快；要它从一句含糊的话发明整套系统时弱得多，而且它没法告诉你结果手感对不对。Puget 的评测者说得好：用它来加速你本就懂的工作，而不是填补你不懂的空白。</p>
+
+<h3>你需要什么</h3>
+<ul>
+<li><strong>Unreal Engine 5.8</strong>，从 Epic Games Launcher 安装。官方 MCP 服务器在这个版本出现，Epic 仍标为“实验性”。安装要几十 GB。</li>
+<li><strong>一个工作项目。</strong>从 Third Person 模板开始：它自带移动、跳跃和镜头，没有自定义角色也能先测关卡。</li>
+<li><strong>Claude Code + Opus 5.5。</strong>付费套餐默认就是 Opus 5.5，用 <code>/model</code> 确认，别名 <code>opus</code>。</li>
+<li><strong>Epic 的 Claude Code 插件</strong> Unreal Engine Skills for Claude Code。免费、MIT 许可，列在 Anthropic 官方插件市场。</li>
+<li><strong>Windows 上需要 Git for Windows 或 WSL。</strong>插件的启动钩子是 bash 脚本；没有 bash，编辑器工具照样能用，但会少掉钩子加的那段项目简介。</li>
+<li><strong>版本控制。</strong>Git 或 Perforce。这不是可选项，原因见“安全网”一节。</li>
+</ul>
+
+<h3>把 Opus 5.5 接进编辑器</h3>
+<p><strong>第 1 步：在编辑器里启用两个插件。</strong>打开 Edit → Plugins，搜索 Unreal MCP（内部名 ModelContextProtocol）并勾选；再搜索 AllToolsets 也勾上，按提示重启编辑器。两个都要：前者是服务器，后者提供工具。只开前者，服务器能启动，却什么工具都不给。</p>
+<p><strong>第 2 步：启动服务器。</strong>按 ~ 打开编辑器控制台，运行：</p>
+<pre><code>ModelContextProtocol.StartServer</code></pre>
+<p>不想每次都敲，可以到 Edit → Editor Preferences → General → Model Context Protocol 打开 Auto Start Server。服务器监听 8000 端口；如果被占用，运行 <code>ModelContextProtocol.StartServer 8010</code>，换任意空闲端口。</p>
+<p><strong>第 3 步：生成连接文件。</strong>仍在控制台里运行：</p>
+<pre><code>ModelContextProtocol.GenerateClientConfig ClaudeCode</code></pre>
+<p>它会写出一个 <code>.mcp.json</code>。用 Launcher 安装的引擎，这个文件会落在 .uproject 旁边，内容很短：</p>
+<pre><code>{
+  "mcpServers": {
+    "unreal-mcp": {
+      "type": "http",
+      "url": "http://127.0.0.1:8000/mcp"
+    }
+  }
+}</code></pre>
+<p>以后改了端口，就再运行一次这条命令。</p>
+<p><strong>第 4 步：在 Claude Code 里安装 Epic 的插件。</strong>打开 Claude Code，运行：</p>
+<pre><code>/plugin install unreal-engine-skills-for-claude-code@claude-plugins-official</code></pre>
+<p>如果提示找不到市场，先运行 <code>/plugin marketplace add anthropics/claude-plugins-official</code>，再装一次。</p>
+<p><strong>第 5 步：从项目文件夹启动 Claude Code。</strong>这是大家最常栽的一步。Claude Code 从它启动的文件夹读取 .mcp.json，所以要在放 .uproject 的那个文件夹里启动。终端里先 cd 过去再运行 <code>claude</code>；桌面版则把该文件夹选为项目。</p>
+<p><strong>第 6 步：检查连接。</strong>运行 <code>/plugin</code>，Installed 页应显示 unreal-engine-skills-for-claude-code 已启用；运行 <code>/mcp</code>，应看到 unreal-mcp 已连接。然后发一个只读提示：</p>
+<pre><code>Inspect the open Unreal Editor project. Read only, change nothing.
+Report the active level's name, the main actors in it, and whether
+a Player Start and a Third Person character exist.</code></pre>
+<p class="caption">（大意：检查打开的项目，只读不改；报告当前关卡名、主要 Actor，以及有没有 Player Start 和第三人称角色。）</p>
+<p>如果回答里说出了你关卡里真实存在的东西，连接就通了。</p>
+
+<h3>省事路线</h3>
+<p>第 1–3 步也可以交给 Claude 做。插件里带有专为此写的配置说明，已有一篇公开教程在 Epic 的 City Sample 项目上用过这个办法。在项目文件夹启动 Claude Code，发送：</p>
+<pre><code>This folder is an Unreal Engine 5.8 project. Set up the Unreal MCP
+connection for this Claude Code session. Enable the ModelContextProtocol
+and AllToolsets plugins in the .uproject, showing me the file path first.
+Turn on auto-start. Tell me exactly what to run in the editor console.
+Then verify with one read-only tool call. Change nothing else.</code></pre>
+<p class="caption">（大意：为本会话配置 Unreal MCP；先给我看 .uproject 路径再启用两个插件；打开自动启动；告诉我控制台要运行什么；用一次只读调用验证；其余不改。）</p>
+<p><strong>已验证：会话钩子。</strong>我拿一个空壳项目文件夹跑了插件的启动钩子。从子文件夹启动时它依然找到了 .uproject，告诉 Claude 优先遵循虚幻的惯例和 unreal-mcp 技能，并报告还没有 .mcp.json，给出了生成它的确切命令。加上文件后，提示改为“已存在”。在项目之外，它保持安静。</p>
+<p>网上的教程有两处说法不一。第一，好几篇给出的配置命令漏了参数；插件自己的文件用的是 <code>GenerateClientConfig ClaudeCode</code>。第二，Epic 文档页说工具调用一次只跑一个，而插件 9 月的更新说服务器现在接受并发请求。无论哪种，实用规则都一样：凡是碰同一个资产的操作，按顺序来。</p>
+
+<h3>其他接入方式</h3>
+<p>说一句 NeoStack，因为那个类魂视频很依赖它。它的开发者发布过一次基准：NeoStack 五项任务通过三项，Epic 的 MCP 通过一项。这是开发者自己跑的，每个工具各跑一次，他本人也称之为“方向性证据”。把它当作两边都试一试的理由，而不是排名。</p>
+
+<h3>安全网</h3>
+<p>Epic 自己对这个插件的描述很直白：装上它，就等于给了 Claude 对运行中编辑器的广泛实时访问权，你应当把它当作运行任意代码来对待，因为实际上就是。其中一个工具能在编辑器里以完整项目权限执行 Python，这样做出的修改并不总能撤销。</p>
+<ul>
+<li><strong>每次会话前先提交。</strong>保存项目，commit 或 shelve，再开工。结果出错，几秒就能回滚。没有这一步，Boss 战作者那半天、Puget 弄坏的操作，都会变成白干。</li>
+<li><strong>保持审批开启。</strong>加载这个插件时不要用 <code>--dangerously-skip-permissions</code> 运行 Claude Code。真要这么做，就用一个可丢弃的项目。</li>
+<li><strong>先在副本里练。</strong>在测试项目上学会这套流程，别拿输不起的项目。</li>
+<li><strong>要改东西前先停止 Play。</strong>游戏运行时，编辑器工具的行为不一样。</li>
+<li><strong>编译期间别发提示。</strong>C++ 或着色器编译时发出的工具调用，会以令人费解的方式卡住或失败。</li>
+<li><strong>端口只留在本机。</strong>服务器没有登录验证，本机任何程序都能访问它；别在共用电脑上跑，也绝不要把端口暴露出去。</li>
+</ul>
+
+<h3>怎样给 Opus 5.5 布置引擎活</h3>
+<p>Opus 5.5 回答前总会先思考。真正要调的是 effort（投入度），共五档：low、medium、high、xhigh、max。默认 medium。从它开始，只有模型明显力不从心时才往上调，用 <code>/effort high</code> 切换。更高的投入度意味着更多自检，同一个任务的账单也大得多。</p>
+<p>演示里的成果和 Puget 测试里的结果之间，差的是六个习惯：</p>
+<ol>
+<li><strong>一个提示只做一个系统。</strong>一个关卡布局，或一套生命值，或一个敌人。类魂作者每个提示只加一个功能并逐个测试；Puget 的两次失败，都是又大又含糊的请求。</li>
+<li><strong>说清“做完”是什么样。</strong>“做完＝我能从 Player Start 走到塔下而不卡住”，给了 Claude 可以对照检查的东西。</li>
+<li><strong>说清什么不许动。</strong>“不要移动小路和 Player Start”保护你已经认可的成果。</li>
+<li><strong>要一份报告。</strong>它创建或修改过的每个蓝图和资产。这是你掌握自己项目的方式。</li>
+<li><strong>禁止悄悄绕路。</strong>Puget 的测试里，模型默默用手摆网格体替换了程序化图。要求它停下来说明。</li>
+<li><strong>提示以 <code>/unreal-mcp</code> 开头。</strong>提到虚幻相关内容时技能通常会自动触发，但点名能消除疑问。</li>
+</ol>
+
+<h3>路线：一款小游戏，五道闸门</h3>
+<p>贯穿全文的例子刻意做得很小：第三人称沿小路走到村庄，收集三颗发光球，一个敌人守着大门，有胜利状态和重开。小正是重点：一个能做完的切片教会你流程，其中每一部分以后都能放大。</p>
+
+<h4>第一轮：一个能走通的关卡</h4>
+<p>用 Third Person 模板新建项目，打开一个空关卡。如果关卡里没有玩家，通过 Add → Add Content to the Project → Third Person 加入模板内容。提交。然后发出第一个构建提示：</p>
+<pre><code>/unreal-mcp Build a greybox level in the current empty level.
+First, read only: confirm the level name and that a Player Start exists.
+
+Layout: a start clearing, a winding path about 150 metres long through
+low hills, and a small walled village at the end with one tall tower
+I can see from the start.
+Use simple shapes and plain materials only. No final art.
+Keep the path at least 4 metres wide and free of obstacles.
+Add a sky, a sun and enough light to read the route.
+
+Done means: I press Play and walk from the Player Start to the tower
+without getting stuck.
+When finished, list every actor and asset you created and take a
+screenshot from the start looking toward the tower.
+If a step fails or a tool is missing, stop and tell me.
+Don't work around it silently.</code></pre>
+<p class="caption">（大意：先只读确认关卡名和 Player Start；布局为起点空地、穿过低丘约 150 米的蜿蜒小路、尽头一座带围墙的小村和一座从起点就能望见的高塔；只用简单形体和素材质；路宽至少 4 米且无障碍；加天空、太阳和足够照明。做完＝按 Play 能从起点走到塔下不卡住；列出所有创建物并从起点朝塔截图；某步失败或缺工具就停下告诉我，不要悄悄绕过。）</p>
+<p>在 Puget 的测试里，一个类似的请求（一条连着六个亮灯房间的走廊）五分钟出头就返回了，和描述高度吻合。模型还加了没人要求的走廊灯。这种合理的自作主张很常见，这也是要它列出所做之物的又一个理由。</p>
+<p><strong>闸门：</strong>按 Play，把整条路线走一遍。如果掉出地板或撞上看不见的墙，说清具体位置，只要求修那一处。然后提交。</p>
+
+<h4>第二轮：规则</h4>
+<pre><code>/unreal-mcp Add the game rules to this level.
+Don't move the path, the village or the Player Start.
+
+1. Three glowing orbs along the path. Touching one collects it.
+2. A counter on screen: "Orbs 0/3".
+3. The tower gate stays locked until all three are collected.
+   Reaching the tower after that shows "You made it" and ends the run.
+4. The R key reloads the level.
+
+Use Blueprints. Compile each one and read the compile result
+before moving on.
+Done means: collect 3, reach the tower, see the message, press R,
+start again.
+Report every Blueprint and widget you created, then give me a
+five-step Play checklist.</code></pre>
+<p class="caption">（大意：不动小路、村庄和起点；路上三颗发光球，碰到即收集；屏幕计数“Orbs 0/3”；集齐前塔门锁住，之后到塔下显示“You made it”并结束；R 键重载关卡。用蓝图，每个都编译并读结果再继续；报告所有蓝图和控件，并给五步试玩清单。）</p>
+<p>“读编译结果”这一句很重要。插件自己的说明警告：很多工具失败时很安静，只在回复里给个状态，所以 Claude 必须先看了再往下走。</p>
+<p><strong>闸门：</strong>自己跑一遍五步清单。然后试着弄坏它：倒序拿球，只拿两颗就去塔下，跑到一半按 R。扛得住再提交。</p>
+
+<h4>第三轮：敌人与战斗</h4>
+<p>这是类魂视频展示得最好的部分，它的方法值得照搬：一个功能，一个提示，一次试玩。按顺序发送下面这些，每条之间都测试。</p>
+<p><strong>敌人</strong></p>
+<pre><code>/unreal-mcp Add one enemy near the village gate. It patrols between
+two points. When it sees the player it chases, and in range it attacks.
+Use a Behavior Tree. Add whatever navigation the level needs and tell
+me what you added. Don't change the player or the rules from before.
+Done means: it patrols, notices me, chases me and swings at me.</code></pre>
+<p class="caption">（大意：在村门附近加一个敌人，两点间巡逻，看到玩家就追，进入范围就攻击；用行为树；补上所需导航并告诉我加了什么；不改玩家和之前的规则。）</p>
+<p>视频里这只用了一个提示，模型还自己加了导航体积，因为没有它敌人走不了路。攻击动画一开始看着是坏的。预期第一版会很粗糙，评判行为，而不是打磨程度。</p>
+<p><strong>生命值</strong></p>
+<pre><code>/unreal-mcp Add health to the player and the enemy. Show the player's
+bar at the bottom left of the screen and the enemy's bar above its head.
+Enemy hits reduce player health. At zero, show "You died" and let R
+restart. Report every Blueprint and widget you touched.</code></pre>
+<p class="caption">（大意：给玩家和敌人加生命值；玩家血条在左下，敌人血条在头顶；被敌人打中掉血，归零显示“You died”，可按 R 重开。）</p>
+<p><strong>玩家的攻击</strong></p>
+<pre><code>/unreal-mcp Give the player an attack on the left mouse button: a
+three-hit combo using the attack animations in [your folder].
+Hits damage the enemy. At zero health the enemy falls and is removed
+after three seconds. Keep movement and camera as they are.</code></pre>
+<p class="caption">（大意：左键三段连击，用你文件夹里的攻击动画；命中扣敌人血，归零倒地、三秒后移除；移动和镜头保持不变。）</p>
+<p>这里要做好等待的准备。Boss 战测试里，一个三段动画的连招花了 Opus 5.5 大约一小时，而作者说他手写只要十五到二十分钟。</p>
+<p><strong>锁定与闪避</strong></p>
+<pre><code>/unreal-mcp Add two things. Tab locks the camera onto the nearest
+visible enemy and Tab again releases it; aim at the enemy's chest,
+not the head. Left Shift makes the player dodge in the movement
+direction. Add a subtle camera shake when a hit lands.</code></pre>
+<p class="caption">（大意：Tab 锁定最近的可见敌人、再按解除，瞄胸口而不是头；左 Shift 朝移动方向闪避；命中时轻微震屏。）</p>
+<p>“瞄胸口而不是头”这个细节来自那段视频：瞄头时镜头压得太低、一直仰视。一句反馈几秒就修好了，小修正就该这样：说你看到了什么，说你想要什么。</p>
+<p>你可能会看到 Claude 写一小段 Python 脚本并请求运行。那是插件的脚本工具，用来一次做好几步，或做到任何单个工具都覆盖不了的事。Boss 战作者在模型搭动画蓝图时就遇到了。批准之前，先读懂脚本做了什么。</p>
+<p><strong>闸门：</strong>战斗两种结局都要能发生：你能赢，也能输，而且两种状态下 R 都管用。提交。</p>
+
+<h4>第四轮：让它看起来像你的游戏</h4>
+<p>只有到现在，有了一个灰盒但能玩的游戏，才值得花力气在外观上。素材有三种来路。</p>
+<p><strong>用 Tripo 做你自己的角色</strong></p>
+<ul>
+<li>用同一角色的正面、侧面、背面三视图生成模型。</li>
+<li>贴图前先跑 Smart UV。保存新的 UV 布局可能会清掉已有贴图。</li>
+<li>生成贴图时打开 Remove Lighting，免得烘焙进去的高光和引擎光照打架。</li>
+<li>在 Rigging 里选 Humanoid，骨架预设选 UE5 Mannequin。正是这个选择让你以后省掉重定向。</li>
+<li>至少预览一个有真实动作的动画，留意塌肩、反膝和衣服穿模。</li>
+<li>导出为带骨架的 FBX，动画保持原地（in place）。</li>
+</ul>
+<p>在虚幻里把 FBX 导入单独的文件夹，确认它以 Skeletal Mesh 形式进来。之后的动画文件，选已有骨架、只导入动画。打开网格体和每个动画，检查比例、朝向、材质和关节，然后再让角色靠近你的关卡。接着：</p>
+<pre><code>/unreal-mcp Replace the default mannequin with the skeletal mesh in
+/Game/Characters/Hero. Keep the current input, movement, camera,
+Player Start and route. Build an Animation Blueprint from that mesh's
+own animations: idle, walk or run by speed, and jump.
+If the animations can't be used without retargeting, stop and explain
+what is needed. Don't force incompatible assets.
+Report every asset you changed and give me a Play checklist:
+idle, walk, run, jump, turn.</code></pre>
+<p class="caption">（大意：用 /Game/Characters/Hero 的骨骼网格体替换默认人偶，保留输入、移动、镜头、起点和路线；用它自带的动画建动画蓝图：待机、按速度走或跑、跳；若不重定向就用不了，停下说明需要什么，不要硬塞不兼容的资产。）</p>
+<p><strong>分小批装点关卡。</strong>导入素材包，然后一次一个区域替换灰盒：“把村墙和塔换成素材包里的件，保持位置和大门宽度。”接着是植被，“围着道路、不压在路上，给第三人称镜头留出空间”，然后是灯光，再然后是声音。类魂作者发现第一版地牢对角色来说大得离谱，用一个提示就整体缩放了。所以要尽早拿一切和人偶的身高比一比。</p>
+<p>零散的树、石头和草，虚幻的程序化系统（PCG）是对的工具，也正是 Puget 测试翻车的地方。此后情况有变：Epic 更新后的 City Sample 注册了一个教代理搭 PCG 图的技能。你的项目有没有，得先问：</p>
+<pre><code>/unreal-mcp List the agent skills registered in this project. If one
+covers PCG graph generation, load it and tell me what it lets you do.
+Change nothing yet.</code></pre>
+<pre><code>/unreal-mcp Scatter trees, rocks and grass with a PCG graph, keeping
+the path and the gate clear. If you can't build or edit a real PCG
+graph here, stop and say so. Don't place static meshes by hand instead.</code></pre>
+<p class="caption">（大意：先列出项目里注册的代理技能，若有覆盖 PCG 的就加载并说明能做什么，暂不改动；再用 PCG 图撒树、石、草，避开道路和大门；若做不了真正的 PCG 图就停下说明，不要改成手摆静态网格体。）</p>
+<p>如果做不到，就自己建一个空的 PCG 图，让 Claude 在里面干活。这正是 Puget 得出的教训：给它一个可以扩展的结构。</p>
+<p><strong>闸门：</strong>角色能待机、走、跑、跳、转身，不滑步、不突然变回 T 字姿势，装饰物不挡路也不挡镜头。提交。</p>
+
+<h3>测试</h3>
+<p>测试是原型变成可信之物的地方，分四层：</p>
+<ol>
+<li><strong>工具结果。</strong>Claude 读取每次调用的状态。你在提示里要求它这么做，来保证这一点。</li>
+<li><strong>看一眼。</strong>插件的编辑器工具包括截图、镜头控制和日志检查。Puget 的评测者看着模型给关卡截图来评判自己的修改。每批改动后都要一张截图，外加 Output Log 里的新错误。</li>
+<li><strong>亲手玩。</strong>永远是你来。类魂视频里模型自己打了一遍战斗，但那用的是另一个插件。用 Epic 的插件时别默认它能做到：问 Claude 游戏运行时它能观察到什么，亲手过一遍的事你来做。</li>
+<li><strong>自动化测试。</strong>插件能发现、运行和检查 C++ 自动化测试。如果项目里有，“运行背包系统的自动化测试并总结失败项”就是个实打实的提示。</li>
+</ol>
+<p><strong>最后一遍</strong></p>
+<p>在宣布切片完成前，从开局一路玩到胜利，检查那些只在完整流程里才暴露的问题：</p>
+<ul>
+<li>镜头不穿墙、不穿树、不穿塔</li>
+<li>走和跑时脚不滑</li>
+<li>出不了地图，也不会卡在道具之间</li>
+<li>胜利、死亡和重开都能用，顺序任意</li>
+<li>最热闹的地方帧率稳得住</li>
+<li>完整跑一遍后 Output Log 里没有新错误</li>
+</ul>
+<p>别跳过那些不起眼的结局。Boss 战测试里一切都正常，直到 Boss 死了，布娃娃物理严重抽搐。</p>
+<p><strong>怎么报 bug</strong></p>
+<p>Puget 的操作被弄坏的那次测试暴露了陷阱：评测者只能说“还是不行”，模型又花了十五分钟、声称修好了，结果什么都没变。一份有用的报告要有步骤、预期结果、实际结果，以及一条“先找原因、再改任何东西”的指令：</p>
+<pre><code>/unreal-mcp Bug: after the enemy dies, pressing R does nothing.
+Steps: Play, kill the enemy, press R.
+Expected: the level reloads.
+Actual: nothing happens and the Output Log shows no message.
+Read the Output Log and the restart Blueprint first and tell me
+the cause. Then fix only that, and tell me what you changed.</code></pre>
+<p class="caption">（大意：敌人死后按 R 没反应；步骤、预期、实际；先读 Output Log 和重开蓝图告诉我原因，再只修那一处并告诉我改了什么。）</p>
+<p>两次尝试都失败，就停。回滚到上一个提交，拆成更小的块重新问，或者只为这一个任务把投入度调高一档。在两次失败的修复上再叠第三次，项目就是这样变得无法挽回的。</p>
+
+<h3>时间与成本</h3>
+<p>这套流程诚实的代价是等待。Puget 的评测者发现，每个请求 5 到 15 分钟，打断了“改、测、调”的惯常节奏；Boss 战作者那半天大多在看进度条。规划时就绕着它来：排一批任务，去干别的，回来再检查。</p>
+<p>另一项代价是用量上限。Opus 5.5 的 API 价格是每百万输入 token 4 美元、每百万输出 token 20 美元，长时间的引擎会话很快就烧完套餐额度。Puget 7 月的测试里，一上午的小实验用掉了团队套餐每周额度的约 15%。Boss 战作者没做完额度就用光了。最极端的例子，一位开发者 36 小时的多人 RPG 构建用掉了最大套餐整整一周的额度，按 API 价格约合 2,400 美元。</p>
+<ul>
+<li><strong>停在 medium。</strong>有一篇评测测了同一个难题：low 约 0.55 美元，medium 约 1.34 美元，max 约 5.98 美元。为某个顽固问题调高一次，然后再调回来。</li>
+<li><strong>把需求一次写好。</strong>一份清楚的规格，比更高的投入度更省钱。</li>
+<li><strong>给实验定时限。</strong>事先决定一个任务最多给多久，到点就回滚、手工做。</li>
+<li><strong>五分钟的活自己干。</strong>挪一个 Actor、改一个数值，手动比写提示快。</li>
+</ul>
+
+<h3>速查卡</h3>
+<ol>
+<li>安装 Unreal Engine 5.8，建 Third Person 项目，纳入版本控制</li>
+<li>启用 ModelContextProtocol 和 AllToolsets，重启，运行 ModelContextProtocol.StartServer，打开 Auto Start Server</li>
+<li>运行 ModelContextProtocol.GenerateClientConfig ClaudeCode</li>
+<li>在 Claude Code 里：<code>/plugin install unreal-engine-skills-for-claude-code@claude-plugins-official</code></li>
+<li>在项目文件夹里用 Opus 5.5、medium 投入度启动 Claude Code。检查 <code>/mcp</code>，再发一个只读提示</li>
+<li>提交。然后按顺序构建：灰盒关卡、规则、敌人与战斗、外观</li>
+<li>一个提示一个系统，带完成线、“不许动”清单、报告，且不许悄悄绕路</li>
+<li>每批之后：结果、截图、日志，然后亲手玩。每道闸门都提交</li>
+<li>报 bug 要有步骤、预期和实际。两次修复失败就回滚</li>
+<li>最后完整通关一遍：镜头、碰撞、滑步、重开、帧率</li>
+</ol>
+<p>这一切最小的有用版本，一个晚上就够：接上编辑器，搭灰盒，加上三颗球和胜利提示，从头到尾玩一遍你自己的关卡。之后的一切都是同一个循环，只是野心更大。</p>
+
+<h3>评论区摘录</h3>
+<ul>
+<li>@fin3wil：大多数人会跳过的那条规则，是每批之后亲手试玩。Opus 在编辑器里执行清晰指令很快，但它没法告诉你游戏手感对不对，那是你的活。连续两次修复失败＝回滚到上个提交。</li>
+<li>@anstapnever：加速你懂的工作，而不是填补你不懂的空白。</li>
+<li>@TheTurnProject：我在 Unity 里用同样的流程做东西，还在灰盒阶段但进展不错；担心的是装点、素材和特效阶段。</li>
+<li>作者本人在帖串里只回复了几条致谢，没有补充正文内容。</li>
+</ul>
+
+<h2>启发</h2>
+<ul>
+<li><strong>“做完”要能被检查：</strong>每个提示都附完成线、不许动清单与报告要求，本质上是给代理写验收标准。</li>
+<li><strong>闸门 + 提交：</strong>把大目标切成可玩、可回滚的小切片，每道闸门由人亲手玩过才放行。</li>
+<li><strong>禁止静默绕路：</strong>代理最危险的失败不是报错，而是悄悄换了一种做法还说“完成了”。</li>
+</ul>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原作者：rewind（<a href="https://x.com/rewind02" rel="noopener">@rewind02</a>）。原文：<a href="https://x.com/rewind02/status/2107063404691132663" rel="noopener">https://x.com/rewind02/status/2107063404691132663</a>。本页为作者本人 X 长文的中文全译；原文配图版权归作者及相关权利人所有，本页未转载。文中提到的 Unreal Engine、Claude、Tripo、NeoStack 等为各自权利人的商标。如需移除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/rewind02/status/2107063404691132663" rel="noopener">x.com/rewind02/status/2107063404691132663</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
