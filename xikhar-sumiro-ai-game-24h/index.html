@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sumiro：24 小时用 AI 做出一款水墨风 3D 网页游戏（原帖串全译 + 导读）</title>
+<meta name="description" content="Shikhar @xikhar 用 Opus 5.5 + Flux 3 Max + GPT Image + Tripo + Blender + Three.js，在约 24 小时内做出水墨风 3D 解谜跑酷网页游戏 Sumiro。六步流程：生成参考视频 → Blender 重建场景放进 Three.js → GPT Image 四视图 + Tripo 出角色 → 试玩 → 概念图扩展关卡 → 迭代修 bug。原帖串全文中译，附作者回复与核实。" />
+<meta property="og:image" content="images/cover.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全译</span><time datetime="2026-11-04">2026.11.04</time></p>
+<h1 class="za-title">Sumiro：24 小时用 AI 做出一款水墨风 3D 网页游戏</h1>
+<p class="za-sub" lang="en" data-za-gen>I made a full original game in 24 hours using AI</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @xikhar</span><span>收录 · 2026-11-04</span><span><a href="https://x.com/xikhar/status/2117776295534997818" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原帖串：<a href="https://x.com/xikhar/status/2117776295534997818" rel="noopener">Shikhar @xikhar</a>（2026-11-04 08:29 UTC+8；截至 17:40 约 26.4 万浏览 / 3,448 赞 / 3,934 收藏）· 作者本人帖串，全文中译如下 · 试玩：<a href="https://xikhar.github.io/sumiro" rel="noopener">xikhar.github.io/sumiro</a></p>
+<img class="cover" src="images/play.webp" alt="Sumiro 标题界面：水墨山水中戴斗笠的旅人（作者帖中截图）" loading="lazy"></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><article>
+<h2>导读</h2>
+<p><strong>Sumiro</strong> 是一款在浏览器里运行的水墨风 3D 游戏：戴斗笠的旅人在云雾山间解谜、跑酷、平台跳跃，随章节推进遭遇不同敌人（标题界面可见「第四章：静钟寺，卷轴 1/12」）。作者 Shikhar（@xikhar，简介「用 AI 做酷东西 · 3D / 游戏」）称整款游戏在约 24 小时内完成，技术栈为 <strong>Opus 5.5 + Flux 3 Max + GPT Image + Tripo + Blender + Three.js</strong>，并把流程拆成六步公开。</p>
+<p>流程的关键是<strong>「先有一段视频，再把视频变成游戏」</strong>：用视频模型生成一段参考片，作为画风、世界和角色的唯一基准；再由 Claude Code 里的多个代理并行在 Blender 中重建场景、放进 Three.js；角色则从视频截图出发，经 GPT Image 四视图 → Tripo 一键建模/贴图/绑骨 → 由 Opus 加布料物理与动画。作者说灵感来自 @OdinLovis 的 Video2Game。</p>
+<p>作者在回复里补充：花费约为 Claude Ultra 套餐额度的 20%，视频生成用的是 fal 近期的免费额度，Tripo 用了「几百点数」；帖中演示视频是让 Claude 操控角色录的，所以动作略僵；不打算商业化，「只是实验 AI 生成工作流」；选 Three.js 而非虚幻引擎，是因为画面较简单、便于网页分享。</p>
+<p class="warn">⚠️ 核实：「24 小时」「20% 额度」「几百点数」均为作者自报，无法独立验证。Opus 5.5、Flux 3 Max 等模型名照录原帖。首帖称「完整流程与提示词见下」并标 (1/7)，但抓取到的帖串只有第 1–6 步，<strong>未见公开的提示词全文</strong>。作者另提醒浏览器需开启 GPU 加速，尚未在不同浏览器测试。试玩站点 xikhar.github.io/sumiro 可访问（200），但未找到公开源码仓库或许可证，因此本页不转载游戏代码与素材，仅用作者帖中配图。</p>
+
+<h2>原帖串全文中译</h2>
+<h3>1/7</h3>
+<p>我用 AI 在 24 小时内做出了一款完整的原创游戏。</p>
+<p>技术栈：Opus 5.5 + Flux 3 Max + GPT Image + Tripo + Blender + Three.js</p>
+<p>现在人人都能做游戏了。完整工作流帖串和提示词见下：</p>
+<p class="caption">（原帖附 97 秒演示视频，请至原帖观看）</p>
+<h3>第 1 步：生成一段视频</h3>
+<p>这段视频是在 @fal 上用 Flux 3 Max 做的。它是一切的参考：画面观感、世界、角色。</p>
+<p>这个项目的灵感来自 @OdinLovis 的 Video2Game。</p>
+<p>所用的参考视频：（见原帖）</p>
+<h3>第 2 步：搭建世界</h3>
+<p>对视频截图，在 Blender 里重建素材，放进 @threejs。</p>
+<p>在 Claude Code 中使用动态工作流，让多个代理并行搭建和检查。</p>
+<figure><img src="images/world.webp" alt="第 2 步配图：在 Three.js 中重建的场景" loading="lazy"><figcaption>第 2 步配图（作者帖中图片）</figcaption></figure>
+<h3>第 3 步：制作角色</h3>
+<p>截下他的画面，用 GPT Image 生成 4 张侧视图，再用 @tripoai 转成 3D 模型，让 Opus 加上布料物理和动画。</p>
+<h3>第 4 步：测试玩法</h3>
+<p>先玩一玩原型，确认能跑通，再继续往下做。</p>
+<h3>第 5 步：让代理搭出完整世界</h3>
+<p>首先，GPT Image 沿用现有画风为每个关卡生成概念图，每关最多 8 张。</p>
+<figure><img src="images/concept1.webp" alt="第 5 步关卡概念图一" loading="lazy"><img src="images/concept2.webp" alt="第 5 步关卡概念图二" loading="lazy"><figcaption>第 5 步配图：GPT Image 生成的关卡概念图（作者帖中图片）</figcaption></figure>
+<h3>第 6 步：把这些场景全部搭出来，然后迭代</h3>
+<p>玩一遍，报告 bug，让代理去修、去改进物件。循环往复。</p>
+<p>每一张概念图都变成一个可以玩的 3D 关卡。</p>
+<h3>作者后续补充（同一帖串）</h3>
+<ul>
+<li>解谜、跑酷和平台跳跃是核心玩法。但随着游戏推进，你会和不同的敌人战斗，做更复杂的事。</li>
+<li>可以在这里试玩：<a href="https://xikhar.github.io/sumiro" rel="noopener">xikhar.github.io/sumiro</a></li>
+<li>另外，帖子里的演示视频是 Claude 录的，所以是机器人在玩，看起来有点僵；真人玩起来灵活得多。</li>
+</ul>
+<h3>作者对评论的回复（节选）</h3>
+<ul>
+<li>（问耗时与成本）大约一天，就像我说的。用了 Claude Ultra 套餐的 20%。fal 最近送了免费视频生成，我就用了。角色在 Tripo 上一次完成生成 + 贴图 + 绑骨（大概几百点数）。</li>
+<li>（问为何不用虚幻）我以前用过虚幻引擎，用它会更久。这款游戏画面大多比较简单，也方便在网页上分享。</li>
+<li>（问是否商业化）不会。如果打算变现或正式发行，我肯定会花更多时间。这是为了实验 AI 生成工作流。</li>
+<li>是的，我还没来得及在不同浏览器和配置上测试。／确保浏览器能用上 GPU。</li>
+<li>（有人提到 Claude 的某工具）对，最近才发现。这是我第一次用它，没想到 Claude 能一次就把动画和一个像样的可玩游戏做出来。</li>
+</ul>
+
+<h2>启发</h2>
+<ul>
+<li><strong>视频即设计文档：</strong>一段生成视频同时锁定美术、世界与角色，后续每一步都「对照截图」，减少风格漂移。</li>
+<li><strong>2D → 3D 的桥：</strong>GPT Image 多视图 + Tripo 建模绑骨，是目前常见的低成本角色管线（同库「余温 Hi3D 海战」用的是类似思路）。</li>
+<li><strong>代理并行 + 人来试玩：</strong>人负责玩和报 bug，代理负责修；可玩性验证放在扩展关卡之前。</li>
+</ul>
+</article></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原作者：Shikhar（<a href="https://x.com/xikhar" rel="noopener">@xikhar</a>）。原帖：<a href="https://x.com/xikhar/status/2117776295534997818" rel="noopener">https://x.com/xikhar/status/2117776295534997818</a>。本页为作者本人帖串的中文翻译与导读，配图来自作者帖子；游戏 Sumiro 版权归作者所有，本页不转载其代码或素材。如需移除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/xikhar/status/2117776295534997818" rel="noopener">x.com/xikhar/status/2117776295534997818</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

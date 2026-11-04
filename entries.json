@@ -1,5 +1,20 @@
 [
   {
+    "slug": "xikhar-sumiro-ai-game-24h",
+    "title": "Sumiro：24 小时用 AI 做出一款水墨风 3D 网页游戏",
+    "desc": "Shikhar @xikhar 帖串全译：Opus 5.5 + Flux 3 Max + GPT Image + Tripo + Blender + Three.js，约 24 小时做出水墨风 3D 解谜跑酷网页游戏 Sumiro。六步流程：生成参考视频 → Blender 重建场景进 Three.js → GPT Image 四视图 + Tripo 出角色、Opus 加布料与动画 → 试玩 → 概念图扩展关卡 → 代理迭代修 bug。附作者回复（成本、为何选 Three.js）与核实：时间与成本为自报，提示词未公开，游戏无公开源码。",
+    "description": "水墨风 3D 网页游戏 Sumiro 的 24 小时 AI 制作流程：视频参考 → Three.js 场景 → Tripo 角色；帖串全译 + 导读。",
+    "source": "X · @xikhar",
+    "date": "2026-11-04",
+    "type": "全译",
+    "subtitle": "I made a full original game in 24 hours using AI",
+    "original_url": "https://x.com/xikhar/status/2117776295534997818",
+    "spine": "AI水墨游戏",
+    "summary": "24 小时用 AI 做出水墨风 3D 网页游戏",
+    "kind": "教程",
+    "by": "Shikhar"
+  },
+  {
     "slug": "leonxlnx-casa-ocaso",
     "title": "Casa Ocaso：浏览器里实时渲染的悬崖日落客厅",
     "desc": "Leonxlnx/casa-ocaso 项目导读：three.js r187 WebGPU + TSL，在浏览器里实时复刻黄金时刻的悬崖海景客厅；作者称由 Claude Code（Opus 5.5）对照五张参考渲染图搭成，窗外可切换六张真实 HDR 天空。原理拆解（真实全景 + 着色器补海、L2 SH 光探针烘焙、SDF 软家具、程序化石材、CIELAB 数值拟色、TAAU 动态分辨率）、与同作者 Athenaion 对比、核实与启发。MIT，附 README 全文中文翻译。",
