@@ -1,5 +1,20 @@
 [
   {
+    "slug": "leonxlnx-casa-ocaso",
+    "title": "Casa Ocaso：浏览器里实时渲染的悬崖日落客厅",
+    "desc": "Leonxlnx/casa-ocaso 项目导读：three.js r187 WebGPU + TSL，在浏览器里实时复刻黄金时刻的悬崖海景客厅；作者称由 Claude Code（Opus 5.5）对照五张参考渲染图搭成，窗外可切换六张真实 HDR 天空。原理拆解（真实全景 + 着色器补海、L2 SH 光探针烘焙、SDF 软家具、程序化石材、CIELAB 数值拟色、TAAU 动态分辨率）、与同作者 Athenaion 对比、核实与启发。MIT，附 README 全文中文翻译。",
+    "description": "three.js WebGPU 实时渲染的悬崖日落客厅：真实全景 + 程序化家具石材，Claude Code 对照参考图搭成；导读 + README 全译。",
+    "source": "Leonxlnx/casa-ocaso（GitHub）",
+    "date": "2026-11-04",
+    "type": "导读",
+    "subtitle": "Real-time WebGPU recreation of a golden-hour cliffside living room in three.js",
+    "original_url": "https://github.com/Leonxlnx/casa-ocaso",
+    "spine": "实时悬崖日落客厅",
+    "summary": "WebGPU 实时渲染海景客厅，参考图拟色",
+    "kind": "项目",
+    "by": "Leon Lin"
+  },
+  {
     "slug": "dankoe-most-lucrative-ai-business",
     "date": "2026-11-04",
     "type": "翻译",

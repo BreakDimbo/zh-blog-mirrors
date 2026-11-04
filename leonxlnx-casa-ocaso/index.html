@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Casa Ocaso：浏览器里实时渲染的悬崖日落客厅（项目导读）</title>
+<meta name="description" content="Leonxlnx/casa-ocaso 项目导读：three.js r187 WebGPU 渲染器 + TSL 节点材质，在浏览器里实时复刻一间黄金时刻的悬崖海景客厅；作者称由 Claude Code（Opus 5.5）对照五张参考渲染图搭成，窗外可切换六张真实 HDR 天空全景。原理拆解（真实全景 + 着色器补海、L2 SH 光探针烘焙、SDF 软家具、程序化石材、按参考图数值拟色）、与同作者 Athenaion 对比、核实与启发；MIT，附 README 全文中文翻译。" />
+<meta property="og:image" content="images/hero.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+<style data-za-legacy>
+/* page-specific components kept from the original page */
+.za-content .hero-tags .tag{margin-right:.35em}
+.za-content .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin:1.2rem 0}
+.za-content .shots figure{margin:0}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-04">2026.11.04</time></p>
+<h1 class="za-title">Casa Ocaso：浏览器里实时渲染的悬崖日落客厅</h1>
+<p class="za-sub" lang="en" data-za-gen>Real-time WebGPU recreation of a golden-hour cliffside living room in three.js</p>
+<p class="za-meta" data-za-gen><span>来源 · Leonxlnx/casa-ocaso（GitHub）</span><span>收录 · 2026-11-04</span><span><a href="https://github.com/Leonxlnx/casa-ocaso" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">仓库：<a href="https://github.com/Leonxlnx/casa-ocaso" rel="noopener">github.com/Leonxlnx/casa-ocaso</a> · 作者 Leon Lin（<a href="https://github.com/Leonxlnx" rel="noopener">GitHub @Leonxlnx</a>）· 代码 MIT 许可 · 同作者另见本站 <a href="../leonxlnx-athenaion/">Athenaion 代码古希腊世界</a> 与 <a href="../shanshui/">Shanshui 代码水墨山水</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><main>
+<div class="related-guide"><strong>一句话：</strong>一间建在悬崖上的弧形落地窗客厅——圆形天窗、壁炉、奶油色布克雷沙发、洞石地面，窗外夕阳落在海上——不是视频，也不是离线渲染图，而是 three.js 用 WebGPU 在浏览器里<strong>实时</strong>画出来的，可以拖动视角、在屋里走动，还能把窗外换成六种真实天空。作者说是用 Claude Code 对着五张参考渲染图做出来的。</div>
+
+<p class="hero-tags"><span class="tag">★ 8 stars</span> <span class="tag">1 fork</span> <span class="tag">JavaScript</span> <span class="tag">MIT（代码）</span> <span class="tag">three.js r187</span> <span class="tag">WebGPU / TSL</span> <span class="tag">1 个提交</span></p>
+<p class="caption">数据通过公开 GitHub API 获取，时间 2026-11-04 15:45（UTC+8）。仓库建于 2026-11-04 07:20（UTC+8），只有 1 个整体提交（fcc3379），没有 Releases，也没有在线演示站。本站计数：<code>src/</code> 下 30 个 JS 模块、9,531 行；<code>tools/</code> 下 30 个脚本（Python / Node / PowerShell）约 4,300 行；<code>public/</code> 素材约 147 MB（模型、纹理、六套天空全景与 GI 烘焙数据）。</p>
+
+<figure><img src="images/hero.webp" alt="实时渲染的悬崖客厅：左侧弧形抹灰墙上嵌着两道长条壁炉，中间是一张弧形奶油色布克雷沙发和圆形石茶几，头顶是圆形天窗，右侧整面弧形落地玻璃外是夕阳下的海面与远处岛屿" loading="lazy"><figcaption>主图：黄金时刻的客厅（作者仓库 <code>docs/hero.jpg</code>，依 MIT 许可转载，缩小并转为 WebP）。画面为实时渲染器的截图，不含任何真人。</figcaption></figure>
+
+<h2 id="what">它是什么</h2>
+<p>Casa Ocaso（西班牙语，“日落之家”）是一个<strong>实时 3D 室内场景</strong>，属于建筑可视化（archviz）一类：只有一个房间，但做到了“像效果图一样”的质感，并且能在浏览器里交互。技术栈是 three.js r187 的 <strong>WebGPU 渲染器</strong>与 <strong>TSL 节点材质</strong>（Three Shading Language，用 JS 写着色器节点），需要 Chrome / Edge 113+ 这类支持 WebGPU 的浏览器。</p>
+<p>作者 README 的原话：<q lang="en">Built with Claude Code (Opus 5.5) from five reference renders</q>（用 Claude Code（Opus 5.5）照着五张参考渲染图做出来）。这五张参考图<strong>不在仓库里</strong>——<code>.gitignore</code> 里写着“reference images (not ours to redistribute)”，所以外人无法对照原图检查还原度 ⚠️。</p>
+<p>能做的事：拖动环视、滚轮前后走、WASD 漫游；按 1–8 飞到预设机位（ref1–ref5 对应五张参考图的构图，另有天窗 oculus、露台 terrace、走廊 corridor）；用 <code>?view=</code> 把窗外换成金色海面、黄金时刻、海雾、黄昏、悬崖清晨、夜晚六种天空。</p>
+
+<div class="shots">
+<figure><img src="images/shot_ref1.webp" alt="与主图同一客厅的另一机位：更广的视角，能看到天窗全貌、立柱旁的纱帘、右侧单人扶手椅和圆柱边几，夕阳在海面拉出一道金色光带" loading="lazy"><figcaption>机位 ref1：日落客厅全景</figcaption></figure>
+<figure><img src="images/detail_table.webp" alt="茶几特写：浅米色石材圆茶几表面有细微的石纹和一道斜切阴影，上面放着两本书、一只陶罐和一只小碗，下方是带波浪纹理的羊毛地毯" loading="lazy"><figcaption>细节：洞石茶几与簇绒地毯的程序化纹理</figcaption></figure>
+</div>
+<p class="caption">以上为作者仓库 <code>docs/</code> 中的渲染截图，依 MIT 许可转载并缩小、压缩为 WebP。README 提到的 45 秒展示短片在 <code>video/</code> 目录，该目录被 <code>.gitignore</code> 排除、没有进仓库，本站也未转载。</p>
+
+<h2 id="how">它是怎么做出来的</h2>
+<p>README 的“How it is built”一节写得很密。拆开来看，它的思路是：<strong>能用真实数据的地方用真实数据，用不了的地方用程序化生成去“接”上，然后用数值把颜色对齐参考图</strong>。</p>
+<h3>1. 窗外：真实全景 + 着色器补出一片海</h3>
+<p>窗外不是建模的，而是 Poly Haven 的六张 CC0 HDR 全景，先旋转到“太阳在参考图里的位置”，再切成 4K 立方体贴图（<code>tools/process_hdri.py</code>）。全景照片里太阳是过曝截断的，背景着色器会按实测的 HDR 光晕把太阳“补回来”，室内太阳光的颜色与强度也取自同一测量。最有意思的是“金色海面”这一视图：原片是海平面高度拍的海滩，作者只保留天空与地平线，<strong>地平线以下改由着色器画出从崖顶俯瞰的开阔海面</strong>——长峰涌浪、用菲涅尔反射原片自己的天空、GGX 太阳闪光带，再加上海湾里的岛屿和雾带（<code>src/world/islands.js</code>）。</p>
+<h3>2. 光：烘焙的探针 + 实时阴影</h3>
+<p>太阳用 VSM 软阴影；间接光用 <code>LightProbeGrid</code>（二阶球谐 L2 SH、两次反弹），每种天空各烘焙一份（<code>node tools/bake_gi.mjs</code>），切换天空时在两份之间插值。再叠上暖色 LED 灯带、带边缘感知降噪的 GTAO 环境光遮蔽、低而宽的泛光、ACES 色调映射和带柔和高光肩部的显示空间调色。</p>
+<h3>3. 颜色：拿数字对齐参考图</h3>
+<p>README 说颜色、明暗比与调色是<strong>按参考图数值拟合</strong>出来的：在对应区域比较 CIELAB 色值、比较色调分布、做反照率“去光照”。拟合工具放在 <code>.tools/colorfit</code>，这个目录同样被 gitignore，仓库里看不到 ⚠️。这和同作者 Athenaion 的“亮度百分位目标”是同一路数：把“像不像”变成可以测量的数字，交给 agent 反复迭代。</p>
+<h3>4. 软家具：SDF + 行进立方体</h3>
+<p>沙发、躺椅、餐椅、毯子这类软体，是在 Python 里用有向距离场（SDF）描述形状，再用 marching cubes 网格化（<code>tools/assets/*.py</code>，公共工具在 <code>sdf.py</code>），法线取自 SDF 本身所以很圆润，环境光遮蔽也由 SDF 算好写进顶点色；毯子做了布料模拟。布克雷面料（bouclé，一种毛圈纱）是一张烘焙好的卷曲毛圈纹理，配一个“包裹式”的织物光照模型，让低角度的夕阳在曲面上柔和地衰减。成品以 <code>.glb</code> 放在 <code>public/models/</code>。</p>
+<h3>5. 石材与抹灰：程序化噪声</h3>
+<p>石灰抹灰墙、石灰岩壁炉（<code>src/scene/limestone.js</code>）和哑光洞石都是程序化材质，用一个浮点精度的平滑浮雕噪声（<code>materials.js</code> 里的 <code>reliefGradient</code>），并随屏幕上的采样尺度淡出，避免远处闪烁；羊毛地毯用生成的簇绒图。地面是抛光奶油色洞石板，带模糊的平面反射。</p>
+<h3>6. 性能：动时降分辨率，停下就变清晰</h3>
+<p>交互时以动态分辨率渲染并用 TAAU 重建，镜头一停就逐步提升到全分辨率；截图与视频走 <code>?q=ultra</code> 的全分辨率 TRAA + GTAO 路径。</p>
+<h3>7. 短片：离线逐帧渲染</h3>
+<p>45 秒的穿梭短片是从实时场景逐帧离线渲染的：按音乐节拍切镜头的相机路径、4K 分块渲染（每块重开浏览器、带内存/显存守护、可续跑），再在线性光空间平均子帧做 180° 快门运动模糊，最后加清晰度、光晕（halation）、胶片肩部、暗角、横向色差、颗粒与 2.2:1 黑边，编码成 H.264。</p>
+
+<h2 id="run">快速上手</h2>
+<pre><code>git clone https://github.com/Leonxlnx/casa-ocaso
+cd casa-ocaso
+npm install
+npm run dev
+# 打开 http://127.0.0.1:5173 （需 WebGPU 浏览器）
+# 例：?shot=ref1&amp;view=dusk  或  ?q=ultra</code></pre>
+<p>注意：仓库带了约 147 MB 的素材，克隆会比较慢；首次加载要编译着色器，作者说需要几秒钟。本站未在 GPU 环境实际运行 ⚠️。</p>
+
+<h2 id="compare">与同作者 Athenaion 对比</h2>
+<table>
+<tr><th></th><th><a href="../leonxlnx-athenaion/">Athenaion</a></th><th>Casa Ocaso</th></tr>
+<tr><td>题材</td><td>一整座古希腊世界（室外、超大尺度）</td><td>一间客厅（室内、近距离）</td></tr>
+<tr><td>渲染</td><td>离线累积采样出 4K 静帧</td><td>浏览器内实时交互（WebGPU）</td></tr>
+<tr><td>素材</td><td>零外部素材，全部程序化</td><td>窗外用真实 CC0 全景与纹理，家具与石材自己生成</td></tr>
+<tr><td>参考图</td><td>9 张 AI 参考图，附对比图</td><td>5 张参考渲染图，未随仓库发布</td></tr>
+<tr><td>规模</td><td>168 模块 / 约 4.4 万行</td><td>30 模块 / 约 9,500 行 + 30 个工具脚本</td></tr>
+<tr><td>过程披露</td><td>详细写了多 agent 分工与流程</td><td>只写“用 Claude Code 做”，多 agent 编排脚本被 gitignore（<code>tools/*_workflow.js</code>）</td></tr>
+</table>
+
+<h2 id="take">启发</h2>
+<ul>
+<li><strong>“真实 + 生成”混合比纯生成更省力。</strong>天空直接用照片，只在照片不够用的地方（海平面以下）用着色器补，比从零造天空更快也更真。</li>
+<li><strong>让 agent 能量化“像不像”。</strong>CIELAB 区域对色、色调分布比较，把审美目标转成数字，agent 才能自己闭环迭代。</li>
+<li><strong>重活放到离线工具里。</strong>SDF 家具、GI 探针、全景切割都预先烘焙好，浏览器只负责实时那一部分。</li>
+<li><strong>工具链同样是作品。</strong>无头 WebGPU 截图、GPU 锁排队、参考图对比堆栈——这些让多个 agent 能并行“渲染—比对—修正”。</li>
+</ul>
+
+<h2 id="notes">⚠️ 核实与说明</h2>
+<ul>
+<li>⚠️ “用 Claude Code（Opus 5.5）构建”为作者自报；耗时、agent 数量等未披露，无法核实。</li>
+<li>⚠️ 五张参考渲染图、<code>.tools/colorfit</code> 拟色工具、多 agent 编排脚本、45 秒短片都不在仓库内，还原度与流程无法独立核对。</li>
+<li>⚠️ 本站未在支持 WebGPU 的 GPU 上实际运行，性能（动态分辨率、TAAU）与“首次加载几秒”均为作者描述。</li>
+<li>许可：<code>LICENSE</code> 正文为 MIT（Copyright (c) 2026 Leon Lin），末尾附注第三方素材另有许可；GitHub API 因此把许可识别为 “Other / NOASSERTION”。<code>public/</code> 中的全景与纹理来自 Poly Haven、ambientCG，作者标为 CC0；短片配乐 Scott Buckley《The Great Sea》为 CC-BY 4.0，未随仓库发布。（核于 2026-11-04）</li>
+<li>本页的统计与计数均基于 2026-11-04 的提交 fcc3379。</li>
+</ul>
+
+<h2 id="readme">附录：README 全文中文翻译</h2>
+<p class="caption">译自 <a href="https://github.com/Leonxlnx/casa-ocaso" rel="noopener">Leonxlnx/casa-ocaso</a> README（提交 fcc3379，2026-11-04），依 MIT 许可翻译转载。代码、命令与文件名保留原文。</p>
+<h3>Casa Ocaso</h3>
+<p>一间黄金时刻悬崖客厅的实时 3D 再现，在浏览器中运行，使用 three.js r187（WebGPU 渲染器、TSL 节点材质）。由 Claude Code（Opus 5.5）依据五张参考渲染图构建；可以在六张真实天空全景之间切换玻璃外的景色。</p>
+<h4>运行</h4>
+<pre><code>npm install
+npm run dev</code></pre>
+<p>在支持 WebGPU 的浏览器（Chrome / Edge 113+）中打开 http://127.0.0.1:5173。建议使用独立显卡或较新的集成显卡；首次加载会花几秒钟编译着色器。</p>
+<p>URL 参数：<code>?shot=ref1..ref5|oculus|terrace|corridor</code>、<code>?view=golden-hour|sea-fog|dusk|cliff-morning|beach-sunrise|night</code>、<code>?q=ultra</code>（全分辨率 TRAA + GTAO 路径）、<code>?ao=0</code>。</p>
+<h4>操作</h4>
+<table>
+<tr><th>输入</th><th>动作</th></tr>
+<tr><td>拖动</td><td>环视</td></tr>
+<tr><td>滚轮 / 双指捏合</td><td>向前 / 向后走</td></tr>
+<tr><td>右键拖动或 Shift 拖动</td><td>横移</td></tr>
+<tr><td>W A S D、方向键、Q / E</td><td>行走、转向、降低 / 升高</td></tr>
+<tr><td>Ctrl + 滚轮</td><td>缩放（视场角）</td></tr>
+<tr><td>1 – 8</td><td>飞到某个机位</td></tr>
+<tr><td>H</td><td>隐藏界面</td></tr>
+</table>
+<h4>它是怎么构建的</h4>
+<ul>
+<li><strong>玻璃之外</strong>——来自 Poly Haven（CC0）的真实 HDR 全景，旋转到让每个太阳都位于参考图中太阳所在的位置，以线性白点切成 4K 立方体面（<code>tools/process_hdri.py</code>）。背景着色器用实测的 HDR 光晕恢复被截断的太阳；太阳光的颜色和强度也来自同一测量。对于海平面高度拍摄的海滩全景，天空与地平线保留照片，地平线以下由着色器绘制从崖顶看到的开阔海面（长峰涌浪、以菲涅尔反射照片自身的天空、GGX 太阳闪光带），海湾中还有岛屿与雾带（<code>src/world/islands.js</code>），并按照片的雾霭进行渐变融合。</li>
+<li><strong>光照</strong>——VSM 柔和太阳阴影 + 按视图预烘焙的 <code>LightProbeGrid</code>（L2 SH，2 次反弹）（<code>node tools/bake_gi.mjs</code>），在切换视图时混合；暖色 LED 灯槽；带边缘感知降噪的 GTAO；宽而低的泛光；ACES；带柔和高光肩部的显示空间调色。颜色、光照平衡与调色均按参考图数值拟合（<code>.tools/colorfit</code>：匹配区域的 CIELAB、色调分布、反照率去光照）。</li>
+<li><strong>软家具</strong>——用行进立方体网格化的有向距离场（<code>tools/assets/*.py</code>，共享工具 <code>tools/assets/sdf.py</code>），平滑的 SDF 法线，写入顶点色的 SDF 环境光遮蔽，经布料模拟的毯子。布克雷 = 一张烘焙的卷曲毛圈纹理（<code>public/textures/boucle/loops.jpg</code>）配合包裹式织物光照模型，使低角度的太阳在形体上柔和衰减。</li>
+<li><strong>石材与抹灰</strong>——程序化、随采样尺度淡出：平滑的浮点精度浮雕噪声（<code>src/scene/materials.js</code> 中的 <code>reliefGradient</code>），用于石灰抹灰、石灰岩壁炉（<code>src/scene/limestone.js</code>）和哑光洞石；羊毛地毯使用生成的簇绒贴图。</li>
+<li><strong>地面</strong>——抛光的奶油色洞石板，带模糊的平面反射。</li>
+<li><strong>性能</strong>——交互模式以动态分辨率渲染并用 TAAU 重建，相机静止时提升到全分辨率；截图使用 <code>ultra</code> 路径。</li>
+</ul>
+<h4>工具</h4>
+<ul>
+<li><code>node tools/shoot.mjs ref1 ref2 "cam:x,y,z,yaw,pitch,fov:name"</code>——无头 WebGPU 截图</li>
+<li><code>powershell -File tools/gpu.ps1 shoot.mjs ...</code> / <code>bake_gi.mjs &lt;view&gt;</code>——同上，但加了 GPU 锁，让并行的工作进程排队使用 GPU</li>
+<li><code>python tools/compare.py .tools/shots ref1</code>——参考图与渲染图的对比堆栈（请把你自己的参考图放到 <code>refs/ref1.png</code> … <code>refs/ref5.png</code>；原始参考图不属于本仓库）</li>
+<li>素材构建脚本（<code>tools/assets/*.py</code>、<code>tools/process_hdri.py</code>）需要 Python 3.11 及 numpy、scipy、opencv 和 trimesh；构建好的素材已在 <code>public/</code> 中。</li>
+</ul>
+<h4>短片</h4>
+<p><code>video/</code> 中 45 秒的穿梭短片是从实时场景逐帧离线渲染的：</p>
+<ol>
+<li><code>powershell -File tools/render_chunks.ps1</code>——相机路径 <code>.tools/video/path.json</code>（镜头切在音乐重拍上、变速、每个镜头的运动模糊子采样数）经 <code>tools/render_video.mjs</code> 以 4K 分块渲染，每块使用全新浏览器，并有内存 / 显存守护。可续跑。</li>
+<li><code>python tools/video_merge.py .tools/video/sub4k .tools/video/merged4k</code>——180° 快门运动模糊（子帧在线性光空间中平均）。</li>
+<li><code>python tools/video_finish.py .tools/video/merged4k .tools/video/final</code>——清晰度、光晕、胶片肩部、暗角、横向色差、颗粒、2.2:1 黑边；输出 4K 与 1080p。</li>
+<li><code>powershell -File tools/video_encode.ps1 -Frames .tools/video/final/1920x1080 -Out video/x.mp4</code>——淡入淡出、音乐、H.264 BT.709（<code>-Mode x</code> / <code>master</code> / <code>preview</code>）。</li>
+</ol>
+<h4>致谢</h4>
+<p>全景：Greg Zaal、Jarod Guest、Rico Cilliers——Poly Haven（CC0）。纹理：Poly Haven 与 ambientCG（CC0）。短片音乐：Scott Buckley《The Great Sea》——以 CC-BY 4.0 发布，www.scottbuckley.com.au（不包含在本仓库中）。</p>
+<h4>许可</h4>
+<p>代码：MIT，见 LICENSE。<code>public/</code> 中的第三方全景与纹理为 CC0。</p>
+<details><summary>LICENSE 原文</summary><pre><code>MIT License
+
+Copyright (c) 2026 Leon Lin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+Third-party assets in public/ keep their own licences: panoramas and textures from
+Poly Haven and ambientCG are CC0.
+</code></pre></details>
+</main></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/Leonxlnx/casa-ocaso" rel="noopener">Leonxlnx/casa-ocaso</a>，作者 Leon Lin（<a href="https://github.com/Leonxlnx" rel="noopener">GitHub @Leonxlnx</a>），代码 MIT 许可，Copyright (c) 2026 Leon Lin。README 译文与渲染截图（<code>docs/</code>，已缩小并转为 WebP）依 MIT 许可转载并保留版权与许可声明；短片与配乐未转载。统计取自公开 GitHub API（2026-11-04 15:45 UTC+8）。导读、原理拆解、对比与“启发”为本站整理。</p>
+<p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/Leonxlnx/casa-ocaso" rel="noopener">github.com/Leonxlnx/casa-ocaso</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
