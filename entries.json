@@ -1,5 +1,20 @@
 [
   {
+    "slug": "juneyaooo-rea-video",
+    "title": "rea-video：逐镜头逆向拆解一条视频是怎么做的",
+    "desc": "JuneYaooo/rea-video 项目导读：给 Claude Code / Codex 用的视频逆向拆解 skill + CLI。逐镜判断实拍、AI 视频、数字人、3D、代码模板、录屏等 10 类画面，拆字幕花字、剪辑节奏、人声/配乐/音效来源，帧率与 AIGC 标识等硬证据优先于看图，再按目标模型能力写复刻方案。附作者自测准确率解读与核实；仓库无 LICENSE 文件，仅导读与短句引用。",
+    "description": "视频逆向拆解工具：逐镜判断实拍 / AI / 3D / 代码渲染，拆声音与剪辑并给复刻方案；项目导读。",
+    "source": "JuneYaooo/rea-video（GitHub）",
+    "date": "2026-11-04",
+    "type": "导读",
+    "subtitle": "Reverse-engineer any video, shot by shot",
+    "original_url": "https://github.com/JuneYaooo/rea-video",
+    "spine": "视频逆向拆解",
+    "summary": "逐镜拆出视频是拍的、AI 生成的还是代码做的",
+    "kind": "项目",
+    "by": "JuneYaooo"
+  },
+  {
     "slug": "0xcodez-sunshower",
     "title": "Sunshower 狐の嫁入り：每一帧都由代码画出的 42 秒动画短片",
     "desc": "0xCodez/sunshower 项目导读：一部 42 秒的《机动警察》同人动画短片——被淹没的东京，警用机器人用手为翠鸟挡太阳雨。不用视频模型、图像模型或手绘帧，three.js 多通道管线模仿赛璐璐角色 + 水粉背景（Kuwahara 笔触、按材质 ID 描线、屏幕空间水面），一拍二动画，纯时间函数确定性渲染，Web Audio 合成配乐，打包成单个离线 HTML；附十镜头表、多智能体制作合同解读与核实。代码 MIT，附 README 全文中文翻译与许可证原文。",

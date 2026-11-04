@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rea-video：逐镜头逆向拆解一条视频是怎么做的</title>
+<meta name="description" content="JuneYaooo/rea-video 项目导读：给 Claude Code / Codex 用的视频逆向拆解 skill + CLI，逐镜头判断实拍 / AI / 3D / 代码渲染 / 录屏，拆字幕花字、剪辑与声音，并给出复刻方案。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-04">2026.11.04</time></p>
+<h1 class="za-title">rea-video：逐镜头逆向拆解一条视频是怎么做的</h1>
+<p class="za-sub" lang="en" data-za-gen>Reverse-engineer any video, shot by shot</p>
+<p class="za-meta" data-za-gen><span>来源 · JuneYaooo/rea-video（GitHub）</span><span>收录 · 2026-11-04</span><span><a href="https://github.com/JuneYaooo/rea-video" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/JuneYaooo/rea-video" rel="noopener">JuneYaooo/rea-video</a>（GitHub）· 作者 JuneYaooo · 本站导读，非翻译</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">rea-video 不生成视频，而是回答“这条视频是怎么做出来的”：把一条参考视频切成镜头，逐镜判断底层画面是实拍、AI 生成、3D、代码模板还是录屏，再拆出字幕花字、剪辑节奏和声音来源，最后按实拍 / AI / 代码三条路线写复刻方案。它以 agent skill 的形式交给 Claude Code、Codex 一类能跑命令的智能体来用。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库根目录没有 LICENSE 文件，GitHub 也未识别出许可证（2026-11-04 核）；仅 <code>pyproject.toml</code> 写有 <code>license = { text = "MIT" }</code>。在作者补上正式许可证文件之前，本站按“未明确授权”处理：只做导读，引用原文仅限短句，不转载 README 全文、案例截图与视频。案例素材里有真人出镜画面，也一律不转载。</div>
+
+<h2>一句话定位</h2>
+<p>仓库简介写的是“逆向一切视频：实拍口播、桌拍、AI 视频、3D、代码动效、混剪，逐镜拆出画面、花字、剪辑和声音是怎么做的，并给出复刻方案”。思路来自 <a href="https://github.com/morluto/rea" rel="noopener">REA（Reverse Engineer Anything）</a>：从现象追到实现，结论附证据。</p>
+
+<h2>它拆什么</h2>
+<ul>
+<li><strong>底层画面 10 类：</strong>实拍、AI 视频、数字人、3D 渲染、2D 动画、定格动画、代码模板渲染、录屏截图、静态图推拉、静帧。其中 2D 动画和定格动画工具测不出，要靠看图判断。实拍镜头还会看是否经过 AI 加工（换脸、对口型、风格化、换装、换背景）。</li>
+<li><strong>剪辑包装层：</strong>逐句字幕时间轴（可导出 SRT / ASS）、花字颜色描边与入场方式、贴纸 / 表情包 / 画中画的位置和时长，以及切点与节拍。</li>
+<li><strong>真实素材：</strong>区分“画面里嵌入的真实像素”（复刻时必须拿到原文件）和“AI / 3D 画面里出现的商品、人物”（复刻时要准备的参考图）。</li>
+<li><strong>声音：</strong>人声是真人还是 TTS，配乐是 AI 生成还是曲库、BPM 与调性，音效卡在哪个画面事件上。</li>
+<li><strong>实拍拍法：</strong>景别、机位、布光（README 称 12 种方案附器材）、调色风格。</li>
+</ul>
+
+<h2>怎么判断</h2>
+<ol>
+<li><strong>切镜头、分音轨：</strong>按镜头切开，用 UVR MDX-Net（onnxruntime，首次运行下载约 67 MB 模型）把声音拆成人声、配乐、音效。</li>
+<li><strong>取证据：</strong>测画面（帧率规律、噪点、是否整张图在推拉、文件里有没有 AIGC 标识）、看图（手指、文字、物理细节）、听声音（BPM、调性、唱还是说）。</li>
+<li><strong>综合判断：</strong>AIGC 标识、帧率这类硬证据优先于“看起来像”；几方冲突时标出来交给 agent 看图复核。SKILL.md 的核心原则是“确定不了就如实写‘待确认’”，宁可给出“倾向 AI 70%”也不编确定答案。</li>
+<li><strong>出复刻方案：</strong>按目标视频模型的实际能力分批——单次能生成多长、能否一次出多镜、能吃几张参考图。各家模型能力表放在 <code>rea_video/capabilities/</code>。</li>
+</ol>
+
+<h2>用法</h2>
+<p>在 agent 里说一句“安装 rea-video，然后拆解这条视频”即可；agent 会跑 <code>scripts/install_skill.sh</code> 装好 CLI 并读 SKILL.md。标准流程是 <code>rea-video decompose</code> 产出 <code>breakdown.json</code>、<code>report.html</code>、分镜联系表和音频图，再 <code>rea-video summary</code> 看低置信镜头；能看图的 agent 还要走 <code>review → apply-review</code>，把自己的看图判断与确定性结果融合（不是直接覆盖）。依赖 ffmpeg 与 Python ≥ 3.10；可选配一个看视频的模型（README 举 Gemini、豆包），不配也能离线跑。</p>
+
+<h2>准确率（作者自测）</h2>
+<p>README 与 <code>eval/RESULTS.md</code> 给出按镜头时长加权的“制作方式”准确率：只用工具时调参集 15 条 98.3%、留出集 99.6% / 98.9%、公众号转码视频 10 条 88.6%；加看图模型与 agent 复核后转码视频达 99.6%–100%。⚠️ 这些均为作者在自建小样本上的自测，未经第三方复现；RESULTS.md 自己也写明 holdout 集“已不完全独立”，用户真实素材的 holdout2“首轮只有 75.6%”，修复后才到 97.2%。抖音带货两条只用工具仅 46%，要靠看图纠正到 97.5%——平台压缩视频是明显短板。</p>
+
+<h2>和复刻工具的关系</h2>
+<p>rea-video 自己不出片。README 的 FAQ 把它和 Hypit 对比：Hypit 拿参考视频直接重做，不区分原片怎么拍；rea-video 先判断每镜是拍的、生成的还是代码做的，再分别给拍摄方案、提示词或代码思路。要“换元素复刻”，作者配套的是同账号的 <a href="https://github.com/JuneYaooo/cheap-claude-video" rel="noopener">cheap-claude-video</a>，README 展示的对比片用自部署 MiniMax H3 + gpt-image-2 关键帧生成。⚠️ 复刻效果仅见作者演示，本站未实跑。</p>
+
+<h2>值得注意的地方</h2>
+<ul>
+<li>把“证据优先级”写进流程：元数据与帧率等可测量信号压过 VLM 的主观判断，这对 AI 检测类工具很重要——README 案例里看图模型把 AI MV 镜头说成“影视剧实拍”，是 agent 从奏折上的伪汉字认出的。</li>
+<li>作者在 FAQ 里明确：工具用来学习结构、节奏和做法，“请勿直接搬运他人的画面、音乐、角色或肖像”，投放时遵守平台 AI 内容标识要求。</li>
+<li>项目很新：2026-10-30（UTC+8）建库，截至 11-04 约 385 星、66 fork，版本 0.1.0。</li>
+</ul>
+
+<h2>核实与待确认</h2>
+<ul>
+<li>⚠️ 许可证：仓库无 LICENSE 文件，GitHub API 显示 license 为空；仅 pyproject 声明 MIT。是否等同于正式授权，待作者补充。</li>
+<li>⚠️ 准确率数字为作者自测，样本量小（15 + 16 + 10 条），部分 holdout 已参与规则修订。</li>
+<li>⚠️ README 中“12 种布光方案”“10 类画面”等能力描述按文档转述，本站未实际运行拆解。</li>
+<li>⚠️ 案例中“歌实际是 Suno”“在即梦里生成”等来源判断，依据为作者陈述的真值，本站未独立核实。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原项目：<a href="https://github.com/JuneYaooo/rea-video" rel="noopener">https://github.com/JuneYaooo/rea-video</a>，作者 JuneYaooo。本页为中文导读，引用均为短句，版权归原作者所有。</p>
+<p>如您是权利人并希望下架，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交下架请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/JuneYaooo/rea-video" rel="noopener">github.com/JuneYaooo/rea-video</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
