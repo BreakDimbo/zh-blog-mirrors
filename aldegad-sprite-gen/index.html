@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sprite-gen：一张画稿做出可进游戏的透明精灵图集与动作循环</title>
+<meta name="description" content="aldegad/sprite-gen（Apache-2.0，v3.15.0）：Codex/Claude Skill + Python CLI。一张基准图 → 行式生成图集（真 alpha + manifest.frame_layout）或视频管线透明动作循环；可选策展视图、换色与引擎导出。项目导读 + 官方简体中文 README 附录。">
+<meta property="og:image" content="images/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-06">2026.11.06</time></p>
+<h1 class="za-title">sprite-gen：一张画稿做出可进游戏的透明精灵图集与动作循环</h1>
+<p class="za-sub" lang="en" data-za-gen>One drawing in, game-ready sprites out · 项目导读 + 官方简体中文 README</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · aldegad/sprite-gen（Apache-2.0）</span><span>收录 · 2026-11-06</span><span><a href="https://github.com/aldegad/sprite-gen" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/aldegad/sprite-gen" rel="noopener">github.com/aldegad/sprite-gen</a> · 作者 aldegad · Apache-2.0（2026-11-06 核 LICENSE）· 包版本 3.15.0</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">sprite-gen 是 aldegad 开源的 Codex/Claude Skill 与 Python CLI：给它<strong>一张基准静图</strong>，可以走出两条主路径——（A）按状态逐行生成、抠色键成真 alpha、拼成带 <code>manifest.json.frame_layout</code> 的运行时图集；或（B）交给视频模型做出片，再切成无缝透明动作循环。生成搞不定的最后一截，可用可选的策展网页比较、剔除、微调并预览循环后再烘焙。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库 <code>LICENSE</code> / <code>pyproject.toml</code> 均为 <strong>Apache-2.0</strong>（2026-11-06 核）。按本站规则做项目导读，并附录官方 <code>README.zh-Hans.md</code>（非本站另译）与许可证原文。示例图为仓库自带演示 GIF 的静帧（圣骑士/史莱姆等虚构角色，非真人照片），转 webp &lt;150KB。README 中的 YouTube 展示片<strong>不下载、不转载</strong>，仅保留链接。</div>
+
+<figure><img class="cover" src="images/cover.webp" alt="sprite-gen 展示静帧：圣骑士、狼与史莱姆等角色同框" width="960" loading="lazy"><figcaption>仓库演示动图 <code>docs/assets/hero-v2-party.gif</code> 的首帧（Apache-2.0，本站转 webp）。完整动画见原仓库；外链视频见 README 中的 YouTube。</figcaption></figure>
+
+<nav class="toc"><ol>
+<li><a href="#what">它是什么</a></li>
+<li><a href="#pipelines">两条流水线与工具组</a></li>
+<li><a href="#quick">快速上手</a></li>
+<li><a href="#notes">核实与注记</a></li>
+<li><a href="#readme">附录一：官方简体中文 README</a></li>
+<li><a href="#license">附录二：Apache-2.0</a></li>
+</ol></nav>
+
+<h2 id="what">它是什么</h2>
+<ul>
+<li><strong>问题：</strong>直接向图像模型要「精灵表」，常见结果是脸每帧漂移、背景抠不净、姿势叠在一起、引擎读不了的 PNG。</li>
+<li><strong>形态：</strong>可安装的 Agent Skill + <code>sprite-gen</code> CLI（CPython ≥3.11；CI 写明跑 3.14；依赖 Pillow、NumPy）。</li>
+<li><strong>交付物：</strong>真 alpha 图集 <code>sprite-sheet-alpha.png</code>、带绝对帧矩形/fps/循环标记的 <code>manifest.json.frame_layout</code>、待机「Breathe」循环、像素网格对齐（Backbone Lattice）、视频来的透明 GIF/WebP、确定性 <code>recolor</code>、Aseprite/Phaser/Flame 导出、背景平铺/投影阴影/运动检查，以及可选场景合成。</li>
+<li><strong>凭证：</strong>图像/视频调用走用户自己的订阅或 API Key（codex / grok / openai / claude 等）；仓库不附带密钥。按调用计费的路径会在 stderr 预先提示。</li>
+<li><strong>版本：</strong>pyproject 记 <code>3.15.0</code>，并要求与 SKILL.md 的 version 同步。</li>
+</ul>
+
+<div class="frames" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1em;margin:1.5em 0">
+<figure><img src="images/attack-slime.webp" alt="史莱姆攻击循环静帧" width="160" loading="lazy"><figcaption>攻击循环 · 史莱姆</figcaption></figure>
+<figure><img src="images/attack-paladin.webp" alt="圣骑士攻击循环静帧" width="160" loading="lazy"><figcaption>攻击循环 · 圣骑士</figcaption></figure>
+</div>
+<p class="caption">上图取自仓库 <code>docs/assets/attack-*.gif</code> 首帧（Apache-2.0）。</p>
+
+<h2 id="pipelines">两条流水线与工具组</h2>
+<ol>
+<li><strong>A · 图集行：</strong><code>prepare → gen/gen-set → extract → compose-atlas</code>（可选 <code>curation</code>）。</li>
+<li><strong>B · 视频→循环：</strong><code>video-canvas → video → video-frames → video-loop</code>（需 ffmpeg、img2webp，以及 grok 登录或 <code>XAI_API_KEY</code>）。</li>
+<li><strong>C–E / S：</strong>抠图与切表、换色与引擎导出、平铺/阴影/运动检查、可选 <code>scene-render</code>。</li>
+</ol>
+<p>侧向精灵的朝向（<code>--facing</code>）默认检测只记录、可能误判；镜像或重生修正需显式开启。细节见 SKILL.md / docs。</p>
+
+<h2 id="quick">快速上手</h2>
+<pre><code>python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -e .
+sprite-gen --help
+
+sprite-gen prepare --out-dir &lt;run&gt; --character-id &lt;id&gt; --base-image base.png
+sprite-gen gen-set --run-dir &lt;run&gt; --provider codex
+sprite-gen extract --run-dir &lt;run&gt;
+sprite-gen compose-atlas --run-dir &lt;run&gt;
+</code></pre>
+<p>Skill 安装（README）：</p>
+<pre><code>python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo aldegad/sprite-gen --path . --name sprite-gen
+</code></pre>
+<p>作者另推广 Steam 愿望单游戏 <em>Dungeon Sookuma</em>，并提到可用 GitHub Sponsors 补贴模型 API 费用——属项目周边，非本工具功能本身。</p>
+
+<h2 id="notes">核实与注记</h2>
+<ul>
+<li>✅ Apache-2.0（LICENSE 与 pyproject；2026-11-06 核 raw）。</li>
+<li>✅ 官方多语言 README（含简体中文）可公开读取。</li>
+<li>⚠️ <strong>未实测：</strong>本站未安装依赖、未跑 gen/video 管线，也未连接任何图像/视频 API。</li>
+<li>⚠️ 演示动图说明中的「Grok Imagine / HyperFrames」等为作者自述制作链路；本站未复现。</li>
+<li>⚠️ 朝向检测「即使高置信也可能错」为 README 原话；侧向结果需人工复核。</li>
+<li>灵感致谢：组件行工作流受 Apache-2.0 的 <code>hatch-pet</code> skill 启发（README Attribution）。</li>
+</ul>
+<p>相关阅读（本站）：<a href="../asynkimo-ai-pixel-art-sprite/">把 AI 像素画修成游戏精灵图</a>；<a href="../patch-gg-pixelfx/">pixelfx 代码像素特效</a>；<a href="../woyun520-pixel-gif-sticker-pack/">GIF 表情包工作室</a>。</p>
+
+<h2 id="readme">附录一：官方简体中文 README</h2>
+<details open><summary>展开 / 收起 README.zh-Hans.md</summary>
+<p class="source">来源：<a href="https://raw.githubusercontent.com/aldegad/sprite-gen/main/README.zh-Hans.md" rel="noopener">raw …/README.zh-Hans.md</a> · 核 2026-11-06。下列为仓库官方简体中文；演示动图改为说明，YouTube 不嵌入。</p>
+<p><a href="README.md" rel="noopener">English</a> · <a href="README.ko.md" rel="noopener">한국어</a> · <a href="README.ja.md" rel="noopener">日本語</a> · <strong>简体中文</strong> · <a href="README.es.md" rel="noopener">Español</a> · <a href="README.fr.md" rel="noopener">Français</a></p>
+<p class="caption">〔原 README 演示动图/视频封面：本站仅在导读中收录至多 3 张静帧 webp，完整动图见原仓库〕</p>
+<p class="caption">〔原 README 演示动图/视频封面：本站仅在导读中收录至多 3 张静帧 webp，完整动图见原仓库〕</p>
+<hr>
+<p>向图像模型要一张&quot;精灵表&quot;，结果你心里有数：角色的脸每帧都在变，背景抠不干净，姿势互相重叠又偏离网格，输出的 PNG 你的游戏引擎根本用不了。演示很可爱，素材没法用。</p>
+<p><code>sprite-gen</code> 是一个 Codex/Claude 技能，同时也是一个 Python CLI，专门填补这道鸿沟。给它<strong>一张基准图</strong> —— 它会逐行驱动生成、锁定角色身份、把色键背景剥离为真正的 alpha、将每个姿势提取为干净的透明帧，并烘焙出<strong>带有机器可读 <code>manifest.json.frame_layout</code></strong> 的运行时图集。或者把同一张静态图交给视频模型，为每个运动状态取回无缝的透明循环。至于生成永远搞不定的最后 10%，<strong>策展网页视图</strong>让你在烘焙前比较、剔除、微调，并实时观看循环效果。</p>
+<h4>从一个请求开始</h4>
+<p>你可以要<strong>精灵图</strong>，也可以要<strong>一张图像</strong>。代理会检查访问权限，只询问缺失的提供方/运动选项，运行既有流水线，然后交付文件。策展视图是可选的。保存一次你的选择，即可复用各自独立的精灵图与图像默认值；一次性请求不会覆盖它们。<a href="docs/user-workflow.md" rel="noopener">用户工作流与默认值</a>。</p>
+<h4>流水线、独立工具与场景</h4>
+<p>两条精灵图流水线是有序的生成流程。工具组包含彼此独立的命令；场景创建是一个消费成品素材的可选工作流。<code>sprite-gen --help</code> 会打印这张地图，并按拥有各命令的代码域进行分组。</p>
+<pre><code>flowchart LR
+    subgraph A[&quot;A · 图集行&quot;]
+        direction LR
+        a1[prepare] --&gt; a2[&quot;gen · gen-set&quot;] --&gt; a3[extract] --&gt; a5[compose-atlas]
+        a5 -.-&gt; a4[&quot;curation（可选）&quot;]
+        a4 --&gt; a5
+    end
+    subgraph B[&quot;B · 视频 → 循环&quot;]
+        direction LR
+        b1[video-canvas] --&gt; b2[video] --&gt; b3[video-frames] --&gt; b4[video-loop]
+    end
+    subgraph C[&quot;C · 实用工具&quot;]
+        direction LR
+        c1[cutout] ~~~ c2[slice-sheet] ~~~ c3[unpack-atlas]
+    end
+    subgraph D[&quot;D · 后期处理&quot;]
+        direction LR
+        d1[recolor] ~~~ d2[export-*]
+    end
+    subgraph E[&quot;E · 素材工具（独立）&quot;]
+        e1[background-tile] ~~~ e2[shadow] ~~~ e3[inspect-motion]
+    end
+    subgraph S[&quot;S · 场景（可选）&quot;]
+        s1[&quot;现有素材 + scene.json&quot;] --&gt; s2[scene-render]
+        s1 --&gt; s3[scene-inspect]
+    end</code></pre>
+<table><tr><th>流水线 / 工具组 / 工作流</th><th>输入什么 → 输出什么</th><th>文档</th></tr><tr><td><strong>A · 图集行</strong></td><td>一张静态图 + 一组状态列表 → <code>sprite-sheet-alpha.png</code> + <code>manifest.json.frame_layout</code>，并在待机姿势上烘焙 <strong>Breathe</strong></td><td><a href="docs/run-contract.md" rel="noopener">run-contract</a> · <a href="docs/breathing.md" rel="noopener">breathing</a></td></tr><tr><td><strong>B · 视频 → 循环</strong></td><td>一张静态图 → 每个状态一份无缝透明 GIF / WebP / 条带，由 Grok Imagine 驱动动画并按其真实周期裁切</td><td><a href="docs/video-pipeline.md" rel="noopener">video-pipeline</a> · <a href="docs/video.md" rel="noopener">video</a></td></tr><tr><td><strong>C · 实用工具</strong></td><td>一张导入图像或网格表 → 干净的透明切片；一份成品图集 → 可供策展的运行目录</td><td><a href="docs/sheet-slicing.md" rel="noopener">sheet-slicing</a> · <a href="docs/curation.md" rel="noopener">curation</a></td></tr><tr><td><strong>D · 后期处理</strong></td><td>一份成品表 → 确定性配色方案、Aseprite / Phaser / Flame 导出</td><td><a href="docs/recolor.md" rel="noopener">recolor</a> · <a href="docs/engine-export.md" rel="noopener">engine-export</a></td></tr><tr><td><strong>E · 素材工具</strong></td><td>独立的 PNG 或动画 → 可重复平铺图、投影阴影、运动/接地测量</td><td><a href="docs/asset-tools.md" rel="noopener">asset-tools</a></td></tr><tr><td><strong>S · 场景</strong></td><td>现有素材 + 摆放、相机与灯光 → PNG 帧、MP4/GIF、检查与摆放元数据</td><td><a href="docs/scene.md" rel="noopener">scene</a></td></tr></table>
+<p>完整索引：<a href="docs/README.md" rel="noopener"><code>docs/README.md</code></a>。含域与流水线示意图的架构说明：<a href="docs/architecture.md" rel="noopener"><code>docs/architecture.md</code></a>。</p>
+<h4>你实际得到什么</h4>
+<ul><li><strong>一张透明精灵图集</strong>（<code>sprite-sheet-alpha.png</code>）—— 真正的 alpha，没有残留的色键边缘，并对照白色背景做过验证（<a href="docs/chroma-alpha.md" rel="noopener">为什么提取器采用解混而非剥离</a>）。</li><li><strong>一份运行时清单</strong>（<code>manifest.json.frame_layout</code>）—— 绝对帧矩形、每状态 fps 与循环标志。你的引擎按矩形取样，绝不去猜网格。</li><li><strong>Breathe</strong> —— 静止的待机变成有生命的循环，基于一个 sidecar 字段在你策展过的帧上烘焙确定性的挤压与拉伸，尊重解剖结构且像素精准（<a href="docs/breathing.md" rel="noopener">详情</a>）。</li><li><strong>始终贴合网格的像素画</strong> —— Backbone Lattice 为整个主体测量出一套网格，并让每一次切割都严格遵守它（<a href="docs/pixel-unfake.md" rel="noopener">详情</a>）。</li><li><strong>来自视频的运动循环</strong> —— 跳跃使用高画布，攻击使用宽画布，循环点取自片段自身的周期，而一次性动作按 静止 → 动作 → 静止 裁切。行走循环通过计算双脚交错裁切为完整的两步一轮，并平滑修复跳帧（<a href="docs/video-pipeline.md" rel="noopener">详情</a>）。</li><li><strong>确定性配色方案</strong> —— <code>recolor</code> 依据调色板映射烘焙出 N 份变体表；相同输入，相同输出字节。（<a href="docs/recolor.md" rel="noopener">详情</a>）。</li><li><strong>可以亲眼检验的 QA</strong> —— 每状态 GIF 与contact sheet，让运动在交付前先以运动的方式被评判。除非运动 QA 真正通过，循环式位移（走/跑）始终视为实验性。</li><li><strong>独立的素材工具</strong> —— 构建可重复的背景、从脚部锚点投射阴影，并检查时序、重复姿势与接地证据。脚部含糊不清时将产出一份未经验证的测量结果（<a href="docs/asset-tools.md" rel="noopener">详情</a>）。</li><li><strong>可选的场景创建</strong> —— 把现有 PNG、外部帧序列、循环条带或运行时图集摆放到命名平面上，配合相机运动与共享阴影投射。精灵图生成可以在这一步之前就完成（<a href="docs/scene.md" rel="noopener">详情</a>）。</li></ul>
+<h4>快速开始</h4>
+<pre><code># 安装（Pillow、NumPy）到全新虚拟环境 —— venv 是唯一受支持的解释器
+python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -e .
+sprite-gen --help</code></pre>
+<p><strong>A · 图集行</strong> —— 从一张静态图到运行时图集。</p>
+<pre><code>sprite-gen prepare --out-dir &lt;run&gt; --character-id &lt;id&gt; --base-image base.png   # 请求、指南、提示词
+sprite-gen gen-set --run-dir &lt;run&gt; --provider codex                            # 每个状态行，一次 4 个
+sprite-gen extract --run-dir &lt;run&gt;                                             # 色键 → 透明帧
+sprite-gen compose-atlas --run-dir &lt;run&gt;                                       # sprite-sheet-alpha.png + manifest.json
+sprite-gen curation --run-dir &lt;run&gt;                                            # （可选）挑选、微调、呼吸</code></pre>
+<p><strong>B · 视频 → 循环</strong> —— 从一张静态图到透明循环（需要 <code>ffmpeg</code>、<code>img2webp</code>，以及你自己的 <code>grok</code> 登录或 <code>XAI_API_KEY</code>）。行走和奔跑循环的跳帧修复、方向组的周期对齐都用 RIFE：用 <code>sprite-gen rife install</code> 安装一次。没有它时，这些循环按拍摄原样裁切，并留下警告（<a href="docs/loop-repair.md" rel="noopener">loop-repair</a>）。</p>
+<pre><code>sprite-gen video-set --base side=still.png --states idle,walk,run,jump,attack --out-dir set/
+# 每项依次：video-canvas → video → video-frames → video-loop；set/table.md 列出每个结果的名称</code></pre>
+<p>通过连接到智能体的视频 MCP 生成片段？使用 ZCRE（지크）的 MCP 时，智能体用你自己的 ZCRE 账户生成片段，sprite-gen 负责切割：<code>sprite-gen video-prompt --direction side --state walk --no-last-frame</code> 输出提示词，<code>video-frames</code> 和 <code>video-loop</code> 接收 mp4，多个方向的行走循环再由 <code>video-cycle-align</code> 对齐为同一周期长度。ZCRE 的 Grok Imagine 1.5 没有结束帧，因此仅支持行走、奔跑和跳跃（<a href="docs/video-pipeline.md#a-clip-from-a-video-mcp-on-your-agent--zcre" rel="noopener">方法</a>）。</p>
+<p>一只手腕上的手表、头一侧的发夹这类左右不同的角色：把朝右的画面翻转，物件就到了另一侧，所以朝左的方向要单独画。<code>sprite-gen gen --direction side --facing left --handed &quot;the black smartwatch=left wrist&quot;</code> 会在提示词里写明该方向下物件的位置，<code>video-set --facing right,left --handed …</code> 用各自画好的静帧把侧面和斜向方向两边都拍，<code>sprite-gen handed-check</code> 逐帧检查用颜色标记的物件是否在正确一侧。单独画朝左方向要多花同样的费用，所以默认仍是翻转（<a href="docs/video-pipeline.md#handedness--an-item-on-one-side" rel="noopener">方法</a>）。</p>
+<p><strong>C · 实用工具</strong> —— 每个都可独立使用。</p>
+<pre><code>sprite-gen cutout icon.png --white-check              # 白/象牙 → 哑光, 洋红/绿 → 色键引擎
+sprite-gen slice-sheet --sheet sheet.png --chroma-key magenta --grid 3x2   # 多角色表 → 逐格切片
+sprite-gen unpack-atlas --atlas sheet.png             # 成品图集 → 可供策展的运行目录（或 --pngs-dir folder/）</code></pre>
+<p><strong>D · 后期处理</strong> —— 不重新生成即可精修成品表。</p>
+<pre><code>sprite-gen recolor-palette --base &lt;run&gt;/sprite-sheet-alpha.png --out palette.draft.json
+sprite-gen recolor --run-dir &lt;run&gt; --spec recolor.spec.json      # → &lt;run&gt;/variants/
+sprite-gen export-aseprite --run-dir &lt;run&gt;                       # 供 Phaser / Flame 使用的 Aseprite JSON</code></pre>
+<p><strong>E · 素材工具</strong> —— 每个都接受现有素材，包括来自其他工具的美术资源。</p>
+<pre><code>sprite-gen background-tile --source background.png --period 512 --overlap 32 --out tile.png
+sprite-gen shadow --source walk.strip.json --out-dir shadows/
+sprite-gen inspect-motion --source walk.strip.json --out motion.json
+# 仅在已知同一只脚接地且脚部 ROI 已隔离时使用：
+sprite-gen inspect-motion --source walk.strip.json --contacts 0:4 --foot-box 20,70,32,10 --out stance.json</code></pre>
+<p><strong>S · 场景</strong> —— 一个可选的合成工作流。<a href="docs/scene.md" rel="noopener">场景契约</a>包含完整规格。</p>
+<pre><code>sprite-gen scene-render --spec scene.json --out-dir render/ --formats png,mp4 --export-layers
+sprite-gen scene-inspect --spec scene.json --out scene-check.json</code></pre>
+<p>面向代理的工作流、门禁与契约位于 <a href="SKILL.md" rel="noopener"><code>SKILL.md</code></a>。</p>
+<h4>作为技能安装</h4>
+<pre><code>python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo aldegad/sprite-gen --path . --name sprite-gen</code></pre>
+<p>图像生成是本引擎的一部分（<code>sprite_gen.gen</code>，跑在你已经付费的订阅上的提供方 <code>codex</code> 与 <code>grok</code>，以及面向服务器与 SaaS、按调用计费、必须显式指定才会运行的 <code>openai</code> 提供方；通用的 <code>image-gen</code> 技能只是覆在其上的一层薄封装）。视频使用<strong>你自己的</strong>凭据 —— <code>grok</code> CLI 登录或 <code>XAI_API_KEY</code> —— 仓库中不附带任何凭据（<a href="docs/video.md" rel="noopener">docs/video.md</a>）。</p>
+<p><code>sprite-gen</code> 支持 CPython 3.10+；CI 运行 3.10 与 3.14。快速开始需要一个 <code>venv</code>/<code>ensurepip</code> 可用的 Python。</p>
+<h4>致谢</h4>
+<p>组件行工作流受 Apache-2.0 许可的 <code>hatch-pet</code> 技能启发，但面向通用的游戏精灵图集，不包含任何宠物包或宠物视觉素材。</p>
+<p>社区贡献、实验及其来源的 pull request 记录在 <a href="CONTRIBUTORS.md" rel="noopener"><code>CONTRIBUTORS.md</code></a>。</p>
+<h4>许可证</h4>
+<p>Apache-2.0</p>
+</details>
+
+<h2 id="license">附录二：Apache License 2.0</h2>
+<details><summary>展开许可证全文</summary>
+<pre>Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+1. Definitions.
+
+   &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+   and distribution as defined by Sections 1 through 9 of this document.
+
+   &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+   the copyright owner that is granting the License.
+
+   &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+   other entities that control, are controlled by, or are under common
+   control with that entity. For the purposes of this definition,
+   &quot;control&quot; means (i) the power, direct or indirect, to cause the
+   direction or management of such entity, whether by contract or
+   otherwise, or (ii) ownership of fifty percent (50%) or more of the
+   outstanding shares, or (iii) beneficial ownership of such entity.
+
+   &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+   exercising permissions granted by this License.
+
+   &quot;Source&quot; form shall mean the preferred form for making modifications,
+   including but not limited to software source code, documentation
+   source, and configuration files.
+
+   &quot;Object&quot; form shall mean any form resulting from mechanical
+   transformation or translation of a Source form, including but
+   not limited to compiled object code, generated documentation,
+   and conversions to other media types.
+
+   &quot;Work&quot; shall mean the work of authorship, whether in Source or
+   Object form, made available under the License, as indicated by a
+   copyright notice that is included in or attached to the work
+   (an example is provided in the Appendix below).
+
+   &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+   form, that is based on (or derived from) the Work and for which the
+   editorial revisions, annotations, elaborations, or other modifications
+   represent, as a whole, an original work of authorship. For the purposes
+   of this License, Derivative Works shall not include works that remain
+   separable from, or merely link (or bind by name) to the interfaces of,
+   the Work and Derivative Works thereof.
+
+   &quot;Contribution&quot; shall mean any work of authorship, including
+   the original version of the Work and any modifications or additions
+   to that Work or Derivative Works thereof, that is intentionally
+   submitted to Licensor for inclusion in the Work by the copyright owner
+   or by an individual or Legal Entity authorized to submit on behalf of
+   the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+   means any form of electronic, verbal, or written communication sent
+   to the Licensor or its representatives, including but not limited to
+   communication on electronic mailing lists, source code control systems,
+   and issue tracking systems that are managed by, or on behalf of, the
+   Licensor for the purpose of discussing and improving the Work, but
+   excluding communication that is conspicuously marked or otherwise
+   designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+   &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+   on behalf of whom a Contribution has been received by Licensor and
+   subsequently incorporated within the Work.
+
+2. Grant of Copyright License. Subject to the terms and conditions of
+   this License, each Contributor hereby grants to You a perpetual,
+   worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+   copyright license to reproduce, prepare Derivative Works of,
+   publicly display, publicly perform, sublicense, and distribute the
+   Work and such Derivative Works in Source or Object form.
+
+3. Grant of Patent License. Subject to the terms and conditions of
+   this License, each Contributor hereby grants to You a perpetual,
+   worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+   (except as stated in this section) patent license to make, have made,
+   use, offer to sell, sell, import, and otherwise transfer the Work,
+   where such license applies only to those patent claims licensable
+   by such Contributor that are necessarily infringed by their
+   Contribution(s) alone or by combination of their Contribution(s)
+   with the Work to which such Contribution(s) was submitted. If You
+   institute patent litigation against any entity (including a
+   cross-claim or counterclaim in a lawsuit) alleging that the Work
+   or a Contribution incorporated within the Work constitutes direct
+   or contributory patent infringement, then any patent licenses
+   granted to You under this License for that Work shall terminate
+   as of the date such litigation is filed.
+
+4. Redistribution. You may reproduce and distribute copies of the
+   Work or Derivative Works thereof in any medium, with or without
+   modifications, and in Source or Object form, provided that You
+   meet the following conditions:
+
+   (a) You must give any other recipients of the Work or
+       Derivative Works a copy of this License; and
+
+   (b) You must cause any modified files to carry prominent notices
+       stating that You changed the files; and
+
+   (c) You must retain, in the Source form of any Derivative Works
+       that You distribute, all copyright, patent, trademark, and
+       attribution notices from the Source form of the Work,
+       excluding those notices that do not pertain to any part of
+       the Derivative Works; and
+
+   (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+       distribution, then any Derivative Works that You distribute must
+       include a readable copy of the attribution notices contained
+       within such NOTICE file, excluding those notices that do not
+       pertain to any part of the Derivative Works, in at least one
+       of the following places: within a NOTICE text file distributed
+       as part of the Derivative Works; within the Source form or
+       documentation, if provided along with the Derivative Works; or,
+       within a display generated by the Derivative Works, if and
+       wherever such third-party notices normally appear. The contents
+       of the NOTICE file are for informational purposes only and
+       do not modify the License. You may add Your own attribution
+       notices within Derivative Works that You distribute, alongside
+       or as an addendum to the NOTICE text from the Work, provided
+       that such additional attribution notices cannot be construed
+       as modifying the License.
+
+   You may add Your own copyright statement to Your modifications and
+   may provide additional or different license terms and conditions
+   for use, reproduction, or distribution of Your modifications, or
+   for any such Derivative Works as a whole, provided Your use,
+   reproduction, and distribution of the Work otherwise complies with
+   the conditions stated in this License.
+
+5. Submission of Contributions. Unless You explicitly state otherwise,
+   any Contribution intentionally submitted for inclusion in the Work
+   by You to the Licensor shall be under the terms and conditions of
+   this License, without any additional terms or conditions.
+   Notwithstanding the above, nothing herein shall supersede or modify
+   the terms of any separate license agreement you may have executed
+   with Licensor regarding such Contributions.
+
+6. Trademarks. This License does not grant permission to use the trade
+   names, trademarks, service marks, or product names of the Licensor,
+   except as required for reasonable and customary use in describing the
+   origin of the Work and reproducing the content of the NOTICE file.
+
+7. Disclaimer of Warranty. Unless required by applicable law or
+   agreed to in writing, Licensor provides the Work (and each
+   Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+   implied, including, without limitation, any warranties or conditions
+   of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+   PARTICULAR PURPOSE. You are solely responsible for determining the
+   appropriateness of using or redistributing the Work and assume any
+   risks associated with Your exercise of permissions under this License.
+
+8. Limitation of Liability. In no event and under no legal theory,
+   whether in tort (including negligence), contract, or otherwise,
+   unless required by applicable law (such as deliberate and grossly
+   negligent acts) or agreed to in writing, shall any Contributor be
+   liable to You for damages, including any direct, indirect, special,
+   incidental, or consequential damages of any character arising as a
+   result of this License or out of the use or inability to use the
+   Work (including but not limited to damages for loss of goodwill,
+   work stoppage, computer failure or malfunction, or any and all
+   other commercial damages or losses), even if such Contributor
+   has been advised of the possibility of such damages.
+
+9. Accepting Warranty or Additional Liability. While redistributing
+   the Work or Derivative Works thereof, You may choose to offer,
+   and charge a fee for, acceptance of support, warranty, indemnity,
+   or other liability obligations and/or rights consistent with this
+   License. However, in accepting such obligations, You may act only
+   on Your own behalf and on Your sole responsibility, not on behalf of
+   any other Contributor, and only if You agree to indemnify,
+   defend, and hold each Contributor harmless for any liability
+   incurred by, or claims asserted against, such Contributor by reason
+   of your accepting any such warranty or additional liability.
+
+END OF TERMS AND CONDITIONS
+
+APPENDIX: How to apply the Apache License to your work.
+
+   To apply the Apache License to your work, attach the following
+   boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+   replaced with your own identifying information. (Don\&#x27;t include
+   the brackets!)  The text should be enclosed in the appropriate
+   comment syntax for the file format. We also recommend that a
+   file or class name and description of purpose be included on the
+   same &quot;printed page&quot; as the copyright notice for easier
+   identification within third-party archives.
+
+Copyright [yyyy] [name of copyright owner]
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</pre>
+</details>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>项目 sprite-gen © 作者 aldegad，Apache License 2.0。本页导读、官方简体中文 README 附录、许可证原文，以及演示 GIF 静帧，均依 Apache-2.0 转载。不下载/不转载 README 所链 YouTube 视频。原项目：<a href="https://github.com/aldegad/sprite-gen" rel="noopener">github.com/aldegad/sprite-gen</a>。整理：Grok Bot。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/aldegad/sprite-gen" rel="noopener">github.com/aldegad/sprite-gen</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
