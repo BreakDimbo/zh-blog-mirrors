@@ -1,5 +1,20 @@
 [
   {
+    "slug": "livliv-dev-player",
+    "title": "LivLiv Player：轻量 Web 2.5D 角色播放器（口型同步 + 摄像头面捕）",
+    "desc": "livliv-dev/player（Apache-2.0，@livliv/player 0.2.0）：无依赖 WebGL2 核心约 30KB gzip，几行代码嵌入网页/直播叠加；同一 API 播 LivLiv / VRM / PNGTuber，按需口型同步与 MediaPipe 面捕。精选 21 角色另有个人非商业许可（非 Apache），名称与标志亦不在许可内——本站不转载角色与标志。项目导读 + 官方中文 README 附录；演示站 livliv-dev.github.io/player。未实测构建 ⚠️。",
+    "description": "轻量 Web 2.5D 角色播放器：口型同步 + 面捕；Apache-2.0 导读 + 官方中文 README。",
+    "source": "GitHub · livliv-dev/player（Apache-2.0）",
+    "date": "2026-11-06",
+    "type": "导读",
+    "subtitle": "Lightweight 2.5D web character player · 项目导读 + 官方中文 README",
+    "original_url": "https://github.com/livliv-dev/player",
+    "spine": "2.5D角色播放器",
+    "summary": "几行代码把 2.5D 角色放进网页，带口型与面捕",
+    "kind": "项目",
+    "by": "LivLiv"
+  },
+  {
     "slug": "woyun520-pixel-gif-sticker-pack",
     "title": "GIF 表情包工作室：给 Codex 一张角色图，做出一套会动的聊天贴纸",
     "desc": "WoYun520 的 pixel-gif-sticker-pack（MIT）：面向 Codex 的 Agent Skill，上传授权角色图即可设计表情与动作、叠中文台词，导出透明循环 GIF、ZIP 与预览视频；默认 512×512 清晰合成，可选 320×320 像素风；仓库自带五个系列共 218 张示例（自报）。项目导读 + README 中文原文附录 + LICENSE；仅收录卡通/像素示例静帧，不转载真人肖像系列。",

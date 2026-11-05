@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LivLiv Player：轻量 Web 2.5D 角色播放器（口型同步 + 摄像头面捕）</title>
+<meta name="description" content="livliv-dev/player（Apache-2.0）：无依赖 WebGL2 核心约 30KB gzip，几行代码把角色放进网页、直播叠加或应用；支持 LivLiv / VRM / PNGTuber，浏览器内口型同步与 MediaPipe 面捕。项目导读 + 官方中文 README 附录。精选角色另有限制许可，本站不转载角色与标志素材。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-06">2026.11.06</time></p>
+<h1 class="za-title">LivLiv Player：轻量 Web 2.5D 角色播放器（口型同步 + 摄像头面捕）</h1>
+<p class="za-sub" lang="en" data-za-gen>Lightweight 2.5D web character player · 项目导读 + 官方中文 README</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · livliv-dev/player（Apache-2.0）</span><span>收录 · 2026-11-06</span><span><a href="https://github.com/livliv-dev/player" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/livliv-dev/player" rel="noopener">github.com/livliv-dev/player</a> · LivLiv · 代码 Apache-2.0（2026-11-06 核 LICENSE）· 演示 <a href="https://livliv-dev.github.io/player/" rel="noopener">livliv-dev.github.io/player</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">LivLiv Player（npm 名 <code>@livliv/player</code>，仓库版本 README/package 记为 0.2.0）是一套面向网页的轻量 2.5D 角色播放器：几行代码就能把角色放进页面、直播叠加层或应用。核心是无依赖的 WebGL2，gzip 后约 30 KB；同一套 API 可播放 LivLiv 模型包、VRM 与 PNGTuber，并按需加载浏览器内口型同步与 MediaPipe 摄像头面捕。</p>
+
+<div class="notice"><strong>版权说明：</strong>代码与文档适用 <strong>Apache License 2.0</strong>（另有 NOTICE；2026-11-06 核 raw LICENSE）。仓库自带的 21 个精选角色<strong>不适用</strong> Apache，见 <code>characters/LICENSE.md</code>（个人非商业、需署名、禁商用/单独分发/训练 AI 等）；Kujira / Kujira Q / Pen 另见 CREDITS。README 写明两份许可都<strong>不包括</strong> LivLiv 名称与标志。因此本页<strong>不转载</strong>角色贴图、demo 动图或 wordmark；演示请到原仓库与 <a href="https://livliv-dev.github.io/player/" rel="noopener">GitHub Pages 示例站</a> / <a href="https://livliv.ai/discover" rel="noopener">livliv.ai/discover</a>。附录采用仓库官方 <code>README.zh-CN.md</code>（非本站另译）。</div>
+
+<nav class="toc"><ol>
+<li><a href="#what">它是什么</a></li>
+<li><a href="#use">怎么用</a></li>
+<li><a href="#chars">精选角色与许可分层</a></li>
+<li><a href="#notes">核实与注记</a></li>
+<li><a href="#readme">附录一：官方中文 README</a></li>
+<li><a href="#license">附录二：Apache-2.0 与 NOTICE</a></li>
+</ol></nav>
+
+<h2 id="what">它是什么</h2>
+<ul>
+<li><strong>定位：</strong>网页端 2.5D 角色「播放器」，不是 Live2D Cubism SDK；不读 <code>.moc3</code> / <code>.cmo3</code>。README 声明与 Live2D Inc. 无关联。</li>
+<li><strong>核心规格（README）：</strong>WebGL2、核心无第三方依赖、约 30 KB gzip；需 ES2023（Chrome/Edge 97+、Firefox 104+、Safari 15.4+）。</li>
+<li><strong>格式：</strong>LivLiv 包（<code>.livliv</code> / <code>model.json</code> v4，见 FORMAT.md）、VRM（需 three + <code>@pixiv/three-vrm</code>）、PNGTuber（开/闭口图，可选闭眼）。</li>
+<li><strong>能力：</strong>表情与动作（如 <code>smile</code> / <code>nod</code>）、口型参数、麦克风/音视频口型同步（<code>createSpeech</code>）、摄像头面捕（MediaPipe，按需导入；画面留在本机）。</li>
+<li><strong>分发：</strong>README 写「尚未上 npm」，需从本仓库 <code>npm run build</code> 后引用 <code>dist/index.js</code>。package.json 记 <code>private: true</code>、<code>version: 0.2.0</code>。</li>
+<li><strong>演示：</strong><a href="https://livliv-dev.github.io/player/" rel="noopener">示例站</a>；本地 <code>/example/demo.html</code> 等。也可用 iframe 嵌 <code>https://livliv.ai/live/&lt;id&gt;</code> 作 OBS 浏览器源。</li>
+</ul>
+
+<h2 id="use">怎么用</h2>
+<p>README 给出的最小示例：</p>
+<pre><code>import { Player } from '@livliv/player'
+
+const player = new Player(document.querySelector('canvas'))
+await player.load('characters/k01/')
+
+player.setExpression('smile')
+player.act('nod')
+player.params.mouthOpen = 0.6
+</code></pre>
+<p>口型与面捕、VRM/PNGTuber 用法见附录官方中文 README。完整选项见仓库 <a href="https://github.com/livliv-dev/player/blob/main/API.md" rel="noopener">API.md</a>（英文）。</p>
+
+<h2 id="chars">精选角色与许可分层</h2>
+<ul>
+<li>代码：Apache-2.0 + NOTICE。</li>
+<li>精选角色（除三名外来角色）：个人非商业免费、需署名「角色：LivLiv（livliv.ai）」；禁出售/单独分发贴图、公司商用、训练 AI、色情暴力歧视诈骗政治宣传等。Nana 为吉祥物，另有不可冒充品牌形象等限制。详见 <a href="https://github.com/livliv-dev/player/blob/main/characters/LICENSE.md" rel="noopener">characters/LICENSE.md</a>（版本 1.0，文首日期 2026-11-06）。</li>
+<li>Kujira / Kujira Q / Pen：不适用上述角色许可，见 CREDITS。</li>
+<li>名称与标志：两份许可均不覆盖。</li>
+<li>制作说明：livliv.ai 做角色会用 AI；播放器本身不调 AI 服务。公开展示 LivLiv 制作的角色时需注明 AI 参与，勿称手绘/人工绑定。</li>
+</ul>
+
+<h2 id="notes">核实与注记</h2>
+<ul>
+<li>✅ LICENSE 为 Apache 2.0；NOTICE 存在并写明角色不在 Apache 范围内（2026-11-06 核 raw）。</li>
+<li>✅ 官方中英日 README 与 characters/LICENSE.md 可公开读取。</li>
+<li>✅ 演示站链接 <code>livliv-dev.github.io/player</code> 与 homepage <code>livliv.ai/developers</code> 来自 README / package.json。</li>
+<li>⚠️ <strong>未实测：</strong>本站未执行 <code>npm install && npm run build</code>，也未在浏览器中实测口型/面捕。</li>
+<li>⚠️ 「约 30 KB gzip」为 README 自述，本站未重新测量产物体积。</li>
+<li>⚠️ 「21 个精选角色」为 README 自述；表格列出 21 个 id，本站未逐目录清点贴图文件。</li>
+</ul>
+<p>相关阅读（本站）：<a href="../receptron-avatarscript/">AvatarScript：文字+头像→口型同步视频</a>；<a href="../hitomiiim-qiyu-one-image-rig/">一张立绘自动绑定（See-through + Anime2.5DRig）</a>；<a href="../andyhuo520-digital-human-koubo/">digital-human-koubo 数字人口播 Skill</a>。</p>
+
+<h2 id="readme">附录一：官方中文 README</h2>
+<details open><summary>展开 / 收起 README.zh-CN.md</summary>
+<p class="source">来源：<a href="https://raw.githubusercontent.com/livliv-dev/player/main/README.zh-CN.md" rel="noopener">raw …/README.zh-CN.md</a> · 核 2026-11-06。下列为仓库官方中文，本站仅做轻量 HTML 排版；原 README 中的标志与演示动图不嵌入。</p>
+<p>&lt;p align=&quot;center&quot;&gt;   &lt;picture&gt;     &lt;source media=&quot;(prefers-color-scheme: dark)&quot; srcset=&quot;media/livliv-player-wordmark-white.svg&quot;&gt;</p>
+<p class="caption">〔此处原 README 有图片，本站不转载角色或标志素材；见原仓库〕</p>
+<p>&lt;/picture&gt; &lt;/p&gt;</p>
+<p>&lt;p align=&quot;center&quot;&gt;   超轻量的 2.5D 网页角色播放器，支持口型同步和摄像头面捕，几行代码就能接入网页、直播画面和应用。&lt;br&gt;   自带 21 个风格各异的精选角色，即开即用。 &lt;/p&gt;</p>
+<p>&lt;p align=&quot;center&quot;&gt;&lt;a href=&quot;README.md&quot;&gt;English&lt;/a&gt; · &lt;b&gt;中文&lt;/b&gt; · &lt;a href=&quot;README.ja.md&quot;&gt;日本語&lt;/a&gt;&lt;/p&gt;</p>
+<p class="caption">〔此处原 README 有图片，本站不转载角色或标志素材；见原仓库〕</p>
+<p>特点：</p>
+<ul><li>WebGL2，无依赖，核心 gzip 后约 30 KB</li><li>口型同步（麦克风、音频、视频）和摄像头面捕（MediaPipe），都在浏览器里运行，按需引入</li><li>支持 LivLiv、VRM 和 PNGTuber 三种角色，用同一套接口</li><li><a href="characters/" rel="noopener"><code>characters/</code></a> 里有 21 个精选角色，可以直接用</li></ul>
+<h4>试一试</h4>
+<ul><li><strong>在线</strong>：示例页在 <a href="https://livliv-dev.github.io/player/" rel="noopener">livliv-dev.github.io/player</a>。</li><li><strong>在本地</strong>：<code>npm install &amp;&amp; npm run build</code>，用任意静态服务器打开这个目录，访问 <code>/example/demo.html</code></li></ul>
+<p>（表情、动作、麦克风、摄像头；<code>?model=../characters/&lt;id&gt;/</code> 换一个角色）。<code>/example/png.html</code> 和   <code>/example/vrm.html</code> 是 PNGTuber 和 VRM。</p>
+<ul><li><strong>在 livliv.ai 上</strong>：那里的每个角色页都用同一套渲染播放这个角色。从 <a href="https://livliv.ai/discover" rel="noopener">livliv.ai/discover</a> 开始。</li></ul>
+<h4>在自己的页面里用</h4>
+<pre><code>import { Player } from &#x27;@livliv/player&#x27;
+
+const player = new Player(document.querySelector(&#x27;canvas&#x27;))
+await player.load(&#x27;characters/k01/&#x27;)   // 含 model.json 和 textures/ 的文件夹，或一个 .livliv 文件
+
+player.setExpression(&#x27;smile&#x27;)          // 可用的 id 在 player.expressions 里
+player.act(&#x27;nod&#x27;)
+player.params.mouthOpen = 0.6          // 0..1</code></pre>
+<p>口型同步和面捕：</p>
+<pre><code>import { createSpeech } from &#x27;@livliv/player/voice&#x27;
+import { startFaceTracking } from &#x27;@livliv/player/tracking&#x27;   // 需要 @mediapipe/tasks-vision
+
+const speech = createSpeech(player)
+button.onclick = () =&gt; { speech.unlock(); speech.say(&#x27;/reply.mp3&#x27;) }
+
+await startFaceTracking(player)</code></pre>
+<p>VRM 和 PNGTuber 用同一套接口：</p>
+<pre><code>import { BodyPlayer } from &#x27;@livliv/player/body&#x27;
+import { VrmBody } from &#x27;@livliv/player/vrm&#x27;    // 需要 three 和 @pixiv/three-vrm
+import { PngBody } from &#x27;@livliv/player/png&#x27;
+
+const vrm = new BodyPlayer(canvasA, new VrmBody())
+await vrm.load(&#x27;/avatars/me.vrm&#x27;)
+const png = new BodyPlayer(canvasB, new PngBody())
+await png.load({ closed: &#x27;me-closed.png&#x27;, open: &#x27;me-open.png&#x27; })</code></pre>
+<p>完整的 API 见 <a href="API.md" rel="noopener">API.md</a>（英文）：选项、参数、表情和动作、驱动、VRM 和 PNGTuber、不可信文件的上限、模型包和格式版本。LivLiv 模型包格式（<code>.livliv</code>、<code>model.json</code> v4）见 <a href="FORMAT.md" rel="noopener">FORMAT.md</a>，JSON Schema 在 <a href="schema/" rel="noopener"><code>schema/</code></a>；v4 之前导出的模型包见 <a href="FORMAT-v3.md" rel="noopener">FORMAT-v3.md</a>，照样能播放。</p>
+<blockquote><p>还没有发布到 npm：请从这个仓库构建，引入 <code>dist/index.js</code>。</p></blockquote>
+<h4>精选角色</h4>
+<p><code>characters/</code> 里有 21 个角色，可以直接 <code>load()</code>。它们右下角带一个小小的 LivLiv 标，播放器会画出来。它们<strong>不</strong>适用 Apache 许可。大部分由 LivLiv 制作：个人非商业用途可以免费使用，请署名（「角色：LivLiv（livliv.ai）」）；不能出售、不能商用、不能用来训练 AI 模型。Nana 是 LivLiv 的吉祥物。完整条款见 <a href="characters/LICENSE.md" rel="noopener">characters/LICENSE.md</a>。</p>
+<p>Kujira、Kujira Q 和 Pen 来自别人的作品，不适用上面的许可和署名。它们的来源、署名和条款见 <a href="characters/CREDITS.md" rel="noopener">characters/CREDITS.md</a>。</p>
+<p>角色列表见<a href="README.md#featured-characters" rel="noopener">英文 README</a>。</p>
+<h4>用自己的角色</h4>
+<p>可以导入 PNGTuber 的几张图，或 VRM（用 three.js 画）；也可以在 <a href="https://livliv.ai" rel="noopener">livliv.ai</a> 用一张图做出自己的角色。</p>
+<ul><li><strong>PNGTuber</strong>：两张图（闭嘴、张嘴），有闭眼的两张更好。</li><li><strong>VRM</strong>：VRoid Studio 或任何能导出 VRM 0.x / 1.0 的工具做的。</li><li><strong>LivLiv 模型</strong>：在 <a href="https://livliv.ai" rel="noopener">livliv.ai</a> 用一张图做出角色，在角色页下载<strong>模型包</strong>（一个 <code>.livliv</code> 文件），直接传给 <code>load()</code>（URL，或用户选的 <code>File</code>），解压后的文件夹也可以。免费版的模型包带 LivLiv 水印，播放器会画出来。</li></ul>
+<h4>关于播放器和角色</h4>
+<p>LivLiv Player 和 <code>.livliv</code> 格式是 LivLiv 独立做的，没有用 Live2D 的软件或 Cubism SDK，也不读 <code>.moc3</code> / <code>.cmo3</code> 文件。「Live2D」是 Live2D Inc. 的商标，LivLiv 与其无关联。</p>
+<p>在 livliv.ai 上制作角色会用到 AI。播放器本身只负责播放：不调用 AI 服务，只读取你指给它的文件。面捕在浏览器里运行 Google 的 MediaPipe，摄像头画面不离开设备；网络方面的细节见 API.md。</p>
+<p>仓库里的精选角色也是在 LivLiv 上做的，同样用到了 AI；Kujira、Kujira Q 和 Pen 改编自别人的角色（<a href="characters/CREDITS.md" rel="noopener">来源</a>）。Nana 精修版（<code>d03ft</code>）另外用 LivLiv 自己的工具加了会摆动的部件和转头的关键形。</p>
+<p>模型包里的 <code>meta.author</code> 和 <code>meta.license</code> 记的是署名和使用条款，请保留并遵守。公开展示用 LivLiv 做的角色时，请注明 AI 参与制作，不要说成手绘或人工绑定的作品。</p>
+<h4>不写代码，直接嵌入</h4>
+<pre><code>&lt;iframe src=&quot;https://livliv.ai/live/k01&quot; width=&quot;480&quot; height=&quot;640&quot; allow=&quot;camera; microphone&quot;
+  style=&quot;border:0;background:transparent&quot;&gt;&lt;/iframe&gt;</code></pre>
+<p>同一个 <code>/live/&lt;id&gt;</code> 页面背景透明，可以直接作为 OBS 的浏览器源。</p>
+<h4>开发</h4>
+<pre><code>git clone https://github.com/livliv-dev/player
+cd player
+npm install
+npm run check          # 类型检查
+npm run build          # dist/：index.js、tracking.js、voice.js、body.js、png.js、vrm.js（ES 模块）、chunks/ 和 types/
+npm test               # 单元测试和模糊测试（Node 22.18 及以上，不需要浏览器）
+npm run test:browser   # 在无头 Chromium 里画出每个精选角色；先执行一次 npx playwright-core install chromium-headless-shell</code></pre>
+<p><code>src/runtime/</code> 是 livliv.ai 自己在用的渲染和动作代码，这个仓库从它发布。参见 <a href="CONTRIBUTING.md" rel="noopener">CONTRIBUTING.md</a>。安全问题请按 <a href="SECURITY.md" rel="noopener">SECURITY.md</a> 报告。</p>
+<h4>浏览器支持</h4>
+<p>需要 WebGL2 和 ES2023：Chrome / Edge 97+、Firefox 104+、Safari 15.4+，桌面和手机都可以。</p>
+<h4>许可</h4>
+<p>代码采用 <a href="LICENSE" rel="noopener">Apache License 2.0</a>（另见 <a href="NOTICE" rel="noopener">NOTICE</a>）。精选角色有自己的许可：<a href="characters/LICENSE.md" rel="noopener">characters/LICENSE.md</a>。两份许可都不包括 LivLiv 的名称和标志。</p>
+<h4>致谢</h4>
+<p>感谢上善无形、ZipZipPipe 和贱兔死顺盖，Kujira、Kujira Q 和 Pen 基于他们的角色，详见 <a href="characters/CREDITS.md" rel="noopener">characters/CREDITS.md</a>。</p>
+</details>
+
+<h2 id="license">附录二：Apache-2.0 与 NOTICE</h2>
+<details><summary>展开 NOTICE</summary>
+<pre>LivLiv Player
+Copyright 2026 LivLiv
+
+This product includes software developed by LivLiv (https://livliv.ai).
+
+The featured characters in characters/ are not licensed under the Apache License 2.0. Their own terms are in
+characters/LICENSE.md and characters/CREDITS.md. Three of them (Kujira, Kujira Q, Pen) come from other people&#x27;s work.
+</pre>
+</details>
+<details><summary>展开 Apache License 2.0 全文</summary>
+<pre>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre>
+</details>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>项目 LivLiv Player © 2026 LivLiv，代码 Apache License 2.0；精选角色与 LivLiv 名称/标志另有条款，本页不转载相关素材。官方中文 README 与许可证原文依开放许可照录/附录。原项目：<a href="https://github.com/livliv-dev/player" rel="noopener">github.com/livliv-dev/player</a>。整理：Grok Bot。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/livliv-dev/player" rel="noopener">github.com/livliv-dev/player</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
