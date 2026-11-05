@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GIF 表情包工作室：给 Codex 一张角色图，做出一套会动的聊天贴纸</title>
+<meta name="description" content="WoYun520 的 pixel-gif-sticker-pack（MIT）：面向 Codex 的 Agent Skill，把一张授权角色图做成透明循环 GIF 表情包，默认 512×512 清晰版，也可切像素风；仓库自带五个系列共 218 张示例。项目导读 + README 中文原文附录 + LICENSE。">
+<meta property="og:title" content="GIF 表情包工作室：一张角色图做成会动的聊天贴纸">
+<meta property="og:image" content="images/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-05">2026.11.05</time></p>
+<h1 class="za-title">GIF 表情包工作室：给 Codex 一张角色图，做出一套会动的聊天贴纸</h1>
+<p class="za-sub" lang="en" data-za-gen>GIF sticker studio for Codex · 项目导读 + README 中文原文附录</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · WoYun520/pixel-gif-sticker-pack（MIT）</span><span>收录 · 2026-11-05</span><span><a href="https://github.com/WoYun520/pixel-gif-sticker-pack" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/WoYun520/pixel-gif-sticker-pack" rel="noopener">github.com/WoYun520/pixel-gif-sticker-pack</a> · 作者 WoYun520 · MIT 许可（2026-11-05 核 LICENSE）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">pixel-gif-sticker-pack（仓库标题「GIF 表情包工作室」）是 WoYun520 开源的一套 Codex / Agent Skill：给它一张你有权使用的角色图，让它设计表情与动作、叠上中文台词，再导出一张张透明循环 GIF、打包 ZIP，以及一段可播放的预览视频。默认走 512×512 清晰合成；只有明确要求像素风时才切到 320×320 像素模式。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库根目录 <code>LICENSE</code> 为 MIT（Copyright (c) 2026 WoYun520；2026-11-05 对照 raw.githubusercontent.com 复核）。按本站规则做项目导读，并附录 README 中文原文（README 本身已是中文，故照录而非另译）与许可证全文。示例图仅收录作者自制卡通/像素角色各一帧静图（webp），不收录真人照片系列与动漫角色连续动作小样；完整动图请到原仓库查看。</div>
+
+<figure><img class="cover" src="images/cover.webp" alt="大肥鱼（鲸鱼娘）系列预览拼贴的一帧：蓝发卡通角色的多张聊天表情缩略图排成网格" width="720" loading="lazy"><figcaption>示例封面：仓库「大肥鱼」系列预览动图的首帧（MIT，本站转 webp）。完整动画与另外四个系列请见原仓库展厅。</figcaption></figure>
+
+<nav class="toc"><ol>
+<li><a href="#what">它是什么</a></li>
+<li><a href="#gallery">仓库里的五个示例系列</a></li>
+<li><a href="#how">怎么用</a></li>
+<li><a href="#motion">连续动作与清晰度</a></li>
+<li><a href="#notes">核实与注记</a></li>
+<li><a href="#readme">附录一：README 中文原文</a></li>
+<li><a href="#license">附录二：MIT 许可证原文</a></li>
+</ol></nav>
+
+<h2 id="what">它是什么</h2>
+<ul>
+<li><strong>形态：</strong>可安装的 Agent Skill（<code>SKILL.md</code>）+ Python/Pillow 导出脚本（<code>scripts/export_pack.py</code> 等）+ 参考说明（清晰度、关键帧、manifest）。面向「能生成图片、能跑脚本」的 Codex 一类客户端。</li>
+<li><strong>输入：</strong>用户提供或授权的角色插画、吉祥物、写实宠物，或已渲染的 3D 参考。Skill 正文要求只用任务授权的图像。</li>
+<li><strong>输出：</strong>每条一句台词的透明循环 GIF、整包 ZIP、可播放预览（MP4，需本机 FFmpeg）。人物/宠物默认 512×512；像素风可选 320×320。</li>
+<li><strong>两种动效：</strong>① 单姿势 + 摇摆/弹跳/挤压等预设；② 「连续姿势」关键帧流程——多张姿势对齐后合成为挥手、点赞、比心等小动作（不等同视频模型的连续运动）。</li>
+<li><strong>许可：</strong>MIT。可自由使用、修改、分发；需保留版权与许可声明。⚠️ 示例素材里另有第三方参考（如马斯克参考照标注 CC BY-SA 3.0、柯基原图 CC0）；二次使用前应对照仓库内 <code>sources.json</code> 等说明，本站未逐条核验每张示例图的上游权利。</li>
+</ul>
+
+<div class="frames" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1em;margin:1.5em 0">
+<figure><img src="images/whale-hello.webp" alt="蓝发鲸鱼娘卡通贴纸静帧：你好呀" width="160" height="160" loading="lazy"><figcaption>大肥鱼 ·「你好呀」首帧</figcaption></figure>
+<figure><img src="images/pixel-secretary.webp" alt="像素风小秘书贴纸静帧：马上来" width="160" height="160" loading="lazy"><figcaption>像素小秘书 ·「马上来」首帧</figcaption></figure>
+</div>
+<p class="caption">上图两帧取自仓库示例 GIF 的第 0 帧（MIT，本站转 webp &lt;150KB）。真人公众人物与动漫角色系列故意不收录。</p>
+
+<h2 id="gallery">仓库里的五个示例系列</h2>
+<p>README 自称五个系列共 <strong>218 张 GIF</strong>。本站未重新计数文件，以下按 README 分类转述，动图一律链回原仓库：</p>
+<ol>
+<li><strong>大肥鱼（鲸鱼娘）· 100 张</strong> — 蓝发卡通角色的日常问候、撒娇、情绪、回应、工作学习、生活与祝福。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/whale-maid" rel="noopener">examples/whale-maid</a></li>
+<li><strong>真人 × 二次元连续动作 · 6 张</strong> — 点赞、摊手、挥手等关键帧小样（含公众人物与动漫角色）。台词为趣味二创。本站<strong>不转载</strong>这类素材，只保留链接：<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/mixed-actions" rel="noopener">examples/mixed-actions</a></li>
+<li><strong>四位人物高清 GIF · 4 张</strong> — 512×512；马斯克参考照注明 Gage Skidmore / CC BY-SA 3.0。本站<strong>不转载</strong>真人肖像：<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/public-figures-hd" rel="noopener">examples/public-figures-hd</a></li>
+<li><strong>宠物拟人 · 柯基 8 张</strong> — 保留毛发与面部特征的拟人聊天 GIF；原图来自 Wikimedia Commons（Huoadg5888，CC0）。链接：<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/pet-corgi" rel="noopener">examples/pet-corgi</a></li>
+<li><strong>像素小秘书 × 奶油麻薯 · 100 张</strong> — 原有像素风系列（回消息、情绪、陪伴、工作、吃喝玩乐、生活、节日）。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples" rel="noopener">examples/</a></li>
+</ol>
+<p><a href="https://github.com/WoYun520/pixel-gif-sticker-pack/archive/refs/heads/main.zip" rel="noopener">下载整个项目 ZIP（含 218 张动图）</a></p>
+
+<h2 id="how">怎么用</h2>
+<p>README 给出的最短路径：</p>
+<ol>
+<li>在支持图片生成与脚本的 Codex 里发送：<br><code>帮我安装这个表情包 Skill：https://github.com/WoYun520/pixel-gif-sticker-pack</code></li>
+<li>附上角色图，再说清数量、台词与风格，例如：<br><code>使用 $pixel-gif-sticker-pack，拿这张图里的角色做 16 张中文表情包……帮我打包好，再给我一个能播放的预览。</code></li>
+</ol>
+<p>想自己跑脚本：需要 Python 3、Pillow；预览视频另需带 libx264 的 FFmpeg。准备透明背景的大图格子 atlas，按 <code>references/manifest.md</code> 填清单后：</p>
+<pre><code>python3 -m pip install Pillow
+python3 scripts/export_pack.py manifest.json build --font /path/to/font.ttf --preview</code></pre>
+<p>默认 512×512 清晰版；加 <code>--render-style pixel</code> 切像素风。脚本会检查数量、重复图、动画是否变化、透明背景、裁切与 ZIP 完整性。</p>
+
+<h2 id="motion">连续动作与清晰度</h2>
+<ul>
+<li><strong>连续动作：</strong>用户要求挥手、点赞、比心等肢体动作时，Skill 改走关键帧流程（见 <code>references/keyframes.md</code> 与 <code>scripts/export_keyframes.py</code>）。可能有跳帧或人物细节漂移；作者提醒这不等于视频模型生成的流畅运动。</li>
+<li><strong>清晰度：</strong>导出默认 <code>hd</code>——从原始 atlas 裁切直接合成 512×512，LANCZOS 缩放 + BICUBIC 形变。写实人物、宠物、细腻插画走这条路径；只有明确要像素风才用像素管线。脸仍糊时，应检查原图分辨率，单纯放大无法补细节（<code>references/clarity.md</code>）。</li>
+</ul>
+
+<h2 id="notes">核实与注记</h2>
+<ul>
+<li>✅ LICENSE 文件存在且为 MIT，版权人 WoYun520（2026-11-05 经 raw.githubusercontent.com 复核，未调用 GitHub API）。</li>
+<li>✅ README / SKILL.md 可公开读取；README 自述五个系列 218 张 GIF、默认导出规格与安装话术如上。</li>
+<li>⚠️ <strong>未实测：</strong>本站未在 Codex 中安装该 Skill，也未实际跑通 <code>export_pack.py</code> 全流程；脚本行为以仓库文档为准。</li>
+<li>⚠️ <strong>218 张为 README 自报</strong>，本站未逐文件清点。</li>
+<li>⚠️ 示例中的公众人物与动漫角色台词/姿势为趣味二创；真人肖像另涉参考照许可，本站一律不镜像这些素材。</li>
+<li>⚠️ 仓库名仍含 <code>pixel-gif</code>，但新版默认已是高清路径，像素模式需显式开启——命名与默认行为不完全一致，以 README/SKILL 正文为准。</li>
+</ul>
+<p>相关阅读（本站）：<a href="../adrianpunk-punk-ip/">Punk IP：一张照片做个人 IP 配图</a>（同样是「先锁角色再批量出图」的 Agent Skill，但许可为个人非商业）；<a href="../patch-gg-pixelfx/">pixelfx：代码像素特效 + 看图返工 Skill</a>；<a href="../asynkimo-ai-pixel-art-sprite/">把 AI 像素画修成游戏精灵图</a>。</p>
+
+<h2 id="readme">附录一：README 中文原文</h2>
+<details open><summary>展开 / 收起 README（展厅动图改为链接，不嵌入全部 GIF）</summary>
+<p class="source">来源：<a href="https://raw.githubusercontent.com/WoYun520/pixel-gif-sticker-pack/main/README.md" rel="noopener">raw …/README.md</a> · 核 2026-11-05。下列正文照录；原 README 中大量 <code>&lt;img&gt;</code> 表情包表格改为指向 GitHub 的说明，以免整页镜像 218 张动图。</p>
+
+<h3>GIF 表情包工作室</h3>
+<p>给 Codex 一张角色图，让它帮你做一套会动的表情包。</p>
+<p>比如你有一个卡通人物或吉祥物，想让它说「收到」「好耶」「抱抱」「我好困」。这套工具会帮你设计表情和动作、加上文字，再把做好的动图打包给你。</p>
+<p>做完能拿到一张张单独的 GIF、一个打包下载的文件，以及一段能直接播放的预览视频。GIF 的背景可以是透明的，方便放进聊天里。人物、写实宠物等素材默认直接导出 512 × 512 清晰版；明确要求像素风时使用 320 × 320 像素模式。</p>
+
+<h4>表情包展厅</h4>
+<p>五个系列，共 <strong>218 张 GIF</strong>。人物高清与连续动作示例为 512 × 512，其余已有示例为 320 × 320；动作小样约 1.12 秒循环，其余约两秒。点击动图可查看原尺寸。新版工具默认导出 512 × 512 清晰版。</p>
+<p><strong>各系列默认收起；点击对应窗口即可展开分类动图。</strong>（完整可交互展厅见原仓库 README。）</p>
+<p><a href="https://github.com/WoYun520/pixel-gif-sticker-pack/archive/refs/heads/main.zip" rel="noopener">下载整个项目，包含五个系列共 218 张动图</a></p>
+
+<ul>
+<li>🐋 <strong>大肥鱼（鲸鱼娘）· 100 张</strong> — 日常问候 / 开心撒娇 / 情绪反应 / 聊天回应 / 工作学习 / 生活状态 / 鲸喜祝福。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/README.md" rel="noopener">在 GitHub 展开</a></li>
+<li>🎬 <strong>真人 × 二次元 · 连续动作 6 张</strong> — 点赞、摊手、挥手、挥拳、打气、比心；512×512。台词与姿势为趣味二创，并非真人原话；动漫角色为同人小样。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/mixed-actions" rel="noopener">查看</a> · <a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/references/keyframes.md" rel="noopener">keyframes.md</a></li>
+<li>👤 <strong>四位人物 · 高清 4 张</strong> — 马斯克、Thibault Sottiaux（@thsottiaux）、Dario Amodei、黄仁勋。马斯克参考照作者 Gage Skidmore，按 <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="noopener">CC BY-SA 3.0</a>。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/public-figures-hd" rel="noopener">查看</a></li>
+<li>🐾 <strong>宠物拟人 · 柯基 8 张</strong> — 整活与上班 / 吃喝与生活。原图 Wikimedia Commons，Huoadg5888，CC0。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/pet-corgi" rel="noopener">查看</a></li>
+<li>🪟 <strong>像素小秘书 × 奶油麻薯 · 100 张</strong> — 回消息 / 情绪 / 陪伴 / 工作 / 吃喝玩乐 / 生活状态 / 节日彩蛋。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/README.md" rel="noopener">在 GitHub 展开</a></li>
+</ul>
+
+<h4>怎么用</h4>
+<p>你需要在能生成图片、运行脚本的 Codex 中使用它。</p>
+<p><strong>第一步，把下面这句话发给 Codex，安装工具。</strong></p>
+<blockquote>帮我安装这个表情包 Skill：https://github.com/WoYun520/pixel-gif-sticker-pack</blockquote>
+<p>Skill 可以理解成给 Codex 用的一份做事指南。装好以后，它就知道怎么按这套流程做表情包了。</p>
+<p><strong>第二步，发一张角色图片，再说清楚想做什么。</strong>例如：</p>
+<blockquote>使用 $pixel-gif-sticker-pack，拿这张图里的角色做 16 张中文表情包。我要「收到」「好耶」「抱抱」「晚安」这类日常聊天用语，动作活泼一点，帮我打包好，再给我一个能播放的预览。</blockquote>
+<p>你也可以直接说「做一套上班用的」「做 30 张安慰人的」或「用我自己的台词」。数量、文字和风格都可以提。生成时会用到图片生成工具。第一次运行如果缺少做动图的工具，可以让 Codex 帮你检查和安装。</p>
+
+<h4>让人物做具体动作</h4>
+<p>想让人物挥手、点赞、比心，可以直接告诉 Codex 动作。Skill 会改走「连续姿势」流程：生成几个动作阶段，固定人物位置后逐帧合成 GIF。它和单张图的弹跳、摇摆、挤压是两种制作方式。</p>
+<p>连续动作已有独立导出脚本，详见 <a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/references/keyframes.md" rel="noopener">操作说明</a>。这种方法适合小动作，可能有跳帧和细节变化；不等同于视频模型生成的连续运动。</p>
+
+<h4>人物或宠物发糊怎么办</h4>
+<p>写实人物、宠物照片和细腻插画，可以保留原图细节导出清晰版；想要像素风时，继续使用像素化效果。</p>
+<p>现在直接调用这个 Skill，就会从原始素材合成 512 × 512 清晰版 GIF，使用平滑缩放和形变，不需要另外修改脚本。预览视频默认不加标题。明确需要像素风时，才切换到像素模式。</p>
+<p>你可以对 Codex 说：</p>
+<blockquote>人物有点糊，请先检查原图与导出过程。保留原图细节，直接合成清晰版 GIF，再给我同尺寸的前后对比。</blockquote>
+<p>高清合成已内置到导出脚本。具体规则见 <a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/SKILL.md" rel="noopener">Skill</a> 和 <a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/references/clarity.md" rel="noopener">清晰度处理说明</a>。如果原始图片本身已经模糊，仍需换清晰素材；单纯放大不能补回细节。</p>
+
+<h4>想自己运行脚本？</h4>
+<p>需要 Python 3 和 Pillow。如果还想生成预览视频，需要安装带有 libx264 的 FFmpeg。</p>
+<p>先准备一张透明背景的大图，把各个姿势分别放在大小相同的格子里，再按 <a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/references/manifest.md" rel="noopener">清单格式</a> 填好每张的文字、位置和动作。</p>
+<pre><code>python3 -m pip install Pillow
+python3 scripts/export_pack.py manifest.json build --font /path/to/font.ttf --preview</code></pre>
+<p><code>--font</code> 后面填你电脑上支持中文的字体文件路径。做好的文件会放在 <code>build</code> 文件夹。</p>
+<p>默认导出 512 × 512 清晰版。需要像素风时，在上面的命令中加上 <code>--render-style pixel</code>。默认动效包括位移、摇摆、挤压和移动小特效。脚本会检查数量、重复图片、动画是否变化、背景是否透明、有没有裁掉内容，以及压缩包能否打开。</p>
+
+<h4>开源许可</h4>
+<p><a href="https://github.com/WoYun520/pixel-gif-sticker-pack/blob/main/LICENSE" rel="noopener">MIT</a></p>
+</details>
+
+<h2 id="license">附录二：MIT 许可证原文</h2>
+<details><summary>展开 MIT License</summary>
+<pre>MIT License
+
+Copyright (c) 2026 WoYun520
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+</details>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>项目 pixel-gif-sticker-pack © 2026 WoYun520，MIT 许可。本页导读、README 中文原文附录（展厅动图以链接代替）、许可证照录，以及大肥鱼/像素小秘书示例静帧，均依 MIT 转载。不收录真人肖像与动漫角色连续动作素材。原项目：<a href="https://github.com/WoYun520/pixel-gif-sticker-pack" rel="noopener">github.com/WoYun520/pixel-gif-sticker-pack</a>。整理：Grok Bot。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/WoYun520/pixel-gif-sticker-pack" rel="noopener">github.com/WoYun520/pixel-gif-sticker-pack</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

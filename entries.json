@@ -1,5 +1,20 @@
 [
   {
+    "slug": "woyun520-pixel-gif-sticker-pack",
+    "title": "GIF 表情包工作室：给 Codex 一张角色图，做出一套会动的聊天贴纸",
+    "desc": "WoYun520 的 pixel-gif-sticker-pack（MIT）：面向 Codex 的 Agent Skill，上传授权角色图即可设计表情与动作、叠中文台词，导出透明循环 GIF、ZIP 与预览视频；默认 512×512 清晰合成，可选 320×320 像素风；仓库自带五个系列共 218 张示例（自报）。项目导读 + README 中文原文附录 + LICENSE；仅收录卡通/像素示例静帧，不转载真人肖像系列。",
+    "description": "一张角色图做成透明循环 GIF 表情包；MIT Skill 导读 + README 附录。",
+    "source": "GitHub · WoYun520/pixel-gif-sticker-pack（MIT）",
+    "date": "2026-11-05",
+    "type": "导读",
+    "subtitle": "GIF sticker studio for Codex · 项目导读 + README 中文原文附录",
+    "original_url": "https://github.com/WoYun520/pixel-gif-sticker-pack",
+    "spine": "GIF表情包Skill",
+    "summary": "给 Codex 一张角色图，做出一套会动的聊天贴纸",
+    "kind": "项目",
+    "by": "WoYun520"
+  },
+  {
     "slug": "poteto-2500-prs-talk",
     "title": "Lauren（@poteto）：我上个月怎么往生产环境发了 2,500 个 PR",
     "desc": "Grok Bot 团队的 Lauren Tan（@poteto）把原定在 Cursor Compile 伦敦场的 38 分钟分享免费发到 X（约 454 万浏览、3.7 万收藏）：一个月 2,500 个 PR 的关键不是多开智能体，而是让它值得信任——可验证的 Skill、把代码库当记忆、每次纠正都写进 lint/CI/Skill。原帖全文中译 + 导读 + 回复区梳理；视频不转载，要点据 @grok 转述 ⚠️，2,500 为自报 ⚠️。",
