@@ -1,5 +1,20 @@
 [
   {
+    "slug": "eianlu-claude-codex-seedance-ai-video",
+    "title": "Claude Code / Codex + Seedance：从一个想法到 AI 视频成片的全流程（Eian）",
+    "desc": "Eian @EianLu X Article 全文照录（2026-11-05）：Claude Code 当总导演，Codex 画设定与首尾帧，Seedance 出片；把错误挡在花钱之前。含故事/分镜/七段式提示词/提交前审核/四线程协作等完整提示词。约 61.7 万浏览 / 1.54 万收藏（抓取快照）。价格与抽卡体验为作者自述 ⚠️；本站未实测、不转载成片视频。",
+    "description": "Claude+Codex+Seedance 从想法到成片：全文照录 + 完整提示词。",
+    "source": "X · @EianLu",
+    "date": "2026-11-06",
+    "type": "全文",
+    "subtitle": "Claude code/Codex+Seedance AI视频：从一个想法到成片的全流程",
+    "original_url": "https://x.com/EianLu/status/2118317430665613741",
+    "spine": "AI视频全流程",
+    "summary": "少花钱、低抽卡：Claude 导演 + Codex 画帧 + Seedance 出片",
+    "kind": "教程",
+    "by": "Eian"
+  },
+  {
     "slug": "chrishkai-video",
     "title": "ChrisHKAI-Video：贴一条 X 链接，做出主角是 3D 搪胶公仔的自我介绍短片",
     "desc": "ChrisHKAI/ChrisHKAI-Video（MIT）：编程 Agent 视频 Skill。贴创作者 X 链接，用 Blender Cycles + Python 声音做成 3D 搪胶公仔短片（无视频/图像生成模型）。项目导读 + 官方简体中文 README；成片与创作者素材只链 Releases、不下载不转载。Codex 完整成片未验证 ⚠️；本站未实测 ⚠️。",
