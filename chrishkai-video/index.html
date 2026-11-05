@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChrisHKAI-Video：贴一条 X 链接，做出主角是 3D 搪胶公仔的自我介绍短片</title>
+<meta name="description" content="ChrisHKAI/ChrisHKAI-Video（MIT）：给编程 Agent 的视频 Skill。贴创作者 X 链接，用代码（Blender Cycles + Python 声音）做成以 3D 搪胶公仔为主角的短片。项目导读 + 官方简体中文 README 附录。成片与创作者素材不转载，只链 Releases。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-06">2026.11.06</time></p>
+<h1 class="za-title">ChrisHKAI-Video：贴一条 X 链接，做出主角是 3D 搪胶公仔的自我介绍短片</h1>
+<p class="za-sub" lang="en" data-za-gen>Paste an X link, get a vinyl-toy intro film · 项目导读 + 官方简体中文 README</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · ChrisHKAI/ChrisHKAI-Video（MIT）</span><span>收录 · 2026-11-06</span><span><a href="https://github.com/ChrisHKAI/ChrisHKAI-Video" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/ChrisHKAI/ChrisHKAI-Video" rel="noopener">github.com/ChrisHKAI/ChrisHKAI-Video</a> · 作者 Chris（<a href="https://x.com/ChrisHKAI" rel="noopener">@ChrisHKAI</a>）· 代码/文档 MIT（2026-11-06 核 LICENSE）· 成片 <a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/releases/tag/films" rel="noopener">Releases / films</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">ChrisHKAI-Video 是香港创作者 Chris（@ChrisHKAI）开源的<strong>视频 Skill</strong>：给 Codex 或 Claude Code 一条创作者的 X 链接，Agent 用代码把对方做成 3D 搪胶公仔短片——头像从主页「撕下」鼓成公仔，帖子立成墙，数字从页面升起。画面走 Blender Cycles 逐帧渲染，声音用 Python 合成或采样乐器；README 强调<strong>不用视频生成、不用图片生成、不用素材库画面</strong>。</p>
+
+<div class="notice"><strong>版权说明：</strong>代码与文档为 <strong>MIT</strong>（Copyright (c) 2026 ChrisHKAI；2026-11-06 核）。用本 Skill 做出的片子归你；演示成片中的创作者头像、帖子、名字与吉祥物归创作者所有（README 原话）。乐器采样另有 CC0/CC BY 条款。因此本页<strong>不嵌入、不下载</strong>任何 mp4 或 <code>docs/</code> 成片封面，成片请到 <a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/releases/tag/films" rel="noopener">Releases · films</a> 观看。附录采用官方 <code>README.zh-CN.md</code>。</div>
+
+<nav class="toc"><ol>
+<li><a href="#what">它是什么</a></li>
+<li><a href="#flow">怎样用与六步流程</a></li>
+<li><a href="#limits">环境、声音与测试状态</a></li>
+<li><a href="#notes">核实与注记</a></li>
+<li><a href="#readme">附录一：官方简体中文 README</a></li>
+<li><a href="#license">附录二：MIT 许可证</a></li>
+</ol></nav>
+
+<h2 id="what">它是什么</h2>
+<ul>
+<li><strong>形态：</strong>Skill <code>creator-toy-intro</code> + 本地渲染引擎依赖（Blender、Node、Python、ffmpeg、无头 Chrome 等）。</li>
+<li><strong>输入：</strong>X 主页链接（或分享文案、截图）；先选 16:9（桌面页，推荐）或 9:16（手机页）。</li>
+<li><strong>输出：</strong>默认约 30 秒、1920×1080 或 1080×1920、30 fps 的自我介绍片；可更长。另有成片、效果轨、平台封面等。</li>
+<li><strong>方法：</strong>公仔按确认过的图用零件表/宠物套件/SDF 雕塑；主页 HTML + Blender 场景；声音六选一（含创作者原曲对拍）。不是填空模板——材料需要新动画时 Agent 可为该片写代码。</li>
+<li><strong>成片示例（只链不转）：</strong><a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/releases/tag/films" rel="noopener">全部成片</a> · 蜗牛King / Kin / 铁柱AGI 等说明见 README。</li>
+</ul>
+
+<h2 id="flow">怎样用与六步流程</h2>
+<p><strong>Codex：</strong>克隆仓库后 <code>python3 scripts/install-codex.py</code>，在可写影片目录说 <code>$creator-toy-intro Make a self-intro film for https://x.com/…</code>。</p>
+<p><strong>Claude Code：</strong><code>claude plugin marketplace add …</code> 再 <code>claude plugin install chrishkai-video@chrishkai-video</code>，或克隆后 <code>--plugin-dir</code>。</p>
+<p>六步（每步停给你看）：0 检查电脑 → 1 链接与画幅 → 2 故事点与开场三选一 → 3 公仔转面确认 → 4 分镜+听声音签字 → 5 先试片再全质量渲染。分镜页会做节奏、碰撞净空、<code>check</code>/<code>compare</code>/<code>sample</code> 等检查；影片入账要求与已有片在六项里至少四项不同。</p>
+
+<h2 id="limits">环境、声音与测试状态</h2>
+<ul>
+<li>耗时与 token 都很大：研究+公仔+分镜签字后，Cycles 后台渲染常一小时以上（README：M4 Pro/M5 约 1.5 h）。high 可用，xhigh 更好。</li>
+<li>已测：Apple silicon + Claude Code（Opus/Sonnet 5.5）。Windows/Linux 未测；Intel Mac 跑不了 Blender 5.2。</li>
+<li>⚠️ <strong>Codex 完整成片效果尚未验证</strong>（仓库置顶警告）；欢迎在 Issues 回报。</li>
+<li>声音：<code>bed</code>/<code>song</code>/<code>band</code>/<code>strings</code>/<code>fx</code>/<code>own</code>；真实乐器约 1.4 GB，需确认后下载。</li>
+</ul>
+
+<h2 id="notes">核实与注记</h2>
+<ul>
+<li>✅ MIT LICENSE 存在（2026-11-06 核 raw）；官方中英 README 可公开读取。</li>
+<li>✅ 成片发布页存在：<code>releases/tag/films</code>（本站未下载任何 mp4）。</li>
+<li>⚠️ 未实测：本站未安装 Blender/Skill，未跑通成片流程。</li>
+<li>⚠️ 测试表中的耗时、片长与「已修复」结论为作者/测试者自述。</li>
+<li>⚠️ Tim 片因含他人主题演讲与歌曲未公开发布（README）；本站亦不链该素材文件。</li>
+</ul>
+<p>相关阅读（本站）：<a href="../andyhuo520-digital-human-koubo/">digital-human-koubo 数字人口播</a>；<a href="../livliv-dev-player/">LivLiv Player 2.5D 角色播放</a>；<a href="../beamnxw-opus-launch-clip/">Opus 发布短片 Launch Clip</a>；<a href="../lemomo-lemo-opuscar/">lemo-opuscar</a>（README 致谢的采样器来源）。</p>
+
+<h2 id="readme">附录一：官方简体中文 README</h2>
+<details open><summary>展开 / 收起 README.zh-CN.md</summary>
+<p class="source">来源：<a href="https://raw.githubusercontent.com/ChrisHKAI/ChrisHKAI-Video/main/README.zh-CN.md" rel="noopener">raw …/README.zh-CN.md</a> · 核 2026-11-06。官方中文；成片封面与 mp4 改为指向 Releases 的说明，不嵌入。</p>
+<blockquote><p>⚠️ <strong>Codex 支持仍属实验性，欢迎帮忙测试。Codex 生成影片的实际效果尚未测试。</strong> 安装及离线检查通过，不代表已验证完整成片效果。欢迎大家实测完整流程，并<a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/issues" rel="noopener">在 Issues 回报结果</a>：请附上模型／思考强度、系统／GPU、遇到的问题，以及愿意公开的预览或成片。</p></blockquote>
+<h3>ChrisHKAI-Video</h3>
+<p><strong>贴一条创作者的 X 链接，做出一条主角是他自己 3D 搪胶公仔的短片。</strong>&lt;br&gt; 头像从主页上像贴纸一样撕下来，鼓成他的公仔；最好的帖子立成一面面墙；数字从主页上原来的位置升起来。&lt;br&gt;</p>
+<p class="caption">〔原 README 成片封面/徽章：本站不转载成片与创作者素材；请到 Releases 观看〕</p>
+<p>⚠️ <strong>最初为 Claude 开发并完成成片测试。</strong> 测试者用 Claude Opus 5.5 和 Sonnet 5.5（high 思考强度）都跑通了，xhigh 效果更好；&lt;br&gt; 现已提供 <a href="#codex桌面版或-cli" rel="noopener">Codex 安装入口</a>，Codex 的完整成片效果尚未验证。</p>
+<p>🆕 <strong>2026-10-29 · 先讲你的故事</strong>：三位测试者的片教会了我们很多。现在片子从创作者最出名的事情出发；公仔照原图的身体来做（柠檬不会长手脚）；开场有三款可选；Blender 开工前先检查哪里会出错。<a href="#会发生什么" rel="noopener">看看 ↓</a>&lt;br&gt; 🧪 <strong>2026-10-28 · 开放测试</strong>：第一条给真实创作者做的片已经完成、通过。现在想看看它在你的电脑上跑得怎样。<a href="#帮忙测试" rel="noopener">怎样帮忙 ↓</a>&lt;br&gt; 🆕 <strong>2026-10-28 · 用耳朵选声音</strong>：六种声音铺在动态分镜下面听完再选；也可以用创作者自己的歌对上影片的节拍，或者用真实乐器采样来演奏。<a href="#声音" rel="noopener">看看 ↓</a></p>
+<h4>🎬 精选作品</h4>
+<p class="caption">〔原 README 成片封面/徽章：本站不转载成片与创作者素材；请到 Releases 观看〕</p>
+<p class="caption">〔原 README 成片封面/徽章：本站不转载成片与创作者素材；请到 Releases 观看〕</p>
+<p>两条片从第一帧到最后一个音符都是代码：画面由 Blender 渲染，声音由 Python 写出来。&lt;br&gt; <a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/releases/tag/films" rel="noopener"><strong>▶ 全部成片</strong></a> · <a href="examples/README.md" rel="noopener"><strong>每条片怎样做出来</strong></a></p>
+<h4>👋 关于我</h4>
+<p>我是 <strong>Chris</strong>（<a href="https://x.com/ChrisHKAI" rel="noopener">@ChrisHKAI</a>），来自香港，在 X 上分享我用 AI 做的东西。</p>
+<blockquote><p><strong>不是模板合集。</strong> 这里每一条片都是我和编程 agent 一起用代码做的。&lt;br&gt;</p></blockquote>
+<blockquote><p>Skill 按 Claude Opus 5.5 调校，换了模型未必做得出来。</p></blockquote>
+<p>每条片的导演、制作、配乐和渲染，都由 agent 写代码完成：</p>
+<ul><li>🧸 <strong>公仔</strong>：按你确认的图片，用零件表、宠物套件或有向距离场雕塑做出来</li><li>🎨 <strong>画面</strong>：主页是 HTML，场景用 Blender Cycles 逐帧渲染</li><li>🎵 <strong>声音</strong>：Python 合成、免费乐器采样演奏，或者把创作者自己的歌剪到影片的节拍上</li></ul>
+<p>不用视频生成，不用图片生成，不用素材库画面。头像、帖子和数字都是创作者自己的。</p>
+<h4>怎样用</h4>
+<p>按你使用的 agent 选择：<a href="#codex桌面版或-cli" rel="noopener">Codex</a> 或 <a href="#方法一安装-skill推荐" rel="noopener">Claude Code</a>。两者共用同一份 Skill 和本地 Blender 引擎。</p>
+<h5>Codex（桌面版或 CLI）</h5>
+<p>克隆包含这次修改的仓库版本，再安装完整 Skill：</p>
+<pre><code>git clone --depth 1 https://github.com/ChrisHKAI/ChrisHKAI-Video.git
+cd ChrisHKAI-Video
+python3 scripts/install-codex.py</code></pre>
+<p>macOS/Linux 默认将 Skill 链接到 <code>~/.agents/skills/creator-toy-intro</code>，因此请保留仓库文件夹。Windows 默认复制整个 Skill（如果 Python 命令是 <code>python</code>，请替换命令中的 <code>python3</code>）；macOS/Linux 也可以加 <code>--copy</code> 使用独立副本。安装器只需要 Python 3.9+，不会覆盖已有 Skill，也不会安装 Blender 等渲染依赖。加 <code>--dry-run</code> 可以先看安装计划；加 <code>--skills-dir /path/to/.agents/skills</code> 可以指定安装目录。</p>
+<p>在 Codex 中打开一个可写的影片文件夹，然后输入：</p>
+<pre><code>$creator-toy-intro 帮我做一条自我介绍片：https://x.com/yourhandle</code></pre>
+<p>只在仓库内使用时，也可以直接用 Codex 打开这个仓库：随仓库提供的 <code>.agents/skills/creator-toy-intro</code> 链接会让它发现 Skill，无须用户级安装；影片放在仓库旁边的 <code>my-films/</code> 中。两种发现方式选一种，避免列表里出现同名的两项。如果下载的 ZIP 没有保留仓库内的软链接，请运行安装器。没有看到 Skill 时重启 Codex。<a href="skills/creator-toy-intro/references/codex.md" rel="noopener">Codex 使用说明</a> 包含路径、工具、图片检查和长时间渲染的处理方式。</p>
+<p>请使用支持命令执行、图片查看和浏览器或搜索工具的本地 Codex 会话，下文的渲染依赖要求仍然适用。安装和离线检查通过不代表完成了 Codex 全流程成片测试，成片效果还需要实际验证。</p>
+<p>链接安装的更新方式：在仓库中运行 <code>git pull --ff-only</code>。复制安装的更新方式：先将已安装的 <code>creator-toy-intro</code> 文件夹移到 skills 目录以外备份，更新仓库，再用 <code>--copy</code> 重新安装。卸载时只移除已安装的链接或 Skill 副本；影片工作区和共用渲染依赖可以保留。本安装方式依据 <a href="https://developers.openai.com/codex/skills/" rel="noopener">OpenAI 官方 Skills 文档</a>。</p>
+<h5>Claude Code</h5>
+<h5>方法一：安装 Skill（推荐）</h5>
+<p>在终端里：</p>
+<pre><code>claude plugin marketplace add https://github.com/ChrisHKAI/ChrisHKAI-Video.git
+claude plugin install chrishkai-video@chrishkai-video</code></pre>
+<p>完整的 <code>https://</code> 地址不需要 SSH key，下载约 2 MB。如果还是失败（连 GitHub 很慢或者连不上），就自己先下载，再加入那个文件夹：</p>
+<pre><code>git clone --depth 1 https://github.com/ChrisHKAI/ChrisHKAI-Video.git
+claude plugin marketplace add ./ChrisHKAI-Video
+claude plugin install chrishkai-video@chrishkai-video</code></pre>
+<p>之后在任何文件夹都能用。</p>
+<ul><li>每条片有自己的工作区 <code>&lt;账号&gt;-intro/</code>，放在你启动时所在的文件夹。</li><li>Blender、Python 模块和无头 Chrome 装在用户级文件夹（<code>~/Applications</code>、<code>~/.chrishkai-video</code>、<code>~/.cache/puppeteer</code>），而且要你说好才装。</li><li>其他 agent：把 <a href="skills/creator-toy-intro/" rel="noopener"><code>skills/creator-toy-intro/</code></a> 整个文件夹复制到它的 skills 目录。</li></ul>
+<h5>方法二：克隆仓库</h5>
+<pre><code>git clone https://github.com/ChrisHKAI/ChrisHKAI-Video.git
+mkdir my-films &amp;&amp; cd my-films
+claude --plugin-dir ../ChrisHKAI-Video</code></pre>
+<p>片放在 <code>my-films/</code>，不会进仓库。</p>
+<h5>然后直接说你想要什么</h5>
+<blockquote><p>帮我做一条自我介绍片：https://x.com/yourhandle</p></blockquote>
+<blockquote><p>幫我整條自我介紹片，主角係我個公仔：https://x.com/yourhandle</p></blockquote>
+<blockquote><p>Make a self-intro film for https://x.com/yourhandle</p></blockquote>
+<p>链接、从 App 复制的分享文字、几张截图都可以。还没想好？Claude Code 输入 <code>/chrishkai-video:creator-toy-intro</code>，Codex 输入 <code>$creator-toy-intro</code>，它会问你要链接。</p>
+<p>它用你的语言回答，开头只问一件事：16:9（X 电脑版主页，推荐）还是 9:16（X 手机版主页）。其他都从主页自己判断。</p>
+<h5>会发生什么</h5>
+<p>六步，每一步都停在一样你要看的东西上。</p>
+<table><tr><th>步骤</th><th>做什么</th><th>停下来等你的地方</th></tr><tr><td><strong>0 · 电脑</strong></td><td>检查 Blender、Node、Python、ffmpeg 和 Chrome；你说一次好，就装齐缺的</td><td>缺东西时的安装清单</td></tr><tr><td><strong>1 · 你的链接</strong></td><td>读链接，开这条片的工作区</td><td>16:9 还是 9:16</td></tr><tr><td><strong>2 · 他的故事</strong></td><td>创作者最出名、最自豪的几件事，每件配上图片、数字（今天的数字，注明从哪里读到）和它会变成的动画；电脑装了 Grok Build 会先问你要不要用它搜 X（没装就直接用浏览器，不会问）</td><td>公仔用哪张图做；然后一页选完：两三件故事、三款开场之一、收尾，每个选项都有预览图</td></tr><tr><td><strong>3 · 公仔</strong></td><td>照原图的身体来做（人、动物、物件），用三种套件之一：零件表、宠物、雕塑</td><td>一张转身图给你确认，颜色已经在深色舞台上检查过</td></tr><tr><td><strong>4 · 分镜</strong></td><td>按你选的顺序排好每一段、节拍网格、真实的预览渲染、每种声音铺在动态分镜下面</td><td>分镜页：在画面上留意见、选声音、签字确认</td></tr><tr><td><strong>5 · 渲染</strong></td><td>先用最终画质渲染几秒样片，想先看的话有半尺寸快速版，然后是成片、只有音效的版本、各平台封面、最后检查</td><td>成片</td></tr></table>
+<p>片子不是套模板：你的素材需要 Skill 还没有的动画时（比如插画拼成一个立体小世界、网页慢慢滚过），agent 会为你的片专门写出来。</p>
+<p>你签字之前，分镜页会先帮你检查：</p>
+<ul><li><strong>节奏</strong>：冷场、公仔独自站太久或者小得看不见、头三秒，以及每行字停留的时间够不够读完。</li><li><strong>不会中途崩</strong>：<code>check</code> 在 Blender 开工前读一遍所有设定，用白话讲哪里错；分镜页全部通过、你签字之后，才开始正式渲染。</li><li><strong>颜色</strong>：每个字在深色舞台上都要看得清；配色取自创作者自己的图片。</li><li><strong>不穿模</strong>：公仔不会走进墙里、站进墙上凸出来的东西里，字条也不会穿过公仔。公仔会自己让开，<code>clearance</code> 在 Blender 开工前逐帧检查。</li><li><strong>要和通过的片一样好</strong>：<code>compare</code> 把你的片的开场、公仔出场、数字定格、高潮和结尾卡，和三条已经通过的片并排对比，agent 会把不够的地方改好。正式渲染之前，<code>sample</code> 先用最终画质连声音渲染最难的几秒。</li><li><strong>别又是上一条</strong>：交付过的片都记在台账里（Skill 自己的几条片一开始就在里面），新片在六样东西（开场、结构、招牌动作、配色、声音、结尾）里至少要有四样和每一条都不同。</li><li><strong>第二意见</strong>：另找一个全新的评审看简报和画面。意见不同时，只当多一个选择给你，不是规定。</li></ul>
+<p>故事选择现在先给出最多三条完整主线，并推荐一条：每条都有开场、 素材之间的关系、结尾和证据缺口。重要资料缺失时，再针对问题补搜一轮； 用 Grok 的话会再搜一轮。资料不足时会缩小故事范围， 不强行编出转折。旧项目仍可按原来的方式选择素材。</p>
+<p>选好主线后，再做一次快速的内部文字故事测试：观众记住什么、为什么继续看、 换个名字还能不能成立，以及每个主要动作表达什么。它只是提醒，不会挡住片子， 不会多问你一次，也不会拖慢做公仔。实际动作有没有表达清楚，仍会在分镜和成片检查。</p>
+<h5>声音</h5>
+<p>用耳朵选：<code>run.mjs listen</code> 会把每种声音铺在动态分镜下面。</p>
+<table><tr><th>声音</th><th>是什么</th></tr><tr><td><code>bed</code>（默认）</td><td>音效加一层很轻的长和弦</td></tr><tr><td><code>song</code></td><td>模板完整的合成歌曲</td></tr><tr><td><code>band</code></td><td>同一首歌，用真实乐器演奏</td></tr><tr><td><code>strings</code></td><td>那层和弦换成真实弦乐组和钢琴</td></tr><tr><td><code>fx</code></td><td>只有音效</td></tr><tr><td><code>own</code></td><td>创作者自己的歌，对上影片的节拍</td></tr></table>
+<p><code>band</code> 和 <code>strings</code> 需要乐器采样库，约 1.4 GB，你说好才下载。</p>
+<h5>开始之前</h5>
+<ul><li><strong>要花时间，也很耗 token。</strong> 一条片要几个小时，不是几分钟：查资料、做公仔、签分镜，最后 Cycles 在后台渲染一个小时以上（M4 Pro、M5 约 1.5 小时）。high 思考强度可以用，xhigh 更好。</li><li><strong>在 Apple 芯片的 Mac 上测过</strong>，用的是 Claude Code 和 Claude Opus 5.5。Windows 和 Linux 还没测；Intel Mac 跑不了 Blender 5.2。</li><li><strong>需要</strong> Blender 5.2+、Node 22+、Python 3.9+、ffmpeg 和无头 Chrome。Skill 会检查，你说好就装齐缺的；需要密码的那几样，由你自己贴进终端运行。如果连 <code>node</code> 都没有，先装 Node 22。</li><li>每条片约 <strong>10 GB 空间</strong>，还要有 <strong>GPU</strong>：没有 GPU，Cycles 要渲染好几个小时。</li><li>agent 必须能<strong>看图片</strong>（每项检查都是一张图）和用<strong>浏览器</strong>查资料。</li><li><strong>可选</strong>：<a href="https://x.ai" rel="noopener">Grok Build</a> 用来搜 X（每次搜索约 1–1.4 美元），以及真实乐器采样（约 1.4 GB）。</li><li><strong>输出</strong>：1920×1080 或 1080×1920，30 fps；默认 30 秒，内容多就更长。这一版只出 X；抖音、小红书、视频号、Instagram 之后每次更新加一个平台。</li></ul>
+<h5>更新或卸载</h5>
+<p>更新，然后重启 Claude Code：</p>
+<pre><code>claude plugin marketplace update chrishkai-video &amp;&amp; claude plugin update chrishkai-video@chrishkai-video</code></pre>
+<p>卸载：</p>
+<pre><code>claude plugin uninstall chrishkai-video@chrishkai-video</code></pre>
+<p>不需要的话，再删掉 <code>~/.chrishkai-video</code>（Python 模块、字体、乐器采样和你的成片台账）。<code>~/Applications</code> 里的 Blender 和 <code>~/.cache/puppeteer</code> 里的 Chrome 留不留由你。你的片的工作区不会动。</p>
+<p>哪一步卡住了，请<a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/issues" rel="noopener">开一个 issue</a>。</p>
+<h4>帮忙测试</h4>
+<p>这个 Skill 还在测试阶段：已经给一位真实创作者做完一条片。我没法自己试遍每一种电脑和模型，很想知道它在你那边跑得怎样。请<a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/issues" rel="noopener">开一个 issue</a>，写上：</p>
+<ul><li>用的 agent、模型和思考强度；</li><li>你的电脑（芯片、系统、GPU）；</li><li>在哪里卡住，或者哪里看起来不对（附一帧画面或分镜页截图更好）；</li><li>愿意的话，附上成片。</li></ul>
+<p>目前测过：</p>
+<table><tr><th>agent</th><th>模型</th><th>强度</th><th>电脑</th><th>结果</th></tr><tr><td>Claude Code</td><td>Claude Opus 5.5</td><td>xhigh</td><td>Mac（Apple 芯片）</td><td><a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/releases/download/films/cgnot996-intro.mp4" rel="noopener">铁柱AGI 的 42 秒片</a>，已通过</td></tr><tr><td>Claude Code</td><td>Claude Opus 5.5</td><td>high</td><td>M4 Pro</td><td>无人值守做出 32 秒片，约 2.5 小时；评审认为第三幕太长太静</td></tr><tr><td>Claude Code</td><td>Claude Sonnet 5.5</td><td>high</td><td>M4 Pro</td><td>无人值守做出 32 秒片，约 1.5 小时；一个数字用了旧帖的约数（已改）</td></tr><tr><td>Claude Code</td><td>Claude Opus 5.5 + Haiku</td><td>high</td><td>M5</td><td>30 秒片；中途崩了六次，片子也不好看：问题都已修好，教训写进了下一版</td></tr></table>
+<h4>全部作品</h4>
+<p>做这个 Skill 之前和期间做过的每一条片。点画面就能看；每条片的简介和代码在 <a href="examples/README.md" rel="noopener"><code>examples/</code></a>。</p>
+<p class="caption">〔原 README 成片封面/徽章：本站不转载成片与创作者素材；请到 Releases 观看〕</p>
+<p class="caption">〔原 README 成片封面/徽章：本站不转载成片与创作者素材；请到 Releases 观看〕</p>
+<p class="caption">〔原 README 成片封面/徽章：本站不转载成片与创作者素材；请到 Releases 观看〕</p>
+<p class="caption">〔原 README 成片封面/徽章：本站不转载成片与创作者素材；请到 Releases 观看〕</p>
+<p>另外两条，Merge Conflict 和 Made with DeepSeek，在 <a href="https://github.com/ChrisHKAI/ChrisHKAI-Video/releases/tag/films" rel="noopener">Releases 页面</a>。</p>
+<h4>授权</h4>
+<p>由 <strong>ChrisHKAI × Claude</strong> 制作。</p>
+<ul><li><strong>代码和文档</strong>：<a href="LICENSE" rel="noopener">MIT</a>。</li><li><strong>你用 Skill 做的片</strong>：归你。</li><li><strong>示例片里的创作者</strong>（Releases、<code>docs/</code> 和 <code>examples/</code>）：他们的头像、帖子、名字和吉祥物属于他们自己。</li><li><strong>真实乐器</strong>：采样器来自 <a href="https://github.com/lemomo-ai/lemo-opuscar" rel="noopener">lemo-opuscar</a>，MIT 授权，放在 <a href="skills/creator-toy-intro/engine/vendor/lemo/" rel="noopener"><code>engine/vendor/lemo/</code></a>。采样库保留各自的授权：CC0，只有 Salamander 三角钢琴（CC BY 3.0）和 MuldjordKit 鼓组（CC BY 4.0）例外。用到它们的片会生成一份 <code>credits.txt</code>，放进影片简介。</li><li><strong>不含字体文件</strong>：结尾卡用系统字体（兰亭黑、苹方、Helvetica Neue）或免费的思源黑体。系统字体用于商业用途，可能需要另外向字体厂商购买授权。</li></ul>
+<p>片里用的素材由你自己负责。</p>
+<h4>鸣谢</h4>
+<ul><li>🍋 <strong><a href="https://github.com/lemomo-ai/lemo-opuscar" rel="noopener">lemo-opuscar</a></strong>（Lemomo）：真实乐器背后的采样器和采样包，还有这一页的写法。</li></ul>
+<hr>
+<p>⭐ <strong>给仓库点个 Star</strong>&lt;br&gt; 👀 <strong>Watch → Custom → Releases</strong>，有新版本时收到通知&lt;br&gt; 𝕏 关注 <a href="https://x.com/ChrisHKAI" rel="noopener">@ChrisHKAI</a></p>
+</details>
+
+<h2 id="license">附录二：MIT 许可证原文</h2>
+<details><summary>展开 MIT License</summary>
+<pre>MIT License
+
+Copyright (c) 2026 ChrisHKAI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre>
+</details>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>项目 ChrisHKAI-Video © 2026 ChrisHKAI，代码与文档 MIT。演示成片中的创作者素材归各创作者；本页不转载成片与封面。官方简体中文 README 与许可证依 MIT 附录。原项目：<a href="https://github.com/ChrisHKAI/ChrisHKAI-Video" rel="noopener">github.com/ChrisHKAI/ChrisHKAI-Video</a>。整理：Grok Bot。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/ChrisHKAI/ChrisHKAI-Video" rel="noopener">github.com/ChrisHKAI/ChrisHKAI-Video</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
