@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lauren（@poteto）：我上个月怎么往生产环境发了 2,500 个 PR</title>
-<meta name="description" content="Grok Bot 团队的 Lauren Tan（@poteto）免费放出原定于 Cursor Compile 伦敦场的 38 分钟分享：一个月 2,500 个 PR 靠的是先让智能体值得信任。原帖全文中译 + 导读 + 回复区梳理。">
+<meta name="description" content="Grok Bot 团队的 Lauren Tan（@poteto）免费放出原定于 Cursor Compile 伦敦场的 38 分钟分享：一个月 2,500 个 PR 靠的是先让智能体值得信任。原帖全文中译 + 视频内容解读 + 回复区梳理。">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
@@ -32,14 +32,64 @@
 <p>这场分享原本是给伦敦的 Cursor Compile 准备的。因为当时我在给 Grok @Bot Galaxy 做直播，没能到场，所以干脆免费放在 X 上！建议开 2 倍速看，我说话慢。</p>
 <p>[视频，约 38 分钟]</p></blockquote>
 <details><summary>英文原文</summary><p lang="en">here's how i shipped 2,500 PRs last month to production</p><p lang="en">this was originally supposed to be for Cursor Compile in London. i couldn't make it since i was livestreaming for Grok @Bot Galaxy so i'm making it available for free here on X! watch it on 2x speed, i talk slowly</p></details>
-<h2>导读：视频讲了什么（⚠️ 据回复区转述）</h2>
-<p>作者在帖子里只写了一句标题，没有附文字版要点，同一对话里也没有她本人的自回复。回复区有十几位读者 @Grok 请它总结视频，几条回答说法一致，大意如下，可以当观看前的提纲：</p>
+<h2>视频内容解读</h2>
+<p>这一节按演讲的顺序整理。主要依据是 Remy 在 redreamality.com 发的长篇复述（2026-10-05，逐段转述，没有公开许可，所以这里只做中文概括，引语很短），加上 Gene Gi 的笔记（2026-09-22），以及作者本人之后在 X 上发的两条帖子，其中一条附了演讲里的幻灯片。本站没有看视频，也没有逐句核对，各条都注明了出处。</p>
+<h3>1. 开场：数字不是重点，信任才是</h3>
 <ul>
-<li><strong>重点不在多开几个智能体，而在信任。</strong>先把环境搭到“米其林后厨 / 软件工厂”的程度，让智能体没人盯着也能交出可靠的代码。⚠️</li>
-<li><strong>信任来自可验证。</strong>给智能体配上验证用的 Skill，比如功能地图（feature map）、能跑真实用户路径的 CLI、trace，让它自己证明结果对不对。⚠️</li>
-<li><strong>代码库就是智能体的记忆。</strong>智能体会照着已有模式写、挑最短的路走，所以要让最短的路恰好就是对的路：持续清理技术债，用架构、类型和边界让反模式根本写不出来；每纠正一次，就马上沉淀成 lint / CI 规则或者更新 Skill，让同样的问题不再出现；团队里设一个“园丁”，专门盯坏味道、拔杂草。⚠️</li>
+<li>视频里她说的是上个月合并了大约 <strong>2,000</strong> 个 PR 进生产，比帖子标题的 2,500 少了 500。她也说这个数字从来不是她的目标。〔Remy〕</li>
+<li>她的论点：产出来自<strong>信任</strong>，而不是多开智能体。信任的意思是，没有人盯着的时候，智能体交出的活依然够格。〔Remy〕</li>
+<li>她不喜欢“软件工厂”这个说法，更愿意比作<strong>米其林后厨</strong>：不是流水线批量复制，而是手艺活。工程师不再亲手切菜，但端上桌的每道菜仍然由自己负责；要操心的是谁站哪个灶台、用什么刀具、受过什么训练、备菜和主厨怎么配比。〔Remy；Matt Pocock 访谈摘要〕</li>
 </ul>
-<p class="source">以上转述取自 @grok 在回复区的几条回答（2026-11-03），回答本身被截断，不完整。想要准确内容请直接看视频。</p>
+<h3>2. 起点：半年前在 Cursor 的“人肉性能分析”</h3>
+<ul>
+<li>大约半年前她刚加入 Cursor（当时还没并入 SpaceX AI），接手新 agents window 的性能问题。之所以找她，是因为她以前在 React 团队。〔Remy〕</li>
+<li>PR 像墙一样不断涌进来，她判断不了性能有没有退化，只能整天开着 Chrome DevTools 抓 trace、拍 heap snapshot。手工到让人烦躁，于是她开始想：能不能让智能体自己启动应用、抓 trace、读懂 trace、找到热点，一步步把性能“爬山”往上推？这就是<strong>验证类 Skill</strong>的起点。〔Remy〕</li>
+<li>她当时的想法是：“我就是瓶颈”，得把工程师脑子里的知识交给智能体。〔Remy〕</li>
+</ul>
+<h3>3. 没有信任，开 100 个云端智能体只会产出垃圾</h3>
+<ul>
+<li>一开始她同时只敢盯 1 到 5 个对话，每个都要不停纠偏。人一走开，智能体要么停着不动，要么做错。她认为这是最难走出来的阶段，因为看不到出口。〔Remy〕</li>
+<li>在这个阶段开 100 个子智能体或云端智能体，得到的只会是一堆垃圾 PR、回归和 bug。所以真正的问题不是“还能多开几个”，而是“做到什么程度才敢不盯着”。〔Remy〕</li>
+</ul>
+<h3>4. 核心框架：每次纠正，先问最强的那一层能不能兜住</h3>
+<p>她把“纠正放在哪里”从强到弱分了几层，顺序本身就是论点：层级越高，越不依赖某个对话里有人记得去读某段提示词。作者 10 月 16 日的帖子说这张图“按价值排序”，并称它为一个<strong>倒金字塔</strong>：大部分力气应该花在顶层，底层花得最少。〔作者 X 帖 2110603122745970914、2111133080526495985〕</p>
+<ol>
+<li><strong>代码库与架构</strong>：从类别上让坏模式写不出来。代码库就是智能体的记忆，它会照着已有代码继续写；一个小 workaround 或者解释它的注释，几天内就会被复制成事实标准，她把这比作病毒，或者花园里的杂草。改数据结构、改做法，比每次口头纠正同一个错误更有效。〔Remy〕</li>
+<li><strong>静态分析</strong>：lint、编译器、测试、CI，作者后来的帖子还把 TLA+ 这类形式验证也放进这一层。看到技术债或坏模式，第一反应就是写一条 lint 规则：先止血，让它不再扩散，再让智能体慢慢清理。〔Remy；作者 X 帖〕</li>
+<li><strong>规则、Bugbot 与 Skill（prose 文字层）</strong>：从硬约束变成了指导。大多数时候有用，但智能体可能忘了读，驾驶它的人也可能忽略。作者的帖子说：尽量少用，但一定要用 <code>/create-verification-skill</code>。〔Remy；作者 X 帖〕</li>
+<li><strong>风格指南与人工评审</strong>：最难扩展。PR 速度一上来，就不可能逐行看。人工评审适合用来发现缺口，然后把时间投到上面几层。同一类评审意见反复出现，说明它还卡在这一层，没有被吸收进架构、lint 或规则。〔Remy；作者 X 帖〕</li>
+<li><strong>验证类 Skill</strong>：能拿出“正确性”的经验证据（这条路径真的端到端跑通了），但不能自动证明性能好、代码写得好。性能要另有指标和遥测，代码质量要另一类 Skill。〔Remy〕</li>
+</ol>
+<ul>
+<li>光谱的另一头是<strong>形式化方法</strong>（Lean、TLA+）。她在演讲里说自己还没走这条路，认为这仍是难题，但验证类 Skill 不靠形式化方法也能走很远。〔Remy〕⚠️ 演讲之后她在 pstack 里加了 <code>/create-formal-verification-skill</code>（10 月）和 <code>/statechart</code>，11 月初还说 adversarial review 大多是浪费 token，不如把 token 花在经验验证加形式验证上。这说明她的立场在演讲后又往前走了一步，不属于演讲内容。〔作者 X 帖 2111926622278521253、2117437607940681849〕</li>
+</ul>
+<h3>5. 案例一：Control Glass，内部的验证 Skill</h3>
+<ul>
+<li>她在 Cursor 做的第一个 Skill 叫 Control Glass，教智能体用 Chrome DevTools Protocol 启动应用、抓 trace。没有公开页面。〔Remy〕</li>
+<li>迭代后定下的结构分两部分：① 放在 Skill 目录里的<strong>可复现 CLI</strong>，不让智能体每次现写脚本，否则脚本会在不同会话之间漂移，同一条性能线量的其实不是一回事；② <strong>feature map（功能地图）</strong>，是她自己起的名字，灵感来自 sitemap：写在仓库里的“应用说明书”，记录有哪些功能、怎么进入、快捷键、该点哪个 DOM 元素，由一组自动化维护。〔Remy〕</li>
+<li>两部分缺一不可。内部 Slack 里常见的报告是一张截图加三个问号，有了 CLI 和功能地图，智能体才能可靠地操控应用、看懂请求。团队很快把这类 Skill 当成需要持续维护的关键基础设施。〔Remy〕现在 Cursor 和 SpaceX AI 的每个应用都有一个自动维护的验证 Skill。〔Matt Pocock 访谈摘要 ⚠️ 不同场合〕</li>
+</ul>
+<h3>6. 案例二：Dune，让捷径成为唯一正确的路</h3>
+<ul>
+<li>Dune 是 Grok Bot 代码库里的客户端框架，没有公开。原则是：<strong>智能体爱走捷径，那就让捷径恰好是对的路</strong>。这样的代码库会让人写着难受，但适合上下文很少的智能体，也适合将来进来改功能的设计师、PM、CEO。〔Remy〕</li>
+<li>例子一：她起初觉得注释无害，后来在 Cursor 看到智能体拿注释当借口，用短期 hack 盖住真正的 bug，于是 Dune 里<strong>禁止写注释</strong>。〔Remy〕</li>
+<li>例子二：Electron 主进程的代码不许进入 renderer。renderer 要守住帧预算（60fps 约 16ms，120fps 约 8ms），Dune 用 import 依赖图把这条边界固定下来。〔Remy〕</li>
+<li>“<strong>园丁</strong>”角色：专门盯着代码库里冒出来的杂草，趁没蔓延就掐掉。三个要点：删掉现有技术债（智能体会照抄）；鼓励的模式只留一条铺好的路；看到坏模式先写 lint 规则。〔Remy；Gene Gi〕</li>
+</ul>
+<h3>7. 外循环：把工具接上就行，不必造“公司大脑”</h3>
+<ul>
+<li>Grok Bot 擅长她说的<strong>外循环</strong>：接上 Slack、Datadog、Sentry、PlanetScale 等连接器，收集信息、做决策，再自动拉起云端智能体。Routines 可以订阅 Slack 线程或 Sentry 告警，自动开工。〔Remy〕</li>
+<li>她不认同要先搭一个复杂的“company brain”，因为智能体本来就擅长用工具。她现场展示了 Cursor 上自动复现 bug、自动开 PR 的截图。〔Remy〕</li>
+<li>前提是前几层已经到位。在没锁紧的仓库上跑外循环，只会把垃圾 PR 自动化放大。〔Remy〕</li>
+<li>pstack 她只是提了一下，没有展开：一个 Cursor 插件，把她自己调试、做功能、做原型的方式写成 Skill，入口是 <code>/poteto-mode</code>（先跑 <code>/setup-pstack</code>）。〔Remy〕</li>
+</ul>
+<h3>8. 结尾与延伸</h3>
+<ul>
+<li>Gene Gi 的笔记把结尾概括为：随着对智能体的信任提高，让每一步都由智能体来做，逐步把人从回路里撤出来。笔记里还记了一个问题：UI 工作怎么验证，UI 层和数据层怎么解耦。〔Gene Gi〕</li>
+<li>演讲后作者发了一份可以直接交给智能体执行的“落地提示”：装上 pstack，新建一个 Project，让它翻你在 Slack 和代码评审里给过的反馈，用 <code>/recall</code> 读你以前怎么引导智能体，用 <code>/correct</code>、<code>/architect</code> 从过去的 commit 里找出最常见的坑，然后提出一个让代码对智能体更友好的重构方案，开工前先用 <code>/sharpen</code> 和 <code>/in-your-own-words</code> 跟你确认。〔作者 X 帖 2111133080526495985〕</li>
+<li>10 月 2 日 Matt Pocock 的直播访谈补充了一些演讲里没细讲的做法：抽样评审（不可能尝每道菜）、10 多个“幕僚长”协调智能体全天候工作、pstack 的 full autopilot 模式为每个 PR 派验证智能体去 fuzz 应用后自己合并、早上看 commit 历史，有问题就回滚或加 lint。〔uiuo.nl 访谈摘要〕⚠️ 这些来自另一场访谈，不是这场演讲。</li>
+</ul>
+<p class="source">来源：<a href="https://redreamality.com/blog/lauren-tan-poteto-trust-before-parallel/" rel="noopener">Remy · Trust First, Then Parallel</a>（2026-10-05）；<a href="https://genegi.github.io/posts/lessons-from-potetos-2500-prs-talk/" rel="noopener">Gene Gi 笔记</a>（2026-09-22）；作者 X 帖 <a href="https://x.com/poteto/status/2111133080526495985" rel="noopener">2111133080526495985</a>、<a href="https://x.com/poteto/status/2110603122745970914" rel="noopener">2110603122745970914</a>（附演讲幻灯片）；Matt Pocock 访谈摘要 <a href="https://uiuo.nl/youtube-summaries/MN9dGgmLyso" rel="noopener">uiuo.nl</a>。均于 2026-11-05 读取。本节为中文概括，不是逐字稿。</p>
 <p>这条思路和她 11 月发的 Grok Bot 团队指南一脉相承：都是少而精、把纠正写成 Skill、能写成脚本的就写成脚本。本站另有一页 <a href="../leo-xiaolei-grok-bot-team-guide/">刘老板对那篇指南的解读</a>可以对照。她在 cursor/plugins 里开源的 pstack 插件（MIT，含 <code>/poteto-mode</code>、<code>/statechart</code>）大概就是这套“验证 + 沉淀”在工具上的落地 ⚠️ 推断。</p>
 <h2>回复区</h2>
 <ul>
@@ -51,7 +101,10 @@
 <h2>核实与待确认</h2>
 <ul>
 <li>⚠️ “一个月 2,500 个 PR 进生产”是作者自报，没有公开仓库或统计可以核对；也没说明 PR 的规模，以及有多少是智能体自动开的。</li>
-<li>⚠️ 视频内容要点来自 @grok 在回复区的转述，本站没有看视频、没有逐句核对。</li>
+<li>⚠️ “视频内容解读”一节依据第三方复述和作者本人的帖子，本站没有看视频，也没有逐句核对。Remy 的复述最完整，但仍是二手材料。</li>
+<li>⚠️ 标题写 2,500，视频里说的是约 2,000，两者冲突，以作者原话为准，本站无法再核。</li>
+<li>⚠️ Control Glass、Dune 都是内部项目，没有公开资料可以核对。</li>
+<li>⚠️ 没有找到官方文字稿或公开字幕页；YouTube 上有一份疑似转载（NjoZoUm85x0），本站没有采用。</li>
 <li>⚠️ pstack 是这套方法在工具上的体现，这是本站的推断，作者在帖子里没提。</li>
 <li>浏览、收藏等数字为 2026-11-05 通过 X 接口读取：约 454 万浏览、2.1 万赞、3.7 万收藏、805 条回复。</li>
 </ul></main><!-- /za:content -->
