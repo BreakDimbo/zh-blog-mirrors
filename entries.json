@@ -1,5 +1,20 @@
 [
   {
+    "slug": "poteto-2500-prs-talk",
+    "title": "Lauren（@poteto）：我上个月怎么往生产环境发了 2,500 个 PR",
+    "desc": "Grok Bot 团队的 Lauren Tan（@poteto）把原定在 Cursor Compile 伦敦场的 38 分钟分享免费发到 X（约 454 万浏览、3.7 万收藏）：一个月 2,500 个 PR 的关键不是多开智能体，而是让它值得信任——可验证的 Skill、把代码库当记忆、每次纠正都写进 lint/CI/Skill。原帖全文中译 + 导读 + 回复区梳理；视频不转载，要点据 @grok 转述 ⚠️，2,500 为自报 ⚠️。",
+    "description": "一个月 2,500 个 PR 进生产：先让智能体值得信任。原帖全译 + 导读。",
+    "source": "X · @poteto",
+    "date": "2026-11-05",
+    "type": "全文",
+    "subtitle": "here’s how i shipped 2,500 PRs last month to production",
+    "original_url": "https://x.com/poteto/status/2102050467505430555",
+    "spine": "月发2500PR",
+    "summary": "一个月 2,500 个 PR：先让智能体值得信任",
+    "kind": "演讲",
+    "by": "Lauren Tan"
+  },
+  {
     "slug": "adrianpunk-punk-ip",
     "title": "Punk IP：上传一张照片，做出会给文章配图的个人 IP 形象",
     "desc": "Adrian Punk（@AdrianPunk115）X 长文照录 + 项目导读：Punk IP Skill 从一张人物照片生成多视图角色设定卡与干净参考图，确认后让 Agent 读完整篇文章、自动挑段落，用“核心动作”或“流程拆解”画出统一画风的小剧场配图；新增松散线描水彩，与扁平化风格二选一。仓库为个人非商业许可（源码可见、商业需授权），README 只做导读；作者收入自述 ⚠️。",

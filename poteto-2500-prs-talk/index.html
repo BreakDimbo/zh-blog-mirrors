@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lauren（@poteto）：我上个月怎么往生产环境发了 2,500 个 PR</title>
+<meta name="description" content="Grok Bot 团队的 Lauren Tan（@poteto）免费放出原定于 Cursor Compile 伦敦场的 38 分钟分享：一个月 2,500 个 PR 靠的是先让智能体值得信任。原帖全文中译 + 导读 + 回复区梳理。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文</span><time datetime="2026-11-05">2026.11.05</time></p>
+<h1 class="za-title">Lauren（@poteto）：我上个月怎么往生产环境发了 2,500 个 PR</h1>
+<p class="za-sub" lang="en" data-za-gen>here’s how i shipped 2,500 PRs last month to production</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @poteto</span><span>收录 · 2026-11-05</span><span><a href="https://x.com/poteto/status/2102050467505430555" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原文：<a href="https://x.com/poteto/status/2102050467505430555" rel="noopener">X 帖子（附 38 分钟视频）</a> · 作者 Lauren Tan（@poteto）</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">Lauren Tan（@poteto）现在做 Grok Bot，也是 React Compiler 核心团队成员，此前在 Cursor、Meta、Netflix 工作过。2026 年 9 月 21 日，她把原本准备在 Cursor Compile 伦敦场讲的一场分享，以一段约 38 分钟的视频免费发在 X 上，标题是“上个月我怎么往生产环境发了 2,500 个 PR”。帖子至今约 454 万浏览、3.7 万收藏，是她传播最广的一条。</p>
+<div class="notice"><strong>版权说明：</strong>帖子正文是作者本人在 X 发布的内容，按本站规则全文中译。视频版权归作者所有；本站不下载、不转载视频，也不转载视频封面（封面是作者本人的画面）。视频没有官方文字稿，所以下面的“内容要点”只能来自回复区的转述，没有逐句核对过，统一标 ⚠️。</div>
+<h2>原帖全文中译</h2>
+<p class="source">作者 Lauren Tan · 2026-09-21 23:01（UTC+8）发布于 X</p>
+<blockquote><p>这是我上个月怎么往生产环境发了 2,500 个 PR 的。</p>
+<p>这场分享原本是给伦敦的 Cursor Compile 准备的。因为当时我在给 Grok @Bot Galaxy 做直播，没能到场，所以干脆免费放在 X 上！建议开 2 倍速看，我说话慢。</p>
+<p>[视频，约 38 分钟]</p></blockquote>
+<details><summary>英文原文</summary><p lang="en">here's how i shipped 2,500 PRs last month to production</p><p lang="en">this was originally supposed to be for Cursor Compile in London. i couldn't make it since i was livestreaming for Grok @Bot Galaxy so i'm making it available for free here on X! watch it on 2x speed, i talk slowly</p></details>
+<h2>导读：视频讲了什么（⚠️ 据回复区转述）</h2>
+<p>作者在帖子里只写了一句标题，没有附文字版要点，同一对话里也没有她本人的自回复。回复区有十几位读者 @Grok 请它总结视频，几条回答说法一致，大意如下，可以当观看前的提纲：</p>
+<ul>
+<li><strong>重点不在多开几个智能体，而在信任。</strong>先把环境搭到“米其林后厨 / 软件工厂”的程度，让智能体没人盯着也能交出可靠的代码。⚠️</li>
+<li><strong>信任来自可验证。</strong>给智能体配上验证用的 Skill，比如功能地图（feature map）、能跑真实用户路径的 CLI、trace，让它自己证明结果对不对。⚠️</li>
+<li><strong>代码库就是智能体的记忆。</strong>智能体会照着已有模式写、挑最短的路走，所以要让最短的路恰好就是对的路：持续清理技术债，用架构、类型和边界让反模式根本写不出来；每纠正一次，就马上沉淀成 lint / CI 规则或者更新 Skill，让同样的问题不再出现；团队里设一个“园丁”，专门盯坏味道、拔杂草。⚠️</li>
+</ul>
+<p class="source">以上转述取自 @grok 在回复区的几条回答（2026-11-03），回答本身被截断，不完整。想要准确内容请直接看视频。</p>
+<p>这条思路和她 11 月发的 Grok Bot 团队指南一脉相承：都是少而精、把纠正写成 Skill、能写成脚本的就写成脚本。本站另有一页 <a href="../leo-xiaolei-grok-bot-team-guide/">刘老板对那篇指南的解读</a>可以对照。她在 cursor/plugins 里开源的 pstack 插件（MIT，含 <code>/poteto-mode</code>、<code>/statechart</code>）大概就是这套“验证 + 沉淀”在工具上的落地 ⚠️ 推断。</p>
+<h2>回复区</h2>
+<ul>
+<li>最多的是“帮我总结一下”和“求文字稿”，说明这条视频确实缺一份文字版。</li>
+<li>有人问 2,500 个是 commit 还是 PR，作者没有回答；原帖写的是 PR。</li>
+<li>有人追问：怎么及早发现反模式和绕路写法，靠智能体做评审够不够？也没有得到作者回复。</li>
+<li>也有读者说，自己搭智能体工作流时最难的正是“真正的信任”，和视频的主线对得上。</li>
+</ul>
+<h2>核实与待确认</h2>
+<ul>
+<li>⚠️ “一个月 2,500 个 PR 进生产”是作者自报，没有公开仓库或统计可以核对；也没说明 PR 的规模，以及有多少是智能体自动开的。</li>
+<li>⚠️ 视频内容要点来自 @grok 在回复区的转述，本站没有看视频、没有逐句核对。</li>
+<li>⚠️ pstack 是这套方法在工具上的体现，这是本站的推断，作者在帖子里没提。</li>
+<li>浏览、收藏等数字为 2026-11-05 通过 X 接口读取：约 454 万浏览、2.1 万赞、3.7 万收藏、805 条回复。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>原文：<a href="https://x.com/poteto/status/2102050467505430555" rel="noopener">https://x.com/poteto/status/2102050467505430555</a>，作者 Lauren Tan（@poteto）。视频与原帖版权归原作者所有。</p>
+<p>如您是权利人并希望下架，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交下架请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/poteto/status/2102050467505430555" rel="noopener">x.com/poteto/status/2102050467505430555</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
