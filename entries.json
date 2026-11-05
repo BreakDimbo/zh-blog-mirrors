@@ -1,5 +1,20 @@
 [
   {
+    "slug": "adrianpunk-punk-ip",
+    "title": "Punk IP：上传一张照片，做出会给文章配图的个人 IP 形象",
+    "desc": "Adrian Punk（@AdrianPunk115）X 长文照录 + 项目导读：Punk IP Skill 从一张人物照片生成多视图角色设定卡与干净参考图，确认后让 Agent 读完整篇文章、自动挑段落，用“核心动作”或“流程拆解”画出统一画风的小剧场配图；新增松散线描水彩，与扁平化风格二选一。仓库为个人非商业许可（源码可见、商业需授权），README 只做导读；作者收入自述 ⚠️。",
+    "description": "一张照片做出自己的 IP 形象，再让它给每篇文章配图；X 长文照录 + 项目导读。",
+    "source": "X · @AdrianPunk115",
+    "date": "2026-11-05",
+    "type": "全文",
+    "subtitle": "Punk IP — a personal-IP illustration skill",
+    "original_url": "https://x.com/AdrianPunk115/status/2117923653019136368",
+    "spine": "个人IP配图",
+    "summary": "一张照片做出个人 IP，再自动给文章配图",
+    "kind": "项目",
+    "by": "Adrian Punk"
+  },
+  {
     "slug": "rewind02-unreal-claude-course",
     "title": "用 Claude Opus 5.5 在虚幻引擎里做一款自己的游戏",
     "desc": "rewind（@rewind02）X 长文全译：借 Unreal Engine 5.8 官方 MCP 服务器与 Epic 的 Claude Code 插件，把 Opus 5.5 接进运行中的编辑器，分四轮做出可玩小游戏——灰盒关卡、规则、敌人与战斗、外观；附安全网、六条提示习惯、四层测试、bug 报告格式与时间成本。模型发布日期、价格与第三方测试数据为作者转述 ⚠️。",
