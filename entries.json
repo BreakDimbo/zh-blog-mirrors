@@ -1,5 +1,20 @@
 [
   {
+    "slug": "miramusic-gpt-image-2-6-sphere",
+    "title": "GPT Image 2.6 验证 2：用 100 张图做 6 秒球体操控动画（MiraMusic）",
+    "desc": "MiraMusic @MiraMusic_AI 日文原帖全文中译（2026-11-06）：以 GPT Image 2.6 把附图当起始帧，图像生成 6 秒 / 约 100 帧，刻意带ケレン味与动画十二原则。视频请在 X 观看（本站不下载）。附作者回复：音频用 SUNO、人声用 ElevenLabs；长尺一致性未试；跑步可用 H3 做 previz。产品名与帧数为作者自述 ⚠️。",
+    "description": "GPT Image 串 100 帧做 6 秒球体动画：日文帖全文中译 + 作者回复。",
+    "source": "X · @MiraMusic_AI",
+    "date": "2026-11-06",
+    "type": "全文",
+    "subtitle": "GPT image2.6検証2 — 球体をコントロールするキャラクター",
+    "original_url": "https://x.com/MiraMusic_AI/status/2118513591490163168",
+    "spine": "图像序列动画",
+    "summary": "起始帧 + 100 张图 → 6 秒；十二原则写进提示词",
+    "kind": "验证",
+    "by": "MiraMusic"
+  },
+  {
     "slug": "eianlu-claude-codex-seedance-ai-video",
     "title": "Claude Code / Codex + Seedance：从一个想法到 AI 视频成片的全流程（Eian）",
     "desc": "Eian @EianLu X Article 全文照录（2026-11-05）：Claude Code 当总导演，Codex 画设定与首尾帧，Seedance 出片；把错误挡在花钱之前。含故事/分镜/七段式提示词/提交前审核/四线程协作等完整提示词。约 61.7 万浏览 / 1.54 万收藏（抓取快照）。价格与抽卡体验为作者自述 ⚠️；本站未实测、不转载成片视频。",
