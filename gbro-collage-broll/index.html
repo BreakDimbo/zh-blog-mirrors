@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>gbro-collage-broll：先定隐喻，再把纸拼贴从空场拼成动画</title><meta name="description" content="三闸门的公开 Gemini 版，与作者演示的 Image 2.6 GIF 新方案：方法、版本边界与“零成本”的真实含义。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-07">2026.11.07</time></p>
+<h1 class="za-title">gbro-collage-broll：先定隐喻，再把纸拼贴从空场拼成动画</h1>
+<p class="za-sub" lang="en" data-za-gen>Metaphor first, collage in motion · 项目导读 + 原帖/长文全文 + README</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · 狗哥笔记 / X · 余温</span><span>收录 · 2026-11-07</span><span><a href="https://x.com/gkxspace/status/2119030071302426753" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p>作者：狗哥笔记（@gbroai / pyang5166）；推荐：余温（@gkxspace）。<a href="https://x.com/gkxspace/status/2119030071302426753">提交原帖</a> · <a href="https://x.com/gbroai/status/2118589683819262346">原长文</a> · <a href="https://github.com/pyang5166/gbro-collage-broll">项目仓库</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h2>一句话看懂</h2>
+<p>gbro-collage-broll 是狗哥笔记（@gbroai / pyang5166）的纸拼贴 B-roll Skill：把一句约五秒的口播拆成一个可读的视觉隐喻，先定静帧，再从纯色空场逐件组装成动画。余温（@gkxspace）推荐的是作者刚展示的 Image 2.6 新路线，但<strong>当前公开 README 仍然是 Gemini Omni Flash 视频生成路线</strong>。两者不能混为一谈。</p>
+<h2>先分清：仓库版与文章版</h2>
+<table>
+<thead>
+<tr>
+<th>环节</th>
+<th>当前仓库 README</th>
+<th>作者 X 长文的新方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>人工确认</td>
+<td>隐喻、静帧两次确认，第三闸门生成视频</td>
+<td>只确认隐喻；静帧由 AI 按清单自检</td>
+</tr>
+<tr>
+<td>动画生成</td>
+<td>Gemini Omni Flash 首尾帧视频</td>
+<td>作者称 Image 2.6 直接输出 GIF</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>Codex image_gen、Python、google-genai、Gemini API 密钥、ffmpeg</td>
+<td>作者称 Codex 订阅额度 + ffmpeg</td>
+</tr>
+<tr>
+<td>交付</td>
+<td>无声 MP4</td>
+<td>GIF + MP4</td>
+</tr>
+</tbody>
+</table>
+<p>作者在原文末尾明确说，新版还在调试；余温也在评论补充“仓库好像还没更新”。本次实时读取 README，仍显示三闸门和 Gemini 依赖。<strong>⚠️ 不能把它当作已经发布、克隆即用的 Image 2.6 Skill。</strong></p>
+<h2>真正值得借用的方法</h2>
+<ol>
+<li><strong>先审隐喻，再花生成额度。</strong> 一句口播只做一个视觉命题；用三到六组大物件，避免一个画面塞进多个意思。</li>
+<li><strong>案例图负责对齐，参数负责复现。</strong> 纯色色场、黑白半调网点、彩色卡纸、奶油白细边、软阴影、纸纤维，各自写成具体约束，而不是只说“高级”。</li>
+<li><strong>静帧不是海报，而是动画的终点。</strong> 提前留出空场和物件进出空间；先冻结风格与构图，再生成运动。</li>
+<li><strong>动作写物理顺序。</strong> 写清从哪进、做什么、停在哪、何时退场；滑入、落下、翻面、剪开比“浮现”“呼吸感”更符合纸拼贴。</li>
+<li><strong>循环也要验收。</strong> 检查空场是否偷露纸片、组装过程是否真实、尾帧是否一致、首尾接头是否跳动；最后用 ffprobe 检查交付规格。</li>
+</ol>
+<h2>怎么开始，以及别误信什么</h2>
+<p>公开仓库可按 README 的安装与触发方式使用，但当前路线涉及按量计费的视频服务；先确认费用、隐喻与静帧，再生成。这里没有运行 Skill，也没有调用任何生成服务。</p>
+<p><strong>⚠️ “0 成本”不是免费承诺。</strong> 作者的解释是复用已付费订阅额度，不再逐条支付视频 API 费用；订阅、额度、失败重试与人工时间仍然存在。Image 2.6、Opus 5.5 的命名和生成能力来自作者自述，本次未独立验证官方可用性；“HTML 代码画不出复杂纸拼贴”也是作者的经验判断，不是代码渲染的能力上限。</p>
+<p>许可于 2026-11-07 实时读取根目录 LICENSE：MIT，Copyright (c) 2026 狗哥笔记。本文转载文档及作者文字，不转载任何示例 GIF、视频、人物照片或封面。仓库许可不等于自动获得输入照片、人物肖像或第三方风格案例的使用权。</p>
+<h2>附录一：余温原帖全文</h2>
+<p>来源：<a href="https://x.com/gkxspace/status/2119030071302426753">余温 @gkxspace，2026-11-07 19:31 SGT</a>。下文为中文原文照录，短链展开；原帖的性能与费用说法不代表本站验证。</p>
+<p>这绝对是把 Image 2.6 榨得最干的教程，拼贴 B-roll 成本真要被干到 0 了！</p>
+<p>之前要做这种有质感的拼贴动效，必须去调视频模型 API，现在只需要：
+https://github.com/pyang5166/gbro-collage-broll</p>
+<p>原来 Image 2.6 就能直接搞定</p>
+<p>1、先让 AI 翻译成画面要素（比如把"经验消耗"变成"时钟胶片裁切"）</p>
+<p>2、给一张案例图，比如把纸纤维、黑白半调、纯色背景参数化。千万别直接让模型一步出 GIF！</p>
+<p>3、从空场拼起，比如动作描述就按物理顺序来：什么纸片先落下、剪刀怎么滑入、最后定格并退场。</p>
+<p>4、一行 ffmpeg 转成 MP4 进剪映</p>
+<p>作者跟帖（全文）：狗哥的仓库好像还没更新，蹲一下吧😂</p>
+<h2>附录二：狗哥笔记原长文全文</h2>
+<p>来源：<a href="https://x.com/gbroai/status/2118589683819262346">狗哥笔记 @gbroai，2026-11-06 14:21 SGT</a>。中文原文照录。X 的 plain_text 不含独立代码卡，全部代码卡在正文之后补齐；图片与视频不转载。</p>
+<p>昨天 Codex 更新了 image2.6，核心是能直接生成 GIF 了。
+我当晚就拿它跑了四条拼贴 B-roll，全程没碰视频模型。</p>
+<p>说实话，这次给我的震撼比 Opus 5.5 写代码做视频那一波还大。
+原因就两个：成本，和能做出来的画面有多复杂。
+Opus 5.5 写代码做视频，本质上是 HTML 动画。数字跳动、卡片翻转、信息图，它做得又快又准。但一到「一只手拿剪刀，把月亮从纸上剪下来」这种画面，代码就画不出来了：纸的毛边、半调网点、手的形状，这些得靠图像模型。
+以前要做这种有手工质感的镜头，我得接视频模型的 API，按条付费。一条5秒的视频大概是1块钱。
+结果就是，我舍不得为一句口播单独做一个镜头。
+现在整条链路都在 Codex 里跑完，用的是本来就在付的订阅额度。不接 API，不配密钥，不再为每条单独付钱。
+对天天剪口播的人来说，这意味着一句话也配得起一个专门的镜头了。
+我把自己的 skill 改了
+我有个自用的 skill 叫 gbro-collage-broll，专门把一句 5 秒左右的口播，做成半调纸拼贴风的 B-roll。
+改之前的流程是这样的：
+先出视觉隐喻，等我确认
+再出静帧，再等我确认
+拿纯色空场当首帧、静帧当尾帧，调 Gemini Omni Flash 生成首尾帧视频（更早用的是 Veo）
+拿到视频去掉音轨
+改完变成：
+只确认一次隐喻
+image2.6 出静帧，AI 自己按清单检查、有问题自己重出
+以静帧为终点，image2.6 直接出循环 GIF
+GIF 转成 MP4，方便进剪辑软件
+具体改了三处：
+视频模型整个拿掉了。 依赖从「Python + google-genai SDK + API 密钥」变成「Codex + ffmpeg」，装机门槛低了一大截。
+两道确认砍成一道。 我发现真正需要人判断的只有隐喻这一步。静帧有没有假字、主体集不集中、纸片是不是太碎，这些都能写成清单让 AI 自己查。我盯着看反而是浪费时间。
+交付从 MP4 变成 GIF + MP4 两份。 GIF 发推、放笔记里直接动，MP4 拖进剪映用。</p>
+<p>下面是我这几天跑下来的经验。如果你也想用 image2.6 低成本做 AI 视频，又想把质量做上去，可以按这四步走：
+隐喻 → 定风格出静帧 → 描述动作出 GIF → 转 MP4</p>
+<p>第一步：先确认隐喻
+口播是抽象的。比如「经验每次都在重复消耗」，这句话你没法直接丢给模型出图，丢了也是随机抽卡。
+所以第一步要把它翻译成一个画面。我的 skill 会给出这样一张卡：</p>
+<p>为什么一定要在这里停下来确认？
+因为隐喻错了，后面每一步都白做。看一段文字只要十秒，重出一组图要几分钟，还要烧额度。
+把人的判断放在最便宜的那一步，这是免抽卡的关键。
+几条规则：
+一句话只做一个隐喻，别想一个画面讲三件事
+物件控制在 3–6 个，多了语义变弱，动起来还会互相遮挡
+不要把文稿的字放进画面，画面负责隐喻，字幕负责文字
+批量做的时候，让几条隐喻前后成叙事。比如先拍手工消耗、经验流失，再拍规范沉淀、人机分工
+第二步：定风格，出静帧（最关键的一步）
+这一步最决定成片质量，篇幅我多花一点。
+1. 风格不能光靠形容词，一定要有案例
+你跟模型说「高级的杂志拼贴风」，出十次能给你十种拼贴。
+形容词每个人理解都不一样，模型也一样。要让风格稳定，必须给它一个具体的案例。也就是你觉得满足这个你心中这个风格的图究竟是什么样的。
+有了案例之后，我的 skill 会做一件事：把案例拆成可执行的材料参数，写进一份 visual-spec.json。拼贴风拆出来是这样的：
+平涂色场：背景是一整块强烈、均匀的纯色纸，没有渐变
+黑白半调剪片：主体是黑白网点照片剪下来的纸片，看得见印刷网点
+彩色卡纸点缀：关键物件（卡片、按钮、胶片）才用红、黄、青、橙、紫
+机切边 + 奶油白描边：每块纸边缘干净利落，外圈一道细细的暖白边
+柔和投影：低透明度的纸片阴影，让纸有一点厚度
+纸纤维颗粒：未涂布纸的细纤维质感
+案例负责让你和模型看到同一个东西，参数负责每次都能复现它。两样缺一不可。</p>
+<ol>
+<li>颜色跟着语义走
+我以前默认全用钴蓝底，一批看下来很单调。现在按意思挑底色：
+焦橙 / 红：时间消耗、劳动、紧迫
+芥末黄：工具、警示、经验漏失
+墨绿：认知、审美、系统重置
+深紫：规范、沉淀、长期记忆
+青绿：判断、协作、自动执行</li>
+</ol>
+<p>同一批作品，设计语言统一，底色各不相同。彩色纸片只用在需要强调的地方，不为了彩色而彩色。
+3. 构图要给动画留位置
+静帧不是一张海报就完事了，它是 GIF 的最后一帧。所以出图时就要想好它怎么动起来：
+主体放在画面中间 70% 的区域
+留出大块干净的纯色空白，动画要从这块空场开始拼
+画面由 3–6 个能分开的大纸片组成，不要满屏碎片
+碎片太多，动起来就是一锅粥。
+4. 把模型的坏习惯提前禁掉
+图像模型很爱在画面里塞假字、假 logo、假界面。拼贴风尤其容易冒出报纸上那种乱码小字。
+所以提示词里要明确写：无文字、无字母、无数字、无 logo、无水印、无 UI、无字幕、不要光滑 3D、不要写实场景。
+我的静帧提示词模板长这样，可以直接拿去改：</p>
+<ol>
+<li>为什么一定要先出静帧
+这是我最想强调的一点：跳过静帧、直接让 image2.6 出 GIF，质量明显差一截。
+道理也简单。一步出 GIF，模型要同时决定风格、构图、动作三件事，等于三件事一起抽卡。结果往往是画面发糊、纸片闪烁、假字乱冒。
+先把静帧定死，GIF 的任务就只剩一件事：把这张图从空场拼出来。终点已经确定，模型只管过程。</li>
+<li>静帧出来先过一遍清单
+隐喻是不是一眼能看懂
+主体集不集中
+有没有假字、logo、水印、UI
+纯色空场留够了没有
+是 3–6 个大组，还是满屏碎片
+同一批是不是质感统一、底色有变化
+有一条不过就重出。这个清单我已经交给 AI 自己跑了，不用人盯。
+第三步：怎么描述动作，让 AI 出 GIF
+静帧定好之后，动作描述的核心就一句话：从空场开始，把纸片一块块拼成这张静帧。
+我管这个叫 assemble-from-empty。为什么不用「轻微漂移」「缓慢推镜」「呼吸感」这种描述？因为放在 GIF 里，这些小动作看起来就是画面在抖。拼贴风的魅力在定格动画那种一块纸「啪」地卡到位的感觉。
+我的 skill 描述动作有四个规矩。
+一、顺序固定。 基础结构先进场，然后是人物或关键卡片，再是连接件，最后是动作和结果。拼完定格一会儿，再清场回到空场，正好接上下一轮循环。
+二、每个物件写清四件事。 从哪进、做什么动作、停在哪、什么时候走。
+三、用物理动词。 滑入、落下、卡位、翻面、剪开、装订、点亮。别写「出现」「浮现」，那是淡入淡出，不是拼贴。
+四、镜头锁死。 不切镜、不缩放、不变形、不加静帧里没有的新物件、不出文字。
+拿我昨天做的「把月亮剪下来」举例，5 秒的动作是这样排的：</li>
+</ol>
+<p>写成提示词，模板是这样：</p>
+<p>GIF 出来之后，别只看最后一帧。要逐段检查：入场有没有提前露出纸片、中段是不是真的一块块拼、定格是不是和静帧一致、循环接头会不会跳一下。
+第四步：GIF 转 MP4
+GIF 发推很方便，但剪映、PR 对 GIF 的支持一般，所以我最后都会转一份 MP4。
+一行 ffmpeg 就够：</p>
+<p>几个参数解释一下：
+-ignore_loop 1：GIF 带着无限循环标记，这里显式让 ffmpeg 只读一遍。要是设成 0，它会按标记一直循环读下去
+fps=24：我的 GIF 按 20fps 出，这里统一成剪辑软件习惯的 24fps
+scale + pad：缩放到 720×1280 竖屏，比例不对就补边，不拉伸
+-pix_fmt yuv420p：兼容性最好的像素格式，手机、剪映都能正常播
+-an：不要音轨，B-roll 的声音在剪辑里统一处理
+转完用 ffprobe 看一眼：5 秒左右、720×1280、24fps、H.264、没有音轨，就可以拖进时间线了。</p>
+<p>顺带说一句，拼贴风天生适合走 GIF：大面积平涂色块加黑白网点，用到的颜色本来就少，GIF 的 256 色基本够用，不太会出现色带。
+最后
+整个流程总结一下：
+隐喻先确认：把人的判断放在最便宜的那一步，免抽卡
+风格靠案例，静帧必须先出：案例让风格稳定，静帧给 GIF 定终点
+动作从空场拼起：顺序固定、物理动词、镜头锁死
+GIF 转 MP4：一行 ffmpeg，直接进剪辑
+这个 skill 我开源在 GitHub：
+https://github.com/pyang5166/gbro-collage-broll
+现在仓库里还是旧版（Gemini Omni Flash 方案）。image2.6 的新版我再调试两天，稳定了就推上去。
+想第一时间用的，可以先点个 star，更新了我会在这里说一声。</p>
+<h3>原文独立代码卡（补齐）</h3>
+<p>代码卡 1：</p>
+<pre><code class="language-bash">ffmpeg -v error -n -ignore_loop 1 -i final.gif -map 0:v:0 -an -vf &quot;fps=24,scale=720:1280:force_original_aspect_ratio=decrease,pad=720:1280:(ow-iw)/2:(oh-ih)/2,setsar=1&quot; -c:v libx264 -pix_fmt yuv420p -movflags +faststart final.mp4
+</code></pre>
+<p>代码卡 2：</p>
+<pre><code class="language-plaintext">0.2–0.9s  钴蓝空场，一张奶油黄圆纸从上方落下，卡到位
+1.2–1.9s  一只黑白半调的手握着剪刀，从右下方滑入
+2.1–2.5s  剪刀合拢，圆纸被剪成弯月，剪下的余纸翻面，露出蓝色背面和奶油白细边
+2.5–3.9s  定格在确认过的静帧
+3.9–4.8s  手和月亮各自退出画面，回到空场，接上下一轮
+</code></pre>
+<p>代码卡 3：</p>
+<pre><code class="language-bash">ffprobe -v error -show_entries stream=codec_type,codec_name,width,height,pix_fmt,avg_frame_rate:format=duration -of json final.mp4
+</code></pre>
+<p>代码卡 4：</p>
+<pre><code class="language-plaintext">Paper-collage stop-motion assembly. The attached image is the exact completed final frame.
+Open on the empty flat [颜色] paper field. Assemble the scene piece by piece with crisp physical stop-motion timing: [按顺序写每个物件：从哪进、做什么、停在哪].
+Hold the completed composition, then clear the pieces out back to the empty field so the loop is seamless.
+Keep the exact 9:16 framing, [hex] color field, halftone dots, cream keylines, crisp cut edges and soft shadows.
+No scene cuts, no camera movement, no zoom, no morphing, no new objects, no text, no letters, no numbers, no logos, no watermark, no UI.
+Output: looping GIF, 9:16, 5 seconds, about 20 fps, infinite loop.
+</code></pre>
+<p>代码卡 5：</p>
+<pre><code class="language-plaintext">Use case: ads-marketing
+Asset type: final still frame for a 9:16 B-roll clip
+Primary request: Create a finished editorial paper-collage image expressing [一句话视觉命题].
+Scene/backdrop: perfectly flat [颜色] paper field [hex] with subtle uncoated paper fiber.
+Style/medium: premium editorial stop-motion paper collage; black-and-white halftone photographic cut-outs mixed with selective [点色] colored cardstock.
+Composition/framing: vertical 9:16 locked poster frame; central subject within the middle 70 percent; generous clean color-field negative space; 3–6 large separable paper groups for later assemble-from-empty animation.
+Materials/textures: visible printed halftone dots, crisp machine-cut edges, thin warm-cream paper keylines, soft low-opacity physical drop shadows.
+Constraints: [这条隐喻必须一眼看懂的关系].
+Avoid: no typography, no readable letters, no numerals, no logos, no watermark, no UI, no subtitles, no glossy 3D, no photoreal environment, no clutter.
+</code></pre>
+<p>代码卡 6：</p>
+<pre><code class="language-plaintext">核心意思：经验每次都在重复消耗
+视觉隐喻：熟练剪辑师围着巨大的胶片时钟逐帧裁切，时钟走完一圈，只得到一小段成片
+关键物件：胶片时钟、剪辑师、剪刀、短胶片
+色彩：焦橙底，奶油白与浅青点色
+组装顺序：时钟 → 人物与剪刀 → 胶片 → 最终短输出
+</code></pre>
+<h2>附录三：README 全文中文版本</h2>
+<p>保留官方中文并翻译英文说明；示例媒体仅外链。</p>
+<h1>gbro-collage-broll</h1>
+<p>（演示 GIF 仅见上游仓库，本页不转载。）</p>
+<p>把一句约 5 秒的口播文稿，压成一个 鲜明的视觉命题，再生成高级编辑风<strong>半调纸拼贴（halftone paper-collage）组装动画</strong> B-roll。</p>
+<p>将约五秒的口播文稿变成具有高级编辑质感的纸拼贴 B-roll，从空场开始组装，使用 Gemini Omni Flash 首尾帧视频生成。</p>
+<h2>效果</h2>
+<ul>
+<li>强烈平坦的纯色纸面色场 + 黑白 halftone 照片剪贴 + 彩色卡纸点缀</li>
+<li>元素从空场逐件滑入、卡位、组装（stop-motion 质感），不是淡入或慢 zoom</li>
+<li>默认交付 9:16、5 秒、720×1280、24fps、无声 MP4，可直接垫在口播下面</li>
+</ul>
+<h2>工作流：三闸门审批</h2>
+<p>这个 skill 的核心不是 prompt 模板，而是强制的三阶段审批，让你把注意力花在审美判断上，而不是烧生成费用：</p>
+<ol>
+<li><strong>Gate 1 · 隐喻确认</strong> — 只输出视觉隐喻方案（核心意思 / 关键物件 / 底色 / 组装顺序），不生成任何图片视频</li>
+<li><strong>Gate 2 · 静帧确认</strong> — 确认后才生成彩色拼贴静帧 + contact sheet，再次等你确认</li>
+<li><strong>Gate 3 · 视频生成</strong> — 静帧通过后自动用 <code>gemini-omni-flash-preview</code> 做首尾帧组装动画，附完整 QA（逐秒抽帧、首帧空场验证、尾帧对照）</li>
+</ol>
+<p>批量模式下支持部分通过：只有确认过的条目进入下一阶段。</p>
+<h2>环境要求</h2>
+<p>首次触发时 skill 会自动运行 <code>scripts/check_setup.sh</code> 自检，并针对缺失项给出配置指引。需要：</p>
+<table>
+<thead>
+<tr>
+<th>依赖</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Codex 环境</td>
+<td>Gate 2 静帧生成依赖内置 <code>image_gen</code> 工具</td>
+</tr>
+<tr>
+<td><code>GEMINI_API_KEY</code></td>
+<td><a href="https://aistudio.google.com/apikey">Google AI Studio</a> 创建，视频生成按量计费</td>
+</tr>
+<tr>
+<td>Python &gt;= 3.10</td>
+<td>用于视频生成脚本</td>
+</tr>
+<tr>
+<td><code>google-genai &gt;= 2.10.0</code></td>
+<td>skill 会引导创建共享 venv <code>~/hyperframes-projects/.omni-venv/</code></td>
+</tr>
+<tr>
+<td>ffmpeg / ffprobe</td>
+<td>首尾帧处理、去音轨、contact sheet</td>
+</tr>
+</tbody>
+</table>
+<p>视频生成脚本（<code>scripts/generate_video.py</code> + <code>scripts/upload_file.py</code>）已随 skill 自带，无需额外安装其他 skill。</p>
+<h2>安装</h2>
+<p>把整个目录放进你的 agent skills 目录（例如 <code>~/.agents/skills/</code> 或 <code>~/.claude/skills/</code>）：</p>
+<pre><code class="language-bash">git clone https://github.com/pyang5166/gbro-collage-broll.git ~/.agents/skills/gbro-collage-broll
+</code></pre>
+<h2>使用</h2>
+<p>对你的 agent 说：</p>
+<pre><code class="language-text">collage b-roll：很多人以为 AI 是来替你思考的，其实它更像一面镜子，会把你问题里的漏洞照出来。
+</code></pre>
+<p>触发词：<code>collage b-roll</code>、<code>纸拼贴 b-roll</code>、<code>半调拼贴</code>、<code>拼贴风格配画面</code>、<code>gbro-collage-broll</code>。</p>
+<p>然后按 Gate 1 → Gate 2 → Gate 3 逐步确认即可。批量给多句文稿也可以，每句一个隐喻一条成片。</p>
+<h2>目录结构</h2>
+<pre><code class="language-text">gbro-collage-broll/
+├── SKILL.md                        # skill 主文档（三闸门协议 + prompt 模板 + QA 标准）
+├── agents/openai.yaml              # Codex interface 配置
+├── evals/evals.json                # 四条闸门行为评测
+└── scripts/
+    ├── check_setup.sh              # 首次使用环境自检
+    ├── generate_video.py           # Gemini Omni Flash 批量视频生成
+    ├── upload_file.py              # Files API 上传辅助
+    └── generate_veo_first_last.py  # 旧 Veo 链路（仅兼容保留，默认不用）
+</code></pre>
+<h2>FAQ</h2>
+<p><strong>为什么强制两次人工确认？</strong>
+错误的隐喻或静帧直接进视频生成，浪费的是真金白银的 API 费用。Gate 1 改文字是免费的，Gate 2 重生一张图远比重跑一条视频便宜。</p>
+<p><strong>成片首帧边缘露出一点纸片？</strong>
+轻微的可以接受；严格空场需求建议用可编辑时间线的动画工具补前段。</p>
+<p><strong>能换视频模型吗？</strong>
+默认固定 <code>gemini-omni-flash-preview</code>，明确指定其他模型时才切换。</p>
+<h2>附录四：MIT 许可证原文</h2>
+<pre><code class="language-text">MIT License
+
+Copyright (c) 2026 狗哥笔记
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+</code></pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名与版权归原作者；项目文档 MIT，许可原文见附录。核对：2026-11-07（SGT）。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/gkxspace/status/2119030071302426753" rel="noopener">x.com/gkxspace/status/2119030071302426753</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

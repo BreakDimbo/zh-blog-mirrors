@@ -1,5 +1,20 @@
 [
   {
+    "slug": "gbro-collage-broll",
+    "title": "gbro-collage-broll：先定隐喻，再把纸拼贴从空场拼成动画",
+    "desc": "三闸门的公开 Gemini 版，与作者演示的 Image 2.6 GIF 新方案：方法、版本边界与“零成本”的真实含义。",
+    "description": "三闸门的公开 Gemini 版，与作者演示的 Image 2.6 GIF 新方案：方法、版本边界与“零成本”的真实含义。",
+    "source": "GitHub · 狗哥笔记 / X · 余温",
+    "date": "2026-11-07",
+    "type": "导读",
+    "subtitle": "Metaphor first, collage in motion · 项目导读 + 原帖/长文全文 + README",
+    "original_url": "https://x.com/gkxspace/status/2119030071302426753",
+    "spine": "纸拼贴 B-roll",
+    "summary": "三闸门的公开 Gemini 版，与作者演示的 Image 2.6 GIF 新方案：方法、版本边界与“零成本”的真实含义。",
+    "kind": "项目",
+    "by": "狗哥笔记 · 余温推荐"
+  },
+  {
     "slug": "feicai-animatic-video-reference",
     "title": "先做分镜动图，再让视频模型重做：Feicai 的预演思路",
     "desc": "已核对 Feicai 完整长文：图像生成动态分镜→Grok Bot 拆十二镜提取参考帧→逐镜生成→局部返修。完整播放仍有三处残留问题；效果、成本及帧数为作者自述，未实测。独立详细导读，非全文转载。",
