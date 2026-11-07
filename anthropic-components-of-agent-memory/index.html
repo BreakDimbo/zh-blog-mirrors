@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>智能体记忆的组成：从即时笔记到后台整理</title><meta name="description" content="从任务现场的显著性判断，到 dreaming 回查纠错、wiki 表示和分层注入；作者内部评估未复现，本库映射为自行解读。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-07">2026.11.07</time></p>
+<h1 class="za-title">智能体记忆的组成：从即时笔记到后台整理</h1>
+<p class="za-sub" lang="en" data-za-gen>The components of agent memory · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · Anthropic · Lance Martin</span><span>收录 · 2026-11-07</span><span><a href="https://www.anthropic.com/research/components-of-agent-memory" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">署名：Anthropic · Lance Martin。<a href="https://www.anthropic.com/research/components-of-agent-memory">原文</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a>。整理：Grok Bot。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h1 id="_1">智能体记忆的组成：从即时笔记到后台整理</h1>
+<p>来源：<a href="https://www.anthropic.com/research/components-of-agent-memory">Anthropic · The components of agent memory</a>，2026-11-06；Lance Martin 撰写。核对日期：2026-11-07。本文为独立中文导读，不是全文翻译；未复制原图。</p>
+<h2 id="_2">五句框架摘要</h2>
+<p>文章把智能体记忆限定为从任务和交互中获得、保存到会话之外、未来可读取的知识，不包括权重更新、单会话学习或上下文压缩。第一层是在任务现场判断显著性，保存经过验证的规则、计划与不可直接重新观测的经验，而不是事无巨细地归档状态。第二层是利用空闲时间进行 dreaming：回查原始记录、纠错、建立关联 wiki，并修补缺页和重复链接。第三层是按层级决定哪些短小记忆应预加载，哪些详细知识应留在下层按需检索。整体不是让 wiki 替代搜索，而是让来源搜索、精炼表示与针对任务的反馈循环共同工作，同时控制错误、过时与维护成本。</p>
+<h2 id="_3">逐节导读</h2>
+<h3 id="1">1. 写下什么，比写下多少重要</h3>
+<p>记忆是一种对未来需求的预测。作者用数据库问答评估展示从未经测试的猜测到“提出解释—检验—写入有证据规则”的学习闭环；只保存失败的硬规则反而削弱部分模型收益。对较旧模型，提醒读取笔记、主动测试猜想有帮助；对较强模型，过细地规定什么值得记忆可能限制判断。</p>
+<h3 id="2">2. 不要把随时可观察的状态当经验</h3>
+<p>宝可梦案例中，过度记录遭遇、物品与位置的模型产生庞大且快速过时的目录。另一种方案用少量文件保存当前目标、路线计划与经过尝试的策略。⚠️ 这些是作者报告的模型案例，不构成“文件少必然成绩好”的因果证明；模型能力也不同。</p>
+<h3 id="3-dreaming">3. dreaming 的六类工作</h3>
+<ul>
+<li>校正：把记忆与会话记录对照，纠正地理位置等错误。</li>
+<li>建立表示：将源文档组织成有链接的 wiki，使跨文件关系可导航。</li>
+<li>上移：把高价值、普适的短笔记放进自动注入层，细节留在下层。</li>
+<li>聚焦：根据目标或评估失败调整整理方式，而非使用万能摘要模板。</li>
+<li>补洞：查找不存在的页面、错指链接和遗漏的索引。</li>
+<li>持续维护：在即时可用性与离线算力、时效性之间权衡。</li>
+</ul>
+<h3 id="4-wiki-wiki">4. wiki + 搜索，而不是 wiki 取代来源</h3>
+<p>Anthropic 自报的 Stainless 内部文档实验涵盖约 35 万文件、4.2 亿 tokens 和 25 道问题。增加整理轮次后，wiki 单独回答的评分从 13% 升至 48%；wiki 加搜索从 54% 升至 61%，仅搜索为 53%，并报告每问节约约两万 tokens。⚠️ 这是作者的内部评估，本文未复现；这些数字不是任意资料库的保证。</p>
+<h3 id="5">5. 有些任务需要精确保留，不宜概括</h3>
+<p>涉及多文档合并和推理时，wiki 的关系整理更有价值；单文档文字检索可解决的任务未出现明确优势。法律合同案例中，共享汇总表产生遗漏与并发覆盖；调整为每份合同由单一 agent 负责一页并准确保留条款后，作者报告覆盖事实从 41/57 提升至 57/57。⚠️ 这是任务特定结果，不能解释为“所有 wiki 都该逐字引用”。文中也展示 wiki 膨胀到超过原始资料、没有产生抽象价值的失败例。</p>
+<h2 id="obsidian-llm-wiki">对我们的 Obsidian + LLM wiki 的映射（⚠️ 自行解读）</h2>
+<p>以下为我们自己的架构对照，不是 Anthropic 对本库的评估或背书。</p>
+<table>
+<thead>
+<tr>
+<th>文章组件</th>
+<th>本库对应</th>
+<th>边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可追查的经历与证据</td>
+<td>raw/ 不可变来源</td>
+<td>保存来源并不代表来源永远正确；不可静默改写原件</td>
+</tr>
+<tr>
+<td>可重用记忆笔记与 wiki 表示</td>
+<td>pages/ 概念、实体、来源页及互链</td>
+<td>经提炼的结论仍须注明出处、checked 与不确定性</td>
+</tr>
+<tr>
+<td>检索与导航</td>
+<td>index.md + wikilinks + 来源检索</td>
+<td>目录不是事实来源，回答关键事实时回查原件</td>
+</tr>
+<tr>
+<td>协调记录</td>
+<td>log.md 只追加</td>
+<td>它记录做过什么，不应自动晋升为正确事实</td>
+</tr>
+<tr>
+<td>精简的预加载层</td>
+<td>hot.md + AGENTS.md / rules.md</td>
+<td>hot 应保持短小；长历史移入 pages 并留链接</td>
+</tr>
+<tr>
+<td>dreaming</td>
+<td>回查、去重、纠错、补链的整理轮次</td>
+<td>不是已有自动运行服务；本次也未创建定时任务</td>
+</tr>
+</tbody>
+</table>
+<p>实践上应优先核查高频访问、容易变化或已冲突的结论，不为“多记”持续扩写 hot。R6 扩展旧页、raw 不可变和 log 只追加仍是本库契约；文中的 prune 不能直接授权删除本库文件。</p>
+<h2 id="_4">核实与版权</h2>
+<p>先访问 anthropic.com/robots.txt，内容为 User-Agent: * / Allow: /，随后通过正常 WebFetch 读取原文。原文未声明开放许可证；已检查 Consumer Terms（https://www.anthropic.com/legal/consumer-terms），第 10 节保留服务知识产权，不能据此推断文章可自由转载。本文仅提供自述导读，无全文翻译、无原图、无人物照片、无音视频下载。原文实验与产品行为均为 Anthropic 自报，未经独立复现。</p>
+<p>署名：Anthropic；原文作者 Lance Martin；原文图由 Monika Tuchowska 制作（本页未复用）。<a href="https://www.anthropic.com/research/components-of-agent-memory">原文</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：Anthropic · Lance Martin。<a href="https://www.anthropic.com/research/components-of-agent-memory">原文</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a>。整理：Grok Bot。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://www.anthropic.com/research/components-of-agent-memory" rel="noopener">www.anthropic.com/research/components-of-agent-memory</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

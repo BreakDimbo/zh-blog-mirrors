@@ -1,5 +1,35 @@
 [
   {
+    "slug": "alexgreensh-anidoodle",
+    "title": "anidoodle：把手绘、动画和配乐写成可重复运行的代码",
+    "desc": "代码绘制插画、逐笔动画、互动网页和配乐；Apache-2.0 导读与全文中文 README，能力与成本为作者自述，未实测。",
+    "description": "代码绘制插画、逐笔动画、互动网页和配乐；Apache-2.0 导读与全文中文 README，能力与成本为作者自述，未实测。",
+    "source": "GitHub · Alex Greenshpun（Apache-2.0）",
+    "date": "2026-11-07",
+    "type": "导读",
+    "subtitle": "Code-drawn art, motion and music · 项目导读 + README 全文中译",
+    "original_url": "https://github.com/alexgreensh/anidoodle",
+    "spine": "代码手绘工作室",
+    "summary": "代码绘制插画、逐笔动画、互动网页和配乐；Apache-2.0 导读与全文中文 README，能力与成本为作者自述，未实测。",
+    "kind": "项目",
+    "by": "Alex Greenshpun"
+  },
+  {
+    "slug": "anthropic-components-of-agent-memory",
+    "title": "智能体记忆的组成：从即时笔记到后台整理",
+    "desc": "从任务现场的显著性判断，到 dreaming 回查纠错、wiki 表示和分层注入；作者内部评估未复现，本库映射为自行解读。",
+    "description": "从任务现场的显著性判断，到 dreaming 回查纠错、wiki 表示和分层注入；作者内部评估未复现，本库映射为自行解读。",
+    "source": "Anthropic · Lance Martin",
+    "date": "2026-11-07",
+    "type": "导读",
+    "subtitle": "The components of agent memory · 独立中文导读",
+    "original_url": "https://www.anthropic.com/research/components-of-agent-memory",
+    "spine": "智能体记忆组件",
+    "summary": "从任务现场的显著性判断，到 dreaming 回查纠错、wiki 表示和分层注入；作者内部评估未复现，本库映射为自行解读。",
+    "kind": "研究",
+    "by": "Lance Martin"
+  },
+  {
     "slug": "miramusic-gpt-image-2-6-sphere",
     "title": "GPT Image 2.6 验证 2：用 100 张图做 6 秒球体操控动画（MiraMusic）",
     "desc": "MiraMusic @MiraMusic_AI 日文原帖全文中译（2026-11-06）：以 GPT Image 2.6 把附图当起始帧，图像生成 6 秒 / 约 100 帧，刻意带ケレン味与动画十二原则。视频请在 X 观看（本站不下载）。附作者回复：音频用 SUNO、人声用 ElevenLabs；长尺一致性未试；跑步可用 H3 做 previz。产品名与帧数为作者自述 ⚠️。",

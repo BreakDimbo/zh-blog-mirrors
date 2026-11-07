@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>anidoodle：把手绘、动画和配乐写成可重复运行的代码</title><meta content="代码绘制插画、逐笔动画、互动网页和配乐；Apache-2.0 导读与全文中文 README，能力与成本为作者自述，未实测。" name="description"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="../assets/article.css" rel="stylesheet"/><script defer="" src="../assets/article.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-07">2026.11.07</time></p>
+<h1 class="za-title">anidoodle：把手绘、动画和配乐写成可重复运行的代码</h1>
+<p class="za-sub" lang="en" data-za-gen>Code-drawn art, motion and music · 项目导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · Alex Greenshpun（Apache-2.0）</span><span>收录 · 2026-11-07</span><span><a href="https://github.com/alexgreensh/anidoodle" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">署名：GitHub · Alex Greenshpun（Apache-2.0）。<a href="https://github.com/alexgreensh/anidoodle">原文</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a>。整理：Grok Bot。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h1 id="anidoodle">anidoodle：把手绘、动画和配乐写成可重复运行的代码</h1>
+<p>anidoodle 是 Alex Greenshpun 的开源创作技能与渲染工具：让 Claude Code、Codex、Grok Build 等智能体把画面和配乐写成程序，而不是每帧重新调用图像或视频生成模型。同一份源码可以产出静态插画、绘制过程、循环贴纸、讲解片和互动网页。</p>
+<h2 id="_1">它真正想解决什么</h2>
+<p>在这里，风格不只是一句形容词，而是落笔、纸张、边缘、配色与作画顺序的具体配方。先确认一张静帧，再沿同一条时间线扩展成片；画面、配乐、字幕和导出检查尽量共用可追溯的程序描述。它适合需要反复改尺寸、保持一组插画统一、精确修改某一帧或某个音乐事件的工作。</p>
+<h2 id="_2">画面、声音与交互</h2>
+<ul>
+<li>⚠️ README 自报提供 32 种画风、21 种音乐词汇及 14 种分层音效；本站未逐项运行核对。</li>
+<li>静帧、逐笔绘制影片与角色动画共用绘制核心。作者声称纯函数与带种子的随机数可保证重复渲染一致；⚠️ 跨机器逐字节一致未验证，不能视作本站保证。</li>
+<li>音符以数据表达，声音由引擎演奏；当前英文 README 另有可选真实乐器采样包，⚠️ 自报约 373 MB，本站未下载。不要把它概括成“所有模式永远不使用录音”。</li>
+<li>网页插画使用小型 ES 模块与 <code>&lt;ani-doodle&gt;</code> 元素；可对光标、滚动及表单状态作出反应，作者称包含减少动画和键盘路径。</li>
+<li>产品发布片工具按节拍组织聊天、产品界面、标题与结尾卡，输出多种画幅、封面和字幕；检查是否截字、音画同步与峰值。</li>
+</ul>
+<h2 id="_3">如何开始</h2>
+<p>README 给出 Claude Code、Codex 与 Grok Build 的插件安装命令，也允许复制标准 skill 目录给其他兼容智能体。运行引擎需要 Node 20 或更新版本，静态图依赖浏览器，动态导出还需要 ffmpeg。下方附录保留原命令供查阅；本次仅阅读文档，未安装插件、未执行任何命令或创作流程。</p>
+<h2 id="_4">成本与证据边界</h2>
+<p>⚠️ “写一次、之后零 token”指复用既有程序时不必逐帧再调用生成模型，不代表本地渲染没有算力、电力、存储和维护成本，也不意味着首次写代码或后续修改免费。47 秒、1,410 帧、每帧约 60 tokens、约 100 KB 离线 HTML 都是作者示例的说法，不是通用性能承诺。</p>
+<p>当前英文 README 风格标题为 32 种，但 craft 小节写 31 套配方；⚠️ 数字口径不一致，未替作者消除差异。官方中文 README 也落后于英文，遗漏可选采样包、3D、旁白及较新的品牌适配说明；本站附录以官方中文为底稿，按本次英文逐节补齐与修订，图片改外链，不删正文信息。</p>
+<h2 id="_5">许可与素材</h2>
+<p>2026-11-07 重新读取上游 LICENSE，确认为 Apache License 2.0。README 署名 Copyright 2026 Alex Greenshpun。本页提供项目导读、完整中文 README 文本附录和许可证原文；两张静态样图来自仓库 assets/styles.jpg 和 assets/readme/lesson.jpg，转为小于 150KB 的 webp。未转载真人照片，未下载视频、音频、GIF 或可选音色包；演示与试听均仅外链。</p><figure><img alt="仓库自带的多种代码插画风格对照" height="888" loading="lazy" src="images/styles.webp" width="1600"/><figcaption>仓库 assets/styles.jpg，Apache-2.0；本站转换为 webp。</figcaption></figure><figure><img alt="猫头鹰九步绘画教学图" height="1600" loading="lazy" src="images/lesson.webp" width="858"/><figcaption>仓库 assets/readme/lesson.jpg，Apache-2.0；本站转换为 webp。</figcaption></figure><h2 id="readme">附录一：README 全文中文译本</h2><p class="notice">⚠️ 下文保留作者自述口吻，所有能力、数字、成本和确定性主张均未独立实测。以官方中文为底稿，按 2026-11-07 英文 README 补齐修订。原图与音视频仅外链；非本站验证报告。</p><p align="center">
+<a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/banner.gif">〔原图 / 动图链接：anidoodle：一张画满代码手绘涂鸦的画桌，anidoodle 这个名字正以书法字体自己写出自己〕</a>
+</p>
+<p><a href="https://github.com/user-attachments/assets/1cf7f75c-b040-4c00-bf0c-cf1885f8b8da">原仓库演示影片（仅外链，不下载）</a></p>
+<p align="center"><sub>发布短片，77 秒。每一帧画面、每一个声音，都是用 anidoodle 以代码制作的。</sub></p>
+<h1 align="center">anidoodle</h1>
+<p align="center"><strong>手绘的艺术，用代码写成。</strong></p>
+<p align="center">
+  插画、绘画延时视频、影片、讲解视频和互动网页艺术，32 种风格任你挑选。<br/>
+  每一笔都是一个函数，每一份配乐都经过谱写，于是同一份源码<br/>
+  在任何机器、任何尺寸下，都会重新画出同一张画，永远如此。
+</p>
+<p align="center">
+<a href="https://github.com/alexgreensh/anidoodle/releases"><a href="https://img.shields.io/github/v/release/alexgreensh/anidoodle?color=c2410c&amp;label=%E7%89%88%E6%9C%AC">〔原图 / 动图链接：最新版本〕</a></a>
+<a href="https://github.com/alexgreensh/anidoodle/blob/main/LICENSE"><a href="https://img.shields.io/badge/%E8%AE%B8%E5%8F%AF%E8%AF%81-Apache%202.0-3b6ea5">〔原图 / 动图链接：Apache 2.0 许可证〕</a></a>
+<a href="https://img.shields.io/badge/%E5%8E%9F%E6%96%99-%E7%BA%AF%E4%BB%A3%E7%A0%81-6b8e23">〔原图 / 动图链接：纯代码打造〕</a>
+<a href="https://img.shields.io/badge/%E6%AF%8F%E6%AC%A1%E6%B8%B2%E6%9F%93-%E5%AE%8C%E5%85%A8%E4%B8%80%E8%87%B4-7c5c99">〔原图 / 动图链接：每次渲染，完全一致〕</a>
+</p>
+<p align="center"><sub>支持 <b>Claude Code</b> · <b>Codex</b> · <b>Grok Build</b> · 以及任何能读取技能的智能体。</sub></p>
+<p align="center"><a href="https://github.com/alexgreensh/anidoodle/blob/main/README.md">English</a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/README.ja-JP.md">日本語</a> · <b>简体中文</b> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/README.ko-KR.md">한국어</a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/README.fr-FR.md">Français</a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/README.es-ES.md">Español</a></p>
+<p align="center">
+<a href="#32-种风格随你挑选">风格</a> ·
+  <a href="#每种风格都会自己画出来">作画影片</a> ·
+  <a href="#用代码谱写音乐">音乐</a> ·
+  <a href="#你能做出什么">你能做出什么</a> ·
+  <a href="#它自带了什么">它自带了什么</a> ·
+  <a href="#先画后动">动态效果</a> ·
+  <a href="#开始使用">开始使用</a>
+</p>
+<h2 id="32">32 种风格，随你挑选</h2>
+<p align="center">
+<a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/styles.jpg">〔原图 / 动图链接：32 幅各具风格的插画，从铅笔水彩、马克笔漫画和孔版印刷，到像素画、玩具积木、木刻、墨绘、刮画、刺绣、油画和民间故事绘本〕</a>
+</p>
+<p>每种风格都有自己独特的落笔方式：笔尖的收锋、水彩的晕染、粉笔在石板上的揉擦、剪纸边缘的撕裂感、孔版印刷滚筒的网点、一条雕刻线螺旋展开变成一轮月亮。同一个主题，在不同的风格里会呈现出完全不同的样子，就像出自 32 位不同插画师之手。每种风格还附有一段影片，按使用这种媒介的画家实际作画的顺序，逐笔展示画面如何诞生。为你的品牌选定一种风格，之后的每一张画都会出自同一双手。上面的每一幅样图，连同这张对照表本身，都是这个仓库里的代码画出来的。</p>
+<details>
+<summary><b>全部 32 种风格</b>，以及它们的画法</summary><table>
+<thead>
+<tr>
+<th>风格</th>
+<th>画法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>圆珠笔</strong></td>
+<td>只用一支圆珠笔，靠交叉排线形成明暗</td>
+</tr>
+<tr>
+<td><strong>分色笔触</strong></td>
+<td>不调匀的色彩分别点上，带着印象派的味道</td>
+</tr>
+<tr>
+<td><strong>粉笔黑板</strong></td>
+<td>用粉笔侧面揉擦，留下粉尘</td>
+</tr>
+<tr>
+<td><strong>炭笔擦画</strong></td>
+<td>炭笔画了又擦、擦了再画，保留旧痕</td>
+</tr>
+<tr>
+<td><strong>彩色铅笔</strong></td>
+<td>在有纹理的米色纸上，顺着方向叠加笔触</td>
+</tr>
+<tr>
+<td><strong>蜡笔</strong></td>
+<td>蜡质涂鸦掠过纸面的凹处</td>
+</tr>
+<tr>
+<td><strong>剪纸拼贴</strong></td>
+<td>撕纸与剪纸拼成画面，不画线条</td>
+</tr>
+<tr>
+<td><strong>蓝晒蓝图</strong></td>
+<td>在蓝晒纸上用鸭嘴笔绘制技术图</td>
+</tr>
+<tr>
+<td><strong>梦境釉彩</strong></td>
+<td>用树脂稀释的油彩薄涂罩染，不见笔触，轮廓一律分明</td>
+</tr>
+<tr>
+<td><strong>刺绣</strong></td>
+<td>在绣绷里的亚麻布上穿针走线</td>
+</tr>
+<tr>
+<td><strong>扁平矢量</strong></td>
+<td>清晰的几何形状，带颗粒感和长投影</td>
+</tr>
+<tr>
+<td><strong>民间故事绘本</strong></td>
+<td>彩绘前景逐渐融入米色纸上的铅笔线</td>
+</tr>
+<tr>
+<td><strong>墨线淡彩</strong></td>
+<td>先铺淡彩，再用有弹性的笔尖勾线</td>
+</tr>
+<tr>
+<td><strong>等距视角</strong></td>
+<td>以平面着色绘出 2:1 等距剖视图</td>
+</tr>
+<tr>
+<td><strong>低多边形 3D</strong></td>
+<td>用代码绘制平面着色的三角面</td>
+</tr>
+<tr>
+<td><strong>马克笔漫画</strong></td>
+<td>平涂色块，配上一道粗轮廓</td>
+</tr>
+<tr>
+<td><strong>世纪中期水粉</strong></td>
+<td>不透明的哑光色块、干刷边缘和松动的线条</td>
+</tr>
+<tr>
+<td><strong>报纸网点</strong></td>
+<td>在新闻纸上叠印黑色网版和一种专色</td>
+</tr>
+<tr>
+<td><strong>油画</strong></td>
+<td>在有底色的画布上留下硬毛笔触和厚涂肌理</td>
+</tr>
+<tr>
+<td><strong>纸艺</strong></td>
+<td>层层剪纸和彩绘纸片，以逐格拍摄的节奏呈现</td>
+</tr>
+<tr>
+<td><strong>铅笔与水彩</strong></td>
+<td>水彩晕染不完全填满铅笔轮廓</td>
+</tr>
+<tr>
+<td><strong>像素画</strong></td>
+<td>在低分辨率网格上使用固定的 16 色调色板</td>
+</tr>
+<tr>
+<td><strong>孔版印刷</strong></td>
+<td>油墨滚筒套印，留下轻微错版</td>
+</tr>
+<tr>
+<td><strong>橡皮管动画</strong></td>
+<td>1930 年代的墨线动画，弯曲的四肢与胶片颗粒</td>
+</tr>
+<tr>
+<td><strong>刮画</strong></td>
+<td>从黑色涂层中刮出白线</td>
+</tr>
+<tr>
+<td><strong>单线雕版</strong></td>
+<td>一条不断开的螺旋线，以粗细表现明暗</td>
+</tr>
+<tr>
+<td><strong>点描</strong></td>
+<td>用钢笔点的疏密表现明暗</td>
+</tr>
+<tr>
+<td><strong>绘本</strong></td>
+<td>用铅笔和水彩描绘角色</td>
+</tr>
+<tr>
+<td><strong>水墨画</strong></td>
+<td>在吸水纸上只用一支饱蘸墨汁的笔</td>
+</tr>
+<tr>
+<td><strong>玩具积木</strong></td>
+<td>带凸点的塑料积木，一层层搭起来</td>
+</tr>
+<tr>
+<td><strong>复古剪贴簿</strong></td>
+<td>在旧纸上拼贴版画、剪字标题和胶带固定的卡片</td>
+</tr>
+<tr>
+<td><strong>木刻／浮世绘</strong></td>
+<td>在和纸上印制雕刻的主版与色版</td>
+</tr>
+</tbody>
+</table></details>
+<h2 id="_1">每种风格都会自己画出来</h2>
+<p align="center">
+<a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/readme/drawing.gif">〔原图 / 动图链接：四幅画同时逐笔成形：工作台前的彩铅机器人、雨中桥上的鹭鸟木版画、扑向萤火虫的像素猫，以及伴着麻雀的水墨竹子〕</a>
+</p>
+<p>每种风格都从同一份源码产出完成的画，以及按这种媒介的画家实际作画顺序制作的影片。水彩先打铅笔稿，再从浅到深铺色；木刻先印主版，再逐一印上色版；像素画先搭出纯色形状，再给像素块加阴影。没有淡入效果：每一道笔画都会伸展，每片水彩都从落笔处晕开，影片最后一帧与静态图像逐像素一致。一段延时摄影，同时也是创作过程和讲解图。</p>
+<h2 id="_2">用代码谱写音乐</h2>
+<p>音符以数据写下，引擎负责发声。这个仓库本身不包含录音。音乐风格是模型用来作曲的词汇，而不是预设：共有 21 种，涵盖低保真电子、House、合成器浪潮、管弦乐、爵士、民谣和钢琴独奏。每种词汇提供音色、律动与和声语言；和弦、动机和曲式每次重新创作，因此每部影片都有自己的配乐。</p>
+<p>安装可选音色包后，八种原声乐器使用真实乐器的录音：施坦威三角钢琴、立式钢琴、音乐会竖琴、马林巴、颤音琴、钟琴、管钟和定音鼓，并提供三个录音空间。合成器、低保真色彩、电子鼓和音效仍由代码生成；不装音色包，所有配乐依然可以原样播放。</p>
+<pre><code class="language-bash">node &lt;skill&gt;/engine/tools/soundfetch.mjs list    # 查看安装目录及已安装内容
+node &lt;skill&gt;/engine/tools/soundfetch.mjs get all # 下载 373 MB，校验哈希并解包；智能体须先征求你的同意
+</code></pre>
+<ul>
+<li><strong>键盘：</strong> 以一台真实的施坦威三角钢琴为原型建模的钢琴，Rhodes 和 Wurlitzer 电钢琴，音轮风琴和管风琴，槌击乐器和钟。</li>
+<li><strong>合奏：</strong> 每位乐手独立演奏的弦乐组，铜管，长笛和单簧管，会唱出元音的合唱团，尼龙弦、钢弦和电吉他，竖琴和四种贝斯。</li>
+<li><strong>鼓：</strong> 用代码做出的真实鼓组（原声、808、909、复古颗粒、鼓刷、带定音鼓的管弦乐），每一击都略有不同。</li>
+<li><strong>真正的低保真：</strong> 12 位采样器、磁带的晃动与底噪、黑胶的噼啪声，以及让整个混音呼吸起来的底鼓。</li>
+<li><strong>混音与空间：</strong> 分轨均衡、鼓组总线、大厅、板式和卷积混响，以及达到流媒体响度标准的母带。</li>
+</ul>
+<p><code>node tools/music.mjs check</code> 在任何人试听之前先审核配乐：调性与调式、响度、掩蔽、每个声部的平衡，以及新颖度。听起来像已有曲子或引用了它的配乐不会通过。</p>
+<table>
+<thead>
+<tr>
+<th>试听</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/nocturne-45s.mp3">降 A 大调夜曲</a></td>
+<td>45 秒的钢琴曲：渐渐铺开、推向高潮，再归于低语</td>
+</tr>
+<tr>
+<td><a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/piano-8s.mp3">有表现力的钢琴</a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/piano-flat-baseline-8s.mp3">同一组音符的平板演奏</a></td>
+<td>差别在演奏：声部、乐句和踏板</td>
+</tr>
+<tr>
+<td><a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/sampler-cinematic-awe-8s.mp3">电影感·敬畏</a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/sampler-lofi-nostalgic-8s.mp3">低保真</a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/sampler-marimba-curious-8s.mp3">马林巴</a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/sampler-drive-electronic-8s.mp3">电子乐</a></td>
+<td>更多情绪与乐器</td>
+</tr>
+<tr>
+<td><a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/audio/fit-theme-15s.mp3">15 秒版夜曲主题</a></td>
+<td>作曲器会选择适合时长的曲式</td>
+</tr>
+</tbody>
+</table>
+<p>以及<strong>音效套件</strong>：十四种分层、带种子的音效，精确到帧触发，每一次音乐都会让开一点（<a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/music/sound-design.md">声音设计</a>）。配乐怎么写：<a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/music/compose.md"><code>compose.md</code></a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/music/styles/vocabularies.md">词汇一览</a>。</p>
+<h2 id="_3">会注意到你的网页</h2>
+<p align="center">
+<a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/readme/interactive.gif">〔原图 / 动图链接：注册表单旁有一个手绘机器人，它看着用户输入，到密码栏时捂住眼睛，提交成功后欢呼〕</a>
+</p>
+<p>真正能放进网站的互动插画：跟随光标、响应按钮的吉祥物，随页面滚动自行画出的主视觉，还有遇到密码栏就捂眼睛的表单伙伴。只需一个小型 ES 模块和一个 <code>&lt;ani-doodle&gt;</code> 元素，无需框架；也支持减少动态效果和键盘操作。给定导致当前状态的输入，每一帧都是确定的。</p>
+<h2 id="_4">用代码画出你的产品发布片</h2>
+<p>本页顶部的影片就是用 anidoodle 做的，做它的那套工具也一起附带。<code>launch.mjs new &lt;名称&gt;</code> 会给你一份待填写的规格：你的产品名、用户会输入的提示、对应的回答（一幅画出来的图、你自己产品的界面，或一段影片）、几个词和你的安装命令。它会踩着节拍剪出一支发布片：自己打字的聊天界面、像墨迹一样绽开的回答、整屏的手写字，以及一张把安装命令停留足够久、方便复制的结尾卡。</p>
+<ul>
+<li><strong>四种画幅，一条时间线：</strong> 16:9、1:1、4:5 和 9:16，每种画幅都重新构图，文字在手机上也清晰可读。</li>
+<li><strong>把你的产品搬上屏幕：</strong> 由数据画出的界面，元素从修改前的状态弹跳到修改后的状态。</li>
+<li><strong>声音来自画面：</strong> 每一次按键、点击和落地都有自己的音效，出现在屏幕上发生的位置，下面是为这支片子作曲的配乐。</li>
+<li><strong>可以直接发布：</strong> <code>launch.mjs ship &lt;名称&gt;</code> 渲染每种画幅，写出封面帧和字幕（.srt 与 .vtt），在交付的文件上检查音画同步和峰值电平，并让任何边缘切到文字的帧不通过。</li>
+</ul>
+<p>它可以采用你产品的外观：字体、颜色、聊天窗口形状，或者直接从 Figma 导入的品牌文件。你可以选择手绘墨迹或简洁的 UI 优先画布，以 30 或 60 fps 制作，并按每帧的速度匹配运动模糊。在成片交付前，anidoodle 会像挑剔的剪辑师那样自检：文字停留是否足够阅读、是否出现幻灯片式切换或模糊退场、声音是否适合信息流，以及屏幕上的每项主张是否标注来源。</p>
+<p>这些规则来自我们自己发布片的四次剪辑，以及优秀发布片的手艺：五秒内说清它是什么，文字永远不压在画面上，在强拍上切换，把第一帧做成缩略图。 → <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/workflows/launch-video.md"><code>launch-video.md</code></a> · <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/workflows/launch-video-kit.md">工具包</a></p>
+<h2 id="_5">带上你自己的图片</h2>
+<ul>
+<li><strong>匹配画风。</strong> 给它看一张你喜欢的画，它会研究笔触、边缘、配色和纸张，再用同样的画风创作新画。借用的是风格，不是原画。</li>
+<li><strong>重画照片。</strong> 照片可以变成刮画、木刻或单线雕版：系统会测量明暗，以及毛发或布料的方向，每道可见笔触都由代码绘制。</li>
+<li><strong>保持角色一致。</strong> 角色只需创建一次，不论镜头、姿势或从木刻到玩具积木的画风如何变化，始终是同一个角色。</li>
+</ul>
+<h2 id="_6">学着画画</h2>
+<p align="center">
+<a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/readme/lesson.jpg">〔原图 / 动图链接：九步画一只猫头鹰：从两个圆开始，经过结构、轮廓、眼睛、阴影和羽毛，直到画完剩下的猫头鹰〕</a>
+<a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/readme/lesson.gif">〔原图 / 动图链接：猫头鹰一步步画出来的延时动画〕</a>
+</p>
+<p align="center"><a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/readme/lesson.mp4">观看带字幕的完整课程 (mp4, 95 秒)</a></p>
+<p>问它怎么画一样东西，或者带来自己的画，anidoodle 就会把它重新拆成一堂课：分步图和带字幕的延时视频，每一步都说明该观察什么、怎样动笔，以及常见的错误。</p>
+<h2 id="_7">你能做出什么</h2>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>你能得到什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>官网</strong></td>
+<td>一张主视觉插画，每个功能点一张点缀小图，空状态和 404 页面，全部出自同一双手。同一份源码可以导出任意尺寸的透明 PNG，视网膜屏和印刷都不在话下。</td>
+</tr>
+<tr>
+<td><strong>说明图和报告</strong></td>
+<td>原理图、剖视图和动态信息图，配上手绘风格的标注文字。严肃一点的话题，粉笔黑板、蓝图和圆珠笔风格都很合适。一个想法也能变成一台会运转、会自己拆开再装回去的机器，用任何风格来画。</td>
+</tr>
+<tr>
+<td><strong>品牌</strong></td>
+<td>一个会自己画出来的 Logo，一段片头动画，一套每次发帖都保持品牌调性的社交卡片模板。</td>
+</tr>
+<tr>
+<td><strong>社交和聊天</strong></td>
+<td>无限循环的动图、GIF，以及适配信息流尺寸的透明动态贴纸。</td>
+</tr>
+<tr>
+<td><strong>幻灯片和文档</strong></td>
+<td>一个程序生成一整套章节插画。换个种子，就能得到风格相同的姊妹图。</td>
+</tr>
+<tr>
+<td><strong>故事</strong></td>
+<td>分镜和动态预览，一步步长成一部任意时长、配有原创配乐的完整影片。</td>
+</tr>
+<tr>
+<td><strong>你自己的图片</strong></td>
+<td>带来一张画，就能用它的风格画新主题；带来一张照片，就能用 32 种画风中的任意一种重新创作，每一笔都由代码绘制。</td>
+</tr>
+<tr>
+<td><strong>网页</strong></td>
+<td>会追随光标、响应点击和表单，或随着页面滚动自行绘制的互动插画。还有放在标题旁的主视觉和小插图，贴合你页面的底色和品牌，浅色深色都行。</td>
+</tr>
+<tr>
+<td><strong>学习</strong></td>
+<td>用分步图和延时视频教你一幅画如何完成，还会指出该看什么、常见错误有哪些。</td>
+</tr>
+<tr>
+<td><strong>角色</strong></td>
+<td>一个角色只需构建一次，在不同镜头、姿势和风格中始终保持一致。</td>
+</tr>
+<tr>
+<td><strong>你的发布</strong></td>
+<td>用模板为你的产品做一支发布片：你的提示、你的画面、你的文字和安装命令，配着音乐剪好。</td>
+</tr>
+<tr>
+<td><strong>3D 与动态图形</strong></td>
+<td>使用 three.js 渲染 3D 场景、立体文字和片头，并与其他内容共享精确到帧的时间线。</td>
+</tr>
+<tr>
+<td><strong>旁白</strong></td>
+<td>与画面同步的配音，配上逐词跟随的字幕，让静音观看也能读懂影片。</td>
+</tr>
+</tbody>
+</table>
+<p>用大白话说出你的需求就行，比如 <em>“给我们的招聘页面画一张孔版印刷风格的灯塔，1600×900”</em>，或者 <em>“用粉笔黑板风格画一张解释我们定价方案的说明图”</em>，anidoodle 会自动把它路由到合适的工作流和风格配方，只有在你没说清楚的地方才会追问。</p>
+<h2 id="_8">它自带了什么</h2>
+<p>引擎只是简单的那一半。真正的功夫，是 anidoodle 替你背下来的六条心得，每一条都是先画砸了一次才换来的经验，写下来是为了让你从上一个项目结束的地方接着开始：</p>
+<ul>
+<li><strong>故事</strong>，让每件作品都有一个重点。一张静态图只讲一个想法、聚焦一个主体；一部短片只有一次转变、一个高潮，和一个反复出现的意象。→ <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/storytelling.md"><code>storytelling.md</code></a></li>
+<li><strong>写实感</strong>，来自把它说清楚。解剖结构、观察视角，以及你参考过的资料，都要交代明白，这样一只蝴蝶读起来才像是一个有身体、有翅脉的真实生物。→ <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/realism-and-craft.md"><code>realism-and-craft.md</code></a></li>
+<li><strong>风格</strong>，活在笔触里。31 套完整配方（英文原文如此；标题列出 32 种风格，⚠️ 口径不一致），外加一份按场合挑风格的指南，以及自创风格的步骤。→ <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/styles.md"><code>styles.md</code></a></li>
+<li><strong>音乐</strong>，依照某种曲风的词汇为每件作品作曲，再由建模及录音乐器演奏：21 种曲风、完整的乐队和管弦乐团、所有大小调、每个段落各自的情绪，以及能适配任意时长的主题旋律。→ <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/music/README.md"><code>music/README.md</code></a></li>
+<li><strong>确定性</strong>，是这套系统的承诺。纯函数加上带种子的随机数，任何人拿到源码都能重建出一模一样的作品。→ <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/determinism-and-contract.md"><code>determinism-and-contract.md</code></a></li>
+<li><strong>方法</strong>，让你保持速度。先用一张静态图验证效果，再一路做到底，把审批环节留给那些出错代价高的地方。→ <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/working-method.md"><code>working-method.md</code></a></li>
+</ul>
+<p>每种格式都出自同一份源码：PNG、带配乐的 MP4、GIF、透明的 WebM 和动态 PNG，还有一个自包含的 HTML 文件。→ <a href="https://github.com/alexgreensh/anidoodle/blob/main/skills/anidoodle/references/formats.md"><code>formats.md</code></a></p>
+<h2 id="_9">先画，后动</h2>
+<table>
+<tr>
+<td align="center" width="50%"><a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/act1.gif">〔原图 / 动图链接：一张蓝晒图工艺的图版正在一笔一笔画出自己〕</a></td>
+<td align="center" width="50%"><a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/alive.gif">〔原图 / 动图链接：一只机械蝴蝶在水彩中苏醒，在陆莲花间轻盈飞舞〕</a></td>
+</tr>
+<tr>
+<td align="center"><sub>每一笔都是<strong>真的画出来</strong>的，顺序和手绘时一模一样。</sub></td>
+<td align="center"><sub>蓝图在水彩中苏醒，振翅飞向自己的草地。</sub></td>
+</tr>
+</table>
+<p><strong>▶ 完整的 47 秒短片</strong>，记得开声音。1080×1080，配有原创配乐，每一帧与每个采样均由代码生成（作者对该示例的说明）：</p>
+<p><a href="https://github.com/user-attachments/assets/019d46d3-536a-4843-9f68-8e8f5f5c3401">原仓库演示影片（仅外链，不下载）</a></p>
+<p>一个纯函数负责画出每一帧，所以一张成品插画，就是这个函数被调用了一次；一枚贴纸，是同一个函数循环调用；一部短片，则是这个函数配上一个故事和一段配乐。三者背后，是同一套保证。</p>
+<h2 id="_10">画一次，管一辈子</h2>
+<p>图像模型每渲染一帧都要烧掉 token 和算力，而且每次画出来的都不一样。代码只花这份钱一次。这部 47 秒的短片就是一个程序：写一次，就能在任何机器、任何尺寸下渲染出全部 1,410 帧画面和一整段立体声配乐，而且每次运行都是免费的。折算下来，第一遍大约每帧只花六十个 token 的代码量，之后每一遍都是零成本。一张静态插画不过几百行代码，一整个系列的图像，也不过是一份种子列表。</p>
+<h2 id="_11">开始使用</h2>
+<p><strong>Claude Code:</strong></p>
+<pre><code class="language-bash">/plugin marketplace add alexgreensh/anidoodle
+/plugin install anidoodle@alexgreensh-anidoodle
+</code></pre>
+<p><strong>Codex:</strong></p>
+<pre><code class="language-bash">codex plugin marketplace add alexgreensh/anidoodle
+</code></pre>
+<p>然后在 Codex 的 TUI 中输入 <code>/plugins</code>，安装 anidoodle。</p>
+<p><strong>Grok Build：</strong></p>
+<pre><code class="language-bash">grok plugin marketplace add alexgreensh/anidoodle
+grok plugin install anidoodle --trust
+</code></pre>
+<p><code>--trust</code> 用于确认安装；不加它，Grok 会列出插件可以运行的内容，然后停下。也可以在 <code>/plugins</code> 的 Marketplace 标签页里安装。</p>
+<p><strong>其他智能体：</strong> anidoodle 是标准的 skill 文件夹（<code>skills/anidoodle/SKILL.md</code>），可以复制到任何能读取 skill 的运行环境。</p>
+<p>然后直接说出你想要什么就行，比如 <em>“给我们的菜谱页面画一个铅笔加水彩风格的梨”</em>。如果你想亲自操作引擎：</p>
+<pre><code class="language-bash">node &lt;anidoodle&gt;/engine/tools/scaffold.mjs ~/art --still hero --film intro --format 9x16 --duration 60
+cd ~/art &amp;&amp; npm install &amp;&amp; npx playwright-core install chromium
+
+node tools/still.mjs  hero  --out out/hero.png --scale 2   # a finished illustration, print size
+node tools/render.mjs intro --out out/intro.gif            # a loop; also .mp4 with score, .webm with alpha
+node tools/emit.mjs   intro --out out/intro.html           # the whole piece as one offline file
+node tools/gate.mjs   hero                                 # determinism, contract and dead air in one pass
+node tools/verify-export.mjs intro --file out/intro.mp4   # the file you ship, decoded and checked
+node tools/music.mjs check score.ts#myScore                # your score: key, loudness, balance, novelty
+node tools/launch.mjs new myLaunch                         # a launch film spec; then: launch.mjs ship myLaunch
+</code></pre>
+<p>需要 Node 20 及以上版本。静态图只需要上面那个浏览器；只要涉及动态效果，就还会用到 <code>ffmpeg</code>。</p>
+<p><code>emit</code> 会输出一个大约 100 KB 的 HTML 文件，双击就能离线播放，声音也在里面。它带着完整的配方，每次打开都会从头重新画一遍。把它作为邮件附件发出去，你就等于交付了一整个工作室。</p>
+<p>四个后端共用同一个绘图核心，而这个核心压根不在乎是谁在画：<code>playwright</code>、<code>html-player</code>、<code>remotion</code>、<code>hyperframes</code>。</p>
+<h2 id="_12">示例短片</h2>
+<p><code>skills/anidoodle/example/</code> 目录里放着<strong>机械鳞翅目</strong>（Mechanical Lepidoptera）：1,410 帧，47 秒，一只机械蝴蝶自己画出自己的图纸，在水彩中苏醒过来，又把蓝图留在了草丛里。这一部作品，就是整个引擎的缩影：控制点是按照真实解剖结构手工摆放的，缓存键记录了每个像素依赖的每一个输入，配乐专为它创作，从画成到活过来，是一气呵成的一个动作。风格样图和引擎放在一起，都在 <code>skills/anidoodle/engine/src/canvas-core/</code> 里，每一张的顶部都写着自己的配方。随便打开一个，改一个数字，看看会发生什么变化。</p>
+<h2 id="_13">诚实是设计出来的</h2>
+<p>声音和动态效果，靠的是拿实打实的证据说话。每一句关于配乐或动作的描述，背后都有一次测量或一双人眼验证过，绿色对勾也只有在重新跑过之后才算数。正是这份较真，让同一件作品无论在哪台机器上、跑多少次，都能分毫不差地重现。</p>
+<hr/>
+<p>基于 <a href="https://github.com/alexgreensh/anidoodle/blob/main/LICENSE">Apache License 2.0</a> 协议开源。版权所有 2026 Alex Greenshpun。</p>
+<p><sub>由 anidoodle 绘制，它的全部本事，都是老老实实画了几遍蝴蝶换来的。</sub></p><h2 id="license">附录二：Apache License 2.0 原文</h2><p>Copyright 2026 Alex Greenshpun（署名取自 README）。</p><pre>Copyright 2026 Alex Greenshpun
+
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：GitHub · Alex Greenshpun（Apache-2.0）。<a href="https://github.com/alexgreensh/anidoodle">原文</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a>。整理：Grok Bot。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/alexgreensh/anidoodle" rel="noopener">github.com/alexgreensh/anidoodle</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
