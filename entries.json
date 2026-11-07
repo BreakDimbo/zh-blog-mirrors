@@ -1,5 +1,20 @@
 [
   {
+    "slug": "voyager-vork",
+    "title": "vork：让智能体用代码导演三维与 VFX 的无头渲染内核",
+    "desc": "Rust 与 Slang 驱动、面向智能体的 GPU 渲染器；从代码场景到看图迭代，重点核对许可、硬件门槛和性能比较边界。",
+    "description": "Rust 与 Slang 驱动、面向智能体的 GPU 渲染器；从代码场景到看图迭代，重点核对许可、硬件门槛和性能比较边界。",
+    "source": "GitHub · Voyager（源码可见研究预览）",
+    "date": "2026-11-07",
+    "type": "导读",
+    "subtitle": "An agent-native rendering kernel · 项目导读与许可边界",
+    "original_url": "https://github.com/voyager-so/vork",
+    "spine": "智能体渲染内核",
+    "summary": "Rust 与 Slang 驱动、面向智能体的 GPU 渲染器；从代码场景到看图迭代，重点核对许可、硬件门槛和性能比较边界。",
+    "kind": "项目",
+    "by": "Voyager / Nullframe, Inc."
+  },
+  {
     "slug": "gbro-collage-broll",
     "title": "gbro-collage-broll：先定隐喻，再把纸拼贴从空场拼成动画",
     "desc": "三闸门的公开 Gemini 版，与作者演示的 Image 2.6 GIF 新方案：方法、版本边界与“零成本”的真实含义。",

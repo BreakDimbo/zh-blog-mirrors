@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>vork：让智能体用代码导演三维与 VFX 的无头渲染内核</title><meta name="description" content="Rust 与 Slang 驱动、面向智能体的 GPU 渲染器；从代码场景到看图迭代，重点核对许可、硬件门槛和性能比较边界。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-07">2026.11.07</time></p>
+<h1 class="za-title">vork：让智能体用代码导演三维与 VFX 的无头渲染内核</h1>
+<p class="za-sub" lang="en" data-za-gen>An agent-native rendering kernel · 项目导读与许可边界</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · Voyager（源码可见研究预览）</span><span>收录 · 2026-11-07</span><span><a href="https://github.com/voyager-so/vork" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：Voyager / voyager-so/vork；版权：Nullframe, Inc. · <a href="https://github.com/voyager-so/vork">原文与仓库</a> · <a href="https://github.com/voyager-so/vork/blob/main/LICENSE">vork Preview License</a> · 核对：2026-11-07（SGT） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">vork 的想法不是给 AI 再造一个能点按钮的三维编辑器，而是把场景、材质、灯光和模拟交给代码：智能体写场景，渲染一张图，检查结果，再修改。它是 Voyager 的无头三维与 VFX 内核，采用 Rust 和 Slang，通过 Vulkan 或 Metal 使用 GPU。</p>
+<div class="notice"><strong>先看许可：</strong>这是研究预览阶段的源码可见软件，不是开源项目。当前版本可免费用于商业工作，但不能随意再分发修改版或架设供他人提交任务的托管渲染服务。本页仅作独立中文导读、使用少量短引，不镜像 README、不转载示例图和视频。</div>
+<h2>一、它解决什么问题</h2>
+<p>传统创作软件通常先设计供人操作的界面，再给智能体增加自动化入口。vork 反过来，让智能体直接生成 JSON 场景，或通过 Python / TypeScript SDK 描述镜头；在需要特殊效果时，再写 GPU 程序。常规镜头不必编写底层着色器，特殊镜头则可进入更深的光线与材质控制层。</p>
+<p>这条路线的价值是<strong>把“写代码—出图—看图—修正”缩短成一个循环</strong>，而不是宣称模型能一次生成最终画面。它也不是视频生成模型：模型负责描述与修改，图像由渲染程序计算。</p>
+<h2>二、公开示例说明了什么</h2>
+<ul><li><strong>百万鸟群：</strong>GPU 计算程序控制群体行为，镜头穿过鸟群；README 特别说明，模拟的百万只鸟并不拍翅，近景鸟与镜头另行编排。不能把数量直接等同于百万只完整骨骼动画。</li>
+<li><strong>实拍 VFX：</strong>把三维物件放入跟踪过的实拍镜头，以代理几何、遮挡与补光完成合成。跟踪求解与单视图浮雕都是估计，不是自动恢复完整真实场景。</li>
+<li><strong>黑洞：</strong>通过公开的光传播接口编写弯曲光路；作者明确说这是数值近似，不是精确相对论求解器。</li>
+<li><strong>资产导入：</strong>展示 glTF 资产、扫描模型及 Blender 场景转换。示例资产有 CC0、CC BY、CC BY-SA、Pexels 等不同条款，不随引擎统一许可。</li>
+<li><strong>水体：</strong>GPU 流体实验有有限网格与粒子预算，细小结构和双向刚体耦合等仍有限制，不应当作成熟模拟软件的通用替代品。</li></ul>
+<p>本页不转载实拍人物画面，也没有下载或观看演示视频。以上为对文档的核对，不是本站运行验证。</p>
+<h2>三、怎样理解工作流</h2>
+<p>作者建议从 <code>vork help</code> 开始，先做一个小场景、出低成本预览、检查图像，再精修镜头与灯光。查询某个功能时按主题或字段取帮助，避免一次塞入所有接口说明。</p>
+<table><thead><tr><th>档位</th><th>适用阶段</th><th>需要注意</th></tr></thead><tbody>
+<tr><td><code>std/previs</code></td><td>快速构图与镜头预演</td><td>灯光和阴影不同于交付档，速度不能当成最终画质的表现。</td></tr>
+<tr><td><code>std/draft</code> / <code>std/final</code></td><td>混合渲染草稿与默认交付</td><td>默认低采样加降噪；部分间接光被近似，室内可能变暗。</td></tr>
+<tr><td><code>std/path</code></td><td>需要更完整光传输的场景</td><td>可能更慢；仍有反弹、截断、采样和降噪限制，不是物理真值。</td></tr></tbody></table>
+<p><strong>提高采样数不能补回算法本身省略的光传播。</strong> 如果问题是室内反射或复杂玻璃，不要只堆采样，要换传输路线并重新看图。场景内容与渲染质量分离，才方便在同一份场景上比较。</p>
+<h2>四、性能数字必须连同条件一起读</h2>
+<p>README 的关键限定是 <q>not equal-quality speedups</q>：这些计时不是等画质加速。默认 final 的七场景影片比较，自报相对 EEVEE 为 1.14–2.32 倍；但渲染配置、采样、降噪和计时边界并不一致，Blender 基线还沿用先前测量。路径追踪的两个静帧例子反而比 Cycles 慢。</p>
+<p>鸟群影片的 Blender 数字主要由少量帧外推，<strong>不是完整影片实测</strong>；不能拿它当端到端同质量对比。初始化、着色器预热、传输与资产准备也可能不在影片计时里。README 给出的 skim 示例，初始化、预热与影片中位数合计约 8.45 分钟，仍不含资产准备和传输。</p>
+<p>更重要的是，基准文档承认 Blender 5.2.1 的相机准备辅助脚本当前失败，历史比较暂时无法独立复现；现有 runner 的配置也不能原样重现部分历史表格。<strong>⚠️ 本站未跑基准，所有速度数据均为作者报告，不构成实测结论。</strong></p>
+<h2>五、先核对电脑，再承诺镜头</h2>
+<ul><li><strong>Linux / Windows：</strong>支持带所需硬件光追功能的近期 NVIDIA GPU。AMD、Intel 和 CPU / 软件渲染不受支持；A100、H100、H200、B200、B300 等并不会因为“新”就自动满足要求。</li>
+<li><strong>Mac：</strong>Apple Silicon + Metal；随包 Slang 工具链要求 macOS 26，旧系统未经确认，Intel Mac 不支持。主程序能打印版本，不代表 Slang 工具链一定能运行。</li>
+<li><strong>冷启动：</strong>新 GPU 程序第一次可能编译数分钟，即使预先运行 setup，也不保证所有镜头即时出图。</li>
+<li><strong>当前限制：</strong>没有体积雾、烟等参与介质；大型场景与密集透明物体可能失败，降分辨率不一定解决。细线、毛发、散景和稀疏高光在低采样下可能失真。</li></ul>
+<p>若准备试用，先从官方 Releases 的完整平台包与校验说明开始，保留二进制旁的运行库、SDK 和许可文本。Python 和 TypeScript SDK 从本地安装目录安装；npm 上名为 <code>vork</code> 的包与本项目无关。本文没有安装、执行安装脚本或提交渲染任务，也未单独确认当前 Release 下载资产可用性。</p>
+<h2>六、许可边界：免费使用，不等于开源</h2>
+<p>2026-11-07 实时读取根目录 LICENSE，标题为 <strong>vork Preview License</strong>，版权人为 Nullframe, Inc.。原文直接写明 <q>It is not open source.</q> 当前版本允许公司内部使用、商业工作、由智能体代操作、为自用修改，以及附完整许可和声明分享未修改副本。</p>
+<ul><li><strong>允许：</strong>为自己的组织渲染，向客户交付完成的媒体作品。许可方不主张用户所创场景、代码和媒体的权利；输入资产仍有自己的条款。</li>
+<li><strong>需要事先书面许可：</strong>出售、出租、重新许可或分许可软件；分发修改版本；提供让外部用户提交场景、代码或任务的托管/代管渲染服务。</li>
+<li><strong>版本范围：</strong>当前许可只覆盖随附版本，后续版本可改为其他条款或收费；不会因此撤回已获得版本的原许可权利。</li>
+<li><strong>独立组件：</strong>根许可说明可选 Blender bridge 单独适用 GPL-3.0-or-later，并不据此让整个渲染器变成 GPL 软件。本站未单独审核桥接目录的许可文件。</li></ul>
+<p>许可正文请看 <a href="https://github.com/voyager-so/vork/blob/main/LICENSE">上游 LICENSE</a>；这不是法律意见。因为许可有实质性再分发限制，本站采用导读与短引，不制作公开全文中译附录。</p>
+<h2>七、适合谁</h2>
+<p>如果你希望智能体用代码反复调整三维镜头、需要比 GUI 自动化更直接的渲染接口，并且具备受支持 GPU，vork 值得作为实验工具研究。如果你需要成熟的体积效果、稳定复杂透明场景、全平台兼容，或准备经营公共渲染服务，先不要把研究预览当成生产承诺。</p>
+<p>最有价值的不是“替代 Blender”这个口号，而是把智能体能写的程序，与可检查的渲染结果连起来；真正的交付能力仍要逐镜验证。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>独立中文导读，不是官方文档翻译。资料：README、LICENSE、docs/help/limits.md、docs/help/build.md、benchmarks/README.md。未转载媒体。</p><a href="../">返回录像带书店</a></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/voyager-so/vork" rel="noopener">github.com/voyager-so/vork</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
