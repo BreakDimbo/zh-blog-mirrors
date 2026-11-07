@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>先做分镜动图，再让视频模型重做：Feicai 的预演思路</title><meta name="description" content="已核对完整长文：动态分镜、逐镜参考帧生成与局部返修的分节导读；非全文转载。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-07">2026.11.07</time></p>
+<h1 class="za-title">先做分镜动图，再让视频模型重做：Feicai 的预演思路</h1>
+<p class="za-sub" lang="en" data-za-gen>动态分镜 → 拆镜参考帧 → 生成与返修 · 完整长文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · X · Feicai @zhu185178</span><span>收录 · 2026-11-07</span><span><a href="https://x.com/zhu185178/status/2119018318912749952" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">署名：Feicai（@zhu185178）。<a href="https://x.com/zhu185178/status/2119018318912749952">原帖 ↗</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a>。整理：Grok Bot。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p>动态分镜能把走位、机位和节奏变成看得见的参考，但也会把自身错误带进下一轮生成。Feicai 的三十秒追车实验，最有价值的部分恰是这些返修记录。</p><h2>核心不是直接视频转视频</h2><p>Feicai 的长文描述了一条约 30 秒的霓虹街头追车片制作路径：先由图像模型产生动作画面，组成动态分镜，再让 Grok Bot 编排视频生成。需要特别区分：作者上传的是整条参考片，但他记录的实际执行方式是拆成 12 镜、提取各镜首中尾参考画面，再逐镜生成并拼接；不能把它简写为视频模型直接读取整条视频。</p><h2>先把镜头与车辆关系排清</h2><p>作者最初只给 Codex 一个街头竞速的想法。它安排六段、每段约五秒、各含两个机位，形成十二镜：银灰改装车与红色超跑追赶、并行、超车、过弯及冲刺。动图在这里承担预演任务，先检验车的位置、朝向、出入画与切镜时机，而不只是统一画风。</p><h2>新增动作帧与补帧是两回事</h2><p>据作者的生成记录，最早有 192 张原始画面，经补帧得到 600 帧，以 20 fps 播放 30 秒。随后模型新增 192 张，原始画面共 384 张，再补至 1,500 帧、50 fps。新增画面依赖生成模型，插帧只是填充过渡；轮毂、水花、车身仍可能拉扯或重影。补帧应限于单镜内部，不跨机位切点。这些数字均为作者自报，本次未检查素材。</p><h2>参考版本必须明确</h2><p>作者曾保存 20 fps 原版与 50 fps 补帧版，最后交给 Grok Bot 的参考又是一份 1280×720、30 fps、30 秒文件。不能把对照画面里的版本当成最终实际输入。作者要求 Bot 在执行前确认文件身份、时长、分辨率与帧率；导出后还要完整播放、完整解码检查，而非只看文件头。</p><h2>按实际切点组织生成</h2><p>生成阶段要保留镜头顺序、机位、运镜、超车节奏，以及主车灯组、底盘光与拉花、红车外观和朝向。十二镜并非平均切分，实际有两秒、两点五秒和三秒镜头。较长素材裁短后，真正用到的末帧可能不再是生成时约束的尾帧，所以检查必须面向最终选段。作者称完整检查版以 720p、30 fps 硬切拼接，没有另做调色、锐化或补帧。</p><h2>最重要的反例：错误参考会被继承</h2><p>检查版出现红车出画不完整、疑似第三辆车、灯组变形与树木突变。作者后来只替换六个问题镜头，其余保留。最后一镜的红车朝向错误，第一次沿用原参考返修仍失败；回查才发现参考本身就错了。第二次先从前镜取得正确正面参照、修正参考画面，再生成，才改善方向。这说明动图参考不是自动纠错器。</p><h2>换过素材仍不等于验收通过</h2><p>局部替换后的版本仍有三处未达作者连续性要求：5–8 秒拉花中途出现，23–25 秒车头与灯组变化，25–28 秒树木平移而缺乏合理视差。其中灯组曾在抽帧检查中被判正常，完整播放才暴露问题。结论应是返修更容易定位，不是已经一发成片。</p><h2>工具可以换，效果不能先承诺</h2><p>作者提出可转用即梦网页 Agent 模式，或由 Codex / Claude Code 按官方 CLI 文档组织 Seedance 任务；实际可用模型、参考输入及账号权限须当场确认。对 Seedance 的偏好并非同条件比较结果。作者认为动态分镜比自己搭白模更方便，但这只是其技术观点，不适用于所有场景。⚠️ 本站未运行任何生成流程，未核实模型版本或当前产品功能。</p><h2>编辑建议与成本边界</h2><p>可借鉴的是先核对输入版本、把动作关系前置、按实际镜头生成、用时间码局部返修，再完整播放验收。是否减少费用和重抽，需要记录同任务的调用次数、失败率及总成本。早期帖子将成本概括为使用 Codex 订阅额度；这不等于没有订阅、额度、计算或时间成本，也不包含后续视频生成的普遍报价。</p><h2>来源与版权</h2><p>正文已于 2026-11-07 重新通过 X 工具取得。关键是明确请求 article 字段，本次返回 article.plain_text；此前只收到标题的缺口已解除。本文为独立中文分节导读与分析，不是逐字全文转载；未确认开放许可，不复制原文提示词或配图。两条作者演示仅外链，未观看、下载或复用视频，也未下载音频或真人照片。</p><h2>作者演示与相关阅读</h2><ul><li><a href="https://x.com/zhu185178/status/2118464916260782588">原版动图演示（仅外链）</a></li><li><a href="https://x.com/zhu185178/status/2118667792509776171">后续重生成说明（仅外链）</a></li><li><a href="../miramusic-gpt-image-2-6-sphere/">MiraMusic 图像序列动画</a></li><li><a href="../eianlu-claude-codex-seedance-ai-video/">Eian 成片工作流</a></li></ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/zhu185178/status/2119018318912749952" rel="noopener">x.com/zhu185178/status/2119018318912749952</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

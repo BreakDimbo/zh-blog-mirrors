@@ -1,5 +1,20 @@
 [
   {
+    "slug": "feicai-animatic-video-reference",
+    "title": "先做分镜动图，再让视频模型重做：Feicai 的预演思路",
+    "desc": "已核对 Feicai 完整长文：图像生成动态分镜→Grok Bot 拆十二镜提取参考帧→逐镜生成→局部返修。完整播放仍有三处残留问题；效果、成本及帧数为作者自述，未实测。独立详细导读，非全文转载。",
+    "description": "动态分镜如何进入逐镜生成与局部返修：完整长文分节导读。",
+    "source": "X · Feicai @zhu185178",
+    "date": "2026-11-07",
+    "type": "导读",
+    "subtitle": "动态分镜 → 拆镜参考帧 → 生成与返修 · 完整长文导读",
+    "original_url": "https://x.com/zhu185178/status/2119018318912749952",
+    "spine": "分镜动图参考",
+    "summary": "参考会继承错误：十二镜追车片的动态分镜与返修记录",
+    "kind": "方法",
+    "by": "Feicai"
+  },
+  {
     "slug": "alexgreensh-anidoodle",
     "title": "anidoodle：把手绘、动画和配乐写成可重复运行的代码",
     "desc": "代码绘制插画、逐笔动画、互动网页和配乐；Apache-2.0 导读与全文中文 README，能力与成本为作者自述，未实测。",
