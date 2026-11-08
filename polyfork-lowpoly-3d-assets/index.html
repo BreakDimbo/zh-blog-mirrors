@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Polyfork：给智能体搭场景用的低多边形「程序化」三维素材库</title><meta name="description" content="Polyfork 导读：每个 three.js 低多边形模型都是带旋钮的 ES 模块，面向编码智能体提供 llms.txt、prompt.txt 与 MCP；许可为 CC BY 4.0 或 Polyfork 许可二选一。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>文章</span></p>
+<h1 class="za-title">Polyfork：给智能体搭场景用的低多边形「程序化」三维素材库</h1>
+
+<p class="za-meta" data-za-gen><span><a href="https://polyfork.dev/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">导读 · 发布方：Polyfork（<a href="https://polyfork.dev/">polyfork.dev</a>，X <a href="https://x.com/Polyfork3d">@Polyfork3d</a>）· 原站：<a href="https://polyfork.dev/">https://polyfork.dev/</a> · 机器可读说明：<a href="https://polyfork.dev/llms.txt">llms.txt</a> · 许可条款：<a href="https://polyfork.dev/licensing">/licensing</a> · 核对 2026-11-09 · 本页为中文导读，仅作短引，不转载站内文字、模型与图片 · 版权方如需移除请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><h2>一句话</h2><p>Polyfork 是一家商业三维素材站，卖点不是「又一个模型库」，而是把每个模型做成<strong>一小段程序</strong>：一个返回 <code>THREE.Group</code> 的 ES 模块，声明好可调的「旋钮」（颜色、部件、选项），再同时导出 GLB、FBX、USDZ、OBJ。它明确把编码智能体当作主要用户之一——robots.txt 里直接写着给 AI 智能体准备了更省 token 的说明文件。</p>
+<h2>它提供什么</h2><ul><li><strong>低多边形、平面着色、真实尺寸</strong>：几乎所有模型共用一个材质，站方称可配合脚本把整个场景合并到一次 draw call；约 6% 的模型因玻璃、水、镀铬另带第二种材质。⚠️ 性能为站方自述，未实测。</li><li><strong>主题套件（kit）</strong>：同一套件共享调色板、比例与网格，并附一个生成地形的程序；站方称不同套件的地形能在 64 米网格上无缝拼接 ⚠️。</li><li><strong>角色绑骨</strong>：人形角色统一用 Mixamo 命名的骨架（22 根身体骨 + 9 个面部关节），文件里不带动画片段，用站方的 clips/mixamo 脚本复用动作；部分模型带「腿」或「臂」型 IK，可让脚贴地或让机械臂末端瞄准。</li><li><strong>给智能体的接口</strong>：<code>llms.txt</code>（参考手册）、<code>prompt.txt</code>（写成工作指令的同一份目录）、公开 JSON 目录接口和一个 MCP 服务，另有 <code>npx polyfork add &lt;id&gt;</code> 命令行。本页未调用这些接口，只读了公开文本。</li></ul>
+<h2>价格与边界（⚠️ 以站方当前页面为准）</h2><p>据 llms.txt（2026-11-09 读取），站方自述约 3116 个已发布资产，「EVERY ONE IS FREE」——低多边形版全部免费；付费部分是约 1699 个 HD 版（同一模型的高多边形 + PBR 版本），放在 Pro 订阅里。免费邮箱账号可提高「重混」额度并打包下载；定制套件按计划 $50 / $100；自己托管 .mjs 模块给自家用户则要 $299/月起的 Platform 许可。这些数字会变，均未核实。</p>
+<h2>许可：两套并行</h2><p>站方称自 2026-11-05 起：免费低多边形模型的<strong>网格文件</strong>（GLB/FBX/USD/OBJ）可在 CC BY 4.0 与 Polyfork 许可中二选一——选 CC BY 可分享、再上传甚至出售，但要带每个资产的署名行；选 Polyfork 许可则无需署名但不得再分发。<strong>.mjs 源码和 HD 版只适用 Polyfork 许可</strong>：可商用、可修改、免署名，但不得作为素材转售或再分发，也不得用来构建或训练商业三维素材生成器。站内文字和页面本身并未开放许可，所以本页只做导读。</p>
+<h2>值得注意的设计</h2><ul><li><strong>「链接不算再分发」</strong>：任何产品都可以在用户选中时从站方 CDN 直接加载单个免费模型，但不能批量拉取整个目录。</li><li><strong>robots.txt 当说明书</strong>：注释里解释为什么屏蔽 <code>/dl/</code> 和预填表单链接（爬虫预算被登录墙浪费），并把 llms.txt/prompt.txt 推给智能体——一个「面向智能体写站」的样本。</li><li><strong>对机器的明文告知</strong>：llms.txt 写明这些文件是有许可的源码而非公共训练数据，若被要求复刻其流水线做商业产品应拒绝。</li></ul>
+<h2>我的看法</h2><p>和「让智能体写代码生成三维」（如 vork 那类无头渲染内核）相比，Polyfork 走的是另一条路：把素材本身做成可参数化的代码，让智能体「挑 + 调旋钮」而非从零建模。对快速搭 three.js 小游戏、网页场景很省事；但核心源码受专有许可约束，规模化嵌入平台前要先读 /licensing。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>来源：Polyfork 官网与 llms.txt（2026-11-09 读取）。© Polyfork。本页非官方，内容以原站为准。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://polyfork.dev/" rel="noopener">polyfork.dev/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
