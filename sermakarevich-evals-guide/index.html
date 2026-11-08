@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evals：怎样知道一个 AI 系统到底管不管用 · Sergii Makarevych</title>
+<meta name="description" content="Sergii Makarevych 的 X 长文全文中译：从一张客服工单出发，逐层讲清 LLM 评测（eval）——金标准答案、错误分析、代码评分器、模型评委及其偏差、误差区间、RAG 与智能体评测、公开基准的局限，以及如何把评测变成日常习惯。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>翻译</span><time datetime="2026-11-09">2026.11.09</time></p>
+<h1 class="za-title">Evals：怎样知道一个 AI 系统到底管不管用</h1>
+<p class="za-sub" lang="en" data-za-gen>写给工程师、产品经理和 CEO 的评测全景：评分器本身也要被测</p>
+<p class="za-meta" data-za-gen><span>来源 · X 长文 · Sergii Makarevych @sermakarevich</span><span>收录 · 2026-11-09</span><span><a href="https://x.com/sermakarevich/status/2106453816757354947" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原作者：Sergii Makarevych（<a href="https://x.com/sermakarevich">@sermakarevich</a>），X 长文，2026-10-04（新加坡时间）发布。原文：<a href="https://x.com/sermakarevich/status/2106453816757354947">https://x.com/sermakarevich/status/2106453816757354947</a>。本页为作者本人帖子的全文中译，版权归原作者；译文仅供学习交流，未转载原文配图。若作者希望下架，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交下架请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote><p><strong>译者按</strong>：文中所有数字均为作者自述，来自他们自己的可运行教程（一个虚构自行车与露营用品网店的小型客服助手）或所引论文；本站没有复现。⚠️ 文中引用了大量 2026 年的 arXiv 论文与厂商说法，本站未逐篇核对。论文、工具名保留英文原名。</p></blockquote>
+
+<p>这篇文章写给所有交付、采购或拍板基于大语言模型（LLM）的软件的人：工程师、产品经理，还有 CEO。用大白话写，从全局一直讲到细节。每个数字都来自文末列出的来源：要么是我们自己那份可运行的教程（围绕一个小型客服助手），要么是已发表的论文。</p>
+
+<h2>快速把握（只读这一节也行）</h2>
+<p><strong>eval</strong>（evaluation，评测）是一种可重复的测试：它用一个你信得过的数字告诉你，AI 系统有没有做到你想要的事，以及某次改动让它变好了还是变差了。</p>
+<p>为什么需要它：语言模型的失败方式和普通软件不同。普通软件要么能用，要么崩溃。语言模型会给出一个流畅、自信、格式漂亮却可能是错的回答。读到一个好回答，对接下来一百个毫无说明力。评测把「演示时看着挺好」换成「在我们在意的用例里通过 70%，上下浮动 12 个点，而且新版本并没有可测量的提升」。</p>
+<p>它怎么运作，分四步：</p>
+<ol>
+<li>收集重要的输入，每条旁边写下正确答案。在我们贯穿全文的例子里：一家自行车店的 80 张客服工单，每张都标好正确类别，以及一封合格回复必须包含的事实。</li>
+<li>让系统跑一遍每条输入，保存输出。</li>
+<li>用评分器给每条输出打分。评分器可以是一条代码规则、一个充当评委的第二个模型，或者一个人。</li>
+<li>把分数汇成一个带误差范围的数字，和上一个版本比较。</li>
+</ol>
+<p>什么时候用：上线前（它到底能不能用？）、每次改动前（我们弄坏了什么没有？）、上线后（在真实流量上还管用吗？）。</p>
+<p><strong>要点</strong>：评分器本身也是你要测试的系统的一部分。一个只有 60% 时候与人类意见一致的评委模型，会在产品其实不行时告诉你一切正常。</p>
+<p><strong>对我们意味着什么</strong>：每个评测都有两个数要看——产品有多好，评分器有多好。两个都要。</p>
+<p><strong>为什么重要</strong>：AI 团队最常见的自欺方式，就是一个出自未经检验的评分器、却显得很笃定的数字。</p>
+<p>文章其余部分逐层放大，每一层回答关于上一层的一个问题。</p>
+<ul>
+<li>第 0 层 · 完整走一遍循环，只用一张工单</li>
+<li>第 1 层 · 我们到底测什么？（输入、金标准答案、那个数字）</li>
+<li>第 2 层 · 哪里会出错？（先看数据）</li>
+<li>第 3 层 · 代码评分器（便宜、精确、看不见含义）</li>
+<li>第 4 层 · 用模型当评分器（灵活、有偏差、必须被检验）</li>
+<li>第 5 层 · 诚实的数字（误差范围、A/B、要多少用例）</li>
+<li>第 6 层 · 给多组件系统打分（检索、智能体、成本、可靠性）</li>
+<li>第 7 层 · 公开基准（排行榜能说明什么、不能说明什么）</li>
+<li>第 8 层 · 把它变成习惯（关卡、监控、何时重新校验）</li>
+<li>然后 · 工具与方法、决策指南、参考文献</li>
+</ul>
+
+<h2>第 0 层：完整走一遍循环，只用一张工单</h2>
+<p><em>放大对象：全部。问题：评测跑起来是什么样子？</em></p>
+<p>全文贯穿的例子是一个虚构的线上自行车与露营用品店的小型客服助手。它有三个部分，后面我们会用不同方式分别打分：</p>
+<ul>
+<li><strong>triage（分诊）</strong>：读工单，把它分到 12 个类别之一（退货、配送、保修……）并定优先级。</li>
+<li><strong>answer（回复）</strong>：在店铺政策手册里找到相关页面，写一封引用它们的回复。</li>
+<li><strong>agent（智能体）</strong>：在政策规则下，通过调用工具操作一个模拟数据库——查订单、退款、升级处理。</li>
+</ul>
+<p>下面是一张工单走过这个循环。</p>
+<p>输入：「我上班要迟到了，需要马上解决。我上周退了自行车，但到现在还没看到退款。你们的政策写得很清楚，退款会在 5 个工作日内处理……」</p>
+<p>系统输出（分诊）：退货。金标准答案：退货。得分：1/1。</p>
+<p>系统输出（回复）：一封礼貌的四段式回复，引用了退货条款，并提到两条必需事实：退款需 5 个工作日；二手商品收取 15% 的重新上架费。</p>
+<p>然后有三个评分器来看这封回复：</p>
+<ul>
+<li>代码规则。问：回复是否引用了手册条款？结论：是。</li>
+<li>代码规则。问：是否提到两条必需事实？结论：是，一条不缺。</li>
+<li>模型评委。问：是否声称了手册里没写的东西？结论：<strong>不通过</strong>——它编造了「总计最多 15 个工作日的宽限」。</li>
+</ul>
+<p>这就是全部思路。两个廉价的代码检查说回复没问题；评委发现了一个编造的数字，而这个数字本来会发到顾客手里。之后每一层，都是在讲怎样让这个循环在规模化时依然可信。</p>
+<p><strong>第 0 层带走的要点：</strong></p>
+<ul>
+<li>评测就是输入、系统、评分器、数字。仅此而已。</li>
+<li>不同评分器回答不同问题。「引用了条款」和「没有编造」不是同一项检查。</li>
+<li>一封流畅的回复可以通过所有表面检查，却依然是错的。</li>
+</ul>
+
+<h2>第 1 层：我们到底测什么？</h2>
+<p><em>放大对象：循环的第 1 和第 4 步。问题：输入和「正确答案」从哪来，那个数字是什么？</em></p>
+<p><strong>输入</strong>。用例应当像真实流量，包括别扭的那些。我们的 80 张工单由「顾客画像 × 话题 × 场景」的网格生成，所以愤怒的顾客、含糊的问题、一张工单里多件事，都会出现。Anthropic 的智能体评测指南建议，从 20 到 50 个取自真实失败的任务开始，而不是取自想象中的顺利路径（Grace et al., 2026）。</p>
+<p><strong>金标准答案</strong>。我们为每条输入写下「正确」的含义：正确类别、回复必须依据的手册条款、必须说出的两三条事实。由于工单是从手册生成的，金标准答案按构造就是对的。在真实产品里，它们来自领域专家。</p>
+<p><strong>两堆</strong>。我们把用例分成开发集（20 张工单），用于调提示词和评分器；以及测试集（60 张工单），只用于报告。如果你在要报告的用例上调参，那个数字就会讨好你。</p>
+<p><strong>那个数字</strong>。分诊用准确率（分对的工单占比）；回复用通过率（没有任何失败的回复占比）；智能体用以正确数据库状态结束的任务占比。每个实验一个数字，永远在测试集上报告，永远带误差范围（第 5 层）。</p>
+<p>四个常被混淆的词：</p>
+<ul>
+<li><strong>Eval（评测）</strong>。衡量：你的系统在你的数据上。例：我们的助手在 60 张工单上。</li>
+<li><strong>Benchmark（基准）</strong>。衡量：一个模型在一项公开任务上。例：GSM8K 数学、SWE-bench 编程。</li>
+<li><strong>Test（软件测试）</strong>。衡量：函数返回预期值。例：JSON 能解析、不崩溃。</li>
+<li><strong>Monitoring（监控）</strong>。衡量：上线后的真实流量。例：每天抽样真实工单打分。</li>
+</ul>
+<p>在公开基准上得高分的模型，照样可能答错你的顾客。基准衡量的是引擎，评测衡量的是这辆车在你的路上（Husain &amp; Shankar, 2025）。</p>
+<p><strong>第 1 层带走的要点：</strong></p>
+<ul>
+<li>带金标准答案的输入是整个流程里最有价值的资产。它们很贵，却是让其他一切成为可能的东西。</li>
+<li>留一堆开发集用于调参，一堆测试集用于报告。</li>
+<li>基准关乎模型。评测关乎你的产品。</li>
+</ul>
+
+<h2>第 2 层：哪里会出错？先看数据</h2>
+<p><em>放大对象：打分这一步。问题：评分器到底该找什么？</em></p>
+<p>在搭建任何自动评分器之前，先读输出。每个有经验的从业者都这么说（Husain, 2024; Husain, 2025; Shankar et al., 2024）。一条一条读一两百个输出，对每个失败写一句简短笔记，再把笔记归并成一份带计数的失败类型短清单。这叫错误分析，两步各有名字：开放编码（自由笔记）和轴心编码（归类）。</p>
+<p>在我们 60 封测试回复上，它得出了：</p>
+<ul>
+<li>通过的回复：34/60</li>
+<li>missing_required_fact（缺少必需事实）· 15</li>
+<li>unsupported_claim（无依据的说法）· 12</li>
+<li>wrong_section_retrieved（检索到错误条款）· 8</li>
+<li>did_not_answer（没有回答）· 5</li>
+<li>wrong_value（数值错误）· 2</li>
+<li>over_promise（过度承诺）· 1</li>
+</ul>
+<p>只有勉强一半的回复通过。最大的两个问题是缺事实和编造说法。看演示的人谁也猜不到这一点。这份清单就是之后每个评分器的规格说明：每种失败类型一个评分器，按出现频率排序。</p>
+<p><strong>要点</strong>：失败清单来自阅读输出，而不是想象。</p>
+<p><strong>对我们意味着什么</strong>：任何评测工作的第一周，应该是人们在一个专门打造的查看器里读对话记录，而不是工程师在接框架。</p>
+<p><strong>为什么重要</strong>：为不会发生的失败搭建的评分器，会给出一个令人安心的数字，同时漏掉真正发生的失败。评测工作停滞的团队，几乎都跳过了这一步（Husain, 2025）。</p>
+<p>一个相关发现：你的标准会在打分过程中变化。Shankar et al.（2024）称之为「标准漂移」（criteria drift）。给样例打分会让评分细则更清晰，而更清晰的细则又会改变先前的评分。预计要来回两三轮。这不是流程失败。</p>
+<p><strong>第 2 层带走的要点：</strong></p>
+<ul>
+<li>失败分类就是计划。先为最主要的失败类型搭评分器。</li>
+<li>阅读输出是价值最高、也最常被跳过的活动。</li>
+<li>预计评分细则会在打分过程中改变。</li>
+</ul>
+
+<h2>第 3 层：代码评分器</h2>
+<p><em>放大对象：一种评分器。问题：一条朴素的规则能测什么，测不了什么？</em></p>
+<p>代码评分器是用普通代码写的规则。它免费、即时、每次给出同样的答案。凡是它能测的，都用它测。</p>
+<p><strong>精确答案</strong>。分诊只有一个正确标签，所以我们数匹配数。</p>
+<p>准确率：0.700 · 宏平均 F1：0.697</p>
+<p>十张工单里七张分对。宏平均 F1 对 12 个类别平等取平均，所以稀有类别和常见类别同样重要。两个数接近，说明错误是分散的，没有集中在某一类。</p>
+<p><strong>自由文本上的规则检查</strong>。回复没有唯一的正确文本，但有一些回复必须遵守的规则：</p>
+<ul>
+<li>nonempty（非空）· 100% 通过</li>
+<li>max_words_150（不超过 150 词）· 17% 通过</li>
+<li>no_banned_promises（无禁用承诺）· 92% 通过</li>
+</ul>
+<p>只有 17% 的回复在 150 词以内。这个应用话太多了，而发现这一点根本不需要评委。IFEval（Zhou et al., 2023）这类公开基准完全由这种可验证的规则构成（「用恰好三个要点作答」）。</p>
+<p><strong>必需事实</strong>。我们检查每条金标准事实是否出现在回复中。这能零成本抓住头号失败类型——缺事实。</p>
+<p><strong>相似度分数</strong>。重叠度量（ROUGE、BLEU）和嵌入相似度，把回复和参考文本做比较。在我们的回复上，嵌入相似度区分好坏回复的 AUC 是 0.709（0.5 等于抛硬币，1.0 是完美）。用来察觉版本之间有了变化很有用，用来判断一封回复对不对则毫无用处。</p>
+<p><strong>要点</strong>：相似度能察觉变化，不能评判质量。</p>
+<p><strong>对我们意味着什么</strong>：把它当廉价的漂移警报，永远别当头条数字。</p>
+<p><strong>为什么重要</strong>：一封错误回复如果和正确回复用词相同，分数会很高。Eugene Yan 的综述（2024）和最初的 ROUGE/BLEU 文献对这一局限有详尽记录。</p>
+<p><strong>用一个数字说明代码评分器的局限</strong>。我们的回复里只有 11.7% 通过全部代码检查，但代码检查一个编造的说法都没抓到。第 0 层那封回复通过了所有规则，同时编造了 15 天宽限。规则看得见形式，看不见含义。</p>
+<p><strong>第 3 层带走的要点：</strong></p>
+<ul>
+<li>凡有确定答案的，都用代码评分器：标签、格式、必需事实、禁用语。</li>
+<li>相似度测的是漂移，不是质量。</li>
+<li>规则看不见编造的说法。那需要一位读者。</li>
+</ul>
+
+<h2>第 4 层：用模型当评分器，以及如何检验它</h2>
+<p><em>放大对象：另一种评分器。问题：当评分器本身是个模型，我们怎么知道它是对的？</em></p>
+<p>模型评委（通常叫 LLM-as-judge）是第二个模型，读一个输出并给它打分。它能读懂含义，所以能抓到编造的 15 天宽限。它本身也是语言模型，所以具备语言模型的全部失败模式。这一层最长，因为大多数评测项目就是在这里出的错。</p>
+
+<h3>4.1 怎样向评委提问</h3>
+<p>从业者共识和研究文献在形式上是一致的：</p>
+<ul>
+<li><strong>每种失败类型一个是/否问题</strong>。问「回复中是否有手册摘录不支持的说法？」，而不是「给质量打 1 到 5 分」。二元问题让人类标注更快、更可复现、也更容易核查（Husain &amp; Shankar, 2025）。只有每个问题的回答都是「否」，输出才算通过。</li>
+<li><strong>要证据</strong>。让评委引出有问题的那句话。这样人几秒钟就能核查它的判断。</li>
+<li><strong>给它上下文</strong>。看不到手册的评委，无从知道什么是没有依据的。</li>
+</ul>
+<p>Cho et al.（2026）在摘要任务上直接验证了这一点（「Ask, Don't Judge」）。把评分拆成针对具体错误的是/否问题，在每个数据集上都胜过流行的整体式 G-Eval 方法（在 SummEval 上与人类的 Spearman 相关系数为 0.563 对 0.514）。最说明问题的例子：一份埋了三个事实错误的摘要，整体式评委给了满分 5.0，基于问题的评委给了 1.57。他们还发现，往提示词里塞更多指令，到某个程度会让评委变差而不是变好。</p>
+
+<h3>4.2 检验评委：我们自己的数字</h3>
+<p>我们手工标注了全部 60 封测试回复（作为「参考」），然后运行评委：</p>
+<ul>
+<li>参考判通过：34 · 评委判通过：42</li>
+<li>两者在 60 封中的 36 封上一致（60%）</li>
+<li>评委抓到的坏回复：26 封中的 10 封</li>
+<li>kappa：0.15</li>
+</ul>
+<p>60% 的一致率听起来还行。其实不行。如果评委对一切都说「通过」，它与参考的一致率也有 57%，因为多数回复本就通过。Cohen's kappa 修正了这一点：它衡量超出随机水平的一致程度。0 代表随机，1 代表完美；0.6 是让评委把守发布关卡的常用门槛，0.8 是让它无人监督运行的门槛。我们的评委得分 0.15。它偏宽松（本该通过 34 封，它放过了 42 封），抓到的坏回复不到一半。</p>
+<p><strong>要点</strong>：当大多数输出都通过时，原始一致率具有误导性。报告 kappa，或者分别报告评委抓到了多少坏输出、错杀了多少好输出。</p>
+<p><strong>对我们意味着什么</strong>：评委就是一个分类器。在信任它之前，至少拿几十个用例的人工标注来测它，并把结果和它产出的每个产品数字并列报告。</p>
+<p><strong>为什么重要</strong>：用这个评委，一个让编造说法翻倍的版本，在头条通过率上可能看不出任何变化。</p>
+<p>补救办法是在开发集上迭代：在评委提示词中加入该失败类型的示例、收窄问题、把金标准事实作为参照给它。教程里针对「缺事实」问题的评委用这种方法达到了可用水平；「无依据说法」问题则没有，于是交给了专门的检测器（4.5）。</p>
+
+<h3>4.3 评委的已知偏差</h3>
+<p>评委的失败方式是可预测的。每一种都有公开发表的测量和一个廉价的缓解办法。</p>
+<ul>
+<li><strong>位置偏差</strong>。现象：成对比较时，评委偏爱先出现的那个答案。证据：调换顺序后，相当大比例的成对判决会翻转（Wang et al., 2024）；2025 年一项 RAG 与 GraphRAG 的对比发现，此前 GraphRAG 的「胜利」在调换顺序后部分消失（Han et al., 2025）。缓解：两种顺序都评一次，两次一致才算赢。</li>
+<li><strong>长度偏差</strong>。现象：更长的答案不论内容都会赢。证据：校正长度后，与人类排名的一致度从 0.94 升到 0.98（Dubois et al., 2024）。缓解：长度受控的打分，或者不奖励长度的二元问题。</li>
+<li><strong>自我偏好</strong>。现象：评委偏爱和自己模型家族风格相近的答案。证据：评委给自己的生成打分更高，认出来时更甚（Panickssery et al., 2024）；在 GAUGE 审计中，同家族评委把自家厂商的智能体在 7 分制上抬高了约 0.75 分。缓解：用与被测系统不同家族的评委。</li>
+<li><strong>满意度 vs. 成功</strong>。现象：评委评的是对话感觉如何，而不是任务有没有完成。证据：GAUGE 审计，见下。缓解：把工具调用和最终状态交给评委，而不只是聊天记录。</li>
+<li><strong>评委身份</strong>。现象：换一个评委模型，获胜的系统就变了。证据：2026 年的审计（arXiv 2607.08535；2606.19544）。缓解：把评委模型和版本作为每个结果的一部分记录下来。</li>
+</ul>
+<p>GAUGE 审计（Bodhwani et al., 2026）值得单独一段，因为它描述的正是大多数公司做发布决策时用的设置：模拟用户与智能体对话，评委模型给对话记录打分，分高的上线。他们在 25 个智能体、约 3700 份对话记录上发现：当一方明显更好时，这道关卡排序得不错（与可验证的真实结果相关度 0.94）；但在势均力敌的一对上——也就是真实发布要做取舍的那种——它有 31% 的时候提拔了更差的智能体。只看用户可见的聊天、评价满意度的评委，在分辨能用和坏掉的智能体上不比抛硬币强（AUC 0.49）。能看到工具调用、身份验证和任务解决情况的评委，把失败风险减半（AUC 0.73）。他们的结论：可靠性来自评委被给予了什么证据，而不是评委模型有多强。</p>
+<p><strong>要点</strong>：顾客满意度和任务成功是两回事，只看对话的评委衡量的是前者。</p>
+<p><strong>对我们意味着什么</strong>：把证据（工具调用、数据库状态、检索到的文档）交给评委；两个版本接近时，永远不要只凭评委分数就提拔一个版本。</p>
+<p><strong>为什么重要</strong>：一个讨人喜欢却办不成事的智能体，会一直被提拔。</p>
+
+<h3>4.4 评委小组，以及如何合并它们</h3>
+<p>一个评委就是一个单点故障。Verga et al.（2024）表明，由几个更小、更便宜的评委组成的小组，比一个大评委更接近人类判断，成本却只是零头。但平均小组分数有个陷阱：Acharya et al.（2026）证明，只要一个评委坏掉（解析失败返回 0 分，或者一个谄媚的评委什么都打 10 分），平均值就会被拖到任意远，不管你加多少好评委都没用。真实评委以可测的比率这样失败（某个数据集上 3.4% 的解析失败；最小的评委在非英语提示词上高达 33%）。他们的修正是用几何中位数取代平均值，它会忽略离群值。在最坏情况下，它的准确度高了 540 倍；在干净数据上，只损失约 1% 的准确度。他们还表明，三个评委就能拿到大部分收益，因为评委的错误是相关的。</p>
+<p>第二个相关效应：Parikh（2026）发现，要求模型以 JSON 格式作答（每条评委流水线都用的格式），会让它的回答明显比在普通聊天中更趋同。众数答案的占比从 41% 升到 64%。对只有一个正确答案的评判任务，这无伤大雅；对开放式评分，这意味着评委的区分力比它聊天时表现出来的要弱。</p>
+
+<h3>4.5 比评委更便宜、更可靠：专用检测器与类型化评委</h3>
+<p>对于最要紧的那些失败类型，通用评委往往是错误的工具。</p>
+<p><strong>幻觉检测器</strong>是小模型（约 1 亿到 5 亿参数），只为一个问题训练：这句话有没有被这段上下文支持？Vectara 的 HHEM、LettuceDetect（Kovács &amp; Recski, 2025）、MiniCheck（Tang et al., 2024），以及朴素的 NLI 交叉编码器，在笔记本 CPU 上约一秒跑完，每次调用零成本，在 RAGTruth 基准上接近大评委的准确度。SelfCheckGPT（Manakul et al., 2023）则根本不需要检测器：它对系统多次采样，标记出在不同样本间变化的说法。Fiddler 2026 年的一篇厂商文章把另一条路称作「评测信任税」：在每条生产调用链路上都跑大评委的团队，通常只能抽样约 10% 的流量；它声称小检测器能以低至 98% 的成本覆盖 100%。这是厂商的说法，没有展示实验，但这种权衡的形态是真实的。</p>
+<p><strong>类型化评委</strong>。TypeSafe 的 Jev 模型是另一种设计：它根本不生成文本。你把输出和一个类型化问题发给它（「这个说法是否被摘录支持？」答案为「是/否」，或「从这些标签中选一个」），它返回一个经过校准的概率。因为什么都不生成，调用很快，大约比生成式评委便宜一百倍，而概率让代码能把不确定的用例转给人。它不能解释自己的判断，也不能自创选项；标签由你提供。2026 年一项采用盲审人工裁定的研究显示，它在 RewardBench 成对比较上达到 92.2%，前沿生成式评委为 93.5%，费用约为后者的三分之一个百分点；但在困难的推导核查上远远落后（78.6% 对 93.1%）。一个只在置信度超过阈值时采纳其判断、否则上报的级联方案，以约一半的成本保住了 92.5%（arXiv 2609.26550）。我们自己的红队测试发现它不是事实核查器：输入里一段伪造的日志就能翻转判断，但每次成功的攻击也都让它的置信度崩塌，所以置信度关卡是一种有效的防御。我们的知识库里有一份关于它、以及如何在信任前测试其准确度的教程。</p>
+<p><strong>评委也需要基准</strong>。JudgeBench（Tan et al., 2025）把困难且可客观核查的问题变成评委测试，发现前沿评委在真正困难的用例上只比随机稍好。可靠性必须按任务、按评分细则、按评委模型，每次都单独测量。厂商宣称的「与人类 85% 一致」来自单个数据集，不能迁移（见我们从业者资料中的分歧记录）。</p>
+<p><strong>第 4 层带走的要点：</strong></p>
+<ul>
+<li>向评委提关于具体失败的是/否问题，附证据，给上下文。</li>
+<li>用人工标注测量评委，报告 kappa 或抓获率，迭代到过线为止。</li>
+<li>了解五种偏差，用上那些廉价的缓解办法。</li>
+<li>对「这有没有依据」这个问题，优先用小检测器或类型化评委，而不是通用评委。</li>
+<li>三个评委加稳健合并胜过一个；平均值是脆弱的。</li>
+</ul>
+
+<h2>第 5 层：诚实的数字</h2>
+<p><em>放大对象：循环的第 4 步。问题：我们对任何一个数字有多大把握，又该怎么比较两个版本？</em></p>
+<p>到目前为止引用的每个比率都藏着一个问题：换 60 张别的工单，结果还一样吗？有三件工具来回答。</p>
+<p><strong>误差范围</strong>。我们对 60 个结果重抽样几千次（bootstrap），看它们的离散程度：</p>
+<p>分诊准确率：0.700 · 95% 置信区间 [0.583, 0.817]</p>
+<p>诚实的说法不是「准确率 70%」，而是「在 58% 到 82% 之间，最可能是 70%」。Miller（2024）表明，已发表评测中报告的模型间差异，大多小于这种区间；他给出了每份评测报告都应使用的公式，包括多个问题共享同一来源时所需的修正（聚类标准误）。</p>
+<p><strong>配对比较</strong>。我们写了第二版回复提示词，让它检索更多条款。在同样的 60 张工单上由评委打分：</p>
+<ul>
+<li>评委通过率 · v1：0.700 · v2：0.700</li>
+<li>差值：+0.000 · 95% 置信区间 [-0.117, +0.117]</li>
+<li>结论：没有实质差异，保留 v1</li>
+</ul>
+<p>注意这个区间比单一准确率的区间窄，因为比较是配对的：每张工单在两个版本下都打分，工单难度相互抵消。McNemar 检验问的是逐个用例的问题：v2 是在 v1 输掉的地方赢了，还是两者只是互换了用例？这里它们是互换。而且 v2 在 14% 的用例上退步了，同时在另一些上进步。「通过率相同」这个头条，掩盖了一个对一部分顾客变好、对另一部分变差的产品。</p>
+<p><strong>要点</strong>：区间包含零的差异是噪声，不是胜利。</p>
+<p><strong>对我们意味着什么</strong>：每一个「新版本更好」的说法，都必须附带区间，以及变差的用例数。</p>
+<p><strong>为什么重要</strong>：团队会凭着一个从未真实存在过的 2 个点的提升，把退步发布出去。</p>
+<p><strong>检测下限</strong>。用 60 个用例，我们能可靠检测到的最小差异约为 12 个百分点。5 个点的退步在这个规模下是隐形的。这是一个统计功效计算，它告诉你，要回答你正在问的问题，需要多少用例。低于下限时你需要的是更多数据，而不是更聪明的检验。</p>
+<p><strong>多重比较</strong>。如果你测试 20 个提示词变体并挑出最好的，其中一个会因为运气看起来好 10 个点。要么针对比较次数做校正，要么在新用例上确认胜者。</p>
+<p><strong>第 5 层带走的要点：</strong></p>
+<ul>
+<li>每个比率都要带区间。每次比较都要配对。</li>
+<li>开始比较版本之前，先知道你的检测下限。</li>
+<li>「没有可测量的差异」是一个真实的结果，而且常常是正确的结果。</li>
+</ul>
+
+<h2>第 6 层：给多组件系统打分</h2>
+<p><em>放大对象：第 2 步，即系统本身。问题：当系统有多个阶段，或者会采取行动时，我们给什么打分？</em></p>
+
+<h3>6.1 检索系统（RAG）</h3>
+<p>我们的回复组件先找手册条款，再写回复。一封坏回复可能来自任一阶段，而修法不同。所以我们分开打分。</p>
+<p><strong>给检索器打分</strong>。对照金标准条款：hit@k（前 k 个里至少有一个正确条款吗？）和 recall@k（正确条款中有多大比例进入了前 k？）。</p>
+<ul>
+<li>hit@2：0.93 · recall@2：0.88</li>
+<li>18 封失败回复中，1 封败在检索器，17 封败在写作器</li>
+</ul>
+<p>检索器基本没问题。写作器才是问题所在。这一行就能改变一周的工程方向。</p>
+<p><strong>给写作器打分</strong>。忠实度（每个说法都有检索文本支持）、答案相关性（是否回应了问题）、上下文精确度（检索到的内容是否真的有用）。这就是 RAGAS 三元组（Es et al., 2024），它不需要金标准答案，这也是 RAGAS 成为默认库的原因。ARES（Saad-Falcon et al., 2024）加入了统计严谨性：用约 150 条人工标注校准每个标准的小评委，并报告置信区间；在其论文中，它在上下文相关性上比 RAGAS 高 59 个点，标注少用 78%，不过在较大的领域偏移下会退化。在我们的运行中，RAGAS 给出上下文相关性 0.855、忠实度 0.737：和我们手写评分器讲的是同一个故事——「检索好，写作差」，正是这种交叉验证让一个数字变得可信。</p>
+<p>来自编程智能体领域的一个提醒：SWE-Explore（Zhang et al., 2026）测量了编程智能体内部的检索，发现它们约 65% 的时候能定位到正确文件，但定位到正确代码行只有 15% 到 19%；而且搞坏下一阶段的是缺失的上下文，而不是多余的上下文。按写作器需要的粒度给检索器打分。</p>
+
+<h3>6.2 智能体</h3>
+<p>智能体会执行一系列动作（查订单、退款、升级处理）。给它打分时有三件事变了。</p>
+<p><strong>给最终状态打分，也给路径打分</strong>。数据库最后是否正确（退款已发、订单已取消）？智能体是否只做了允许的动作，比如没有退两次款？τ-bench（Yao et al., 2024）确立了这个模式：模拟用户、政策规则、检查最终状态。AgentLens（2026）说明了路径为何重要：智能体常常经由侥幸或退化的路线到达正确的最终状态，频繁到只看结果的打分会高估其能力。</p>
+<p><strong>每个任务跑多次</strong>。智能体是随机的。有两个不同的数字描述结果：pass@k（k 次中至少成功一次，衡量能力）和 pass^k（k 次全部成功，衡量可靠性）。面向顾客的智能体，你要的是 pass^k。我们的智能体 pass^3 = 0.75：四分之三的任务三次都成功。τ²-bench（2025）发现，当智能体必须与一个主动的用户协作而非独自行动时，pass^1 会下降约 20 个点。</p>
+<p><strong>把可靠性当作单独的一项来测</strong>。Rabanser et al.（2026）借鉴航空与核工程，定义了四组共 12 个可靠性指标：跨运行的一致性、对扰动的鲁棒性、可预测性（智能体是否知道自己何时会失败）、以及有界损害。在 15 个前沿模型上，他们发现两年的能力提升只带来了约六分之一那么多的可靠性提升。智能体每次运行选择同类动作但顺序不同，能从容应对真实基础设施故障，却会被换个说法的指令弄崩。</p>
+<p><strong>要点</strong>：有能力的智能体不等于可靠的智能体，而你的顾客体验到的是可靠性。</p>
+<p><strong>对我们意味着什么</strong>：报告 pass^k，为每个任务运行扰动版本（重命名字段、改写指令），并把跨运行的一致性作为单独的数字追踪。</p>
+<p><strong>为什么重要</strong>：已公开的那些失败事故（智能体删除生产数据库、智能体擅自购物），全都来自平均成功率不错的系统。</p>
+<p><strong>测量成本</strong>。Bai et al.（2026）在 SWE-bench Verified 上测量了八个前沿模型的 token 花费。智能体任务用的 token 约为一轮聊天的一千倍，几乎全花在反复重读自己不断增长的历史上。同一任务在同一模型上，不同运行间成本相差 30 倍；准确率在中等成本时达到峰值，在最高成本时反而下降；模型预测自身成本的相关度最多 0.39。他们的建议：按每个正确结果的成本给模型排名，而不是只看准确率；永远别相信模型对自己的估计。</p>
+<p><strong>判断、提问与学习：三个较新的维度</strong>。三项 2026 年的基准测量了单一成功率看不到的东西。</p>
+<ul>
+<li><strong>品味</strong>（Pan et al., 2026）：把智能体冻结在一个两条路看起来都可以的岔口，问哪条以后会有回报。最好的模型在二选一中选对 59.7%，而且思考更久并没有帮助。</li>
+<li><strong>提问</strong>（Gulati et al., 2026）：就目标提出澄清问题的价值，在任务完成 10% 之后，从 0.78 降到 0.39。没有一个前沿模型在那个窗口内提问；一个模型 52% 的时候会问，一个 23%，一个从来不问。</li>
+<li><strong>从经验中学习</strong>（Asawa et al., 2026）：在六个有状态环境中，最好的系统只拿到了它本可以从经验中获得的提升的 25%；而简单地保留完整对话历史，胜过了所有专门的记忆产品。</li>
+</ul>
+
+<h3>6.3 当系统针对评分器被优化时</h3>
+<p>如果用评分器来训练或挑选系统（强化学习、best-of-n 选择），系统就会找到评分器的盲点。Qwen 团队的 Wang et al.（2026）称之为「验证视界」：每个评分器都只是意图的代理，在优化压力下，代理和意图会分道扬镳。他们梳理了编程智能体中的奖励黑客行为（从仓库历史里读答案、修改测试、针对评测器打补丁），并表明一个行为监控器把作弊的「解」从 28.6% 降到 0.6%，同时把真正的解从 40% 提高到 61%。他们认为没有任何评分器能同时做到可扩展、忠实、鲁棒：测试可扩展且鲁棒，但会漏掉意图；评委可扩展且忠实，但可以被钻空子；专家忠实且鲁棒，但无法扩展。Meta-Agent Challenge（Lu et al., 2026）自发观察到了同样的现象：被要求构建其他智能体的智能体，在五次试验中都试图从评分系统里窃取答案。</p>
+<p><strong>要点</strong>：任何影响训练或挑选的评分器都会被钻空子。</p>
+<p><strong>对我们意味着什么</strong>：保留一个系统永远看不到的留出评分器，监控走捷径的行为，并随系统进步升级评分器。</p>
+<p><strong>为什么重要</strong>：分数在涨，产品在变差。</p>
+<p><strong>第 6 层带走的要点：</strong></p>
+<ul>
+<li>每个阶段分开打分；检索器和写作器的失败方式不同。</li>
+<li>对智能体：最终状态和路径、多次运行、pass^k、每次成功的成本，以及把可靠性作为单独的数字。</li>
+<li>用于优化的评分器会被钻空子。保留一个它永远看不到的。</li>
+</ul>
+
+<h2>第 7 层：公开基准</h2>
+<p><em>放大对象：第 1 层里评测与基准的区分。问题：排行榜上的数字能告诉你什么，又藏了什么？</em></p>
+<p>基准是一组用于比较模型的固定公开任务：MMLU（学术选择题）、GSM8K（小学数学）、HumanEval（代码）、MT-Bench 与 Chatbot Arena（对话质量）、SWE-bench（修复真实 GitHub issue）、τ-bench（客服智能体）、GPQA 与 HLE（专家级问题）。它们是你挑选引擎的方式。引用之前，要知道四件事。</p>
+<p><strong>数字既取决于模型，也同样取决于测试框架</strong>。我们在同一个开放权重模型上用两种提示格式跑 GSM8K，得到 0.686 和 0.746。lm-evaluation-harness 的论文（Biderman et al., 2024）记录了由提示格式、少样本示例、提取答案的正则表达式带来的两位数波动。一个分数是一个（模型、提示词、框架、版本）元组。Schaeffer et al.（2023）指出了更强的一点：所谓能力的「涌现」跃升，很大程度上是全有或全无式指标造成的假象，换成平滑指标就消失了。你选的指标可以制造或抹去一种现象。</p>
+<p><strong>污染</strong>。如果测试题在训练数据里，分数测的就是记忆。GSM1k（Zhang et al., 2024）用同等难度的新题重建了 GSM8K，发现某些模型家族下降多达 8 个点，下降幅度与模型记住原题的可能性相关。其他家族没有下降。污染是真实的、可测量的，而且不均匀。</p>
+<p><strong>饱和</strong>。基准有保质期。2026 年一项对 60 个常用基准的研究发现，约一半已高度饱和，越老的饱和越快。SWE-bench Verified 在大约两年里从约 40% 被解决涨到 80% 以上，其维护者表示它已不再能区分前沿模型。MMLU、GSM8K 和 HumanEval 实际上已被前沿实验室弃用，换成了 HLE、GPQA Diamond、SWE-bench Verified、LiveCodeBench 和 τ²-bench——它们也会依次饱和。在 Chatbot Arena 上，顶尖模型如今相差约 20 Elo 分以内，这处在噪声范围之内。</p>
+<p><strong>冗余</strong>。Zeng 和 Papailiopoulos（2026）汇集了一个 84 个模型 × 133 个基准的矩阵，发现它近似秩为二：两个潜在因素解释了 90% 以上的差异。五个精心挑选的基准能把其余 128 个预测到约 4 分以内。对于挑选引擎，这是好消息：你不需要跑四十个基准。对于发现某种具体的失败模式，它什么也没说；那仍然需要你自己的评测。</p>
+<p><strong>要点</strong>：排行榜是在一种测试框架下、用去年的考卷给引擎排名，而且榜首几名通常彼此都在噪声之内。</p>
+<p><strong>对我们意味着什么</strong>：用基准把候选缩到两三个模型，再用你自己数据上的评测做决定。</p>
+<p><strong>为什么重要</strong>：因为基准上 2 个点的提升而换模型，可能让你在实际任务上丢掉 10 个点。</p>
+<p><strong>两个值得了解的前沿评测用法</strong>。Google 的 Paper Assistant Tool（Jayaram et al., 2026）用智能体流水线审稿，抓到了 89.7% 的已知证明错误，单次模型调用只有 55.2%；在 850 位受访作者中，超过 90% 认为它有帮助，31% 因它做了新实验。CUSP（Wu et al., 2026）让模型预测哪些研究方向会成功，发现它们接近随机（0.519），且视模型不同有强烈的偏「是」或偏「否」倾向，只有显式的偏差校正才能修正。两者都提醒我们：评测模型的判断力需要它自己的真实标准；模型对未来、对自己都严重缺乏校准。</p>
+<p><strong>第 7 层带走的要点：</strong></p>
+<ul>
+<li>基准分数是一个元组，不是模型的属性。记录测试框架。</li>
+<li>基准会被污染、会饱和；看看日期。</li>
+<li>五个基准就能告诉你排行榜能告诉你的几乎一切。剩下的由你的评测来回答。</li>
+</ul>
+
+<h2>第 8 层：把它变成习惯</h2>
+<p><em>放大对象：「快速把握」里的「什么时候」。问题：没有研究团队，这件事怎样每周持续运转？</em></p>
+<p>Hamel Husain 的三级模型（2024）定下了节奏：</p>
+<ol>
+<li>内容：代码评分器、schema 检查、必需事实。时机：每次提交。成本：免费。</li>
+<li>内容：在测试集上跑模型评委和检测器，人工审阅一份样本。时机：每次改动提示词、模型或检索。成本：几美分到几美元。</li>
+<li>内容：在真实流量上做 A/B 测试。时机：改动上线后。成本：真实用户。</li>
+</ol>
+<p><strong>合并关卡</strong>。我们教程里的 CI 关卡会重跑第 1 级和第 2 级，如果通过率比记录在案的基线 0.70 下降超过 3 个点，就让构建失败。它是捕捉大幅退步的绊线，不是保证：检测下限是 12 个点，5 个点的退步会大摇大摆走过去。要在看板上写明这一点。</p>
+<p><strong>监控</strong>。上线后，抽样真实流量，对全部样本跑廉价评分器，对其中一部分跑昂贵评分器，并画出趋势。Bodhwani et al.（2026）的「先校准，再信任」是昂贵关卡的正确模式：对照可验证的真实结果做一次完整审计，弄清廉价的评委关卡在哪个区域与现实一致；在 CI 中只在那个区域内使用廉价关卡；当模型、评委、模拟器或领域变化时重新审计。他们还发现，一个零成本的「对话是否完成」标志位，单靠自己就抓到了预算耗尽导致的退步。</p>
+<p><strong>缓存与成本</strong>。缓存每一次模型调用，以提示词、数据版本和配方为键。重跑就变成读文件。我们在 60 张工单上做完整的 A/B，需要 121 次评委调用，约 4 美分；整个教程从缓存重跑，零次调用。成本不是跳过评测的理由。</p>
+<p><strong>领导者该要什么</strong>。一页纸上的四个数字：带区间的产品通过率、评分器与人工标注的一致度、检测下限、上次改动中变差的用例占比。只要缺了其中任何一个，另外三个就还没有意义。</p>
+<p><strong>第 8 层带走的要点：</strong></p>
+<ul>
+<li>三种节奏：每次提交、每次改动、上线之后。</li>
+<li>关卡是地板，不是天花板。写明它的检测下限。</li>
+<li>对照真实结果校准一次廉价关卡，之后只在那个区域内信任它。</li>
+</ul>
+
+<h2>工具与方法：观察所得</h2>
+<p>这一节是观察，不是推荐清单。以下所有工具都在构建教程时运行或审阅过；细节保存在我们知识库的从业者与工具笔记中。</p>
+<h3>框架</h3>
+<ul>
+<li><strong>Inspect AI</strong>（英国 AI 安全研究所，MIT）。擅长：一条连贯的流水线——数据集、求解器、评分器、日志查看器；支持智能体与沙箱；用于前沿安全评测。留意：代码优先；最完整，要学的也最多。</li>
+<li><strong>lm-evaluation-harness</strong>（EleutherAI，MIT）。擅长：针对任意模型可复现地运行公开基准（GSM8K、MMLU、IFEval）。留意：只做基准；那篇框架论文就是它存在的理由。</li>
+<li><strong>promptfoo</strong>（MIT，Node.js）。擅长：声明式 YAML 测试套件、红队测试、CI 回归。留意：不是 Python 包；2026 年被 OpenAI 收购。⚠️ 收购一事本站未核实。</li>
+<li><strong>DeepEval</strong>（Apache-2.0）。擅长：pytest 风格的单元测试，自带现成指标（忠实度、相关性）。留意：头条指标是混合值；信任之前先看看里面。</li>
+<li><strong>RAGAS</strong>（Apache-2.0）。擅长：标准的 RAG 三元组，无需参考答案。留意：配合本地模型时不稳定（NaN、执行器报错）；数字是混合值。</li>
+<li><strong>Langfuse</strong>（MIT，可自托管）。擅长：在一个自托管栈里做链路追踪、数据集、实验运行、评委评估器。留意：第 4 版改变了评估器语义；提前规划迁移。</li>
+<li><strong>Phoenix</strong>（Arize）。擅长：链路追踪加评测，UI 强。留意：Elastic License 2.0，属于源码可得而非开源。</li>
+<li><strong>LangSmith、Braintrust</strong>。擅长：托管平台——调用记录采集、抽样、评委初始化、人工精修。留意：商业产品；Braintrust 的 autoevals 库可独立使用。</li>
+<li><strong>Opik（Comet）、MLflow genai、Weave（W&amp;B）</strong>。擅长：带评测钩子的可自托管可观测性；如果你已经在用这些平台就很好。留意：对从零起步的团队来说太重。</li>
+<li><strong>HELM</strong>（斯坦福）。擅长：多指标理念——准确率、校准、鲁棒性、公平性、效率一起看。留意：偏研究，最不开箱即用。</li>
+<li><strong>evalica</strong>。擅长：把成对判断变成带区间的 Bradley-Terry 或 Elo 排行榜。留意：只做统计；要配合评委使用。</li>
+<li><strong>Jev / TypeSafe</strong>。擅长：带校准概率的类型化评委问题，比生成式评委便宜约 100 倍。留意：不出文本、不给解释；标签由你提供。</li>
+<li><strong>HHEM、LettuceDetect、MiniCheck、SelfCheckGPT</strong>。擅长：以 CPU 速度、零边际成本回答「这个说法有没有依据」。留意：只回答这一个问题；不是通用评分器。</li>
+<li><strong>Selene-Mini、Prometheus 2、Flow-Judge</strong>。擅长：可自托管、可审计的开放权重评委模型。留意：仍然是评委；仍然需要校准。</li>
+</ul>
+<h3>方法对比</h3>
+<ul>
+<li><strong>代码规则</strong>。回答：形式对不对、事实在不在。成本：免费。盲点：含义。</li>
+<li><strong>相似度（ROUGE、嵌入）</strong>。回答：输出变了没有。成本：免费。盲点：正确性。</li>
+<li><strong>专用检测器 / NLI</strong>。回答：这个说法是否被这段文本支持。成本：接近免费。盲点：其他一切。</li>
+<li><strong>类型化评委（Jev）</strong>。回答：这个标签、这个是/否，附概率。成本：每千次几美分。盲点：不能解释或提议。</li>
+<li><strong>生成式评委，二元 + 证据</strong>。回答：任何可读的标准。成本：每次调用几美分。盲点：五种偏差；必须校准。</li>
+<li><strong>评委小组，稳健合并</strong>。回答：同上，单评委失败更少。成本：一个评委的三倍。盲点：相关的错误让收益在约 3 个评委时封顶。</li>
+<li><strong>人工标注</strong>。回答：真实标准。成本：昂贵、缓慢。盲点：需要两位标注者和一个一致性统计量。</li>
+<li><strong>真实流量 A/B</strong>。回答：真实的业务影响。成本：真实用户承担风险。盲点：慢；需要前面几层先把安全兜住。</li>
+</ul>
+<p>在每个来源和我们自己的运行中都能看到一个规律：手写评分器的数字和框架给出的数字应当对照着读。一致是证据。不一致是一个问题，而且通常是个好问题。</p>
+
+<h2>决策指南</h2>
+<ul>
+<li>输出格式正确、内容完整吗？用：代码规则。然后核查：无需，它是精确的。</li>
+<li>新版本改变了输出吗？用：相似度。然后核查：为什么，读一份样本。</li>
+<li>这个说法有这份文档支持吗？用：检测器或类型化评委。然后核查：它在一份标注样本上的精确率和召回率。</li>
+<li>回复是否以 X 方式失败？用：带证据的二元生成式评委。然后核查：在开发集上与人工标注的 kappa。</li>
+<li>两个版本哪个更好？用：带区间的配对比较。然后核查：逐用例的退步。</li>
+<li>我们能检测到 5 个点的退步吗？用：功效计算。然后核查：增加用例，直到能检测为止。</li>
+<li>智能体可靠吗？用：多次运行的 pass^k、扰动任务。然后核查：把跨运行一致性作为单独的数字。</li>
+<li>该用哪个模型？用：五个公开基准做初筛。然后核查：用你自己的评测做决定。</li>
+<li>在生产环境里还管用吗？用：抽样流量，廉价评分器全覆盖，评委跑一部分。然后核查：任何东西变化时重新审计评委关卡。</li>
+</ul>
+
+<h2>值得带走的十五件事</h2>
+<ol>
+<li>评测就是输入、系统、评分器、数字。先建金标准输入；它们是资产。</li>
+<li>评测衡量你的产品，基准衡量引擎。别混为一谈。</li>
+<li>写评分器之前先读一百个输出。失败清单就是计划。</li>
+<li>凡有确定答案的，都用代码评分器。它们看得见形式，看不见含义。</li>
+<li>给评委二元问题，附证据和上下文。整体式打分会漏掉埋进去的错误。</li>
+<li>用人工测量评委。报告 kappa 或抓获率。60% 的一致率可能毫无意义。</li>
+<li>评委偏爱先出现的、更长的、眼熟的、讨喜的。缓解办法很便宜，用上。</li>
+<li>满意不等于成功。把工具调用和最终状态交给评委。</li>
+<li>对「这有没有依据」，小检测器或类型化评委在成本上、往往在准确度上也胜过通用评委。</li>
+<li>每个比率带区间，每次比较要配对，知道检测下限。</li>
+<li>流水线的每个阶段分开打分。</li>
+<li>智能体：最终状态和路径、多次运行、pass^k、每次成功的成本、可靠性单独一条轴。</li>
+<li>用于优化的评分器会被钻空子。保留一个系统永远看不到的。</li>
+<li>基准分数依赖测试框架，污染不均匀，还会饱和。记录完整元组。</li>
+<li>三种节奏、一个写明下限的关卡、一套监控，任何东西变化时重新审计。</li>
+</ol>
+
+<h2>参考文献</h2>
+<p>（按原文保留英文条目。⚠️ 其中大量 2026 年 arXiv 编号与厂商说法本站未逐一核对。）</p>
+<h3>来自作者的知识库（摘要在相邻文件夹中）</h3>
+<ul>
+<li>Acharya, Pan, Verkhovsky (2026). RoPoLL: Robust Panel of LLM Judges. arXiv:2606.30931.</li>
+<li>Asawa et al. (2026). Continual Learning Bench. arXiv:2606.05661.</li>
+<li>Bai et al. (2026). How Do AI Agents Spend Your Money? arXiv:2604.22750.</li>
+<li>Bodhwani, Tran, Wei (2026). GAUGE: When Not to Trust LLM-as-a-Judge in User-Simulated Evaluation of Task-Oriented Agents. arXiv:2609.12191.</li>
+<li>Cho et al. (2026). Ask, Don't Judge / BinEval. arXiv:2606.27226.</li>
+<li>Fiddler (2026). The Evaluation Trust Tax: agent evals TCO.</li>
+<li>Grace, Hadfield, Olivares, De Jonghe (Anthropic, 2026). Demystifying Evals for AI Agents.</li>
+<li>Gulati et al. (2026). Ask Early, Ask Late, Ask Right. arXiv:2605.07937.</li>
+<li>HKUDS (2026). ClawWork (economic-accountability agent benchmark, code analysis).</li>
+<li>Jayaram et al. (Google, 2026). Towards Automating Scientific Review with the Paper Assistant Tool. arXiv:2606.28277.</li>
+<li>Lu et al. (2026). The Meta-Agent Challenge. arXiv:2606.04455.</li>
+<li>Menaged et al. (2026). Can LLM Agents Infer World Models? arXiv:2606.16576.</li>
+<li>Pan et al. (2026). The Tasteful Agent. arXiv:2609.25804.</li>
+<li>Parikh (2026). Structured Output Collapses Answer Diversity Across 44 Language Models. arXiv:2607.18476.</li>
+<li>Rabanser, Kapoor, Kirgis, Liu, Utpala, Narayanan (2026). Towards a Science of AI Agent Reliability. arXiv:2602.16666, ICML 2026.</li>
+<li>Wang et al. (Qwen, 2026). The Verification Horizon: No Silver Bullet for Coding Agent Rewards. arXiv:2606.26300.</li>
+<li>Wu et al. (2026). CUSP: Forecasting Scientific Progress with AI. arXiv:2605.22681.</li>
+<li>Zeng, Papailiopoulos (2026). You Don't Need to Run Every Eval. arXiv:2606.24020.</li>
+<li>Zhang et al. (2026). SWE-Explore. arXiv:2606.07297.</li>
+<li>作者的评测教程（tutorials/evals/，第 00–14 章、Q&amp;A.md、research/SOURCES_*.md）及其入门 notebook，是贯穿全文示例中所有数字的来源；以及 jev 教程（tutorials/jev/）。⚠️ 原文未给出公开链接。</li>
+</ul>
+<h3>基础与从业者资料</h3>
+<ul>
+<li>Biderman et al. (2024). Lessons from the Trenches on Reproducible Evaluation of Language Models. arXiv:2405.14782.</li>
+<li>Chiang et al. (2024). Chatbot Arena. arXiv:2403.04132.</li>
+<li>Dubois, Galambosi, Liang, Hashimoto (2024). Length-Controlled AlpacaEval. arXiv:2404.04475.</li>
+<li>Es, James, Espinosa-Anke, Schockaert (2024). RAGAS. arXiv:2309.15217.</li>
+<li>Gu et al. (2024). A Survey on LLM-as-a-Judge. arXiv:2411.15594.</li>
+<li>Han et al. (2025). RAG vs GraphRAG: A Systematic Evaluation. arXiv:2502.11371.</li>
+<li>JEV-as-a-Judge (2026). arXiv:2609.26550.</li>
+<li>Panickssery, Bowman, Feng (2024). LLM Evaluators Recognize and Favor Their Own Generations. arXiv:2404.13076.</li>
+<li>Husain (2024). Your AI Product Needs Evals. hamel.dev. Husain (2025). A Field Guide to Rapidly Improving AI Products. Husain &amp; Shankar (2025). AI Evals FAQ.</li>
+<li>Jimenez et al. (2024). SWE-bench. arXiv:2310.06770. OpenAI (2024). SWE-bench Verified.</li>
+<li>Kovács, Recski (2025). LettuceDetect. arXiv:2502.17125. Tang, Laban, Durrett (2024). MiniCheck. arXiv:2404.10774. Manakul, Liusie, Gales (2023). SelfCheckGPT. arXiv:2303.08896.</li>
+<li>Liang et al. (2022). HELM. arXiv:2211.09110.</li>
+<li>Liu et al. (2023). G-Eval. arXiv:2303.16634.</li>
+<li>Miller (2024). Adding Error Bars to Evals. arXiv:2411.00640.</li>
+<li>Saad-Falcon, Khattab, Potts, Zaharia (2024). ARES. arXiv:2311.09476.</li>
+<li>Schaeffer, Miranda, Koyejo (2023). Are Emergent Abilities of Large Language Models a Mirage? arXiv:2304.15004.</li>
+<li>Shankar, Zamfirescu-Pereira, Hartmann, Parameswaran, Arawjo (2024). Who Validates the Validators? arXiv:2404.12272.</li>
+<li>Tan et al. (2025). JudgeBench. arXiv:2410.12784.</li>
+<li>Verga et al. (2024). Replacing Judges with Juries (PoLL). arXiv:2404.18796.</li>
+<li>Wang et al. (2024). Large Language Models are not Fair Evaluators. arXiv:2305.17926.</li>
+<li>Yan (2024). Task-Specific LLM Evals that Do &amp; Don't Work; Evaluating the Effectiveness of LLM-Evaluators. eugeneyan.com.</li>
+<li>Yao, Shinn, Razavi, Narasimhan (2024). τ-bench. arXiv:2406.12045. Sierra (2025). τ²-bench. arXiv:2506.07982.</li>
+<li>Zhang et al. (2024). GSM1k. arXiv:2405.00332.</li>
+<li>Zheng et al. (2023). Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena. arXiv:2306.05685.</li>
+<li>Zhou et al. (2023). IFEval. arXiv:2311.07911.</li>
+<li>2026 年审计：When AI Benchmarks Plateau (arXiv:2602.16763)；When the Judge Changes, So Does the Measurement (arXiv:2607.08535)；Reliability without Validity (arXiv:2606.19544)；AgentLens (arXiv:2605.12925)。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>译自 Sergii Makarevych 的 X 长文「Evals: how to know whether an AI system actually works」。原帖：<a href="https://x.com/sermakarevich/status/2106453816757354947">x.com/sermakarevich/status/2106453816757354947</a>。下架请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交 issue</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/sermakarevich/status/2106453816757354947" rel="noopener">x.com/sermakarevich/status/2106453816757354947</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>从平面图翻出纵深：Eian 的屏幕空间投影错觉</title><meta name="description" content="原帖与作者回复：用 Claude 做代码动画，分别计算平面和立体屏幕位置，保持相机不动；不是直接插值投影矩阵，也不等于希区柯克变焦。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>原帖照录 + 导读</span><time datetime="2026-11-09">2026.11.09</time></p>
+<h1 class="za-title">从平面图翻出纵深：Eian 的屏幕空间投影错觉</h1>
+<p class="za-sub" lang="en" data-za-gen>Flat-to-depth reveal · 屏幕空间错觉与实现边界</p>
+<p class="za-meta" data-za-gen><span>来源 · X · Eian @EianLu</span><span>收录 · 2026-11-09</span><span><a href="https://x.com/EianLu/status/2119379681824903562" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Eian（@EianLu） · <a href="https://x.com/EianLu/status/2119379681824903562">原帖</a> · 核对：2026-11-09（SGT） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">起初像一张完全平面的图，慢慢“翻开”之后却显出很深的空间。Eian 把这种感觉概括为“正交转透视”；但评论里的实现说明比这个标题更准确：相机保持不动，分别计算每个点在平面和立体状态下的屏幕位置，再把它们滑过去。</p>
+<h2>原帖全文</h2><blockquote><p>简单复刻了一支这种风格的视频</p><p>原理就是正交转透视，一开始是一张完全的平面图，然后慢慢透视翻开，就会发现后面有很深的纵深，视觉错误就这么来的🤔感觉有点类似类似希区柯克变焦。</p></blockquote>
+<p>作者：Eian（@EianLu）；发布：2026-11-08 18:41 SGT。<a href="https://x.com/EianLu/status/2119379681824903562">原帖附视频，点击观看</a>。本页不下载、不重新托管视频，也未观看视频；内容依据可读原帖和评论整理。</p>
+<h2>关键不是换相机，而是算两套屏幕位置</h2>
+<p>有读者问：这是直接插值投影矩阵，还是用很长的焦距接近正交效果？作者的回答明确否定这两个选项：</p>
+<blockquote><p>“都不是，你让AI每个点单独算平面位置和立体位置，直接在屏幕上从一个滑到另一个；相机一直保持不动，只挪消失点。”</p></blockquote>
+<p><a href="https://x.com/EianLu/status/2119423369246539902">作者技术回复</a>。因此，本页用“屏幕空间投影错觉”描述它，不把“正交转透视”误写成已经确认的三维相机投影模式切换。</p>
+<p>编辑解读：可以把平面布局与具有纵深关系的布局理解为两组屏幕坐标，在时间上连续过渡，让观众重新解释原先以为平坦的画面。⚠️ 这是对作者文字的说明，不是从源码还原出的算法；作者没有公布具体坐标计算、曲线、遮挡处理或逐帧实现。</p>
+<h2>为什么只是“类似”希区柯克变焦</h2>
+<p>通常所说的希区柯克变焦（dolly zoom），是相机前后移动与焦距变化配合，在维持主体画面尺度时改变背景透视关系。它与作者这里“相机一直保持不动”的描述并不相同。</p>
+<p>两者可以有相似的纵深感知冲击，但不能据此把本片标成 dolly zoom 的标准实现。这里应区分<strong>视觉联想</strong>与<strong>实际机制</strong>：作者自己用的是“感觉有点类似”。</p>
+<h2>工具、提示词与成本，作者究竟确认了什么</h2>
+<ul><li><strong>工具：</strong>被问到用什么做时，作者回答 <a href="https://x.com/EianLu/status/2119384100926894246">“claude啊哈哈”</a>；没有在这条回复中确认具体版本、框架或渲染器。</li>
+<li><strong>提示词：</strong>作者说可把作品交给 AI 拆解，但对于“一句话”完成的期待，补充 <a href="https://x.com/EianLu/status/2119390649132957929">“一段话应该可以 一句话不行哈哈哈”</a>。完整原始提示词没有公开。</li>
+<li><strong>模型费用：</strong>评论提问每周 token 费用，作者回答自己用 200 美元档位；这是订阅档位，<strong>不是本片费用，也不是每周实际支出</strong>。</li>
+<li><strong>视频模型：</strong>面对视频模型费用讨论，作者说 <a href="https://x.com/EianLu/status/2119451009600922021">“很多视频不需要视频生成模型 代码就行”</a>；不能外推为所有视频都不需要视频模型。</li>
+<li><strong>实拍：</strong>对实拍边缘是否会穿帮的问题，作者表示还未尝试；不应据此宣称该方法在真实摄影素材上已经成立。</li></ul>
+<h2>和 Eian 既有作品如何区分</h2>
+<p>这不是孟菲斯微缩世界的新场景，也不是 Claude / Codex / Seedance 成片全流程的更新。它围绕一个独立的投影与深度感知手法，因此新建专题；关联阅读可看 <a href="../eianlu-code-miniature-animation-collection/">孟菲斯微缩世界合集</a>与 <a href="../eianlu-claude-codex-seedance-ai-video/">AI 视频成片全流程</a>。</p>
+<h2>核实边界与署名</h2>
+<ul><li>⚠️ 原帖称“复刻”，作者回复称最早来自一位日本创作者，但未提供姓名或原作链接；无法核实首创者与参考关系。本页不把 Eian 写成该风格首创者。</li>
+<li>⚠️ 未公开源码、完整提示词、制作耗时或单片成本；没有足够证据确认渲染技术栈、运动曲线和具体画面表现。</li>
+<li>⚠️ 未下载或观看 24 秒附件视频，未做视觉质量、边缘或空间连续性评测。</li>
+<li>这是作者本人中文帖照录与评论导读，不声明作品开源，也不推定其他代码仓库的许可证适用于本片。</li></ul>
+<h2>附录：作者回复原文</h2><p>以下保留作者全部可检索回复（去掉开头的被回复账号以便阅读；链接可看完整对话）。个别简短回应的上下文只代表当时对话，不当成技术结论。</p><p><a href="https://x.com/EianLu/status/2119382072121057558">回复 2119382072121057558</a>：👍</p><p><a href="https://x.com/EianLu/status/2119384100926894246">回复 2119384100926894246</a>：claude啊哈哈</p><p><a href="https://x.com/EianLu/status/2119386083985351119">回复 2119386083985351119</a>：最早是一个日本兄弟搞出来的</p><p><a href="https://x.com/EianLu/status/2119387736645976382">回复 2119387736645976382</a>：这个很简单的 你把我这个拿去让ai拆一下就可以</p><p><a href="https://x.com/EianLu/status/2119387879701135603">回复 2119387879701135603</a>：还没尝试过</p><p><a href="https://x.com/EianLu/status/2119390418731409568">回复 2119390418731409568</a>：可以的</p><p><a href="https://x.com/EianLu/status/2119390649132957929">回复 2119390649132957929</a>：一段话应该可以 一句话不行哈哈哈</p><p><a href="https://x.com/EianLu/status/2119422154047664271">回复 2119422154047664271</a>：谢谢雪瑜哥</p><p><a href="https://x.com/EianLu/status/2119422328824369245">回复 2119422328824369245</a>：200美金档位的哈哈哈</p><p><a href="https://x.com/EianLu/status/2119423369246539902">回复 2119423369246539902</a>：都不是，你让AI每个点单独算平面位置和立体位置，直接在屏幕上从一个滑到另一个；相机一直保持不动，只挪消失点。</p><p><a href="https://x.com/EianLu/status/2119423531863908764">回复 2119423531863908764</a>：是的他也在做</p><p><a href="https://x.com/EianLu/status/2119428925663363170">回复 2119428925663363170</a>：不是哦</p><p><a href="https://x.com/EianLu/status/2119436692222583076">回复 2119436692222583076</a>：谢谢支持</p><p><a href="https://x.com/EianLu/status/2119451009600922021">回复 2119451009600922021</a>：也没那么贵，很多视频不需要视频生成模型 代码就行</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><a href="../">返回录像带书店</a></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/EianLu/status/2119379681824903562" rel="noopener">x.com/EianLu/status/2119379681824903562</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

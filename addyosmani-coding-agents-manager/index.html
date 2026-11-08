@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>编码智能体把你变成了管理者：把验收、边界和判断设计进工作流</title><meta name="description" content="Addy Osmani 的智能体管理导读：先设计自证机制，再交代仓库之外的意图；重复纠正写成团队规则，硬边界交给执行层；并行扩张取决于验证能力，而不是多开会话。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>article</span><time datetime="2026-11-09">2026.11.09</time></p>
+<h1 class="za-title">编码智能体把你变成了管理者：把验收、边界和判断设计进工作流</h1>
+<p class="za-sub" lang="en" data-za-gen>从多开会话，转向设计可验收的工作</p>
+<p class="za-meta" data-za-gen><span>来源 · Addy Osmani @addyosmani · X 长文</span><span>收录 · 2026-11-09</span><span><a href="https://x.com/addyosmani/status/2119332146485891501" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">Addy Osmani · <a href="https://x.com/addyosmani/status/2119332146485891501">X 原文</a> · 2026-11-09（SGT）核对 · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><section><h2>这次不是另一份提示词技巧清单</h2><p>这篇 X 长文讨论的是角色变化：当工程师的日常变成挑任务、写要求、分派、跟进和决定是否发布，管理已经发生了。作者借工程管理来解释如何使用编码智能体，但刻意保留一道边界：跑得动多个智能体，不等于懂得管理人。本文围绕原文的工作流做独立中文导读，不是全文翻译。</p></section>
+<section><h2>一、先把“怎样验收”交给它</h2><p>作者把自我验证放在首位。重点不是智能体说自己完成了，而是它能否运行检查、看见失败并自行修复。测试、构建、类型检查、截图各自提供不同证据；需要先明确要证明的性质。人的注意力应留给自动检查覆盖不了的东西，而不是充当每轮手工测试员。</p><p>原文还把不同机制分开：直接要求运行检查、目标条件检查、结束时的执行钩子，以及由全新上下文子智能体进行的评审。它们并非同一层保证：模型判断的评审不能自动等同于确定性测试。</p></section>
+<section><h2>二、简报写仓库外面的事</h2><p>任务说明最有价值的部分，是代码里没有的意图：为什么做、什么不能改、明确不做什么、怎样才算成功。不要把模型可以自行读出的目录结构再描述一遍。需求还不成形时，可以先让智能体帮助澄清问题，形成规格，再用一个干净会话执行；规格也就成了验收依据。</p><p>这对应的不是更强势的微观指挥，而是减少隐含预期。工程师觉得理所当然的会议结论、业务动机和部署习惯，对一个只看到仓库的执行者来说都不存在。</p></section>
+<section><h2>三、纠正要积累，但不是所有规则都该硬编码</h2><p>重复出现的错误值得变成团队共享的规则或技能，而非只留在某个人的聊天记录、某台电脑的记忆里。作者尤其强调精简指令文件：把验证命令、容易误解的代码区域、仓库之外的决定，以及反复纠正的事项留下来。</p><p>同时要区分指导与强制。自然语言能表达偏好，却不能独自构成不可绕过的边界；真正不能省略的步骤，应交给合适的执行控制。反过来，把所有偏好都写成硬钩子，会制造新的流程负担。随着模型变化，旧规则也需要重新审视。</p></section>
+<section><h2>四、并行之前，先检查任务接缝</h2><p>计划评审是低成本纠错点。应在编码前检查隐藏假设、共享接口和文件归属，再把任务分到互不干扰的工作区。多个智能体碰同一片代码，并不天然构成更高吞吐量，只是可能把决策重复与合并冲突推迟到集成时爆发。</p><p>作者建议尽早观察运行方向。若几次纠正仍未奏效，应重新考虑任务表达与背景，而不是不断在失败对话上叠加新要求。这里的重点是重建正确起点，不是机械追求更长上下文。</p></section>
+<section><h2>五、任务可以外包，是否值得发布不能</h2><p>测试通过只能说明某些被测性质成立，不能回答产品是否值得复杂化。作者用自己差点批准一组收益很小、却增加用户负担的改动说明：跳过判断，不是更快的评审，只是给产物盖章。</p><p>可以把机械修复、风格处理与测试工作交给智能体，但安全边界、合规和产品取舍仍须有人负责。外循环需要明确：保留什么证据，读多少产出，谁有最终批准权，以及哪些操作不得自行执行。保持改动小，也是在控制理解成本。</p></section>
+<section><h2>六、无人值守不是无人负责</h2><p>长时间自主运行的前提，是预先定义完成条件、自证方式、允许活动的范围、资源或轮数上限，以及产出交给谁批准。先用小批次验证新流程，再逐步扩大，而不是睡前派一个含混任务，第二天才追查它为什么偏航。</p><p>这也解释了作者说的“编排税”：多开会话并非线性增益，更多产出可能挤占更多审查注意力。真正可扩张的是检查与反馈系统，让人少盯过程；衡量时应把周期、返工与回滚一起看，而不是只看合并数或 AI 代码占比。</p></section>
+<section><h2>七、还要保留说“不”的能力</h2><p>代码生成便宜之后，团队更容易积累没人明确需要的功能。启动前先问需求从哪来、怎样知道有效、什么情况下停止，并限制同时进行的工作。这里的稀缺资源是验证、维护与判断，不是再多生成几行代码的能力。</p><p>但管理人的部分不能照搬给模型：人有动机、冲突、成长与长期信任，智能体没有对应经验；模型也容易迎合、共享相似盲点，并随版本变化。让智能体接走入门工作之后，团队还得主动为新人保留学习机会。</p></section>
+<section><h2>与此前文章怎样接起来</h2><p>此前收录的《智能体替你干活时，怎样保住批判性思维》聚焦个人如何不让出理解和判断；本篇则把视角移到任务分派、执行控制、并行和验收系统。它不是前文的重复版，而是同一问题的工作流侧展开。两篇共同提醒：减少亲手实现，不应等于取消责任。</p></section>
+<section><h2>核对与边界</h2><p>已通过 X MCP 的批量帖子读取接口取得完整 article.plain_text，并核对内嵌示例；单帖接口这次只给了标题。原帖没有引用其他帖子；作者线程搜索翻页至空，未检出作者在该线程的追加回复。文章链接到作者早期相关博文与 Claude Code 最佳实践，早期博文已在先检查 robots.txt 后阅读，但不作为本篇全文的替代。</p><p>⚠️ 文中的 Claude Code 命令、默认模式、自动记忆范围和执行机制是作者在本文中的描述，本次没有安装或逐项运行验证；不要把它们直接当作本环境可用能力。作者的并行数量是个人经验，不是效率基准。沃顿研究的结论只在本文中被转述，本次未独立复核论文，不能据此作因果承诺。</p></section>
+<section><h2>署名与版权</h2><p>原作：Addy Osmani，Your coding agents made you a manager。原帖发布于 2026-11-08 15:32（SGT），本页核对于 2026-11-09（SGT）。未确认开放转载许可；本页为独立导读，不提供全文翻译，不转载原图、人物照片或媒体。项目许可证核验不适用：本次没有以代码仓库为主体。</p></section>
+<section><h2>原始出处与延伸阅读</h2><ul><li><a href="https://x.com/addyosmani/status/2119332146485891501">X 长文原帖</a></li><li><a href="https://addyosmani.com/blog/coding-agents-manager/">作者早期博文：Your AI coding agents need a manager</a></li><li><a href="../addyosmani-critical-thinking-agents/">本站：保住批判性思维</a></li><li><a href="../anthropic-code-review/">本站：Claude Code 团队的代码评审</a></li></ul></section></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><a href="../">返回录像带书店</a></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/addyosmani/status/2119332146485891501" rel="noopener">x.com/addyosmani/status/2119332146485891501</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
