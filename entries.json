@@ -1,5 +1,20 @@
 [
   {
+    "slug": "polyfork-lowpoly-3d-assets",
+    "title": "Polyfork：给智能体搭场景用的低多边形「程序化」三维素材库",
+    "desc": "每个 three.js 模型都是带旋钮的 ES 模块，附 llms.txt / MCP；网格 CC BY 4.0 或专有许可二选一。",
+    "description": "Polyfork 导读：程序化低多边形三维素材、面向编码智能体的接口与双许可边界。",
+    "source": "Polyfork · polyfork.dev",
+    "date": "2026-11-09",
+    "type": "导读",
+    "subtitle": "把素材做成代码，让智能体挑选和调旋钮",
+    "original_url": "https://polyfork.dev/",
+    "spine": "POLYFORK",
+    "summary": "商业三维素材站：低多边形模型以 ES 模块 + GLB 发布，全部低多边形版免费、HD 版属 Pro；免费网格可选 CC BY 4.0，.mjs 源码与 HD 为专有许可。",
+    "kind": "资源",
+    "by": "Polyfork"
+  },
+  {
     "slug": "voyager-vork",
     "title": "vork：让智能体用代码导演三维与 VFX 的无头渲染内核",
     "desc": "Rust 与 Slang 驱动、面向智能体的 GPU 渲染器；从代码场景到看图迭代，重点核对许可、硬件门槛和性能比较边界。",
