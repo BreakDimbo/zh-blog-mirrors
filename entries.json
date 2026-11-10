@@ -1,5 +1,20 @@
 [
   {
+    "slug": "garments-depth-swap-intersection",
+    "title": "纵深对调的交叉路口：Yuma Garments 的错视运动图形",
+    "desc": "日本运动图形作者 Yuma Garments 原帖全文中译：一件让纵深和前后关系对调的交叉路口错视作品。收录作者原文与两日后的个展感谢回复；只用视频封面帧，不转载视频。",
+    "description": "日本运动图形作者 Yuma Garments 原帖全文中译：一件让纵深和前后关系对调的交叉路口错视作品。收录作者原文与两日后的个展感谢回复；只用视频封面帧，不转载视频。",
+    "source": "X · Yuma Garments @garments__",
+    "date": "2026-11-10",
+    "type": "翻译",
+    "subtitle": "An intersection where depth and front-back relations swap",
+    "original_url": "https://x.com/garments__/status/2118313545939243322",
+    "spine": "纵深对调的交叉路口",
+    "summary": "错视风格交叉路口：纵深与前后关系对调；原帖中译，不转载视频",
+    "kind": "作品",
+    "by": "Yuma Garments"
+  },
+  {
     "slug": "anthropic-which-claude-model",
     "title": "该用哪个 Claude 模型来构建：Fable、Opus、Sonnet 还是 Haiku",
     "desc": "Addy Osmani 在 claude.dev 的选型指南导读：多数工作从 Opus 5.5、medium 起步；按任务下探 Sonnet / Haiku，或上探 Fable 5.2；先调 effort，再换模型。价格与基准数字均为原文自报，本站未复现 ⚠️。",
