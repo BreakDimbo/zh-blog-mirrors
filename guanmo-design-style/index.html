@@ -3,24 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>每天一个设计风格 · Design Style：观默的开源设计风格库（导读）</title>
-<meta name="description" content="guanmo-ai/design-style 项目导读：面向设计师与 AI 的开源设计风格库，每期一支 15 秒 Remotion 代码动效短片 + 4 张手写 SVG 风格图 + 设计令牌 + AI 提示词 + 制作过程与全部源码；已出包豪斯、瑞士国际主义、构成主义三种风格与便当盒、瀑布流两种布局。">
-<meta property="og:title" content="每天一个设计风格 · Design Style 导读">
-<meta property="og:image" content="gallery-preview.webp">
+<title>每天一个设计风格 · Design Style：观默的开源设计风格库（导读，2026-11-10 增补）</title>
+<meta name="description" content="guanmo-ai/design-style 项目导读增补：画廊已发布 17 种风格与 2 种布局，共 19 部 15–20 秒代码短片。根目录 2026-11-10 仍无 LICENSE，本页保持导读、只用短引，不译 README 全文。星数为页面观察值 ⚠️。">
+<meta property="og:title" content="每天一个设计风格 · Design Style：观默的开源设计风格库（导读）">
+<meta property="og:description" content="面向设计师与 AI 的设计风格库。2026-11-10 复查：画廊已有 19 部短片；根目录仍无开源许可证，本页只做导读。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
-<style data-za-legacy>
-/* page-specific components kept from the original page */
-.ds-covers{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:1.2em 0}
-.ds-covers figure{margin:0}
-.ds-covers img{width:100%;height:auto;border-radius:6px;display:block}
-.ds-covers figcaption{font-size:.85em;margin-top:.35em}
-.ds-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:1.2em 0}
-.ds-pair figure{margin:0}
-.ds-pair img{width:100%;height:auto;border-radius:6px}
-@media (max-width:640px){.ds-pair{grid-template-columns:1fr}}
-</style>
+
 <!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
 <!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
 </head>
@@ -29,164 +21,147 @@
 <!-- za:article v1 -->
 <div class="za-page">
 <header class="za-head">
-<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-10-23">2026.10.23</time></p>
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
 <h1 class="za-title">每天一个设计风格 · Design Style：观默的开源设计风格库（导读）</h1>
-<p class="za-sub" lang="en" data-za-gen>Design Style · Design references for humans and AI</p>
-<p class="za-meta" data-za-gen><span>来源 · 观默 @guanmo_ai · GitHub</span><span>收录 · 2026-10-23</span><span><a href="https://github.com/guanmo-ai/design-style" rel="noopener">查看原文 ↗</a></span></p>
-<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/guanmo-ai/design-style" rel="noopener">guanmo-ai/design-style</a> · 作者 观默 <a href="https://x.com/guanmo_ai" rel="noopener">@guanmo_ai</a> · 网页画廊 <a href="https://guanmo-ai.github.io/design-style/" rel="noopener">guanmo-ai.github.io/design-style</a> · 仓库创建于 2026-10-20 · 本页依据提交 <code>31e56ca</code>（2026-10-22）整理</p>
-<img class="cover" src="gallery-preview.webp" alt="Design Style 网页画廊首页 封面" width="1440" height="1000" loading="lazy"></div><!-- /za:origin -->
+<p class="za-sub" lang="en" data-za-gen>Design Style · 2026-11-10 复查增补</p>
+<p class="za-meta" data-za-gen><span>来源 · 观默 @guanmo_ai · GitHub</span><span>收录 · 2026-11-10</span><span><a href="https://github.com/guanmo-ai/design-style" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/guanmo-ai/design-style">guanmo-ai/design-style</a> · 作者 观默 <a href="https://x.com/guanmo_ai">@guanmo_ai</a> · 网页画廊 <a href="https://guanmo-ai.github.io/design-style/">guanmo-ai.github.io/design-style</a> · 初版导读 2026-10-23 · 本次复查 2026-11-10（新加坡时间） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><div class="related-guide"><strong>版权说明：</strong>仓库根目录<strong>没有开源许可证（LICENSE）</strong>。README「授权」一节写的是：「代码欢迎学习和改造；转发视频和图片请注明出处 观默 @guanmo_ai」；只有 <code>gallery/</code> 子目录（网页画廊代码）带 MIT 许可，字体为 SIL OFL 1.1 / GUST Font License。因此本页<strong>不是 README 全文翻译</strong>，而是用我们自己的话写的中文导读，只摘少量短句；文中图片均取自原仓库（封面、风格图、过程图，转为 webp 缩小）与画廊首页截图，版权归观默 @guanmo_ai 所有。原作者如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</div>
+<!-- za:content --><main class="za-content"><p class="lede">Design Style 是观默做的一套设计参考库，自我定位是「面向设计师与 AI 的开源设计风格库」。一期拆一种视觉语言或一种排法：给一支代码写成的动效短片、一组风格图、一份带规则与提示词的指南，以及可共用的设计令牌。本站在 2026-10-23 写过导读，当时画廊里只有 3 种风格和 2 种布局。今天按同一条地址复查，短片已经长到 19 部，做法也从单一的 Remotion 管线分出了三维与其他脚本；根目录却仍然没有开源许可证。所以这一页继续只做中文导读，不译 README 全文，也不新收入仓库里的风格图。</p>
 
-<nav class="toc"><strong>目录</strong><ol>
-<li><a href="#what">这是什么项目</a></li>
-<li><a href="#tldr">五个要点</a></li>
-<li><a href="#catalog">目前有哪几期</a></li>
-<li><a href="#kit">每一期的“四件套”</a></li>
-<li><a href="#how">它是怎么做出来的</a></li>
-<li><a href="#use">怎么用：看、抄、喂给 AI、自己做一期</a></li>
-<li><a href="#tree">仓库结构</a></li>
-<li><a href="#gallery">网页画廊</a></li>
-<li><a href="#comment">评论与启发</a></li>
-<li><a href="#related">本站相关</a></li>
-<li><a href="#license">来源与授权</a></li>
-</ol></nav>
+<figure>
+<img src="images/cover.webp" alt="自制封面：米纸底、细线边框，居中写着「每天一个设计风格 Design Style」，下署观默 @guanmo_ai，并注明 17 种风格、2 种布局、根目录无开源许可证" width="1600" height="1000">
+<figcaption>本页封面为自制题头，未使用仓库图片。版权说明见文末。</figcaption>
+</figure>
+
+<div class="notice"><strong>版权说明：</strong>2026-11-10（新加坡时间）现场核验：仓库根目录的 <code>LICENSE</code>、<code>LICENSE.md</code>、<code>LICENSE.txt</code>、<code>COPYING</code>、<code>LICENCE</code> 以及 <code>NOTICE.md</code> 均返回 404；<code>package.json</code> 写明 <code>"private": true</code>，且没有 <code>license</code> 字段；GitHub 仓库页未见 “View license”。根 README「授权」一节的原句是：「代码欢迎学习和改造；转发视频和图片请注明出处 观默 @guanmo_ai」。这不是一份 OSI 意义上的开源许可证。只有 <code>gallery/</code> 子目录的画廊代码带 <a href="https://raw.githubusercontent.com/guanmo-ai/design-style/main/gallery/LICENSE">MIT License</a>（Copyright (c) 2026 观默 / @guanmo_ai），并写明视频、音频、封面和原有风格素材不在该许可范围内，使用规则以仓库 README 为准。字体另有 SIL OFL 1.1、GUST Font License 与 Apache License 2.0。因此本页<strong>不是 README 全文翻译</strong>，只用我们自己的话做导读，并保留少量短引。文中沿用 2026-10-23 已上站的缩略图（包豪斯、瑞士、构成主义与两种布局的封面、过程图，以及当时的画廊首页截图），版权归观默 @guanmo_ai；本次不新增仓库图像，也不下载或转载视频。原作者如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</div>
+
+<h2 id="update">2026-11-10 复查：从五期到十九部短片</h2>
+<p>与 10 月那一版相比，变化主要在规模和管线，而不是定位。画廊目录 <code>gallery/data/works.json</code> 在此次核对时共有 <strong>19</strong> 条已发布作品：<strong>17 种设计风格</strong>加<strong>2 种布局</strong>。最早一条仍是 2026-10-20 的包豪斯；最晚一条是 2026-11-09 23:19（新加坡时间）写入的「水墨」。时长不再一律是 15 秒、900 帧：根 README 开篇已改成「15—20 秒动效短片」，规格表同时写了 30 / 60fps。已上线的短片里，波普、字符画、生成艺术、液态金属是 18 秒，点云 19.5 秒，水墨 18.75 秒，新粗野主义、装饰艺术、液态玻璃、微缩景观、低多边形是 20 秒。</p>
+<p>制作路径也分开了。早期仍是 Remotion（根目录依赖现为 4.0.538）加 numpy 合成配乐。液态玻璃用到 WebGL；微缩景观在目录数据里标明 <code>videoDir: video3d</code>，标签里有 three.js；字符画与生成艺术的渲染脚本是各期目录下的 <code>video/make.sh</code>，不再走统一的 <code>npm run render:00x</code>。本地运行说明现要求 Node.js 22.12+（旧导读写的是 18+），安装改为 <code>npm ci</code>，并提到浏览器解压安全补丁与 <code>docs/SECURITY.md</code>。本站没有在本地跑渲染或画廊，这些只是对文档的转述。</p>
+<p>根 README 的风格目录表没有跟上画廊。表里写到了 021 生成艺术，却没有点云、液态金属和水墨；「计划中」仍列着装饰艺术、新粗野主义、Y2K，而这三样里前两样已经发布，Y2K 则是另一种状态。判断「现在有哪几期」，这次以 <code>works.json</code> 为准，README 目录只作对照。</p>
+<p>还有两期写了指南、但没有进入画廊。006 千禧未来主义（Y2K）的风格 README 链到 Release <code>day-06</code>，根 README 却写「视频待补齐，暂未上线」；我们打开该 Release 页，得到 404。015 未来主义（1909—1944）的 README 写「成片审过后发布」，<code>day-15</code> 同样是 404，<code>package.json</code> 里已有对应渲染脚本。两者都未计入上面的 19 部。</p>
+<p>公开仓库页 HTML 里嵌入的 <code>stargazerCount</code>，在 2026-11-10（新加坡时间）读到 <strong>210</strong>；2026-10-23 的笔记是 83。⚠️ 这是页面观察值，未调用 GitHub API，也可能随缓存变化。仓库创建时间仍为 2026-10-20 12:27（新加坡时间）。</p>
 
 <h2 id="what">这是什么项目</h2>
-<p>Design Style（中文名「每天一个设计风格」）是观默 @guanmo_ai 在 2026 年 10 月开的一个开源设计参考库，自我定位是「面向设计师与 AI 的开源设计风格库」（<em>Design references for humans and AI</em>）。它的做法是<strong>一期拆一种设计语言</strong>：给出一支 15 秒的动效短片、一组 4 张竖版风格图、一份风格指南（历史、规则、色板、字体、版式、误区、AI 提示词），以及可复用的设计令牌和全部源码。</p>
-<p>内容分两条线：<strong>设计风格</strong>（Style，三位期号，如 001 包豪斯）讲视觉语言；<strong>布局方式</strong>（Layout，两位期号，如 01 便当盒）讲信息怎么排。截至 2026-10-22 已经发了 5 期，仓库约 83 星。</p>
+<p>它把内容分成两条线。<strong>设计风格</strong>用三位期号（如 001 包豪斯、024 水墨），讲一种视觉语言；<strong>布局方式</strong>用两位期号（01 便当盒、02 瀑布流），讲信息怎么排。作者的原句是：「每天拆解一种设计风格：15 秒动效短片、风格图、设计规则、AI 提示词与完整源码。」现在短片时长已经放宽，但这句话里的结构没有变：给人看的参考，也给模型用的约束。</p>
+<p>网页画廊在 <a href="https://guanmo-ai.github.io/design-style/">guanmo-ai.github.io/design-style</a>，可以按风格或布局筛选、看视频、读指南和制作过程。本页不转载画廊截图的新版本；10 月那张首页缩略仍附在后面，仅作当时形貌的记录。</p>
 
-<h2 id="tldr">五个要点</h2>
+<h2 id="tldr">几个仍然成立的要点</h2>
 <ul>
-<li><strong>一期一个风格，一个风格一招：</strong>每期先写出“观众能带走的一招”（比如构成主义的“把轴转 30°，版面就开始动”），所有画面都围着这一招服务。</li>
-<li><strong>全部用代码做：</strong>短片用 Remotion（React + TypeScript）逐帧写成，配乐和音效用 numpy 从零合成，风格图是 Python 手写 SVG；没有 Figma / AE / 素材库 / AI 生图。改一个数字就能重出。</li>
-<li><strong>设计令牌是核心：</strong>颜色（含面积比例）、字体、线宽、节拍、轴角度写进 <code>tokens.ts / tokens.css / tokens.json</code>，视频、图片、网页共用同一套数值——<code>tokens.json</code> 也正适合直接喂给 AI 当审美约束。</li>
-<li><strong>过程完全公开：</strong>每期有 <code>PROCESS.md</code>（设计上怎么想、哪里推翻重来，附联系表、时间轴图），003 起加了 <code>MAKING.md</code>（十步从 0 到 1 + 开工提示词）。003 期本身就是由 AI 智能体在 Linux 沙盒里做完、人只定方向和审片。</li>
-<li><strong>统一规格可复刻：</strong>15 秒 = 900 帧 @ 60fps，转场全部落在拍点；结构固定为“钩子 → 6–9 个章节 → 回顾 → 片尾”；风格图统一 1080×1350（X / 小红书竖图比例）；只用可免费商用的开源字体。</li>
+<li><strong>一期一招。</strong>每期先写出观众能带走的一句话——例如构成主义的「把轴转 30°，版面就开始往前冲」，或液态玻璃的「玻璃不发光，只把后面的东西弯过来」。画面围着这一招展开。</li>
+<li><strong>以代码出片。</strong>早期短片用 Remotion 逐帧写成，配乐和音效用 numpy 合成，风格图是手写 SVG。后来的三维与材质篇补充了 three.js、WebGL 和其他脚本，仍然不是 generational video 模型出片。</li>
+<li><strong>设计令牌共用。</strong>颜色（有的还带面积比例）、字体、线宽、节拍、轴角度写进 <code>tokens.ts</code> / <code>tokens.css</code> / <code>tokens.json</code>，视频、图片和网页用同一套数字。<code>tokens.json</code> 也适合直接交给智能体当约束。</li>
+<li><strong>过程公开。</strong>每期有 <code>PROCESS.md</code>；003 起还有 <code>MAKING.md</code>，把一期拆成「做什么 → 产出 → 过关」。作者说明 003 是由 AI 智能体在沙盒里做完、人定方向和审片。</li>
+<li><strong>规格仍严，但不再只有一种时长。</strong>转场落在拍点、钩子之后分章、再回顾和片尾，这一骨架还在；风格图仍是 1080×1350 的四张一组；字体声明只用可免费商用的开源字体。短片则已从固定 15 秒扩展到 15–20 秒。</li>
 </ul>
 
-<h2 id="catalog">目前有哪几期</h2>
-<div class="ds-covers">
-<figure><img src="cover-001-bauhaus.webp" alt="001 包豪斯 封面" width="960" height="540" loading="lazy"><figcaption><strong>001 包豪斯 Bauhaus</strong> · 1919—1933 · 现代主义</figcaption></figure>
-<figure><img src="cover-002-swiss.webp" alt="002 瑞士国际主义 封面" width="960" height="540" loading="lazy"><figcaption><strong>002 瑞士国际主义 Swiss Style</strong> · 1950—1970 · 现代主义</figcaption></figure>
-<figure><img src="cover-003-constructivism.webp" alt="003 构成主义 封面" width="960" height="540" loading="lazy"><figcaption><strong>003 构成主义 Constructivism</strong> · 1917—1932 · 现代主义</figcaption></figure>
-<figure><img src="cover-L01-bento.webp" alt="布局 01 便当盒 封面" width="960" height="540" loading="lazy"><figcaption><strong>布局 01 便当盒 Bento Grid</strong> · 2020s— · 当代界面</figcaption></figure>
-<figure><img src="cover-L02-masonry.webp" alt="布局 02 瀑布流 封面" width="960" height="540" loading="lazy"><figcaption><strong>布局 02 瀑布流 Masonry</strong> · 2009— · 当代界面</figcaption></figure>
-</div>
+<h2 id="catalog">画廊现在有哪几期</h2>
+<p>下表按 <code>works.json</code> 的记录整理，期号用仓库目录名，避免和画廊里的显示序号混淆——例如孔版印刷的目录是 008，画廊序号却是 006。成片都在 GitHub Releases，本页只给标签链接，不下载视频。时长来自根 README 画廊预览或目录简介，未逐帧测量 ⚠️。</p>
 <div class="table-wrap"><table>
-<thead><tr><th>期</th><th>名称</th><th>短片做了什么（概括）</th><th>节拍</th><th>成片</th></tr></thead>
+<thead><tr><th>目录</th><th>名称</th><th>年代（条目所写）</th><th>时长</th><th>Release</th></tr></thead>
 <tbody>
-<tr><td>001</td><td>包豪斯</td><td>9 个章节依次讲色彩、形与色、字体、海报、建筑、家具、灯具、纺织、舞台，最后九宫格回顾；圆 / 方 / 三角轮流做转场</td><td>120 BPM</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-01" rel="noopener">day-01</a></td></tr>
-<tr><td>002</td><td>瑞士国际主义</td><td>一张 12 × 6 网格贯穿全片，红色接力换幕</td><td>120 BPM</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-02" rel="noopener">day-02</a></td></tr>
-<tr><td>003</td><td>构成主义</td><td>全片只有两条轴（−30° / 60°），红楔、黑圆、粗条接力换幕，真西里尔字母</td><td>144 BPM</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-03" rel="noopener">day-03</a></td></tr>
-<tr><td>L01</td><td>便当盒布局</td><td>同一套圆角卡片一路变形：发布会 → 来历 → 规则 → 用法</td><td>150 BPM</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/layout-01" rel="noopener">layout-01</a></td></tr>
-<tr><td>L02</td><td>瀑布流布局</td><td>26 张卡片在 13 种排法之间流动（落雨 → 砌石墙 → 最短列算法 → Pinterest → 手机 → 响应式）</td><td>≈128.6 BPM</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/layout-02" rel="noopener">layout-02</a></td></tr>
+<tr><td>001</td><td>包豪斯 Bauhaus</td><td>1919—1933</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-01">day-01</a></td></tr>
+<tr><td>002</td><td>瑞士国际主义 Swiss Style</td><td>1950—1970</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-02">day-02</a></td></tr>
+<tr><td>003</td><td>构成主义 Constructivism</td><td>1917—1932</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-03">day-03</a></td></tr>
+<tr><td>004</td><td>孟菲斯 Memphis</td><td>1980—1988</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-04">day-04</a></td></tr>
+<tr><td>005</td><td>波普艺术 Pop Art</td><td>1956—1970</td><td>18 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-05">day-05</a></td></tr>
+<tr><td>008</td><td>孔版印刷 Risograph</td><td>1946—今天</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-08">day-08</a></td></tr>
+<tr><td>009</td><td>新粗野主义 Neo-Brutalism</td><td>2021—今天</td><td>20 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-09-audio-v2">day-09-audio-v2</a></td></tr>
+<tr><td>013</td><td>装饰艺术 Art Deco</td><td>1925—1939</td><td>20 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-13">day-13</a></td></tr>
+<tr><td>014</td><td>液态玻璃 Liquid Glass</td><td>2013—今天</td><td>20 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-14">day-14</a></td></tr>
+<tr><td>017</td><td>中世纪现代 Mid-Century Modern</td><td>1945—1965</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-17">day-17</a></td></tr>
+<tr><td>018</td><td>微缩景观 Diorama</td><td>1950s—今天</td><td>20 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-18-v3">day-18-v3</a></td></tr>
+<tr><td>019</td><td>低多边形 Low Poly</td><td>1993—今天</td><td>20 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-19">day-19</a></td></tr>
+<tr><td>020</td><td>字符画 ASCII Art</td><td>1960s—今天</td><td>18 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-20">day-20</a></td></tr>
+<tr><td>021</td><td>生成艺术 Generative Art</td><td>1960s—今天</td><td>18 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-21">day-21</a></td></tr>
+<tr><td>022</td><td>点云 Point Cloud</td><td>条目写 2026 ⚠️</td><td>19.5 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-22">day-22</a></td></tr>
+<tr><td>023</td><td>液态金属 Liquid Chrome</td><td>条目写 2026 ⚠️</td><td>18 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-23">day-23</a></td></tr>
+<tr><td>024</td><td>水墨 Ink Wash</td><td>条目写 2026 ⚠️</td><td>18.75 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/day-24">day-24</a></td></tr>
+<tr><td>L01</td><td>便当盒布局 Bento Grid</td><td>2020s—</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/layout-01">layout-01</a></td></tr>
+<tr><td>L02</td><td>瀑布流布局 Masonry</td><td>2009—</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/layout-02">layout-02</a></td></tr>
 </tbody></table></div>
-<p>计划中（作者注明顺序可能调整）：装饰艺术 Art Deco、孟菲斯 Memphis、新粗野主义网页、Y2K、日式极简等。</p>
+<p>后三期的「年代」在目录里写成 2026，更像条目写入年，而不是风格本身的历史区间，表中已标出。点云一条的简介还写「80 万个点构成文字、兔子、街道与盆景」，这是目录自述，本站未数点 ⚠️。</p>
+<p>未进画廊、但仓库里已有指南的两期：<strong>006 千禧未来主义 Y2K</strong>（1997—2004），根 README 标明视频待补；风格 README 的 Release 链接在此次核对中打不开。<strong>015 未来主义 Futurism</strong>（1909—1944），一句话是「动的东西，留下它刚才的样子」；成片尚未发布。日式极简等，根 README 仍写在「计划中」，顺序可能调整。</p>
+<p>下面五张图是 2026-10-23 导读里用过的早期封面，便于对照当时的规模。本次没有为后来各期另配图。</p>
+<div class="ds-covers">
+<figure><img src="images/cover-001-bauhaus.webp" alt="001 包豪斯短片封面：几何形与红黄蓝" width="960" height="540" loading="lazy"><figcaption>001 包豪斯 · 1919—1933</figcaption></figure>
+<figure><img src="images/cover-002-swiss.webp" alt="002 瑞士国际主义短片封面：网格与红色块" width="960" height="540" loading="lazy"><figcaption>002 瑞士国际主义 · 1950—1970</figcaption></figure>
+<figure><img src="images/cover-003-constructivism.webp" alt="003 构成主义短片封面：斜向红楔与大字" width="960" height="540" loading="lazy"><figcaption>003 构成主义 · 1917—1932</figcaption></figure>
+<figure><img src="images/cover-L01-bento.webp" alt="布局 01 便当盒短片封面：圆角格子" width="960" height="540" loading="lazy"><figcaption>布局 01 便当盒 · 2020s—</figcaption></figure>
+<figure><img src="images/cover-L02-masonry.webp" alt="布局 02 瀑布流短片封面：高低错落的卡片墙" width="960" height="540" loading="lazy"><figcaption>布局 02 瀑布流 · 2009—</figcaption></figure>
+</div>
+<p class="caption">以上五帧取自 2026-10-23 已上站的仓库封面缩略，版权归观默 @guanmo_ai，转为 WebP 缩小后沿用。</p>
 
-<h2 id="kit">每一期的“四件套”</h2>
-<p>作者把每期的固定产出概括为“视频 · 风格图 · 制作过程 · 源代码”。拆开看：</p>
+<h2 id="kit">每一期仍然有一套固定产出</h2>
+<p>作者把每期概括为「视频 · 风格图 · 制作过程 · 源代码」。拆开看，和 10 月那一版大体相同，只是视频规格写得更宽：</p>
 <div class="table-wrap"><table>
-<thead><tr><th>产出</th><th>规格</th><th>对应文件</th></tr></thead>
+<thead><tr><th>产出</th><th>规格（据 README 转述）</th><th>对应文件</th></tr></thead>
 <tbody>
-<tr><td>15 秒动效短片</td><td>1920×1080 · 60fps · 配乐音效全部代码合成；成片放在 GitHub Releases</td><td><code>video/*.tsx</code>、<code>audio/make_music.py</code></td></tr>
-<tr><td>4 张风格图 / 布局图</td><td>1080×1350；风格：海报 · 速查卡 · 今天的应用（App UI）· 图案；布局：海报 · 速查卡 · 布局×风格 / 对照 · 模板</td><td><code>images/*.svg</code>；<code>images/preview/</code> 为内嵌字体子集、在 GitHub 上点开即最终效果的 SVG</td></tr>
-<tr><td>风格 / 布局指南</td><td>10 节：来历 · 五条规则 · 色板 · 字体 · 版式参数 · 这样做/别这样 · 误区 · AI 提示词 · 15 秒分镜 · 文件</td><td><code>README.md</code></td></tr>
-<tr><td>设计令牌</td><td>一份数值三种格式</td><td><code>tokens.ts</code>（视频）· <code>tokens.css</code>（网页）· <code>tokens.json</code>（画廊与 AI）</td></tr>
-<tr><td>制作过程</td><td>研究 → 令牌 → 风格图 → 分镜 → 改版 → 质检 → 发布</td><td><code>PROCESS.md</code>、<code>process/</code>（联系表、时间轴图）、003 起 <code>MAKING.md</code></td></tr>
+<tr><td>15—20 秒动效短片</td><td>1920×1080 · 30 / 60fps · 配乐与音效由代码合成；成片放在 Releases</td><td><code>video/</code>（Remotion 等）或 <code>video3d/</code>（three.js）· <code>audio/make_music.py</code></td></tr>
+<tr><td>4 张风格图 / 布局图</td><td>1080×1350（X / 小红书竖图比例）；风格多为海报、速查卡、今天的应用、图案或步骤图</td><td><code>images/*.svg</code>；<code>images/preview/</code> 内嵌字体子集</td></tr>
+<tr><td>风格 / 布局指南</td><td>来历、规则、色板、字体、版式、误区、AI 提示词等</td><td>各期 <code>README.md</code></td></tr>
+<tr><td>设计令牌</td><td>一份数值，三种格式</td><td><code>tokens.ts</code> · <code>tokens.css</code> · <code>tokens.json</code></td></tr>
+<tr><td>制作过程</td><td>研究 → 令牌 → 风格图 → 分镜 → 改版 → 质检 → 发布</td><td><code>PROCESS.md</code>、<code>process/</code>；部分期有 <code>MAKING.md</code></td></tr>
 </tbody></table></div>
 <div class="ds-pair">
-<figure><img src="poster-003.webp" alt="构成主义风格海报" width="720" height="900" loading="lazy"><figcaption>003 构成主义 · 风格海报（原图 2160×2700 PNG）</figcaption></figure>
-<figure><img src="cheatsheet-001.webp" alt="包豪斯速查卡" width="720" height="900" loading="lazy"><figcaption>001 包豪斯 · 速查卡：颜色、字体与五条规则</figcaption></figure>
+<figure><img src="images/poster-003.webp" alt="构成主义风格海报缩略" width="720" height="900" loading="lazy"><figcaption>003 构成主义 · 风格海报（2026-10-23 已上站缩略）</figcaption></figure>
+<figure><img src="images/cheatsheet-001.webp" alt="包豪斯速查卡缩略：颜色、字体与规则" width="720" height="900" loading="lazy"><figcaption>001 包豪斯 · 速查卡（同上）</figcaption></figure>
 </div>
-<p>以构成主义的 <code>tokens.json</code> 为例，它不仅给色值，还给出<strong>面积比例</strong>（旧纸 #ECE4D2 占 50%、印刷黑 #161412 占 30%、构成红 #D3261C 占 15%、网点灰 5%），字体（Oswald 代替 1920 年代手绘压缩无衬线，中文用 Noto Sans SC），以及这一期最关键的“轴”令牌：主轴 −30°、副轴 60°，外加 60fps / 144 BPM / 每拍 25 帧的动效参数。</p>
+<p>以构成主义的 <code>tokens.json</code> 为例（初版导读已核对）：它不只给色值，还给出面积比例（旧纸约占 50%、印刷黑 30%、构成红 15%、网点灰 5%），以及这一期最关键的轴令牌：主轴 −30°、副轴 60°。后来各期是否都维持同样的令牌密度，本次没有逐份重开。</p>
 
 <h2 id="how">它是怎么做出来的</h2>
-<figure><img src="workflow-003.webp" alt="构成主义 从 0 到 1 的十步工作流" width="1440" height="900" loading="lazy"><figcaption>003 的 MAKING.md 配图：从 0 到 1 的十步</figcaption></figure>
-<p><code>MAKING.md</code> 把一期拆成十步，每一步写明“做什么 → 产出 → 过关标准”。概括如下：</p>
-<ol>
-<li><strong>读仓库</strong>：通读前几期的 README / PROCESS / tokens / video，列出每期必须有的产出——“抄结构，不抄画面”。</li>
-<li><strong>选题与一招</strong>：一句话定义 + 观众能带走的一招；答不出“在演示哪一招”的画面删掉。</li>
-<li><strong>研究</strong>：只写查得到的年份；3–5 条可执行规则；“广度清单”（海报、电影、建筑、纺织、舞台、书籍、今天……）直接变成视频章节。</li>
-<li><strong>设计令牌</strong>：先定系统再画画面。所有斜向元素都用同一个“沿主轴走 u、沿副轴走 n”的定位函数，TS 版给视频、Python 版给 SVG，两边是同一套数学。</li>
-<li><strong>风格图先行</strong>：先把静止画面做对——这几张图就是视频的“定帧”。</li>
-<li><strong>时间轴</strong>：先写节拍再写动画，每次换幕落在拍点，每章一个主角、一个动作（<code>process/timeline.json</code>）。</li>
-<li><strong>视频代码</strong>：Remotion 里每一帧是 <code>frame → 画面</code> 的函数；过关标准是“任何一帧截下来都能当海报”。</li>
-<li><strong>配乐音效</strong>：和画面共用帧号，用 numpy 合成鼓、贝斯、铜管、铁砧、打字机等。</li>
-<li><strong>质检循环</strong>：导出关键帧、联系表、节拍时间轴图，看 → 改 → 再看。</li>
-<li><strong>渲染与发布</strong>：渲染 crf16 母版，再用 ffmpeg 压各平台可播的分享版；取第 90 帧做封面；一期一个提交（视频不进 git）；发 Release 并附 SHA-256；最后更新画廊目录。</li>
-</ol>
-<figure><img src="timeline-001.webp" alt="包豪斯 节拍时间轴" width="1440" height="465" loading="lazy"><figcaption>001 包豪斯 · 过程图：节拍与章节时间轴（由 scripts/timeline_chart.py 生成）</figcaption></figure>
-<p>工具链全部开源或免费：Remotion 4.0.454 + React 19 + TypeScript、Node.js、Python（fontTools 做字体度量和子集化内嵌、Pillow / matplotlib 画过程图）、Playwright + Chromium 把 SVG 渲成 2x PNG 和导出关键帧、ffmpeg 做响度和抽帧。作者说明一台没有显卡的 2 核机器就能跑完整个流程（Remotion 本身对个人与小团队免费，商业使用需看其许可）。</p>
+<figure><img src="images/workflow-003.webp" alt="构成主义从 0 到 1 的十步工作流图" width="1440" height="900" loading="lazy"><figcaption>003 的 MAKING.md 配图：十步工作流（2026-10-23 已上站缩略）</figcaption></figure>
+<p><code>MAKING.md</code> 把一期拆成十步，每一步写明「做什么 → 产出 → 过关」。概括仍是：先读前几期、抄结构不抄画面；写出一句话定义和「一招」；只写查得到的年份和可执行规则；先定令牌再画；风格图当作视频的定帧；先写节拍再写动画；Remotion 里每一帧是 <code>frame → 画面</code> 的函数，过关标准是「任何一帧截下来都能当海报」；配乐与画面共用帧号；导出联系表和时间轴图做质检；最后渲染母版、发 Release、更新画廊。003 之后的新管线（WebGL、three.js、<code>make.sh</code>）是在这套方法上添路，不是另起一套口味。</p>
+<figure><img src="images/timeline-001.webp" alt="包豪斯节拍与章节时间轴" width="1440" height="465" loading="lazy"><figcaption>001 包豪斯 · 节拍时间轴（由脚本生成；2026-10-23 已上站缩略）</figcaption></figure>
 
-<h2 id="use">怎么用：看、抄、喂给 AI、自己做一期</h2>
-<h3>1）只是看</h3>
-<p>直接打开<a href="https://guanmo-ai.github.io/design-style/" rel="noopener">网页画廊</a>：可搜索、按「设计风格 / 布局方式」筛选，点卡片看视频、放大或下载 SVG 风格图，并在站内阅读每期的指南和制作过程。</p>
-<h3>2）拿来当设计参考 / AI 约束</h3>
-<ul>
-<li>每期 README 第 8 节是「AI 提示词（直接复制）」，分图片（Midjourney / 即梦 / ChatGPT 图像）和视频（Runway / 可灵 / Sora）两段，色值、字体、禁忌都写死在提示词里。</li>
-<li>把某期的 <code>tokens.json</code> + README 的“五条规则 / 这样做·别这样”交给 coding agent，就是一份现成的“风格约束包”，可用于生成网页、海报或 Remotion 动画。</li>
-<li><code>tokens.css</code> 可直接在网页项目里引用。</li>
-</ul>
-<h3>3）在本地重出成片</h3>
-<pre><code>git clone https://github.com/guanmo-ai/design-style.git && cd design-style
-npm install
-npm run fonts                 # 下载开源字体到 public/fonts
-pip install numpy fonttools
-npm run studio                # 浏览器里逐帧预览、改参数
-npm run render:003            # 生成配乐 → 渲染 out/003-constructivism-master.mp4
-npx playwright install chromium
-npm run images:003            # 生成 4 张风格图 → preview SVG + 2x PNG</code></pre>
-<p>需要 Node 18+、Python 3.10+、ffmpeg。风格对应 <code>render:001/002/003</code>，布局对应 <code>render:L01/L02</code>；Remotion 里注册的 Composition 名为 <code>S001-Bauhaus</code>、<code>L01-BentoGrid</code> 等。</p>
-<h3>4）让 AI 帮你做下一期</h3>
-<p><code>MAKING.md</code> 第 4 节附了一段“开工提示词”：大意是让智能体先读前几期的 README / PROCESS / MAKING 和 docs 模板、列出必备产出，再写一句话定义和“一招”，然后按研究 → 令牌 → 风格图 → 时间轴 → 动画 → 声音 → 质检的顺序推进。新的一期放进 <code>styles/NNN-name/</code> 或 <code>layouts/NN-name/</code>，按 <code>docs/GALLERY.md</code> 发 Release、填 <code>gallery/data/works.json</code> 即可进入画廊。</p>
+<h2 id="use">怎么用</h2>
+<p>若只是看，打开<a href="https://guanmo-ai.github.io/design-style/">网页画廊</a>即可。若要当设计参考或给智能体当约束，可以把某期 README 里的规则、误区和 AI 提示词，连同 <code>tokens.json</code> 一起交给模型；<code>tokens.css</code> 也可以在网页项目里引用。本地重出成片的命令以仓库当前 README 为准，需要 Node 22.12+、Python 3.10+、ffmpeg；本站未实际运行。003 起的 <code>MAKING.md</code> 还附有「开工提示词」，让智能体按研究 → 令牌 → 风格图 → 时间轴 → 动画 → 声音 → 质检的顺序推进。转载视频和图片，按作者要求注明出处观默 @guanmo_ai；商用边界仍需向作者确认，因为根目录没有许可证。</p>
 
-<h2 id="tree">仓库结构</h2>
+<h2 id="tree">仓库结构（据 README 转述）</h2>
 <pre><code>design-style/
-├─ src/              Remotion 入口，每期一个 Composition；lib/ 放缓动、弹簧、关键帧轨道与胶片颗粒
-├─ styles/NNN-name/  风格：README（指南）· PROCESS · MAKING · tokens.{ts,css,json}
-│                    · video/ · audio/make_music.py · images/（+ preview/）· process/
-├─ layouts/NN-name/  布局：结构同上
-├─ gallery/          网页画廊静态站源码 + works.json（MIT）
-├─ scripts/          字体下载 · SVG→PNG · 关键帧截图 · 联系表 · 节拍时间轴 · 画廊构建
-├─ docs/             PROCESS / MAKING 模板 · 画廊维护文档
-└─ tests/gallery/    画廊目录与文档测试</code></pre>
+├─ src/                 Remotion 入口，每期一个 Composition
+├─ styles/NNN-name/     风格指南、PROCESS、tokens、video 或 video3d、配乐与图片
+├─ layouts/NN-name/     布局，结构同风格
+├─ gallery/             网页画廊源码与 works.json（此目录代码为 MIT）
+├─ scripts/             字体、转图、截帧、画廊构建
+├─ docs/                过程模板、画廊维护、安全说明
+└─ public/              字体与生成的音频（不入库）</code></pre>
 
 <h2 id="gallery">网页画廊</h2>
-<p>画廊是独立的静态站：构建时读取本仓库 Releases，下载视频并<strong>校验 SHA-256</strong>，把每期 README / PROCESS 用 Marked + sanitize-html 转成站内阅读页；GitHub Actions 在推送 main 时跑“安装锁定依赖 → 测试 → 下载核验视频 → 构建 → 发布检查 → 部署 Pages”，失败就不部署。视觉上沿用了作者另一个项目 Awesome AI Motion 的暖纸色画廊样式。仓库首页 README 顶部的视频预览表格也是由脚本按 <code>works.json</code> 自动生成的。</p>
+<p>画廊是独立的静态站：构建时读取本仓库 Releases，下载视频并校验 SHA-256，再把每期指南转成站内阅读页。GitHub Actions 在推送 main 时跑测试、核验和部署，失败就不发布。视觉上沿用了作者另一个项目 Awesome AI Motion 的暖纸色样式；<code>gallery/NOTICE.md</code> 说明沿用的是样式与字体，不含那边的作品数据。仓库首页 README 顶部的预览表由脚本按 <code>works.json</code> 生成，所以它比正文里的目录表更接近「现在上线了什么」。下图是 2026-10-23 的画廊首页截图，不能代表今天的目录。</p>
+<figure><img src="images/gallery-preview.webp" alt="2026-10-23 时的 Design Style 网页画廊首页截图" width="1440" height="1000" loading="lazy"><figcaption>画廊首页（2026-10-23 截图，仅作当时记录；本次未新截）。</figcaption></figure>
 
-<h2 id="comment">评论与启发</h2>
+<h2 id="comment">评论</h2>
 <ul>
-<li><strong>“给 AI 的审美参考”这个定位很准。</strong>相比只给一句风格提示词，这里给的是可计算的约束：色值 + 面积比例、字体及替代、网格模块、轴角度、节拍帧数。这正是 coding agent 最容易执行、也最不容易“跑偏”的形式。</li>
-<li><strong>“先把静止画面做对，再让它动”</strong>是对代码动效最实用的一条经验，和本站收录的多篇 Remotion / Opus 动效手册（帧号驱动、静帧评审）殊途同归。</li>
-<li><strong>过程文档本身就是教材。</strong>PROCESS.md 记录了推翻重来的版本（v1 联系表 → v2 分镜 → 改版），比成片更有学习价值。</li>
-<li><strong>需要注意：</strong>项目很新（2026-10-20 创建），目前只有 5 期；根目录没有开源许可证，视频与图片转载须注明出处，商用前应向作者确认。</li>
+<li>「给 AI 的审美参考」这一点仍然准。比起一句风格提示词，这里给的是可计算的约束：色值、面积、字体、网格、轴角度、节拍。这正是编码智能体比较不容易跑偏的形式。</li>
+<li>「先把静止画面做对，再让它动」依然是对代码动效最管用的一条经验，和本站其他 Remotion 手册里的静帧评审是同一类方法。</li>
+<li>仓库在三周里从 5 期长到 19 部已发布短片，并且愿意为三维、印刷、水墨另开管线，说明这不是一份写完就停的样本册。缺号（006、015 以及若干未在目录出现的期号）和 README 目录滞后，则说明发布节奏已经快过文档整理。</li>
+<li>根目录仍然没有开源许可证。作者欢迎学习、改造代码，并要求转发视频和图片时署名；这解决了礼貌问题，没有解决派生作品和商用的法律边界。引用、学习可以，再分发或商用前应向作者确认。</li>
 </ul>
 
 <h2 id="related">本站相关</h2>
 <ul>
-<li><a href="../mg-styles-15/">15 种 MG 动态设计风格：每种一支 10 秒代码成片 + 完整提示词 + 全部源码</a>——同样是“一个风格一支代码短片”的思路。</li>
-<li><a href="../lemo-opuscar-98-styles/">OPUSCAR 98：98 种奥斯卡最佳影片风格 + 提示词 + 导演编排</a>——影像风格包的另一种规模。</li>
-<li><a href="../hohomngkj-skill-library/">龚浩 Snail 的 Skill 风格库：93 套中式影像风格包</a>——风格以 Skill 形式交给 agent。</li>
-<li><a href="../huashu-motion/">Huashu-motion：让 coding agent 一键直出商业级产品宣传片</a></li>
-<li><a href="../prompt-motion/">Prompt Motion：Claude Opus 5.5 动态视频画廊（附提示词与 Skill）</a></li>
-<li><a href="../beamnxw-opus-launch-clip/">用 Opus 5.5 做动效工程：做能卖钱的产品发布短片</a>——Remotion 帧号驱动、静帧评审，与本项目 MAKING.md 互相印证。</li>
-<li><a href="../kerazcity-opus-motion-playbook/">Opus 5.5 动效手册：多数“一句提示词”视频其实不是一句话</a></li>
-<li><a href="../yanliu-design-sites/">审美提升：硅谷设计师私藏的 10 个网站 + 灵感库</a> · <a href="../design-resources/">设计资源大赏</a></li>
+<li><a href="../mg-styles-15/">15 种 MG 动态设计风格</a>——同样是「一个风格一支代码短片」，规则主要写在提示词里，而不是令牌文件。</li>
+<li><a href="../lemo-opuscar/">OPUSCAR 98</a>——影像风格包的另一种规模。</li>
+<li><a href="../shanshui/">Shanshui</a>——用代码画水墨山水；可与本库新上线的「水墨」一期对照，路线不同。</li>
+<li><a href="../beamnxw-opus-launch-clip/">用 Opus 5.5 做动效工程</a>——Remotion 帧号驱动、静帧评审，与本项目的 MAKING 互相印证。</li>
+<li><a href="../kerazcity-opus-motion-playbook/">Opus 5.5 动效手册</a></li>
+<li><a href="../eianlu-memphis-miniature-world/">Eian 孟菲斯微缩世界</a>——同一孟菲斯语汇，走的是提示词短片，而不是本库这种令牌 + 源码的写法。</li>
 </ul>
 
 <h2 id="license">来源与授权</h2>
 <ul>
-<li>原项目：<a href="https://github.com/guanmo-ai/design-style" rel="noopener">https://github.com/guanmo-ai/design-style</a>（作者 观默 @guanmo_ai）；网页画廊：<a href="https://guanmo-ai.github.io/design-style/" rel="noopener">https://guanmo-ai.github.io/design-style/</a></li>
-<li>许可状态：<strong>根目录无开源许可证</strong>；README 声明“代码欢迎学习和改造，转发视频和图片请注明出处 观默 @guanmo_ai”；<code>gallery/</code> 目录代码为 MIT；字体为 SIL OFL 1.1 / GUST Font License。</li>
-<li>本页处理方式：中文导读（非翻译），仅短摘引；图片为原仓库素材缩略与画廊首页截图，均注明出处。</li>
-<li>删除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request</a></li>
-</ul>
-</div></main><!-- /za:content -->
+<li>原项目：<a href="https://github.com/guanmo-ai/design-style">https://github.com/guanmo-ai/design-style</a>（作者 观默 @guanmo_ai）；网页画廊：<a href="https://guanmo-ai.github.io/design-style/">https://guanmo-ai.github.io/design-style/</a></li>
+<li>许可状态（2026-11-10 新加坡时间重核）：<strong>根目录无开源许可证</strong>；README 声明「代码欢迎学习和改造，转发视频和图片请注明出处 观默 @guanmo_ai」；<code>gallery/</code> 目录代码为 MIT，不含视频与风格素材；字体为 SIL OFL 1.1 / GUST Font License / Apache License 2.0（Tinos）。</li>
+<li>本页处理方式：中文导读（非翻译），仅短摘引；沿用 2026-10-23 已上站的缩略图，并自制题头封面；不新增仓库图像，不转载视频。</li>
+<li>删除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request</a></li>
+</ul></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig">本页为 guanmo-ai/design-style 的中文导读，整理于 2026-10-23（UTC+8）。内容版权归原作者观默 @guanmo_ai 所有。</div><!-- /za:foot -->
+<!-- za:foot --><div class="za-foot-orig"><p>本页为 guanmo-ai/design-style 的中文导读增补，整理于 2026-11-10（新加坡时间）；初版导读发布于 2026-10-23。内容版权归原作者观默 @guanmo_ai 所有。非官方镜像，仅供阅读学习。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/guanmo-ai/design-style" rel="noopener">github.com/guanmo-ai/design-style</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
 <p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>

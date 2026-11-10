@@ -1,5 +1,20 @@
 [
   {
+    "slug": "guanmo-design-style",
+    "title": "每天一个设计风格 · Design Style：观默的开源设计风格库（导读，2026-11-10 增补）",
+    "desc": "guanmo-ai/design-style 项目导读增补（根目录仍无开源许可，非翻译）：画廊已发布 17 种风格与 2 种布局，共 19 部 15–20 秒代码短片；管线从 Remotion 扩展到 three.js / WebGL 与各期脚本。令牌、过程文档与四件套规格仍在。星数为页面观察值 ⚠️；点云「80 万个点」为目录自述 ⚠️。沿用 10-23 已上站缩略图，自制题头封面，不新增仓库图像、不转载视频。",
+    "description": "guanmo-ai/design-style 项目导读增补（根目录仍无开源许可，非翻译）：画廊已发布 17 种风格与 2 种布局，共 19 部 15–20 秒代码短片；管线从 Remotion 扩展到 three.js / WebGL 与各期脚本。令牌、过程文档与四件套规格仍在。星数为页面观察值 ⚠️；点云「80 万个点」为目录自述 ⚠️。沿用 10-23 已上站缩略图，自制题头封面，不新增仓库图像、不转载视频。",
+    "source": "观默 @guanmo_ai · GitHub",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "Design Style · 2026-11-10 复查增补",
+    "original_url": "https://github.com/guanmo-ai/design-style",
+    "spine": "开源设计风格库",
+    "summary": "画廊已有 19 部代码短片；根目录仍无许可证，本页只做导读",
+    "kind": "项目",
+    "by": "观默 @guanmo_ai"
+  },
+  {
     "slug": "argofowl-ferrofluid-toggle",
     "title": "「铁磁流体开关」：溢出轨道的深色模式拨杆",
     "desc": "@argofowl 用 Opus 5.5 做的铁磁流体开关：自称无库、单 HTML 文件，声音也在浏览器里生成。本页含原帖全文中译与封面帧导读；未找到可打开的源码或许可证，不转载视频。",
@@ -999,19 +1014,6 @@
     "spine": "280 个游戏玩法图鉴",
     "summary": "280 个玩法机制逐条拆解：核心循环、权衡与原型",
     "kind": "站点"
-  },
-  {
-    "slug": "guanmo-design-style",
-    "title": "每天一个设计风格 · Design Style：观默的开源设计风格库（导读）",
-    "desc": "guanmo-ai/design-style 项目中文导读（无开源许可，非翻译）：面向设计师与 AI 的设计风格库，每期一支 15 秒 Remotion 代码动效短片（配乐由 numpy 合成）+ 4 张手写 SVG 风格图 + tokens.ts/css/json 设计令牌 + AI 提示词 + PROCESS/MAKING 制作过程；已出包豪斯、瑞士国际主义、构成主义 3 种风格与便当盒、瀑布流 2 种布局。五个要点、目录与规格、十步工作流、本地渲染与喂给 AI 的用法、网页画廊、评论与本站相关；附封面、风格图、过程图与画廊截图 webp。",
-    "source": "观默 @guanmo_ai · GitHub",
-    "date": "2026-10-23",
-    "type": "导读",
-    "subtitle": "Design Style · Design references for humans and AI",
-    "original_url": "https://github.com/guanmo-ai/design-style",
-    "spine": "开源设计风格库",
-    "summary": "每期一种设计风格：动效短片、风格图、令牌与提示词",
-    "kind": "项目"
   },
   {
     "slug": "every-how-codex-happened",
