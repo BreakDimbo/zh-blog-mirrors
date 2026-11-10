@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>该用哪个 Claude 模型来构建：Fable、Opus、Sonnet 还是 Haiku</title>
+<meta name="description" content="Addy Osmani 在 claude.dev 的选型指南导读：多数工作从 Opus 5.5、medium 起步；按任务下探 Sonnet / Haiku，或上探 Fable 5.2；先调 effort，再换模型。价格与基准数字均为原文自报，本站未复现。">
+<meta property="og:title" content="该用哪个 Claude 模型来构建：Fable、Opus、Sonnet 还是 Haiku">
+<meta property="og:description" content="多数工作从 Opus 5.5、medium 起步；按任务下探或上探，先调 effort。独立中文导读，短引原文。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">该用哪个 Claude 模型来构建：Fable、Opus、Sonnet 还是 Haiku</h1>
+<p class="za-sub" lang="en" data-za-gen>Which Claude model should you build with? · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · claude.dev Blog · Addy Osmani</span><span>收录 · 2026-11-10</span><span><a href="https://claude.dev/blog/which-claude-model-should-you-build-with/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原作者：Addy Osmani（Anthropic，Member of Technical Staff），发表于 <a href="https://claude.dev/blog/which-claude-model-should-you-build-with/">claude.dev Blog</a>，2026-11-09。原文：<a href="https://claude.dev/blog/which-claude-model-should-you-build-with/">https://claude.dev/blog/which-claude-model-should-you-build-with/</a>。本页是独立中文导读，只用短引，不是全文翻译。文章、配图、演示视频与设计版权归 Anthropic 或其许可方所有；本页未转载原图与视频。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote>
+<p><strong>导读说明。</strong> 现场核过 <a href="https://claude.dev/terms">claude.dev Terms of Use</a>（2026-09-18 更新，核于 2026-11-10）：站点上的代码示例默认 MIT；文章、图片、视频与设计归 Anthropic 或其许可方，只允许阅读、分享链接，以及在署名后引用简短摘录，不得另行复制或转载。文中价格、基准分数与内部评测均为 Anthropic 在原文中的自报，本站未对照价目表或复现评测，一律标 ⚠️，并以 2026-11-10 读到的原文为准。模型名、价码与数字按原文照录。</p>
+</blockquote>
+
+<p>这篇 Playbooks 要回答的是一个很具体的问题：在 Claude 平台或 Claude Code 里做日常开发，该从哪一个模型起步，又该在什么时候换。当前一般可用的四个模型是 Claude Haiku 5.5、Claude Sonnet 5.5、Claude Opus 5.5 和 Claude Fable 5.2。另有一个 Claude Mythos 5.2，原文称它是网络安全与生命科学研究上「最强」的模型，但只通过验证项目提供，不在这篇的日常选型里。</p>
+
+<p>原文配了几段演示视频：用四个模型把同一张巷子照片写成绘画程序、并排搭同一个作品集站点、用 Fable 5.2 把一个场景画成十六种渲染风格，以及四个模型同时改一家网店。演示分别署名 Lance Martin、Addy Osmani、Dan Fein。按版权条款与本站惯例，这些视频和原图都没有下载或转载。</p>
+
+<h2>先记住的结论</h2>
+<p>作者给的快答是：多数工作从 Opus 5.5、默认的 <code>medium</code> effort 开始。原文原句是：</p>
+<blockquote>
+<p>The quick answer is that you should start most work on Opus 5.5 at its default effort level, medium.</p>
+<p>— Addy Osmani，<cite>Which Claude model should you build with?</cite>（claude.dev，2026-11-09）</p>
+</blockquote>
+<p>它是 Claude Code 的默认模型，输入和输出的每 token 标价是 Fable 5.2 的一半，也被推荐为大多数编程与知识工作的起点。</p>
+<p>再往下分三步：</p>
+<ul>
+<li>任务边界清楚、属于日常修复或按规格做功能，可以下探到 Sonnet 5.5。但「有清晰规格」并不自动等于该用 Sonnet：迁移或性能优化完全可能规格清楚、难度仍高，这时仍应用 Opus 5.5；重大项目则上探 Fable 5.2。</li>
+<li>再往下，分类、路由、抽取这类最简单、量大的工作，以及给大模型打下手的子智能体，用 Haiku 5.5。</li>
+<li>往上，编码、金融与科学里最难的技术项目，或者 Opus 5.5 开到 <code>high</code> 仍然不够，以及长时间无人值守的运行，再用 Fable 5.2。</li>
+</ul>
+<p>换模型之前，先试着调 effort。它是更细的成本和能力旋钮。超过 <code>high</code> 之后，再升一档 effort，花费可能已经接近换一个更大的模型，所以要在自己的任务上两边都比一比；若已经超过 <code>high</code>，下一步应拿更大的模型、用更低的 effort 来测。反过来，降一档或许就能在更低费率下得到需要的结果。</p>
+<p>更高的 effort 适合模型需要想更久、多调用工具、或多做自我检查的时候，但也会增加延迟。它不会凭空补上模型本身没有的知识或技能——那种情况仍然要换更大的模型。</p>
+
+<h2>按任务选起点</h2>
+<p>下表是对原文「Pick a model by task」表的转述，起点模型和起始 effort 按原文照录。</p>
+<table>
+<thead>
+<tr><th>任务</th><th>起点模型</th><th>起始 effort</th><th>作者给出的理由</th></tr>
+</thead>
+<tbody>
+<tr><td>日常工程与排错、跨多个 PR 的功能开发</td><td>Opus 5.5</td><td><code>medium</code>（默认），不够再 <code>high</code></td><td>日常任务上成本和能力的平衡</td></tr>
+<tr><td>分类、路由、打标、高通量抽取</td><td>Haiku 5.5</td><td><code>medium</code>（默认）</td><td>家族里成本和延迟最低</td></tr>
+<tr><td>搜文件、读日志、做摘要的子智能体</td><td>Haiku 5.5 或 Sonnet 5.5</td><td>该模型的默认值</td><td>错了容易看出来，判断仍留在主模型</td></tr>
+<tr><td>对话和交互式会话</td><td>Sonnet 5.5（简单、量大的对话可用 Haiku 5.5）</td><td><code>low</code> 或 <code>medium</code></td><td>Sonnet 5.5 在低、中 effort 上很快</td></tr>
+<tr><td>范围清楚的编码：修 bug、按规格迭代功能</td><td>Sonnet 5.5</td><td><code>medium</code>，更难再用 <code>high</code></td><td>token 标价是 Opus 5.5 的一半，足以处理边界清楚的任务</td></tr>
+<tr><td>日常文档、幻灯片、表格</td><td>Sonnet 5.5</td><td><code>high</code>（API 默认；Claude Code 里是 <code>medium</code>）</td><td>迭代快、对设计眼力好。复杂财务模型，或要从一大堆材料里写出的文档，改从 Opus 5.5 起</td></tr>
+<tr><td>反复跑的智能体任务：调查、评审、起草</td><td>Sonnet 5.5</td><td><code>medium</code></td><td>定义清楚、反复执行的任务很少需要更大的模型</td></tr>
+<tr><td>计算机使用、偏视觉的工作流</td><td>Opus 5.5</td><td><code>medium</code></td><td>这类运行是对着大量截图和图像的长智能体循环，正是 Opus 5.5 被设计去承担的工作</td></tr>
+<tr><td>重大重构与迁移、架构规划、带领许多子智能体</td><td>Fable 5.2</td><td><code>medium</code>，再 <code>high</code>（API 默认是 <code>high</code>）</td><td>作者称它是一般可用模型里，面向技术领域能力最强的一档</td></tr>
+<tr><td>深度研究，以及科学或定量分析</td><td>Fable 5.2</td><td>同上</td><td>面向编码、金融与科学里最难的技术项目</td></tr>
+<tr><td>还拿不准</td><td>Opus 5.5</td><td><code>medium</code>（默认）</td><td>Claude Code 在 Pro、Max、Ultra、Team、Enterprise 和 Anthropic API 上默认用它，平台文档也把它当作起点</td></tr>
+</tbody>
+</table>
+
+<h2>四个模型并排</h2>
+<p>下表数字均来自原文「Claude API list prices」，⚠️ 未对照官方价目表，核于 2026-11-10。基准成绩原文指向 <a href="https://www.anthropic.com/claude/fable">Fable 5.2 产品页</a>，本页不转载那些成绩。</p>
+<table>
+<thead>
+<tr><th></th><th>Haiku 5.5</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>Fable 5.2</th></tr>
+</thead>
+<tbody>
+<tr><td>定位</td><td>量大、对成本敏感的任务</td><td>范围清楚的任务上，又快又够用</td><td>复杂编码与知识工作的日常主力</td><td>最有野心、边界开放的技术工作</td></tr>
+<tr><td>相对延迟</td><td>最快</td><td>快</td><td>中等</td><td>中等</td></tr>
+<tr><td>输入 / 输出（每百万 token）⚠️</td><td>$0.10 / $0.50（提示不超过 100K token）；超过 100K 则为 $0.50 / $2.50</td><td>$2 / $10</td><td>$4 / $20</td><td>$8 / $40</td></tr>
+<tr><td>缓存读取（每百万 token）⚠️</td><td>$0.01（不超过 100K），超过 100K 为 $0.05</td><td>$0.10</td><td>$0.20</td><td>$0.20</td></tr>
+<tr><td>上下文窗口</td><td>1M tokens</td><td>1M tokens</td><td>1M tokens</td><td>1M tokens</td></tr>
+<tr><td>最大输出</td><td>128K tokens</td><td>128K tokens</td><td>128K tokens</td><td>128K tokens</td></tr>
+<tr><td>API 上的 thinking</td><td>自适应，默认开，可关</td><td>自适应，默认开；<code>between_tools</code> 会跳过调用工具前的思考</td><td>自适应，始终开启</td><td>自适应，始终开启</td></tr>
+<tr><td>API 默认 effort（Claude Code 可能不同，用 <code>/effort status</code> 查看）</td><td><code>medium</code></td><td><code>high</code>（Claude Code 里是 <code>medium</code>）</td><td><code>medium</code></td><td><code>high</code>（Claude Code 里是 <code>medium</code>）</td></tr>
+<tr><td>Fast mode</td><td>无</td><td>无</td><td>有</td><td>有</td></tr>
+</tbody>
+</table>
+<p>四个模型都支持工具调用和图像输入，但不能只改模型名就迁移，兼容性差异见后文。</p>
+
+<h2>三组权衡</h2>
+<h3>能力，以及「做完一件事」的成本</h3>
+<p>更大的模型通常每 token 更贵、也更强，但放到具体任务上并不总是如此。作者的原句是：「A higher price per token doesn't always mean a higher cost per task, or a better result.」</p>
+<p>原文举了几组 Anthropic 自己跑的基准，均为自报 ⚠️（核于 2026-11-10），本站未复现：</p>
+<ul>
+<li>在 Terminal-Bench 3.0 上，上一档 Fable 5.1 开到 <code>max</code> 得 58.0%；Opus 5.5 开到 <code>high</code> 得 58.9%，而且用了一半的 token。出处是姊妹篇 <a href="https://claude.dev/blog/spending-your-effort/">Spending your effort</a>。</li>
+<li>在更难的 FrontierCode 2.0 上，Fable 5.2 开到 <code>high</code>，与 Opus 5.5 开到 <code>max</code> 大致持平（45.3% 对 45.5%），但每项任务成本大约只有一半。所以：难题上先不要把 Opus 5.5 推过 <code>high</code>，先拿 Fable 5.2 比一比。日常工作仍从 Opus 5.5 的 <code>medium</code> 起。更完整的成绩见 <a href="https://www.anthropic.com/claude-fable-and-mythos-5-2">Fable 与 Mythos 5.2 发布文</a>。</li>
+<li>比较两个模型时，既要给典型任务定价，也要给集合里最难的那些定价，因为花费往往集中在最难的几项。原文提到一项 20 题的搜索基准里，两道题就占了 43% 的花费 ⚠️。</li>
+</ul>
+<p>平台文档里的成本与智力测量也显示：小模型适合输出可核对、通量高的工作，不太适合很长的智能体循环。</p>
+
+<h3>延迟对准确</h3>
+<p>更快的配置更早结束，也可能错过更多。人选模型和 effort 之前，先想清楚人能等多久。等人看着的回复，从 Sonnet 5.5 的 <code>low</code> 或 <code>medium</code> 起。</p>
+<p>原文称新生代往往比前辈更快：Fable 5.2 的输出速度最多比 Fable 5.1 快 30%；Sonnet 5.5 比 Sonnet 5 快 30%。⚠️ 厂商自报，未独立测速。</p>
+<p>effort 与延迟大致同向。要以多出来的准确，值不值得多等那一段时间。原文在 SWE-bench Pro 上的对照（⚠️ 自报）：Opus 5.5 的 <code>medium</code> 比 <code>high</code> 大约低 2.5 分，成本约是其 70%；<code>low</code> 大约低 8 分，成本约是三分之一；<code>xhigh</code> 大约高 1.4 分，成本是 <code>high</code> 的 2.5 倍。</p>
+<p>作者更看重的一步是：先给模型一种自我核验的办法（测试、构建，或调用接口的脚本），这往往比改 effort 更省钱、也少增延迟。模型不够用时，按这个顺序试：先确认它能核验自己的工作；再把 effort 升一档；再换更大的模型，并且从比刚才更低的 effort 起测。</p>
+<p>如果结果可以自动检查，就先全部用低档跑，只把失败的再用高档重跑。同一份 SWE-bench Pro 子集上，Opus 5.5 以 <code>low</code> 起步、失败项再以 <code>high</code> 重跑，约通过 97%，每项约 $0.17；全部直接 <code>high</code> 则是 95.3%、每项约 $0.29。⚠️ 自报。</p>
+<p>若要在不放弃能力的前提下加快同一模型的回复，Opus 5.5 和 Fable 5.2 在 Claude API 上提供 <a href="https://platform.claude.com/docs/en/build-with-claude/fast-mode">fast mode</a>，输出更快，按溢价计费。</p>
+
+<h3>上下文对成本</h3>
+<p>这一代四个模型的上下文窗口都是 1M token。更大的上下文有助于做完任务，但每一轮都会把上下文再送一遍。长运行里，大部分输入会按缓存读取计费。</p>
+<p>缓存读取价：Opus 5.5 与 Fable 5.2 都是每百万 token $0.20，Sonnet 5.5 是 $0.10。⚠️ 因此在缓存很重的长运行里，Fable 和 Opus 的差距主要落在未缓存的输入和输出上，那一部分 Fable 每 token 贵一倍。姊妹篇 <a href="https://claude.dev/blog/what-a-task-costs-on-opus-5-5/">What a task costs on Opus 5.5</a> 里，一轮缓存读取在 150K 上下文时约 $0.03，在 20K 时约 $0.004。⚠️</p>
+<p>由此引出的建议是：主模型越大，主上下文越要精瘦。把贵的模型的上下文留给决策，冗长的阅读交给更便宜的子智能体。</p>
+<p>Haiku 5.5 是唯一按提示长度分档计价的模型：不超过 100K token 走低档，超过则按五倍费率。长提示档仍然只有 Sonnet 5.5 每 token 价的四分之一；短提示上，它的输入价是 Sonnet 5.5 的二十分之一。所以它在短提示上最划算。若每次调用都需要很长的提示，就不要只看标价，而要比较「做完一件事」的成本。</p>
+
+<h2>把模型混起来用</h2>
+<h3>在自然的断点上切换</h3>
+<p>提示缓存属于写下它的那个模型。第一次换到新模型时，整段对话都要按缓存写入计价。为了让这一轮小一点：在 Claude Code 里先 <code>/compact</code>，或新开一轮、只带一份短计划；在 API 上，用到目前为止的摘要开启新对话，不要把完整历史原样搬走。</p>
+<p>每段 thinking 都会记下是哪个模型写的，而且每个模型只能读一部分其他模型的 thinking。在 Claude API 以及 Google Cloud 上由 Google 托管的 Claude 模型中：Opus 5.5 能读 Sonnet 5.5 和 Haiku 5.5 的；Sonnet 5.5 能读 Haiku 5.5 的；Fable 5.2 能读 Opus 5.5、Sonnet 5.5 和 Haiku 5.5 的。在 Claude API 上，Fable 5.1 能读 Opus 5.5 的。向下换一档会丢掉先前的推理，因为模型从不读取比自己更强的模型写下的 thinking 块；其他方向的切换也可能丢掉。新模型读不了时，API 会丢掉这些块，请求仍会成功，只是新模型不再带上那段推理。从 Fable 5.2 换到任何一个其他一般可用模型，都会丢掉它的推理。细节见 <a href="https://platform.claude.com/docs/en/build-with-claude/preserved-thinking">preserved thinking</a> 文档。</p>
+
+<h3>把子智能体放在更小的模型上</h3>
+<p>子智能体有自己的上下文窗口，交回一份摘要，按它所运行的模型计费。在 Claude Code 里，可在子智能体定义中写 <code>model: haiku</code> 或 <code>model: sonnet</code>；未指定时，默认值由环境变量 <code>CLAUDE_CODE_SUBAGENT_MODEL</code> 决定。</p>
+<p>原文给了一个日志阅读子智能体的例子。按站点条款，代码示例默认 MIT，下面照录并保留许可说明：</p>
+<pre><code>---
+name: log-reader
+description: Reads test output and logs, and reports each failing case. Use after a test run.
+tools: Read, Grep, Glob, Bash
+model: haiku
+---
+
+Read the logs you're given. For each failure, report the file, the test name and the first error line. Don't edit any files.</code></pre>
+<p class="caption">代码示例 © Anthropic，按 claude.dev Terms of Use §1 以 MIT License 许可。保存为 <code>.claude/agents/log-reader.md</code>。使用时请保留版权与许可声明。</p>
+<p>小模型只做「错了也容易看出来」的事：找文件、跑测试、读日志。改代码和做判断留在主模型。小模型若读错一条搜索结果，主模型就会打开错误的文件，把 token 花在上面。</p>
+<p>当前版本的 Claude Code 里，内置 Explore 子智能体跑的是当前会话的模型，而不再总是 Haiku；在 Claude API 上，这个模型最高用到 Opus。若要让探索保持便宜，可自己定义一个也叫 <code>Explore</code>、<code>model: haiku</code> 的子智能体，并用 <code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code> 钉死 <code>haiku</code> 别名指向的模型。</p>
+<p>在 Anthropic API 上，<code>haiku</code> 别名现已解析为 Haiku 5.5，需要 Claude Code v2.1.293 或更新版本。在 Amazon Bedrock、Google Cloud、Microsoft Foundry 以及 AWS 上的 Claude Platform，它仍解析为 Haiku 4.5。⚠️ 这是原文在 2026-11-09 的说法，各云厂商随后可能已变，以 <a href="https://code.claude.com/docs/en/model-config">model configuration</a> 文档为准。</p>
+<p>Claude Code 还有 <code>opusplan</code> 别名：在 plan 模式里用 Opus 做计划，再交给 Sonnet 执行。这会把代码修改放到 Sonnet 上。上面的建议正好相反：改代码留在主模型，小模型只做容易核对的边角工作。把 <code>opusplan</code> 设为默认之前，先在自己的任务上测过。</p>
+
+<h3>把难题交给顾问</h3>
+<p><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool">advisor tool</a>（beta）让一个更快、更便宜的执行模型，在中途向更强的顾问模型请教。大部分 token 按执行模型计费。顾问只在执行模型缺某种能力、并且主动来问的时候才出手；effort 低时，请教也会更少。</p>
+<p>可能划算的场景：大多数回合都例行公事的智能体工作。平台的成本指南本身很谨慎：其顾问表里的四种配对，没有一种明显优于执行模型单干；顾问只有在被请教时才帮得上忙。先测量执行模型的请教率，并核对它接受哪些顾问。举例：Sonnet 5.5 执行模型可以请教 Fable 5.2、Opus 5.5、Opus 5 和 Sonnet 5.5；Fable 5.2 执行模型只接受 Fable 5.2 或 Mythos 5.2。</p>
+<p>帮助有限的例子：内部编码基准上，Opus 5.5 执行模型开 <code>high</code>、配 Fable 5.1 顾问，得分 90.1%，每次尝试 $2.92。这比 Opus 5.5 单独开 <code>high</code> 高 1.7 分，花费大约是 2.1 倍。作者认为这点增益已接近多次运行之间的噪声，也大约相当于只把 effort 再升一档能买到的东西。⚠️ 内部评测，未复现。</p>
+
+<h3>把大宗工作交给更便宜的工人</h3>
+<p>上面的子智能体，是在主模型保住一条主线的同时处理边角。下面这种模式针对的是大过单个上下文窗口的工作：由顶层模型牵头，把任务拆开，并行交给许多更便宜的工人，再把结果合并回来。原文称，在一份覆盖约 2200 万 token 源代码的内部缺陷搜索基准上，以 Opus 5.5 带领最多 25 个并行的 Sonnet 5.5 工人，成本大约比单独用默认 effort 的 Opus 5.5 低三分之一，得分大致相当。⚠️ 内部评测，未复现。</p>
+<p>在 Claude 平台上，Claude Managed Agents 的 <a href="https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration">multiagent orchestration</a> 提供协调者与一组工人。一条必须依次依赖的步骤链，或本来就装得进一个上下文窗口的工作，不必用它——这时规划和合并的开销会高于节省。何时该把子智能体折回主循环，见 <a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop">When to fold subagents into your main agent loop</a>。</p>
+
+<h2>迁移前先看兼容性</h2>
+<p>选型主要是能力和成本的问题，但不能假定改一个模型名就万事大吉。原文列出若干迁移前要测的差异：</p>
+<ul>
+<li><strong>Fable 5.2 把 preserved thinking 扩展到每个 API 账户。</strong> 若 Fable 5.2 的某段 thinking 之前的任何内容被改过——包括系统提示、工具或更早的消息——API 会返回 400，除非你选择丢掉受影响的 thinking。经 Claude Code、Claude Agent SDK 或 Claude Managed Agents 组请求，不必改自己的代码；若是自己的代码在改历史，应保持只追加，并在切换前测试。</li>
+<li><strong>Thinking。</strong> Opus 5.5 和 Fable 5.2 始终思考，关掉 thinking 的请求会报错。Sonnet 5.5 默认思考，<code>between_tools</code> 把思考限制在工具调用之间的空隙。Haiku 5.5 默认思考，在 <code>high</code> 及以下可以关掉。读取响应时都应按 <code>type</code> 区分内容块，因为回复可能以 thinking 块开头。</li>
+<li><strong>强制使用工具。</strong> 在 Sonnet 5.5、Opus 5.5 和 Fable 5.2 上，<code>tool_choice</code> 为 <code>any</code> 或 <code>tool</code> 会返回 400。应发送 <code>auto</code>，把工具标为 <code>strict: true</code>，并在提示里写清何时使用。</li>
+<li><strong>计算机使用。</strong> 这四个一般可用模型只通过 <code>computer_toolset_20260801</code> 工具集，在 Claude API 以及 Google Cloud 上由 Google 托管的 Claude 模型中支持计算机使用。</li>
+<li><strong>从 Haiku 4.5 迁到 Haiku 5.5。</strong> 用 effort 级别替换 <code>budget_tokens</code>；去掉非默认的 <code>temperature</code>、<code>top_p</code>、<code>top_k</code>，否则会 400。消息必须以用户轮次结束，若最后一轮是助手、想让模型接着写，也会 400。</li>
+<li><strong>安全回退。</strong> Opus 5.5、Sonnet 5.5 和 Fable 5.2 会跑安全分类器，最常标出网络安全和生物学内容。在 Claude Code 里，被标记的请求可能在更旧的模型上重跑，成绩单里会注明是哪一个。Fable 5.2 沿用 Fable 5.1 的回退模型：被标记的网络安全请求回退到 Opus 4.8，生物学请求回退到 Opus 5。</li>
+</ul>
+<p>若同一系统要跑多个模型，就把每条请求按其中最严格的那一档来写：历史只追加，发送 <code>tool_choice: auto</code> 并使用 strict 工具，按 <code>type</code> 读内容块，提示词和工具说明写到连最字面理解的模型也够用。这样升一档或降一档都不必改代码。若路由规则很简单，比如每类步骤固定一个模型，就让代码来选模型，不要再问模型该用谁。</p>
+
+<h2>用自己的任务来测</h2>
+<p>像 SWE-bench Pro、Terminal-Bench 这类已发表的数字，只够帮你选定一个起点。真正决定之前，还是要在自己的任务上测候选组合：</p>
+<ol>
+<li>抽一组真实任务，为每一项写好结果检查，例如测试通过、工单关闭，或正确的行数。</li>
+<li>让每个候选模型跑两到三档 effort，每档单独开一轮，避免共享缓存。从每条响应的 <code>usage</code> 字段记下做完该任务的成本。</li>
+<li>把分数对花费画出来。只有当多模型方案胜过图上每一个单模型点时，才保留它。</li>
+<li>切过去之前，先在一片真实流量上做影子运行。</li>
+</ol>
+<p>在 Claude Code 里做快速对照：用 <code>/model</code> 把待办里的同一项任务跑在两个模型上，再比较 <code>/usage</code> 的报告。</p>
+
+<h2>原文提供的延伸阅读</h2>
+<ul>
+<li><a href="https://claude.dev/blog/building-with-claude-sonnet-5-5/">Building with Claude Sonnet 5.5</a>：何时选 Sonnet 而不是 Opus，以及定价、迁移与调参。</li>
+<li><a href="https://claude.dev/blog/getting-the-most-out-of-opus-5-5/">Getting the most out of Opus 5.5 in Claude and Claude Code</a>：提示词与长运行的掌控。</li>
+<li><a href="https://claude.dev/blog/what-a-task-costs-on-opus-5-5/">What a task costs on Opus 5.5</a>：effort、模型选择与子智能体的计价。</li>
+<li>Claude 博客上的另两篇：<a href="https://claude.com/blog/claude-models-explained-choosing-the-best-model-for-your-use-case">choosing the best Claude model for your use case</a>，以及 <a href="https://claude.com/blog/claude-model-and-effort-level-in-claude-code">picking a model and effort level in Claude Code</a>。</li>
+<li>文档：<a href="https://platform.claude.com/docs/en/about-claude/models/choosing-a-model">Choosing a model</a>、<a href="https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence">Optimizing for cost and intelligence</a>、<a href="https://platform.claude.com/docs/en/build-with-claude/effort">Effort</a>，以及 Claude Code 的 <a href="https://code.claude.com/docs/en/model-config">model configuration</a> 与 <a href="https://code.claude.com/docs/en/sub-agents">subagents</a>。</li>
+</ul>
+
+<h2>核实与版权</h2>
+<p>抓取前先读 <code>https://claude.dev/robots.txt</code>，内容为 <code>User-Agent: *</code>、<code>Allow: /</code>。随后用普通 HTTPS 读取原文 HTML、页面提供的 markdown 副本，以及 <a href="https://claude.dev/terms">claude.dev Terms of Use</a>。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未转载原图或人物照片。</p>
+<p>版权结论：文章本身未声明开放许可。条款第 2 节保留文章、图片、视频与设计的权利，只允许带署名的短引。因此本页只做导读。文中那个 <code>log-reader</code> 代码示例按条款第 1 节以 MIT 收录，并保留署名。尽管本库对 Anthropic 博文另有「公开导读 + 私有全译」的惯例，这次因条款只允许短引，未另写私有全文译本。</p>
+<p>⚠️ 未核实或未复现（核于 2026-11-10，依据原文，非独立测量）：全部 API 标价与缓存价；Terminal-Bench 3.0、FrontierCode 2.0、SWE-bench Pro 及「失败再重跑」的分数与每项成本；20 题搜索基准里两题占 43% 花费；内部顾问配对 90.1% / $2.92；内部缺陷搜索「约低三分之一、得分相当」；Fable 5.2 / Sonnet 5.5 相对上一代「最多快 30%」；各云上 <code>haiku</code> 别名仍指向 Haiku 4.5 的说法（可能随后已变）；Mythos 5.2 的提供范围。演示视频未见，效果不作判断。</p>
+<p>署名：Anthropic；作者 Addy Osmani。原文：<a href="https://claude.dev/blog/which-claude-model-should-you-build-with/">https://claude.dev/blog/which-claude-model-should-you-build-with/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读，仅供阅读学习；原文、配图与演示视频版权归 Anthropic 或其许可方所有。原文：<a href="https://claude.dev/blog/which-claude-model-should-you-build-with/">claude.dev/blog/which-claude-model-should-you-build-with/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://claude.dev/blog/which-claude-model-should-you-build-with/" rel="noopener">claude.dev/blog/which-claude-model-should-you-build-with/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

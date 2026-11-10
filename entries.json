@@ -1,5 +1,20 @@
 [
   {
+    "slug": "anthropic-which-claude-model",
+    "title": "该用哪个 Claude 模型来构建：Fable、Opus、Sonnet 还是 Haiku",
+    "desc": "Addy Osmani 在 claude.dev 的选型指南导读：多数工作从 Opus 5.5、medium 起步；按任务下探 Sonnet / Haiku，或上探 Fable 5.2；先调 effort，再换模型。价格与基准数字均为原文自报，本站未复现 ⚠️。",
+    "description": "Addy Osmani 在 claude.dev 的选型指南导读：多数工作从 Opus 5.5、medium 起步；按任务下探 Sonnet / Haiku，或上探 Fable 5.2；先调 effort，再换模型。价格与基准数字均为原文自报，本站未复现 ⚠️。",
+    "source": "claude.dev Blog · Addy Osmani",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "Which Claude model should you build with? · 独立中文导读",
+    "original_url": "https://claude.dev/blog/which-claude-model-should-you-build-with/",
+    "spine": "Claude 模型选型",
+    "summary": "多数工作从 Opus 5.5、medium 起步；先调 effort，再按任务下探或上探",
+    "kind": "长文",
+    "by": "Addy Osmani"
+  },
+  {
     "slug": "eianlu-flat-depth-reveal",
     "title": "从平面图翻出纵深：Eian 的屏幕空间投影错觉",
     "desc": "原帖与作者回复：用 Claude 做代码动画，分别计算平面和立体屏幕位置，保持相机不动；不是直接插值投影矩阵，也不等于希区柯克变焦。",
