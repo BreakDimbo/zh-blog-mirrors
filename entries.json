@@ -1,5 +1,20 @@
 [
   {
+    "slug": "jkeatn-fable-52-personas",
+    "title": "「在代码里画画」：Fable 5.2 的画家人设",
+    "desc": "@jkeatn（Jake Eaton）用 Claude Fable 5.2 在代码里画画，并请模型长出画家人设。本页含作者推文串全文中译与附图；每一张据称为一至两千行的 Python 程序，经模拟绘画引擎逐笔绘出，未使用图像模型。笔数、代码行数与实现方式为作者自报 ⚠️；未见源码与许可证。作者简介所写 Anthropic 职员身份为自报 ⚠️。",
+    "description": "@jkeatn（Jake Eaton）用 Claude Fable 5.2 在代码里画画，并请模型长出画家人设。本页含作者推文串全文中译与附图；每一张据称为一至两千行的 Python 程序，经模拟绘画引擎逐笔绘出，未使用图像模型。笔数、代码行数与实现方式为作者自报 ⚠️；未见源码与许可证。作者简介所写 Anthropic 职员身份为自报 ⚠️。",
+    "source": "X · @jkeatn",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "推文串全译 · Dermot Hale 与 Tidewright · 约 70 万笔模拟笔触（自报 ⚠️）",
+    "original_url": "https://x.com/jkeatn/status/2119874007382299087",
+    "spine": "用画家人设在代码里作画",
+    "summary": "请 Fable 5.2 长出画家人设，用模拟笔触作画；未见源码",
+    "kind": "作品",
+    "by": "Jake Eaton @jkeatn"
+  },
+  {
     "slug": "kickingkeys-fable-52-painting",
     "title": "「Fable 5.2 很会画画」：同一提示下的三模型对照",
     "desc": "@kickingkeys（Surya）用同一组提示比较 Claude Fable 5.2、Fable 5.1 与 Gemini 4 Argon 的代码绘画。本页含作者推文串全文中译与对照图；视频与音频据称为代码生成，工具自报为 p5.js。费用、耗时与 token 数为作者标注 ⚠️；未观看视频，未见源码与许可证。",

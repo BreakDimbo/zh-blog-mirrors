@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「在代码里画画」：Fable 5.2 的画家人设</title>
+<meta name="description" content="@jkeatn（Jake Eaton）用 Claude Fable 5.2 在代码里画画，并请模型长出画家人设。本页含作者推文串全文中译与附图；每一张据称为一至两千行的 Python 程序，经模拟绘画引擎逐笔绘出，未使用图像模型。笔数、代码行数与实现方式为作者自报 ⚠️；未见源码与许可证。">
+<meta property="og:title" content="「在代码里画画」：Fable 5.2 的画家人设">
+<meta property="og:description" content="作者推文串全文中译与附图导读。笔数、代码行数与「未使用图像模型」均为作者自报 ⚠️；未见源码与许可证。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">「在代码里画画」：Fable 5.2 的画家人设</h1>
+<p class="za-sub" lang="en" data-za-gen>推文串全译 · Dermot Hale 与 Tidewright · 约 70 万笔模拟笔触（自报 ⚠️）</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @jkeatn</span><span>收录 · 2026-11-10</span><span><a href="https://x.com/jkeatn/status/2119874007382299087" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Jake Eaton @jkeatn · <a href="https://x.com/jkeatn/status/2119874007382299087">原帖</a> · 核对：2026-11-10（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">Jake Eaton（@jkeatn）说，这几个星期他一直在用 Claude Fable 5.2 在代码里画画。关于 Opus 5.5 的画，他听到最多的批评之一，是它不过是在模仿已有的艺术。他觉得这说得对，于是请 Fable 5.2 去长出一些「人设」——带着某种来历、风格也大致能落在某个时代里的画家。主帖引用了 @claudeai 同日介绍 Fable 5.2 与 Mythos 5.2 的帖子；本页只短引那两句，不转载其附件视频。作者没有给出仓库或演示页。下面这些画都是他本人发布的附图，本页把它们转成较小的 webp，并链回原帖。</p>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874007382299087"><img src="images/cover.webp" alt="绘画：晴空下黄红相间的螺旋滑梯，下方是红蓝地垫，右下有绿色攀爬架，滑梯阴影里有一只粉色拖鞋。不是真人照片。" width="1200" height="1200"></a>
+<figcaption>作者称为「一些喜欢的」里的第一张。晴空、螺旋滑梯，阴影里有一只粉色拖鞋。这是插画，不是真人照片。点击图片可到原帖查看原图。</figcaption>
+</figure>
+<h2>这是一次怎样的探索</h2>
+<p>就作者自己的说法，每张画都是一个 Python 程序，有的长达一两千行；每一笔都要经过一个模拟的绘画引擎，笔毛也不尽相同。多数只要几千笔，他也试过推到高得多的笔数，结果有好有坏。他写：Claude 没有使用图像模型，也没有事先渲染或描摹。他给一点评语或转向，模型就会更新或改写驱动笔刷和颜料的引擎。这些都是自报：本页没有源码，也没有演示页，无法核对这些画是否真由 Python 模拟笔触绘出，更不能核对其是否完全未借助图像模型。⚠️</p>
+<p>同一天稍后，Surya（@kickingkeys）也发了一组 Fable 5.2 的代码绘画对照，工具自报为 p5.js，比的是同一提示下的三个模型。那是另一次评测，不是本页这条线索；两条都没有公开源码。</p>
+<h2>原帖全文</h2>
+<p>以下为作者英文推文串的中文译文。主帖不是 X 长文，但正文超过了短帖长度，接口返回了完整 note。主帖之后还有五条作者自己的续帖，发布间隔约一到两秒，同属一条对话。主帖发布于 2026-11-10 03:25（新加坡时间，UTC+8）。</p>
+<blockquote>
+<p>这几个星期，我一直在用 Fable 5.2 在代码里画画。关于 Opus 5.5 的画，我听到最多的批评之一，是它不过是在模仿已有的艺术。我觉得这说得对，于是就请 Fable 5.2 去长出一些「人设」——带着某种来历、风格也大致能落在某个时代里的画家。</p>
+<p>我并不知道会走到哪里，却看着这个项目朝我从未预料的方向长开。我给一点评语或转向，Claude 就会更新或改写驱动笔刷和颜料的引擎。遇到我喜欢或觉得有意思的画，我就让它再往深处走。下面是一些我比较喜欢的。</p>
+<p>每一张都是一个 Python 程序，有的长达一两千行，每一笔都要经过一个模拟的绘画引擎，笔毛也不尽相同。多数只要几千笔，我也试过推到高得多的笔数，结果有好有坏。Claude 没有使用图像模型，也没有事先渲染或描摹。</p>
+</blockquote>
+<p>作者：Jake Eaton @jkeatn；发布：2026-11-10 03:25（新加坡时间，UTC+8）。<a href="https://x.com/jkeatn/status/2119874007382299087">查看主帖</a>。主帖引用了 <a href="https://x.com/claudeai/status/2119867114450268322">@claudeai 介绍 Fable 5.2 与 Mythos 5.2 的帖子</a>（约 02:58 发布）。该介绍帖写道，这两款模型「designed to tackle the most daunting technical challenges」，并称在编码、推理与视觉等方面有所改进。本页只作短引，不转载其视频。</p>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874007382299087"><img src="images/slide.webp" alt="绘画：晴空下黄红相间的螺旋滑梯，下方是红蓝地垫，右下有绿色攀爬架，滑梯阴影里有一只粉色拖鞋。不是真人照片。" width="1400" height="1400"></a>
+<figcaption>主帖附图之一：游乐场滑梯。是插画，不是真人照片。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874007382299087"><img src="images/dragon.webp" alt="绘画：俯视冰场，巨大的红龙头占去大半画面，许多小小的冰球运动员在龙头、眼睛和冰面上活动。是插画，不是真人照片。" width="1050" height="1400"></a>
+<figcaption>主帖附图之二：冰场上的龙头。场上的运动员是插画小人，不是真人照片。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874007382299087"><img src="images/braided-river.webp" alt="绘画：俯视辫状河，青绿水道在浅色沙洲上分叉，一道细桥横过，两侧是树林，下方有大片阴影。" width="979" height="1400"></a>
+<figcaption>主帖附图之三：俯视辫状河，一道细桥横过沙洲。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874007382299087"><img src="images/table.webp" alt="绘画：俯视铺着白桌布的长桌，盘碟、酒渍、鱼和花的影子落在桌上；左上有一个穿深蓝衣服的人坐着，看不清面目。是插画，不是真人照片。" width="1400" height="838"></a>
+<figcaption>主帖附图之四：散席后的长桌。左上那个人影是插画，面目不清，不是真人照片。</figcaption>
+</figure>
+<blockquote>
+<p>它对风格的稳定性让我印象很深。下面这些画，出自 Fable 5.2 自己长出来的一个叫「Dermot Hale」的人设。他「用调色刀和大笔，以厚油画天气，地点通常并不好看，比如零售园或汽车影院，而且总是画天气即将变化的那一刻。他自己给的理由是：『它很大，它准时到来，也没有人管着它。』」</p>
+</blockquote>
+<p><a href="https://x.com/jkeatn/status/2119874011970797660">查看这条续帖</a>。「Dermot Hale」及其自述，都是作者转述模型为人设写下的话，⚠️ 无法另行核对。</p>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874011970797660"><img src="images/lot-sky.webp" alt="绘画：厚重油彩的橙粉与墨蓝云层压在一片空场地或汽车影院上，积水映着天空，远处有灯杆和一块屏幕，前景有几个很小的人影。是插画，不是真人照片。" width="1050" height="1400"></a>
+<figcaption>Dermot Hale 组：厚云压在空场地或汽车影院上，积水映着天空。场中人影是插画，不是真人照片。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874011970797660"><img src="images/suburb-front.webp" alt="绘画：一排粉彩郊区住宅，天际压着一道浅色风暴墙；路上有一辆自行车和一辆蓝绿轿车，骑车的是很小的人影。是插画，不是真人照片。" width="1400" height="933"></a>
+<figcaption>Dermot Hale 组：郊区住宅前方，天际压着一道浅色的风暴墙。是插画，不是真人照片。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874011970797660"><img src="images/retail-park.webp" alt="绘画：零售园停车场，深青近黑的厚云横过天空，边缘透出一道暖光；有人推着购物车，远处停着几辆车。是插画，不是真人照片。" width="1400" height="700"></a>
+<figcaption>Dermot Hale 组：零售园停车场，云层边缘透出一道暖光。推车的人是插画，不是真人照片。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874011970797660"><img src="images/road-light.webp" alt="绘画：雪地里一条笔直的路伸向地平线，天空垂下大片弧形的暖色光幕。" width="1400" height="1400"></a>
+<figcaption>Dermot Hale 组：雪地里的直路，天空垂下弧形的光幕。画面中没有人。</figcaption>
+</figure>
+<blockquote>
+<p>它喜欢俯瞰。我尤其喜欢一个 Claude 称作「潮汐工匠」（The Tidewright）的人设。</p>
+</blockquote>
+<p><a href="https://x.com/jkeatn/status/2119874016127410309">查看这条续帖</a>。作者没有再解释这个人设的来历，本页只保留这个名字。</p>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874016127410309"><img src="images/estuary.webp" alt="绘画：俯视河口，浅色河汊注入青绿海水，形成涡状的水色，林岸边有很小的船只。" width="978" height="1400"></a>
+<figcaption>Tidewright 组：俯视河口，河水在入海处旋成涡状。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874016127410309"><img src="images/glacier.webp" alt="绘画：俯视冰原，一条弯折的蓝溪连起两汪更蓝的湖，表面有层叠的笔触。" width="1400" height="978"></a>
+<figcaption>Tidewright 组：俯视冰原上的蓝溪与湖泊。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874016127410309"><img src="images/meander.webp" alt="绘画：俯视农田，河流蜿蜒过绿、黄、褐的地块，树丛投下清晰的影子。" width="1400" height="978"></a>
+<figcaption>Tidewright 组：俯视蜿蜒过农田的河流。</figcaption>
+</figure>
+<blockquote>
+<p>我让 Fable 5.2 画一张尽可能与照片难分彼此的画。这大约是 70 万笔模拟笔触。</p>
+</blockquote>
+<p><a href="https://x.com/jkeatn/status/2119874018706874601">查看这条续帖</a>。「约 70 万笔」是作者自报，⚠️ 本页无法点数，也无法证明它在多近的意义上「像一张照片」。</p>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874018706874601"><img src="images/garage.webp" alt="作者称为约 70 万笔模拟笔触、力求接近照片的绘画：地下停车场，墙面标着 419、420、421 和 LEVEL 6，一辆购物车停在车位线上，另一辆的影子投在墙上。画面中没有人。" width="1400" height="933"></a>
+<figcaption>地下停车场。墙面写着 419、420、421 和 LEVEL 6；一辆购物车停在车位线上，另一辆只剩下投在墙上的影子。画面中没有人。作者说这是尽可能接近照片的画，约 70 万笔模拟笔触。⚠️</figcaption>
+</figure>
+<blockquote>
+<p>当我让 Fable 5.2 自己选题时，有些题材会反复出现。它喜欢光、手，以及人们的劳作，或正在工作的人。它给了我不少飞机、风力发电机和数据中心，而且看起来对车流也很感兴趣。</p>
+</blockquote>
+<p><a href="https://x.com/jkeatn/status/2119874021902909702">查看这条续帖</a>。作者提到的飞机、风力发电机、数据中心和车流，并没有出现在这条续帖所附的四张图里。下面这四张分别是舞台灯光、人行道上的光影、集装箱通道，以及一双正在剥豌豆的手。</p>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874021902909702"><img src="images/stage.webp" alt="绘画：黑暗的舞台，一把木梯、一盏落地灯、一把椅子和一只黑桶，灯光把影子拉得很长；右侧是未完工的布景框架，一块景片上画着白云。画面中没有人。" width="1400" height="998"></a>
+<figcaption>自选题组：空舞台，灯把梯子和椅子的影子拉得很长。画面中没有人。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874021902909702"><img src="images/bicycle.webp" alt="绘画：一辆锁在柱子上的红色自行车，人行道地砖上落满斑驳的光影，像云的影子。画面中没有人。" width="1400" height="999"></a>
+<figcaption>自选题组：锁着的红自行车，地砖上是斑驳的光。画面中没有人。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874021902909702"><img src="images/containers.webp" alt="绘画：从船或栈桥看出去，两侧是彩色集装箱的高墙，远处是一艘船的尾部；通道中央有一个很小的人影。是插画，不是真人照片。" width="1400" height="953"></a>
+<figcaption>自选题组：集装箱通道。远处那个很小的人影是插画，不是真人照片。有人在评论里说喜欢「集装箱那张」，作者回「这张我也喜欢」。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/jkeatn/status/2119874021902909702"><img src="images/peas.webp" alt="绘画：一双手正在剥豌豆荚，豆子落入一只已装得较满的蓝盆，笔触粗、色彩分明。是插画，不是真人照片。" width="1190" height="871"></a>
+<figcaption>自选题组：剥豌豆的手。笔触清楚，是插画，不是真人照片。</figcaption>
+</figure>
+<blockquote>
+<p>对于这项工作，我远谈不上有什么科学结论。大语言模型的文本已经研究得够多，我们多少知道一些它会落入的盆地；可当一个模型必须像这样作出几十万次选择时，要画出那张地图就难得多。关于模型的性情与个性，关于代码和图像理解，还有许多可以探的地方。不过我已经非常吃惊：模型竟能只用代码、不借助其他工具，把想象中的世界画出来（尽管解剖关系偶尔别扭，物理也常常颠倒）。而我最大的感受是：比起 Claude 的文字里常见的情形，这些画里有一些，我觉得相当美。</p>
+</blockquote>
+<p><a href="https://x.com/jkeatn/status/2119874025266757881">查看这条续帖</a>。「只用代码、不借助其他工具」仍是作者的判断，⚠️ 未见源码。</p>
+<h2>英文原文</h2>
+<blockquote lang="en">
+<p>for the past few weeks, I’ve been exploring painting with Fable 5.2 in code. one of the most common critiques I heard about Opus 5.5’s paintings was that it was only emulating real art. I thought that was fair, so i’ve been asking Fable 5.2 to develop personas—artists with some sort of a back story and a consistent style roughly identifiable in time</p>
+<p>not knowing what to expect, i’ve watched this project evolve in directions i never predicted. I give comments or steers, and Claude updates or revises the engines that power the brushes and paint. where paintings come up i like or find intriguing, i ask it to go deeper. these are some favorites.</p>
+<p>each of these is a python program, some one to two thousand lines of code, that places every stroke through a simulated paint engine with different bristles. most take a few thousand strokes, but i’ve pushed much higher with varying results. Claude does not use an image model, nor render or trace in advance</p>
+</blockquote>
+<blockquote lang="en">
+<p>I’ve been impressed with its consistency. these are the paintings of a persona Fable 5.2 developed, “Dermot Hale,” who “paints weather in thick oil with a knife and big brushes, usually in unscenic places like a retail park or a drive-in, at the moment just before it changes. His stated reason: ‘it is large, it is on time, and nobody is in charge of it.’”</p>
+</blockquote>
+<blockquote lang="en">
+<p>it likes aerial views. I was particularly taken with a persona claude called “The Tidewright”</p>
+</blockquote>
+<blockquote lang="en">
+<p>I asked Fable 5.2 to create a painting as indistinguishable as possible from a photograph. this is roughly 700,000 simulated brush strokes</p>
+</blockquote>
+<blockquote lang="en">
+<p>when i left Fable 5.2 to choose its subjects, some topics recurred. it likes light, hands, and people’s work or people working. it gave me quite a few airplanes, wind turbines, and data centers, and appears to find traffic quite interesting</p>
+</blockquote>
+<blockquote lang="en">
+<p>i’m far from having a scientific opinion on this work. LLM text has been studied enough that we understand some basins, but it’s a harder task to map what happens when a model has to make hundreds of thousands of choices like these. there’s a lot to explore with respect to model character and personality, with code and image understanding, but i have been extremely impressed by how models can render, in code and without other tools, imagined worlds (if still with occasionally awkward anatomy and topsy-turvy physics). mostly though, my main takeaway is that far more than is common with claude’s writing, i find some of these quite beautiful</p>
+</blockquote>
+<h2>线程里还能看到什么</h2>
+<p>有人说想要印刷品，作者回可以寄高分辨率文件。有人喜欢 Dermot Hale 那一组，作者说「也是我最喜欢的」。有人说喜欢集装箱那张，作者回「这张我也喜欢」。另有人看了那张力求接近照片的停车场，说还是能看出一些分别；作者回，他也说不清为什么这条帖子传得这么开。</p>
+<p>作者简介写着「technically, a member of staff @anthropicai」，所在地写 Napa, CA。这是账号自报，本页未作独立核实。⚠️ 本页也没有把他的个人探索写成 Anthropic 的官方演示。</p>
+<h2>许可与可复现性</h2>
+<p>作者没有在帖中给出仓库、Gist 或演示页，也没有声明许可证。附图是他发布的绘画，本页只为说明这条推文串而缩小转载，并链回原帖。按版权分级，这是作者本人的英文短帖串，本页做导读，并收录全文中译与原文；不把尚未公开的源码写成已经核过的实现，也不把「未使用图像模型」「约 70 万笔」写成已经复核的事实。</p>
+<p>主帖所引用的 @claudeai 介绍帖带有视频。本页不下载、不重新托管，也未观看该视频。</p>
+<h2>传播数据（快照）</h2>
+<p>2026-11-10 经 X 接口读取时，主帖约 187,993 次浏览、2,929 个赞、183 次转发、81 条引用、75 条回复、1,679 次收藏。这些数字会变，只作当时记录，不是效果评测。</p>
+<h2>核实边界与署名</h2>
+<ul>
+<li>这是以该探索为中心的导读，并收录作者本人英文推文串的全文中译。未见可打开的源码或演示。</li>
+<li>「每一张都是一至两千行的 Python 程序」「模拟绘画引擎」「多数几千笔、也可更高」「Claude 没有使用图像模型，也没有事先渲染或描摹」均为作者自报，⚠️ 未用源码核对。</li>
+<li>「约 70 万笔模拟笔触」、Dermot Hale 与 Tidewright 的人设自述，以及「这几个星期」的时间跨度，均为作者转述或自报。⚠️</li>
+<li>作者提到的飞机、风力发电机、数据中心和车流，未出现在相应续帖的附图中；本页不把那四张图解释成这些题材。</li>
+<li>⚠️ 未下载或观看 @claudeai 介绍帖中的视频。对该帖只作短引。</li>
+<li>⚠️ 作者简介所写 Anthropic 职员身份、所在地 Napa 均为自报，本页未独立核实。</li>
+<li>附图中若出现人物，均为插画小人或看不清面目的剪影，不是真人照片。那张力求接近照片的停车场里没有人。剥豌豆的手是明显的绘画笔触。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© Jake Eaton @jkeatn。本页为非官方中文导读与翻译，仅供阅读学习；原帖与原图请见原作者页面。原帖：<a href="https://x.com/jkeatn/status/2119874007382299087">x.com/jkeatn/status/2119874007382299087</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/jkeatn/status/2119874007382299087" rel="noopener">x.com/jkeatn/status/2119874007382299087</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
