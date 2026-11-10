@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「Fable 5.2 很会画画」：同一提示下的三模型对照</title>
+<meta name="description" content="@kickingkeys（Surya）用同一组提示比较 Claude Fable 5.2、Fable 5.1 与 Gemini 4 Argon 的代码绘画。本页含作者推文串全文中译与对照图；视频与音频据称为代码生成，工具自报为 p5.js。费用、耗时与 token 数为作者标注 ⚠️；未观看视频，未见源码与许可证。">
+<meta property="og:title" content="「Fable 5.2 很会画画」：同一提示下的三模型对照">
+<meta property="og:description" content="作者推文串全文中译与十组对照图导读；只用视频封面帧，不转载视频。费用、耗时与 token 数为作者标注 ⚠️。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">「Fable 5.2 很会画画」：同一提示下的三模型对照</h1>
+<p class="za-sub" lang="en" data-za-gen>Fable 5.2 vs Fable 5.1 vs Gemini 4 Argon · 推文串全译 + 对照图导读</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @kickingkeys</span><span>收录 · 2026-11-10</span><span><a href="https://x.com/kickingkeys/status/2119945841997672698" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Surya @kickingkeys · <a href="https://x.com/kickingkeys/status/2119945841997672698">原帖</a> · 核对：2026-11-10（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">Surya（@kickingkeys）说 Claude Fable 5.2 很会画画，并向 Anthropic 的 Claude 团队道贺。视频和声音，据他说，都是用代码做的。下面是同一组提示下，Fable 5.2、Fable 5.1 与 Gemini 4 Argon 的对照。主帖附了一段约 23 秒、1080×1080 的视频；本页只用封面静帧，没有下载，也没有观看。作者随后用十组绘画对照和一张汇总表，谈高光与材质、每幅画的费用，以及思考所花的时间。有人问他给这些生成准备了什么工具包，他只答：p5.js 库。</p>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945841997672698"><img src="images/cover.webp" alt="原视频封面帧：从轨道上看地球。下半幅是弯向地平线的暗色云层，上半幅是几乎全黑的天空，只有稀疏的星点；大气层在边缘收成一道很细的蓝紫色光带。不是真人照片。" width="1080" height="1080"></a>
+<figcaption>原视频封面帧。附件为约 23 秒、1080×1080 的视频；本页不下载、不重新托管，也未观看视频。点击图片可到原帖观看。这一帧是轨道视角的地球与大气辉光，不是真人照片；不能代表整段视频里出现过的其他画面。</figcaption>
+</figure>
+<h2>这是一次什么对照</h2>
+<p>就作者自己的说法，这不是一次图像生成模型的评测，而是让语言模型写代码来画画。工具包他只点名了 p5.js。视频和声音也声称是代码做成的。这些都是自报：本页没有源码，也没有演示页，无法核对这些画是否真由 p5.js 绘出，更不能核对话音是怎样生成的。⚠️</p>
+<p>对照本身排列得清楚。每一组都是同一提示下的三张结果，左上为 Claude Fable 5.2，右上为 Claude Fable 5.1，下方为 Gemini 4 Argon；每张图下都标着美元费用和耗时。作者认为 Fable 5.2 是他试过的最好的画家，高光用得好，材质也更真实；但虽然它的单价比 Fable 5.1 更低，每幅画却大约要用掉三倍的 token，其中大多是思考，所以更贵，也不适合当作人人都能用的日常模型。费用、耗时和 token 数都写在他发布的图上，本页只作转写，没有独立复现。⚠️</p>
+<h2>原帖全文</h2>
+<p>以下为作者英文推文串的中文译文。原帖不是 X 长文。主帖之后还有五条作者自己的续帖，发布间隔约一到四秒，同属一条对话。</p>
+<blockquote>
+<p>Fable 5.2 很会画画！！🎨 恭喜 @claudeai 团队！（视频和声音都是用代码做的。）</p>
+<p>下面是 Fable 5.2、Fable 5.1 和 Gemini 4 Argon 在同一组提示下的对照。⬇️</p>
+</blockquote>
+<p>作者：Surya @kickingkeys；发布：2026-11-10 08:10（新加坡时间，UTC+8）。<a href="https://x.com/kickingkeys/status/2119945841997672698">主帖附视频，点击观看</a>。</p>
+<blockquote>
+<p>Fable 5.2 很会用高光，也能让材质显得真实。</p>
+<p>看看光线怎样穿过玻璃弹珠、又怎样在阴影里汇成一洼。Fable 5.2 画的老虎有分量。它的条纹还会顺着身体的起伏弯曲。</p>
+</blockquote>
+<p><a href="https://x.com/kickingkeys/status/2119945844527182148">查看这条续帖</a>。</p>
+<blockquote>
+<p>虽然 Fable 5.2 的单价比 Fable 5.1 更低，但它大约会用掉三倍的 token，其中大多是思考，所以每幅画反而更贵。</p>
+</blockquote>
+<p><a href="https://x.com/kickingkeys/status/2119945849371525288">查看这条续帖</a>。</p>
+<blockquote>
+<p>Fable 5.2 会按提示调节用力的程度。那头麋鹿用了大约 5 万 token 的思考和代码，大约是 Fable 5.1 的四倍。滑板那张把它推到了大约 9 万。</p>
+</blockquote>
+<p><a href="https://x.com/kickingkeys/status/2119945853704310837">查看这条续帖</a>。</p>
+<blockquote>
+<p>这些思考都要花时间。糖纸那张不到 5 分钟，斑马群却用了 16 分半。Fable 5.1 大约 5 分钟，Argon 不到 2 分钟。</p>
+</blockquote>
+<p><a href="https://x.com/kickingkeys/status/2119945857407566192">查看这条续帖</a>。结合图下标签可以读出：这里的「16 分半」「大约 5 分钟」「不到 2 分钟」说的是斑马群，分别对应 Fable 5.2 的 16 分 37 秒、Fable 5.1 的 4 分 50 秒，以及 Argon 的 1 分 48 秒；糖纸那张 Fable 5.2 标为 4 分 49 秒，也与「不到 5 分钟」相符。</p>
+<blockquote>
+<p>Fable 5.2 是一位出色的画家，是我试过的最好的。</p>
+<p>但它非常贵，大概不适合每个人天天用。如果你真的想攻一个卡住很久的难题，我会建议用它。</p>
+</blockquote>
+<p><a href="https://x.com/kickingkeys/status/2119945861891572027">查看这条续帖</a>。</p>
+<h2>英文原文</h2>
+<blockquote lang="en">
+<p>Fable 5.2 is very good at painting!! 🎨 Congratulations to the @claudeai team!(Video + Audio made in code).</p>
+<p>Comparison below between Fable 5.2, Fable 5.1 and Gemini 4 Argon on the same prompts. ⬇️</p>
+</blockquote>
+<blockquote lang="en">
+<p>Fable 5.2 uses highlights well and is able to make materials feel realistic.</p>
+<p>See how the light bends through the glass marbles and the light pools in the shadows. Fable 5.2's tiger painting has real weight. Its stripes even curve to follow the contours of the tigers body.</p>
+</blockquote>
+<blockquote lang="en">
+<p>While Fable 5.2 is cheaper per token than Fable 5.1, it ends up using about 3x more tokens, most of them thinking, so each painting costs more.</p>
+</blockquote>
+<blockquote lang="en">
+<p>Fable 5.2 matches its effort to the prompt. The elk took it ~50k tokens of thinking and code, about ~4x what Fable 5.1 used. The skater pushed it to ~90k.</p>
+</blockquote>
+<blockquote lang="en">
+<p>All that thinking takes time. The candy wrapper took under 5 minutes but the zebra herd took 16½ minutes. Fable 5.1 took about 5, and Argon under 2.</p>
+</blockquote>
+<blockquote lang="en">
+<p>Fable 5.2 is a fantastic painter, the best I've tested.</p>
+<p>But it's very expensive and probably not something everyone can use as a daily driver. If you really want to push on a hard problem you've been stuck on, I'd recommend using it.</p>
+</blockquote>
+<h2>对照图</h2>
+<p>以下十组对照和图上的费用、耗时标签，均来自作者自己的续帖。本页把这些图转成较小的 webp，仅供对照阅读；完整原图请到原帖查看。滑板那一组画的是虚构的滑板人物，是插画，不是真人照片。图下数字均为作者标注，⚠️ 未独立核实。</p>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945844527182148"><img src="images/marbles.webp" alt="三格对照：木纹桌面上的玻璃弹珠。左上 Claude Fable 5.2，深色玻璃里有蓝、橙、黄的扭转纹路，高光和折射清楚，标价 0.98 美元、3 分 56 秒。右上 Claude Fable 5.1，珠子更浅、纹路较弱，标价 0.52 美元、1 分 52 秒。下方 Gemini 4 Argon，珠子更平面，彩色条带更粗，标价 0.11 美元、2 分 02 秒。" width="1107" height="1200"></a>
+<figcaption>玻璃弹珠。标签：Fable 5.2 · 0.98 美元 · 3 分 56 秒；Fable 5.1 · 0.52 美元 · 1 分 52 秒；Argon · 0.11 美元 · 2 分 02 秒。作者指出，光线穿过这些玻璃珠，并在阴影里汇成一洼。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945844527182148"><img src="images/tiger.webp" alt="三格对照：草丛里的老虎，紫蓝色夜空。左上 Fable 5.2，老虎侧身行走，条纹顺着身体起伏，天空有旋涡笔触，标价 2.00 美元、8 分 49 秒。右上 Fable 5.1，头身关系较别扭，标价 1.14 美元、4 分 34 秒。下方 Argon，造型更块面，正面朝向观者，标价 0.20 美元、3 分 55 秒。" width="1107" height="1200"></a>
+<figcaption>老虎。标签：Fable 5.2 · 2.00 美元 · 8 分 49 秒；Fable 5.1 · 1.14 美元 · 4 分 34 秒；Argon · 0.20 美元 · 3 分 55 秒。作者说 Fable 5.2 这张「有分量」，条纹顺着身体轮廓弯曲。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945849371525288"><img src="images/droplets.webp" alt="三格对照：叶子或粗糙表面上的水珠，黑白。左上 Fable 5.2，大水珠里有窗格似的反光，叶脉清楚，标价 1.41 美元、5 分 51 秒。右上 Fable 5.1，水珠更圆、表面更粗，标价 0.58 美元、2 分 09 秒。下方 Argon，更平面，周围有点状溅痕，标价 0.12 美元、2 分 21 秒。" width="1107" height="1200"></a>
+<figcaption>水珠。标签：Fable 5.2 · 1.41 美元 · 5 分 51 秒；Fable 5.1 · 0.58 美元 · 2 分 09 秒；Argon · 0.12 美元 · 2 分 21 秒。此组未在正文里单独评述，只出现在费用那条续帖的附图中。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945849371525288"><img src="images/puffin.webp" alt="三格对照：海鹦鹉侧脸，青绿背景。左上 Fable 5.2，黑羽有高光，喙分橙与灰两截，标价 1.58 美元、6 分 54 秒。右上 Fable 5.1，形体更平，标价 0.68 美元、2 分 50 秒。下方 Argon，角度不同，背景有横纹，标价 0.12 美元、2 分 27 秒。" width="1107" height="1200"></a>
+<figcaption>海鹦鹉。标签：Fable 5.2 · 1.58 美元 · 6 分 54 秒；Fable 5.1 · 0.68 美元 · 2 分 50 秒；Argon · 0.12 美元 · 2 分 27 秒。同样未在正文单独评述。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945853704310837"><img src="images/elk.webp" alt="三格对照：暮色里仰头的麋鹿，粉色气息。左上 Fable 5.2，鹿角伸向天空，前景是深粉草丛，标价 2.09 美元、9 分 12 秒。右上 Fable 5.1，更接近剪影，标价 0.65 美元、2 分 28 秒。下方 Argon，鹿角几乎变成一大片浅色块，标价 0.12 美元、2 分 08 秒。" width="1107" height="1200"></a>
+<figcaption>麋鹿。标签：Fable 5.2 · 2.09 美元 · 9 分 12 秒；Fable 5.1 · 0.65 美元 · 2 分 28 秒；Argon · 0.12 美元 · 2 分 08 秒。作者说这张 Fable 5.2 用了大约 5 万 token 的思考和代码，约为 Fable 5.1 的四倍。⚠️</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945853704310837"><img src="images/skater.webp" alt="三格对照：泳池碗池上的滑板人物插画，不是真人照片。左上 Fable 5.2，人物在池沿起跳，池壁有 COS 涂鸦和棕榈树，标价 3.69 美元、16 分 04 秒。右上 Fable 5.1，侧面构图更简单，标价 1.51 美元、6 分 24 秒。下方 Argon，近景人物更大，池壁写着 SK，标价 0.22 美元、4 分 25 秒。" width="1107" height="1200"></a>
+<figcaption>滑板。标签：Fable 5.2 · 3.69 美元 · 16 分 04 秒；Fable 5.1 · 1.51 美元 · 6 分 24 秒；Argon · 0.22 美元 · 4 分 25 秒。画的是虚构人物插画，不是真人照片。作者说这张把 Fable 5.2 推到了大约 9 万 token。⚠️</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945857407566192"><img src="images/candy.webp" alt="三格对照：格子布上的透明糖纸包着红色糖果。左上 Fable 5.2，糖纸扭转，糖果半透明，下面有红影，标价 1.17 美元、4 分 49 秒。右上 Fable 5.1，形体更扁，标价 0.68 美元、2 分 37 秒。下方 Argon，糖纸更几何，视角更斜，标价 0.15 美元、3 分 06 秒。" width="1107" height="1200"></a>
+<figcaption>糖纸。标签：Fable 5.2 · 1.17 美元 · 4 分 49 秒；Fable 5.1 · 0.68 美元 · 2 分 37 秒；Argon · 0.15 美元 · 3 分 06 秒。作者说糖纸那张不到 5 分钟，与 Fable 5.2 的标签相符。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945857407566192"><img src="images/zebras.webp" alt="三格对照：黑白线条画的斑马群，其中一只带棕色。左上 Fable 5.2，几匹马叠在一起低头饮水，脚下有圈纹，标价 3.73 美元、16 分 37 秒。右上 Fable 5.1，腿更像圆柱，标价 1.16 美元、4 分 50 秒。下方 Argon，形体拆成交错的块面，标价 0.09 美元、1 分 48 秒。" width="1107" height="1200"></a>
+<figcaption>斑马群。标签：Fable 5.2 · 3.73 美元 · 16 分 37 秒；Fable 5.1 · 1.16 美元 · 4 分 50 秒；Argon · 0.09 美元 · 1 分 48 秒。作者所说「16 分半」「大约 5 分钟」「不到 2 分钟」与这三项标签相符。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945861891572027"><img src="images/sundog.webp" alt="三格对照：雪地里一排带刺铁丝的木桩伸向远方，天上有日晕。左上 Fable 5.2，日晕两侧有完整的假日，标价 1.95 美元、8 分 22 秒。右上 Fable 5.1，木桩更整齐，日晕较简单，标价 0.64 美元、2 分 19 秒。下方 Argon，笔触更糊，透视较弱，标价 0.14 美元、2 分 31 秒。" width="1107" height="1200"></a>
+<figcaption>雪地日晕。标签：Fable 5.2 · 1.95 美元 · 8 分 22 秒；Fable 5.1 · 0.64 美元 · 2 分 19 秒；Argon · 0.14 美元 · 2 分 31 秒。此组未在正文单独评述。</figcaption>
+</figure>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945861891572027"><img src="images/flipflop.webp" alt="三格对照：泳池瓷砖上漂着一只绿色拖鞋，旁边有一枚粉红圈。左上 Fable 5.2，瓷砖边缘清楚，还有一条深色泳道线，标价 2.53 美元、10 分 40 秒。右上 Fable 5.1，水色更浅，有网状高光，标价 1.00 美元、3 分 56 秒。下方 Argon，瓷砖更松、更水彩，标价 0.11 美元、2 分 14 秒。" width="1107" height="1200"></a>
+<figcaption>泳池拖鞋。标签：Fable 5.2 · 2.53 美元 · 10 分 40 秒；Fable 5.1 · 1.00 美元 · 3 分 56 秒；Argon · 0.11 美元 · 2 分 14 秒。此组未在正文单独评述。</figcaption>
+</figure>
+<h2>汇总表里的数字</h2>
+<figure>
+<a href="https://x.com/kickingkeys/status/2119945861891572027"><img src="images/summary.webp" alt="作者发布的对照表：Fable 5.2、Fable 5.1 与 Argon 四行。费用 1.84、0.80、0.12 美元；耗时 7.9、3.1、2.3 分钟；思考 token 约 3.9 万、约 1.1 万、约 4 千；输出 token 4.4 万、1.4 万、1 万。" width="1200" height="1200"></a>
+<figcaption>作者自己的汇总表。Fable 5.2 / Fable 5.1 / Argon：费用 1.84 / 0.80 / 0.12 美元；耗时 7.9 / 3.1 / 2.3 分钟；思考 token 约 3.9 万 / 约 1.1 万 / 约 4 千；输出 token 4.4 万 / 1.4 万 / 1 万。⚠️ 这些数字是作者给出的，本页未复现。它们也并不等于上面十组图标签的算术平均——十组 Fable 5.2 的费用相加再平均约为 2.11 美元，平均耗时约为 9.1 分钟。汇总表可能用了另一组样本，或另一种汇总方式，本页无法判定。</figcaption>
+</figure>
+<p>把十组图下的标签转写如下，便于对照。单位是作者图上的美元与分秒，不是本页的测量。</p>
+<table>
+<thead>
+<tr><th>题目（据画面）</th><th>Fable 5.2</th><th>Fable 5.1</th><th>Argon</th></tr>
+</thead>
+<tbody>
+<tr><td>玻璃弹珠</td><td>0.98 美元 · 3 分 56 秒</td><td>0.52 美元 · 1 分 52 秒</td><td>0.11 美元 · 2 分 02 秒</td></tr>
+<tr><td>老虎</td><td>2.00 美元 · 8 分 49 秒</td><td>1.14 美元 · 4 分 34 秒</td><td>0.20 美元 · 3 分 55 秒</td></tr>
+<tr><td>水珠</td><td>1.41 美元 · 5 分 51 秒</td><td>0.58 美元 · 2 分 09 秒</td><td>0.12 美元 · 2 分 21 秒</td></tr>
+<tr><td>海鹦鹉</td><td>1.58 美元 · 6 分 54 秒</td><td>0.68 美元 · 2 分 50 秒</td><td>0.12 美元 · 2 分 27 秒</td></tr>
+<tr><td>麋鹿</td><td>2.09 美元 · 9 分 12 秒</td><td>0.65 美元 · 2 分 28 秒</td><td>0.12 美元 · 2 分 08 秒</td></tr>
+<tr><td>滑板</td><td>3.69 美元 · 16 分 04 秒</td><td>1.51 美元 · 6 分 24 秒</td><td>0.22 美元 · 4 分 25 秒</td></tr>
+<tr><td>糖纸</td><td>1.17 美元 · 4 分 49 秒</td><td>0.68 美元 · 2 分 37 秒</td><td>0.15 美元 · 3 分 06 秒</td></tr>
+<tr><td>斑马群</td><td>3.73 美元 · 16 分 37 秒</td><td>1.16 美元 · 4 分 50 秒</td><td>0.09 美元 · 1 分 48 秒</td></tr>
+<tr><td>雪地日晕</td><td>1.95 美元 · 8 分 22 秒</td><td>0.64 美元 · 2 分 19 秒</td><td>0.14 美元 · 2 分 31 秒</td></tr>
+<tr><td>泳池拖鞋</td><td>2.53 美元 · 10 分 40 秒</td><td>1.00 美元 · 3 分 56 秒</td><td>0.11 美元 · 2 分 14 秒</td></tr>
+</tbody>
+</table>
+<h2>线程里还能看到什么</h2>
+<p>有人问「你为这些生成提供了什么工具包？」作者答：「p5.js 库！」另有人看完费用后续帖，说自己明天要把 token 花破产，作者回：「它太贵了 😭」。还有人说地平线那张看起来非常真实，作者回：「这是一个了不起的模型。」对「这才是唯一重要的评测」这条评论，他写：「直到下一个来临 👀」。被称赞这组探索有趣时，他对一位朋友说：「语言模型就是新的图像 / 视频模型 😎」。</p>
+<p>评论区里另有人提到，森林里那条蜿蜒的线给地平线镜头带来了纵深。这是他人看过视频后的观察。本页只看到封面帧里的地球与大气，没有观看视频，不能确认那段森林镜头。也有人问声音是不是也由代码生成、究竟是什么在把代码变成音乐；到本页核对时，作者没有在可检索的回复里再作说明。</p>
+<h2>许可与可复现性</h2>
+<p>作者没有在帖中给出仓库、Gist 或演示页，也没有声明许可证。对照图本身是他发布的评测截图，本页只为说明这条推文串而缩小转载，并链回原帖。视频和声音没有重新托管。按版权分级，这是作者本人的英文短帖串，本页做导读，并收录全文中译与原文；不把尚未公开的源码写成已经核过的实现，也不把图上的费用写成已经复核的账单。</p>
+<h2>传播数据（快照）</h2>
+<p>2026-11-10 经 X 接口读取时，主帖约 4,567 次浏览、112 个赞、7 次转发、10 条回复、44 次收藏，引用为 0。这些数字会变，只作当时记录，不是效果评测。</p>
+<h2>核实边界与署名</h2>
+<ul>
+<li>这是以该对照为中心的导读，并收录作者本人英文推文串的全文中译。未见可打开的源码或演示，本页不转载视频。</li>
+<li>「视频和声音都是用代码做的」「工具包是 p5.js」「Fable 5.2 是我试过的最好的画家」均为作者自报，⚠️ 未用源码或盲测核对。</li>
+<li>图上的费用、耗时、思考与输出 token，以及「单价更低但每幅更贵」「麋鹿约 5 万、滑板约 9 万」均为作者标注或自报，⚠️ 未独立复现。汇总表与十组标签的算术平均并不相等，原因不明。</li>
+<li>⚠️ 未下载或观看约 23 秒的附件视频。封面帧只代表其中一帧，不能代替完整演示，也不能证明声音如何生成。</li>
+<li>⚠️ 作者简介所写「Design &amp; other stuff @websim_ai」「RL residency @primeintellect」、站点 surya.website 与 brusharena.art、所在地 Brooklyn 均为自报，本页未打开这些站点作核验。</li>
+<li>滑板一组为代码生成的人物插画，不是真人照片。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© Surya @kickingkeys。本页为非官方中文导读与翻译，仅供阅读学习；原帖、对照图与视频请见原作者页面。原帖：<a href="https://x.com/kickingkeys/status/2119945841997672698">x.com/kickingkeys/status/2119945841997672698</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/kickingkeys/status/2119945841997672698" rel="noopener">x.com/kickingkeys/status/2119945841997672698</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kickingkeys-fable-52-painting",
+    "title": "「Fable 5.2 很会画画」：同一提示下的三模型对照",
+    "desc": "@kickingkeys（Surya）用同一组提示比较 Claude Fable 5.2、Fable 5.1 与 Gemini 4 Argon 的代码绘画。本页含作者推文串全文中译与对照图；视频与音频据称为代码生成，工具自报为 p5.js。费用、耗时与 token 数为作者标注 ⚠️；未观看视频，未见源码与许可证。",
+    "description": "@kickingkeys（Surya）用同一组提示比较 Claude Fable 5.2、Fable 5.1 与 Gemini 4 Argon 的代码绘画。本页含作者推文串全文中译与对照图；视频与音频据称为代码生成，工具自报为 p5.js。费用、耗时与 token 数为作者标注 ⚠️；未观看视频，未见源码与许可证。",
+    "source": "X · @kickingkeys",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "Fable 5.2 vs Fable 5.1 vs Gemini 4 Argon · 推文串全译 + 对照图导读",
+    "original_url": "https://x.com/kickingkeys/status/2119945841997672698",
+    "spine": "同一提示下的代码绘画",
+    "summary": "Fable 5.2 很会画画，但每幅更贵；对照图来自作者，未见源码",
+    "kind": "评测",
+    "by": "Surya @kickingkeys"
+  },
+  {
     "slug": "guanmo-design-style",
     "title": "每天一个设计风格 · Design Style：观默的开源设计风格库（导读，2026-11-10 增补）",
     "desc": "guanmo-ai/design-style 项目导读增补（根目录仍无开源许可，非翻译）：画廊已发布 17 种风格与 2 种布局，共 19 部 15–20 秒代码短片；管线从 Remotion 扩展到 three.js / WebGL 与各期脚本。令牌、过程文档与四件套规格仍在。星数为页面观察值 ⚠️；点云「80 万个点」为目录自述 ⚠️。沿用 10-23 已上站缩略图，自制题头封面，不新增仓库图像、不转载视频。",
