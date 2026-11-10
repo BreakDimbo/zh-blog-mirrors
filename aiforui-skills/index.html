@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>给智能体用的界面技艺：Emil Kowalski 的开源 AI Skills</title>
+<meta name="description" content="aiforui.dev/skills 导读：Emil Kowalski 把界面与动效品味写成可安装的开源技能；仓库 README 附中文全译。站点课程文案只作短引。星数、安装量与课程数字均为页面自报 ⚠️。">
+<meta property="og:title" content="给智能体用的界面技艺：Emil Kowalski 的开源 AI Skills">
+<meta property="og:description" content="把做界面时会反复纠正的品味，写成可以安装的开源技能。导读 + README 中译；课程文案只作短引。">
+<meta property="og:image" content="https://breakdimbo.github.io/zh-blog-mirrors/aiforui-skills/images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">给智能体用的界面技艺：Emil Kowalski 的开源 AI Skills</h1>
+<p class="za-sub" lang="en" data-za-gen>把界面品味写成可安装的开源技能</p>
+<p class="za-meta" data-za-gen><span>来源 · Emil Kowalski · aiforui.dev/skills</span><span>收录 · 2026-11-10</span><span><a href="https://aiforui.dev/skills" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Emil Kowalski · 目录页：<a href="https://aiforui.dev/skills">aiforui.dev/skills</a> · 仓库：<a href="https://github.com/emilkowalski/skills">emilkowalski/skills</a>（<a href="https://github.com/emilkowalski/skills/blob/main/LICENSE">MIT License</a>，Copyright (c) 2026 Emil Kowalski） · 核对：2026-11-10（新加坡时间） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">智能体写界面时，常常会选错缓动、加太多淡入，或把实线描边当成默认装饰。Emil Kowalski 把这些「看起来只差一点、叠加起来却很廉价」的判断，写成一套可以安装的技能，让代理按任务去调用。本页以这套开源技能为中心，并说明它和同站付费课程之间的界限。</p>
+
+<div class="notice"><strong>版权说明：</strong>公开技能仓库 <a href="https://github.com/emilkowalski/skills">emilkowalski/skills</a> 的根目录 LICENSE 于 2026-11-10（新加坡时间）现场核对为 MIT License（Copyright (c) 2026 Emil Kowalski）。下文对 README 作全文中译，并附许可证原文。aiforui.dev 站点本身未找到许可或条款页（<code>/license</code>、<code>/terms</code>、<code>/privacy</code> 等返回 404），课程、等候名单与团队授权属于商业内容，只作独立导读与少量短引，不转载证言、照片或站点截图。</div>
+
+<h2>一、目录页在卖什么，仓库里又有什么</h2>
+<p><a href="https://aiforui.dev/skills">aiforui.dev/skills</a> 自称「AI Skills for Building Better Interfaces」，页面说明这些技能是免费、开源的，给设计师和工程师用来指挥智能体做更好的界面。目录写着「Available skills 17」，按「实际项目里你会伸手去用的顺序」分成五组：动手之前、搭建界面、打磨与评审、看整座应用、以及其他。站点标注最后更新于 2026 年 11 月 8 日。</p>
+<p>同一套技能的源码在 GitHub 仓库 <a href="https://github.com/emilkowalski/skills">emilkowalski/skills</a>。README 列出 18 项，比网站目录多出一项 <code>write-swift</code>（写现代 Swift，含值类型、Swift 6 并发、泛型、性能与 Swift Testing）。网站目录未收录这一项，本页在目录后单独注明。</p>
+<p>安装命令在目录页和各技能页上都写得很明确：</p>
+<pre><code>npx skills@latest add emilkowalski/skills</code></pre>
+<p>单项安装可加 <code>--skill</code>，例如 <code>npx skills@latest add emilkowalski/skills --skill emil-design-eng</code>。作者还在 README 里放了技能更新的通讯订阅入口（<a href="https://aiforui.dev/skills/updates">aiforui.dev/skills/updates</a>）；本站只记录该链接存在，未登记邮箱。</p>
+
+<h2>二、和付费课程的边界</h2>
+<p>这些公开技能被放在 <a href="https://aiforui.dev/">aiforui.dev</a> 上，和一门名叫「AI for Designers and Engineers」的付费课程住在同一座站点。课程页写：由 Emil Kowalski 讲授，面向希望「要 AI 的速度、但不降低标准」的设计师与工程师；候补登记可先看两节免费课，招生页面写明入学将于 2026 年 12 月 8 日重新开放。各公开技能页页脚也重复了这句招生日程。</p>
+<p>两者不要混为一谈。网站目录上的 17 项（加上仓库里的 <code>write-swift</code>）是 MIT 许可的公开技能。课程页另称学员会得到「我每天都在用的 28 项 UI skills」、动画审查工具 Lapse，以及专属 Discord。变更日志里出现的 <code>/emil-prep-for-prod</code>、<code>/emil-unslop-design</code>、<code>/emil-borrow-a-brain</code> 等，并不在此次核对过的公开仓库 README 列表中。⚠️ 课程是否仍为 28 项、Lapse 的授权范围、以及哪些技能只对学员开放，均以作者站点当时页面为准，本站未登录课程、未逐项核对付费包。</p>
+<p>团队授权页展示：购买 5 个席位，原价 1,495 美元，显示 10% 折扣后为 1,345.50 美元（2026-11-10 页面所示）⚠️，价格可能随时变动。个人课程标价在本次抓取中未稳定显示（页面处于等候名单状态），故不转写一个未核对的数字。课程页自报已有 4,500+ 名设计师与工程师参加 ⚠️，本站未核实。</p>
+
+<h2>三、技能目录</h2>
+<p>下面按目录页的五组来写，说明用我的转述，不逐页复制技能文档。括号里是调用名与目录页链接。</p>
+
+<h3>01 动手之前</h3>
+<p>先弄清该怎么说、用什么做、以及要不要先并排比较几个方案。</p>
+<ul>
+<li><strong>Animation Vocabulary</strong>（<a href="https://aiforui.dev/skills/animation-vocabulary"><code>/animation-vocabulary</code></a>）：把「顺一点、高级一点」换成准确的动效用语，让智能体知道你要的是哪一种变化。</li>
+<li><strong>Pick a UI Library</strong>（<a href="https://aiforui.dev/skills/pick-ui-library"><code>/pick-ui-library</code></a>）：按作者信任的清单帮你选型，避免智能体手写一个 toast，或装上已经无人维护的包。</li>
+<li><strong>Prototyping</strong>（<a href="https://aiforui.dev/skills/prototype"><code>/prototype</code></a>）：就同一块界面做出多个不同版本，并用切换器比较，而不是只生成一个再慢慢改。</li>
+</ul>
+
+<h3>02 搭建界面</h3>
+<p>目录页称这一组是「帮你为界面做出正确决定」的技能。</p>
+<ul>
+<li><strong>Design Engineering</strong>（<a href="https://aiforui.dev/skills/emil-design-eng"><code>/emil-design-eng</code></a>）：作者说的「主技能」。不知道该调用哪一项时用它。它会判断某件事是否值得动画、挑选缓动与弹簧、处理按压态和感知来源的弹出层，并以「之前 / 之后 / 原因」表说明改动。比专项技能更宽、也没那么深。</li>
+<li><strong>Animate</strong>（<a href="https://aiforui.dev/skills/animate"><code>/animate</code></a>）：从零做一段动画，并选择曲线、时长和该动的属性。</li>
+<li><strong>Choreograph</strong>（<a href="https://aiforui.dev/skills/choreograph"><code>/choreograph</code></a>）：协调多个一起动的元素——谁先、谁后、谁并行，以及什么不该动。目录举例：删除一张卡片后，其余卡片如何就位。</li>
+<li><strong>Apple Design</strong>（<a href="https://aiforui.dev/skills/apple-design"><code>/apple-design</code></a>）：把 Apple 在 WWDC 设计讲座里谈的界面原则与流体运动，转写到网页语境。抽屉该用怎样的弹簧、松手后是否显得「死掉」，是这一项常被指向的问题。</li>
+<li><strong>Gestures</strong>（<a href="https://aiforui.dev/skills/gestures"><code>/gestures</code></a>）：拖拽、轻扫与 sheet。技能页说明它用运动值 1:1 跟踪指针、越过边缘时橡胶回弹，并按距离或速度决定是否关闭，释放时带上动量。更新标注为 2026 年 11 月 8 日。</li>
+<li><strong>Mobile Native</strong>（<a href="https://aiforui.dev/skills/mobile-native"><code>/mobile-native</code></a>）：让网页在手机上不像「缩小的网站」——粘滞的悬停态、点击高亮闪一下还不褪、100vh 问题、输入框导致页面放大、安全区与迟钝的点击，都在这一项里。</li>
+</ul>
+
+<h3>03 打磨与评审</h3>
+<ul>
+<li><strong>Animation Performance</strong>（<a href="https://aiforui.dev/skills/animation-performance"><code>/animation-performance</code></a>）：处理掉帧。目录页的目标写法是让动画跑在 60 帧；README 强调其中包含许多智能体容易漏掉的细问题，例如长列表里拖拽变卡、或随手加上 <code>will-change</code>。</li>
+<li><strong>Break UI</strong>（<a href="https://aiforui.dev/skills/break-ui"><code>/break-ui</code></a>）：用最糟数据去压界面——超长姓名、奇怪邮箱、单字母名字、巨大计数、空列表、非拉丁字符和表情。技能页说它会做一份报告并给出修复（例如 <code>min-width: 0</code> 或 <code>Intl.PluralRules</code>），并加上「演示数据 / 最糟情况」开关。更新标注为 2026 年 10 月 2 日。</li>
+<li><strong>Review Animations</strong>（<a href="https://aiforui.dev/skills/review-animations"><code>/review-animations</code></a>）：按作者的规则做一次严格审查，结果是通过或阻断。</li>
+</ul>
+
+<h3>04 看整座应用</h3>
+<p>目录页的提示是：不当下在写某一块时，先把整座应用拉开看一眼。</p>
+<ul>
+<li><strong>Find Opportunities</strong>（<a href="https://aiforui.dev/skills/find-animation-opportunities"><code>/find-animation-opportunities</code></a>）：找出真正值得加运动的地方，也明确指出不该动的地方。</li>
+<li><strong>Improve Animations</strong>（<a href="https://aiforui.dev/skills/improve-animations"><code>/improve-animations</code></a>）：普查代码里的动画，并给出可交给子智能体执行的、带优先级的独立计划。</li>
+<li><strong>Remove Animations</strong>（<a href="https://aiforui.dev/skills/remove-animations"><code>/remove-animations</code></a>）：反过来做减法。README 举的例子包括：键盘快捷键上的运动、每个栏目都做一次淡入、一组 tooltip 各自再加一段延迟。</li>
+</ul>
+
+<h3>05 其他</h3>
+<ul>
+<li><strong>Animate Expo</strong>（<a href="https://aiforui.dev/skills/animate-expo"><code>/animate-expo</code></a>）：同一套标准，面向 React Native 与 Expo——手势、sheet、触感、屏幕转场，并尽量让运动离开 JS 线程。目录页写「与 Expo 团队合作完成」⚠️，合作形式与范围未在本次核对中另寻旁证。</li>
+<li><strong>Ask Sonner</strong>（<a href="https://aiforui.dev/skills/ask-sonner"><code>/ask-sonner</code></a>）：作者的 React toast 库 <a href="https://sonner.emilkowal.ski">Sonner</a> 的安装、样式、配方，以及开发环境重复弹出、Tailwind 类不生效等常见问题。</li>
+</ul>
+
+<h3>仓库有、目录页没有</h3>
+<p><strong>write-swift</strong>（<code>/write-swift</code>）：只出现在 2026-11-10 核对的 README 参考列表中，不在网站 17 项目录里。说明是写现代 Swift：值类型、Swift 6 并发、泛型、性能与 Swift Testing。若你只从网站安装说明进入，可能会漏掉这一项。</p>
+
+<h2>四、作者怎么解释这套技能</h2>
+<p>README 的核心判断很短：智能体往往没有好品味。入场动画用了该用 <code>ease-out</code> 却写成 <code>ease-in</code>，或者把实线边框当成半透明阴影的替代，这些小错会叠成「能用，但不怎么好」的界面。技能的作用，是把代理可能犯的小错列出来，并说明怎么改。作者把它称作通向好界面的捷径，也是从「一片 slop」里走出来的捷径。</p>
+<p>他同时写得很清楚：这些技能是领域经验的副产品。「AI 并不能替代这种经验，它放大你能从中得到的东西。」所以仍要学习写代码、做设计，或在任何领域里把专业养厚。经验来源，README 写的是他在 Vercel 与 Linear 的工作；课程首页进一步自称现为 Linear 的 design engineer，此前在 Vercel 设计团队，并称 Sonner 与 Vaul 每周从 npm 下载超过 8,000 万次、前作 animations.dev 已有 13,000+ 名学员 ⚠️。职务、下载量与前作学员数为站点自我介绍，本站未独立核实。</p>
+<p>同站还有 <a href="https://aiforui.dev/lab">/lab</a> 互动实验室，以及课程变更日志（称课程于 2026 年 8 月开放，后续更新对已购学员免费）。这些页面服务课程与展示，不属于本次开源技能目录的正文。</p>
+
+<h2>五、核实与注记</h2>
+<ul>
+<li>合规：先读 <a href="https://aiforui.dev/robots.txt">aiforui.dev/robots.txt</a>（<code>Allow: /</code>，<code>Disallow: /api/</code>）。只抓公开页与 sitemap，未调用 <code>/api/</code>，未绕过等候名单或填写邮箱，未下载音视频，未复制人物照片或站点截图。封面为自绘字体图。</li>
+<li>许可证（R13）：2026-11-10 通过 <code>raw.githubusercontent.com/emilkowalski/skills/main/LICENSE</code> 现场读取，全文为 MIT License，版权人为 Emil Kowalski，年份 2026。未调用 api.github.com。网站本身无许可页。</li>
+<li>目录页展示「55,453 GitHub stars」「3.3M Installs on skills.sh」（2026-11-10 页面所示）⚠️。星数会变；安装量为站点自报，本站未核 skills.sh。抓取 GitHub 仓库页时未能稳定读出星数，故不另报一个不同数字。</li>
+<li>公开技能数量：网站目录 17 项；README 参考列表 18 项（多 <code>write-swift</code>）。课程页另称 28 项 UI skills，与公开包不是同一范围 ⚠️。</li>
+<li>本站未安装、未运行这些技能，也未完成课程。效果、性能与「和 Expo 团队合作」等表述，均按页面与 README 转述。</li>
+</ul>
+
+<h2>附录一：README 全文中译</h2>
+<p>译文依据 2026-11-10 读取的 <a href="https://github.com/emilkowalski/skills/blob/main/README.md">README.md</a>（MIT License）。插图与 skills.sh 徽章未转载。文内链接保留原址。</p>
+
+<h3>写给设计师和工程师的 Skills</h3>
+<p>给设计师和工程师，帮他们做出更好的用户界面。</p>
+<p>动画对不对、设计对不对，往往很难当时就知道。这些技能想让你更快走到那些正确的决定。</p>
+<p>它们依据我在 Vercel、Linear 这类公司工作多年的经验。</p>
+<p>这里的全部技能，都是领域专长的副产品。AI 并不能替代这种专长，它放大你能从中得到的东西，也让你相对其他人变得更好。</p>
+<p>所以，去学写代码、做设计，或在任何其他领域里把专长养起来。这件事极其值钱。</p>
+<p>想跟上我这些技能的更新，可以在这里订阅：</p>
+<p><a href="https://aiforui.dev/skills/updates">订阅通讯</a></p>
+
+<h3>安装</h3>
+<pre><code>npx skills@latest add emilkowalski/skills</code></pre>
+
+<h3>为什么要用？</h3>
+<p>智能体并没有很好的品味。</p>
+<p>我见过很多次，它们给动画选错了材料。入场动画本该用 <code>ease-out</code>，却用了 <code>ease-in</code>（<a href="https://emilkowal.ski/ui/7-practical-animation-tips#4.-choose-the-right-easing">这里解释过为什么</a>）。或者在界面上用实线边框，而不是半透明的阴影。</p>
+<p>这些小事会叠加起来，让你的界面要么出色，要么……也就一般。</p>
+<p>正如 <a href="https://emilkowal.ski/ui/agents-with-taste">Agents with Taste</a> 一文所解释的，这些技能列出了智能体可能犯下的各种小错，并说明该怎么修正。</p>
+<p>这是通向出色界面的捷径。也是在一片平庸生成物里显出来的捷径。</p>
+
+<h3>参考</h3>
+<ul>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/emil-design-eng/SKILL.md">emil-design-eng</a></strong> — 主技能，以动画为主，也包含一些设计建议。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/animate/SKILL.md">animate</a></strong> — 从零做一段动画，并选择正确的曲线、时长、属性等等。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/animate-expo/SKILL.md">animate-expo</a></strong> — 同一标准，面向 React Native 与 Expo：手势、sheet、触感、屏幕转场，并让运动离开 JS 线程。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/review-animations/SKILL.md">review-animations</a></strong> — 按我的规则，严格审查你的动画。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/improve-animations/SKILL.md">improve-animations</a></strong> — 审查代码库中的全部动画，并给出带优先级、可独立执行、能交给任意智能体的计划。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/find-animation-opportunities/SKILL.md">find-animation-opportunities</a></strong> — 在界面里寻找真正能从运动中受益的位置，同时也告诉你什么不该动画。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/remove-animations/SKILL.md">remove-animations</a></strong> — 寻找机会的反面：去掉应用并不需要的动画。可以想想键盘快捷键上的运动、每个栏目的淡入，以及一组 tooltip 里每一条再加的延迟。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/choreograph/SKILL.md">choreograph</a></strong> — 协调多个一起做动画的元素：谁领、谁跟、谁并行，以及什么根本不该动。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/animation-performance/SKILL.md">animation-performance</a></strong> — 修复掉帧的动画。其中包含许多大多数智能体会漏掉的细问题。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/animation-vocabulary/SKILL.md">animation-vocabulary</a></strong> — 用准确的词告诉 AI 你到底要什么，从而得到更好的动画。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/apple-design/SKILL.md">apple-design</a></strong> — Apple 的界面设计与流体运动原则，提炼自他们的 WWDC 设计讲座，并转写到网页。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/gestures/SKILL.md">gestures</a></strong> — 做拖拽、轻扫和 sheet：1:1 跟踪手指，带上释放时的速度，并允许在动画中途被接住。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/write-swift/SKILL.md">write-swift</a></strong> — 写现代 Swift。包括：值类型、Swift 6 并发、泛型、性能，以及 Swift Testing。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/pick-ui-library/SKILL.md">pick-ui-library</a></strong> — 让智能体按我使用并信任的库来选型，而不是手写一个 toast 组件，或装上一个已废弃的包。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/prototype/SKILL.md">prototype</a></strong> — 就你描述的那一块 UI，做出多个不同版本，并用切换器浏览。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/mobile-native/SKILL.md">mobile-native</a></strong> — 让网页应用在手机上接近原生：粘滞悬停、点击高亮闪烁、100vh 问题、输入框放大页面、迟钝的点击、安全区，以及其余把「网站」和「应用」分开的小修正。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/break-ui/SKILL.md">break-ui</a></strong> — 用最糟数据去压你刚做的界面：长名字、奇怪邮箱、单字母名字、巨大计数、空列表、过长标签。</li>
+<li><strong><a href="https://github.com/emilkowalski/skills/blob/main/skills/ask-sonner/SKILL.md">ask-sonner</a></strong> — 使用我的 toast 库 <a href="https://sonner.emilkowal.ski">Sonner</a> 的指南。包含安装、样式、配方，以及对最常见问题的修复。</li>
+</ul>
+
+<h2>附录二：许可证原文</h2>
+<p>以下为 2026-11-10 自 <a href="https://raw.githubusercontent.com/emilkowalski/skills/main/LICENSE">上游 LICENSE</a> 读取的全文。这不是法律意见。</p>
+<pre><code>MIT License
+
+Copyright (c) 2026 Emil Kowalski
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>独立中文导读；附录一对 MIT 许可的 README 作全文中译，附录二附许可证原文。课程与站点营销文案只用短引。资料：aiforui.dev/skills 及代表技能页、首页、团队页、变更日志、实验室；GitHub 仓库 README 与 LICENSE。未运行技能，未转载媒体。</p>
+<a href="../">返回录像带书店</a></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://aiforui.dev/skills" rel="noopener">aiforui.dev/skills</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

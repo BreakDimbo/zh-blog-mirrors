@@ -1,5 +1,20 @@
 [
   {
+    "slug": "aiforui-skills",
+    "title": "给智能体用的界面技艺：Emil Kowalski 的开源 AI Skills",
+    "desc": "aiforui.dev/skills 导读：17 项公开 UI 技能可安装使用；仓库 README 为 MIT，附中文全译。付费课程与 28 项技能包不是同一范围。星数、安装量与课程数字均为页面自报 ⚠️。",
+    "description": "aiforui.dev/skills 导读：17 项公开 UI 技能可安装使用；仓库 README 为 MIT，附中文全译。付费课程与 28 项技能包不是同一范围。星数、安装量与课程数字均为页面自报 ⚠️。",
+    "source": "Emil Kowalski · aiforui.dev/skills",
+    "date": "2026-11-10",
+    "type": "导读 + README 中译",
+    "subtitle": "把界面品味写成可安装的开源技能",
+    "original_url": "https://aiforui.dev/skills",
+    "spine": "界面技艺包",
+    "summary": "公开 17 项 MIT 技能，仓库另有 write-swift；与同站 28 项付费课程包分开看待",
+    "kind": "项目",
+    "by": "Emil Kowalski"
+  },
+  {
     "slug": "bilawalsidhu-gods-eye-view",
     "title": "God's Eye View：把公开信号叠进三维地球",
     "desc": "浏览器里的开源三维地球：把航班、船舶、卫星、地震、天气和公共摄像头等公开信号叠在一起。源码 MIT，但捆绑数据、三维模型和 README 宣传图另行许可；本页含导读与 README 全文中译。",
