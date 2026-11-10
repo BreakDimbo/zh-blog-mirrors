@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>God&#x27;s Eye View：把公开信号叠进三维地球</title><meta name="description" content="浏览器里的开源三维地球：把航班、船舶、卫星、地震、天气和公共摄像头等公开信号叠在一起。源码 MIT，但捆绑数据、三维模型和 README 宣传图另行许可；本页含导读与 README 全文中译。"><meta property="og:title" content="God&#x27;s Eye View：把公开信号叠进三维地球"><meta property="og:description" content="浏览器里的开源三维地球：把航班、船舶、卫星、地震、天气和公共摄像头等公开信号叠在一起。源码 MIT，但捆绑数据、三维模型和 README 宣传图另行许可；本页含导读与 README 全文中译。"><meta property="og:image" content="images/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">God&#x27;s Eye View：把公开信号叠进三维地球</h1>
+<p class="za-sub" lang="en" data-za-gen>A spy-satellite simulator in your browser · 项目导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · bilawalsidhu/gods-eye-view（源码 MIT；数据、模型与宣传图另行许可）</span><span>收录 · 2026-11-10</span><span><a href="https://github.com/bilawalsidhu/gods-eye-view" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：Bilawal Sidhu / Halfpixel · <a href="https://github.com/bilawalsidhu/gods-eye-view">GitHub 仓库</a> · <a href="https://godseyeview.ai/">官网 godseyeview.ai</a> · 源码 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/LICENSE">MIT</a>（数据、模型与宣传图另行许可） · 核对：2026-11-10（新加坡时间） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">God's Eye View 是一个在浏览器里运行的开源三维地球。它把已经公开的飞行应答、船舶信标、轨道根数、地震、火灾、天气和公共摄像头等信号放在同一幅可探索的球面上，也可以用语音或文字向这个画面提问。外观像一间禁区里的操作舱，但源码可以检查，多数图层不必先申请密钥。</p>
+<div class="notice"><strong>先看许可：</strong>2026-11-10 现场读取根目录 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/LICENSE">LICENSE</a>，正文以 <q>MIT License</q> 起首，版权人为 Bilawal Sidhu。同一文件随后写明：<strong>MIT 只覆盖源代码</strong>；<code>src/data/local_data/</code> 捆绑数据集、运行时向第三方拉取的数据，以及 <code>public/models/</code> 三维模型，都不在 MIT 内。GitHub 的 license 字段因此显示为 Other / NOASSERTION，不能据此说“没有 MIT”。README 里的演示 GIF 和宣传 PNG 同样不在 MIT 内，只允许随本仓库及项目文档收录，禁止单独再利用或修改，本页不转载。官网页脚还说明：God's Eye View 是 Metaversity LLC 的商标，许可覆盖代码，不覆盖名称或内容。这不是法律意见。</div>
+<h2>一、它是什么</h2>
+<p>仓库自述是 <q>A spy-satellite simulator in your browser — then you realize the sources are public and the data is real.</q> 前身叫 WorldView。维护者是 <a href="https://github.com/bilawalsidhu">Bilawal Sidhu</a> 与 <a href="https://github.com/samehkhamis">Sameh Khamis</a>，所属公司为 <a href="https://halfpixel.ai">Halfpixel</a>。官方站点是 <a href="https://godseyeview.ai/">godseyeview.ai</a>。</p>
+<p>它做的不是再做一个静态地图，而是把多层公开信号叠在 CesiumJS 地球上，并让你点选、跟踪、进入驾驶舱视角，或用语音在真实地形上画边界、量距离、切换传感器风格（CRT、夜视、FLIR 等）。默认在本机浏览器运行；也可以作为 MCP 服务器，让 Claude Desktop、Codex 或 ChatGPT 桌面版在对话里打开同一幅地球。</p>
+<p>README 自己划了一条线：项目刻画的是事件、资产、基础设施和系统——飞机、船舶、卫星、火灾、摄像头、城市——<strong>不为检索具名个人、人脸识别或追踪个体做功能</strong>，这类拉取请求不会被合并。它也写明：这是探索与学习用的演进中开源客户端，不是加固过的生产服务；数据可能延迟、不完整、被建模或推断，<strong>不可用于航行、应急、医疗、投资或其他安全关键用途</strong>。</p>
+<h2>二、球上有什么，怎样工作</h2>
+<p>README 表列二十余个图层与底图来源，并称其中二十个有无需密钥的路径。无密钥时可先用 Esri 卫星影像和关键地形（Esri 不可达时回退到 OSM）。要看 Google 摄影级三维城市与世界地形，需符合条件的个人非商业 Cesium ion 令牌，或走计量的 Google Maps 密钥。语音和部分分析功能需要 OpenAI 或 Gemini 密钥。船舶（AISStream）、活火（NASA FIRMS）、交通流速（TomTom）、街景 Mapillary 等也有各自的免费或计量档。</p>
+<ul>
+<li><strong>运动与轨道：</strong>OpenSky 与 adsb.lol 的民航与军用 ADS-B、AISStream 船舶、CelesTrak 约 1,300 个空间目标（含空间站、成像、电信、Starlink、探测器、碎片）、Launch Library 2 近 30 天发射回放（标明为重建估计）。</li>
+<li><strong>事件与天气：</strong>USGS 地震、NASA FIRMS 活火、WFIGS/NIFC 火场周界、NOAA/ECMWF 风场、nowCOAST 雷达云图与闪电、NHC/CPHC 气旋路径。交通是在 OSM 道路上的模拟车流；有 TomTom 密钥时用实时流速上色，但单个车辆位置仍不是实地观测。</li>
+<li><strong>摄像头与街道：</strong>多个城市交通摄像头被投影进三维空间，姿态是需用户校准的粗估计。另有 OSM 标注的车牌识别摄像头位置（只有位置和标签，没有车牌或视频），以及 Mapillary / KartaView / Panoramax / Google Street View 的街景面板。</li>
+<li><strong>捆绑静态基础设施：</strong>数据中心、水坝、海底电缆。其中 TeleGeography 海缆为 CC BY-NC-SA 3.0，禁止按 MIT 做商业使用；水坝与数据中心来自 OSM / Open Infrastructure Map，适用 ODbL 1.0。</li>
+</ul>
+<p>运动上，实时源大约每 15–30 秒更新一次，球体渲染会落后一个间隔并在已知点之间插值，空隙用航位推算补上。卫星用 SGP4 传播，轨道环按 GMST 对齐。图标朝向按真实航向做屏幕空间投影，不随相机胡乱旋转。界面是 Vue 3 与 Pinia，地球是 CesiumJS，构建用 Vite。密钥（除浏览器必须持有的 Google Maps 与 Cesium ion 外）走本机服务端代理。</p>
+<h2>三、怎么开始</h2>
+<p>本地运行不必先有账号或 API 密钥。README 给出四条路径：</p>
+<ol>
+<li><strong>Pinokio：</strong>安装或更新到 8.2 或更新版本，在 Pinokio 里打开应用，点 Install 再 Start。维护者称已在 Windows、macOS 和 Linux 测过安装器。</li>
+<li><strong>终端：</strong>需要 Node.js 24.x（24.14.0 或更新，建议 24.22.1+）或 26.x（建议 26.12.1+）；克隆仓库后 <code>npm ci</code>、<code>npm run doctor</code>、<code>npm run dev</code>，打开 <code>http://localhost:4173</code>。Node 25 已结束支持。</li>
+<li><strong>Docker：</strong><code>docker compose up</code>，同样使用 4173 端口。本地 MCP 与 ChatGPT OAuth 语音在 Docker 下不可用，语音需改用 OpenAI API 密钥。</li>
+<li><strong>GitHub Codespaces：</strong>需 GitHub 账号；经转发 HTTPS 地址时 Overpass 与 OpenAI 语音令牌会返回 403，这些功能应在本地使用。</li>
+</ol>
+<p>密钥在应用右下角的 <strong>POWER UP</strong> 面板里添加，不要先改仓库里的文件。默认只绑定本机；若把服务共享到局域网，等于把已配置的密钥代理给能访问该地址的人。官网同期写明：官方托管版仍是 <q>Coming soon</q>，可加入等候名单；其他自称托管或收费的 “God's Eye View” 站点与作者及 Halfpixel 无关。</p>
+<h2>四、许可要分层看</h2>
+<p>这是本页最需要单独说清的部分，也是仓库自己反复强调的。</p>
+<ul>
+<li><strong>源码：</strong>MIT，版权人 Bilawal Sidhu（2026）。可以复制、修改、再分发和商用，但须保留版权与许可声明。</li>
+<li><strong>捆绑与在线数据：</strong>不在 MIT 内。LICENSE 点名：TeleGeography 海缆 CC BY-NC-SA 3.0（禁商用）；数据中心与水坝 ODbL 1.0；NASA FIRMS 快照 CC0 / 美国公有领域（请引用）；Bhote Koshi 2026 事件影像与派生河道中心线为 Vantor / GeoPera、CC BY-NC 4.0（无单独许可不可商用）。Google Maps、OpenSky 等实时源须遵守各自条款，部分限制商用并要求自备凭证。完整分源说明见上游 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/DATA_SOURCES.md">DATA_SOURCES.md</a>。</li>
+<li><strong>三维模型：</strong><code>public/models/</code> 为第三方作品，见该目录 README，不随源码 MIT 授权。</li>
+<li><strong>README 媒体：</strong><code>docs/media/README.md</code> 写明 17 张 GIF 与 2 张 PNG 不在 MIT 内，禁止单独再利用或修改。它们还含 Google Photorealistic 3D Tiles 与第三方图层，作者的许可不能替代这些提供方的条款。</li>
+<li><strong>名称：</strong>官网页脚称 God's Eye View 是 Metaversity LLC 的商标，由 Halfpixel, Inc. 经许可使用；许可覆盖代码，不覆盖名称或内容。</li>
+</ul>
+<p>因此：可以把这份源码当作 MIT 软件来阅读和改；若要商用部署、再分发数据或宣传图，必须按数据源、模型和商标条款逐项处理，必要时删除或替换不合条款的数据集。</p>
+<h2>五、核实与注记</h2>
+<ul>
+<li>✅ 2026-11-10 通过连接器读取仓库元数据、根 LICENSE、<code>docs/media/README.md</code>、README，以及 main 最新提交 <code>78c5b6c</code>（新加坡时间 09:38:26，Sameh Khamis 合并 PR #1641）。创建于 2026-06-22T23:37:22Z（新加坡时间 2026-06-23 07:37:22）。当时 ★ 63,953、fork 12,602、未关闭 issue 402——这些数字会变。</li>
+<li>✅ 官方站点 <a href="https://godseyeview.ai/">godseyeview.ai</a> 在 robots 允许下只读了文字：确认是官方站，托管版仍为即将推出 / 等候名单，并给出商标与“许可覆盖代码、不覆盖名称或内容”的说明。</li>
+<li>⚠️ README 与官网中的社交数据为项目自报，本站未独立核验：YouTube 5M+ / 全网 25M+ 观看、2026 年 8 月 GitHub Trending 日榜与周榜第一（官网还写 9 月 12 日再上榜、10 月 13 日第二）、Product Hunt 当日第八、Brendan Eich 的短评（README 附了 X 链接，本次未打开核对）。冷启动中位 1.86 秒是某次 M5/Chrome 对照基线，不是对你机器的保证。</li>
+<li>⚠️ 图层数量、11,000+ 航班、约 7,350 个摄像头位点、数据中心 4,352 / 水坝 704 / 海缆 712 等，均为 README 当时的陈述。同一 README 在“三峡”任务里写“再找到 703 座水坝”，与 704 不一致，未在运行中核对。</li>
+<li>⚠️ 本站未安装、未运行该应用，也未下载或观看演示视频与 GIF。交通模拟、摄像头姿态、发射轨迹等，作者已标明为估计或重建；官方站点另提到 Sentinel-2 近期影像，README 通读中未展开，未核实其当前开关与条款。源码树中存在 <code>src/sdr/</code>，与官网所述 SDR 能力相符，但未实跑。</li>
+<li>⚠️ 官网自述 Bilawal 曾担任 Google 三维世界模型产品负责人、参与 Immersive View 与 3D Tiles API，未做独立背景核实。</li>
+<li>ChatGPT / Codex OAuth 语音被作者标为实验性；成功签发令牌不等于计费或支持条款已经明确。</li>
+</ul>
+<p>下面附录是对 2026-11-10 所读取 README 的全文中译。演示媒体按上游条款省略，改为简短说明。许可证附录为根目录 LICENSE 原文。</p>
+<h2>附录一：README 全文中译</h2>
+<p>译自 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/README.md">bilawalsidhu/gods-eye-view/README.md</a>，对应本次核对的 main 提交 <code>78c5b6c</code>（2026-11-10）。徽章、YouTube 缩略图与全部 GIF/PNG 已省略。命令与文件名保持原文。这是译文，不是官方中文文档。</p>
+<h3>God's Eye View</h3>
+<p>浏览器里的间谍卫星模拟器——然后你会发现，数据源是公开的，数据是真的。</p>
+<p>摄影级三维地球。实时飞机、船舶、卫星、地震、交通和公共摄像头。由实时 AI 智能体驱动的免持语音控制。</p>
+<p><em>No place left behind.</em></p>
+<p class="media-note">（原文此处有演示媒体：主视觉 GIF：轨道 HUD、被跟踪的活地球、FLIR 地形，然后出现 OPEN SOURCED。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p>来自病毒式传播的 God's Eye View 系列（原名 WorldView）背后的项目——<a href="https://youtube.com/playlist?list=PL6qSg2I-7_koPbDnSMo0QeeHX_RknA2uv&amp;si=nBGYMoHWQw41v93Q">YouTube 上 5M+</a> · <a href="https://www.google.com/search?q=god%27s+eye+view">各社交平台 25M+</a>（均为项目自报）。</p>
+<p>🏆 曾登上 GitHub Trending 日榜与周榜第一 · 2026 年 8 月（项目自报）。</p>
+<p><a href="https://www.producthunt.com/products/god-s-eye-view?launch=god-s-eye-view">Product Hunt 当日第八</a> · 由 hashtag 的创造者 Chris Messina 提交。</p>
+<p><q>pretty cool</q> —— <a href="https://x.com/BrendanEich/status/2094592096401490266">Brendan Eich</a>，JavaScript 创造者，Mozilla 与 Brave 联合创始人 · 曾登上 <a href="https://pinokio.co/posts/01m1m4p9xxm3qw7dnnpj2wr93g">Pinokio</a>。</p>
+<p>⚡ <strong>不必先有 API 密钥即可开始。</strong>用 <a href="https://pinokio.co/apps/github-com-bilawalsidhu-gods-eye-view">Pinokio</a> 安装，或在终端本地运行。可选密钥在应用内添加。<a href="#readme-quick-start">→ 快速开始</a></p>
+<h3>这份东西为什么存在</h3>
+<p>God's Eye View 把公开信号收进同一颗可探索的地球。实时跟踪世界。和它说话。拆开它。扩展它。</p>
+<p>飞行应答机、船舶信标、轨道根数、地震仪和公共摄像头，本来就已经在讲述这个世界。God's Eye View 把它们放在同一处，让你能从全球图景走到某一架飞机、某一艘船或某一条街道。它在你的浏览器里本地运行，源码可以检查和扩展。</p>
+<p>作者的原话是：<q>Half the magic is that it looks like a forbidden cockpit. The other half is that every line of code is inspectable.</q></p>
+<p>多数数据源是实时的，或会定期刷新。交通是沿着真实道路、用汇总位置数据模拟出来的。闭路摄像头的姿态和火箭发射轨迹是粗估计。</p>
+<p>先从附带的数据源开始，再加入你自己的。每一层都是单独的模块。</p>
+<h3>它能做什么</h3>
+<ul><li><strong>驾驶舱视角：</strong>坐进被跟踪的航班里——相机会一路把下方地形保持在你脚下。</li><li><strong>近距目标名单：</strong>目标周围 250 公里内的名册——可逐步浏览实时飞机，并进入任一驾驶舱。</li><li><strong>点击即跟踪：</strong>相机锁定、画出渐隐尾迹、显示完整元数据；被跟踪的火点或船只可一键交给最近的实时摄像头。</li><li><strong>语音白板：</strong>对着世界说话做标注——真正的边界多边形、标记和路线。</li><li><strong>三维机库：</strong>按机型的真实三维模型——787、ATR-72、Citation、Bell 206、MQ-9——被跟踪目标在靠近时会从符号换成三维模型。</li><li><strong>重绘现实：</strong>在普通地球上叠加 GLSL 传感器外观——CRT、夜视、FLIR/热成像、Noir。</li><li><strong>探测叠加：</strong>视口里每一目标的屏幕空间包围盒与编号。</li><li><strong>军用抬头显示：</strong>带情报风格遥测的战术 HUD。</li><li><strong>全球上下文：</strong>一键铺开完整态势，离开时回到你原来的精确视角。</li><li><strong>场景导演：</strong>为短片和演示捕捉电影感相机巡游。</li><li><strong>分享链接：</strong>相机、风格、图层，甚至一个被跟踪目标，都可以序列化进 URL——实时目标是交接，不是书签。</li><li><strong>重置地球：</strong>一个控件——或一句话——回到完整地球。</li><li><strong>天气：</strong>播放 GFS 或 ECMWF 预报风场，回放实测雷达、卫星云图和闪电，并跟随 NHC/CPHC 气旋路径。无需密钥。</li><li><strong>已标注的车牌识别摄像头：</strong>OpenStreetMap 中标记的车牌识别摄像头位置，一次一座城市。只有位置和标签；无需密钥。</li><li><strong>卫星过境：</strong>用语音询问任一已加载卫星下次从你所在地上空升起的时间：升起、最高点和落下，以及是否可见。</li><li><strong>分析师问答：</strong>用语音统计、筛选和排序卫星、数据中心和水坝，也可问航班、船舶、火灾和地震；答案会说明源是否过时或已回退。</li><li><strong>倾斜与北朝上：</strong>在正射和下俯 35° 斜视之间切换，或把北方放到上方，被跟踪目标保持居中。</li><li><strong>无需密钥的搜索：</strong>输入十进制坐标、二维 WGS84 的 geo: URI（例如 geo:39.7392,-104.9903），或附带的城市、地标，即可飞过去，不必请求地理编码器；其他名称在已配置时走 Google，再回退到 Photon 和 Nominatim。</li><li><strong>可分享场景：</strong>把导演场景作为文件或包导入、预览和分享，含相机锚点、编写的运镜和数据包。</li><li><strong>尼泊尔洪水场景：</strong>回放 Bhote Koshi 洪水：洪水路径、目击者来源和前后影像（捆绑数据不可商用；见 DATA_SOURCES.md）。</li></ul>
+<p>完整演示见作者 YouTube 视频：<a href="https://www.youtube.com/watch?v=GRJaKcXZS94">https://www.youtube.com/watch?v=GRJaKcXZS94</a>（本页未嵌入、未下载该视频）。</p>
+<h3 id="readme-quick-start">快速开始</h3>
+<p>本地安装不需要账号或 API 密钥。应用打开时使用 Esri 卫星影像和无需密钥的地形。若 Esri 无法访问，则回退到 OSM。航班、军用交通、卫星、地震、公共摄像头、广播和发射任务均可在无密钥时使用。</p>
+<p>若要摄影级三维，可为符合条件的个人非商业用途添加 <strong>Cesium ion 令牌</strong>，或使用 <strong>Google Maps 密钥</strong>走直接、计量的路线并使用 Google 地点搜索。须遵守提供方条款与配额。密钥通过应用内的 <strong>POWER UP</strong> 面板添加；<a href="#readme-keys">密钥与费用</a>一节说明选项。</p>
+<p><strong>若已安装过：</strong>请更新到最新版本。旧版本会查询公开的 OpenStreetMap Overpass 服务器，后者现已拒绝这些请求，因此交通、已标注设施和车牌识别图层会一直空着，直到你更新。</p>
+<h3>路径 1 —— 一键，不用终端</h3>
+<ol>
+<li>安装或将 <a href="https://desktop.pinokio.co/">Pinokio</a> 更新到 <strong>8.2 或更新版本</strong>。</li>
+<li>打开 <a href="https://pinokio.co/apps/github-com-bilawalsidhu-gods-eye-view">Pinokio 中的 God's Eye View</a>。</li>
+<li>点击 <strong>Install</strong>，再点 <strong>Start</strong>。</li>
+</ol>
+<p>可用于 <strong>Windows、macOS 和 Linux</strong>。Pinokio 维护者称已对修复后的安装器做跨平台测试。启动器会安装锁定的依赖、寻找空闲的本地端口，并在系统浏览器中打开应用。Server 菜单项可继续查看启动器控制台。</p>
+<p><strong>以前试过、安装失败？</strong>更新 Pinokio 后再试。8.2 修复了启动器安装问题；细节见 <a href="https://pinokio.co/posts/01m1m4p9xxm3qw7dnnpj2wr93g">Pinokio 维护者的说明</a>。</p>
+<p><strong>若使用较旧启动器，或手动打开内嵌视图？</strong>如果地球非常卡顿，先不要当成 GPU 兼容或最低硬件问题：把 Pinokio 显示的本地服务器 URL 复制到你平常使用的、启用了硬件加速的浏览器中打开。有一位 Pinokio 8.2.0 用户报告，内嵌视图严重卡顿，但同一正在运行的服务器在外部浏览器中恢复正常（<a href="https://github.com/bilawalsidhu/gods-eye-view/issues/365">#365</a>）。这指向内嵌浏览器，而不是应用服务器或你的硬件；它并不能据此确定最低 GPU 要求。</p>
+<h3>路径 2 —— 终端 / 编码智能体</h3>
+<p>请使用 <strong>Node.js 24.x（24.14.0 或更新）或 26.x</strong>；24.22.1 或更新（26 线上为 26.12.1 或更新）包含 2026 年 10 月 21 日的安全修复，其中包括 CVE-2026-111497。安装医生会对已结束支持的 Node 25 发出警告。</p>
+<pre><code>git clone https://github.com/bilawalsidhu/gods-eye-view.git
+cd gods-eye-view
+npm ci
+npm run doctor
+npm run dev</code></pre>
+<p>打开 <code>http://localhost:4173</code>。在首次运行面板中选择 <strong>Live Contacts</strong>、<strong>Space Missions</strong>、<strong>Environmental</strong> 或 <strong>Explore Manually</strong>。</p>
+<p>启动性能：一次时点的 M5/Chrome 采集测得中位 1.86 秒冷启动。这是对照基线，不是对你的机器或网络的保证。见 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/docs/PERFORMANCE.md">docs/PERFORMANCE.md</a>。</p>
+<p><strong>macOS 快捷方式：</strong><code>./scripts/dev-fresh.sh</code> 会清理 Vite 缓存，并从钥匙串拉取已配置的密钥。它也可以在无密钥时启动。</p>
+<h3>路径 3 —— Docker</h3>
+<p>不必安装 Node；容器会发布同一套开发服务器。</p>
+<pre><code>git clone https://github.com/bilawalsidhu/gods-eye-view.git
+cd gods-eye-view
+docker compose up</code></pre>
+<p>同样打开 <code>http://localhost:4173</code>。应用保存的一切都留在你克隆的目录里，所以 <code>docker compose down</code> 不会丢掉它们：</p>
+<ul>
+<li><code>.env</code> —— 你的 API 密钥，无论是从 Provider Settings 保存还是手写。</li>
+<li><code>.gev-cache/</code> —— 下载的地图和卫星数据，使以后启动更快。</li>
+<li><code>.gev-logs/</code> —— 日志。</li>
+</ul>
+<p>备份这个文件夹就备份了全部内容；删除 <code>.env</code> 即可忘掉密钥。源码修改仍会热重载。端口只发布到 <code>127.0.0.1</code>，默认行为与本地安装一致。</p>
+<p>本地 MCP 服务器和 ChatGPT OAuth 语音在 Docker 下不可用；语音请使用 OpenAI API 密钥。</p>
+<p>若要对外发布，属于后文「共享实例」的显式选择，而且会一并交出 <strong>Provider Settings</strong>：启动器把容器网关当作本机，更宽的发布会让其他人也从同一地址进入。若打算共享实例，请改用手写把密钥放进 <code>.env</code>。<a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/SECURITY.md">SECURITY.md</a> 有细节。</p>
+<p>扩大发布范围时，同时设置 <code>GEV_KEY_SETUP_TRUSTED_PEERS=none</code>，使启动器不信任任何网关地址。</p>
+<pre><code>GEV_KEY_SETUP_TRUSTED_PEERS=none docker compose up</code></pre>
+<p>Compose 会从你的 shell 或项目 <code>.env</code> 转发 <code>GEV_KEY_SETUP_TRUSTED_PEERS</code> 和 <code>GEV_ALLOWED_HOSTS</code>；已导出的 shell 值优先。也可以把 <code>GEV_KEY_SETUP_TRUSTED_PEERS=none</code> 写进 <code>.env</code> 作为持久设置。未设置或空白的受信任对等仍会自动发现网关；<code>none</code> 会明确关闭它。启动日志会确认没有额外受信任的对等方。</p>
+<h3>在 Linux、NAS 或反向代理后运行</h3>
+<p>请用应当拥有其写入文件的那个用户来运行。<code>id</code> 可查看编号；在 Linux 上对自己可以这样：</p>
+<pre><code>env UID=$(id -u) GID=$(id -g) docker compose up</code></pre>
+<p>在 NAS 上，把仓库克隆到你希望存放数据的共享目录，并使用该共享所有者的 id：</p>
+<pre><code>cd /volume1/docker
+git clone https://github.com/bilawalsidhu/gods-eye-view.git
+cd gods-eye-view
+env UID=1026 GID=100 docker compose up -d</code></pre>
+<p>请保留 <code>env</code>：bash 把 <code>UID</code> 视为只读，命令前单独写 <code>UID=1026</code> 会被静默忽略。若容器无法写入检出目录，启动时会说明。macOS 和 Windows 上的 Docker Desktop 会替你映射所有权。</p>
+<p>在 SELinux 主机（Fedora、RHEL）上，compose 使用 <code>:z</code> 挂载检出目录以便容器读取；Docker 可能为容器访问重新标记该目录，大型检出可能需要一点时间。若没有这一步，启动会失败并提示 <code>Cannot find module '/app/scripts/docker-start.mjs'</code>。</p>
+<p>若在反向代理之后，把密钥放进 <code>.env</code> 或作为环境变量传入——Provider Settings 会故意拒绝经代理的请求——并加上你对外提供的主机名，例如 <code>GEV_ALLOWED_HOSTS=globe.example.lan</code>（见「共享实例」）。地图路由会比较浏览器的 <code>Origin</code> 与服务器看到的 <code>Host</code>，因此代理必须传递原始 <code>Host</code>；若由代理终止 TLS，还要传 <code>X-Forwarded-Proto</code>。Caddy 默认两者都会做；nginx 需加上 <code>proxy_set_header Host $http_host;</code>、<code>proxy_set_header X-Forwarded-Proto $scheme;</code> 和 <code>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</code>。在 Docker 之外的安装上，该转发头也会把代理用户与你自己的浏览器分开限流。在默认 Docker 桥接网络下，主机上的每个客户端（包括你的浏览器）都从网关地址到达容器，并共享同一个 Overpass 配额桶。</p>
+<h3>仅 IPv6 的网络、重建镜像，以及测试套件</h3>
+<p>启动器读取 IPv4 默认网关，因此仅 IPv6 的 Docker 网络会找不到网关：它会记录 <code>No default gateway; Provider Settings stays loopback-only</code>，面板会拒绝所有保存。这时请把手写密钥放进 <code>.env</code>，或在阅读 SECURITY.md 后用 <code>GEV_KEY_SETUP_TRUSTED_PEERS</code> 自行指定网关。</p>
+<p><code>node_modules</code> 有意留在镜像内，并在匿名卷中跨重启保留：若 <code>git pull</code> 改变了依赖，用 <code>docker compose down -v &amp;&amp; docker compose up --build</code> 重建。镜像还跳过 Puppeteer 的 Chromium 下载以保持体积，因此 <code>npm run test:track</code> 需在主机上运行——<code>npm run build</code> 和 <code>npm test</code> 可在容器内运行。</p>
+<h3>路径 4 —— GitHub Codespaces（云端，无需本地安装）</h3>
+<p>Codespaces 需要 GitHub 账号。即便 <code>.env</code> 里有 API 密钥并配置了 <code>GEV_ALLOWED_HOSTS</code>，经其转发的 HTTPS URL 访问 Overpass 查询和 OpenAI 语音令牌仍会返回 HTTP 403。这些功能请使用本地安装。</p>
+<p>codespace 在云端工作区运行开发服务器，因此 Node 和依赖不会落到你的机器上。地球仍在你自己的浏览器里渲染，图形需求与其他路径相同。GitHub Free 每月包含 120 个核心小时、无需绑卡——在默认 2 核机器上大约 60 小时。组织版与企业版不含免费配额；以当前条款与配额为准。</p>
+<ol>
+<li>先 fork 本仓库，再在 GitHub 上打开<strong>你的 fork</strong>。</li>
+<li>点击绿色的 <strong>Code</strong> 按钮，打开 <strong>Codespaces</strong> 标签，然后 <strong>Create codespace on main</strong>。</li>
+<li>在 codespace 终端中运行：</li>
+</ol>
+<pre><code>nvm install 24 &amp;&amp; nvm use 24
+npm ci
+npm run doctor
+GEV_ALLOWED_HOSTS="$CODESPACE_NAME-4173.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN" npm run dev</code></pre>
+<p>打开 <strong>Ports</strong> 标签，找到 <code>4173</code>，点击地球图标在浏览器中打开。端口默认是私有的，因此 URL 会要求 GitHub 登录。请保持私有：公开端口会让任何人使用该应用以及你 <code>.env</code> 中的密钥。</p>
+<p>这里的 <code>GEV_ALLOWED_HOSTS</code> 是必需的，不是可选。开发服务器只响应它信任的主机名，转发端口会以 <code>$CODESPACE_NAME-4173.$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN</code> 到达。不设置时页面会显示 <code>Blocked request. This host is not allowed.</code> 前导点通配符会被有意忽略，所以要传入这个准确名称。</p>
+<p>⚠️ <strong>codespace 可从互联网访问。</strong>应将其视为「共享实例」中更宽发布的情形。Provider Settings 在转发 URL 上不可用。永远不要提交工作区里的 <code>.env</code>。威胁模型见 SECURITY.md。</p>
+<h3>然后在应用里增强，而不是先改文件</h3>
+<p>对本地安装而言，密钥是升级，不是前提。需要时，点击右下角的 <strong>POWER UP</strong> 徽章：Provider Settings 会列出所有支持的密钥、它们打开什么，以及到哪里申请。粘贴后点 <strong>SAVE KEYS</strong>，应用会自行重启并启用新能力。全部配置完成后，徽章会显示 <strong>POWERED UP</strong>——若紧凑布局把它藏起来了，可用 <code>?setup=1</code> 重新打开同一面板。</p>
+<ul>
+<li><strong>密钥落在哪里：</strong>Pinokio → 被忽略的 <code>pinokio/ENVIRONMENT</code>；终端克隆 → 仓库根目录的 <code>.env</code>。在写入任何秘密之前，文件会被设为仅属主可读写。它们是被 Git 排除的本地明文文件；应用用你的密钥联系提供方。</li>
+<li><strong>你已有的密钥仍归你：</strong>来自 shell 或 macOS 钥匙串的值会显示为 <em>configured externally</em>，面板对其只读。</li>
+<li><strong>建议先申请什么：</strong>免费的 <a href="https://cesium.com/ion">Cesium ion</a> 令牌（符合条件的个人、非商业用途；以当前条款与配额为准），用于摄影级三维和世界地形；只有在需要启用计费的计量路线和 Google 地点搜索时才用 Google Maps 密钥；若想和世界说话，再加 OpenAI。完整对照见「密钥与费用」。</li>
+</ul>
+<p>较旧的 Pinokio 与凭据存储：不要在 Pinokio 8.0.40 自带的 <strong>Configure</strong> 面板里输入凭据——该版本不能正确保存这个嵌套应用文件，而且会把提交的值记进日志。请改用 GEV 内部的 <strong>POWER UP → Provider Settings</strong>。Pinokio 8.2 公告修复的是安装问题，并不能据此认定这个单独的 Configure 问题已经解决。在 macOS 上，经 <code>./scripts/dev-fresh.sh</code> 使用钥匙串仍是更稳妥的存储方式。</p>
+<p>两条路径下服务器都绑定在 <strong>localhost</strong>，Provider Settings 只响应来自本机的请求。浏览器侧密钥（Google Maps、Cesium ion）必须在提供方处做限制——SECURITY.md 说明了做法，并与「密钥与费用」一起给出局域网共享规则。</p>
+<h3>最初的五分钟</h3>
+<p>选择一个首次运行任务，或按这个顺序试。GIF 展示的是 Google 摄影级三维；你的起始底图取决于已添加的密钥。</p>
+<ol>
+<li><strong>点亮天空。</strong>选择 <strong>Live Contacts</strong> 任务（或自己打开 <strong>Flights</strong>）——成千上万架实时飞机沿真实遥测滑行，探测网格已经在读场景。点击一架：相机锁定，尾迹在身后画出，实时遥测卡片出现。</li>
+<li><strong>接手操控。</strong>在被跟踪的飞机上点 <strong>COCKPIT</strong>，一路向下，并在飞行中切换传感器：夜视再到 Ironbow FLIR。</li>
+</ol>
+<p class="media-note">（原文此处有演示媒体：驾驶舱中跟随实时飞机并切换传感器模式。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<ol start="3">
+<li><strong>降到繁忙机场。</strong>搜索一座机场，打开 <strong>3D</strong> 飞机模型下降到滑行道——地面目标、滑行尾迹，整个机坪在实时运转。</li>
+</ol>
+<p class="media-note">（原文此处有演示媒体：从机场全貌下降到近距滑行道，并显示三维航班模型。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<ol start="4">
+<li><strong>从公共摄像头往外看。</strong>在奥斯汀、伦敦、加州、芬兰或特拉华（实时视频）打开 <strong>Cameras</strong>。这些源不是网页摄像头嵌入——它们被投影进三维城市。把覆盖切换到 <strong>VIEWSHED</strong>，每台摄像头会画出估计的覆盖体积：它能看到哪里，以及哪里是盲区。</li>
+</ol>
+<p class="media-note">（原文此处有演示媒体：潜入奥斯汀十字路口，把实时公共摄像头投影进三维场景。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<ol start="5">
+<li><strong>跟踪轨道上的目标。</strong>打开 <strong>Satellites</strong>，点击国际空间站——你在轨道距离上同行，轨道环一并显示。</li>
+</ol>
+<p class="media-note">（原文此处有演示媒体：沿轨道跟踪飞越乌克兰上空的国际空间站。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<ol start="6">
+<li><strong>切换光学。</strong>按 <code>1</code>–<code>6</code>——CRT、夜视、FLIR——整颗活的行星会按另一种传感器重绘。</li>
+</ol>
+<p class="media-note">（原文此处有演示媒体：在同一连续视角中，把密集的活地球在 CRT、FLIR 和夜视之间循环。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<ol start="7">
+<li><strong>和它说话</strong>（需要 OpenAI 密钥）：<em>"Take me to LAX and select the nearest airborne aircraft."</em></li>
+<li><strong>回家。</strong>点 <strong>Reset Globe</strong>——或者直接说 <em>"zoom out to a globe view."</em></li>
+</ol>
+<p><strong>键盘：</strong><code>1</code>–<code>6</code> 视觉风格 · <code>H</code> HUD · <code>D</code> 探测 · <code>C</code> 闭路电视 · <code>`</code> 帧率 · <code>Esc</code> 退出。触控板捏合可缩放地球。</p>
+<h3>驾驶舱</h3>
+<p>作者的原话是：<q>Every plane should let you do this.</q></p>
+<p>由实时航班数据构成的驾驶舱模式：相机带着你的目标前进，真实地形一直在脚下——传感器风格一并跟上，<strong>Contacts</strong> 把 250 公里名册留在一键之距：从一架飞机跳到另一架，直接落入下一座驾驶舱。</p>
+<p class="media-note">（原文此处有演示媒体：在实时飞机之间跳转并直接进入驾驶舱视角。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p>驾驶舱还有自己的简报条：附近的实时信号、地区头条和真实本地天气——以及可选的 <strong>WX</strong> 模式，用你飞机周围的实际观测绘制体积云。</p>
+<p class="media-note">（原文此处有演示媒体：乘坐一架实时军用目标，在 Normal、夜视和 Ironbow FLIR 之间切换，探测密度很高。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><em>驾驶舱模式存在的理由是：你正乘坐真实飞机飞过真实地形——并且可以选择用哪一种传感器看这个世界。</em></p>
+<h3>和它说话</h3>
+<p>独立应用在设置里的 <strong>AI Provider</strong> 下提供 <strong>OpenAI</strong> 和 <strong>Gemini</strong>，语音与聊天共用同一个选择。初始默认是 OpenAI；选择会保存在本浏览器。要使用 Gemini，在 Provider Settings 或本地 <code>.env</code> 中添加 <code>GEMINI_API_KEY</code>，然后选择 Gemini。<code>GEMINI_LIVE_MODEL</code> 默认是 <code>gemini-3.8-live</code>。长期密钥留在本地服务器上，由它签发受约束的一次性会话凭证。</p>
+<p>更换提供方会结束当前对话。若语音已开启，新提供方会以同样的开放麦克风或按键说话模式开始；已按住的空格键不会被带走。Gemini 使用相同的地图动作和字幕，但没有 OpenAI 费用表或 MINI 档。当 Gemini 报告会话过期时，重新开始语音以开启新对话。AI Provider 设置不会改变由 OpenAI 支持的 AI HUD 摘要。</p>
+<p>麦克风旁边的 <strong>CHAT</strong> 会打开无声回复的文字聊天。它使用所选提供方和同样的地图动作，从不索要麦克风。OpenAI 聊天需要 API 密钥（<code>OPENAI_CHAT_MODEL</code>），因此在 <code>GEV_PREFER_CODEX_OAUTH</code> 把 OpenAI 固定到 ChatGPT OAuth 时会关闭；Gemini 聊天使用单独的文本模型（<code>GEMINI_CHAT_MODEL</code>）。聊天和语音面板共用左侧面板的玻璃表面，位于停靠栏上方或停靠在右侧。</p>
+<p>语音可以使用 <strong>OpenAI API 密钥</strong>，或在同一台机器上使用可选的、已登录的 <strong>ChatGPT/Codex OAuth</strong> 会话。API 密钥路径仍是默认。在 Provider Settings 中选择 ChatGPT OAuth，会复用已有的本地登录，或启动 Codex 浏览器登录流程，并在完成后选择 OAuth。OpenAI 密钥仍驱动 <strong>AI HUD 摘要</strong>：对当前视图作出简短、约五词的情报风格读出，并随你移动重新生成。</p>
+<p>OAuth 选项是实验性的。OpenAI 为 <a href="https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference">Responses API</a> 记录了 ChatGPT 套餐用量；尚未确认存在受支持的、可复用 Codex 令牌的第三方 Realtime 合约。成功签发令牌并不等于确立计费或支持条款。</p>
+<p>GEV 会读取 Codex 的文件凭据，但不会写入或刷新它们。它检查令牌形态与过期时间，并把过期登录报告为需要重新认证。登录按钮运行 <code>codex login</code>，只允许一次待处理尝试，并报告退出失败或两分钟超时。<code>CODEX_HOME</code> 必须与 Codex 使用的目录一致。若 <code>CODEX_AUTH_JSON</code> 指向别处，请先另行登录或修正该不一致，再使用按钮。Codex 凭据存储必须使用 <code>auth.json</code>；仅钥匙串和仅内存的存储无法被 GEV 读取。在 Windows 上，登录按钮可能无法启动经 npm 安装的 Codex；请自行运行 <code>codex login</code>，再选择 OAuth。见 <a href="https://learn.chatgpt.com/docs/auth#credential-storage">Codex credential storage</a>。</p>
+<p>若要做实时语音检查，可对本地开发服务器运行 <code>node scripts/qa-voice-auth.mjs http://127.0.0.1:4189 oauth microphone.wav</code>。请使用一段前三秒为静音、随后是短出口头回复请求的 WAV。把 <code>oauth</code> 换成 <code>api-key</code> 可检查 API 密钥路径。该检查会验证音频输入、完整的口头回复、用量、资源清理和重连。截图和不含凭据的结果保存在 <code>.gev-logs/voice-auth/</code>。</p>
+<p>点击 <strong>GEV MIC</strong>，授予麦克风，然后直接说。这不只是一个语音遥控器：</p>
+<ul>
+<li><strong>它知道自己在看什么。</strong>智能体在回答前会拉取实时场景上下文——包括坐标、街道名、已开启图层和视图尺度。飞行中问 <em>"what city is this?"</em>，它知道。</li>
+<li><strong>实体问答。</strong>点击任一飞机、船舶或数据中心并问 <em>"what's this?"</em> 它会用该对象的实时遥测回答。</li>
+<li><strong>视觉锚定。</strong>在街道尺度，它会读取视口截图以识别可读的招牌和建筑名，并被指示不得幻觉标签。</li>
+<li><strong>电影感取景。</strong><em>"Show me the planes overhead"</em> 会把相机拉回、调整角度，像导演一样框住实时交通。</li>
+<li><strong>诚实且安全。</strong>智能体只确认已经成功的动作。你的 <code>OPENAI_API_KEY</code> 从不进入浏览器；客户端只得到短时会话令牌。若在 Provider Settings 中选择 <strong>USE CHATGPT OAUTH</strong>，本地服务器仅用该登录签发同一种短时 Realtime 凭证，并对非回环客户端拒绝 OAuth 路径。</li>
+</ul>
+<p>三十个工具，四类工作——下面的命令直接来自产品的语音测试套件和工具手册：</p>
+<p><strong>导演它</strong> —— 无人机操作员式的相机动词：</p>
+<p>“Rotate the globe” 会让地球持续向右旋转；可以要求向左、指定速度，或停止。若它拒绝，请遵循其重置并旋转或进一步缩放的提示；相机输入会停止旋转。</p>
+<p>🗣️ <em>"Take me to Tokyo."</em> · <em>"Orbit around this area slowly."</em> · <em>"Draw the walking route from the Capitol to Zilker Park."</em> → <em>"Fly the route we just drew."</em> · <em>"Zoom out to a globe view."</em></p>
+<p><strong>标注它</strong> —— 覆盖在真实世界上的白板：</p>
+<p>🗣️ <em>"Outline the state of Texas."</em> · <em>"Annotate the Texas State Capitol and its grounds"</em> —— 它画出<strong>实际围合边界</strong>，而不是一个圆。 · <em>"How far is the Eiffel Tower from the Louvre?"</em> —— 会出现连接箭头并读出距离。一切会保持到你说 <em>"clear the map."</em></p>
+<p><strong>或者自己画</strong> —— UTILITIES ▸ <strong>Draw</strong>：选择 Area、Line 或 Pin 和一种颜色，在真实世界上点击顶点，双击结束，然后在列表里为每个形状命名、改色、隐藏或飞过去。同一块白板、同样持久，不需要麦克风。</p>
+<p class="media-note">（原文此处有演示媒体：用语音把 Zilker Park 和 Lady Bird Lake 画成持久矢量标注。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p class="media-note">（原文此处有演示媒体：用语音测量跨越一座机场的距离，并从轨道上查看。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><strong>审讯它</strong> —— 针对实时图层的分析查询：</p>
+<p>🗣️ <em>"How many flights are over Texas right now?"</em> · <em>"Which ships are headed to Oakland?"</em> · <em>"What is the biggest fire near Los Angeles?"</em> · <em>"Is anything flying above forty thousand feet?"</em> · <em>"When does the ISS pass over next?"</em> · <em>"How many datacenters are in view?"</em></p>
+<p><strong>操作它</strong> —— 整张控制台，免持：</p>
+<p>🗣️ <em>"Switch to night vision and turn on the flights layer."</em> · <em>"Turn on the camera viewsheds."</em> · <em>"Play a news radio station near Austin."</em> · <em>"Track that plane."</em> → <em>"Enter Cockpit."</em></p>
+<p><strong>以及快速档</strong> —— 各一句：</p>
+<p>🗣️ <em>"Show me global infrastructure."</em>（铺开图层并拉回地球） · <em>"Play Orbital Watch."</em>（完整电影感场景） · <em>"Set detection density to fifty percent."</em> · <em>"Next contact — helicopters only."</em>（驾驶舱中） · <em>"Show me space missions."</em> · <em>"Switch to OSM."</em> · <em>"Sharpen the image a touch."</em> · <em>"Switch to the tactical layout."</em> · <em>"What's turned on right now?"</em></p>
+<p class="media-note">（原文此处有演示媒体：地球上作为又一层实时数据浮现出世界广播电台。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><em>在任何地方点播广播，地球就开始播出——每一座电台都是一个你可以飞过去的真实地点。</em></p>
+<p><strong>也可以从 Claude 和 Codex 提问。</strong>God's Eye View 同时也是一个 MCP 服务器：让 Claude Desktop、Codex 或 ChatGPT 桌面版显示某个地点，实时地球就会在对话中打开。设置大约一分钟——见 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/docs/MCP_SETUP.md">docs/MCP_SETUP.md</a>。</p>
+<h3>地球上有什么</h3>
+<p>二十二个图层与地图源。<strong>其中二十个有无需密钥的路径。</strong>部分功能在提供密钥后还能增强。（🟢 无需密钥 · 🟡 免费密钥 · 🔴 计量计费。）</p>
+<table><thead><tr><th>图层</th><th>你得到什么</th><th>来源</th><th>认证</th></tr></thead><tbody><tr><td>🗺️ <strong>地图栈</strong></td><td>Esri 卫星影像、Google 摄影级三维、OSM，以及更多托管在 ion 上的栈</td><td>Esri / Google / Ion / OSM</td><td>🟢 Esri 卫星 + OSM · 🟡 ion 托管的 Google 3D 与世界地形 · 🔴 直接使用 Google 与地点搜索</td></tr><tr><td>✈️ <strong>实时航班</strong></td><td>11,000+ 实时飞机 + 航路历史</td><td>OpenSky + adsb.lol</td><td>🟢（🟡 可选，用于更多轮询额度）</td></tr><tr><td>🎖️ <strong>军用航班</strong></td><td>琥珀色的 ADS-B 军用交通，紧急广播为红色</td><td>adsb.lol</td><td>🟢</td></tr><tr><td>📡 <strong>GNSS 完好性</strong></td><td>区域导航精度评分；异常并不等于确认存在干扰</td><td>adsb.lol、GPSJAM 汇总</td><td>🟢</td></tr><tr><td>🔥 <strong>火场周界</strong></td><td>事件边界与报告的控制情况</td><td>WFIGS / NIFC</td><td>🟢</td></tr><tr><td>🚢 <strong>实时船舶</strong></td><td>全球数千艘船</td><td>AISStream</td><td>🟡</td></tr><tr><td>🛰️ <strong>卫星</strong></td><td>约 1,300 个目标，分为六类（空间站、成像、电信、Starlink、探测器、碎片），可切换并显示各类实时计数；Starlink 会加载其整个壳层</td><td>CelesTrak</td><td>🟢</td></tr><tr><td>🌍 <strong>地震</strong></td><td>全球地震活动，最近 24 小时</td><td>USGS</td><td>🟢</td></tr><tr><td>◍ <strong>空气质量</strong></td><td>按已公布的 1–10+ 健康风险尺度显示实时 AQHI，天气面板卡片给出色带图例和视口内最高读数。<strong>仅加拿大</strong>——ECCC 是首个已注册提供方</td><td>ECCC MSC GeoMet</td><td>🟢</td></tr><tr><td>🚗 <strong>交通</strong></td><td>OSM 道路上的模拟车辆。有 TomTom 时，实时流速驱动模拟，并在约 8 公里以下上色显示拥堵；单个车辆位置不是实地观测</td><td>TomTom + OSM</td><td>🟢 模拟 · 🟡 实时流速</td></tr><tr><td>📹 <strong>闭路电视网格</strong></td><td>最多约 7,350 个摄像头位置（4,000 个共享轮询槽，外加 1,120 个魁北克和 2,230 个 World 图像摄像头的空间），被投影进三维空间——奥斯汀、得克萨斯（TxDOT）、加州（Caltrans）、伦敦（TfL）、安大略（511，免费开发者密钥）、渥太华（渥太华市，免费访问证书）、芬兰（Fintraffic）、不列颠哥伦比亚（DriveBC）、爱沙尼亚（塔林、Tarktee）、特拉华（DelDOT 实时视频）、新南威尔士（Live Traffic NSW）、卡尔加里、挪威（Statens vegvesen）、多伦多、King County（WA）、华盛顿（WSDOT）、加泰罗尼亚（Servei Català de Trànsit）、冰岛（Vegagerðin）、香港（运输署）、台湾（高速公路局，交通部）、魁北克（MTQ 位置配魁北克 511 链接、蒙特利尔位置、地区网络摄像头）、俄勒冈（TripCheck）、日本（国土交通省河流摄像头）、意大利（A22 布伦纳罗高速公路），以及需选择加入的纽约市（NYC DOT TMC，需要你自己的 NYC DOT 协议）、立陶宛（Via Lietuva / Eismoinfo，照片许可未确认）、魁北克 511 浏览器内视频（嵌入条款未确认）、佛罗里达（FL511，仅限个人使用；其他用途需 FDOT 书面同意）和休斯敦（TranStar，须按 TranStar 内容使用条款获得 TxDOT 书面许可后才可启用）。位置为已公布或已署名的；姿态是估计先验，<strong>需你在摄像头上拖动操控器自行校准</strong></td><td>各城市 API</td><td>🟢</td></tr><tr><td>📷 <strong>已标注车牌识别摄像头</strong></td><td>由 OpenStreetMap 贡献者标记的车牌识别摄像头位置，按城市尺度的视图逐次加载，并提供 <strong>SHOW NEAREST</strong>。只有位置和标签：没有车牌数据，也没有视频</td><td>OpenStreetMap（含 DeFlock 测绘）</td><td>🟢</td></tr><tr><td>📷 <strong>街景</strong></td><td>同一个面板里的街道级照片，每个提供方一个徽章：街道覆盖、图像锥、带全屏 <strong>EXPAND</strong> 的嵌入查看器。Mapillary、Google Street View、KartaView 和 Panoramax</td><td>Mapillary · Google · KartaView · Panoramax</td><td>🟢 KartaView、Panoramax · 🟡 Mapillary 令牌 · 🔴 Google Maps 密钥</td></tr><tr><td>📻 <strong>广播</strong></td><td>带<strong>模拟调谐器</strong>的地理定位世界广播——拖动指针可扫过最多 750 个电台，地球会飞向每一座广播台</td><td>Radio Browser / 各广播台</td><td>🟢</td></tr><tr><td>🚌 <strong>公交</strong></td><td>实时公交车、有轨电车、地铁、火车和渡轮，报告之间采用延迟回放，被选中的车辆有尾迹，DETECT 标签按模式着色——波士顿、奥斯汀、明尼阿波利斯、赫尔辛基、荷兰、挪威、昆士兰东南、里约热内卢（公交与 BRT）、什切青、里斯本（Carris Metropolitana 与市内 Carris）、布拉格、华沙、克拉科夫、波兹南、格但斯克、热舒夫、维尔纽斯、布加勒斯特、克卢日-纳波卡、雅西、罗马、都灵、威尼斯（公交与水上巴士）、波尔多、蒙彼利埃、鲁昂、土伦、勒阿弗尔、图尔、马拉加、仙台、新山、哥打巴鲁、阿德莱德、亚特兰大、丹佛、埃德蒙顿、哈利法克斯、维多利亚，以及安大略九市：多伦多（地面车辆；地铁不发布位置）、密西沙加、汉密尔顿、达勒姆区、约克区、圭尔夫、伯灵顿、巴里和金斯顿</td><td>运营商 GTFS-Realtime 源</td><td>🟢</td></tr><tr><td>🚲 <strong>共享单车</strong></td><td>实时站点可用性</td><td>GBFS</td><td>🟢</td></tr><tr><td>🧭 <strong>路线</strong></td><td>在地球上点击 A 和 B，得到沿街的驾车、步行或骑行路线，铺在地形上并给出逐向步骤——然后可用 FLY 让相机沿路线前进。无需密钥、地理编码器或麦克风</td><td>FOSSGIS 服务器上的 OSRM（OpenStreetMap）</td><td>🟢</td></tr><tr><td>⌖ <strong>OSM 地点</strong></td><td>来自 OpenStreetMap 的语音地点搜索（“hospitals in Kathmandu”），画成编号点，后续问题可以筛选。需要你自己的 Overpass 服务器（<code>OVERPASS_UPSTREAMS</code>）；否则关闭</td><td>OpenStreetMap Overpass</td><td>需自备 Overpass</td></tr><tr><td>🔥 <strong>活火</strong></td><td>NASA FIRMS 实时探测，滚动 24 小时</td><td>NASA FIRMS</td><td>🟡</td></tr><tr><td>🚀 <strong>太空任务</strong></td><td>滚动 30 天的发射，含载荷、级和回收细节</td><td>Launch Library 2</td><td>🟢（🔴 可选付费令牌可提高额度）</td></tr><tr><td>🎖️ <strong>已标注设施</strong></td><td>来自社区测绘、受视口限制的军事站点上下文——本质上不完整，并如此标注</td><td>OpenStreetMap</td><td>🟢</td></tr><tr><td>🚫 <strong>禁飞与限制空域</strong></td><td>将 FAA 禁止（P）和限制（R）特殊用途空域画成地面多边形，选中时可看到名称、高度范围和使用时间。不是 UAS Facility Map 或无人机飞行限制；仅供参考，不用于飞行计划</td><td>FAA SUA</td><td>🟢</td></tr><tr><td>🦉 <strong>野生动物目击</strong></td><td>48 小时内观测到的野生动物（鲸鱼为 7 天）：密度辉光、分类徽章，以及带创作者/许可署名的锚定照片卡。萨利希海海洋哺乳动物来自 Acartia；敏感位置显示为 0.2° 网格。不是普查</td><td>iNaturalist、Acartia</td><td>🟢</td></tr><tr><td>🌬️ <strong>风场</strong></td><td>动画化的 10 米预报风，可选速度、温度或气压色带，并在地图中心给出读数</td><td>NOAA GFS / ECMWF IFS</td><td>🟢</td></tr><tr><td>🌦️ <strong>实测天气</strong></td><td>雨雷达（美国本土连续区）、卫星云图（GOES 区域或全球红外，仅云或完整图像）和闪电密度（美洲与太平洋），共用一条历史时间轴</td><td>NOAA nowCOAST</td><td>🟢</td></tr><tr><td>🌀 <strong>气旋</strong></td><td>大西洋以及北太平洋东部/中部的通报位置、预报路径和不确定性锥</td><td>NOAA NHC / CPHC</td><td>🟢</td></tr></tbody></table>
+<p><strong>天气，无需密钥。</strong><strong>Wind</strong> 用 NOAA GFS 或 ECMWF IFS 播放 10 米预报流场，可加色带，并在地图中心给出读数。<strong>雨雷达</strong>、<strong>卫星云图</strong>和<strong>闪电密度</strong>是 <strong>WEATHER</strong> 面板同一条历史时间轴上的观测（可回退、<strong>Play</strong>、<strong>Latest</strong>）；<strong>气旋通报</strong>绘制 NHC 和 CPHC 的位置、预报路径和锥体。在 Google 3D Tiles 上，观测图层会作为半透明壳浮在城市上方，并在你的视图周围变得更锐利。</p>
+<p>在应用里，<strong>Data Layers</strong> 把它们分为 Movement、Cameras、Infrastructure、Events、Weather 和 Audio；Directions 和 OSM Places 与 Draw、Import 一起放在单独的 <strong>Utilities</strong> 面板。</p>
+<p><strong>底图阶梯——每一档换来什么：</strong></p>
+<table><thead><tr><th>你有什么</th><th>你得到的地球</th></tr></thead><tbody><tr><td>🟢 什么都没有</td><td>Esri World Imagery 卫星底图 + 无需密钥的地形，二维。若 Esri 不可达，OSM 会自动接上；若地形不可用，地球会在没有地形的情况下继续</td></tr><tr><td>🟡 免费 Cesium ion 令牌</td><td><strong>Google 摄影级三维城市</strong>和世界地形——符合条件的个人、非商业用途；以当前 ion 条款与配额为准</td></tr><tr><td>🔴 Google Maps 密钥</td><td>同样的三维直接来自 Google，外加 Google 地点搜索——启用计费的计量路线</td></tr></tbody></table>
+<p class="media-note">（原文此处有演示媒体：重建的 Falcon 9 上升段爬升并转入投影轨道。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><em>太空任务图层正在回放 Falcon 9 上升段——标为 <code>RECONSTRUCTED ESTIMATE</code>，可在 0.25×–4× 之间 scrub。</em></p>
+<p><strong>球上还有：</strong>街区叠加，以及可选的驾驶舱 WX 云效果。<strong>捆绑的静态基础设施：</strong>数据中心（4,352）、水坝（704）和海底电缆（712）。</p>
+<p class="media-note">（原文此处有演示媒体：潜入巴哈马并揭示地球下方带标注的海底电缆路由。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><strong>缺了你想要的图层？</strong>开一个 issue——或者自己加上并发送 PR。</p>
+<h3>街景</h3>
+<p>任一提供方的街道级照片都在同一个面板里。此构建附带 <strong>Mapillary</strong>（免费客户端令牌）、<strong>Google Street View</strong>（使用你的 Google Maps 密钥）、以及无需密钥的 <strong>KartaView</strong> 和 <strong>Panoramax</strong>。</p>
+<p><strong>设置。</strong>在 <a href="https://www.mapillary.com/dashboard/developers">mapillary.com/dashboard/developers</a> 注册一个具有 <strong>Read</strong> 权限的应用，复制其 <strong>Client Token</strong>（<code>MLY|…</code>）。把它贴进 <strong>POWER UP → Mapillary</strong>，或在 <code>.env</code> 中设置 <code>MAPILLARY_CLIENT_TOKEN</code> 并重启。没有它时，街景会从 <strong>KartaView</strong> 开始，Mapillary 徽章会提示该添加哪把密钥。<strong>Google Street View</strong> 使用已在 Google Cloud 中为其启用 <strong>Maps JavaScript API</strong> 的 <code>GOOGLE_MAPS_API_KEY</code>；其徽章默认关闭，因为每一张全景都会计到该密钥上。<strong>KartaView</strong> 和 <strong>Panoramax</strong> 什么都不需要：它们的公开 API 无需密钥。</p>
+<p><strong>使用。</strong>在 DATA LAYERS → Cameras 下打开 <strong>Street Level</strong>，或使用 STREET LEVEL 面板标题中的药丸按钮。每个提供方有自己颜色的徽章，同一时间只亮一个：点亮一个会关掉其他。Mapillary 免费，在已设置令牌时默认点亮；否则点亮 KartaView。缩放到街道尺度（低于 60 公里）才会出现覆盖线；从轨道上看，面板会提示你放大。<strong>IMAGERY</strong>（ALL / 360° / FLAT）和 <strong>SINCE</strong> 过滤适用于 Mapillary、KartaView 和 Panoramax；Street View 全景都是 360°，因此在点亮 Street View 时这些过滤会被隐藏。点击覆盖线可看到图像锥，点击锥体打开照片。点亮 <strong>KARTAVIEW</strong>（紫色）并放大到大约 6 公里以下：它的线是 KartaView 拥有照片的街道，点击一条会打开离点击点最近的照片，平面或 360°（拖动环顾），锥体沿行驶路线排列；<strong>‹ ›</strong> 或 ← → 可沿行驶路线步进（Shift+← →、↑ ↓ 和 + − 用于环顾 360° 照片；手机上捏合缩放）。KartaView 已归档的照片会被跳过；若全部已归档，面板会说明。对 KartaView 而言，<strong>SINCE</strong> 按上传日期计算，与 KartaView 自己的地图一致（它不能按别的过滤），面板会在 SINCE 值旁注明（ANY DATE (by upload date)）；KartaView 在自己的服务器上过滤线条，对尚未画过的过滤区域可能需要数秒。点亮 <strong>PANORAMAX</strong>（橙色）可使用开放的联邦公共库（在法国和比利时最强）：大约 60 公里以下，它的线是序列。点击一条线会打开该序列中离点击点最近的图片，且不移动相机，平面或 360°，锥体沿周围序列排列；<strong>‹ ›</strong> 或 ← → 逐步查看，两种过滤都适用。其说明文字会写出图片作者（或持有它的实例）和许可（多为 CC BY-SA 4.0；IGN 实例上的图片为 Licence Ouverte 2.0）。在 <strong>Google 3D</strong> 地图上（Google 的条款使 Street View 在其他底图上不可用，因此不会出现），点亮 <strong>GOOGLE STREET VIEW</strong> 并从约 3 公里以下点击一条街道，或按 <strong>OPEN STREET VIEW</strong> 打开视图中心处的 Google 全景；沿箭头步进。照片上方有 <strong>EXPAND</strong>（全屏；Esc 离开）和 <strong>FIT / FILL</strong>（Mapillary，以及平面的 KartaView 和 Panoramax 照片）。说明文字链到提供方站点上的图像，地球会为每个已开启的提供方署名（“© Mapillary contributors, CC BY-SA 4.0”、“Street View imagery © Google”、“© KartaView contributors, CC BY-SA 4.0”、“© Panoramax contributors, licence per picture”）。KartaView 自己的照片页对未登录访客会失败，因此其链接打开的是全尺寸照片。</p>
+<p>分享链接会携带提供方开关和过滤（<code>0.m.0</code> 关闭 Mapillary，<code>0.m.0_0.r.google-1</code> 打开 Street View，<code>0.m.0_0.r.google-0*kartaview-1*panoramax-0</code> 打开 KartaView，<code>0.m.0_0.r.google-0*kartaview-0*panoramax-1</code> 打开 Panoramax，按应用写出的格式（<code>0.m.0_0.r.kartaview-1</code> 和 <code>0.m.0_0.r.panoramax-1</code> 也可以；省略 <code>m</code> 的链接会保持默认的 Mapillary 点亮），<code>0.p.p</code> 仅全景，<code>0.s.365</code> 最近一年）。要添加提供方，请在 <code>src/layers/streetLevel/registry.js</code> 实现约定，并在 <code>src/app/layers/streetLevel.js</code> 注册。</p>
+<h3>实地任务</h3>
+<p>基础熟悉之后，可以跑这些：</p>
+<table><thead><tr><th>任务</th><th>怎么做</th></tr></thead><tbody><tr><td>🚁 <strong>问地球</strong></td><td><em>"Why are all these military helicopters flying in circles?"</em> 选中一条军用轨迹——它会静默回填约 24 小时的真实轨迹历史——并看到它一直在做什么，以堆叠的三维环呈现。</td></tr><tr><td>✈️ <strong>最后进近</strong></td><td>点击跟踪一架正在对准跑道的客机，跳进 <strong>cockpit</strong>，一路乘坐下去。</td></tr><tr><td>🌃 <strong>夜巡</strong></td><td>飞到你自己的城市，切换到 <strong>NVG</strong>，让探测网格和 HUD 读取场景。</td></tr><tr><td>🚢 <strong>靠港</strong></td><td>在长滩港打开船舶。点击一艘油轮查看战术卡片和尾迹——然后在 CCTV 面板点 <strong>NEAREST</strong>，从公共摄像头看同一片水面。</td></tr><tr><td>📻 <strong>东京 FM</strong></td><td>打开 <strong>Radio</strong> 图层环绕涩谷——然后拖动模拟调谐器指针：每个位置都会吸附到一座真实电台，地球飞向正在播出的那一座。</td></tr><tr><td>🔥 <strong>火线</strong></td><td>在加州打开 FIRMS。点击一次探测——相机俯冲过去——读取强度，再在 CCTV 面板点 <strong>NEAREST</strong> 看地面视角。</td></tr><tr><td>🚶 <strong>要一条步行路线</strong> 🎙️</td><td>告诉世界你想去哪里，看一条沿街的真实路线在三维城市中自行描出——然后 <em>"fly it"</em>：带坡度的转弯、缓和的起止，相机会像无人机镜头一样领着这条路走。</td></tr><tr><td>📏 <strong>测量 LAX 到 DFW</strong> 🎙️</td><td><em>"How far is LAX from DFW?"</em> —— 一支箭头横跨国土，距离出现在说明里，端点在你环绕时仍钉在真实世界上。</td></tr><tr><td>🚀 <strong>发射回放</strong></td><td>打开 <strong>Space Missions</strong>，从最近 30 天里选一次发射，从 T 负倒计时一直坐到入轨——以 0.25×–4× 拖动。标为 <code>RECONSTRUCTED ESTIMATE</code>，因为它本来就是估计。</td></tr><tr><td>🪦 <strong>走进飞机坟场</strong></td><td>从区域上下文下降到一排排完全解析的退役飞机。</td></tr><tr><td>🏗️ <strong>环绕三峡</strong></td><td>一眼扫过大坝及其地形——然后打开 <strong>Dams</strong> 图层，再找到 703 座。</td></tr></tbody></table>
+<p>🎙️ = 语音任务——它们需要 OpenAI 密钥。</p>
+<p class="media-note">（原文此处有演示媒体：把所选飞机的近期航路解析成地形上方堆叠的三维环。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><em>问地球：一条军用目标最近约 24 小时的真实轨迹历史，被解析成堆叠的三维环。</em></p>
+<p class="media-note">（原文此处有演示媒体：请求一条步行路线，并沿生成的路径飞过三维城市。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><em>"Draw the walking route… now fly it" —— 带坡度的转弯、缓和的起止，相机像无人机镜头一样领着这条路。</em></p>
+<p class="media-note">（原文此处有演示媒体：从区域上下文下降到飞机坟场里密集的退役机身。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><em>走进飞机坟场：一排排在三维中完全解析的退役机身。</em></p>
+<h3>引擎盖下</h3>
+<p>地球如何处理实时数据：</p>
+<ul>
+<li><strong>对世界稳定的图标。</strong>无论是否被跟踪，无论正俯视还是看向地平线，飞机和船舶在每一相机角度都指向它们<strong>真实的世界航向</strong>——通过逐帧的屏幕空间航向投影。不会自旋，也不会锁死在视口上。</li>
+<li><strong>从断续数据得到平滑运动。</strong>实时源大约每 15–30 秒到达一次；地球渲染会落后真实时间一个间隔，并在已知定位之间插值。空隙由航位推算填补。</li>
+<li><strong>诚实的卫星。</strong>SGP4 传播，轨道环通过 GMST 重对齐锁在卫星上——不漂移，也不每秒闪烁。</li>
+<li><strong>落在真实地面上。</strong>实体高度与 Google 3D tiles 对齐，因此飞机会停在机坪上，摄像头会站在街角，而不是飘在空中。</li>
+<li><strong>缓存与请求预算。</strong>OpenSky 额度调节器、TomTom 每日瓦片预算，以及磁盘缓存的 TLE，用来减少重复请求。这些控制不能替代提供方的配额或计费控制。</li>
+<li><strong>服务端凭据。</strong>凡是接触私钥的 API（OpenAI、AISStream、OpenSky OAuth、摄像头帧）都经加固的服务端代理中转，带有 SSRF 防护、响应上限和经过清理的错误。浏览器能看到的密钥只有 Google Maps 和 Cesium ion（请在提供方处同时限制二者）。</li>
+<li><strong>一套小栈。</strong>界面用 <strong>Vue 3</strong> 和 <strong>Pinia</strong>，地球用 <strong>CesiumJS</strong>，构建用 <strong>Vite</strong>——再加上用于行星的 <strong>Google Photorealistic 3D Tiles</strong>，以及用于语音的 <strong>OpenAI Realtime API</strong>。读起来快，改起来也快。</li>
+</ul>
+<pre><code>src/
+├── main.js                 # 启动：Google 3D tiles、图层注册
+├── ui/                     # 运行时 UI —— Vue 视图、Pinia 存储、组件、控制器、样式
+├── hud.js                  # 情报 HUD + AI 场景摘要
+├── keySetup.js             # POWER UP 面板 —— 应用内提供方密钥（仅开发服务器）
+├── mapStackController.js   # 底图切换 —— Google 3D / Esri / OSM / ion 栈
+├── voice/                  # OpenAI Realtime 会话 + 30 个语音工具
+├── layers/                 # 图层组件 —— 天气、风场、气旋、公交、车牌识别摄像头等
+├── data/                   # 每层一个模块 + 编排 + 上下文存储
+│   ├── iconOrientation.js  # 屏幕投影航向 + 地平线剔除
+│   └── local_data/         # 捆绑数据集（按文件夹标注出处）
+└── scenes/                 # 电影感场景导演</code></pre>
+<p>权威的运行时说明见 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/docs/CURRENT-STATE.md">docs/CURRENT-STATE.md</a>。</p>
+<h3 id="readme-keys">API 密钥</h3>
+<p>🟢 <strong>无需密钥</strong> · 🟡 <strong>免费密钥</strong> · 🔴 <strong>计量计费</strong></p>
+<p>用 <strong>POWER UP → Provider Settings</strong> 添加密钥。下表说明每个提供方打开什么；开始时一个都不需要。存储与配置细节见前文「然后在应用里增强」。</p>
+<p>Wind、雨雷达、卫星云图、闪电密度、气旋通报、已标注车牌识别摄像头、公交、路线、特拉华实时视频，以及坐标或捆绑地点搜索，都不需要密钥。正在等待密钥的图层行会写出密钥名称。</p>
+<p><strong>选择你想要的能力</strong></p>
+<p>七把密钥。其中五把有免费档，两把 🔴 为计量计费：</p>
+<table><thead><tr><th></th><th>密钥</th><th>为什么需要</th><th>到哪里申请</th></tr></thead><tbody><tr><td>🟡</td><td><strong>Cesium ion</strong></td><td>🗺️ Google 摄影级三维、世界地形，以及更多托管在 ion 上的影像栈。免费 Community 计划面向符合条件的个人、个人/非商业用途，并有配额</td><td><a href="https://cesium.com/ion">cesium.com/ion</a> —— 使用公开的 <code>assets:read</code> 令牌，并核对该站当前的<a href="https://cesium.com/platform/cesium-ion/pricing/">定价与资格</a></td></tr><tr><td>🔴</td><td><strong>Google Maps</strong></td><td>直接的 Google 摄影级三维、Google 地点搜索和 Street View（<a href="https://developers.google.com/maps/documentation/tile">Map Tiles API</a>；Street View 还需要 Maps JavaScript API）</td><td><a href="https://console.cloud.google.com/">Google Cloud Console</a> —— 请按 URL 限制它</td></tr><tr><td>🔴</td><td><strong>OpenAI</strong></td><td>🎙️ 通过 API 密钥使用语音 + AI HUD 摘要。Provider Settings 也提供 <strong>USE CHATGPT OAUTH</strong>，可在不移除 API 密钥选项的情况下使用云端语音</td><td><a href="https://platform.openai.com">platform.openai.com</a> —— API 密钥用量按量计费，费用见下</td></tr><tr><td>🟡</td><td><strong>AISStream</strong></td><td>🚢 全球实时船舶</td><td><a href="https://aisstream.io">aisstream.io</a> —— 免费注册</td></tr><tr><td>🟡</td><td><strong>NASA FIRMS</strong></td><td>🔥 实时活火</td><td><a href="https://firms.modaps.eosdis.nasa.gov/api/map_key/">firms.modaps.eosdis.nasa.gov</a> —— 免费</td></tr><tr><td>🟡</td><td><strong>TomTom</strong></td><td>🚦 为模拟交通图层提供实时流速和拥堵着色</td><td><a href="https://my.tomtom.com/keys">my.tomtom.com/keys</a> —— 有免费档</td></tr><tr><td>🟡</td><td><strong>Mapillary</strong></td><td>📷 街景覆盖与照片。按设计使用公开客户端令牌（见 SECURITY.md）</td><td><a href="https://www.mapillary.com/dashboard/developers">mapillary.com/dashboard/developers</a> —— 注册应用并复制 Client Token</td></tr></tbody></table>
+<p class="media-note">（原文此处有演示媒体：从城市尺度的实时拥堵直接潜入一个十字路口的公共摄像头。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p><em>TomTom 密钥换来的是：把高峰密度画在城市上——然后从拥堵直接潜进正在看它的摄像头。</em></p>
+<p><strong>锦上添花</strong></p>
+<table><thead><tr><th></th><th>密钥</th><th>为什么需要</th><th>到哪里申请</th></tr></thead><tbody><tr><td>🟡</td><td><strong>OpenSky</strong></td><td>✈️ 更多航班轮询额度（🟢 匿名模式无需密钥也可工作）</td><td><a href="https://opensky-network.org">opensky-network.org</a></td></tr><tr><td>🔴</td><td><strong>Launch Library 2</strong></td><td>🚀 可选的付费令牌以提高限额（🟢 公开访问无需密钥）</td><td><a href="https://thespacedevs.com/supportus">thespacedevs.com/supportus</a></td></tr></tbody></table>
+<p>只有在需要更高轮询额度时才添加这些。把 <code>LL2_API_TOKEN</code> 留空即使用标准公开访问。LL2 令牌是可选的付费 Patreon 升级，用于提高限额；没有免费的 API 密钥注册。</p>
+<p><code>npm run doctor</code> 会报告 Node/npm 就绪情况、主要提供方路由，以及每个已配置提供方是在哪里找到的，且不打印凭据值。在 macOS 上，其感知钥匙串的结果可预览 <code>./scripts/dev-fresh.sh</code>；普通的 <code>npm run dev</code> 只读取显式环境变量和 Vite dotenv 值。OpenSky 摘要会为显式的 <code>anon</code> 或没有客户端对的 OAuth 模式报告无需密钥的匿名访问；对完整的 OAuth 对只使用“已存在”的措辞；并识别所选的 Basic 或自动模式，而不猜测运行时将接受哪组凭据。Basic 和凭据文件模式仍属于高级的 <code>dev-fresh.sh</code> 配置。</p>
+<h3>高级设置：环境变量与 macOS 钥匙串</h3>
+<p>对于无界面机器、编码智能体或脚本化安装：</p>
+<pre><code># 把密钥放进 .env（见 .env.example），或作为环境变量传入：
+OPENAI_API_KEY="…" AISSTREAM_API_KEY="…" npm run dev -- --host localhost --port 4173
+
+# 在 macOS 上，把任意一项存进钥匙串，dev-fresh.sh 会把它们拉进来：
+security add-generic-password -U -s "google-maps-api" -a "api-key" -w
+security add-generic-password -U -s "openai-api"      -a "api-key" -w
+security add-generic-password -U -s "aisstream-api"   -a "api-key" -w
+security add-generic-password -U -s "firms-map"       -a "map-key" -w
+security add-generic-password -U -s "cesium-ion"      -a "token"   -w</code></pre>
+<p>OpenSky 可以完全匿名运行（<code>OPENSKY_AUTH_MODE=anon</code>），或用 <code>./scripts/opensky-import-client.sh /path/to/credentials.json</code> 导入 OAuth 凭据。</p>
+<h3>实时视频摄像头（HLS）</h3>
+<p>带有 <code>"feedType": "hls"</code> 且已注册 HTTP(S) <code>.m3u8</code> URL 的闭路电视源，会通过监视平面和面板共享的、延迟加载的 hls.js 解码器播放。DelDOT 使用其官方 HTTPS HLS 目录链接。可用 <code>CCTV_DELDOT_ENABLED=0</code> 关闭该包。</p>
+<p>服务器允许两个并发会话。每个会话在内存中最多保留 12 个分段和 24 MiB；单次下载上限为 8 MiB，时限十秒。没有分段文件，也没有 ffmpeg 进程。重定向、跨源引用、加密播放列表和非 MPEG-TS 分段会被拒绝。每个解码器有自己的客户端租约（每会话最多八个），包括原生 HLS。关闭它只会释放该租约；被遗弃的租约在 15 秒无访问后过期。最后一次释放会停止上游工作。失败的实时视频会使用已有的静帧 / Street View / 合成回退，那不是实时视频。本集成不支持仅 RTMP 的源。</p>
+<h3>实际要花多少钱</h3>
+<p>大致诚实的数字，截至 2026 年中——请始终核对该提供方的定价页：</p>
+<table><thead><tr><th></th><th>费用现实</th></tr></thead><tbody><tr><td>🟢 <strong>大多数图层</strong></td><td><strong>0 美元，无需注册。</strong>OpenSky 匿名、USGS、CelesTrak、adsb.lol、城市闭路电视、Radio Browser、GBFS、Launch Library 2、公交源、OSRM 路线、NOAA 与 ECMWF 天气、OpenStreetMap 车牌识别测绘、捆绑数据集。</td></tr><tr><td>🟡 <strong>免费密钥档</strong></td><td><strong>注册即可 0 美元。</strong>AISStream、FIRMS、TomTom、OpenSky，以及符合条件的个人/非商业用途下的 Cesium ion。提供方配额与资格仍然适用。</td></tr><tr><td>🗺️ <strong>Google 3D tiles</strong></td><td><strong>通过符合条件的 Cesium ion Community 账户在其配额内免费；通过直接的 Google 密钥则按量计费。</strong>若需要 Google 地点搜索或商业部署，请走直接路线，核对该提供方当前条款，并在启用计费处设置预算警报。</td></tr><tr><td>🔴 <strong>OpenAI 语音</strong></td><td>API 密钥会话保留实时花费读出、STD/MINI 模型切换、2 美元警告和 <strong>5 美元硬上限</strong>。ChatGPT OAuth 是 Provider Settings 中的显式选择。其用量会被跟踪，但没有按 API 美元的估计或花费上限。语音上下文窗口被有意保持很短。</td></tr></tbody></table>
+<p>Google 的直接三维路线意外地宽裕：目前每月前 1,000 次 Photorealistic 3D Tiles 会话免费，一次根请求大约支持三小时渲染。单独、偶尔探索的用户，现实中可以留在免费用量上限内。仍必须启用计费，因此请限制密钥并设置配额或预算警报。在依赖这些数字前，请核对该公司<a href="https://developers.google.com/maps/billing-and-pricing/pricing">当前定价</a>。</p>
+<h3>门槛被有意放低</h3>
+<p>以上都是被有意做便宜的基线——足够真正品尝地理空间情报、GEOINT 和 OSINT，而不必先和销售团队说话。你也会看到天花板：陆地 AIS 在大洋中会安静下来，卫星 AIS 要花真金白银；高端影像、SAR 和更深的商业源活在企业合同后面。这不是架构的上限——这里的每一层都是一种模式，你可以把它指向自己的数据源。这个仓库交给你的是地基；你往里面融合什么，由你决定。</p>
+<h3>共享一个实例</h3>
+<p>默认情况下，别人到不了你的服务器——它绑定在 localhost。若要在局域网上共享，必须显式选择（<code>npm run dev -- --host 0.0.0.0 --port 4173</code>，或在 macOS/Linux 上使用 <code>HOST=0.0.0.0 ./scripts/dev-fresh.sh</code>）。IP 地址可以直接用；若使用局域网主机名，请用 <code>GEV_ALLOWED_HOSTS=globe.lan</code> 添加它，因为绑定到 <code>0.0.0.0</code> 并不会信任任意 Host 头。但要清楚：⚠️ <strong>一台在局域网可见的服务器，会把你已配置的 API 密钥代理给任何能访问它的人。</strong>对产生费用的端点，默认按 IP 节流（<code>GEV_RATELIMIT_OPENAI_PER_MIN</code>、<code>GEV_RATELIMIT_GOOGLE_PER_MIN</code>——调节方法见 <code>.env.example</code>），但首先应<strong>配置提供方配额、用量限制和计费警报</strong>：应用层节流不是计费上限，单靠预算警报也不会停止花钱。完整威胁模型见 SECURITY.md。</p>
+<p>服务器被共享时，Provider Settings 会被关闭，因此远程用户无法进入密钥录入面板。</p>
+<p><strong>本启动器仍然禁用 Pinokio 的局域网和 Cloudflare 共享。</strong>若需要远程访问，请使用经过单独审查的认证代理。限制和威胁模型见 SECURITY.md。</p>
+<h3>负责，并且开放</h3>
+<p>God's Eye View 建立在<strong>公开数据、清晰来源和本地优先执行</strong>之上。没有秘密，没有私有数据集，也没有来路不明的抓取——凡是涉及私钥的事，都经服务端中转。它有机密操作室的视觉语法，却完全由开放信号和可检查的代码建成。</p>
+<p><strong>这条线。</strong>本项目刻画的是<strong>事件、资产、基础设施和系统</strong>——飞机、船舶、卫星、火灾、摄像头、城市。它不为检索具名个人、人脸识别或追踪个体做功能，越过这条线的拉取请求不会被合并。在这里，人不是一种查询类型。</p>
+<p><strong>一起来做。</strong>这是近期空间智能工具浪潮所从出的那个项目的规范实时三维客户端——它也是一块画布：这里的图层，是一个人能够找到并融合的那些信号。加一个城市包、一个数据源、一种风格、一个语音工具。它是你藉以观看世界的窗口；把这扇窗带给别人。</p>
+<p><strong>状态：</strong>一个仍在演进、用于探索与学习的开源客户端——地基很快、很好改，但不是加固过的生产服务。以 <strong><a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/LICENSE">MIT License</a></strong> 发布。捆绑和实时数据集各有自己的条款——见 <strong><a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/DATA_SOURCES.md">DATA_SOURCES.md</a></strong>。安全模型：<strong><a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/SECURITY.md">SECURITY.md</a></strong>。想贡献？见 <strong><a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a></strong>。</p>
+<p><strong>维护者：</strong><a href="https://github.com/bilawalsidhu">Bilawal Sidhu</a> 与 <a href="https://github.com/samehkhamis">Sameh Khamis</a>，就职于 <a href="https://halfpixel.ai">Halfpixel</a>。</p>
+<p>媒体说明：本页中的演示 GIF 展示了 Google Photorealistic 3D Tiles 与实时数据图层，作为宣传使用并带有画内署名；它们未被授权单独再利用。见 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/docs/media/README.md">媒体出处与许可</a>；完整源条款见 DATA_SOURCES.md。</p>
+<p><strong>重要：</strong>God's Eye View 是对公开和第三方数据的探索性可视化。数据可能延迟、不完整、被建模、被推断或出错。不要把它用于航空或航海导航、应急响应、医疗或健康决定、投资决定，或其他安全关键或操作性用途。重要信息请与权威来源核对。</p>
+<h3>接下来</h3>
+<p>首先，谢谢。谢谢所有看过 God-view 演示后自己去做的人，也谢谢一直在要代码的人：我很感激。当我询问这是否应该开源时，你们并不含蓄：</p>
+<p class="media-note">（原文此处有演示媒体：关于是否开源 God&#x27;s Eye View 的社区调查截图。按 docs/media/README.md，这些文件不在 MIT 内，且禁止单独再利用，本页不转载。）</p>
+<p>所以它在这里了。走进这座间谍惊悚片式的驾驶舱——只不过数据是真的——让我们把它变成共同的沙盒，用来理解这个世界，并在其中得到乐趣。这个仓库是基线，它保持开放，全部意义在于让你拆东西，并接上我们还没想到的图层。</p>
+<p>从内部提醒一句：在这个空间里做上一周，你会明白<strong>当下其实是便宜的部分</strong>。一旦你想回到过去——在任何真正的分辨率上切片、提供并回放<em>曾经发生过什么</em>以及<em>什么改变了</em>——数据就会变贵，计算也会变得残酷。那才是长线。</p>
+<p><strong>更新——托管版即将推出。</strong>我们原本计划让这个仓库继续作为开源客户端，另做一款专业产品。然后发布发生了，最响亮的请求不是又一个功能——而是 <em>"just give me a link."</em> 所以我们正在 <a href="https://halfpixel.ai">Halfpixel</a> 做官方托管的 God's Eye View：不用安装，在浏览器里打开即可。托管版会是进入这个开源项目最容易的方式。稍后见。</p>
+<p>▶️ <a href="https://youtube.com/playlist?list=PL6qSg2I-7_koPbDnSMo0QeeHX_RknA2uv&amp;si=nBGYMoHWQw41v93Q">观看 God's Eye View 系列</a> · 📬 <a href="https://maptheworld.ai/">Map the World</a> —— 项目背后的通讯</p>
+<p><strong>🌐 God's Eye View. No place left behind.</strong></p>
+<h2>附录二：许可证原文</h2>
+<p>以下为 2026-11-10 现场读取的根目录 <a href="https://github.com/bilawalsidhu/gods-eye-view/blob/main/LICENSE">LICENSE</a> 全文，未做删改。</p>
+<pre>MIT License
+
+Copyright (c) 2026 Bilawal Sidhu
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+NOTE ON THIRD-PARTY DATA AND ASSETS — THE MIT LICENSE ABOVE COVERS THE SOURCE
+CODE ONLY.
+
+The datasets bundled under src/data/local_data/, and all data fetched from
+third-party providers at runtime, are owned by their respective sources and
+are NOT licensed under MIT. They are included/visualized for convenience and
+remain subject to their own licenses and terms. Notably:
+
+  - TeleGeography Submarine Cable Map (src/data/local_data/
+    telegeography_submarine_cables/): CC BY-NC-SA 3.0 — NonCommercial +
+    ShareAlike. NOT for commercial use. If you use this project commercially,
+    remove these files or obtain a commercial license from TeleGeography.
+  - Datacenters and Dams (OpenStreetMap / Open Infrastructure Map extracts):
+    Open Database License (ODbL) 1.0 — attribution + share-alike on the data.
+  - NASA FIRMS active-fire snapshot: CC0 / U.S. public domain (citation
+    requested).
+  - Bhote Koshi event imagery and derived river centerline
+    (public/events/bhote-koshi-2026/ and the coordinate dataset in
+    src/data/bhoteKoshiFloodPath.js): Vantor / GeoPera, CC BY-NC 4.0.
+    NOT for commercial use without separate permission. Source-linked witness
+    posts retain their owners&#x27; terms; no witness clips are bundled. See the
+    folder README for attribution and modification notices. The derived
+    coordinates remain third-party data even though they are embedded in a
+    JavaScript source file; the MIT grant does not cover that dataset.
+
+Live sources (Google Maps, OpenSky, adsb.lol, AISStream, CelesTrak, USGS,
+OSM Overpass, City of Austin, GBFS) are fetched at runtime under each
+provider&#x27;s terms; some (e.g. Google Maps, OpenSky) restrict commercial use
+and require you to supply your own credentials.
+
+In short: the MIT grant does not extend to any third-party data. See
+DATA_SOURCES.md for the full per-source license + attribution summary, and
+remove any dataset whose terms don&#x27;t fit your use.
+
+The 3D models under public/models/ are also third-party works and are NOT
+licensed under MIT. They remain under their individual licenses. See
+public/models/README.md for the author, source, license, modification notice,
+and attribution covering each model file.
+</pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>独立中文导读 + README 全文中译，不是官方文档。资料：根目录 README 与 LICENSE、<code>docs/media/README.md</code>、官方站点 godseyeview.ai 文字（托管版与商标）。未转载 README 媒体，未下载视频，未运行该应用。封面为本站自制线框地球图，不含项目截图或人物。</p><p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/bilawalsidhu/gods-eye-view" rel="noopener">github.com/bilawalsidhu/gods-eye-view</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

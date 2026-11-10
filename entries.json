@@ -1,5 +1,20 @@
 [
   {
+    "slug": "bilawalsidhu-gods-eye-view",
+    "title": "God's Eye View：把公开信号叠进三维地球",
+    "desc": "浏览器里的开源三维地球：把航班、船舶、卫星、地震、天气和公共摄像头等公开信号叠在一起。源码 MIT，但捆绑数据、三维模型和 README 宣传图另行许可；本页含导读与 README 全文中译。",
+    "description": "浏览器里的开源三维地球：把航班、船舶、卫星、地震、天气和公共摄像头等公开信号叠在一起。源码 MIT，但捆绑数据、三维模型和 README 宣传图另行许可；本页含导读与 README 全文中译。",
+    "source": "GitHub · bilawalsidhu/gods-eye-view（源码 MIT；数据、模型与宣传图另行许可）",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "A spy-satellite simulator in your browser · 项目导读 + README 全文中译",
+    "original_url": "https://github.com/bilawalsidhu/gods-eye-view",
+    "spine": "公开信号三维地球",
+    "summary": "开源三维地球叠加公开航班、船舶与卫星等信号；MIT 只覆盖源码",
+    "kind": "项目",
+    "by": "Bilawal Sidhu / Halfpixel"
+  },
+  {
     "slug": "garments-depth-swap-intersection",
     "title": "纵深对调的交叉路口：Yuma Garments 的错视运动图形",
     "desc": "日本运动图形作者 Yuma Garments 原帖全文中译：一件让纵深和前后关系对调的交叉路口错视作品。收录作者原文与两日后的个展感谢回复；只用视频封面帧，不转载视频。",
