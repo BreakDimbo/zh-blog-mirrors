@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kevintngo-what-the-water-keeps",
+    "title": "「What the water keeps」：乘船穿过八个梦境",
+    "desc": "Kevin Ngo（@kevin_t_ngo）做的浏览器行船演示《What the water keeps》，自称由 Claude Fable 5.2 写成，可沿水道穿过八个风格不同的境域。本页为导读，收录作者短帖全文中译；演示页可见 three.js 与首境资产，未见许可证。预告片与游戏内音乐、人物模型来源均为自报 ⚠️。Nori（@fuxun233）转述该作并称赞 Claude 的审美。不转载视频。",
+    "description": "Kevin Ngo（@kevin_t_ngo）做的浏览器行船演示《What the water keeps》，自称由 Claude Fable 5.2 写成，可沿水道穿过八个风格不同的境域。本页为导读，收录作者短帖全文中译；演示页可见 three.js 与首境资产，未见许可证。预告片与游戏内音乐、人物模型来源均为自报 ⚠️。Nori（@fuxun233）转述该作并称赞 Claude 的审美。不转载视频。",
+    "source": "X · @kevin_t_ngo",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "What the water keeps · 可玩演示导读 + 作者短帖全译",
+    "original_url": "https://x.com/kevin_t_ngo/status/2119868968307695818",
+    "spine": "提着灯笼的慢船",
+    "summary": "Fable 5.2 行船演示可在浏览器里玩；three.js 可核，许可见不到，视频不转载",
+    "kind": "演示",
+    "by": "Kevin Ngo @kevin_t_ngo"
+  },
+  {
     "slug": "positronx-hitofude",
     "title": "「一筆」：用代码画出来的五十秒动画预告",
     "desc": "@positronx_（Shubhu）公开了 HITOFUDE「一筆」：一条号称全由代码画出的 50 秒动画预告，女剑士的剑是画笔，对手是会擦掉世界的纸龙。本页含原帖全文中译与仓库导读；仓库未见许可证，不转载视频。Mythos、会话数与子智能体为作者自报 ⚠️。",

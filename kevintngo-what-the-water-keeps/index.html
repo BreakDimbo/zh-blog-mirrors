@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「What the water keeps」：乘船穿过八个梦境</title>
+<meta name="description" content="Kevin Ngo（@kevin_t_ngo）做的浏览器行船演示《What the water keeps》，自称由 Claude Fable 5.2 写成，可沿水道穿过八个风格不同的境域。本页为导读，收录作者短帖全文中译；演示页可见 three.js 与首境资产，未见许可证。预告片与游戏内音乐、人物模型来源均为自报 ⚠️。不转载视频。">
+<meta property="og:title" content="「What the water keeps」：乘船穿过八个梦境">
+<meta property="og:description" content="Fable 5.2 行船演示的中文导读；收录作者短帖全文中译。演示页可见 three.js，未见许可证。不转载视频。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">「What the water keeps」：乘船穿过八个梦境</h1>
+<p class="za-sub" lang="en" data-za-gen>What the water keeps · 可玩演示导读 + 作者短帖全译</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @kevin_t_ngo</span><span>收录 · 2026-11-10</span><span><a href="https://x.com/kevin_t_ngo/status/2119868968307695818" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Kevin Ngo @kevin_t_ngo · <a href="https://x.com/kevin_t_ngo/status/2119868968307695818">原帖</a> · 演示：<a href="https://what-the-water-keeps.vercel.app/">what-the-water-keeps.vercel.app</a> · 引介：Nori @fuxun233 · 核对：2026-11-10（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">Kevin Ngo（@kevin_t_ngo）在 Claude Fable 5.2 发布后不久，放出一个可以在浏览器里玩的行船演示，名叫 <i lang="en">What the water keeps</i>（水所保存的）。他说这是 Fable 5.2 做成的：乘一只小船，穿过八个如梦的世界。站点自己的说明是：「一趟提着灯笼的慢船。你可以自己掌舵，沿一条开阔而安静的水道，穿过一连串彼此很不一样的境域；也可以随水流走。」同一天稍晚，Nori（@fuxun233）转了预告片，说 Claude 的审美一如既往地让人安心，并写「这是 GPT 一辈子都做不出来的内容」。本页以这件作品为中心，收录两位作者本人帖文的全文；预告片只有封面静帧，没有下载，也没有观看。</p>
+<figure>
+<a href="https://what-the-water-keeps.vercel.app/"><img src="images/cover.webp" alt="官方分享图：大雨中的暗色海面，船头一盏灯，船尾站着一个桨手，水面被雨点打出一圈圈青蓝色的光环；远景是玄武岩般的崖壁。上方写着英文标题 What the water keeps。是风格化的三维画面，不是真人照片。" width="1200" height="630"></a>
+<figcaption>演示页的官方分享图。画面是风格化的三维场景，不是真人照片。点击图片可打开演示。</figcaption>
+</figure>
+<h2>这是一件什么作品</h2>
+<p>就作者自己的说法，这是一个用 Claude Fable 5.2 写成的浏览器游戏演示：一条船，八个梦境，可以在网页里直接玩。这些归属是自报。本页打开过演示的公开首页，但没有把游戏玩完，也没有观看 57 秒的预告片，因此不能证明整段旅程是谁写的，也不能核对八个境域是否都已做成。⚠️</p>
+<p>从公开首页的 HTML 可以确认的，是它的技术外形。页面标题与规范地址就是这部作品；它用 importmap 引入了内置的 three.js，以及 GLTF 加载器和一层后期处理。首境在资源清单里名为 <i lang="en">landing</i>，列有栈桥、芦苇、睡莲、鱼梁、船、灯与桨手等 glb 模型。加载卡片上写着首境约 144 个文件、约 24.9 MB（本页从同一份清单里数到 136 条路径，两个数字不完全相同，原因不明）。根路径下没有看到 LICENSE 或 README，页面源码里也没有许可证或仓库链接。</p>
+<p>作者个人站 <a href="https://kevintngo.com/">kevintngo.com</a> 在 2026-11-10 的公开首页作品列表里，还没有收入这一件。演示托管页的 <code>Last-Modified</code> 是 2026-11-09 23:17 UTC（新加坡时间 11-10 07:17），比发帖晚约四小时，所以本页看到的是当时正在托管的构建，不一定等于发帖那一刻的版本。</p>
+<figure>
+<a href="https://x.com/kevin_t_ngo/status/2119868968307695818"><img src="images/trailer-poster.webp" alt="原视频封面帧：黄昏金橙色的水面，一座木栈桥横过，桥下倒影很长；近处一只小船，船头挂着灯，一个浅发小人站在船里撑篙，背对观者。是插画或三维风格，不是真人照片。" width="1200" height="675"></a>
+<figcaption>原视频封面帧。附件为约 57 秒、1920×1080 的预告片；本页不下载、不重新托管，也未观看视频。点击图片可到原帖观看。这一帧的木栈桥与金色水面，和官方分享图里的雨夜青辉不是同一处景色；不能代表整段预告片，也不能代替亲自玩一遍。</figcaption>
+</figure>
+<h2>作者怎么说</h2>
+<p>以下为作者英文短帖与本人回复的中文译文。主帖不是 X 长文。发出后约一秒，他补了一条游玩地址；之后在回复里谈到人物模型和音乐。</p>
+<blockquote>
+<p>Claude Fable 5.2 做了这个游戏演示，可以在浏览器里玩。</p>
+<p>这是一次乘船，穿过八个如梦的世界。</p>
+</blockquote>
+<p>作者：Kevin Ngo @kevin_t_ngo；发布：2026-11-10 03:05（新加坡时间，UTC+8）。<a href="https://x.com/kevin_t_ngo/status/2119868968307695818">原帖附预告片，点击观看</a>。主帖同时引用了 @claudeai 介绍 Fable 5.2 与 Mythos 5.2 的发布帖。</p>
+<blockquote>
+<p>可以在这里玩：</p>
+<p><a href="https://what-the-water-keeps.vercel.app/">https://what-the-water-keeps.vercel.app/</a></p>
+</blockquote>
+<p><a href="https://x.com/kevin_t_ngo/status/2119868970643964177">查看这条续帖</a>。</p>
+<blockquote>
+<p>Tripo 3D :)</p>
+</blockquote>
+<p>这是对「船上那个人物的三维模型是怎么做的」的回答。<a href="https://x.com/kevin_t_ngo/status/2119873500517388629">查看这条回复</a>。这只说了人物模型，没有说明场景里其他资产的来源。⚠️</p>
+<blockquote>
+<p>谢谢！是的，预告片里的音乐是 Fable 5.2 写的，用的是 CC0 的乐器采样。</p>
+<p>游戏里的音乐则是用 Suno v6 生成的。</p>
+</blockquote>
+<p><a href="https://x.com/kevin_t_ngo/status/2119880812254601655">查看这条回复</a>。预告片与游戏内用了不同的配乐路径，这是作者自报；本页未听音频，也未见谱面或工程文件。⚠️</p>
+<h2>英文原文</h2>
+<blockquote lang="en">
+<p>Claude Fable 5.2 made this game demo, playable in the browser</p>
+<p>It's a boat ride through 8 dreamlike worlds</p>
+</blockquote>
+<blockquote lang="en">
+<p>You can play here:</p>
+<p>https://what-the-water-keeps.vercel.app/</p>
+</blockquote>
+<blockquote lang="en">
+<p>tripo 3d :)</p>
+</blockquote>
+<blockquote lang="en">
+<p>thanks!  yes, the music in the trailer is composed by fable 5.2, using cc0 instrument samples.</p>
+<p>the music in the actual game was generated with suno v6</p>
+</blockquote>
+<h2>Nori 的引介</h2>
+<p>2026-11-10 15:19（新加坡时间，UTC+8），Nori（@fuxun233）发帖转了这段预告片。帖文不是引用转发，而是直接附上了 Kevin 原帖里的同一条视频。下面是他的原文，未改字：</p>
+<blockquote>
+<p>Fable 5.2的作品，claude的审美一如既往的安心</p>
+<p>这是GPT一辈子都做不出来的内容</p>
+</blockquote>
+<p><a href="https://x.com/fuxun233/status/2120053721573052799">查看这条引介</a>。有人问「一辈子都做不出来」具体差在哪里，他答「审美，毫无疑问」。另有人说字体搭配和排版总是很干净，看着留白就觉得舒服，他回「确实」。这些都是看过预告片的人的观感；本页未观看视频，不能替他们确认字体或留白。⚠️</p>
+<h2>许可与可复现性</h2>
+<p>演示可以公开游玩，但 2026-11-10 在站点根路径检查 LICENSE、LICENSE.md、LICENSE.txt 与 README，均为 404；首页 HTML 里没有许可证、版权声明或 GitHub 链接。作者没有在可见回复里给出源码仓库。内置的 three.js 是常见的 MIT 组件，只说明引擎本身的许可，不能外推到这件作品。按版权分级，本页只做导读，并收录作者本人短帖的全文中译；不转载视频，也不把演示页的模型、贴图或音乐收进本站。</p>
+<h2>传播数据（快照）</h2>
+<p>2026-11-10 经 X 接口读取时，Kevin 的原帖约 30.2 万次浏览、3400 个赞、154 次转发、128 条回复、1331 次收藏，引用 73 次。预告片播放次数当时约 12.3 万。Nori 的引介帖约 1603 次浏览、18 个赞、8 次收藏、3 条回复。这些数字会变，只作当时记录，不是效果评测。</p>
+<h2>核实边界与署名</h2>
+<ul>
+<li>这是以《What the water keeps》为中心的导读。用户发来的是 @fuxun233 的引介帖；作品与预告片的作者是 Kevin Ngo @kevin_t_ngo。</li>
+<li>「Fable 5.2 做成」「八个如梦的世界」「人物模型来自 Tripo 3D」「预告片配乐由 Fable 5.2 写、用 CC0 采样；游戏内音乐由 Suno v6 生成」均为作者自报，⚠️ 未用完整源码或音频工程核对。</li>
+<li>three.js、首境名为 landing、以及加载卡片上的文件数与体积，来自 2026-11-10 打开的公开首页 HTML，可以核对；本页没有枚举其余七个境域，也没有把游戏玩完。</li>
+<li>⚠️ 未下载或观看约 57 秒的预告片。封面帧与官方分享图只代表两帧静帧，不能代替完整演示。</li>
+<li>Nori 关于审美、以及评论区对字体与留白的判断，是他人观感，本页未亲自看片验证。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© Kevin Ngo @kevin_t_ngo（《What the water keeps》与预告片）；引介帖 © Nori @fuxun233。本页为非官方中文导读与翻译，仅供阅读学习；原帖、预告片与可玩演示请见原作者页面。原帖：<a href="https://x.com/kevin_t_ngo/status/2119868968307695818">x.com/kevin_t_ngo/status/2119868968307695818</a>。引介：<a href="https://x.com/fuxun233/status/2120053721573052799">x.com/fuxun233/status/2120053721573052799</a>。演示：<a href="https://what-the-water-keeps.vercel.app/">what-the-water-keeps.vercel.app</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/kevin_t_ngo/status/2119868968307695818" rel="noopener">x.com/kevin_t_ngo/status/2119868968307695818</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
