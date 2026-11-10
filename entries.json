@@ -1,5 +1,20 @@
 [
   {
+    "slug": "jdhruv14-line-art-animation",
+    "title": "「会走路的墨线」：line-art-animation",
+    "desc": "JDhruv14（Dhruv Jaradi）的 line-art-animation 项目导读：一套画动态线描 SVG 组件的 Claude 技能与四个无依赖 TypeScript 模块，可做会走路的墨线人物和带昼夜循环的场景。根目录 LICENSE 于 2026-11-10 现场核为 MIT，附 README 全文中译与许可证原文。插图为仓库静帧。未运行示例 ⚠️。README 所称 walker「约 150 行」与读到的 109 行不完全吻合 ⚠️。星数会变 ⚠️。",
+    "description": "JDhruv14（Dhruv Jaradi）的 line-art-animation 项目导读：一套画动态线描 SVG 组件的 Claude 技能与四个无依赖 TypeScript 模块，可做会走路的墨线人物和带昼夜循环的场景。根目录 LICENSE 于 2026-11-10 现场核为 MIT，附 README 全文中译与许可证原文。插图为仓库静帧。未运行示例 ⚠️。README 所称 walker「约 150 行」与读到的 109 行不完全吻合 ⚠️。星数会变 ⚠️。",
+    "source": "GitHub · JDhruv14/line-art-animation（Dhruv Jaradi，MIT）",
+    "date": "2026-11-10",
+    "type": "导读 + README 中译",
+    "subtitle": "一套画动态线描组件的 Claude 技能与 TypeScript 小库",
+    "original_url": "https://github.com/JDhruv14/line-art-animation",
+    "spine": "会走路的墨线",
+    "summary": "MIT 的线描 SVG 技能与小库：步态是求解出来的，场景会从白天走到夜里",
+    "kind": "项目",
+    "by": "Dhruv Jaradi @JDhruv14"
+  },
+  {
     "slug": "kevintngo-what-the-water-keeps",
     "title": "「What the water keeps」：乘船穿过八个梦境",
     "desc": "Kevin Ngo（@kevin_t_ngo）做的浏览器行船演示《What the water keeps》，自称由 Claude Fable 5.2 写成，可沿水道穿过八个风格不同的境域。本页为导读，收录作者短帖全文中译；演示页可见 three.js 与首境资产，未见许可证。预告片与游戏内音乐、人物模型来源均为自报 ⚠️。Nori（@fuxun233）转述该作并称赞 Claude 的审美。不转载视频。",

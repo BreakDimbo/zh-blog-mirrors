@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「会走路的墨线」：line-art-animation</title>
+<meta name="description" content="JDhruv14（Dhruv Jaradi）的 line-art-animation 导读：一套画动态线描 SVG 组件的 Claude 技能与无依赖 TypeScript 小库。仓库为 MIT，附 README 全文中译。未运行示例 ⚠️。星数会变 ⚠️。">
+<meta property="og:title" content="「会走路的墨线」：line-art-animation">
+<meta property="og:description" content="一套画会走路、会作反应的墨线人物，以及能从白天走到夜里的场景的 Claude 技能与 TypeScript 小库。导读 + README 中译。">
+<meta property="og:image" content="https://breakdimbo.github.io/zh-blog-mirrors/jdhruv14-line-art-animation/images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">「会走路的墨线」：line-art-animation</h1>
+<p class="za-sub" lang="en" data-za-gen>一套画动态线描组件的 Claude 技能与 TypeScript 小库</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · JDhruv14/line-art-animation（Dhruv Jaradi，MIT）</span><span>收录 · 2026-11-10</span><span><a href="https://github.com/JDhruv14/line-art-animation" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Dhruv Jaradi（<a href="https://github.com/JDhruv14">@JDhruv14</a>） · 仓库：<a href="https://github.com/JDhruv14/line-art-animation">JDhruv14/line-art-animation</a>（<a href="https://github.com/JDhruv14/line-art-animation/blob/main/LICENSE">MIT License</a>，Copyright (c) 2026 JDhruv14） · 核对：2026-11-10（新加坡时间） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">这是一套给 Claude 用的技能，也是一个很小、没有依赖的 TypeScript 库。它要做的不是一段会播完的片子，而是可以嵌在页面里的线描组件：墨线人物会走路、作出反应，整条街可以从白天走到夜里。所有东西都在 SVG 里当场画出来，放大仍清晰，也能响应指针。本页以这个项目为中心。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库根目录 LICENSE 于 2026-11-10（新加坡时间）经 <a href="https://raw.githubusercontent.com/JDhruv14/line-art-animation/main/LICENSE">raw.githubusercontent.com</a> 现场核对为 MIT License（Copyright (c) 2026 JDhruv14）；GitHub 仓库页同样标注 MIT。下文对 README 作全文中译，并附许可证原文。正文插图是仓库 <code>media/day.png</code> 与 <code>media/night.png</code> 的压缩静帧（作者自己的线描，非真人照片），按 MIT 使用并保留版权声明。仓库中的 GIF 预览未转载，也未下载视频。</div>
+
+<figure>
+<img src="images/cover.webp" alt="正午光线下的线描街道：运河、町屋、茶屋与路上的行人" width="1400" height="700">
+<figcaption>仓库提供的白昼静帧（<code>media/day.png</code>）。© 2026 JDhruv14，MIT License。</figcaption>
+</figure>
+
+<h2>一、这是什么</h2>
+<p><a href="https://github.com/JDhruv14/line-art-animation">JDhruv14/line-art-animation</a> 在仓库简介里写：一套 Claude 技能，外加一个小型 TypeScript 库，用来做会动的线描 SVG 组件——会走路、会反应的墨线人物，以及带昼夜循环的场景。作者 GitHub 显示名为 Dhruv Jaradi，个人站点是 <a href="https://jdhruv.dev">jdhruv.dev</a>，X 账号为 <a href="https://x.com/dhruvtwt_">@dhruvtwt_</a>。</p>
+<p>2026-11-10（新加坡时间）打开的仓库首页显示：默认分支 <code>main</code>，主题标签为 <code>claude-skill</code>、<code>line-art</code>、<code>svg-animation</code>、<code>typescript</code>，提交次数为 1，创建时间为 2026-11-10 17:25（新加坡时间；上游记录为 09:25:25 UTC）。页面内嵌数据里的 star 数约为 4，会变 ⚠️。根目录可见 <code>LICENSE</code>、<code>README.md</code>、<code>SKILL.md</code>、<code>package.json</code>（版本 0.1.0，<code>private: true</code>，license 字段亦为 MIT）、两个示例、四个库文件，以及 <code>references/</code>、<code>scripts/</code>、<code>media/</code>。</p>
+<p>README 只说明在本地运行 <code>npm run dev</code>（<code>http://localhost:5173</code>）。本次未发现仓库文档里给出的已托管演示地址，本站也没有把示例跑起来 ⚠️。</p>
+
+<h2>二、库怎么画、怎么走</h2>
+<p><code>lib/</code> 里有四个不依赖外部包的 TypeScript 模块，源码与 README 的对应关系可以核上：</p>
+<ul>
+<li><code>ink.ts</code>：笔、纸和人物共用的绘画基元。人物在自己的坐标系里画——大约高 95 个单位，脚落在 <code>y = 120</code>——再用 <code>place()</code> 放进场景。墨是 <code>currentColor</code>，纸色填充带 <code>pp</code> 类，整幅画可以一次改色。四肢由 <code>limb()</code> 画成两道不相交于远端的开放笔触，中间填纸，这是这种风格的签名。源码里还有一层很轻的位移与模糊滤镜，让线条读起来像墨，而不是发亮的矢量边。</li>
+<li><code>gait.ts</code>：走、拖步和跑的求解器，预设为 <code>walk</code>、<code>shuffle</code>、<code>run</code>。它不是给腿做正弦起伏。撑地的脚以正好等于行进速度的速度向后滑，所以人物按 <code>gait.speed × 缩放</code> 移动时，那只脚会钉在地上；摆动腿走最小加加速度路径；迈出前脚跟先离地、改用脚尖；髋的高度由撑地的腿能够到的位置决定，于是每一步中间身体升起，双脚都在地上时又沉下去。</li>
+<li><code>motion.ts</code>：弹簧、摆、指针带起的风、按名称排列的姿态序列，以及带种子的随机数——后者是为了让一场戏每次打开都长得一样。</li>
+<li><code>daynight.ts</code>：<code>palette(τ)</code> 给出 <code>τ ∈ [0, 1)</code> 时的天、纸、墨，以及灯火、夜色和晨昏的强度。白天是暖纸上的深墨；夜里反过来，变成靛色纸上的浅墨，窗户和灯笼带着暖光。源码注释写，墨色翻转发生在纸色半暗的时候，好让低对比的那一瞬在默认的三分钟一天里大约只持续一秒。</li>
+</ul>
+<p>衣服不单独做刚体动画。README 写，先把腿求解出来（即使被衣摆挡住），再从膝和踝去画大衣或着物的下摆，布料就会随着步幅开合；袖子、围巾和包则挂在弹簧上。示例 <code>walker.ts</code> 正是这样画的。</p>
+
+<h2>三、两个例子：一个行人，和一条会过昼夜的街</h2>
+<p>本地开发页是一个很短的目录，只链到两个例子。Walker 被写成最小完整示例：一个提着公文包、围着红围巾的人走过卡片，点他会摘一下帽子，移动指针可以吹动围巾。README 写它「大约 150 行」；本次读到的 <code>examples/walker/walker.ts</code> 是 109 行（含注释与导入），与「约 150 行」不完全吻合 ⚠️。</p>
+<p>Village 是一场完整的戏。页面标题是「Ink Village」，提示语为 “drag the sun across the sky · click anyone and anything”。源码和无障碍说明写的是一条日本街道：町屋、茶屋、运河边的澡堂，从黎明到夜里。默认情况下，一整天在 180 秒里走完（可用 <code>?day=</code> 改掉）；<code>?start=</code> 只设定起始时刻，<code>?tau=</code> 把时间钉住，<code>?debug</code> 则关掉 <code>requestAnimationFrame</code>，改用 <code>window.__step</code> 精确步进。源码还规定：人物始终按自然步速走，压缩一天时只让路人更勤地出现，而不是把步态加快。</p>
+<p>主文件会拼起天空、街道、运河、着物行人、骑车的人、孩子、船、猫、麻雀、燕子、花瓣和烟。可以点的东西比「十来种」还多一些：灯笼、暖帘、障子窗、风铃、雨搭（会抖落花瓣）、电线上的麻雀、猫、船、柳树、水面，以及路上的人。指针移动会起风。夜里，窗户和灯笼亮起来，并在水里留下倒影。这些都写在 <code>examples/village/main.ts</code> 里；街道和人物还分在 <code>houses.ts</code>、<code>people.ts</code> 等模块中。本站未在浏览器里打开过这场戏 ⚠️。</p>
+
+<figure>
+<img src="images/day.webp" alt="白昼的线描街道，纸色偏暖，行人走过运河边的町屋" width="1400" height="700">
+<figcaption>昼。<code>media/day.png</code>，© 2026 JDhruv14，MIT License。</figcaption>
+</figure>
+<figure>
+<img src="images/night.webp" alt="夜间的同一条街：靛色的纸，浅色的墨线，窗与灯笼亮着，水里有倒影" width="1400" height="700">
+<figcaption>夜。<code>media/night.png</code>，© 2026 JDhruv14，MIT License。</figcaption>
+</figure>
+
+<h2>四、技能怎么用，以及它在防什么</h2>
+<p>安装方式是把仓库克隆进 Claude Code 的技能目录，例如 <code>~/.claude/skills/line-art-animation</code>，或某个项目的 <code>.claude/skills/</code>。然后用自然语言提要求：一座黎明的面包店、把某段参考片做成循环组件、给场景加上昼夜并导出视频。</p>
+<p>README 对工作顺序写得很清楚：Claude 先读 <code>SKILL.md</code>，把 <code>lib/</code> 拷进项目，先交一个人物请你过目，再画其余部分，并且在交出来之前逐帧检查运动。技能文档把这一点写得更硬：一次把整组组件都做出来，看起来会像同一张脸；先交出一角，是为了把标准定下来。</p>
+<p><code>SKILL.md</code> 和 <code>references/</code> 里还有一组风格规则，本页只作转述，不作全文翻译。其中反复出现的几条是：四肢必须是两道开放笔触；线条要弯曲，不要靠尺；人物在自己的坐标系里画；脚要钉在地上，不要用正弦去「蹦」；组件是卡片，页面背景不要跟着场景变色；互动应当是世界在反应——鞠躬、摘帽、猫伸懒腰、灯笼摆一下、鸟散开——而不是场景里再放按钮；若要求「像这样，但是新的」，只保留媒介、笔触、比例和节奏，人物和道具要另起。本站未安装、也未让 Claude 按这套技能生成过新场景 ⚠️。</p>
+
+<h2>五、出视频，以及对照参考片</h2>
+<p>出视频的路径是确定性的。先本地打开开发服务器，再用 <code>scripts/capture.ts</code> 通过 DevTools 协议驱动无头 Chrome，在 <code>?debug</code> 模式下精确步进并截出 PNG，最后交给 ffmpeg。脚本不另装 npm 依赖，截图之间把场景推进整整一帧，所以成片不取决于机器快慢。它会寻找本机的 Chrome 或 Chromium，或使用环境变量 <code>$CHROME</code>。</p>
+<p>若要跟一段参考片对齐，仓库提供 <code>scripts/clip.ts</code> 和 <code>scripts/frames.sh</code>：量一段区域的循环长度，跟踪每帧里的暗斑（例如脚），或导出带测量网格的帧。<code>references/matching.md</code> 还提醒，社交媒体上的片子多为可变帧率，应当先按时间重采样，再用叠加模式检查绘画是否贴合。</p>
+
+<h2>六、核实与注记</h2>
+<ul>
+<li>合规：先读 <a href="https://github.com/robots.txt">github.com/robots.txt</a>（User-agent: *）。只打开仓库公开首页与作者公开主页；未请求 github.com 的 <code>/raw/</code>、<code>/tree/</code>、<code>/archive/</code>、<code>/commits/</code>，也未调用 api.github.com。LICENSE、README、SKILL.md、库与示例源码、参考文档及 <code>media/</code> 下的静帧 PNG，经 raw.githubusercontent.com 读取（该主机 robots.txt 为 404）。未下载或转载 <code>village.gif</code>、<code>walker.gif</code>，未导出视频。</li>
+<li>许可证（R13）：2026-11-10 读取 <code>raw.githubusercontent.com/JDhruv14/line-art-animation/main/LICENSE</code>，全文为 MIT License，版权人为 JDhruv14，年份 2026。仓库页与 <code>package.json</code> 的 license 字段一致。</li>
+<li>仓库页内嵌的 star 数约为 4（2026-11-10 所见）⚠️，会变。创建当日仅 1 次提交，亦以当时页面为准。</li>
+<li>README 写 Walker「大约 150 行」；本次读到的 <code>walker.ts</code> 为 109 行 ⚠️。</li>
+<li>本站未安装技能，未运行 <code>npm run dev</code>，未做 typecheck 或抓帧，也未在真实标签页里核对 60 帧。互动与昼夜效果按源码和 README 转述 ⚠️。</li>
+<li>README 未给出已托管的在线演示。作者个人站点存在，本次未把它当作本项目的演示页来抓取。</li>
+</ul>
+
+<h2>附录一：README 全文中译</h2>
+<p>译文依据 2026-11-10 读取的 <a href="https://github.com/JDhruv14/line-art-animation/blob/main/README.md">README.md</a>（MIT License）。仓库中的 GIF 预览未转载；白昼与夜晚静帧见正文。文内命令与代码保持原样，链接指向原仓库。</p>
+
+<h3>line-art-animation</h3>
+<p>一套 Claude 技能，外加一个很小的 TypeScript 库，用来做会动的线描组件：纸上的墨线人物会走路、乘车、作出反应，场景会从白天走到夜里。全部都在 SVG 里当场画出来，所以放大缩小都清晰，也能响应指针。</p>
+<p>（此处原文配有村子从傍晚走到夜里的 GIF，以及昼 / 夜两张静帧。静帧见上文。）</p>
+
+<h3>仓库里有什么</h3>
+<ul>
+<li><code>SKILL.md</code>、<code>references/</code> — 技能本身：工作流程、让这种风格成立的规则，以及风格、运动、场景、核对、对照参考片、导出视频的指南。</li>
+<li><code>lib/</code> — 四个无依赖的 TypeScript 模块：绘画基元（<code>ink.ts</code>）、走 / 跑求解器（<code>gait.ts</code>）、弹簧、摆和风（<code>motion.ts</code>），以及一天里各时刻的调色板（<code>daynight.ts</code>）。</li>
+<li><code>examples/walker/</code> — 大约 150 行画出一个人：提着公文包走过卡片；点他，他会摘一下帽子。</li>
+<li><code>examples/village/</code> — 一整场戏：运河边的町屋街道、茶屋和澡堂，按时刻表出现的路人，一只猫、鸟、船夫，亮着的窗户和倒影，大约十来种互动。</li>
+<li><code>scripts/</code> — 用来稳定抓帧做视频，以及测量参考片的工具。</li>
+</ul>
+
+<h3>安装技能</h3>
+<p>若用 Claude Code，把它克隆进技能目录：</p>
+<pre><code>git clone https://github.com/JDhruv14/line-art-animation ~/.claude/skills/line-art-animation</code></pre>
+<p>或者放进某个项目的 <code>.claude/skills/</code>。然后直接说你想要什么，例如：</p>
+<ul>
+<li>「做一段烘焙店黎明的线描动画：面包师端着托盘，炉子冒着蒸汽，窗里有一只猫。」</li>
+<li>「把这段片子做成循环的线描组件，步态要跟得一模一样。」（附上或链到片子）</li>
+<li>「给这场戏加上昼夜循环，并导出一段 30 秒的 1080p 视频。」</li>
+</ul>
+<p>Claude 会读 <code>SKILL.md</code>，把 <code>lib/</code> 拷进你的项目，先交出一个人物请你过目，再画其余部分，并在交出来之前逐帧检查运动。</p>
+
+<h3>运行示例</h3>
+<p>需要 Node 22.18 或更新版本。</p>
+<pre><code>npm install
+npm run dev        # http://localhost:5173</code></pre>
+<p>在村子里，拖动天上的太阳或月亮来改时间，移动指针可以起风，点击人物、窗户、灯笼、风铃、猫、鸟或水面。网址参数：<code>?start=0.9</code> 设定起始时刻（0 是午夜，0.5 是正午），<code>?tau=0.5</code> 把时间钉住，<code>?day=30</code> 让一整天在 30 秒内走完，<code>?debug</code> 则改用手控步进。</p>
+<pre><code>npm run typecheck  # 对 lib/ 和 walker 做严格检查
+npm run build</code></pre>
+
+<h3>库的要点</h3>
+<p>（此处原文配有行人示例的 GIF：一个戴红围巾、提着公文包的人走过路灯。本页未转载该动图。）</p>
+<p>人物在自己的坐标系里画，大约高 95 个单位，脚落在 y = 120，再用变换放进场景。四肢是两道开着的笔触，沿着关节的一条曲线走，这正是它读起来像手绘墨线的主要原因。</p>
+<p>下面是一段完整程序，在纸上画出一双正在走路的腿（行人示例还会加上身体、手臂、衣服，以及点击后的反应）：</p>
+<pre><code>import { el, limb, shoe, place, inkDefs, run } from './lib/ink.ts';
+import { gait } from './lib/gait.ts';
+
+const svg = el('svg', { viewBox: '0 0 480 240' });
+document.body.append(svg);
+const fig = el('g', { filter: inkDefs(svg).filter }, svg);
+const legs = [limb(fig, 4.2), limb(fig, 4.2)];
+const shoes = [el('path', {}, fig), el('path', {}, fig)];
+
+const walk = gait({ kind: 'walk' });
+let phase = 0, x = 60;
+run((t, dt) =&gt; {
+  phase += dt / walk.period;
+  x += walk.speed * 1.25 * dt;           // move at the gait's speed and the feet stay planted
+  place(fig, x % 520 - 20, 196, 1, 1.25);
+  const p = walk.pose(phase);
+  p.feet.forEach((foot, i) =&gt; {
+    legs[i].draw([p.hip, foot.knee, foot.ankle]);
+    shoe(shoes[i], foot.ankle, foot.pitch);
+  });
+});</code></pre>
+<p><code>gait()</code> 是在求解腿，而不是给腿做关键帧动画：撑地的那只脚会以正好等于行进速度的速度向后滑，摆动腿走一条最小加加速度路径，每一步迈出前脚跟会先离开、改用脚尖撑地，髋的高度则由撑地的腿能够到的位置决定，所以身体会在每一步中间升起，双脚都在地上时又沉下去。衣服再顺着膝和踝来画，大衣或着物就会随着步幅开合。</p>
+<p><code>palette(τ)</code> 给出一天中任意时刻的天空、纸色和墨色。墨是 <code>currentColor</code>，纸色填充带有 <code>pp</code> 类，因此 <code>applyPalette()</code> 能在夜里把整幅画改成靛色纸上的浅墨，同时让窗户和灯笼亮起来。</p>
+
+<h3>导出视频</h3>
+<pre><code>npm run dev
+node scripts/capture.ts "http://localhost:5173/examples/village/?debug&amp;capture&amp;day=30&amp;start=0.3" \
+  captures/village 900 30 1920 1080
+ffmpeg -framerate 30 -i captures/village/f%04d.png -c:v libx264 -preset slow -crf 15 \
+  -pix_fmt yuv420p -movflags +faststart -tune animation village.mp4</code></pre>
+<p>抓帧脚本通过 DevTools 协议驱动无头 Chrome，不另装 npm 依赖，并在两次截图之间把场景精确推进一步，所以结果不取决于机器快慢。它会寻找本机的 Chrome 或 Chromium，或使用 <code>$CHROME</code>。需要 ffmpeg。</p>
+
+<h3>对照参考片</h3>
+<pre><code>node scripts/clip.ts period clip.mp4 X Y W H          # loop length of a region
+node scripts/clip.ts blobs clip.mp4 X Y W H Y0 Y1     # dark blobs per frame, e.g. feet
+scripts/frames.sh clip.mp4 X Y W H out/               # frames with a measuring grid</code></pre>
+<p><code>references/matching.md</code> 写了其余步骤：为什么要按时间重采样（社交媒体上的片子多为可变帧率），怎样从网格上读姿势，以及用叠加模式检查你的画是否贴合原片。</p>
+
+<h3>许可证</h3>
+<p>MIT</p>
+
+<h2>附录二：许可证原文</h2>
+<p>以下为 2026-11-10 自 <a href="https://raw.githubusercontent.com/JDhruv14/line-art-animation/main/LICENSE">上游 LICENSE</a> 读取的全文。这不是法律意见。</p>
+<pre><code>MIT License
+
+Copyright (c) 2026 JDhruv14
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>独立中文导读；附录一对 MIT 许可的 README 作全文中译，附录二附许可证原文。插图为仓库提供的静帧，按 MIT 使用。资料：GitHub 仓库首页、README、LICENSE、SKILL.md、lib/ 与 examples/ 源码、references/ 与 scripts/。未运行示例，未转载 GIF 或视频。</p>
+<a href="../">返回录像带书店</a></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/JDhruv14/line-art-animation" rel="noopener">github.com/JDhruv14/line-art-animation</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
