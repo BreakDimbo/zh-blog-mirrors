@@ -1,5 +1,20 @@
 [
   {
+    "slug": "positronx-hitofude",
+    "title": "「一筆」：用代码画出来的五十秒动画预告",
+    "desc": "@positronx_（Shubhu）公开了 HITOFUDE「一筆」：一条号称全由代码画出的 50 秒动画预告，女剑士的剑是画笔，对手是会擦掉世界的纸龙。本页含原帖全文中译与仓库导读；仓库未见许可证，不转载视频。Mythos、会话数与子智能体为作者自报 ⚠️。",
+    "description": "@positronx_（Shubhu）公开了 HITOFUDE「一筆」：一条号称全由代码画出的 50 秒动画预告，女剑士的剑是画笔，对手是会擦掉世界的纸龙。本页含原帖全文中译与仓库导读；仓库未见许可证，不转载视频。Mythos、会话数与子智能体为作者自报 ⚠️。",
+    "source": "X · @positronx_",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "HITOFUDE 一筆 · 项目导读 + 原帖全译",
+    "original_url": "https://x.com/positronx_/status/2120002833277956388",
+    "spine": "画笔当剑的代码水墨预告",
+    "summary": "五十秒代码水墨预告：画笔当剑，纸龙吞掉画出的世界；仓库未见许可证",
+    "kind": "项目",
+    "by": "Shubhu @positronx_"
+  },
+  {
     "slug": "jkeatn-fable-52-personas",
     "title": "「在代码里画画」：Fable 5.2 的画家人设",
     "desc": "@jkeatn（Jake Eaton）用 Claude Fable 5.2 在代码里画画，并请模型长出画家人设。本页含作者推文串全文中译与附图；每一张据称为一至两千行的 Python 程序，经模拟绘画引擎逐笔绘出，未使用图像模型。笔数、代码行数与实现方式为作者自报 ⚠️；未见源码与许可证。作者简介所写 Anthropic 职员身份为自报 ⚠️。",

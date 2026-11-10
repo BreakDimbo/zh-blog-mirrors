@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「一筆」：用代码画出来的五十秒动画预告</title>
+<meta name="description" content="@positronx_（Shubhu）公开了 HITOFUDE「一筆」：一条号称全由代码画出的 50 秒动画预告，女剑士的剑是画笔，对手是会擦掉世界的纸龙。本页含原帖全文中译与仓库导读；仓库未见许可证，不转载视频。Mythos、会话数与子智能体为作者自报 ⚠️。">
+<meta property="og:title" content="「一筆」：用代码画出来的五十秒动画预告">
+<meta property="og:description" content="HITOFUDE 一筆的项目导读与原帖全文中译；只用视频封面帧，不转载视频。仓库根目录未见许可证。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">「一筆」：用代码画出来的五十秒动画预告</h1>
+<p class="za-sub" lang="en" data-za-gen>HITOFUDE 一筆 · 项目导读 + 原帖全译</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @positronx_</span><span>收录 · 2026-11-10</span><span><a href="https://x.com/positronx_/status/2120002833277956388" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Shubhu（@positronx_） · <a href="https://x.com/positronx_/status/2120002833277956388">原帖</a> · 仓库：<a href="https://github.com/shubhu121/hitdude">shubhu121/hitdude</a> · 核对：2026-11-10（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">宣纸色的底上，几道墨色山脊在雾里叠着，右上角盖着一轮朱砂红日。这是 HITOFUDE「一筆」附件视频的封面帧。作者 Shubhu（@positronx_）说，这是一部给一款并不存在的游戏做的五十秒动画预告，全部用代码画成：没有图像生成，也没有视频模型。女剑士的剑是一支画笔，对手是一条会把画出的世界擦掉的纸龙；最后那一剑，是汉字「一」，也是作品的名字。源码在 GitHub 仓库 <a href="https://github.com/shubhu121/hitdude">shubhu121/hitdude</a>。仓库根目录和 package.json 里都没有许可证，本页只做导读，收录作者原帖的全文中译；不转载视频，也不全文翻译 README。</p>
+<figure>
+<a href="https://x.com/positronx_/status/2120002833277956388"><img src="images/cover.webp" alt="原视频封面帧：宣纸色背景上，几层水墨山脊在淡雾里交叠，勾线带飞白；右上方一枚朱砂红日，边缘有细碎的飞白点。没有人物，不是真人照片。" width="1200" height="675"></a>
+<figcaption>原视频封面帧（作者发布的预览静帧，1200×675）。附件为约 50 秒、1920×1080 的视频；本页不下载、不重新托管，也未观看视频。点击图片可到原帖观看。</figcaption>
+</figure>
+<h2>这是一件什么作品</h2>
+<p>就仓库 README 的题记，HITOFUDE「一筆」（One Stroke）是「一部给一款并不存在的游戏做的五十秒动画预告，全部用代码画成」。女剑士名叫 Sumi，兵器是一支比她还高的毛笔；敌人叫 THE BLANK，是一条会把画面擦成空白的折纸龙。她用一笔画出另一条龙，两条龙收成太极，最后一剑是汉字「一」——既是那一笔，也是标题。这些设定写在 README 与 SPEC.md 里；本页未观看成片，不能把分镜效果写成已经看过的画面。</p>
+<p>同一仓库里还有 <code>play/</code>：README 说这是从短片里剪出来的可玩版本，用的是同一套笔触引擎。另有 <code>game/</code> 目录，README 把它写作更早的三维桌面原型（画作摊在桌上，配一条折纸龙）。也就是说，作者一面强调成片「零三维」、只用二维画布，一面保留了一个较早的三维原型目录。本页打开过 <code>game/index.html</code> 的存在性（HTTP 200），没有审读其中的实现。</p>
+<p>作者在原帖里把作品归给 Mythos，并写道：一次会话、十四个子智能体；十五个镜头、一千二百帧由代码画出；声音全部合成、不用采样。仓库正文没有出现 Mythos，也没有出现「十四个子智能体」。一次会话与子智能体的数目，只是作者自报，⚠️ 未独立核实。Mythos 是否就是 Anthropic 只向验证项目提供的 Claude Mythos，原帖没有写全称，本页也不把这层对应写成已核事实。</p>
+<h2>仓库里能核对到什么</h2>
+<p>2026-11-10 在核对 robots.txt 之后，打开了仓库公开页，并从 raw.githubusercontent.com 读取了 README、SPEC.md、REVIEW.md、package.json 以及若干源文件的开头，未调用 api.github.com，也没有进入 GitHub 禁止抓取的 <code>/tree/</code>、<code>/raw/</code> 路径。</p>
+<p>默认分支是 <code>main</code>，当时可见提交 2 次，当前提交为 <code>248d243</code>。仓库页显示创建于 2026-11-10 11:34（新加坡时间，UTC+8），比原帖早约二十三分钟。根目录可见 <code>src/</code>、<code>play/</code>、<code>game/</code>、<code>tools/</code>、<code>renders/</code>、<code>assets/audio/</code>，以及 SPEC.md、REVIEW.md、STORYLINES.md。README 提到的笔触引擎 <code>src/core.js</code>、世界与角色 <code>src/world.js</code> / <code>src/actors.js</code>、镜头文件 <code>src/shots.js</code> 与 <code>src/shots2.js</code>、声音脚本 <code>tools/make-audio.mjs</code>，以及 <code>play/index.html</code>，均能以 HTTP 200 取到。</p>
+<p><code>src/core.js</code> 开头把画布写成 1920×1080、24 帧，并注明这是笔触引擎，函数对其参数是纯的，不用 <code>Math.random</code>，也不读时钟。这与 README、SPEC.md「单张二维画布，只按影片时间绘制」的说法一致，但不能代替对成片逐帧核对。SPEC.md 与 REVIEW.md 都把成片写成 50 秒、24 帧、十五镜、一千二百帧；附件视频的时长也是 50 秒。这些数字互相吻合，⚠️ 本页没有打开 <code>renders/hitofude.mp4</code> 去数帧。</p>
+<p>渲染工具在 README 与 <code>package.json</code> 里都指向 HyperFrames（HeyGen），脚本钉在 <code>hyperframes@0.9.27</code>。仓库里的 AGENTS.md 与 CLAUDE.md 内容相同，是 HyperFrames 项目的通用说明，不是一份针对本片的制作手记。本页没有打开 HyperFrames 的产品站点。</p>
+<p>声音方面，<code>tools/make-audio.mjs</code> 开头写它不依赖外部库，用确定性的伪随机数合成，并写出 50 秒、48 kHz 的 <code>assets/audio/score.wav</code>。该 wav 在核对日返回 HTTP 200，本页没有下载，也没有试听。REVIEW.md 里有一组响度读数，并写明「测过，但还没有人听过」。⚠️ 「零采样」是仓库与原帖的共同说法，本页未对音频做来源分析。</p>
+<p>2026-11-10 在仓库页上看到 1 个 star、2 个 fork。这些数字会变，只作当时记录。⚠️</p>
+<h2>原帖全文</h2>
+<p>以下为作者英文原帖的中文译文。原帖不是 X 长文，有一份 note_tweet 全文；附件是视频。作者在约七分钟后的一条回复里给出了仓库地址，而不是另写一份流程说明。</p>
+<blockquote>
+<p>Mythos 直接把整个动画预告片行业给干翻了……</p>
+<p>这真的太狂了</p>
+<p>我做了一个女剑士，对手是一条会把世界擦掉的纸龙，她的剑是一支画笔。没有图像生成，没有视频模型，百分之百是代码。</p>
+<p>&gt; 1 个会话，14 个子智能体<br>
+&gt; 15 个镜头，1,200 帧由代码画出<br>
+&gt; 零三维。每一帧都是纸上的墨，一笔一笔画出来<br>
+&gt; 连汉字也是用代码刷出来的，不用字体<br>
+&gt; 所有声音都是合成的，零采样</p>
+<p>最后那一剑就是标志。请看到结尾</p>
+<p>工作流程和完整代码在评论区。</p>
+</blockquote>
+<p>作者：Shubhu（@positronx_）；发布：2026-11-10 11:57（新加坡时间，UTC+8）。<a href="https://x.com/positronx_/status/2120002833277956388">原帖附视频，点击观看</a>。仓库回复：<a href="https://x.com/positronx_/status/2120004758530589018">x.com/positronx_/status/2120004758530589018</a>。</p>
+<h2>英文原文</h2>
+<blockquote lang="en">
+<p>Mythos just f*cked the whole anime trailer industry...</p>
+<p>this is f*cking crazy</p>
+<p>i made a swordswoman fight a paper dragon that erases the world, and her sword is a paintbrush. no image generation, no video model, 100% code</p>
+<p>&gt; 1 session, 14 sub-agents<br>
+&gt; 15 shots, 1,200 code-rendered frames<br>
+&gt; zero 3D. every frame is ink on paper, painted stroke by stroke<br>
+&gt; even the kanji are brushed in code, no font<br>
+&gt; every sound synthesized, zero samples</p>
+<p>the final sword cut is the logo. watch till the end</p>
+<p>workflow and complete code in comments.</p>
+</blockquote>
+<h2>线程里还能看到什么</h2>
+<p>作者本人在同一对话里的可见回复只有一条，发布于 2026-11-10 12:04（新加坡时间，UTC+8），正文就是仓库链接 <a href="https://github.com/shubhu121/hitdude">github.com/shubhu121/hitdude</a>，没有另附工作流程说明。检索该对话线程时，第一页已覆盖主帖与全部十条回复，未见作者再补短文。</p>
+<p>其他人的回复大多是称赞。其中 @aniketdotexe 问了一句 “We got mythos?”，说明至少有读者把原帖里的 Mythos 理解成新近放出的模型；这不能证明作者确已使用、或已获准使用 Claude Mythos。</p>
+<h2>许可与可复现性</h2>
+<p>2026-11-10 现场核对：仓库默认分支 <code>main</code> 的根目录没有 LICENSE、LICENCE、COPYING、UNLICENSE 或同类文件；<code>package.json</code> 没有 <code>license</code> 字段，并标了 <code>"private": true</code>；仓库页侧栏也没有许可证一项。源文件开头只有作品名与功能注释，没有许可声明。按版权分级，本页只做项目导读，对 README 只用短引，收录作者本人原帖的全文中译；不转载视频或音频，也不把仓库正文写成可以再分发的译本。</p>
+<p>源码公开，因此可以打开文件看结构，但没有许可证不等于可以随意复制或再发布这些代码。作者个人站点 shubhu.site 在核对日未能取得可判定的 robots.txt（返回的是 Vercel 安全检查页），本页没有继续访问该站。</p>
+<h2>传播数据（快照）</h2>
+<p>2026-11-10 经 X 接口读取时，原帖约 2,254 次浏览、80 个赞、8 次转发、10 条回复、40 次收藏，引用为 0；附件视频播放次数约 1,150。这些数字会变，只作当时记录，不是效果评测。</p>
+<h2>核实边界与署名</h2>
+<ul>
+<li>这是以 HITOFUDE「一筆」为中心的导读，并收录作者本人英文原帖的全文中译。仓库没有开放许可证，本页不转载视频，也不全文翻译 README。</li>
+<li>「Mythos」「一次会话、十四个子智能体」仅见于原帖，仓库未记载，⚠️ 未独立核实。原帖未写 Claude Mythos 5.2 的全称。</li>
+<li>「没有图像生成、没有视频模型、百分之百代码」「零三维」「汉字不用字体、用代码刷出」「声音全部合成、零采样」是原帖与 README 的共同说法。本页核对到二维画布常量、笔触引擎与合成脚本等文件，⚠️ 未观看成片，也未分析音频是否含有采样。</li>
+<li>十五镜、一千二百帧、50 秒、24 帧、1920×1080：仓库文档与 <code>src/core.js</code> 常量、以及附件视频时长一致，⚠️ 未打开渲染文件逐帧清点。</li>
+<li>⚠️ 未下载或观看约 50 秒的附件视频，也未打开仓库中的 <code>renders/hitofude.mp4</code>。封面帧只代表其中一帧，看起来像开场的山与日，不能代替完整演示。</li>
+<li>⚠️ 作者简介所写「designer, ai and startups」以及关注者数量为账号自报或接口快照，未独立核实。个人站点未打开。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© Shubhu（@positronx_ / GitHub shubhu121）。本页为非官方中文导读与翻译，仅供阅读学习；原帖、视频与源码请见原作者页面。原帖：<a href="https://x.com/positronx_/status/2120002833277956388">x.com/positronx_/status/2120002833277956388</a>。仓库：<a href="https://github.com/shubhu121/hitdude">github.com/shubhu121/hitdude</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/positronx_/status/2120002833277956388" rel="noopener">x.com/positronx_/status/2120002833277956388</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
