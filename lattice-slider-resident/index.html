@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「住人のいる音量」：滑杆里住着一个人</title>
+<meta name="description" content="Lattice 在 Ludion 上发布的 MIT 音量滑杆：轨道里有一间像素小屋，音量高低变成屋里的事。含原帖中译、源码题记与许可证说明；只用视频封面帧，不转载视频或完整源码。">
+<meta property="og:title" content="「住人のいる音量」：滑杆里住着一个人">
+<meta property="og:description" content="MIT 音量滑杆：轨道里有一间像素小屋。原帖中译与作品导读；只用封面帧，不转载视频。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">「住人のいる音量」：滑杆里住着一个人</h1>
+<p class="za-sub" lang="en" data-za-gen>A volume slider with a pixel room inside the track · 项目导读 + 原帖中译</p>
+<p class="za-meta" data-za-gen><span>来源 · X · Lattice @Lattice_Node；Ludion（作品 MIT）</span><span>收录 · 2026-11-10</span><span><a href="https://x.com/Lattice_Node/status/2119622784729096453" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Lattice（@Lattice_Node） · 作品页：<a href="https://ludion.ai/p/slider-resident">ludion.ai/p/slider-resident</a>（MIT） · <a href="https://x.com/Lattice_Node/status/2119622784729096453">原帖</a> · 核对：2026-11-10（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">一条看起来像普通音量滑杆的胶囊轨道，里面其实是一间像素小屋。拖动滑杆，屋里的人会睡觉、读书、打拍子、跳舞；音量几乎拉满时，房间会晃，墙上的画框会倾斜，隔壁还会来敲门。作者 Lattice 把它叫做「住人のいる音量」，源码按 MIT 许可发布，复制时须保留第一行署名。</p>
+<figure>
+<a href="https://x.com/Lattice_Node/status/2119622784729096453"><img src="images/cover.webp" alt="原视频封面帧：浅灰底上一条白色胶囊形滑杆。左侧是圆形玻璃透镜，下面是像素风音箱；轨道里是一间夜景像素小屋，窗外有月亮，落地灯亮着，一个像素小人坐在沙发上。不是真人照片。" width="1200" height="900"></a>
+<figcaption>原视频封面帧。附件为约 14.5 秒、2880×2160 的视频；本页不下载、不重新托管，也未观看视频。点击图片可到原帖观看。若要亲手拖动，请到 <a href="https://ludion.ai/p/slider-resident">作品页</a>。</figcaption>
+</figure>
+<h2>这是一件什么作品</h2>
+<p>「住人のいる音量」是一个可复制的网页滑杆组件，标识为 <code>slider-resident</code>，归在「部件 · 滑杆」，标签是 experimental 与 motion，页面记录的版本为 5。它发布在 <a href="https://ludion.ai/">Ludion</a> 上：这是 Lattice 以个人身份运营的 UI 作品站，官方面说明是「看别人放上的界面和部件，复制代码，用到自己的站点」。2026-11-10 现场阅读关于页与作品页，二者都写明作品许可为 MIT，并且「复制出的代码第一行会留下作者的署名行」。</p>
+<p>源码开头的题记把机制写得很清楚：轨道里面是一间低分辨率的像素房间，住着一个人；房间只用调色板编号来画，光靠阶梯和抖动来表现，不造中间色，显示时按整数倍放大。轨道外侧则是抛光表面、凹下去的玻璃，以及用 WebGL 画的液体透镜，透镜会把下面的画面稍微放大。从音箱发出的波会传到透镜所在的位置，波碰到的东西会跟着晃。「音量高低，会直接变成房间里发生的事。」颜色不写在 JavaScript 里，而是取一组 CSS 变量的色相，再配上规定的明度。</p>
+<p>真正接收拖动和键盘操作的，是一个透明的原生 <code>&lt;input type="range"&gt;</code>（范围 0 到 100，页面里的默认值是 72），画面则全部由 canvas 绘制。作品页还写明：若设备开了「减少动态效果」，动画会停住，可以由访问者再打开。</p>
+<h2>音量如何变成房间里的事</h2>
+<p>组件用 <code>aria-valuetext</code> 把当前音量读成一句房间里的状态。以下阈值与措辞来自 2026-11-10 在作品页上可见的源码（常量 <code>READ_TO = 30</code>、<code>TAP_TO = 62</code>、<code>MAX_FROM = 98</code>），不是观看视频后的推测：</p>
+<ul>
+<li>0：住人在睡觉</li>
+<li>1–30：住人戴着耳机在读书</li>
+<li>31–62：住人用脚打着拍子</li>
+<li>63–97：住人站起来跳舞</li>
+<li>98–100：房间在晃，墙上的画框倾斜，隔壁正在敲墙壁</li>
+</ul>
+<p>源码题记还提到节拍为 108 BPM，以及灯、沙发、音箱、画框和隔壁房间等布局。本页不转载完整实现，也不把这些内部名字写成已经在视频里被逐帧核对过的画面。</p>
+<h2>原帖全文</h2>
+<p>以下为作者日文短帖的中文译文。原帖不是 X 长文，正文只有一句，附件是视频；演示链接是他稍后在回复里给出的。</p>
+<blockquote>
+<p>我不小心做了个很容易让人上瘾的音量滑杆……</p>
+</blockquote>
+<p>作者：Lattice（@Lattice_Node）；发布：2026-11-09 10:47（新加坡时间，UTC+8）。<a href="https://x.com/Lattice_Node/status/2119622784729096453">原帖附视频，点击观看</a>。</p>
+<h2>日文原文</h2>
+<blockquote lang="ja">
+<p>中毒性の高い音量調整バーを作ってしまった...</p>
+</blockquote>
+<h2>作者回复</h2>
+<p>在可检索的作者本人回复里，有两条。</p>
+<p>当天 17:35（新加坡时间），他给出了可交互的作品页，并请人关注新开的官方账号：</p>
+<blockquote>
+<p>官方账号开好了，请关注！</p>
+<p>@Ludion_AI</p>
+<p>想亲手试试的话，在这里↓</p>
+</blockquote>
+<p>日文原文：「公式アカウント作ったのでフォローお願いします！／@Ludion_AI／ここで実際に触れます↓」。链接指向 <a href="https://ludion.ai/p/slider-resident">ludion.ai/p/slider-resident</a>。<a href="https://x.com/Lattice_Node/status/2119725481423737033">查看这条回复</a>。</p>
+<p>次日 09:41，他又在原帖线程里引用了自己另一条帖子，正文没有另写说明。被引用的帖发布于 09:26，说的是：「这个开关，换作你会怎么改？不妨试试『重新混合』功能。」并指向 Ludion 首页。那是平台上的再创作入口，也对应他的另一件作品「住人のいるスイッチ」，不要和本页这根音量滑杆混成同一件东西。<a href="https://x.com/Lattice_Node/status/2119964834074955890">被引用的帖</a> · <a href="https://x.com/Lattice_Node/status/2119968631035720051">线程里的引用回复</a>。</p>
+<h2>封面帧里能看见什么</h2>
+<p>封面是作者自己发布的视频静帧，不是实拍人物照片。浅灰背景上横着一条白边胶囊滑杆：左侧是一枚圆而厚的玻璃透镜，底下是像素风的音箱；轨道里是一间夜景小屋，窗外有月亮和星点，落地灯亮着，一个像素小人坐在沙发或矮台上，墙边还有画框和深色家具。透镜下沿有一个白色鼠标指针。这一帧只能说明「滑杆里确实有房间和住人」，不能代替完整的 14.5 秒演示，也不能据此判断当时音量处在上面哪一档。</p>
+<h2>Ludion、署名与许可</h2>
+<p>Ludion 的 X 官方账号 @Ludion_AI 简介写着：「可触摸 UI 的展示场。让作者名字留下来的代码，以开源方式发布。」关于页（日文与英文一致）写明：站由个人 Lattice 运营；作品许可为 MIT；复制出的代码第一行会留下作者署名。询问渠道是 X 上的 @Lattice_Node。</p>
+<p>本作品源码里的署名为：</p>
+<pre><code>&lt;!-- UI by @Lattice_Node — ludion.ai/p/slider-resident (MIT) --&gt;</code></pre>
+<p>2026-11-10 核对此页时，作品页计数为 3,631 次查看、298 次复制、9 次收藏；作者主页共 10 件作品。作品记录上的 <code>published_at</code> 是 2026-11-08 00:00:00 UTC（新加坡时间 08:00），这一时间戳落在午夜，可能只精确到日期，不能当成上线时刻。以上数字都会变。</p>
+<p>站点声明了 MIT，但关于页和作品页都没有全文转载 OSI 的 MIT 许可正文，也没有写成「Copyright (c) 某年 某人」的单独版权行。下面附录的是通用 MIT 许可文本，供对照；再分发或改写源码时，仍须保留上面那一行署名，并以作品页上的现行声明为准。本页不转载完整源码，请到原作品页复制。</p>
+<h2>源码题记（中译）</h2>
+<p>以下译自作品页可见源码开头的作者题记，不是另写的 README。日文原文附后。</p>
+<blockquote>
+<p>住着人的音量：音量滑杆的轨道里有一间像素小屋，里面住着一个人。</p>
+<p>房间：以低分辨率、只用调色板编号来画。光用阶梯和抖动来表现，不造中间色。显示时始终按整数倍放大。</p>
+<p>外侧：抛光的表面、凹下去的玻璃，以及用 WebGL 画的液体透镜。透镜会把下面的画面稍微放大。</p>
+<p>声音：从音箱发出的波会传到透镜所在的位置。波碰到的东西会跟着晃。音量高低，会直接变成房间里发生的事。</p>
+<p>颜色不写在 JS 里。用 <code>--_bg</code>、<code>--_surface</code>、<code>--_fg</code>、<code>--_muted</code>、<code>--_accent</code> 的色相，加上规定的明度，排列而成。</p>
+</blockquote>
+<h3>题记日文原文</h3>
+<blockquote lang="ja">
+<p>住人のいる音量：音量のスライダーのレールの中に、ピクセルの部屋があり、住人が1人暮らしている。</p>
+<p>部屋：低い解像度で、パレットの番号だけで描く。光は段階とディザで表し、中間色を作らない。常に整数倍で写す。</p>
+<p>外側：磨かれた面、くぼんだガラス、液体のレンズを WebGL で描く。レンズは下の絵を少し拡大する。</p>
+<p>音：スピーカーから出る波は、レンズのところまで届く。波が触れたものは揺れる。音量が、そのまま部屋の出来事になる。</p>
+<p>色は JS に書かない。<code>--_bg</code>、<code>--_surface</code>、<code>--_fg</code>、<code>--_muted</code>、<code>--_accent</code> の色相に、決めた明るさを与えて並べて作る。</p>
+</blockquote>
+<h2>MIT 许可（通用文本）</h2>
+<pre><code>MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre>
+<p>对照 Condensed 中文大意：允许免费使用、复制、修改、合并、发布、再许可和出售，条件是在所有副本或重要部分中保留上述版权声明与本许可声明；软件按「原样」提供，不附带适销性、特定用途适用性或非侵权等保证。这不是法律意见。</p>
+<h2>传播数据（快照）</h2>
+<p>2026-11-10 经 X 接口读取时，原帖约 48.5 万次浏览、1.05 万赞、814 次转发、54 条引用、95 条回复、2,730 次收藏。这些数字会变，只作当时记录，不是效果评测。</p>
+<h2>核实边界与署名</h2>
+<ul>
+<li>这是以该 MIT 作品为中心的导读，并收录作者本人日文短帖与回复的全文中译；题记亦全文译出。完整源码请到原作品页查看，本页不转载。</li>
+<li>许可依据 2026-11-10 现场阅读的 <a href="https://ludion.ai/about">关于页</a>、<a href="https://ludion.ai/en/about">英文关于页</a>与作品页可见声明及源码首行署名。未访问被 robots.txt 禁止的 <code>/p/*/code</code> 或 <code>/api/</code>。站点未全文刊出 OSI MIT 正文。</li>
+<li>⚠️ 未下载或观看约 14.5 秒的附件视频，也未在浏览器里拖动该滑杆做交互核验；封面帧只代表其中一帧。音量档位的说明来自源码中的无障碍读法，不是对视频画面的逐帧对照。</li>
+<li>⚠️ 作者简介所写「19 岁、大学生、个人开发」为自报，未独立核实。</li>
+<li>⚠️ Ludion 作品页与作者主页上的查看、复制、收藏次数，以及作品记录中的发布时间戳，均为核对当时的快照；午夜时间戳可能只精确到日期。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© Lattice（@Lattice_Node）。作品「住人のいる音量」在 Ludion 上声明为 MIT 许可，复制须保留首行署名。本页为非官方中文导读与翻译，仅供阅读学习；原帖、视频与完整源码请见原作者页面。原帖：<a href="https://x.com/Lattice_Node/status/2119622784729096453">x.com/Lattice_Node/status/2119622784729096453</a>。作品页：<a href="https://ludion.ai/p/slider-resident">ludion.ai/p/slider-resident</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/Lattice_Node/status/2119622784729096453" rel="noopener">x.com/Lattice_Node/status/2119622784729096453</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

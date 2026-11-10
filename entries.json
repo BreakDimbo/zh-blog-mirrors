@@ -1,5 +1,20 @@
 [
   {
+    "slug": "lattice-slider-resident",
+    "title": "「住人のいる音量」：滑杆里住着一个人",
+    "desc": "Lattice 在 Ludion 上发布的 MIT 音量滑杆：轨道里有一间像素小屋，音量高低变成屋里的事。含原帖中译、源码题记与许可证说明；只用视频封面帧，不转载视频或完整源码。",
+    "description": "Lattice 在 Ludion 上发布的 MIT 音量滑杆：轨道里有一间像素小屋，音量高低变成屋里的事。含原帖中译、源码题记与许可证说明；只用视频封面帧，不转载视频或完整源码。",
+    "source": "X · Lattice @Lattice_Node；Ludion（作品 MIT）",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "A volume slider with a pixel room inside the track · 项目导读 + 原帖中译",
+    "original_url": "https://x.com/Lattice_Node/status/2119622784729096453",
+    "spine": "滑杆里的像素小屋",
+    "summary": "MIT 音量滑杆：轨道里有一间像素小屋，音量变成屋里的事",
+    "kind": "项目",
+    "by": "Lattice"
+  },
+  {
     "slug": "aiforui-skills",
     "title": "给智能体用的界面技艺：Emil Kowalski 的开源 AI Skills",
     "desc": "aiforui.dev/skills 导读：17 项公开 UI 技能可安装使用；仓库 README 为 MIT，附中文全译。付费课程与 28 项技能包不是同一范围。星数、安装量与课程数字均为页面自报 ⚠️。",
