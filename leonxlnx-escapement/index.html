@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escapement：用 Python 驱动无头 Blender 做成的钟表短片</title>
+<meta name="description" content="Leon Lin 用 Claude Code（Opus 5.5）写 Python，在无头 Blender 5.2 的 EEVEE 里搭出齿轮、跑车、峡谷与钟表神庙，再由 numpy 与 ffmpeg 完成剪辑、调色和混音。成片约 36 秒。源码 MIT，音乐与音效另行许可；本页含导读、作者原帖全文中译与 README 全译。">
+<meta property="og:title" content="Escapement：用 Python 驱动无头 Blender 做成的钟表短片">
+<meta property="og:description" content="Leon Lin 用 Claude Code（Opus 5.5）写 Python，在无头 Blender 5.2 的 EEVEE 里搭出齿轮、跑车、峡谷与钟表神庙，再由 numpy 与 ffmpeg 完成剪辑、调色和混音。成片约 36 秒。源码 MIT，音乐与音效另行许可；本页含导读、作者原帖全文中译与 README 全译。">
+<meta property="og:image" content="images/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-10">2026.11.10</time></p>
+<h1 class="za-title">Escapement：用 Python 驱动无头 Blender 做成的钟表短片</h1>
+<p class="za-sub" lang="en" data-za-gen>A 36s cinematic short film made by Claude Code driving Blender headless · 项目导读 + 原帖全译 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · Leonxlnx/escapement（源码 MIT；音乐与音效另行许可）</span><span>收录 · 2026-11-10</span><span><a href="https://github.com/Leonxlnx/escapement" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/Leonxlnx/escapement">Leonxlnx/escapement</a> · 作者 Leon Lin（<a href="https://github.com/Leonxlnx">GitHub @Leonxlnx</a> / <a href="https://x.com/LexnLin">X @LexnLin</a>）· 源码 <a href="https://github.com/Leonxlnx/escapement/blob/main/LICENSE">MIT</a>（音乐与音效另行许可）· 介绍帖 <a href="https://x.com/LexnLin/status/2119558994352304202">2026-11-09</a> · 核对：2026-11-10（新加坡时间）· <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">Escapement 是一支约 36 秒的短片。作者 Leon Lin 说，整部片子里的物体、材质、灯光和镜头运动都由 Python 脚本在无头运行的 Blender 5.2 里搭出来，真正出图的是 EEVEE；剪辑、调色和混音也是代码。片名取自钟表里那套让时间一格一格走下去的擒纵机构。仓库源码为 MIT，成片在 GitHub Releases，本页不转载视频。</p>
+
+<figure>
+<img src="images/cover.webp" alt="对称构图的钟表神庙：青绿琉璃瓦与朱红柱廊，山花中央是巨大的时钟表盘，屋顶上是转动的金色浑仪，前方水池映出建筑，两侧是柏树与路灯，蓝天白云" width="1280" height="720">
+<figcaption>神庙一场的静帧。图为仓库 <code>docs/still_07.jpg</code>，依 MIT 许可转载并压缩为 WebP。</figcaption>
+</figure>
+
+<h2>一、它是什么</h2>
+<p>仓库自述：这是一部由 Claude Code（Opus 5.5）写 Python、驱动无头 Blender 5.2，在一台集成显卡笔记本（AMD Radeon 780M）上做出来的电影感短片。作者在 README 里把故事串成一条不断「逃逸」的梦：黑暗里亮起的微距齿轮，六辐齿轮对切成跑车轮毂，超跑在黑色影棚里按节拍自行装配，影棚碎成黄昏峡谷，汽车一路疾驰（跟拍、后视镜、漂移、俯拍、从镜头上方轧过、一线天峡谷追逐），扬尘化成云海，露出一座钟表神庙，最后一帧对切成书桌上的照片，镜头低伏掠过桌面，再潜入怀表，落到标题。</p>
+<p>生产圣经 <code>BRIEF.md</code> 把标题写得很清楚：擒纵机构是「让时间一拍一拍往前走的心脏」。它也写明：片中没有真人；构图为 2.39:1 的中间带宽（剪辑时加黑边），但完整的 16:9 也要站得住。</p>
+<p>公开的镜头表 <code>shotlist.json</code> 按 24 帧/秒列出 30 个镜头。后来作者把云层揭示（4A）和两段神庙特写（4D、4E）从成片里剪掉了——更好的云在这块集成显卡上会把 GPU 卡死。X 上那支视频时长约 36.5 秒，与 README 所说的「36 秒」相符。镜头表把后来被剪掉的镜头也算进去，总长约 45 秒；声音时间线里的终点约 41 秒。本站没有重新剪片子去对账，只能同时记下这几组数字。</p>
+
+<figure>
+<img src="images/contact_sheet.webp" alt="整部短片的接触印样：从上到下依次是微距齿轮、跑车装配、黄昏峡谷追逐、云海与钟表神庙、书桌上的神庙照片与怀表，最后是 ESCAPEMENT 标题" width="1600" height="1200">
+<figcaption>仓库 <code>docs/contact_sheet.jpg</code> 接触印样，依 MIT 许可转载并压缩为 WebP。</figcaption>
+</figure>
+
+<div class="shots">
+<figure>
+<img src="images/still_01.webp" alt="黑暗中的微距齿轮：前景齿牙失焦，中景一圈铜色轮齿扫过微光，背景隐约还有更大的齿轮，画面上下有宽黑边" width="1280" height="720">
+<figcaption>齿轮微距（<code>docs/still_01.jpg</code>）</figcaption>
+</figure>
+<figure>
+<img src="images/still_04.webp" alt="黄昏峡谷里的车内视角：左侧是高速运动模糊的赤红色岩壁与路面标线，右侧后视镜里映出身后的道路" width="1280" height="720">
+<figcaption>后视镜镜头（<code>docs/still_04.jpg</code>）</figcaption>
+</figure>
+<figure>
+<img src="images/still_05.webp" alt="狭窄的一线天峡谷中，一辆深色超跑正驶离镜头，尾部横向红灯条亮着，两侧岩壁近在咫尺，光线从缝隙落下" width="1280" height="720">
+<figcaption>一线天追逐（<code>docs/still_05.jpg</code>）</figcaption>
+</figure>
+<figure>
+<img src="images/still_08.webp" alt="暗色工作台上：裁切垫、神庙照片、放大镜、打开的铜怀表、铅笔、蓝图和一筒画笔，灯光从斜上方打下" width="1280" height="720">
+<figcaption>书桌一场（<code>docs/still_08.jpg</code>）</figcaption>
+</figure>
+<figure>
+<img src="images/still_10.webp" alt="失焦的齿轮背景前，居中叠着金属质感的英文标题 ESCAPEMENT，一条细线横在标题下方" width="1280" height="720">
+<figcaption>片名字幕（<code>docs/still_10.jpg</code>）</figcaption>
+</figure>
+</div>
+<p class="caption">以上静帧均来自作者仓库 <code>docs/</code>，依 MIT 许可转载、缩小并转为 WebP。成片视频未下载、未转载；可在 <a href="https://github.com/Leonxlnx/escapement/releases/latest">GitHub Releases</a> 或 <a href="https://x.com/LexnLin/status/2119558994352304202">原帖</a> 观看。</p>
+
+<h2>二、它是怎么做出来的</h2>
+<p>作者在介绍帖里先写「每一帧都是 Python，没有用任何三维资产」，第二天自己更正了措辞：Python 负责搭出每一场戏，没有人打开过 Blender 的图形界面；真正渲染的是 EEVEE。仍然没有使用现成的模型或纹理。这个更正很重要，本页以更正后的说法为准。</p>
+<p>README 把方法收成五条，仓库里的圣经、镜头表和分幕迭代日志可以对上：</p>
+<ul>
+<li><strong>场景是代码生成的。</strong>齿轮、跑车、峡谷、神庙和书桌道具都由 <code>lib/</code> 与 <code>shots/</code> 里的脚本生成。作者的准确说法是：没有下载三维模型或图像纹理。生产圣经里提到，环境光可以使用 Blender 自带的日落、室内等 EXR；这不等于从网上下载贴图，但「完全不用任何图像」并不精确。</li>
+<li><strong>一场戏一个搭建 agent。</strong>五个搭建 agent 并行做五幕，再由一个导演 agent 审每一幕，第二轮按意见修改。迭代过程记在 <code>notes/act*.md</code>。本站读过这五份日志：里面有具体的曝光返工、漂移和「从镜头上方轧过」等后加镜头、以及一次两台 EEVEE 同时渲染把 780M 卡死的记录，与 README 的说法相符。</li>
+<li><strong>一次只跑一个渲染。</strong>所有 Blender 进程都经过 <code>tools/rb.py</code> 的全局 GPU 锁（<code>tools/gpu_guard.py</code>）。作者写：曾经让几路 EEVEE 共享集成显卡，笔记本蓝屏，错误码 <code>0x119 VIDEO_SCHEDULER_INTERNAL_ERROR</code>，所以这把锁从不绕过。</li>
+<li><strong>用测量，而不是只靠眼看。</strong><code>tools/exposure_check.py</code> 给每张静帧打分，检查高光裁切、黑位被抬和颜色发闷；合成器会在高光到达纯白之前把它滚下来。圣经里后补的客户规则，几乎都在对付「太亮、太白、颜色发灰」。</li>
+<li><strong>剪辑、调色、混音也是代码。</strong><code>tools/edit.py</code>（numpy + ffmpeg）负责套片和转场（硬切、匹配剪切、扬尘到云的亮度叠化），以及调色、光晕、颗粒和宽银幕黑边。<code>tools/mix.py</code> 按 <code>edit/cues.json</code> 把音乐和音效混到 120 BPM 的格子上（每拍 12 帧）。</li>
+</ul>
+<p>作者还说自己用了 GitHub 上的 <a href="https://github.com/Leonxlnx/cook">/cook skill</a>（2026-11-10 核对其根目录 LICENSE 为 MIT，版权人同样是 Leon Lin）。那是一套「给定参考、标准与时间，让智能体自己循环搭建、出静帧、换上下文审看再修改」的技能。Escapement 仓库的组织方式与之相近，但 cook 自己的 README 演示名单里还没有写入本片，本站不能把「用了 /cook」当成已核过的运行记录，只能记作作者自述。</p>
+<p>汽车那场戏，作者引用了 Rory Flynn（<a href="https://x.com/Ror_Fly/status/2107210846673977423">@Ror_Fly</a>）的帖子作参考。对方写的是用 Three.js 做场面调度参考、再用 Midjourney 和 Seedance 出片。那是第三方内容，本页只作短引，不转载其视频或截图。圣经要求：可以借参考的光线、调色和细节密度，但不要去复制具体的泰国神庙、某款车或某个房间。</p>
+
+<h2>三、作者怎么说，以及本站核对到什么</h2>
+<ul>
+<li>仓库创建于 2026-11-08T22:29:13Z（新加坡时间 2026-11-09 06:29:13），介绍主帖在约四分钟后发出。2026-11-10 读取 GitHub 仓库公开页时为 94 星、11 个 fork，有 1 个 Release（提供 1080p 成片和一版更小的手机拷贝）。这些数字会变。</li>
+<li>主帖发出时（本站 2026-11-10 上午读取）约 11.5 万次浏览、2,340 次喜欢、1,718 次收藏。互动数字同样会变。</li>
+<li>作者说：Opus 5.5 的「xhigh ultracode」，一条提示词，再加一点轻微把控；被问到把控几次时，回答「大约 5 次」。仓库里的圣经却留下多条制作中途补上的客户规则（效果要看起来真实、千万不要过亮、还要再加疯狂的驾驶镜头），分幕日志里也能看到多轮返工。本站把「一条提示词」理解为作者对自己起点的概括，并不等于中途没有改过要求。⚠️「xhigh ultracode」具体对应哪一档官方设置，未独立核实。</li>
+<li>被问到渲染多久时，作者说：在 2GB 的集成显卡上，「我想大概 3 小时」。这是他的估计。日志里能看到单帧大约十几到三十秒的记录，但本站没有重跑渲染去核对总时长。⚠️</li>
+<li>README 的再现步骤要求 Windows、Blender 5.2，以及 PATH 上的 ffmpeg，并用 Blender 自带的 Python（已含 numpy）。本站在 Linux 环境，没有安装或运行这条管线。⚠️</li>
+<li>音效许可要分开看。原帖写「Mixkit + Freesound CC0」；README 写明音乐是 Grigoriy Nuzhny 的 <cite>Epical Drums 02</cite>（Mixkit 库存音乐免费许可），音效来自 Mixkit 与 Freesound CC0，且 Mixkit 不允许把这些声音当作独立文件再分发，所以音频不在仓库里。仓库中的 <code>audio/manifest.json</code> 统计为：Mixkit 音效 103、CC0 48、numpy 合成 13、派生 3、Mixkit 音乐 3。圣经里有一条客户规则是「只用下载来的免费素材，绝不自己合成音效或音乐」，与清单里的 13 条 numpy 合成存在出入。⚠️ 本站未去 Mixkit 或 Freesound 逐条打开源页面复核。</li>
+</ul>
+
+<h2>四、许可</h2>
+<p>2026-11-10 读取根目录 <a href="https://github.com/Leonxlnx/escapement/blob/main/LICENSE">LICENSE</a>，正文以 <q>MIT License</q> 起首，版权人为 Leon Lin（Copyright (c) 2026 Leon Lin）。README 随后写明：<strong>代码为 MIT</strong>；音乐和音效保留各自许可。GitHub 仓库页的许可证标签显示为 MIT。这不是法律意见。</p>
+<p>因此：源码、README 和 <code>docs/</code> 里的静帧，本页按 MIT 做导读、全文中译并转载压缩图；成片视频不转载；第三方音乐与音效不随仓库分发，本页也不收录音频文件。</p>
+<p>同作者在本站还有 <a href="../leonxlnx-athenaion/">Athenaion</a>、<a href="../shanshui/">Shanshui</a> 与 <a href="../leonxlnx-casa-ocaso/">Casa Ocaso</a>。那些作品主要在浏览器里用 three.js 生成世界；这一次他改用无头 Blender 做离线短片，但「参考图定标准、多 agent 分头搭建、用测量而不是只靠眼看、一块集成显卡一次只跑一个渲染」这条工作方式是连着的。</p>
+
+<h2>五、介绍帖全文中译</h2>
+<p>以下为作者本人帖子的中文全译。原帖为英文。主帖时间 2026-11-08T22:33:38Z（新加坡时间 2026-11-09 06:33:38）。更正帖时间 2026-11-09T06:31:39Z（新加坡时间 2026-11-09 14:31:39）。</p>
+
+<h3>主帖</h3>
+<blockquote>
+<p>这大概是我用 Opus 5.5 做过的最好的东西。</p>
+<p>每一帧都是 Python，没有用任何三维资产。</p>
+</blockquote>
+<p><a href="https://x.com/LexnLin/status/2119558994352304202">原帖</a>。配有一支约 36.5 秒的视频，本页不转载。</p>
+
+<h3>我是这样做的</h3>
+<blockquote>
+<p>我是这样做的：</p>
+<ul>
+<li>opus 5.5 xhigh ultracode，一条提示词，再加一点轻微的把控</li>
+<li>无头运行的 Blender 5.2，EEVEE</li>
+<li>剪辑、调色和混音也是代码（numpy + ffmpeg）</li>
+<li>汽车那场戏我用了这个做参考：<a href="https://x.com/Ror_Fly/status/2107210846673977423">Ror_Fly 的帖子</a></li>
+<li>再叠上有创意的转场，以及三维神庙和齿轮的生成图像</li>
+</ul>
+<p>用了在我 GitHub 上的 /cook skill</p>
+</blockquote>
+<p><a href="https://x.com/LexnLin/status/2119558997162287560">原帖</a>。文中「三维神庙和齿轮的生成图像」，结合圣经里的参考图名单，更像是风格参考，而不是把外部三维模型贴进场景；具体文件没有出现在本次读到的仓库根目录里。⚠️</p>
+
+<h3>音乐与音效</h3>
+<blockquote>
+<p>音乐：「Epical Drums 02」，Grigoriy Nuzhny（Mixkit）<br>
+音效：Mixkit + Freesound CC0</p>
+</blockquote>
+<p><a href="https://x.com/LexnLin/status/2119559000492794132">原帖</a></p>
+
+<h3>云层的遗憾</h3>
+<blockquote>
+<p>还不算完美。云层揭示看起来还是有点像沙丘，哈哈。</p>
+<p>它其实做出过更好的云，但我这块（集成）显卡直接卡住了，所以只好砍掉。</p>
+</blockquote>
+<p><a href="https://x.com/LexnLin/status/2119559003575595328">原帖</a></p>
+
+<h3>仓库</h3>
+<blockquote>
+<p>仓库在这里！<br>
+<a href="https://github.com/Leonxlnx/escapement">https://github.com/Leonxlnx/escapement</a></p>
+</blockquote>
+<p><a href="https://x.com/LexnLin/status/2119559005999693836">原帖</a></p>
+
+<h3>评论区里作者自己的回答</h3>
+<p>有人问需要把控几次，作者答：「大约 5 次。」（<a href="https://x.com/LexnLin/status/2119561086718407128">原帖</a>）</p>
+<p>有人问渲染花了多久，作者答：「在我这块集成显卡（2GB）上，我想大概 3 小时。」（<a href="https://x.com/LexnLin/status/2119561239676219827">原帖</a>）</p>
+<p>有人指出，如果是用 Blender 做的，说「每一帧都是 Python」容易让人误解。作者先回复对方：「说得对，我应该把话说得更清楚。我的意思是：每个物体、材质、灯光和镜头运动都是驱动 Blender 的 Python 脚本，没有人碰过界面，当然最终是由 Blender 的 EEVEE 渲染的。」随后又在主帖下发了独立更正：</p>
+<blockquote>
+<p>更正「每一帧都是 Python」：</p>
+<p>Python 搭建了每一场戏（物体、材质、灯光、镜头运动），所以没有人碰过 Blender 的界面。真正出图的是 Blender 的 EEVEE。</p>
+<p>仍然没有使用任何现成的模型或纹理 :)</p>
+</blockquote>
+<p><a href="https://x.com/LexnLin/status/2119679291814264929">更正原帖</a></p>
+
+<h2>附录一：README 全文中译</h2>
+<p>译自 2026-11-10 读取的 <a href="https://github.com/Leonxlnx/escapement/blob/main/README.md">Leonxlnx/escapement/README.md</a>（main 分支）。命令、文件名与错误码保持原文。接触印样与静帧见上文，此处不重复贴图。这是译文，不是官方中文文档。</p>
+
+<h3>ESCAPEMENT</h3>
+<p>一部 36 秒的电影感短片，由 <strong>Claude Code（Opus 5.5）</strong> 用 Python 驱动无头运行的 <strong>Blender 5.2</strong> 做成，机器是一台带集成显卡（AMD Radeon 780M）的笔记本。一条提示词，然后几轮反馈。</p>
+<p><strong>观看：</strong><a href="https://github.com/Leonxlnx/escapement/releases/latest">ESCAPEMENT.mp4（1080p 母版）</a> · Release 里还有一份更小的、给手机用的拷贝。</p>
+<p class="media-note">（原文此处为 <code>docs/contact_sheet.jpg</code> 接触印样，见上文转载。）</p>
+
+<h3>这部片子</h3>
+<p>黑暗中打亮的微距钟表齿轮 → 一只六辐齿轮对切成汽车轮毂 → 超跑在黑暗影棚里自行装配，零件按节拍砸到位 → 影棚碎开，变成黄昏峡谷 → 驾驶（跟拍、后视镜、漂移、俯拍无人机、汽车从镜头上方轧过、一线天峡谷追逐）→ 扬尘化成云 → 一座钟表神庙 → 最后一帧对切成书桌上同一画面的照片 → 低机位掠过桌面 → 潜入一只怀表 → 标题。</p>
+<p class="media-note">（原文此处为六张静帧表：<code>docs/still_01.jpg</code>、<code>still_04.jpg</code>、<code>still_05.jpg</code>、<code>still_07.jpg</code>、<code>still_08.jpg</code>、<code>still_10.jpg</code>，见上文转载。）</p>
+
+<h3>它是怎么做出来的</h3>
+<ul>
+<li><strong>每一个三维物体、材质、灯光和镜头运动都是 Python。</strong>没有下载任何三维模型或图像纹理。齿轮、汽车、峡谷、神庙和书桌道具，全部由 <code>lib/</code> 与 <code>shots/</code> 里的脚本生成。</li>
+<li><strong>一场戏一个 agent。</strong>五个搭建 agent 并行做五幕，然后一个导演 agent 审每一幕，第二轮落实修改（<code>notes/act*.md</code> 是它们的迭代日志）。它们依据的简报是 <a href="https://github.com/Leonxlnx/escapement/blob/main/BRIEF.md"><code>BRIEF.md</code></a>；镜头表是 <a href="https://github.com/Leonxlnx/escapement/blob/main/shotlist.json"><code>shotlist.json</code></a>。</li>
+<li><strong>一次只跑一个渲染。</strong>每一次 Blender 运行都经过 <code>tools/rb.py</code>，它持有一把全局 GPU 锁（<code>tools/gpu_guard.py</code>）。曾经让几路 EEVEE 渲染共享这块集成显卡，笔记本蓝屏了一次（<code>0x119 VIDEO_SCHEDULER_INTERNAL_ERROR</code>），所以这把锁从不绕过。</li>
+<li><strong>用测量，而不是只靠眼看。</strong><code>tools/exposure_check.py</code> 为每张静帧评分，检查高光裁切、黑位被抬和颜色发闷；<code>common.compositor()</code> 会在高光到达白色之前把它滚下来。</li>
+<li><strong>剪辑、调色和混音也是代码。</strong><code>tools/edit.py</code>（numpy + ffmpeg）负责套片、转场（切换、匹配剪切、扬尘到云的亮度叠化）、调色、光晕、颗粒和宽银幕黑边。<code>tools/mix.py</code> 按 <code>edit/cues.json</code> 混合音乐和音效，卡在音乐 120 BPM 的格子上（每拍 12 帧）。</li>
+</ul>
+
+<h3>仓库结构</h3>
+<pre><code>BRIEF.md          智能体所依据的生产圣经
+shotlist.json     每个镜头：编号、脚本、剪辑长度、手柄帧
+lib/              共用工具箱（common.py）+ 分幕生成器（车、峡谷、神庙、书桌、云……）
+shots/            一幕一个脚本；`--shot &lt;ID&gt;` 搭建场景并渲染该镜头
+tools/            渲染运行器与 GPU 锁、渲染队列、剪辑/调色、混音、线索表与 EDL 生成器、质检
+edit/             最终剪辑决策表、修剪和声音线索表
+audio/            每条声音的清单（源地址、许可、作者）+ 音乐节拍分析
+notes/            智能体分幕迭代日志
+docs/             静帧
+</code></pre>
+
+<h3>如何复现</h3>
+<p>环境要求：Windows、Blender 5.2、PATH 上的 ffmpeg。全部使用 Blender 自带的 Python 运行（其中已有 numpy）。</p>
+<ol>
+<li>把 <code>BLENDER</code> 设为你的 <code>blender.exe</code>。</li>
+<li>按 <code>audio/manifest.json</code> 列出的地址，把声音下载到 <code>audio/sfx/</code> 和 <code>audio/music/</code>，并使用清单中的文件名（Mixkit 与 Freesound CC0，链接已写在清单里）。音频文件本身不在本仓库中，因为 Mixkit 许可不允许把它们当作独立文件再分发。</li>
+<li>渲染一张测试静帧：<code>python tools/rb.py shots/act1_gears.py -- --shot 1A --stills 30 --pct 50</code></li>
+<li>渲染镜头：<code>python tools/render_queue.py</code>（同一时间只运行一个 Blender 进程；在集成显卡上可能需要许多个小时）。</li>
+<li>做剪辑和混音：<code>python tools/make_edl.py</code>，<code>python tools/make_cues.py</code>，然后 <code>python tools/assemble.py</code>。</li>
+</ol>
+<p>需要老实说清的限制：</p>
+<ul>
+<li><code>shots/act4_temple.py</code> 里有一版后来重做的云，在这台笔记本上渲染太重（会把 GPU 卡住）。发布的成片在神庙揭示处用的是较早那一版云层；云层浮现镜头（4A）和两段神庙特写（4D、4E）已从成片中剪掉。</li>
+<li>快速运动的镜头按 83% 分辨率、16 个采样渲染，以赶上层时间，然后再放大。</li>
+<li>路径和时间是为某一台特定笔记本调的。换到你的机器上，采样数和体积效果参数大概需要再调。</li>
+</ul>
+
+<h3>致谢</h3>
+<ul>
+<li>音乐：「Epical Drums 02」，Grigoriy Nuzhny，<a href="https://mixkit.co/free-stock-music/">Mixkit</a>（Mixkit 库存音乐免费许可）。</li>
+<li>音效：<a href="https://mixkit.co/free-sound-effects/">Mixkit</a>（Mixkit 音效免费许可）与 <a href="https://freesound.org">Freesound</a>（CC0）。每个文件、来源和许可都列在 <code>audio/manifest.json</code>。</li>
+<li>使用 Claude Code（Claude Opus 5.5）和 Blender 制作。</li>
+</ul>
+
+<h3>许可</h3>
+<p>代码：MIT，见 <a href="https://github.com/Leonxlnx/escapement/blob/main/LICENSE">LICENSE</a>。音乐和音效保留上文列出的各自许可。</p>
+
+<details>
+<summary>README 英文原文</summary>
+<pre><code># ESCAPEMENT
+
+A 36-second cinematic short film made by **Claude Code (Opus 5.5)** driving **Blender 5.2** headless from Python, on a laptop with an integrated GPU (AMD Radeon 780M). One prompt, then a few rounds of feedback.
+
+**Watch it:** [ESCAPEMENT.mp4 (1080p master)](https://github.com/Leonxlnx/escapement/releases/latest) · the release also has a smaller copy for phones.
+
+![contact sheet](docs/contact_sheet.jpg)
+
+## The film
+
+Macro clockwork lit out of the dark → a 6-spoke gear match-cuts into a car&#x27;s wheel → the hypercar assembles itself in a dark studio, parts slamming on the beat → the studio breaks apart into a dusk canyon → the drive (tracking shot, mirror, drift, top-down drone, the car driving over the camera, a slot-canyon chase) → the dust turns into clouds → a clockwork temple → the last frame match-cuts to the same image as a printed photo on a desk → a low run across the desk → a dive into a pocket watch → title.
+
+| | | |
+|---|---|---|
+| ![](docs/still_01.jpg) | ![](docs/still_04.jpg) | ![](docs/still_05.jpg) |
+| ![](docs/still_07.jpg) | ![](docs/still_08.jpg) | ![](docs/still_10.jpg) |
+
+## How it was made
+
+- **Every 3D object, material, light and camera move is Python.** No 3D models or image textures were downloaded. Gears, the car, the canyon, the temple and the desk props are all generated by the scripts in `lib/` and `shots/`.
+- **One agent per act.** Five builder agents worked on the five acts in parallel, then a director agent critiqued each act and a second pass applied the fixes (`notes/act*.md` are their iteration logs). The brief they worked from is [`BRIEF.md`](BRIEF.md); the shot table is [`shotlist.json`](shotlist.json).
+- **One render at a time.** Every Blender run goes through `tools/rb.py`, which holds a global GPU lock (`tools/gpu_guard.py`). Letting several EEVEE renders share the iGPU bluescreened the laptop once (`0x119 VIDEO_SCHEDULER_INTERNAL_ERROR`), so the lock is never bypassed.
+- **Measured, not eyeballed.** `tools/exposure_check.py` scores every still for clipped highlights, lifted blacks and dull colour, and `common.compositor()` rolls highlights off before they reach white.
+- **Edit, grade and mix are code too.** `tools/edit.py` (numpy + ffmpeg) conforms the shots, does the transitions (cuts, match cuts, a dust-to-cloud luma dissolve), the grade, halation, grain and letterbox. `tools/mix.py` mixes music and sound effects from `edit/cues.json`, cut to the music&#x27;s 120 BPM grid (12 frames per beat).
+
+## Repo layout
+
+```
+BRIEF.md          production bible the agents worked from
+shotlist.json     every shot: id, script, cut length, handles
+lib/              shared toolkit (common.py) + per-act generators (car, canyon, temple, desk, clouds...)
+shots/            one script per act; `--shot &lt;ID&gt;` builds the scene and renders that shot
+tools/            render runner + GPU lock, render queue, edit/grade, mixer, cue + EDL generators, QC
+edit/             the final edit decision list, trims and sound cue sheet
+audio/            manifest of every sound (source URL, license, author) + music beat analysis
+notes/            the agents&#x27; iteration logs per act
+docs/             stills
+```
+
+## Reproducing it
+
+Requirements: Windows, Blender 5.2, ffmpeg on PATH. Everything runs with Blender&#x27;s bundled Python (it has numpy).
+
+1. Set `BLENDER` to your `blender.exe`.
+2. Download the sounds listed in `audio/manifest.json` (Mixkit and Freesound CC0, links included) into `audio/sfx/` and `audio/music/` with the file names given there. The audio files themselves aren&#x27;t in this repo because the Mixkit license doesn&#x27;t allow redistributing them as standalone files.
+3. Render a test still: `python tools/rb.py shots/act1_gears.py -- --shot 1A --stills 30 --pct 50`
+4. Render the shots: `python tools/render_queue.py` (one Blender process at a time; it can take many hours on an iGPU).
+5. Build the edit and mix: `python tools/make_edl.py`, `python tools/make_cues.py`, then `python tools/assemble.py`.
+
+Honest caveats:
+
+- `shots/act4_temple.py` contains a later cloud rework that turned out too heavy to render on this laptop (it froze the GPU). The released film uses the earlier cloud deck for the temple reveal, and the cloud-emergence shot (4A) and two temple close-ups (4D, 4E) were cut from the edit.
+- Fast-motion shots were rendered at 83% resolution and 16 samples to fit the render time, then upscaled.
+- Paths and timings were tuned for one specific laptop. Expect to adjust samples and volumetric settings for yours.
+
+## Credits
+
+- Music: &quot;Epical Drums 02&quot; by Grigoriy Nuzhny, [Mixkit](https://mixkit.co/free-stock-music/) (Mixkit Stock Music Free License).
+- Sound effects: [Mixkit](https://mixkit.co/free-sound-effects/) (Mixkit Sound Effects Free License) and [Freesound](https://freesound.org) (CC0). Every file, its source and license is listed in `audio/manifest.json`.
+- Made with Claude Code (Claude Opus 5.5) and Blender.
+
+## License
+
+Code: MIT, see [LICENSE](LICENSE). The music and sound effects keep their own licenses listed above.
+</code></pre>
+</details>
+
+<details>
+<summary>MIT 许可声明原文（LICENSE）</summary>
+<pre><code>MIT License
+
+Copyright (c) 2026 Leon Lin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre>
+</details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/Leonxlnx/escapement">Leonxlnx/escapement</a>，作者 Leon Lin（<a href="https://github.com/Leonxlnx">GitHub @Leonxlnx</a> / <a href="https://x.com/LexnLin">X @LexnLin</a>）。源码 MIT，Copyright (c) 2026 Leon Lin。介绍帖为作者本人英文原帖的中文全译；README 译文与 <code>docs/</code> 静帧（已缩小并转为 WebP）依 MIT 许可转载并保留版权与许可声明。成片视频、音乐与音效未转载。导读、原理整理与核对为本站所写。第三方参考帖（@Ror_Fly）仅作短引。</p>
+<p>如果你是作者或权利人并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交删除请求</a>。</p>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习。原文：<a href="https://github.com/Leonxlnx/escapement">github.com/Leonxlnx/escapement</a> · 介绍帖：<a href="https://x.com/LexnLin/status/2119558994352304202">x.com/LexnLin/status/2119558994352304202</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/Leonxlnx/escapement" rel="noopener">github.com/Leonxlnx/escapement</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

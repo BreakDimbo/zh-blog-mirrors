@@ -1,5 +1,20 @@
 [
   {
+    "slug": "leonxlnx-escapement",
+    "title": "Escapement：用 Python 驱动无头 Blender 做成的钟表短片",
+    "desc": "Leon Lin 用 Claude Code（Opus 5.5）写 Python，在无头 Blender 5.2 的 EEVEE 里搭出齿轮、跑车、峡谷与钟表神庙，再由 numpy 与 ffmpeg 完成剪辑、调色和混音。成片约 36 秒。源码 MIT，音乐与音效另行许可；本页含导读、作者原帖全文中译与 README 全译。",
+    "description": "Leon Lin 用 Claude Code（Opus 5.5）写 Python，在无头 Blender 5.2 的 EEVEE 里搭出齿轮、跑车、峡谷与钟表神庙，再由 numpy 与 ffmpeg 完成剪辑、调色和混音。成片约 36 秒。源码 MIT，音乐与音效另行许可；本页含导读、作者原帖全文中译与 README 全译。",
+    "source": "GitHub · Leonxlnx/escapement（源码 MIT；音乐与音效另行许可）",
+    "date": "2026-11-10",
+    "type": "导读",
+    "subtitle": "A 36s cinematic short film made by Claude Code driving Blender headless · 项目导读 + 原帖全译 + README 全文中译",
+    "original_url": "https://github.com/Leonxlnx/escapement",
+    "spine": "Python 驱动的钟表短片",
+    "summary": "用 Python 驱无头 Blender 搭出齿轮到神庙的 36 秒短片；MIT 覆盖源码",
+    "kind": "项目",
+    "by": "Leon Lin"
+  },
+  {
     "slug": "lattice-slider-resident",
     "title": "「住人のいる音量」：滑杆里住着一个人",
     "desc": "Lattice 在 Ludion 上发布的 MIT 音量滑杆：轨道里有一间像素小屋，音量高低变成屋里的事。含原帖中译、源码题记与许可证说明；只用视频封面帧，不转载视频或完整源码。",
