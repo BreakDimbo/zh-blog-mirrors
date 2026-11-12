@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kevintngo-animated-show-intro",
+    "title": "动画剧集片头：所见都是代码，Python 做动画，Blender 出画",
+    "desc": "Kevin Ngo（@kevin_t_ngo）发布的一支动画剧集片头，自称由 Claude Fable 5.2 做成：画面里的一切都是代码，用 Python 做动画，再交给 Blender 出画。本页为导读，收录作者短帖与本人回复的全文中译；未见公开仓库或许可证。不转载视频。作者另称还做了完整的一集，并贴出含 Coach Ok 第 25 镜脚本的对话截图；这些以及 ElevenLabs 说法均为自报或对话草稿 ⚠️。未看视频 ⚠️。",
+    "description": "Kevin Ngo（@kevin_t_ngo）用 Fable 5.2 做的动画剧集片头导读：自称 Python 做动画、Blender 出画。收录作者短帖全文中译。未见许可证。不转载视频。未看视频 ⚠️。",
+    "source": "X · @kevin_t_ngo",
+    "date": "2026-11-11",
+    "type": "导读",
+    "subtitle": "动画剧集片头 · 导读 + 作者短帖全译",
+    "original_url": "https://x.com/kevin_t_ngo/status/2120540964909711415",
+    "spine": "1996 年的弓与摄像机",
+    "summary": "自称 Python 驱动、Blender 出画的剧集片头；未见许可证，只做导读，不转载视频",
+    "kind": "短片",
+    "by": "Kevin Ngo @kevin_t_ngo"
+  },
+  {
     "slug": "blendi-painted-valley",
     "title": "「Painted Valley」：走进一片用代码画成的夏日山谷",
     "desc": "Blendi（@BlendiByl）在 Patch 上发布的可玩 three.js 演示《Painted Valley》：一片手绘动画背景味道的夏日山谷，可以走进村里、沿河走到小湖。自称用 Claude Fable 5.2 做成 ⚠️。代码 MIT（Copyright (c) 2026 Patch），美术 CC0 1.0；发行版里的 Sonniss 环境录音不在仓库中。本页为导读，附 README 与许可说明全文中译，以及 MIT / CC0 原文。前一日「150 万笔触 / 200 fps」那条热帖指向的是同一作者的 Oil paint，不是本作品 ⚠️。未游玩、未看视频 ⚠️。浏览与克隆数为核对当日快照 ⚠️。",
