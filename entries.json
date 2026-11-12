@@ -1,5 +1,20 @@
 [
   {
+    "slug": "blendi-painted-valley",
+    "title": "「Painted Valley」：走进一片用代码画成的夏日山谷",
+    "desc": "Blendi（@BlendiByl）在 Patch 上发布的可玩 three.js 演示《Painted Valley》：一片手绘动画背景味道的夏日山谷，可以走进村里、沿河走到小湖。自称用 Claude Fable 5.2 做成 ⚠️。代码 MIT（Copyright (c) 2026 Patch），美术 CC0 1.0；发行版里的 Sonniss 环境录音不在仓库中。本页为导读，附 README 与许可说明全文中译，以及 MIT / CC0 原文。前一日「150 万笔触 / 200 fps」那条热帖指向的是同一作者的 Oil paint，不是本作品 ⚠️。未游玩、未看视频 ⚠️。浏览与克隆数为核对当日快照 ⚠️。",
+    "description": "Blendi 的可玩 three.js 手绘夏日山谷《Painted Valley》导读：代码 MIT，美术 CC0；自称 Fable 5.2 写成。附 README 全译。未游玩、未看视频 ⚠️。",
+    "source": "Patch · blendi/painted-valley（@BlendiByl）",
+    "date": "2026-11-12",
+    "type": "导读",
+    "subtitle": "Painted valley · 项目导读 + README 全译",
+    "original_url": "https://patch.gg/blendi/painted-valley",
+    "spine": "用代码画成的夏日山谷",
+    "summary": "可走的 three.js 手绘夏日山谷；代码 MIT、美术 CC0；未游玩，不转载视频",
+    "kind": "演示",
+    "by": "Blendi @BlendiByl"
+  },
+  {
     "slug": "mxvdl-paris-freestyle",
     "title": "「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球",
     "desc": "Max Vedel（@mxvdl）的浏览器演示《Paris Freestyle》：在风格化的巴黎街上按节拍颠球，可调镜头、角色、笔触与声音，并可在页内导出 MP4。自称由 Claude Fable 5.2 写成。本页为导读，收录作者短帖全文中译；首页与脚本声明 © 2026 Max Vedel / Spellbound Labs，All rights reserved。演示页可见 three.js r147（MIT，不能外推到作品）。不转载视频与角色贴图。three.js 官方账号 @threejs 转发了演示链接。「Fable 写成 / 唯一图片是角色贴图」为自报 ⚠️。未播放演示、未看视频 ⚠️。传播数字会变 ⚠️。",
