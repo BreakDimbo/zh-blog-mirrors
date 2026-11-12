@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>给 Claude Fable 5.2 写提示词：官方文档导读</title>
+<meta name="description" content="Anthropic 官方文档《Prompting Claude Fable 5.2》独立中文导读：先校准 effort，再按提前结束、代码归属、长回合沉默、子智能体与拒绝等行为改提示词和 harness。内部评测数字均为原文自报，本站未复现。">
+<meta property="og:title" content="给 Claude Fable 5.2 写提示词：官方文档导读">
+<meta property="og:description" content="官方文档导读：先校准 effort，再按观察到的行为改提示词与 harness。只用短引，不是全文翻译。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-12">2026.11.12</time></p>
+<h1 class="za-title">给 Claude Fable 5.2 写提示词：官方文档导读</h1>
+<p class="za-sub" lang="en" data-za-gen>Prompting Claude Fable 5.2 · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · Claude Platform Docs · Anthropic</span><span>收录 · 2026-11-12</span><span><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">发布方：Anthropic，发表于 <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2">Claude Platform Docs</a>。原文：<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2">https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2</a>。页面未署作者，也未标明发布或更新日期。本页是独立中文导读，只用短引，不是全文翻译。文档与设计版权归 Anthropic 或其许可方所有。封面为自绘字体图，不含官方标志，也未使用文档的官方分享图。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote>
+<p><strong>导读说明。</strong> 抓取前先读 <a href="https://platform.claude.com/robots.txt">platform.claude.com/robots.txt</a>（核于 2026-11-12）：<code>User-Agent: *</code> 只禁止 <code>/api/</code>，本文档路径允许抓取。随后用普通 HTTPS 读取文档页，以及页脚所链的 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>（生效于 2025-06-17，核于 2026-11-12）。未调用任何 <code>/api/</code> 或未公开接口，未抓取 <code>/web-api/og/…</code> 官方分享图，未绕过付费墙。现场核过的条款把 documentation 列入 Services；第 F 节写明，除条款另有规定外，不授予对方内容或知识产权。文档页与页脚未见开放许可（MIT、CC、Apache 等）。<a href="https://claude.dev/terms">claude.dev Terms of Use</a>（2026-09-18 更新，同日核过）只适用于 claude.dev，不能外推到 platform.claude.com。因此本页只做导读，建议写入系统提示的长段文字只用短引，不照录。文中内部评测、早期测试者评价与 token 增减均为 Anthropic 自报，本站未复现，一律标 ⚠️，并以 2026-11-12 读到的原文为准。</p>
+</blockquote>
+
+<p>这是一份专门讲 Claude Fable 5.2 行为差异的官方提示词指南，不是通用的提示词手册。文档把能力介绍和接口变更留给《What’s new in Claude Fable 5.2》与 Fable / Mythos 5.2 的迁移指南，把各模型通用的写法留给《Prompting best practices》。元描述里也提到 Claude Mythos 5.2；正文在拒绝一节说明，Mythos 5.2 提供与 Fable 5.2 相同的能力，但只向通过网络安全或生命科学验证项目的组织开放。</p>
+
+<p>读这篇之前，本站已经收过 Addy Osmani 的选型指南<a href="../anthropic-which-claude-model/">《该用哪个 Claude 模型来构建》</a>，以及两篇用 Fable 5.2 在代码里画画的对照：<a href="../kickingkeys-fable-52-painting/">kickingkeys 的三模型对照</a>，和 <a href="../jkeatn-fable-52-personas/">jkeatn 的画家人设</a>。那几篇讲的是「选哪个模型、它画出什么」；本篇讲的是：一旦用上 Fable 5.2，提示词和 harness 要怎样改。</p>
+
+<p>文档建议先按自己看到的现象跳到对应章节，迁移时再按文末的顺序做。若干节会建议增删系统提示、技能、规则，或改工具说明。这些修改只应开在新对话里。文档写明：在 Claude Fable 5.2 上，接口会对每个账户做前缀检查；若在 <code>system</code>、<code>tools</code> 或更早的消息改过之后，把旧的 thinking 块再送回去，请求可能返回 400。已存储的对话套上新文本再续跑，因此可能失败。若要在对话中途改指示，应写进最新一轮；若平台支持中途追加系统消息，也可以另附一条系统消息，而不是改前面的前缀。</p>
+
+<h2>先校准 effort</h2>
+<p>在 Fable 5.2 里，effort 同时决定模型想多久、调用多少工具、一轮要花多长时间，以及用掉多少 token。它要和提示词一起调，而不是只改其中一项。</p>
+<p>Claude API 上的默认值是 <code>high</code>，文档建议从这里起步，再按自己的评测上调或下调。各档的排序在不同 Claude 模型上相同，但同一档实际想多少，可能并不一样。所以不要把在 Fable 5.1 或 Opus 5.5 上调好的档位直接搬过来，而要重新扫一遍。</p>
+<p>文档对各档的定位是：</p>
+<ul>
+<li><code>low</code>：适合快速来回、规格清楚的任务，以及量大的工作（例如又快又聪明的子智能体）。文档称，在编码评测上，Fable 5.2 在 <code>low</code> 比过去的模型更好；Anthropic 自报，其分数接近 Fable 5.1 在更高档位上的表现 ⚠️。</li>
+<li><code>medium</code>：适合互动式编码、聊天和日常知识工作。</li>
+<li><code>high</code>：适合困难的编码、研究、智能体工作，以及长时间无人值守的运行。完成一轮会明显比 <code>medium</code> 更久。</li>
+<li><code>xhigh</code>：留给已经测出收益的、最难的长程编码和智能体工作。Anthropic 自报，它在内部编码评测上分数略有提高，同时用掉多得多的 token ⚠️。</li>
+<li><code>max</code>：用来测量模型上限，或用于时间和 token 都不重要的少见任务。文档认为它最合理的用途是科学发现和数学这类开放问题。回合会很慢，token 也比 <code>xhigh</code> 多得多。</li>
+</ul>
+<p>能力上的主要提升，出现在用上 <code>high</code> 的时候。原文写：「You get most of the capability gain when using <code>high</code> effort.」Anthropic 自报，从 <code>medium</code> 升到 <code>high</code>，在他们追踪的多数编码和知识工作评测上都提高了分数 ⚠️；这一档也会用掉更多 token 和时间，所以只要自己的评测站得住，就可以回到 <code>medium</code>。<code>high</code> 以上的收益不均匀，而且取决于任务。</p>
+<p>做智能体工作、又停在 <code>low</code> 或 <code>medium</code> 时，应同时采用下一节「把整项任务做完」的写法。档位越低，越容易提前停住。反过来，在 <code>high</code> 及以上，模型几乎在每一次回复前都会思考，包括回一句问候。若发现很简单的请求也又慢又贵，就把那些回合降到更低档。Anthropic 自报：加一句「直接回答、不要反复斟酌」，在 <code>medium</code> 及以上并不能阻止它思考 ⚠️。effort 对助手回复的篇幅影响很小；要改长度和语气，仍然靠提示词。</p>
+<p>同一条工作流里也可以混用档位，例如先用 <code>medium</code> 计划和迭代，再把长时间无人值守的那一段升高。若要在对话中途改档并保住提示缓存，文档指向 Per-message effort（beta，请求头 <code>mid-conversation-output-config-2026-07-01</code>），并列出了可用的平台。新档位会一直保持，直到再次改掉。没有这项能力时，就在下一次请求里改顶层的 <code>effort</code>，缓存会重算。</p>
+
+<h2>把整项任务做完</h2>
+<p>在长的、多步骤任务上，Fable 5.2 有时会在工作尚未完成时结束一轮：列出还没做的事、提出要不要继续，或在超时这类普通障碍前停住。这种情况在 <code>low</code> 和 <code>medium</code> 更常见。</p>
+<p>若智能体里出现这些停法，文档建议在系统提示里写一段「把该做的做完」的指示，大意是：还欠用户的工作就不要停；状态说明可以有，需要用户拍板的地方可以问，但不依赖答复的部分应继续；若发现自己在请用户改方向或表示愿意等待，就接着做下一部分；错误、超时、锁文件、空结果或工具失败，要先诊断，不是真正的阻断就用已有权限绕过去；对有人明确标为不可动的文件、故意不给的权限或安全护栏，则应放下、说清楚，再另找安全的办法。文档强调，这不能覆盖掉危险或破坏性操作仍需确认这一点。</p>
+<p>Anthropic 自报：他们在 <code>medium</code> 上回放了一个智能体编码产品的会话记录，加上类似文本后，本可继续却提前结束的会话大约减半；多数「征求许可或表示愿意继续」的收尾被去掉，但「列出剩余事项然后停下」的收尾仍在；输出 token 大约增加 30% ⚠️。因为模型更少开口询问，危险或不可逆的操作仍要保留自己的确认步骤。</p>
+<p>请模型继续时，不要只回一句「继续」或一个赞，而要说清具体要做什么，例如「可以，在预发数据库上跑这次迁移」。若还把批准规则写进系统提示，就要写明哪些动作必须再确认一次。Anthropic 自报：在无人在场批准的模拟任务里，若把「向对话之外的人发消息」列进需要批准的步骤，模型会扣下大约一半本属常规的同事或跨团队请求 ⚠️。</p>
+
+<h2>先说清代码归谁</h2>
+<p>Fable 5.2 很在意自己正在改的代码归谁。Anthropic 自报：在小型编码任务上，若提示词不谈归属，或把代码库写成别人的，模型往往只在现有结构上添补，哪怕会重复已有代码；若写明代码库是模型自己的，它常常会合并重复代码，有时还会做没有被要求的相关修正 ⚠️。</p>
+<p>若希望它在工作中改结构，文档给出一句很短的提示，原文是：</p>
+<blockquote>
+<p>You are the owner and long-term maintainer of this codebase, and its design is up to you.</p>
+<p>— Anthropic，<cite>Prompting Claude Fable 5.2</cite>（Claude Platform Docs）</p>
+</blockquote>
+<p>Anthropic 自报：没有这句时，合并重复代码的比例不到 10%；加上之后大约是 75%。输出 token 大约增加 70% 到 80%，模型还会做没人要求的改动，其中很多是新测试和文档；有些轮次里，它还会改掉一个已有功能的行为。收尾的 PR 摘要常常漏掉小改动，所以要同时看 diff 和摘要 ⚠️。</p>
+<p>若代码是用户的、希望尽量少改，就不要加这句。一条限制范围的规则也抵消不了它。Anthropic 自报：即使同一条提示词里先前写了「不要顺便重构、重命名或清理」，模型仍会在一半以上的轮次里合并重复代码 ⚠️。</p>
+
+<h2>长回合里让人知道进度</h2>
+<p>Fable 5.2 在连续调用工具的长运行里，有时几乎不写给用户看的文字，也可能在第一次调用工具前什么都不说。</p>
+<p>文档首先要检查的是客户端有没有收到更新。在 Fable 5.2 上，两次工具调用之间的进度说明会以 progress-update 的 <code>thinking</code> 块返回，说明它发现了什么、下一步要做什么。默认的 <code>thinking.display</code> 是 <code>"omitted"</code>，这些块的文本是空的。只渲染 <code>text</code> 块的客户端，在长的智能体回合里就会看起来像沉默。要收到每次更新的短摘要，需把 <code>display</code> 设为 <code>"updates"</code>（beta，请求头 <code>thinking-display-updates-2026-08-18</code>）；若还要连同经过摘要的推理一起看，则用 <code>"summarized"</code>，再渲染工具调用之间非空的 <code>thinking</code> 块。</p>
+<p>频繁更新主要对有人在看的互动场景有意义。文档给了三层做法，这里只转述要点，不照录提示词：</p>
+<ul>
+<li>改 harness：在 <code>display</code> 不是 <code>"omitted"</code> 的前提下，清点连续多少步工具调用既没有 <code>text</code> 块、也没有带文字的 <code>thinking</code> 块。若平台支持中途系统消息，连续多次空白之后，可在最新工具结果后追加一条仅作用于本轮的提醒（<code>clear_at: "next_user_message"</code>，beta，请求头 <code>mid-conversation-system-clear-at-2026-08-21</code>），大意是：用户有一阵没听到你的声音，用几句话说明你在做什么，然后继续。Anthropic 自报：在多轮编码任务上，这条提醒大约把最长的沉默段减半，token 和时间没有明显增加 ⚠️。提醒一旦发出，就要留在后续请求的 <code>messages</code> 里；删掉或改写等于编辑更早的一轮，会使之后的 thinking 块失效。</li>
+<li>先表明意图：若希望第一次调用工具前有一句开场、过程中有简短更新、结束时有一段可单独读懂的回顾，可在系统提示里要求这三件事。Anthropic 自报：加上之后，编码任务的每一轮都在首次工具调用前写了说明，每个任务的输出 token 大约增加 20% ⚠️。这种写法适合有人直接看着；若还要更多互动更新，可与上一条提醒一起用。</li>
+<li>若不能在 harness 里追加提醒，也没有中途系统消息，可在系统提示里要求每隔几次工具调用，用一行说明当前进展。Anthropic 自报：这在工作流自动化任务上去掉了多数很长的沉默段 ⚠️。即便提醒和开场、回顾一起用，仍可能连续几次工具调用之间没有更新。文档也写明，Fable 5.2 适合长时间异步任务，若现场并不需要频繁通报，它仍推荐这个模型。</li>
+</ul>
+
+<h2>给子智能体定预期</h2>
+<p>Fable 5.2 会派出多少子智能体，取决于 harness 和任务。Anthropic 自报：在短任务、子智能体工具又很简陋时，它很少启动子智能体；在提示词本身就鼓励委派的智能体编码产品里，它会愿意委派。在 <code>xhigh</code> 和 <code>max</code> 这些更高档位上，他们看到 Fable 5.2 会派子智能体复查自己的工作，而 Fable 5.1 在同样的任务上不会这么做 ⚠️。</p>
+<p>早期测试者把 Fable 5.2 用成其他模型的规划者和编排者，效果不错 ⚠️。适合并行的工作，委派可以加快；但子智能体往往占掉会话成本的很大一块，所以要先看清它们默认用的是哪个模型。</p>
+<p>只有在 Fable 5.2 派出的子智能体明显超出任务所需时，才值得改子智能体工具的说明。文档认为，这在「harness 本来就鼓励委派、而且子智能体已经占了很大一部分 token」时最有用。若工具说明很平淡，提示词里也没有要求委派，通常不必改；若系统提示、技能或 agent 文件里已经在叫它委派，应先审那些句子。</p>
+<p>新的工具说明应写清：子智能体如何增加会话成本、何时值得委派、何时不值得，以及怎样向它即将启动的子智能体交代任务。若委派过多，就在 harness 里把成本讲得更具体，并做测试。Anthropic 自报：在 <code>high</code> 档，一份更长、把重点放在成本上的说明，派出的子智能体大约减半 ⚠️。</p>
+
+<h2>别让谨慎一层层堆起来</h2>
+<p>谨慎的指示会经由记忆、笔记和规则文件，从过去的会话里积下来。Fable 5.2 若照单执行，就可能征求并不需要的批准。早期测试里，这种情况多见于多个智能体一起工作时 ⚠️。</p>
+<p>若看到这一现象，就从上下文里清掉过时的指示：不再需要的笔记，例如已经失效的「永远不要重试」；写明哪些常规步骤不必批准，而不要只说「更大胆一些」，因为后者太含糊；检查「一出错就停下来复查」这类会挡住自主工作的条件，不需要的就删掉或收窄。含有「never」的指示会被当成绝对禁令。若真正想要的是「删除文件前先征求批准」，就不要写成「永远不要删除文件」。危险或不可逆的操作，仍要保留自己的确认步骤。</p>
+
+<h2>为更早的模型写的提示词和 harness，要再审一遍</h2>
+<p>迁到 Fable 5.2 时，应重读自己带过来的提示词和 harness。Anthropic 自报：一些为更早模型准备的指示和干预，会抬高成本、带来副作用，或已经不再起作用 ⚠️。需要重新考虑的做法包括：</p>
+<ul>
+<li>常设的委派指示：它们可能写在系统提示、技能和 agent 文件里。迁移前先读这些文件；若测试中委派过多，就删掉不再需要的句子。</li>
+<li>把 token 预算展示给模型：有些 harness 会告诉模型这项任务的预算，以及还剩多少。预算的大小会改变 Fable 5.2 花多少。Anthropic 自报：在 <code>high</code> 和 <code>xhigh</code> 的编码任务上，去掉一份很大的预算会降低成本，表现相当 ⚠️。应在自己的任务上试着拿掉它。这一发现针对的是提示词里的文字，不是接口里的 task budgets（beta）；测试没有覆盖后者。</li>
+<li>会改写更早轮次的 harness 代码：Fable 5.2 使用 preserved thinking。若在两次请求之间改了系统提示、工具或更早的消息，改动点之后的 thinking 块会失效。默认情况下，Messages API 会拒绝请求，Message Batches API 会丢掉这些块。若要缩短历史又避免这种错误，应使用 context editing，或做不会在摘要之后保留更早轮次的 compaction。若希望 Messages API 也丢掉这些块，可把 <code>thinking.block_binding.prefix_mismatch_behavior</code> 设为 <code>"drop_block"</code>（beta，请求头 <code>thinking-binding-controls-2026-08-01</code>）。Anthropic 自报：若每一轮都丢掉先前的 thinking，模型会重新思考，并用掉更多输出 token；这是最坏情况，增幅取决于 harness 改写更早轮次的频率 ⚠️。除了 compaction 和 context editing，应让历史保持只追加。这样缓存命中率高，thinking 也不会被丢掉。在依赖 <code>"drop_block"</code> 之前，先在自己的任务上量输出 token。</li>
+<li>「把那个回答当作已经完成」这类句子：给 Opus 5.5 写的聊天系统提示里有两句，叫模型把先前的回答当作做完，把思考集中在新消息上。Anthropic 自报：在 <code>high</code> 档，这些指示会减少 Fable 5.2 对追问的思考，也使它远不那么愿意指出自己先前回答里的错误 ⚠️。若希望它继续复查先前的回答，就不要加这些句子；若要采用，先测它是否仍会指出自己的错误。</li>
+<li>叫它少想一些的指示：Fable 5.1 通常会遵循「直接回答、不要反复斟酌」这类句子。在 Fable 5.2 上，这样的补充在 <code>medium</code> 及以上并不能阻止它思考。应删掉这些句子，并按上文降低 effort。</li>
+<li>写作风格规则：Fable 5.2 会严格执行。像「一句只给一条指示，不超过 20 个词」这样的硬限制，可能让文句变得破碎。在采用下一节关于报告的写法之前，先去掉不再需要的规则。</li>
+<li>积下来的规则、笔记和记忆：其中有些可能是模型自己写的。迁移前，删掉理由已经不成立的谨慎条款，并把绝对规则改写成带范围和理由的句子。若系统已经卡住，可以考虑在修剪记忆和笔记之后重启。</li>
+</ul>
+
+<h2>让报告容易读下去</h2>
+<p>早期测试者认为，Fable 5.2 的文笔高于 Fable 5.1，清晰程度与 Opus 5.5 相近 ⚠️。但长段智能体工作之后，读最终报告的人通常没看见背后的工具调用和文件，报告必须能单独成立。</p>
+<p>若会请它写最终报告或交接，文档建议在系统提示里加上一段「写清楚」的要求，并按读者和产品调整。大意是：写给聪明、但缺少上下文的读者；关键信息放在最前面，按渐进披露安排句子，不要在第一行使用要读到后文才懂的指称；用明白的整句，不要使用工作过程中自造的词或缩写；文风大致靠近 ASD-STE100 简化技术英语——短句、一句一个意思、主动语态、同一事物始终用同一个词；意思相连时写成连贯段落，条目才用列表；去掉不必要的细节，同时保住关键上下文。Anthropic 自报：在智能体任务上，这段文字让最终报告不那么密，分号也更少；在工作流自动化任务上，句子更短 ⚠️。按用途，可以再补上篇幅或必须写进哪些细节的要求。</p>
+
+<h2>安全护栏下的拒绝</h2>
+<p>Fable 5.2 会运行安全分类器，并可能拒绝请求。被拒绝的请求返回 <code>stop_reason: "refusal"</code>，<code>stop_details.category</code> 给出类别。文档列出的类别包括：<code>cyber</code>（可能助长网络伤害，例如恶意软件或漏洞利用开发）、<code>bio</code>（可能助长生物伤害，例如危险的实验室方法）、<code>frontier_llm</code>（可能协助开发竞争性 AI 模型）、<code>reasoning_extraction</code>（要求模型在回复正文里复述其内部推理）、<code>general_harms</code>（属于其他使用政策范围），以及不对应该些名称的 <code>null</code>。</p>
+<p>良性的网络安全和生命科学工作，也可能触发 <code>cyber</code> 和 <code>bio</code> 分类器。若因此挡住了机构的正当工作，文档指向 Anthropic 的 Cyber Verification Program 和 Life Sciences Verification Program。Claude Mythos 5.2 提供与 Fable 5.2 相同的能力，但只向通过这些项目验证的组织开放。</p>
+<p>若提示词、技能或工具说明要求模型在回复里写出推理过程，应去掉这些指示。若要看它如何推理，把 <code>display</code> 设为 <code>"summarized"</code>，去读 thinking 块。若要在另一个模型上重试被拒绝的请求，文档另有关于拒绝、回退和计费的说明。</p>
+
+<h2>迁移时从哪里开始</h2>
+<p>文档给的顺序是：先把 <code>effort</code> 显式设为 <code>high</code>，并同时在 <code>medium</code> 和 <code>xhigh</code> 上跑自己的评测；重读将要带过来的系统提示、技能、agent 文件、记忆、笔记和 harness 文本，删掉或测过上文列出的那些旧写法；跑自己最长的智能体任务，记下它在哪里提前停下、征求并不需要的批准、陷入沉默、委派过多，或在你希望重构时只往现有代码上添补；然后针对每一种观察到的行为，一次只加一处对应的文本或做法，并在自己的任务上测量效果和 token 成本。</p>
+
+<h2>核实与版权</h2>
+<p>抓取前先读 <code>https://platform.claude.com/robots.txt</code>，内容为 <code>User-Agent: *</code>、<code>Disallow: /api/</code>，以及两条 sitemap。文档路径不在禁止之列。随后用普通 HTTPS 读取原文 HTML，以及 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>。anthropic.com 与 claude.dev 的 robots.txt 均为 <code>Allow: /</code>。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未使用官方分享图或商标。</p>
+<p>版权结论：文档本身未声明开放许可。Commercial Terms（生效于 2025-06-17，核于 2026-11-12）覆盖相关 documentation；第 F 节未另授转载或复制权。claude.dev 的条款只覆盖 claude.dev，其中「代码示例默认 MIT、其他内容只允许短引」的规定不能套用到本页。本库对 anthropic.com / claude.dev 博文另有「公开导读 + 私有全译」的惯例（R8），但本页是 platform.claude.com 上的官方文档，不是博文，且条款未授予转载权，故只做导读，未另写私有全文译本，也不照录文档中的长段建议提示词。</p>
+<p>⚠️ 未核实或未复现（核于 2026-11-12，依据原文，非独立测量）：Fable 5.2 在 <code>low</code> 上接近 Fable 5.1 更高档位的编码分数；从 <code>medium</code> 升到 <code>high</code> 在多数编码与知识工作评测上提高分数；<code>xhigh</code> 在内部编码评测上分数略升、token 明显增加；「把任务做完」那段文字使未完成会话大约减半、输出 token 约增 30%；把对外发消息列入批准项后，约一半常规请求被扣下；归属句使合并重复代码从不到 10% 升到约 75%，输出 token 约增 70%–80%，并可能改动未被要求的行为；即使写了「不要顺便重构」，仍有一半以上轮次会合并重复代码；长回合提醒大约把最长沉默减半且 token 与时间没有明显增加；开场与回顾使每轮都在首次工具调用前发消息，输出 token 约增 20%；「每隔几次工具调用更新一行」去掉了多数很长的沉默；在 <code>xhigh</code> / <code>max</code> 上 Fable 5.2 会派子智能体自查，而 5.1 不会；更长的成本导向工具说明在 <code>high</code> 大约使子智能体减半；去掉提示词里的大额 token 预算会降低成本且表现相当（未覆盖接口级 task budgets）；Opus 5.5 的「把先前回答当作完成」在 <code>high</code> 会减少追问时的思考，并更少指出先前错误；早期测试者对文笔与清晰度的评价；「写清楚」那段文字使报告不那么密、分号减少、句子变短。页面未标明发布或更新日期。接口头与 beta 功能以当时文档为准，随后可能变化。</p>
+<p>署名：Anthropic（Claude Platform Docs）。原文：<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2">https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读，仅供阅读学习；原文与设计版权归 Anthropic 或其许可方所有。原文：<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2">platform.claude.com/docs/…/prompting-claude-fable-5-2</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2" rel="noopener">platform.claude.com/docs/en/build-with-claude/prompt-enginee</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,5 +1,20 @@
 [
   {
+    "slug": "anthropic-prompting-fable-5-2",
+    "title": "给 Claude Fable 5.2 写提示词：官方文档导读",
+    "desc": "Anthropic 官方文档《Prompting Claude Fable 5.2》独立中文导读：先校准 effort，再按提前结束、代码归属、长回合沉默、子智能体与拒绝等行为改提示词和 harness。内部评测数字均为原文自报，本站未复现 ⚠️。",
+    "description": "Anthropic 官方文档《Prompting Claude Fable 5.2》独立中文导读：先校准 effort，再按提前结束、代码归属、长回合沉默、子智能体与拒绝等行为改提示词和 harness。内部评测数字均为原文自报，本站未复现 ⚠️。",
+    "source": "Claude Platform Docs · Anthropic",
+    "date": "2026-11-12",
+    "type": "导读",
+    "subtitle": "Prompting Claude Fable 5.2 · 独立中文导读",
+    "original_url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2",
+    "spine": "Fable 提示词",
+    "summary": "官方文档导读：先校准 effort，再按观察到的行为改提示词与 harness",
+    "kind": "文档",
+    "by": "Anthropic"
+  },
+  {
     "slug": "woyun520-gif-factory",
     "title": "GIF 工厂：给 Codex 一张图或一句话，做成表情包、片头和短片",
     "desc": "WoYun520 的 gif-factory（脚本与 Skill 文档于 2026-11-11 现场核为 MIT）：面向 Codex 的多用途制作 Skill，可做表情包、光栅变画卡、动态海报、动态签名、电影片头、动态绘本和品牌短片。调用名仍为 $pixel-gif-sticker-pack；旧仓库 pixel-gif-sticker-pack 的 README 已与本仓相同并改指向此处。MIT 不覆盖角色 IP、网络照片与部分素材。导读 + README 中文原文附录 + LICENSE。插图仅为作者像素/粘土/签名/绘本静帧与面包店接触印样，不转载真人肖像或第三方角色。作品库张数为自报 ⚠️。未安装或运行 ⚠️。星数会变 ⚠️。",
