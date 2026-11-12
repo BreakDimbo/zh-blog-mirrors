@@ -1,5 +1,20 @@
 [
   {
+    "slug": "mxvdl-paris-freestyle",
+    "title": "「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球",
+    "desc": "Max Vedel（@mxvdl）的浏览器演示《Paris Freestyle》：在风格化的巴黎街上按节拍颠球，可调镜头、角色、笔触与声音，并可在页内导出 MP4。自称由 Claude Fable 5.2 写成。本页为导读，收录作者短帖全文中译；首页与脚本声明 © 2026 Max Vedel / Spellbound Labs，All rights reserved。演示页可见 three.js r147（MIT，不能外推到作品）。不转载视频与角色贴图。three.js 官方账号 @threejs 转发了演示链接。「Fable 写成 / 唯一图片是角色贴图」为自报 ⚠️。未播放演示、未看视频 ⚠️。传播数字会变 ⚠️。",
+    "description": "Max Vedel（@mxvdl）的浏览器颠球实验室《Paris Freestyle》导读：可调的 three.js 动画，自称 Fable 5.2 写成。作品保留所有权利；收录作者短帖全文中译。不转载视频。three.js 官方账号作了引介。未播放、未看视频 ⚠️。",
+    "source": "X · @mxvdl（@threejs 引介）",
+    "date": "2026-11-12",
+    "type": "导读",
+    "subtitle": "Paris Freestyle · 可玩演示导读 + 作者短帖全译",
+    "original_url": "https://x.com/mxvdl/status/2120505286603505858",
+    "spine": "画笔描边的巴黎颠球",
+    "summary": "可调的 three.js 颠球实验室；作品保留所有权利，只做导读，不转载视频",
+    "kind": "演示",
+    "by": "Max Vedel @mxvdl"
+  },
+  {
     "slug": "anthropic-prompting-fable-5-2",
     "title": "给 Claude Fable 5.2 写提示词：官方文档导读",
     "desc": "Anthropic 官方文档《Prompting Claude Fable 5.2》独立中文导读：先校准 effort，再按提前结束、代码归属、长回合沉默、子智能体与拒绝等行为改提示词和 harness。内部评测数字均为原文自报，本站未复现 ⚠️。",
