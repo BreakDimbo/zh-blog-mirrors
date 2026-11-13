@@ -1,5 +1,20 @@
 [
   {
+    "slug": "mxvdl-paris-freestyle",
+    "title": "「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球",
+    "desc": "Max Vedel（@mxvdl）的浏览器演示《Paris Freestyle》：在风格化的巴黎街上按节拍颠球，可调镜头、角色、笔触与声音，并可在页内导出 MP4。自称由 Claude Fable 5.2 写成。本页为导读，收录作者短帖全文中译；2026-11-13 增补他发布的完整拆解（约 100 秒视频未观看）及关于笔触通道、自定义选项的说明。首页与脚本声明 © 2026 Max Vedel / Spellbound Labs，All rights reserved（2026-11-13 复查仍无开放许可证）。演示页可见 three.js r147（MIT，不能外推到作品）。不转载视频与角色贴图。three.js 官方账号 @threejs 转发了演示链接。「Fable 写成 / 唯一图片是角色贴图 / 也可轻松做出来」为自报 ⚠️。未播放演示、未看视频 ⚠️。传播数字会变 ⚠️。",
+    "description": "Max Vedel（@mxvdl）的浏览器颠球实验室《Paris Freestyle》导读：可调的 three.js 动画，自称 Fable 5.2 写成；含 2026-11-13 拆解帖更新。作品保留所有权利；收录作者短帖全文中译。不转载视频。未播放、未看拆解视频 ⚠️。",
+    "source": "X · @mxvdl（@threejs 引介；含拆解更新）",
+    "date": "2026-11-13",
+    "type": "导读",
+    "subtitle": "Paris Freestyle · 可玩演示导读 + 作者短帖全译 + 拆解更新",
+    "original_url": "https://x.com/mxvdl/status/2120505286603505858",
+    "spine": "画笔描边的巴黎颠球",
+    "summary": "可调的 three.js 颠球实验室；作品保留所有权利，只做导读，不转载视频；含作者拆解更新",
+    "kind": "演示",
+    "by": "Max Vedel @mxvdl"
+  },
+  {
     "slug": "kevintngo-animated-show-intro",
     "title": "动画剧集片头：所见都是代码，Python 做动画，Blender 出画",
     "desc": "Kevin Ngo（@kevin_t_ngo）发布的一支动画剧集片头，自称由 Claude Fable 5.2 做成：画面里的一切都是代码，用 Python 做动画，再交给 Blender 出画。本页为导读，收录作者短帖与本人回复的全文中译；未见公开仓库或许可证。不转载视频。作者另称还做了完整的一集，并贴出含 Coach Ok 第 25 镜脚本的对话截图；这些以及 ElevenLabs 说法均为自报或对话草稿 ⚠️。未看视频 ⚠️。",
@@ -28,21 +43,6 @@
     "summary": "可走的 three.js 手绘夏日山谷；代码 MIT、美术 CC0；未游玩，不转载视频",
     "kind": "演示",
     "by": "Blendi @BlendiByl"
-  },
-  {
-    "slug": "mxvdl-paris-freestyle",
-    "title": "「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球",
-    "desc": "Max Vedel（@mxvdl）的浏览器演示《Paris Freestyle》：在风格化的巴黎街上按节拍颠球，可调镜头、角色、笔触与声音，并可在页内导出 MP4。自称由 Claude Fable 5.2 写成。本页为导读，收录作者短帖全文中译；首页与脚本声明 © 2026 Max Vedel / Spellbound Labs，All rights reserved。演示页可见 three.js r147（MIT，不能外推到作品）。不转载视频与角色贴图。three.js 官方账号 @threejs 转发了演示链接。「Fable 写成 / 唯一图片是角色贴图」为自报 ⚠️。未播放演示、未看视频 ⚠️。传播数字会变 ⚠️。",
-    "description": "Max Vedel（@mxvdl）的浏览器颠球实验室《Paris Freestyle》导读：可调的 three.js 动画，自称 Fable 5.2 写成。作品保留所有权利；收录作者短帖全文中译。不转载视频。three.js 官方账号作了引介。未播放、未看视频 ⚠️。",
-    "source": "X · @mxvdl（@threejs 引介）",
-    "date": "2026-11-12",
-    "type": "导读",
-    "subtitle": "Paris Freestyle · 可玩演示导读 + 作者短帖全译",
-    "original_url": "https://x.com/mxvdl/status/2120505286603505858",
-    "spine": "画笔描边的巴黎颠球",
-    "summary": "可调的 three.js 颠球实验室；作品保留所有权利，只做导读，不转载视频",
-    "kind": "演示",
-    "by": "Max Vedel @mxvdl"
   },
   {
     "slug": "anthropic-prompting-fable-5-2",

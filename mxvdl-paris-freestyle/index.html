@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球</title>
-<meta name="description" content="Max Vedel（@mxvdl）的浏览器演示《Paris Freestyle》：在风格化的巴黎街上按节拍颠球，可调镜头、角色、笔触与配乐，并可在页内导出 MP4。自称由 Claude Fable 5.2 写成。本页为导读，收录作者短帖全文中译；作品声明保留所有权利。不转载视频。three.js 官方账号转发了演示链接。">
+<meta name="description" content="Max Vedel（@mxvdl）的浏览器演示《Paris Freestyle》：在风格化的巴黎街上按节拍颠球，可调镜头、角色、笔触与配乐，并可在页内导出 MP4。自称由 Claude Fable 5.2 写成。本页为导读，收录作者短帖全文中译，并含 2026-11-13 对拆解帖的更新；作品声明保留所有权利。不转载视频。three.js 官方账号转发了演示链接。">
 <meta property="og:title" content="「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球">
-<meta property="og:description" content="可调的 three.js 颠球实验室中文导读；收录作者短帖全文中译。作品保留所有权利。不转载视频。">
+<meta property="og:description" content="可调的 three.js 颠球实验室中文导读；收录作者短帖全文中译，并含拆解帖更新。作品保留所有权利。不转载视频。">
 <meta property="og:image" content="images/cover.webp">
 <meta property="og:type" content="article">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,11 +21,11 @@
 <!-- za:article v1 -->
 <div class="za-page">
 <header class="za-head">
-<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-12">2026.11.12</time></p>
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-13">2026.11.13</time></p>
 <h1 class="za-title">「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球</h1>
-<p class="za-sub" lang="en" data-za-gen>Paris Freestyle · 可玩演示导读 + 作者短帖全译</p>
-<p class="za-meta" data-za-gen><span>来源 · X · @mxvdl（@threejs 引介）</span><span>收录 · 2026-11-12</span><span><a href="https://x.com/mxvdl/status/2120505286603505858" rel="noopener">查看原文 ↗</a></span></p>
-<!-- za:origin --><div class="za-origin"><p class="source">作者：Max Vedel @mxvdl · <a href="https://x.com/mxvdl/status/2120505286603505858">原帖</a> · 演示：<a href="https://parisfreestyle.netlify.app/">parisfreestyle.netlify.app</a> · 引介：@threejs · 核对：2026-11-12（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+<p class="za-sub" lang="en" data-za-gen>Paris Freestyle · 可玩演示导读 + 作者短帖全译 + 拆解更新</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @mxvdl（@threejs 引介；含拆解更新）</span><span>收录 · 2026-11-13</span><span><a href="https://x.com/mxvdl/status/2120505286603505858" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Max Vedel @mxvdl · <a href="https://x.com/mxvdl/status/2120505286603505858">原帖</a> · <a href="https://x.com/mxvdl/status/2120809570344050705">拆解</a> · 演示：<a href="https://parisfreestyle.netlify.app/">parisfreestyle.netlify.app</a> · 引介：@threejs · 初核：2026-11-12 · 核对：2026-11-13（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><p class="lede">Max Vedel（@mxvdl）做了一个可以在浏览器里打开的颠球实验室，名叫 <i lang="en">Paris Freestyle</i>，站点副题是「brush-stroke juggling lab」（画笔描边的颠球实验室）。他说这是用 Claude Fable 5.2 写成的：一个可以完全自定义的 three.js 动画，让人在风格化的巴黎街上按节拍颠球，最好开着声音看。页里可以换画幅、暂停、跳到另一条街，也可以改设置、把设定存成 JSON，或直接导出 MP4。2026-11-12 凌晨，three.js 官方账号 @threejs 发了一颗足球表情，附上同一条演示链接和同一段视频。本页以这件作品为中心，收录作者本人帖文的全文；视频只有封面静帧，没有下载，也没有观看。</p>
@@ -67,6 +67,48 @@
 <p>⚽</p>
 </blockquote>
 <p><a href="https://x.com/threejs/status/2120577860499062803">查看这条引介</a>。用户投递的是这一条。按页面安排，作品仍以 Max Vedel 的《Paris Freestyle》为中心。评论区里有人问提示词，也有人希望公开做法好让自己的智能体做出别的设计；到本页核对时，作者没有在可检索的回复里回答这两问。另有人提到从 Boulevard 跳到 Pigalle 时，暂停状态会保持——这两条街名可以在页面脚本里核到，暂停是否跨街保持，本页没有实际操作，不能替他确认。⚠️</p>
+
+<h2>2026-11-13 更新：作者发布了完整拆解</h2>
+<p>2026-11-12 17:22（新加坡时间，UTC+8），Max Vedel 发了一条新帖，说给对昨天那条「轻量笔触着色器和整段动画」感兴趣的人，这里有一份完整拆解；并再次写到，仍然全部是用 Fable 5.2 做的，「这样的东西你也可以轻松做出来」。附件是一段约 100 秒、1920×1080 的视频。约一分钟后，他又在原作帖下引用这条拆解，写道：「这个项目的完整拆解在这里。」这是同一件作品的制作说明，不是新项目。本页未下载、也未观看这段视频，因此不能转述拆解里逐步展示了什么，只能收录他写在帖文里的话，并附上封面静帧。⚠️「仍由 Fable 5.2 写成」「也可以轻松做出来」均为作者自报。</p>
+<figure>
+<a href="https://x.com/mxvdl/status/2120809570344050705"><img src="images/breakdown.webp" alt="拆解视频封面帧：米白底上写着 PARIS FREESTYLE，其中 FREESTYLE 是洋红色手写字；下方是被拉长、略微错位的 BREAKDOWN。中间是同一个短发、戴浅色帽、穿着粉紫外套的风格化小人，把一只蓝白足球抱在身侧。四周有蓝灰笔触和放射状白线。是插画，不是真人照片。" width="1200" height="675"></a>
+<figcaption>拆解视频的封面帧。附件约 100 秒、1920×1080；本页不下载、不重新托管，也未观看该视频。画面是标题卡与风格化笔触小人，不是真人照片。点击图片可打开原帖。</figcaption>
+</figure>
+<h3>作者怎么解释这层笔触</h3>
+<p>有人在原作帖下问他提示词。2026-11-12 17:55，他回了一段较长的说明，并把拆解帖附在后面：</p>
+<blockquote>
+<p>笔触着色器迭代了很久，但概念上就是在不同的通道上画笔触，尺寸、颜色、形状、混合方式和绘制速度都会变化。至于实际体验，我想要的是动态的、广角的、有节奏的东西。</p>
+<p>我觉得关键在于做出大量可自定义的选项，让它真正变成你自己的。</p>
+<p>我在这里发过一份小拆解。</p>
+</blockquote>
+<p>作者：Max Vedel @mxvdl。<a href="https://x.com/mxvdl/status/2120817846611501420">查看这条回复</a>。同日 17:49，在回应「有没有可能公开，好让我们的智能体做出自己的设计」时，他说：「谢谢，过一阵大概会公开一个仓库。」到 2026-11-13 再次核对演示站时，根路径仍没有 LICENSE 或 README，也还没有见到公开仓库。<a href="https://x.com/mxvdl/status/2120816201551196279">查看这条回复</a>。</p>
+<p>另有人觉得「用代码随手做出整套动画管线」仍然不可思议。他答：「是啊，太疯狂了。现在为任何镜头从零开发一套自定义动画工具，反而更有效率。」<a href="https://x.com/mxvdl/status/2120879625714667852">查看这条回复</a>。有人追问工作流、是不是有一个专门用来预览和微调动画的网页场景，他只把试用地址又贴了一次，没有在可检索的回复里展开讲自己的流程。<a href="https://x.com/mxvdl/status/2120879768099012632">查看这条回复</a>。</p>
+<p>拆解帖的评论区里，有人问起「图生 3D 用的是什么」。2026-11-13 19:20，作者只回了一声感叹，并提到 @tripo3d_ai。这不像一句完整的技术说明，本页不能把它写成已经确认的制作步骤。⚠️ 另有评论把拆解视频形容成「把街道展开成一条条上了色的纸带，还带标签」；因为本页没有看过视频，不能替他们确认。⚠️</p>
+<h3>英文原文</h3>
+<blockquote lang="en">
+<p>For the people interested by the @threejs ligthweight brush stroke shader and overal animation I posted yesterday, here's a complete breakdown.</p>
+<p>Still fully made with Fable 5.2 @claudeai</p>
+<p>(Yes you can also create these easily)</p>
+</blockquote>
+<blockquote lang="en">
+<p>Complete breakdown of this project here :</p>
+</blockquote>
+<blockquote lang="en">
+<p>The brush shader took lots of iteration but conceptually it's applying brush strokes on different passes with variation in size, color, shape, and blending and speed of painting. Then for the actual experience I wanted something dynamic, wide angle and rhythmic.</p>
+<p>The key I think is to create tons of customization options to make it your own.</p>
+<p>I've posted a small breakdown here</p>
+</blockquote>
+<blockquote lang="en">
+<p>Thanks man, will probably do a public repo a bit later on.</p>
+</blockquote>
+<blockquote lang="en">
+<p>Yeah it's crazy. It's now more efficient to develop custom animation tools from scratch for any shots.</p>
+</blockquote>
+<h3>同一层着色器的后续，不是这件作品本身</h3>
+<p>拆解发出约七小时后，作者在这条帖下写道「这个着色器的更多用法」，并指向另一条新帖：他把同一层笔触用在一个滑雪板原型上，说还要再微调，之后会放出可玩的版本，同样自称用 Fable 5.2 做成。⚠️ 2026-11-13 20:18，他又发帖说可玩版来了，可以在五种环境里一直滑下去，并称「整个游戏只有 2MB」。⚠️ 那是另一件作品，本页不展开，也没有观看那两条视频；公告正文里没有单独的试用链接，只附了视频。</p>
+<h3>许可复查与传播快照</h3>
+<p>2026-11-13 再次打开公开首页：版权注释仍是「(c) 2026 Max Vedel / Spellbound Labs. All rights reserved.」主程序文件头仍写：未经书面许可，不得复制、再利用或再分发这份代码及其着色器。根路径 LICENSE、LICENSE.md、LICENSE.txt 与 README 仍为 404。当天经 raw.githubusercontent.com 核对，three.js r147 的 LICENSE 仍是 MIT License（Copyright © 2010-2022 three.js authors）；dev 分支仍是 MIT，年份写到 2010-2026。引擎许可依旧不能外推到这件作品或笔触着色器。</p>
+<p>2026-11-13 经 X 接口读取时，这条拆解帖约 22284 次浏览、593 个赞、26 次转发、21 条回复、674 次收藏，引用 4 次。这些数字会变，只作当时记录。</p>
 <h2>许可与可复现性</h2>
 <p>演示可以公开打开，但作品本身没有开放许可证。首页 HTML 有一条版权注释：「(c) 2026 Max Vedel / Spellbound Labs. All rights reserved.」主程序文件开头写得更明确：保留所有权利，未经书面许可，不得复制、再利用或再分发这份代码及其着色器。2026-11-12 在站点根路径检查 LICENSE、LICENSE.md、LICENSE.txt 与 README，均为 404；也没有看到 GitHub 链接。作者没有在可见回复里给出源码仓库。</p>
 <p>页面里附带的 three.js r147，其上游 <a href="https://raw.githubusercontent.com/mrdoob/three.js/r147/LICENSE">r147 的 LICENSE</a> 于 2026-11-12 经 raw.githubusercontent.com 现场核对为 MIT License（Copyright © 2010-2022 three.js authors）；当时 dev 分支的 LICENSE 仍是 MIT，年份已写到 2010-2026。lil-gui 0.19.2 的文件头同样标明 MIT。这些只说明引擎和控件库本身的许可，不能外推到这件作品，也不能外推到笔触着色器。按版权分级，本页只做导读，并收录作者本人帖文的全文中译；不转载视频，不转载角色贴图，也不引述着色器源码。</p>
@@ -78,11 +120,13 @@
 <li>「Fable 5.2 写成」「很好的笔触着色器」「这版构建里唯一的图片是角色贴图」均为作者自报。公开脚本里可以见到一个名为 BRUSH、版本号 1.0.0 的模块，以及角色脚本中有一处嵌入的 <code>data:image/webp</code>；本页没有在浏览器里运行演示，也没有解码或转载那张贴图，因此不能把自报写成已经逐项核完的结论。⚠️</li>
 <li>四条街的名称、默认 144 BPM / 每街 16 拍、画幅选项、导出 MP4 与 JSON 设定、以及需要 WebGL 2，来自 2026-11-12 打开的公开首页和它所引用的脚本，可以核对。本页没有把四条街都播放完，也没有导出视频。</li>
 <li>⚠️ 未下载或观看约 53 秒的附件视频。封面帧只代表其中一帧，不能代替完整演示，也不能证明笔触或声音的效果。</li>
-<li>作者简介所写「巴黎」「SwipeBack 联合创始人兼创意总监」，以及版权行里的 Spellbound Labs，均为资料或页面上的自称，未独立核实。⚠️</li>
+<li>作者简介所写「巴黎」「SwipeBack 联合创始人兼创意总监」，以及版权行里的 Spellbound Labs，均为资料或页面上的自称，未独立核实。⚠️ 2026-11-13 再读其 X 资料时，简介写的是「Creative Director &amp; Innovation SB Labs」，与此前记录的 SwipeBack 职务不同，同样未独立核实。⚠️</li>
+<li>2026-11-13 增补：拆解帖与随后关于笔触通道、自定义选项、稍后公开仓库、以及「为镜头从零做动画工具更有效率」的说明，均来自作者本人帖文，已全文收录。约 100 秒的拆解视频未下载、未观看；评论区对视频画面的描述不能代替亲眼看过。⚠️</li>
+<li>「图生 3D 用了 Tripo」只是从作者一句带 @tripo3d_ai 的感叹里读出的暗示，不是完整说明，未独立核实。⚠️ 滑雪板原型是另一件作品，其「整个游戏只有 2MB」等说法为自报，本页未展开、未看视频。⚠️</li>
 </ul></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p>© 2026 Max Vedel / Spellbound Labs（《Paris Freestyle》与预告视频，All rights reserved）；引介帖 © @threejs。本页为非官方中文导读与翻译，仅供阅读学习；原帖、视频与可玩演示请见原作者页面。原帖：<a href="https://x.com/mxvdl/status/2120505286603505858">x.com/mxvdl/status/2120505286603505858</a>。引介：<a href="https://x.com/threejs/status/2120577860499062803">x.com/threejs/status/2120577860499062803</a>。演示：<a href="https://parisfreestyle.netlify.app/">parisfreestyle.netlify.app</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<!-- za:foot --><div class="za-foot-orig"><p>© 2026 Max Vedel / Spellbound Labs（《Paris Freestyle》、预告视频与拆解视频，All rights reserved）；引介帖 © @threejs。本页为非官方中文导读与翻译，仅供阅读学习；原帖、视频与可玩演示请见原作者页面。原帖：<a href="https://x.com/mxvdl/status/2120505286603505858">x.com/mxvdl/status/2120505286603505858</a>。拆解：<a href="https://x.com/mxvdl/status/2120809570344050705">x.com/mxvdl/status/2120809570344050705</a>。引介：<a href="https://x.com/threejs/status/2120577860499062803">x.com/threejs/status/2120577860499062803</a>。演示：<a href="https://parisfreestyle.netlify.app/">parisfreestyle.netlify.app</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
 <p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/mxvdl/status/2120505286603505858" rel="noopener">x.com/mxvdl/status/2120505286603505858</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
