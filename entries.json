@@ -1,5 +1,20 @@
 [
   {
+    "slug": "raphael-erba-unseen-dance",
+    "title": "「Unseen dance」：一群眼睛看着一个人翻腾，与一次独立复刻",
+    "desc": "Raphaël Erba（@raphael_erba）发的 10 秒循环动画《Unseen dance》导读。帖文只有标题与一段 1080×1080 视频，无制作说明、无开放许可；本页不转载视频与封面帧，只写导读并引用评论短句。另附本站自写的独立复刻（canvas，零依赖，可在线看，非原作）：奶油底、白色眼形碎片从右下涌向左上，蓝发舞者拖着蓝红飘带翻腾。复刻的时间曲线、轨道、眼群运动均为推断 ⚠️，只依据一张封面静帧；未下载、未观看视频 ⚠️。传播数字会变 ⚠️。",
+    "description": "Raphaël Erba 的 10 秒循环动画《Unseen dance》导读 + 本站自写的独立复刻（canvas，非原作）。作品保留所有权利，不转载视频与封面帧。复刻时序为推断 ⚠️，未看视频 ⚠️。",
+    "source": "X · @raphael_erba（作品保留所有权利；含独立复刻 demo）",
+    "date": "2026-11-14",
+    "type": "评述",
+    "subtitle": "10 秒循环动画 · 导读 + 独立复刻（canvas demo）",
+    "original_url": "https://x.com/raphael_erba/status/2121300297255395730",
+    "spine": "看不见的舞",
+    "summary": "一群白色眼形碎片看着蓝发舞者翻腾的 10 秒循环；不转载原作，附一个自写的 canvas 复刻，推断处逐条标注",
+    "kind": "作品",
+    "by": "Raphaël Erba @raphael_erba"
+  },
+  {
     "slug": "meshy-threert",
     "title": "「ThreeRT」：用你熟悉的 three.js 写法，在 GPU 上实时追光",
     "desc": "Meshy（meshy-dev / Meshy LLC）的 ThreeRT：一套放在 three.js 风格接口后面的实时路径追踪引擎，Rust + wgpu，场景与玩法包为 TypeScript。同一份场景文件也可作为普通 three.js 在浏览器里跑。根目录 LICENSE 于 2026-11-14 现场核为 MIT（Copyright (c) 2026 Meshy LLC）；macOS / iOS 客户端闭源，素材不在仓库内，Bistro / Zero-Day 为 CC BY 4.0，东京数据与 Valve 地图另有条款。导读 + README 全文中译 + LICENSE 原文。插图仅为入门场景 sun-room 静帧。未编译、未运行、未下载客户端 ⚠️。对照帧率与 ΔE、素材体积、演示规模为仓库自报 ⚠️。星数会变 ⚠️。",

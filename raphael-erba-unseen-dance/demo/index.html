@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unseen dance · 独立复刻（非原作）</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{color-scheme:light dark}
+  html,body{margin:0;height:100%;background:#f4efe3;color:#6d6455;font:12px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",sans-serif}
+  @media (prefers-color-scheme:dark){html,body{background:#1d1b17;color:#a79d8b}}
+  body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+  #stage{width:min(92vw,92vh - 40px,1080px);aspect-ratio:1/1;position:relative;cursor:pointer;touch-action:manipulation}
+  canvas{width:100%;height:100%;display:block;border-radius:2px}
+  .cap{letter-spacing:.02em;text-align:center;padding:0 12px}
+  .cap a{color:inherit;text-underline-offset:3px}
+  .embed .cap{display:none}
+</style>
+<!-- zbm-nav:head --><link rel="stylesheet" href="../../assets/nav.css"><script defer src="../../assets/nav.js"></script><!-- /zbm-nav:head -->
+</head>
+<body>
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<div id="stage"><canvas id="c" aria-label="独立复刻：奶油色底上，白色眼形碎片组成的蜂群朝左上方涌来，一位蓝发舞者拖着蓝红飘带翻腾"></canvas></div>
+<div class="cap">独立复刻 · 非原作 — 灵感来自 <a href="https://x.com/raphael_erba/status/2121300297255395730">Raphaël Erba《Unseen dance》</a> · 单击暂停 / 继续 · 键盘 ←/→ 步进 · 无外部依赖</div>
+<script>
+(()=>{
+'use strict';
+/* ───────── 独立复刻：所有形状、曲线、时序均为本页自写；没有使用原作的任何像素、视频或代码。
+   ───────── 参照物：仅一张公开封面静帧 + 帖文标题 “Unseen dance” + 作者在同系列帖里的色调。
+   设计坐标系 1024×1024，循环 10 s，帧率不限（连续时间）。 */
+const W=1024, LOOP=10;
+const C={bg:'#efe4ce',white:'#ffffff',line:'#5d5b62',navy:'#1c2a58',red:'#df2f2f',peri:'#9db0d4',tan:'#d7cbb4',frame:'#ffffff'};
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const qs=new URLSearchParams(location.search);
+if(qs.has('embed')) document.body.classList.add('embed');
+let paused=qs.has('pause'), T=qs.has('t')?parseFloat(qs.get('t')):0, last=null;
+
+function fit(){const r=cv.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2.5);cv.width=Math.round(r.width*d);cv.height=Math.round(r.height*d);}
+addEventListener('resize',fit);fit();
+
+/* ───────── 工具 ───────── */
+function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const sstep=(a,b,x)=>{x=clamp((x-a)/(b-a));return x*x*(3-2*x)};
+const easeIO=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const D2R=Math.PI/180;
+
+/* ───────── 眼群：从右下的消失点向左上涌来，透视放大 ─────────
+   每只眼 = 方向 α + 相位 ℓ；深度 z 线性减小 → 距离 r = r0/z 远处慢、近处快；
+   尺寸 ∝ r；r 过大就跑出画外，随后以极小尺寸在消失点附近重生（10 s 一个整周期 → 无缝循环）。 */
+const FOE={x:845,y:845}, R0=270, R1=1200, SIZE_K=.118;   // r 从 R0 指数增长到 R1（对数均匀 → 各档尺寸都有）
+const rOf=u=>R0*Math.pow(R1/R0,u);
+const eyes=[];
+(function build(){
+  const rnd=rng(20261113);
+  const pal=[C.navy,C.navy,C.red,C.peri,C.navy,C.red];
+  const N=46;
+  for(let i=0;i<N;i++){
+    const l=Math.pow((i+rnd())/N,.9);          // 分层相位
+    // 方向：以 225°(指向左上) 为中心，偏左/偏上略宽，少量落在右上
+    let a=229+ (rnd()+rnd()+rnd()-1.5)*21 + (rnd()<.06? (rnd()*30) : 0);
+    eyes.push({l,a:a*D2R,kind:(rnd()<.62)?0:(rnd()<.6?1:2),col:pal[Math.floor(rnd()*pal.length)],
+      rot:(rnd()-.5)*1.1, wob:rnd()*6.28, mult:.34+rnd()*.95, asp:.26+rnd()*.12, skew:(rnd()-.5)*.7,
+      blinkT:rnd()*LOOP, blinkD:.18+rnd()*.12, twin:rnd()<.22, col2:pal[Math.floor(rnd()*pal.length)], lat:(rnd()-.5)*60});
+  }
+  // 手摆：把封面静帧里最显眼的几只近景眼放回它们在 t=0 的位置（由位置反解 α、ℓ）
+  const manual=[ // x,y,宽,kind,pupil colours,rot
+    [58,98,128,2,C.red,C.red,.12],[48,196,125,2,C.navy,C.peri,-.1],[135,42,92,1,C.navy,null,.25],[283,52,128,2,C.red,C.navy,-.2],
+    [185,45,70,0,C.peri,C.peri,-.1],[438,18,40,1,C.red,null,.4],[160,380,52,0,C.peri,null,0],[410,396,86,1,null,null,0],[565,418,58,1,C.navy,null,.5],
+    [738,572,70,0,C.red,null,0],[322,533,50,0,null,null,-.1],[120,308,42,0,C.navy,null,.1],[25,330,70,0,C.peri,null,.1]
+  ];
+  for(const [x,y,w,k,c1,c2,rot] of manual){
+    const dx=x-FOE.x, dy=y-FOE.y, r=Math.hypot(dx,dy), a=Math.atan2(dy,dx);
+    const l=Math.log(r/R0)/Math.log(R1/R0);
+    eyes.push({l:clamp(l,0,.999),a,kind:k,col:c1||C.navy,col2:c2||C.navy,twin:k===2&&!!c2,rot,wob:rnd()*6.28,mult:w/(SIZE_K*r),asp:.36,skew:.2,
+      blinkT:rnd()*LOOP,blinkD:.2,lat:0,manual:true});
+  }
+})();
+
+/* ───────── 舞者：骨架 + 渐细样条管 ───────── */
+// 姿势：局部坐标，x=头的朝向，角度单位 °（屏幕 y 向下）
+const POSE={
+  arch :{t1:-8,t2:6,hd:34, th1:168,sh1:68,ft1:56,  th2:174,sh2:80,ft2:66,  ua1:190,fa1:185, ua2:206,fa2:196},
+  lay  :{t1:-14,t2:10,hd:14,th1:176,sh1:196,ft1:178, th2:170,sh2:182,ft2:160, ua1:-14,fa1:-20, ua2:-26,fa2:-34},
+  tuck :{t1:-30,t2:30,hd:18,th1:246,sh1:150,ft1:120,th2:238,sh2:140,ft2:112, ua1:150,fa1:96,  ua2:160,fa2:100},
+  split:{t1:-16,t2:-4,hd:-6,th1:150,sh1:164,ft1:150, th2:208,sh2:228,ft2:214, ua1:-52,fa1:-46, ua2:112,fa2:96},
+  reach:{t1:-24,t2:-6,hd:-16,th1:196,sh1:156,ft1:126,th2:172,sh2:178,ft2:164, ua1:-34,fa1:-18, ua2:12,fa2:-8}
+};
+const KEYS=[[0,'arch'],[.14,'arch'],[.26,'tuck'],[.40,'tuck'],[.52,'lay'],[.64,'split'],[.78,'reach'],[.90,'arch'],[1,'arch']];
+function poseAt(h){
+  h=((h%1)+1)%1; let i=0; while(i<KEYS.length-2&&h>KEYS[i+1][0])i++;
+  const [h0,n0]=KEYS[i],[h1,n1]=KEYS[i+1]; const u=easeIO(clamp((h-h0)/(h1-h0)));
+  const a=POSE[n0],b=POSE[n1],o={}; for(const k in a)o[k]=lerp(a[k],b[k],u); return o;
+}
+const RX=262,RY=204,CX=500,CY=362,PSI0=210*D2R;
+function pathAt(t){
+  const psi=PSI0+2*Math.PI*t/LOOP;
+  return {x:CX+RX*Math.cos(psi),y:CY+RY*Math.sin(psi),tau:Math.atan2(RY*Math.cos(psi),-RX*Math.sin(psi)),psi};
+}
+function bodyAngle(t){
+  const p=pathAt(t); const h=((t/LOOP)*2)%1;          // 每个循环 2 次翻腾
+  const flip=-2*Math.PI*easeIO(clamp((h-.16)/.36));    // 在 tuck 段翻一整圈
+  const bob=Math.sin(t/LOOP*Math.PI*4)*.06;
+  return p.tau+40*D2R+flip+bob;
+}
+function bodyPos(t){const p=pathAt(t);const h=((t/LOOP)*2)%1;const lift=-Math.sin(clamp((h-.1)/.5)*Math.PI)*34;return{x:p.x,y:p.y+lift};}
+function skel(t){
+  const P=bodyPos(t), phi=bodyAngle(t), ps=poseAt((t/LOOP)*2), s=1.1;
+  const to=(o,a,l)=>({x:o.x+Math.cos(a)*l*s,y:o.y+Math.sin(a)*l*s});
+  const R=d=>(d*D2R)+phi;
+  const hip={x:P.x,y:P.y};
+  const waist=to(hip,R(ps.t1),46), chest=to(waist,R((ps.t1+ps.t2)/2+ps.t2*.4),48), neck=to(chest,R(ps.t2+ps.hd*.35),18), head=to(neck,R(ps.hd),22);
+  const sh=lerpP(waist,chest,.9);
+  const leg=(th,sk,ft)=>{const k=to(hip,R(th),80),a=to(k,R(sk),104),f=to(a,R(ft),26);return[hip,k,a,f]};
+  const arm=(ua,fa)=>{const e=to(sh,R(ua),46),w=to(e,R(fa),40),h=to(w,R(fa),14);return[sh,e,w,h]};
+  return{hip,waist,chest,neck,head,torso:[hip,waist,chest,neck],
+    legN:leg(ps.th1,ps.sh1,ps.ft1),legF:leg(ps.th2,ps.sh2,ps.ft2),armN:arm(ps.ua1,ps.fa1),armF:arm(ps.ua2,ps.fa2),phi,headAng:R(ps.hd),ps};
+}
+function lerpP(a,b,t){return{x:lerp(a.x,b.x,t),y:lerp(a.y,b.y,t)}}
+function crSample(pts,n=8){ // Catmull-Rom → 折线
+  const o=[];const p=[pts[0],...pts,pts[pts.length-1]];
+  for(let i=1;i<p.length-2;i++){for(let k=0;k<n;k++){const t=k/n,t2=t*t,t3=t2*t;
+    o.push({x:.5*((2*p[i].x)+(-p[i-1].x+p[i+1].x)*t+(2*p[i-1].x-5*p[i].x+4*p[i+1].x-p[i+2].x)*t2+(-p[i-1].x+3*p[i].x-3*p[i+1].x+p[i+2].x)*t3),
+            y:.5*((2*p[i].y)+(-p[i-1].y+p[i+1].y)*t+(2*p[i-1].y-5*p[i].y+4*p[i+1].y-p[i+2].y)*t2+(-p[i-1].y+3*p[i].y-3*p[i+1].y+p[i+2].y)*t3)})}}
+  o.push(pts[pts.length-1]);return o;
+}
+function tubePath(pts,ws,n=8){
+  const sp=crSample(pts,n), m=sp.length, L=[],Rr=[];
+  const wAt=i=>{const f=i/(m-1)*(ws.length-1),a=Math.floor(f),b=Math.min(ws.length-1,a+1);return lerp(ws[a],ws[b],f-a)/2};
+  for(let i=0;i<m;i++){const a=sp[Math.max(0,i-1)],b=sp[Math.min(m-1,i+1)];let dx=b.x-a.x,dy=b.y-a.y;const l=Math.hypot(dx,dy)||1;dx/=l;dy/=l;
+    const w=wAt(i);L.push({x:sp[i].x-dy*w,y:sp[i].y+dx*w});Rr.push({x:sp[i].x+dy*w,y:sp[i].y-dx*w});}
+  const p=new Path2D();p.moveTo(L[0].x,L[0].y);for(let i=1;i<m;i++)p.lineTo(L[i].x,L[i].y);
+  const e=sp[m-1],w=wAt(m-1),a=Math.atan2(e.y-sp[m-2].y,e.x-sp[m-2].x);
+  p.arc(e.x,e.y,w,a-Math.PI/2,a+Math.PI/2,false);
+  for(let i=m-1;i>=0;i--)p.lineTo(Rr[i].x,Rr[i].y);
+  const s0=sp[0],w0=wAt(0),a0=Math.atan2(sp[1].y-s0.y,sp[1].x-s0.x);
+  p.arc(s0.x,s0.y,w0,a0+Math.PI/2,a0+Math.PI*1.5,false);p.closePath();return p;
+}
+
+/* ───────── 绘制 ───────── */
+function drawEye(g,e,t,gaze){
+  const u=((e.l+t/LOOP)%1+1)%1, r=rOf(u);
+  let x=FOE.x+Math.cos(e.a)*r+ e.lat*Math.cos(e.a+1.57)*r/1000;let y=FOE.y+Math.sin(e.a)*r+e.lat*Math.sin(e.a+1.57)*r/1000;
+  let w=SIZE_K*r*e.mult; if(w<2.2)return;
+  { // 软避让舞者：连续位移，不会突然跳出
+    const dx0=x-gaze.x, dy0=y-gaze.y, dd=Math.hypot(dx0,dy0)||1, R=150+w*.75;
+    if(dd<R){const k=Math.pow(1-dd/R,2)*R*.9; x+=dx0/dd*k; y+=dy0/dd*k;} }
+  w*=sstep(0,.22,u);                                    // 出生：从 0 长出
+  if(x<-w*1.2||y<-w*1.2||x>W+w||y>W+w)return;
+  // 眨眼：每只眼一个 10 s 周期内一次
+  let bt=((t-e.blinkT)%LOOP+LOOP)%LOOP, bl=bt<e.blinkD?Math.sin(bt/e.blinkD*Math.PI):0;
+  const open=1-bl*.92;
+  const rot=e.rot+Math.sin(t/LOOP*6.283+e.wob)*.07;
+  g.save();g.translate(x,y);g.rotate(rot);
+  const hw=w/2, th=w*e.asp*open;
+  const lw=Math.max(.7,Math.min(1.5,w*.014));
+  // 浅圈（小眼脚下的涟漪）
+  if(w<64){g.strokeStyle='rgba(120,100,70,.10)';g.lineWidth=1;g.beginPath();g.arc(hw*.1,th*.25+w*.06,w*.42,0,6.283);g.stroke();}
+  const P=new Path2D();
+  if(e.kind===0){            // 上眼睑：平底、弧顶
+    P.moveTo(-hw,w*.03*e.skew*8);P.bezierCurveTo(-hw*.95+e.skew*hw*.2,-th*1.45,-hw*.1+e.skew*hw*.5,-th*1.7,hw*.35+e.skew*hw*.2,-th*1.3);P.quadraticCurveTo(hw*.9,-th*.6,hw,w*.03*-e.skew*8);P.closePath();
+  }else if(e.kind===1){      // 楔形：一侧直边，一侧外凸
+    P.moveTo(-hw,0);P.bezierCurveTo(-hw*.7,-th*1.5,hw*.0+e.skew*hw*.5,-th*1.85,hw*.2,-th*1.1);P.quadraticCurveTo(hw*.6,-th*.5,hw,0);P.closePath();
+  }else{                     // 近景胖胞：上下都鼓
+    P.moveTo(-hw,-th*.15);P.bezierCurveTo(-hw*.7,-th*1.65,hw*.55,-th*1.8,hw*.95,-th*.75);P.bezierCurveTo(hw*1.0,th*.3,hw*.2,th*1.15,-hw*.2,th*.95);P.bezierCurveTo(-hw*.65,th*.8,-hw*1.0,th*.3,-hw,-th*.15);P.closePath();
+  }
+  // 与画框交叠处留一圈奶油色（画框被眼“咬”出缺口）
+  g.lineJoin='round';g.strokeStyle=C.bg;g.lineWidth=w>14?lw*5:0;if(w>14)g.stroke(P);
+  g.fillStyle=C.white;g.fill(P);
+  g.save();g.clip(P);
+  // 瞳孔朝向舞者
+  const ca=Math.cos(rot),sa=Math.sin(rot);
+  let gx=(gaze.x-x),gy=(gaze.y-y);const gl=Math.hypot(gx,gy)||1;gx/=gl;gy/=gl;
+  let lx=gx*ca+gy*sa, ly=-gx*sa+gy*ca;
+  const dot=(cx,cy,rx,ry,col)=>{g.fillStyle=col;g.beginPath();g.ellipse(cx,cy,rx,ry,0,0,6.283);g.fill();};
+  if(e.kind===2){
+    const pr=w*.075;
+    dot(-hw*.15+lx*hw*.22,-th*.15+ly*th*.25,pr*.95,pr*1.35,e.col);
+    if(e.twin)dot(hw*.28+lx*hw*.2,th*.0+ly*th*.25,pr*1.25,pr*1.7,e.col2);
+    else dot(hw*.38+lx*hw*.2,-th*.5+ly*th*.2,pr*.75,pr*1.05,e.col2);
+  }else{
+    const pr=w*.052;
+    dot(lx*hw*.35,-th*.62+ly*th*.15,pr*(e.kind?.9:1.1),pr*(e.kind?1.2:.95),e.col);
+  }
+  g.restore();
+  g.strokeStyle=C.line;g.lineWidth=lw;g.stroke(P);
+  g.restore();
+}
+
+function ribbon(g,t,wid){
+  // 飘带沿“背侧”从头一路顺着脊柱、髋、大腿流下去；越靠末端，取的是越早的骨架姿态（拖尾 / 滞后）
+  const lags=[0,.025,.05,.085,.12,.19,.28,.36], off=[6,11,14,12,8,3,0,0], n=46, pts=[];
+  for(let i=0;i<lags.length;i++){
+    const k=skel(t-lags[i]); const J=[k.head,k.neck,k.chest,k.waist,k.hip,k.legN[1],k.legN[2],k.legN[3]][i];
+    const bx=-Math.sin(k.phi), by=Math.cos(k.phi);       // 局部 +y（背侧）
+    pts.push({x:J.x+bx*off[i],y:J.y+by*off[i]});
+  }
+  const sp=crSample(pts,Math.ceil(n/(pts.length-1)));
+  const q=sp.map((p,i)=>{const s=i/(sp.length-1);const a=sp[Math.min(sp.length-1,i+1)],b=sp[Math.max(0,i-1)];const ang=Math.atan2(a.y-b.y,a.x-b.x);
+    const f=Math.sin(s*8-t*5.2)*4*s;return{x:p.x-Math.sin(ang)*f,y:p.y+Math.cos(ang)*f}});
+  const nn=q.length-1;
+  const ws=q.map((_,i)=>wid*Math.pow(1-i/nn,.7)*(1+.05*Math.sin(i*.8)));
+  // 外层淡紫蓝
+  const band=(off,wf,col,extra)=>{
+    const pp=[];const m=q.length;
+    for(let i=0;i<m;i++){const a=q[Math.max(0,i-1)],b=q[Math.min(m-1,i+1)];let dx=b.x-a.x,dy=b.y-a.y;const l=Math.hypot(dx,dy)||1;dx/=l;dy/=l;
+      pp.push({x:q[i].x-dy*off*ws[i],y:q[i].y+dx*off*ws[i],w:ws[i]*wf});}
+    return pp;
+  };
+  const poly=(pp,col,line)=>{const m=pp.length;const A=[],B=[];
+    for(let i=0;i<m;i++){const a=pp[Math.max(0,i-1)],b=pp[Math.min(m-1,i+1)];let dx=b.x-a.x,dy=b.y-a.y;const l=Math.hypot(dx,dy)||1;dx/=l;dy/=l;
+      A.push({x:pp[i].x-dy*pp[i].w/2,y:pp[i].y+dx*pp[i].w/2});B.push({x:pp[i].x+dy*pp[i].w/2,y:pp[i].y-dx*pp[i].w/2});}
+    g.beginPath();g.moveTo(A[0].x,A[0].y);for(let i=1;i<m;i++)g.lineTo(A[i].x,A[i].y);for(let i=m-1;i>=0;i--)g.lineTo(B[i].x,B[i].y);g.closePath();
+    g.fillStyle=col;g.fill();if(line){g.strokeStyle=line;g.lineWidth=1.1;g.stroke();}};
+  poly(band(0,1,C.peri),C.peri,C.navy);
+  poly(band(.12,.26,C.red),C.red,null);
+  poly(band(-.34,.1,C.navy),C.navy,null);
+  return q;
+}
+
+function drawDancer(g,t){
+  const k=skel(t);
+  const parts=[
+    [k.armF,[15,11,8,7]],[k.legF,[36,23,12,7]],[k.torso,[44,34,38,13]],[k.legN,[39,25,12,7]],[k.armN,[17,13,9,7]]
+  ];
+  // 影子（沙色，向右下偏移）
+  g.save();g.translate(40,32);g.fillStyle='rgba(150,128,96,.13)';
+  for(const [pts,ws] of parts)g.fill(tubePath(pts,ws));
+  g.restore();
+  // 飘带（在身后）
+  ribbon(g,t,34);
+  g.lineJoin='round';g.lineCap='round';
+  for(const [pts,ws,i] of parts.map((p,i)=>[...p,i])){
+    const P=tubePath(pts,ws);g.fillStyle=C.white;g.fill(P);g.strokeStyle=C.line;g.lineWidth=1.25;g.stroke(P);
+    if(i===2){ // 躯干排线
+      g.save();g.clip(P);g.strokeStyle='rgba(168,150,118,.55)';g.lineWidth=.9;
+      const c=lerpP(pts[1],pts[2],.45);for(let q=-6;q<=6;q++){g.beginPath();g.moveTo(c.x+q*3.2-8,c.y+8);g.lineTo(c.x+q*3.2+8,c.y-8);g.stroke();}
+      g.restore();}
+  }
+  // 头：发 + 脸侧
+  const hx=k.head.x,hy=k.head.y,ha=k.headAng;
+  g.save();g.translate(hx,hy);g.rotate(ha);
+  g.fillStyle=C.peri;g.strokeStyle=C.navy;g.lineWidth=1.3;g.beginPath();g.ellipse(-2,0,19,15,0,0,6.283);g.fill();g.stroke();
+  g.fillStyle=C.white;g.strokeStyle=C.line;g.lineWidth=1;g.beginPath();g.moveTo(8,-6);g.quadraticCurveTo(19,-9,19,-2);g.lineTo(16,0);g.quadraticCurveTo(15,4,9,6);g.quadraticCurveTo(14,0,8,-6);g.closePath();g.fill();g.stroke();
+  g.restore();
+}
+
+/* 白色新月：沿轨道留在舞者身后的拖尾（外弧半径略大于舞者轨道） */
+function crescent(g,t){
+  const p=pathAt(t), a0=p.psi-26*D2R, a1=p.psi-126*D2R, n=56, outer=[], inner=[];
+  for(let i=0;i<=n;i++){const u=i/n, psi=a0+(a1-a0)*u;
+    const wv=27*Math.pow(Math.sin(Math.PI*Math.pow(u,.72)),1.1);
+    const ex=CX+(RX+4)*Math.cos(psi), ey=CY-24+(RY+10)*Math.sin(psi);
+    const nx=Math.cos(psi)/(RX),ny=Math.sin(psi)/(RY),nl=Math.hypot(nx,ny);
+    outer.push({x:ex+nx/nl*wv/2,y:ey+ny/nl*wv/2});inner.push({x:ex-nx/nl*wv/2,y:ey-ny/nl*wv/2});}
+  g.beginPath();g.moveTo(outer[0].x,outer[0].y);for(const q of outer)g.lineTo(q.x,q.y);for(let i=n;i>=0;i--)g.lineTo(inner[i].x,inner[i].y);g.closePath();
+  g.fillStyle=C.white;g.fill();
+}
+
+function frame(t){
+  t=((t%LOOP)+LOOP)%LOOP;
+  const d=cv.width/W, g=ctx; g.setTransform(d,0,0,d,0,0);
+  g.fillStyle=C.bg;g.fillRect(0,0,W,W);
+  // 画框：白色圆角线框
+  g.strokeStyle=C.frame;g.lineWidth=6;g.lineJoin='round';
+  g.beginPath();g.roundRect(48,48,928,928,26);g.stroke();
+  g.fillStyle='rgba(176,160,132,.9)';g.font='italic 15px Georgia,serif';g.textAlign='right';g.fillText('replica · not the original',968,958);
+  const gaze=bodyPos(t);
+  // 眼：远→近
+  const order=eyes.map(e=>{const u=((e.l+t/LOOP)%1+1)%1;return{e,u}}).sort((a,b)=>a.u-b.u);
+  for(const {e} of order)drawEye(g,e,t,gaze);
+  crescent(g,t);
+  drawDancer(g,t);
+}
+
+function loop(ts){
+  if(last===null)last=ts; const dt=(ts-last)/1000; last=ts;
+  if(!paused)T=(T+dt)%LOOP;
+  frame(T);requestAnimationFrame(loop);
+}
+const toggle=()=>{paused=!paused};
+document.getElementById('stage').addEventListener('click',toggle);
+addEventListener('keydown',e=>{if(e.key===' ')toggle();if(e.key==='ArrowRight'){paused=true;T=(T+1/30)%LOOP}if(e.key==='ArrowLeft'){paused=true;T=(T-1/30+LOOP)%LOOP}});
+window.__setTime=t=>{paused=true;T=t;frame(T)};
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
