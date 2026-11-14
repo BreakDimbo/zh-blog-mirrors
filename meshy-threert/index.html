@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「ThreeRT」：用你熟悉的 three.js 写法，在 GPU 上实时追光</title>
+<meta name="description" content="Meshy（meshy-dev / Meshy LLC）的 ThreeRT 项目导读：一套放在 three.js 风格接口后面的实时路径追踪引擎，引擎用 Rust 与 wgpu 写成。根目录 LICENSE 于 2026-11-14 现场核为 MIT，但 macOS / iOS 客户端闭源，素材也不在仓库里。附 README 全文中译与许可证原文。未编译、未运行、未下载客户端 ⚠️。对照数字为仓库自报 ⚠️。星数会变 ⚠️。">
+<meta property="og:title" content="「ThreeRT」：用你熟悉的 three.js 写法，在 GPU 上实时追光">
+<meta property="og:description" content="硬件光线追踪的 three.js：同一份场景文件，可在引擎里追光，也可在浏览器里当普通 three.js 来跑。MIT 管源码，不管闭源客户端与第三方素材。附 README 全译。未运行 ⚠️。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-14">2026.11.14</time></p>
+<h1 class="za-title">「ThreeRT」：用你熟悉的 three.js 写法，在 GPU 上实时追光</h1>
+<p class="za-sub" lang="en" data-za-gen>硬件光线追踪的 three.js · 项目导读 + README 全译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · meshy-dev/ThreeRT（MIT，客户端与素材另有边界）</span><span>收录 · 2026-11-14</span><span><a href="https://github.com/meshy-dev/ThreeRT" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Meshy LLC / MeshyAI（GitHub 组织 <a href="https://github.com/meshy-dev">meshy-dev</a>） · 仓库：<a href="https://github.com/meshy-dev/ThreeRT">meshy-dev/ThreeRT</a>（<a href="https://github.com/meshy-dev/ThreeRT/blob/main/LICENSE">MIT License</a>，Copyright (c) 2026 Meshy LLC；客户端闭源，素材另有边界） · 核对：2026-11-14（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">ThreeRT 是一套实时路径追踪引擎，接口写成你熟悉的 three.js 样子。按 README 的说法，你用写 three.js 的方式写场景，场景里的光会在 GPU 的光线追踪硬件上被追踪。它不只是渲染器，也是游戏运行时：同一份场景文件，可以在引擎里跑，也可以作为普通 three.js，在任何浏览器里打开。引擎本体是 Rust 和 <a href="https://wgpu.rs">wgpu</a>，场景和玩法包是 TypeScript。本页以这个项目为中心。根目录许可证在 2026-11-14（新加坡时间）核到是 MIT，所以下面有导读、README 全文中译，以及许可证原文。macOS 与 iOS 客户端是闭源的；演示用的第三方场景和地图也不随这份 MIT 授权。本页没有编译引擎，没有运行演示，也没有下载客户端。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库根目录 <code>LICENSE</code> 于 2026-11-14（新加坡时间）经 <a href="https://raw.githubusercontent.com/meshy-dev/ThreeRT/main/LICENSE">raw.githubusercontent.com</a> 现场核对为 MIT License（Copyright (c) 2026 Meshy LLC）；GitHub 仓库页同样标注 MIT（<code>spdxId: MIT</code>）。根目录 <code>package.json</code> 的 <code>license</code> 字段也是 MIT。README 同时写明：macOS 和 iOS 客户端可免费使用，但是闭源；素材不进仓库，由安装脚本另行拉取，第三方内容保留各自条款，详见 <a href="https://github.com/meshy-dev/ThreeRT/blob/main/docs/ASSETS.md">docs/ASSETS.md</a>。Amazon Lumberyard Bistro 与 Beeple / Kate Anderson 的 Zero-Day 来自 NVIDIA ORCA，CC BY 4.0；东京数据来自 Project PLATEAU、国土地理院与 OpenStreetMap（ODbL），编译后的瓦片按文档不得再发布；OpenStrike 演示里的 cs_assault、de_inferno、de_dust2 是《反恐精英》地图，© Valve，不属于本项目。three.js 是独立开源项目，ThreeRT 与它没有从属关系。下文对 README 作全文中译，并附许可证原文。正文插图只取仓库里作者自己的入门场景静帧（<code>scenes/sun-room.ts</code> 的渲染图），不转载 Bistro、Zero-Day、东京模型，也不转载含 Valve 地图的总览图或任何视频、音频。</div>
+
+<figure>
+<img src="images/cover.webp" alt="一间米色灰泥墙的房间。阳光从右侧窗口照进来，在棕色地板上投下一块明亮的方形光斑；窗框的影子很清楚。窗玻璃下半是暗的。房间左侧有一张深蓝色双人沙发，中间是一张浅色木桌，桌上有一个白色圆球，桌腿投下柔软的影子。墙面和天花板带着从地板反弹上来的暖光。没有人物。" width="1280" height="720">
+<figcaption>仓库提供的入门场景在 ThreeRT 下的静帧（<code>site/media/hello/sun-room-rt.webp</code>）。阳光、地面反弹和灯的光，按 README 的说法都来自对场景的追踪。© 2026 Meshy LLC，MIT License（引擎源码与这份文档插图所在仓库文件）。画面里没有人物。</figcaption>
+</figure>
+
+<h2>一、这是什么</h2>
+<p><a href="https://github.com/meshy-dev/ThreeRT">meshy-dev/ThreeRT</a> 的仓库简介写：「硬件光线追踪的 three.js：一套放在 three.js 风格接口后面的实时路径追踪器。引擎是 Rust 与 wgpu，场景和玩法包是 TypeScript。」README 把这句话写得更短：Hardware ray-traced three.js。署名是一项来自 MeshyAI 的研究项目；许可证版权人为 Meshy LLC；GitHub 组织是 meshy-dev。本页没有另行核实公司结构或产品线 ⚠️。</p>
+<p>2026-11-14（新加坡时间）打开的仓库首页显示：公开仓库，不是 fork，默认分支 <code>main</code>，侧栏标注 MIT License。创建时间为 2026-11-10 19:22（新加坡时间；上游记录为 2026-11-10T11:22:56.000Z）。页面内嵌数据里，star 约为 161、fork 约为 7、watch 约为 1，提交次数显示为 143，发行版与标签均为 0；这些都会变 ⚠️。主题标签为 <code>game-engine</code>、<code>global-illumination</code>、<code>graphics</code>、<code>metal</code>、<code>path-tracing</code>、<code>ray-tracing</code>、<code>real-time-rendering</code>、<code>rendering</code>、<code>rust</code>、<code>threejs</code>、<code>typescript</code>、<code>voxel</code>、<code>webgpu</code>、<code>wgpu</code>。根目录可见 <code>LICENSE</code>、<code>README.md</code>、<code>package.json</code>（版本 0.1.1，<code>private: true</code>，许可字段为 MIT，开发依赖里的 three.js 为 <code>^0.187.0</code>）、<code>package-lock.json</code>、<code>rust-toolchain.toml</code>、<code>tsconfig.base.json</code>；目录包括 <code>renderer/</code>、<code>packages/</code>、<code>scenes/</code>、<code>games/</code>、<code>docs/</code>、<code>playground/</code>、<code>site/</code>、<code>tools/</code>、<code>tests/</code>、<code>compare/</code>、<code>ue5/</code>、<code>showcase/</code> 等。README 写：项目最早在另一个仓库里开始，于 2026-11-10 抽出；文档里的 PR 编号 #1 到 #139，以及其中提到的 <code>cloud/</code> 和 <code>render-node/</code>，指的是那个旧仓库。本次没有打开那个旧仓库 ⚠️。</p>
+<p>官方站点在 README 中列为 <a href="https://threert.dev">threert.dev</a>，应用发布在 <a href="https://threert.app">threert.app</a>，另有文档、下载页、Discord 与 X 账号 <a href="https://x.com/ThreeRT3D">@ThreeRT3D</a>。本页只读了 GitHub 仓库与 raw 文件，没有打开这些站点，也没有下载客户端 ⚠️。</p>
+
+<h2>二、三个 RT</h2>
+<p>README 把名字拆成 Two 部分：Three 是你已经熟悉的接口；RT 是它要补上的三件事。</p>
+<ul>
+<li><strong>Ray tracing（光线追踪）。</strong>每一盏灯都会被追踪：阴影、间接光、反射，以及会把房间照亮的发光表面。没有阴影贴图，没有探针，没有光照贴图，也不用烘焙。</li>
+<li><strong>Real time（实时）。</strong>按仓库的说法，在制作级场景里、相机还在动的时候，也能跑到 60 fps，例子是 Amazon Lumberyard 的 Bistro 和 Beeple 的 Zero-Day，而且是在笔记本电脑上；不是停下相机之后才慢慢收敛的静帧。帧率与场景规模均为自报，本页未复现 ⚠️。</li>
+<li><strong>Runtime（运行时）。</strong>这是一套游戏运行时，不只是渲染器。场景代码和游戏逻辑在引擎里运行；同一份文件也可以作为普通 three.js，在任何浏览器里跑。</li>
+</ul>
+<p>这和本站收过的浏览器演示不是同一类东西。<a href="https://breakdimbo.github.io/zh-blog-mirrors/blendi-painted-valley/">Painted Valley</a> 和 <a href="https://breakdimbo.github.io/zh-blog-mirrors/mxvdl-paris-freestyle/">Paris Freestyle</a> 是在浏览器里直接跑的 three.js 小品；ThreeRT 的路径追踪发生在原生引擎里，浏览器路径走的是「同一份文件的普通 three.js 预览」。本页没有把这两种预览并排跑过 ⚠️。</p>
+
+<h2>三、同一份入门场景</h2>
+<p>README 给的入门例子体量很小，所有设置保持默认：一盏写成 90,000 lux 的太阳、天空大气、灰泥墙，再补地板、窗子、沙发和灯。完整文件是 <code>scenes/sun-room.ts</code>。光使用物理单位，发光表面本身就是光源。</p>
+<pre><code>import { Scene, PerspectiveCamera, Mesh, BoxGeometry, MeshStandardMaterial, DirectionalLight, SkyAtmosphere } from &quot;@threert/scene&quot;;
+
+export default function build() {
+  const scene = new Scene();
+  const sun = new DirectionalLight(0xffffff, 90000).setSunAngles(28, 100); // lux
+  scene.add(sun);
+  scene.environment = new SkyAtmosphere({ sun });
+
+  const plaster = new MeshStandardMaterial({ color: 0xd9d4cc, roughness: 0.92 });
+  const wall = new Mesh(new BoxGeometry(6.6, 3, 0.3), plaster);
+  wall.position.set(0, 1.5, -3.15);
+  scene.add(wall);
+  // ... the rest of the room: a floor, a window, a sofa, a lamp
+
+  const camera = new PerspectiveCamera(58, 16 / 9, 0.05, 200);
+  camera.position.set(-2.3, 1.45, 2.4);
+  camera.lookAt(1.0, 0.9, -1.2);
+  scene.add(camera);
+  return { scene, camera };
+}</code></pre>
+<p>仓库把同一份场景分别交给「按所写直接跑的 three.js」和「全部默认的 ThreeRT」，得到下面这两张静帧。左边是 three.js：窗子是一块平涂的蓝天，地板上没有阳光，墙是均匀的灰。右边是 ThreeRT：阳光从窗口进来，在地板上留下清楚的光斑，桌子投下软影子，墙和天花板带着反弹上来的暖光。这些静帧是仓库自己提供的，本页没有重新渲染 ⚠️。</p>
+<figure>
+<img src="images/compare-hello.webp" alt="左右对照。左：同一间房间在 three.js 里，墙面平坦，窗子是一块蓝天，地板上没有阳光，只有左侧灯具附近有一点光。右：ThreeRT 的同一机位，窗口射进阳光，地板上有方形光斑，桌子有软影子，墙面被反弹的暖光照亮。" width="1600" height="448">
+<figcaption>左：<code>site/media/hello/sun-room-three.webp</code>（three.js，按所写直接跑）。右：<code>site/media/hello/sun-room-rt.webp</code>（ThreeRT，全部默认）。两张都是仓库静帧，已并排缩小；原图各为 1280×720。© 2026 Meshy LLC，MIT License。</figcaption>
+</figure>
+
+<h2>四、他们给出的对照数字</h2>
+<p>README 还把同一份制作级场景，在同一台 Mac 上分别交给两套引擎。three.js 使用了文档所写的全部手段：阴影贴图、基于图像的照明，以及在 WebGPU 上它自己的 SSGI、SSR 和 TRAA。对照图用的是夜间 Bistro 和 Beeple 的 Zero-Day。那两张图是第三方场景的渲染，本页不转载；场景本身的许可见第七节。</p>
+<p>仓库给出的夜间 Bistro、1280×720 数字如下。参考图是「无偏的离线渲染，每像素 4,096 个样本，没有降噪器」。方法、每个场景，以及 three.js 仍然领先的地方（文档写小场景大约 1 ms 就能画完），都指向 <a href="https://github.com/meshy-dev/ThreeRT/blob/main/docs/COMPARE.md">docs/COMPARE.md</a>。这些数字全部是仓库自报，本页没有重跑，也没有打开那份对照文档的测量脚本 ⚠️。</p>
+<table>
+<thead>
+<tr><th>条目</th><th>单帧耗时</th><th>相对参考图的误差（ΔE，越低越接近）</th></tr>
+</thead>
+<tbody>
+<tr><td>ThreeRT，实时</td><td>15.5 ms（60 fps）</td><td>3.4</td></tr>
+<tr><td>three.js，WebGPU + SSGI + SSR + TRAA</td><td>34.7 ms（29 fps）</td><td>10.1</td></tr>
+<tr><td>three.js，调过的 WebGL</td><td>15.9 ms（60 fps）</td><td>12.1</td></tr>
+</tbody>
+</table>
+<p>README 首页还有一张十二格总览，说明文字写：在一台 Apple M3 Max 上实时运行仓库里的演示，以及用这套引擎做的射击游戏 OpenStrike。那张总览约 4 MB，并且按 README 自己的说明，包含《反恐精英》地图。本页没有转载，也没有观看任何演示或预告 ⚠️。</p>
+
+<h2>五、怎么开始用</h2>
+<p>文档把路径分成三条：下载客户端玩、用 npm 包写场景，以及从源码编译引擎。本页都没有实际操作 ⚠️。</p>
+<p>要玩或做游戏，README 请人到 <a href="https://threert.dev/download/">threert.dev/download</a> 下载客户端，平台写的是 macOS（14 或更新，Apple 芯片）以及 iPhone 和 iPad（iOS 17 或更新）。客户端会拉取游戏代码，在设备自己的 GPU 上追踪。例子可以从应用资料库或 <a href="https://threert.app">threert.app</a> 打开。Mac 应用里带有 <code>threert</code> 命令行：</p>
+<pre><code>threert create my-game
+cd my-game
+threert dev        # bundles on save, serves every client on your network, prints a QR code for your phone</code></pre>
+<p>按文档的说法，在任意浏览器里打开同一个地址，看到的是这份游戏的 three.js 版本。完整步骤指向 <a href="https://threert.dev/docs/">threert.dev/docs</a>。</p>
+<p>TypeScript 包有三个：<code>@threert/scene</code>（网格、PBR 材质、灯、glTF、物理、体积）、<code>@threert/gameplay</code>（状态、事务性处理器、世界处理器、逐帧脚本、输入、HUD，以及与宿主应用的通道；文档写它是确定性、可回放的）、<code>@threert/voxel</code>（可破坏的体素关卡）。安装示例是：</p>
+<pre><code>npm install @threert/scene @threert/gameplay</code></pre>
+<p><code>threert dev</code> 会替你打包这些包。若只要类型、测试，或接入自己的构建流程，也可以从 npm 安装。README 上有 <code>@threert/scene</code> 的 npm 徽章，本页没有核对该包在 npm 上的实际版本 ⚠️。仓库 <code>package.json</code> 自己的版本号是 0.1.1。</p>
+<p>从源码编译需要 Rust、Node 24 和 Bun。引擎在 GPU 提供硬件光线查询的地方走硬件（文档写 Metal、Vulkan），没有硬件的地方用软件 BVH。<code>renderer/</code> 里还有嵌入的 QuickJS，用来跑场景代码；<code>voxel-core</code> 和基于 Rapier 的 <code>physics-core</code> 也可以编成 wasm32。文档给出的命令是：</p>
+<pre><code>npm install &amp;&amp; bun scripts/setup.ts      # assets/ -&gt; the machine&#x27;s shared asset store, then fetch what is missing
+node tools/build-scenes.ts                # scenes/*.ts + games -&gt; out/bundles/&lt;id&gt;.js
+bun renderer/build.ts                     # -&gt; renderer/target/release/threert-render
+
+renderer/target/release/threert-render play out/bundles/light-room.js                         # a game, in a window
+renderer/target/release/threert-render render out/bundles/cornell-box.js -o out/cornell.png --spp 32   # a scene, to an image
+node tools/three/open.ts scenes/bistro.ts # the same scene in three.js, in your browser</code></pre>
+<p>窗口操作按 README：拖动环绕，右键拖动平移，滚轮缩放，WASD / QE 飞行，R 重置，P 截图。测试命令为：</p>
+<pre><code>npm test &amp;&amp; npm run typecheck &amp;&amp; (cd renderer &amp;&amp; cargo test --release)   # scene API, gameplay, runtime and engine tests
+npm run test:render                                                      # the render test suite, on the GPU</code></pre>
+
+<h2>六、仓库里列出的演示</h2>
+<p>下面这些都来自 README 的目录，本页没有运行其中任何一个 ⚠️。</p>
+<ul>
+<li><strong>Light Room</strong>：一个小游戏，点击硬币、地板、球、木箱和墙。</li>
+<li><strong>Kabukichō Night</strong>：程序生成的新宿夜街，几乎全靠约 120 块发光招牌照明，有雨、雾和一辆出租车。R 下雨，L 打烊，V 切换视点。这块招牌数量是文档自报 ⚠️。</li>
+<li><strong>Bistro</strong>：夜间的 Amazon Lumberyard Bistro，分成切片、街区，以及「150 个步行者和 60 辆厢式车」的人群版本。人数是文档自报 ⚠️。</li>
+<li><strong>Zero-Day</strong>：Beeple 的 Zero-Day（Measure One），带动画。</li>
+<li><strong>Tokyo</strong>：来自 PLATEAU 城市模型的新宿和芝，带实时时刻。</li>
+<li><strong>Voxel level</strong>：可破坏的体素城市，有爆炸、掉落的碎块、火和烟。</li>
+<li><strong>Playground</strong>：套在实时视口外的 macOS 编辑器，有大纲、实时编辑、Play-in-Editor，以及与 UE5 的 A/B。</li>
+</ul>
+<p>仓库里还有一套文档：入门、运行时、材质函数、体素、与 three.js 的对照、相对 UE 5.8 的 Kabukichō 对等、架构与报告、路线图，以及一份给编程智能体用的场景写作 skill（<code>.claude/skills/threert-scene-authoring/SKILL.md</code>）。本页没有把这些文档逐份译出，只在附录中翻译了 README；对照数字也没有打开 <code>docs/COMPARE.md</code> 复核 ⚠️。</p>
+
+<h2>七、许可与素材边界</h2>
+<p>引擎自己的代码，以 2026-11-14 读到的根目录 <code>LICENSE</code> 为准，是 MIT，版权人为 Meshy LLC。这覆盖软件和配套文档。它不覆盖：</p>
+<ul>
+<li>macOS 和 iOS 客户端：免费使用，闭源。</li>
+<li>素材本身：不提交进仓库。文档写它们大约 1.8 GB，外加约 2 GB 的 ORCA 归档，由 <code>bun scripts/setup.ts</code> 拉到机器上的共享目录。这些体积数字是文档自报 ⚠️。</li>
+<li>Amazon Lumberyard Bistro（Amazon Lumberyard，2017）和 Zero-Day（Mike Winkelmann / Beeple 与 Kate Anderson，2019）：来自 NVIDIA ORCA，CC BY 4.0；仓库脚本把 FBX 转成 glTF，并保存各归档自带的许可文件。</li>
+<li>东京：三维模型来自日本国土交通省的 Project PLATEAU，高程和航拍来自国土地理院，道路和地点 © OpenStreetMap 贡献者（ODbL）。<code>tools/city</code> 的编译器来自 <a href="https://github.com/jeantimex/tokyo">jeantimex/tokyo</a>（MIT）。文档写：编译后的瓦片是 ODbL 下的派生数据库，不得再发布。</li>
+<li>Poly Haven 与 Quaternius 为 CC0；Khronos 的 glTF 示例模型按各模型自己的许可。</li>
+<li>OpenStrike 片段里的 cs_assault、de_inferno、de_dust2 是《反恐精英》地图，© Valve，不属于 ThreeRT，也不属于 OpenStrike 这个项目本身——这句话是 README 写的。</li>
+<li><code>renderer/third_party/</code> 里有打过补丁的依赖，各自保留原许可。</li>
+</ul>
+<p>欢迎提交 issue 和 pull request。工作流程见 <code>docs/WORKFLOW.md</code>：一项一个 PR，按层级过合并门，PR 采用 squash 合并。本页没有参与或复现这条工作流。</p>
+
+<h2>附录一、README 全文中译</h2>
+<p>以下为 2026-11-14 经 <a href="https://raw.githubusercontent.com/meshy-dev/ThreeRT/main/README.md">raw.githubusercontent.com</a> 读到的 <code>README.md</code> 全文中译。原文为英文。页首徽章、主题色 logo 与十二格总览图未转载；总览图的说明文字已译出。代码、命令、路径和包名保持原样。文中的帧率、误差、素材体积和演示规模均为原文陈述，不是本页的测量。</p>
+
+<h3>ThreeRT</h3>
+<p><strong>硬件光线追踪的 three.js。</strong></p>
+<p>在 three.js 风格的接口后面，放一个实时路径追踪器。你按写 three.js 的方式写场景，场景里的每一盏灯，都会在 GPU 的光线追踪硬件上被追踪，并且以 60 fps 运行。</p>
+<p><a href="https://threert.dev">Website</a> · <a href="https://threert.app">Apps</a> · <a href="https://threert.dev/download/">Download</a> · <a href="https://threert.dev/docs/">Docs</a> · Discord · <a href="https://x.com/ThreeRT3D">X</a></p>
+<p>ThreeRT 在一台 Apple M3 Max 上实时运行：本仓库的演示，以及用这套引擎做的射击游戏 OpenStrike。</p>
+
+<h3>Three + RT</h3>
+<p><strong>Three</strong>，指你已经熟悉的接口。<strong>RT</strong>，指它补上的三件事：</p>
+<ul>
+<li><strong>光线追踪。</strong>每一盏灯都会被追踪：阴影、间接光、反射，以及会把房间照亮的发光表面。没有阴影贴图，没有探针，没有光照贴图，也不用烘焙。</li>
+<li><strong>实时。</strong>在制作级场景里、相机在动的时候，也能跑到 60 fps：Amazon Lumberyard 的 Bistro，以及 Beeple 的 Zero-Day，在笔记本电脑上。不是停下之后才慢慢收敛的静帧。</li>
+<li><strong>运行时。</strong>这是一套游戏运行时，不只是渲染器。场景代码和游戏逻辑在引擎里运行；同一份文件也可以作为普通 three.js，在任何浏览器里跑。</li>
+</ul>
+
+<h3>入门例子看起来就是对的</h3>
+<p>用教程体量写一个场景，所有设置都保持默认。</p>
+<pre><code>import { Scene, PerspectiveCamera, Mesh, BoxGeometry, MeshStandardMaterial, DirectionalLight, SkyAtmosphere } from &quot;@threert/scene&quot;;
+
+export default function build() {
+  const scene = new Scene();
+  const sun = new DirectionalLight(0xffffff, 90000).setSunAngles(28, 100); // lux
+  scene.add(sun);
+  scene.environment = new SkyAtmosphere({ sun });
+
+  const plaster = new MeshStandardMaterial({ color: 0xd9d4cc, roughness: 0.92 });
+  const wall = new Mesh(new BoxGeometry(6.6, 3, 0.3), plaster);
+  wall.position.set(0, 1.5, -3.15);
+  scene.add(wall);
+  // ... the rest of the room: a floor, a window, a sofa, a lamp
+
+  const camera = new PerspectiveCamera(58, 16 / 9, 0.05, 200);
+  camera.position.set(-2.3, 1.45, 2.4);
+  camera.lookAt(1.0, 0.9, -1.2);
+  scene.add(camera);
+  return { scene, camera };
+}</code></pre>
+<p>左栏是「three.js，按所写直接跑」：一间房间，墙是平的，地板上没有阳光。右栏是「ThreeRT，全部默认」：同一间房间，阳光从窗子进来，墙上有反弹的光。</p>
+<p>窗外的太阳、天空、地板反弹上来的光，以及灯的辉光，都来自对场景的追踪。光使用物理单位：太阳是 90,000 lux，发光表面本身就是光源。完整文件是 <code>scenes/sun-room.ts</code>。</p>
+
+<h3>与全力开启的 three.js 对照</h3>
+<p>同一份场景文件，在同一台 Mac 上分别交给两套引擎。three.js 用上了它有的全部手段：阴影贴图、基于图像的照明，以及在 WebGPU 上它自己的 SSGI、SSR 和 TRAA。</p>
+<p>对照图（本页未转载）分别是：夜间 Amazon Lumberyard Bistro 在 three.js 中的样子与 ThreeRT 的同一帧；Beeple 的 Zero-Day 在调过的 three.js 中的样子，以及 ThreeRT 的同一帧。</p>
+<p>夜间 Bistro，1280 × 720：</p>
+<ul>
+<li><strong>ThreeRT，实时</strong>：15.5 ms（60 fps），相对参考图的误差 ΔE 为 <strong>3.4</strong>（越低越接近）。</li>
+<li>three.js，WebGPU + SSGI + SSR + TRAA：34.7 ms（29 fps），ΔE 为 10.1。</li>
+<li>three.js，调过的 WebGL：15.9 ms（60 fps），ΔE 为 12.1。</li>
+</ul>
+<p>参考图是无偏的离线渲染（每像素 4,096 个样本，无降噪器）。方法、每一个场景，以及 three.js 仍然领先的地方（它画小场景大约只要 1 ms），都写在 <code>docs/COMPARE.md</code>。</p>
+
+<h3>开始使用</h3>
+<h4>玩，以及做游戏</h4>
+<ol>
+<li>为 macOS（14 或更新，Apple 芯片）或 iPhone 和 iPad（iOS 17 或更新）<a href="https://threert.dev/download/">下载 ThreeRT</a>。客户端会拉取游戏的代码，并在设备自己的 GPU 上追踪。</li>
+<li>从应用的资料库，或从 <a href="https://threert.app">threert.app</a>（ThreeRT 应用和游戏的发布处）打开一个例子。</li>
+<li>用随 Mac 应用附带的 <code>threert</code> 命令行写自己的游戏：</li>
+</ol>
+<pre><code>threert create my-game
+cd my-game
+threert dev        # bundles on save, serves every client on your network, prints a QR code for your phone</code></pre>
+<p>在任意浏览器里打开同一个地址，看到的是这份游戏的 three.js 版本。完整步骤见 <a href="https://threert.dev/docs/">threert.dev/docs</a>。</p>
+<h4>软件包</h4>
+<ul>
+<li><code>@threert/scene</code>：three.js 风格的场景接口：网格、PBR 材质、灯、glTF 模型、物理、体积。</li>
+<li><code>@threert/gameplay</code>：游戏：状态、事务性处理器、世界处理器、逐帧脚本；输入、HUD，以及与运行游戏的应用之间的通道；确定性、可回放。</li>
+<li><code>@threert/voxel</code>：可破坏的体素关卡：爆炸、切割，以及会作为刚体脱落的碎块。</li>
+</ul>
+<pre><code>npm install @threert/scene @threert/gameplay</code></pre>
+<p><code>threert dev</code> 会替你打包这些包。若只要类型、测试，或接入自己的构建流程，也可以从 npm 安装。</p>
+<h4>从源码编译引擎</h4>
+<p>引擎是 Rust 和 <a href="https://wgpu.rs">wgpu</a>：GPU 有硬件光线查询的地方用硬件（Metal、Vulkan），没有的地方用软件 BVH。你需要 Rust、Node 24 和 Bun。</p>
+<pre><code>npm install &amp;&amp; bun scripts/setup.ts      # assets/ -&gt; the machine&#x27;s shared asset store, then fetch what is missing
+node tools/build-scenes.ts                # scenes/*.ts + games -&gt; out/bundles/&lt;id&gt;.js
+bun renderer/build.ts                     # -&gt; renderer/target/release/threert-render
+
+renderer/target/release/threert-render play out/bundles/light-room.js                         # a game, in a window
+renderer/target/release/threert-render render out/bundles/cornell-box.js -o out/cornell.png --spp 32   # a scene, to an image
+node tools/three/open.ts scenes/bistro.ts # the same scene in three.js, in your browser</code></pre>
+<p>在窗口里：拖动环绕，右键拖动平移，滚轮缩放，WASD/QE 飞行，<code>R</code> 重置，<code>P</code> 截图。</p>
+<pre><code>npm test &amp;&amp; npm run typecheck &amp;&amp; (cd renderer &amp;&amp; cargo test --release)   # scene API, gameplay, runtime and engine tests
+npm run test:render                                                      # the render test suite, on the GPU</code></pre>
+
+<h3>本仓库中的演示</h3>
+<ul>
+<li><strong>Light Room</strong>：一个小游戏：点击硬币、地板、球、木箱和墙。<code>threert-render play out/bundles/light-room.js</code></li>
+<li><strong>Kabukichō Night</strong>：一条新宿夜街，程序生成，几乎全靠约 120 块发光招牌照明；有雨、雾、一辆出租车。<code>R</code> 下雨，<code>L</code> 打烊，<code>V</code> 视点。<code>threert-render play out/bundles/kabukicho.js</code></li>
+<li><strong>Bistro</strong>：夜间的 Amazon Lumberyard Bistro：一个切片、街区，以及 150 个步行者和 60 辆厢式车的人群。见 <code>games/bistro-slice</code>、<code>bistro-district</code>、<code>bistro-crowd</code>。</li>
+<li><strong>Zero-Day</strong>：Beeple 的 Zero-Day（Measure One），带动画。见 <code>games/zero-day</code>。</li>
+<li><strong>Tokyo</strong>：来自 PLATEAU 城市模型的新宿和芝，带实时时刻。见 <code>games/tokyo</code>、<code>tools/tokyo</code>。</li>
+<li><strong>Voxel level</strong>：一座可破坏的体素城市：爆炸、掉落的碎块、火和烟。见 <code>games/voxel-level</code>、<code>docs/VOXEL.md</code>。</li>
+<li><strong>Playground</strong>：套在实时视口外的 macOS 编辑器：大纲、实时编辑、Play-in-Editor，以及与 UE5 的 A/B。<code>bun playground/build.ts &amp;&amp; bun playground/run.ts</code></li>
+</ul>
+
+<h3>仓库布局</h3>
+<ul>
+<li><code>renderer/</code>：引擎。Rust + wgpu 路径追踪器、实时视口、降噪、后期，以及嵌入的、用来跑场景代码的 QuickJS（<code>threert-render</code>）；<code>voxel-core</code> 和 <code>physics-core</code>（Rapier）也可以编成 wasm32。</li>
+<li><code>packages/</code>：<code>@threert/scene</code>、<code>@threert/gameplay</code>、<code>@threert/voxel</code>。</li>
+<li><code>scenes/</code>、<code>games/</code>：参考目录（Cornell box、材质格、Bistro、Zero-Day 等）以及可玩内容。</li>
+<li><code>tests/</code>：渲染测试套件（解析性检查与时间性检查）以及 three.js 兼容性集合。</li>
+<li><code>tools/</code>：打包、基准与门禁、three.js 对照、东京管线。</li>
+<li><code>compare/</code>：入门场景在 three.js 与 ThreeRT 中的并排对照。</li>
+<li><code>ue5/</code>：UE5 参考捕捉（Lumen 与 Path Tracer）：用来衡量渲染器的基准真相。</li>
+<li><code>playground/</code>：ThreeRT Playground，macOS 编辑器。</li>
+<li><code>site/</code>：<a href="https://threert.dev">threert.dev</a>：落地页、下载和文档（应用本身在 <a href="https://threert.app">threert.app</a>）。</li>
+</ul>
+
+<h3>文档</h3>
+<ul>
+<li><a href="https://threert.dev/docs/">入门</a>：客户端、第一个场景、开发循环、软件包。</li>
+<li><code>docs/RUNTIME.md</code>：场景代码如何在引擎里运行：setup、处理器、世界处理器、逐帧脚本、物理。</li>
+<li><code>docs/MATERIAL_FUNCTIONS.md</code>：写在材质上的一段 WGSL，路径追踪器在每次命中时都会运行它。</li>
+<li><code>docs/VOXEL.md</code>：体素引擎，在一个可破坏关卡上测量过。</li>
+<li><code>docs/COMPARE.md</code>：全力开启的 three.js 对 ThreeRT，比帧率和图像质量。</li>
+<li><code>docs/PARITY.md</code>：把 Kabukichō 按同一份简报在 UE 5.8 里做一遍，以及引擎从中得到了什么。</li>
+<li><code>docs/ARCHITECTURE.md</code>、<code>docs/REPORT.md</code>：这套引擎为之而写的无服务器玩法与渲染运行时。</li>
+<li><code>docs/ROADMAP.md</code>：目标、计划，以及每一步量到了什么。</li>
+<li>场景写作 skill（<code>.claude/skills/threert-scene-authoring/SKILL.md</code>）：和编程智能体一起，对照照片写场景。</li>
+</ul>
+
+<h3>贡献</h3>
+<p>欢迎提交 issue 和 pull request。<code>docs/WORKFLOW.md</code> 说明工作如何落地：一项一个 PR，按层级过合并门，以及 CI。PR 采用 squash 合并。</p>
+<p>项目最早在另一个仓库里开始，于 2026-11-10 抽出；文档里的 PR 编号 #1 到 #139，以及其中提到的 <code>cloud/</code> 和 <code>render-node/</code> 目录，指的是那个仓库。</p>
+
+<h3>许可与致谢</h3>
+<p>ThreeRT 使用 <a href="https://github.com/meshy-dev/ThreeRT/blob/main/LICENSE">MIT 许可</a>。macOS 和 iOS 的客户端可免费使用，但是闭源。</p>
+<p>素材不在仓库里；<code>bun scripts/setup.ts</code> 会去拉取。第三方内容保留各自条款，列在 <code>docs/ASSETS.md</code>：</p>
+<ul>
+<li><strong>Amazon Lumberyard Bistro</strong>：Amazon Lumberyard（2017）。<strong>Zero-Day</strong>：Mike Winkelmann（Beeple）和 Kate Anderson（2019）。两者都来自 NVIDIA 的 Open Research Content Archive（ORCA），CC BY 4.0，从 FBX 转换成 glTF。</li>
+<li><strong>Tokyo</strong>：三维城市模型来自 Project PLATEAU（日本国土交通省 MLIT）；高程和航拍来自国土地理院（GSI）；道路和地点 © OpenStreetMap 贡献者（ODbL）。<code>tools/city</code> 里的编译器来自 <a href="https://github.com/jeantimex/tokyo">jeantimex/tokyo</a>（MIT）。</li>
+<li>Poly Haven 和 Quaternius 的素材是 CC0；glTF 示例模型来自 Khronos。</li>
+<li>上文 OpenStrike 片段里的地图（cs_assault、de_inferno、de_dust2）是《反恐精英》地图，© Valve，不属于这两个项目中的任何一个。</li>
+</ul>
+<p>three.js 是一个独立的开源项目；ThreeRT 与它没有从属关系。</p>
+<p>一项来自 MeshyAI 的研究项目。</p>
+
+<h2>附录二、LICENSE 原文</h2>
+<p>以下为 2026-11-14 经 <a href="https://raw.githubusercontent.com/meshy-dev/ThreeRT/main/LICENSE">raw.githubusercontent.com</a> 读到的根目录 <code>LICENSE</code> 原文，未作改动。</p>
+<pre><code>MIT License
+
+Copyright (c) 2026 Meshy LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© 2026 Meshy LLC（ThreeRT 源码与配套文档，MIT License）。macOS / iOS 客户端闭源，本页未收录。第三方场景、东京数据与 Valve 地图按各自条款，本页未转载这些素材，也未转载十二格总览图。three.js 为独立开源项目。本页为非官方中文导读与翻译，仅供阅读学习；源码、文档与客户端请见原仓库与官方站点。仓库：<a href="https://github.com/meshy-dev/ThreeRT">github.com/meshy-dev/ThreeRT</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/meshy-dev/ThreeRT" rel="noopener">github.com/meshy-dev/ThreeRT</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

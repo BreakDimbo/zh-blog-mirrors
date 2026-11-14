@@ -1,5 +1,20 @@
 [
   {
+    "slug": "meshy-threert",
+    "title": "「ThreeRT」：用你熟悉的 three.js 写法，在 GPU 上实时追光",
+    "desc": "Meshy（meshy-dev / Meshy LLC）的 ThreeRT：一套放在 three.js 风格接口后面的实时路径追踪引擎，Rust + wgpu，场景与玩法包为 TypeScript。同一份场景文件也可作为普通 three.js 在浏览器里跑。根目录 LICENSE 于 2026-11-14 现场核为 MIT（Copyright (c) 2026 Meshy LLC）；macOS / iOS 客户端闭源，素材不在仓库内，Bistro / Zero-Day 为 CC BY 4.0，东京数据与 Valve 地图另有条款。导读 + README 全文中译 + LICENSE 原文。插图仅为入门场景 sun-room 静帧。未编译、未运行、未下载客户端 ⚠️。对照帧率与 ΔE、素材体积、演示规模为仓库自报 ⚠️。星数会变 ⚠️。",
+    "description": "Meshy 的 ThreeRT 项目导读：硬件光线追踪的 three.js 风格引擎，MIT 管源码，客户端闭源，素材另有边界。附 README 全译。未运行 ⚠️。对照数字自报 ⚠️。星数会变 ⚠️。",
+    "source": "GitHub · meshy-dev/ThreeRT（MIT，客户端与素材另有边界）",
+    "date": "2026-11-14",
+    "type": "导读 + README 中译",
+    "subtitle": "硬件光线追踪的 three.js · 项目导读 + README 全译",
+    "original_url": "https://github.com/meshy-dev/ThreeRT",
+    "spine": "会追光的 three.js",
+    "summary": "用 three.js 的写法写场景，在 GPU 上实时路径追踪；MIT 管源码，不管闭源客户端和第三方素材",
+    "kind": "项目",
+    "by": "Meshy LLC / MeshyAI"
+  },
+  {
     "slug": "mxvdl-paris-freestyle",
     "title": "「Paris Freestyle」：按节拍在画笔描边的巴黎街上颠球",
     "desc": "Max Vedel（@mxvdl）的浏览器演示《Paris Freestyle》：在风格化的巴黎街上按节拍颠球，可调镜头、角色、笔触与声音，并可在页内导出 MP4。自称由 Claude Fable 5.2 写成。本页为导读，收录作者短帖全文中译；2026-11-13 增补他发布的完整拆解（约 100 秒视频未观看）及关于笔触通道、自定义选项的说明。首页与脚本声明 © 2026 Max Vedel / Spellbound Labs，All rights reserved（2026-11-13 复查仍无开放许可证）。演示页可见 three.js r147（MIT，不能外推到作品）。不转载视频与角色贴图。three.js 官方账号 @threejs 转发了演示链接。「Fable 写成 / 唯一图片是角色贴图 / 也可轻松做出来」为自报 ⚠️。未播放演示、未看视频 ⚠️。传播数字会变 ⚠️。",
