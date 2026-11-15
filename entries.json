@@ -1,5 +1,20 @@
 [
   {
+    "slug": "setodev-rakuworld",
+    "title": "「Rakuworld」：蜡笔练习本当成生存世界，还可以打造自己的小车",
+    "desc": "SETO（@Setodev92 / Steam Seto92）的独立游戏 Rakuworld 导读。蜡笔剪纸风的群体生存，可自己画出英雄；作者在 2026-11-15 的帖子里展示可打造、改装的小车，并说正在做木筏和纸板飞机以便在岛间移动。收录作者原帖与两条回复的全文中译。商业抢先体验作品，未见开放许可与公开源码仓库；不转载视频，只用封面静帧，商店文案只用短引。未试玩、未观看视频 ⚠️。小车与舒适模式尚未写入当日所见商店短介 ⚠️。线上合作口径需对照 Remote Play Together ⚠️。标价、评分数和传播数字会变 ⚠️。",
+    "description": "Rakuworld 项目导读与作者原帖全译：蜡笔世界里的群体生存，最近可以打造自己的小车。商业作品，不转载视频。未试玩 ⚠️。线上合作口径需对照 ⚠️。",
+    "source": "X · @Setodev92（SETO / Steam Seto92；商业作品，未见开放许可）",
+    "date": "2026-11-15",
+    "type": "原帖照录 + 导读",
+    "subtitle": "独立生存游戏 · 原帖全译 + 项目导读",
+    "original_url": "https://x.com/Setodev92/status/2121737747131990214",
+    "spine": "蜡笔小车",
+    "summary": "蜡笔剪纸风的群体生存游戏，作者正在加入可改装的小车，并计划用木筏和纸飞机在岛间移动",
+    "kind": "项目",
+    "by": "SETO @Setodev92"
+  },
+  {
     "slug": "anthropic-building-always-on-agents",
     "title": "建造始终在线的智能体：官方文章导读",
     "desc": "Anthropic 官方文章《Building always-on agents》独立中文导读：始终在线只是体验，实际是睡了再醒；外围靠事件收件箱、计时器、记忆、权限和发件箱五个原语拼起来。成本数字为原文自报，本站未复现 ⚠️。",
