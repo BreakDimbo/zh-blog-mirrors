@@ -1,5 +1,20 @@
 [
   {
+    "slug": "anthropic-building-always-on-agents",
+    "title": "建造始终在线的智能体：官方文章导读",
+    "desc": "Anthropic 官方文章《Building always-on agents》独立中文导读：始终在线只是体验，实际是睡了再醒；外围靠事件收件箱、计时器、记忆、权限和发件箱五个原语拼起来。成本数字为原文自报，本站未复现 ⚠️。",
+    "description": "Anthropic 官方文章《Building always-on agents》独立中文导读：始终在线只是体验，实际是睡了再醒；外围靠事件收件箱、计时器、记忆、权限和发件箱五个原语拼起来。成本数字为原文自报，本站未复现 ⚠️。",
+    "source": "claude.com Resources · William Hu / Anthropic",
+    "date": "2026-11-15",
+    "type": "导读",
+    "subtitle": "Building always-on agents · 独立中文导读",
+    "original_url": "https://claude.com/resources/articles/building-always-on-agents",
+    "spine": "始终在线智能体",
+    "summary": "始终在线只是体验：收件箱、计时器、记忆、权限与发件箱五个原语",
+    "kind": "长文",
+    "by": "William Hu"
+  },
+  {
     "slug": "raphael-erba-unseen-dance",
     "title": "「Unseen dance」：一群眼睛看着一个人翻腾，与一次独立复刻",
     "desc": "Raphaël Erba（@raphael_erba）发的 10 秒循环动画《Unseen dance》导读。帖文只有标题与一段 1080×1080 视频，无制作说明、无开放许可；本页不转载视频与封面帧，只写导读并引用评论短句。另附本站自写的独立复刻（canvas，零依赖，可在线看，非原作）：奶油底、白色眼形碎片从右下涌向左上，蓝发舞者拖着蓝红飘带翻腾。复刻的时间曲线、轨道、眼群运动均为推断 ⚠️，只依据一张封面静帧；未下载、未观看视频 ⚠️。传播数字会变 ⚠️。",

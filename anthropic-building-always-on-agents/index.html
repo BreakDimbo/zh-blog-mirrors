@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>建造始终在线的智能体：官方文章导读</title>
+<meta name="description" content="Anthropic 官方文章《Building always-on agents》独立中文导读：始终在线只是体验，实际是睡了再醒；外围靠事件收件箱、计时器、记忆、权限和发件箱五个原语拼起来。成本数字为原文自报，本站未复现。">
+<meta property="og:title" content="建造始终在线的智能体：官方文章导读">
+<meta property="og:description" content="独立中文导读：始终在线只是体验。五个原语如何让智能体跨多次运行自己决定何时行动。只用短引，不是全文翻译。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-15">2026.11.15</time></p>
+<h1 class="za-title">建造始终在线的智能体：官方文章导读</h1>
+<p class="za-sub" lang="en" data-za-gen>Building always-on agents · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · claude.com Resources · William Hu / Anthropic</span><span>收录 · 2026-11-15</span><span><a href="https://claude.com/resources/articles/building-always-on-agents" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原作者：William Hu，发布方 Anthropic，发表于 <a href="https://claude.com/resources/articles/building-always-on-agents">claude.com Resources</a>（Best practices · Claude Platform），原文标注日期 2026-11-13，自称阅读时间 14 分钟。原文：<a href="https://claude.com/resources/articles/building-always-on-agents">https://claude.com/resources/articles/building-always-on-agents</a>。致谢 Rodrigo Olivares、Michael Segner。本页是独立中文导读，只用短引，不是全文翻译。文章、示意图、动图与设计版权归 Anthropic 或其许可方所有；本页未转载原图、动图或官方分享图。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote>
+<p><strong>导读说明。</strong> 抓取前先读 <a href="https://claude.com/robots.txt">claude.com/robots.txt</a>（核于 2026-11-15）：<code>User-Agent: *</code> 为 <code>Allow: /</code>，本篇路径允许抓取。随后用普通 HTTPS 读取文章页，以及页脚所链的 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>（生效于 2025-06-17）和 <a href="https://www.anthropic.com/legal/consumer-terms">Consumer Terms of Service</a>（页面标注日期 2025-10-08），两份条款均在确认 <a href="https://www.anthropic.com/robots.txt">anthropic.com/robots.txt</a> 为 <code>Allow: /</code> 之后读取。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未抓取官方配图、动图或 <code>/opengraph-image/og</code> 分享图，未绕过付费墙。文章页与页脚未见开放许可（MIT、CC、Apache 等），页脚署 <code>© 2026 Anthropic PBC</code>。现场核过的商业条款把相关 documentation 列入 Services，第 F 节写明除条款另有规定外，不授予对方内容或知识产权；消费者条款第 10 节写明，除明示授予的访问与使用权外，不授予对 Services 的任何权利、所有权或利益。claude.com 本身未见单独的站点条款（<code>/terms</code> 会转到 claude.ai，本次收到 403，未绕过）。因此本页只做导读，只用短引，不照录正文，也不转载官方图。文中关于模型判断力、成本下降的数字均为 Anthropic 自报，本站未复现，一律标 ⚠️，并以 2026-11-15 读到的原文为准。</p>
+</blockquote>
+
+<p>这是一篇写给要把「始终在线」体验做进自己产品里的人看的实践指南，不是一篇评测，也不是某一款托管产品的说明书。作者把 always-on agents 定义为：有状态、会主动做事，能在多次会话之间保存上下文，并且不必等人盯着才会行动。它们仍然跑在和其他智能体相同的<a href="https://www.anthropic.com/research/building-effective-agents">核心循环</a>上；真正不同的，是外面那一层决定它何时醒来、两次运行之间留下什么、以及结果怎样交到用户手里的架构。</p>
+
+<p>文章把最近的回潮归因于模型本身的变化：判断力更好，也更知道何时该向人确认；同时智力在变便宜，长程任务受益更大。Anthropic 自报：在某一项长程编码基准上，Opus 5.5 每完成一项任务的成本比 Opus 5 低 78%，而在常规工作负载上大约低 40% ⚠️。数字链到官方的成本与智力优化文档，本站未打开该文档核对，也未复现评测。客户向他们问的，是怎样把这种体验接进已有产品，或从零做起。</p>
+
+<p>本站已经收过同一条记忆线索上的研究文章<a href="../anthropic-components-of-agent-memory/">《智能体记忆的组成》</a>，以及选型指南<a href="../anthropic-which-claude-model/">《该用哪个 Claude 模型来构建》</a>。前者讲记忆怎样写、怎样整理；后者讲该用哪个模型和哪一档 effort。本篇补的是外围怎么搭。</p>
+
+<h2>始终在线，只是一种体验</h2>
+<p>文章先把名字说清楚。原文是：</p>
+<blockquote>
+<p>An always-on agent is not actually “always on.” This is just a description of the user experience.</p>
+<p>— William Hu，<cite>Building always-on agents</cite>（claude.com，2026-11-13）</p>
+</blockquote>
+<p>它大部分时间在睡，并不消耗 token；只是定期醒来做一段工作。每一段叫做一次 <em>run</em>：收到事件，做完这件事，再把经过写回去。一次 run 发生在一次 <em>session</em> 里，也就是消息和工具调用的记录。做完就再睡，这个循环可以一直转下去。官方配了一张时间线动图，本页不转载；图注的大意是：长睡、短醒，每次醒来都是「事件到达 → 打开或接上一次 session → 跑智能体循环 → 把状态写回，供下次接着用」。</p>
+
+<h2>五个原语</h2>
+<p>外围架构被拆成五件东西：事件收件箱、计时器、记忆、权限、发件箱。下面按原文顺序说。</p>
+
+<h3>事件收件箱</h3>
+<p>多数智能体只在用户发来一条消息时才跑。始终在线的智能体还可以被 webhook、定时任务和后台作业唤醒。若让每个事件源直接去调智能体，两个事件同时到达就可能抢着开两次 run，过程中崩溃也可能把事件丢掉。</p>
+<p>所以事件先进入收件箱，再由一个 worker 取走。最简单的版本有三部分：一份持久的事件清单（通常是一张数据库表）、一个写入清单的处理端点（通常是 HTTP）、以及一个读取清单的后台服务。收件箱要记录每条事件的状态，并按来源的唯一标识去重。文章建议先按用户各设一个收件箱，需要更大并行时再拆。</p>
+<p>新事件进来时，处理端点写入收件箱并叫醒 worker。接续先前工作的事件（例如用户的回复）应回到已有 session；其余则开一次新的 session。worker 把事件交给智能体循环，等这次 run 结束，再把对应事件标成完成。</p>
+<p>文章给了几条实践上的提醒：处理端点要尽快确认收到——有些 webhook 把慢响应当成失败——深度检查（例如提示注入）放到 run 里再做；收件箱才是事实来源，worker 被叫醒后应先从收件箱拉取最新事件，这样中途死掉的 worker 可以由下一个接着重试；同一个收件箱同一时刻只应有一个活动的 worker，以免重复劳动或互相覆盖，中途又来新事件时，可以推到下一次 run、并进当前这次，或者中断再重启；多个待处理事件应尽量合并，例如用户连发几条消息，可以并成一次 run，只回复一次。</p>
+
+<h3>计时器</h3>
+<p>计时器和收件箱一起，才让智能体显得会主动做事。计时器大致分两类：跟进（follow-up）是智能体给自己设的截止时间，例如过一会再看有没有回复；日程（schedule）是按已知节奏重复的任务，例如每天一份简报。</p>
+<p>计时器要放在单独的持久存储里，通常是另一张表。收件箱里只应放已经到期、可以立刻动手的事件。跟进和日程可以用相近的字段，但日程还要记下如何复发。</p>
+<p>计时器自己不会开一次 run。一个调度器按固定间隔扫描存储，把到期的项目变成收件箱里的事件，再叫醒 worker。跟进到期后标成完成；日程则把下次到期时间推到下一回。调度器可以自建，也可以用现成的持久执行引擎。</p>
+
+<h3>记忆</h3>
+<p>始终在线的智能体要跨许多互不连续的 run 工作，连续性靠记忆。记忆也应有自己的存储。文章举他们产品里的例子：Claude Code 的 auto memory，以及 Messages API 的 memory tool，都做成一个文件目录；用在始终在线的智能体上时，这些目录应落到数据库或对象存储，好让记忆活得比某个 worker 更久。⚠️ 这是原文对自身产品的描述，本页不把它写成对所有实现的规定。</p>
+<p>经验法则是：只保存没法再查到的东西。若某项内容已经活在问题跟踪系统之类的别处，就存一个指针，而不是再抄一份。文章建议至少分四类：</p>
+<ul>
+<li><strong>用户指示</strong>：关于智能体该怎么行事的说明，单独成文件，每次 run 开始时加载。人并不总在场，这些指示必须能带到下一次。</li>
+<li><strong>用户笔记</strong>：已经了解到的角色、偏好和纠正。可以先用一个文件，变长后再拆成若干小文件；那时每次只预加载一份索引，需要细节时再把单个文件拉进上下文。</li>
+<li><strong>已经对用户说过的话</strong>：避免重复。可以单独成文件在每次 run 开始时加载，也可以由 worker 带上最近几条对用户的消息。</li>
+<li><strong>任务进度</strong>：每件进行中的事各有一份进度，写清做了什么、还剩什么，好让下一次 run 接着做。和用户笔记一样，开始时只加载索引，需要时再读具体文件。</li>
+</ul>
+<p>官方示范图（本页不转载）把每次 run 开始时加载的文件写成 <code>instructions.md</code>、<code>index.md</code> 和 <code>reported.md</code>，并把 <code>notes/</code> 与 <code>progress/</code> 留到需要时再读。智能体在 run 期间写入记忆。图中的文件名是示例，不是必须沿用的约定。</p>
+<p>以上都是一次 run 里写下的记忆。此外还可以加上 dreaming：回看过往 session，清理过时条目，并找出只有连看许多次 run 才会出现的模式。细节指向本站已收的<a href="../anthropic-components-of-agent-memory/">《智能体记忆的组成》</a>。</p>
+
+<h4>上下文窗口里装什么</h4>
+<p>动手之前，智能体要先载入系统提示、工具定义和记忆文件。这份起始上下文每次 run 都会带上，所以应尽量精瘦，并使用提示缓存来降低费用。新 session 只带着这份开销和触发本次 run 的事件出发；已有 session 则会带回先前的消息和工具调用。session 太长时，可以压缩较旧的消息，或另开一次 session。两种做法都会丢掉细节，所以需要留下来的东西，应沿途写入记忆。</p>
+
+<h3>权限</h3>
+<p>文章认为，权限是始终在线的智能体风险最大的地方。一次 run 握着用户的访问权，而且本来就是无人值守的。每次工具调用，智能体都要决定：自己继续、拦住，还是等批准。</p>
+<p>组件和其他智能体相同，但用法要适应后台工作：</p>
+<ul>
+<li><strong>凭证存储</strong>：建议的模式是在智能体环境外放一个代理，由代理把密码或访问令牌注入出站请求。智能体发出的请求本身不带真实凭证。这与本库先前记下的「大脑/双手分离」是同一类做法。</li>
+<li><strong>自动模式</strong>：文章指向 Claude Code 里的 auto mode——用分类器审查较高风险的动作，拦住判定为危险的那些，让模型另找更安全的办法。最重要的决定，仍需要人看一眼。⚠️ 这是对 Claude Code 已有机制的转述，不是一份可独立核对的评测。</li>
+<li><strong>推迟的工具调用</strong>：Claude Code 可以用 hook 把一次工具调用推迟，等人补一句说明或批准。调用被推迟时，这次 run 结束，session 停在调用中途；请求可通过 MCP Apps 一类的交互卡片展示给用户，用户的答复作为事件回到收件箱，再开一次新的 run，从保存的 session 接着做。等待期间，worker 仍可处理其他事件，智能体不必被卡住。</li>
+</ul>
+
+<h3>发件箱</h3>
+<p>多数智能体把回复边生成边推给用户，人可以跟着看推理、工具调用和成文。始终在线的智能体把大部分工作放在后台，用户拿到的是结果和少量说明，而不是全程逐步展开。</p>
+<p>一次 run 的结束只有三种：向发件箱送一条消息；判断什么都不必说；或用推迟的工具调用去要权限、要补充。多数情况下，一个直接把消息送给用户的「发送」工具就够了。只有需要控制发送节奏，或希望在出错后还能恢复时，才值得做正式的发件箱。</p>
+<p>发件箱是另一张待发出消息的表，调度员（dispatcher）相当于收件箱那边的 worker：读出待发送的消息，决定交哪些，再送给用户。推迟调用的请求可以走发件箱，也可以直接出现在界面里。</p>
+<p>比投递机制更要紧的，是发送的数量。发得太多会吵，发得太少又会漏掉用户该知道的事。文章建议用评测来找平衡，并认为实践上最好先偏安静，再逐渐赢得更多注意力。</p>
+
+<h2>这五件东西怎样接在一起</h2>
+<p>每次 run 都从收件箱里的一个事件开始，无论它来自用户消息、webhook 还是计时器。worker 取到事件后，在新的或已有的 session 里叫醒智能体。智能体先读记忆作为基线，在权限范围内行动，再把学到的写回记忆。run 结束后把一行写入发件箱，由调度员交给用户。</p>
+<p>它们构成一个循环：一次 run 可以给自己设一枚计时器，稍后再把自己叫醒；用户对消息的答复，会作为事件回到收件箱。单次 run 很短，循环本身可以一直转，这才让人觉得它始终在线。官方另有一张把五个原语接在一起的动图，本页不转载。</p>
+
+<h2>核实与版权</h2>
+<p>抓取前先读 <code>https://claude.com/robots.txt</code>，内容为 <code>User-Agent: *</code>、<code>Allow: /</code>，以及两条 sitemap。文章路径不在禁止之列。随后用普通 HTTPS 读取原文 HTML，以及页脚所链的 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a> 与 <a href="https://www.anthropic.com/legal/consumer-terms">Consumer Terms of Service</a>。anthropic.com 的 robots.txt 为 <code>Allow: /</code>。未调用任何 <code>/api/</code> 或未公开接口，未下载视频、音频、官方配图或分享图，未使用商标。</p>
+<p>版权结论：文章本身未声明开放许可，页脚为 <code>© 2026 Anthropic PBC</code>。Commercial Terms（生效于 2025-06-17，核于 2026-11-15）覆盖相关 documentation；第 F 节未另授转载或复制权。Consumer Terms（页面标注 2025-10-08，同日核过）把相关网站列入 Services，第 10 节除明示授予的访问与使用权外，不授予对 Services 的权利。claude.com 未见可读取的单独站点条款。本库对 anthropic.com / claude.dev 博文另有「公开导读 + 私有全译」的惯例（R8）；本篇是 claude.com Resources 上的实践文章，精神相近，因此私有全文中译只留在本库 wiki，不上站。公开页只做导读，只用短引，不转载正文与官方图。</p>
+<p>⚠️ 未核实或未复现（核于 2026-11-15，依据原文，非独立测量）：「最新模型判断力更好、更知道何时该确认」；「智力在变便宜，长程任务受益最大」；在某一项长程编码基准上，Opus 5.5 每完成一项任务的成本比 Opus 5 低 78%，常规工作负载大约低 40%（本站未打开所链成本文档核对）。原文把 auto memory、memory tool、auto mode 和推迟工具调用的 hook 作为其产品中的既有机制来引用，本页未独立对照那些文档的当前文本。作者职衔与所属团队未在文中写明。示意图中的文件名只是示例。阅读时间 14 分钟为页面自报。</p>
+<p>署名：William Hu / Anthropic。原文：<a href="https://claude.com/resources/articles/building-always-on-agents">https://claude.com/resources/articles/building-always-on-agents</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读，仅供阅读学习；原文、配图与设计版权归 Anthropic 或其许可方所有。原文：<a href="https://claude.com/resources/articles/building-always-on-agents">claude.com/resources/articles/building-always-on-agents</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://claude.com/resources/articles/building-always-on-agents" rel="noopener">claude.com/resources/articles/building-always-on-agents</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
