@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「Feather」：停在枝上的蜂鸟，转头时喉羽会亮成紫色</title>
+<meta name="description" content="Theo Tillberg（@theo_t）Codevember 2026 第 12 天《Feather》导读：一只停在苔藓枝上的紫喉山宝石蜂鸟，每根羽毛都是几何体，喉斑用按羽片法线收紧的瓣做出结构色。仓库 MIT。导读 + README 全文中译 + LICENSE 原文。封面为本站在作品页实时截取的一帧。未观看原帖视频 ⚠️。README 与源码有几处不完全吻合 ⚠️。">
+<meta property="og:title" content="「Feather」：停在枝上的蜂鸟，转头时喉羽会亮成紫色">
+<meta property="og:description" content="Codevember 第 12 天：一只停着的、绑好骨骼的蜂鸟，羽毛会随着你的视线亮起来。MIT。导读 + README 全译。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-15">2026.11.15</time></p>
+<h1 class="za-title">「Feather」：停在枝上的蜂鸟，转头时喉羽会亮成紫色</h1>
+<p class="za-sub" lang="en" data-za-gen>一只停着的蜂鸟 · 项目导读 + README 全译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · ttillberg/codevember-2026（MIT）· 第 12 天 Feather</span><span>收录 · 2026-11-15</span><span><a href="https://ttillberg.github.io/codevember-2026/12/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Theo Tillberg（<a href="https://github.com/ttillberg">ttillberg</a> / <a href="https://x.com/theo_t">@theo_t</a>） · 作品：<a href="https://ttillberg.github.io/codevember-2026/12/">ttillberg.github.io/codevember-2026/12/</a> · 仓库：<a href="https://github.com/ttillberg/codevember-2026">ttillberg/codevember-2026</a>（<a href="https://github.com/ttillberg/codevember-2026">MIT License</a>，Copyright (c) 2026 Theo Tillberg） · 原帖：<a href="https://x.com/theo_t/status/2120901393556856980">x.com/theo_t/status/2120901393556856980</a> · 核对：2026-11-15（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">一只蜂鸟停在长着苔藓和星形小花的嫩枝上。它几乎正对你，喙微微抬起；头顶有一点蓝绿，喉部是一块会突然亮起来的紫红色羽斑。这是 Theo Tillberg（GitHub ttillberg，X <a href="https://x.com/theo_t">@theo_t</a>）为 Codevember 2026 第 12 天的词「Feather」做的浏览器作品。页面标题写成「12 · Feather」，副题里有日文「羽根」。本页以这件作品为中心，也交代它所属的十一月系列。仓库在 2026-11-15（新加坡时间）现场核到是 MIT，所以下面有导读、两份 README 的全文中译，以及许可证原文。封面是本站在作品页里实时渲染后截的一帧，不是作者的宣传视频。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库根目录 <code>LICENSE</code> 于 2026-11-15（新加坡时间）经 <a href="https://raw.githubusercontent.com/ttillberg/codevember-2026/main/LICENSE">raw.githubusercontent.com</a> 现场核对为 MIT License（Copyright (c) 2026 Theo Tillberg）。GitHub 仓库页同样标注 MIT（<code>spdxId: MIT</code>），根目录 <code>package.json</code> 的 <code>license</code> 字段也是 MIT。按本站规则，本页为项目导读 + README 全文中译 + 许可证原文。依赖的 <a href="https://threejs.org">three.js</a> 是独立开源项目，许可不能外推到仓库以外的第三方素材；本日未见作者另外声明第三方贴图或录音。作者本人的短帖全文中译并附原文。本页不转载、不下载原帖视频，也不转载系列首页里的预览视频。</div>
+
+<figure>
+<img src="images/cover.webp" alt="深绿色失焦林地前，一只蜂鸟停在长着苔藓和右侧星形小花的褐色枝条上。它几乎正对镜头，细喙朝上，头顶带一点蓝绿色，喉部有一块明亮的紫红色鳞状羽斑，胸腹是深绿色到紫灰色的体羽，深色尾羽下垂。画面里没有人物。" width="1200" height="1200">
+<figcaption>本站 2026-11-15（新加坡时间）在作品页实时渲染后截取的一帧（1200×1200）。因默认后期与景深在无硬件加速环境下几乎停在加载线稿上，封面使用作品自带的 <code>?still&amp;clean&amp;nopost</code>：相机不再晃，界面文字关掉，并跳过景深和调色。它仍是同一套实时画面，只是没有那一层后期。© 2026 Theo Tillberg，MIT License。画面里没有人物。</figcaption>
+</figure>
+
+<h2>这是什么</h2>
+<p><a href="https://ttillberg.github.io/codevember-2026/12/">第 12 天的演示页</a>把作品写成：「一只绑好骨骼、停在枝上、带着虹彩羽毛的蜂鸟」（A rigged hummingbird, perched, with iridescent feathers）。日录 <code>12/README.md</code> 写得更具体：这是一只紫喉山宝石蜂鸟（purple-throated mountain-gem，源码里的学名是 <i lang="la">Lampornis calolaemus</i>），根据「几秒参考影像」做成；它有绑定，会按程序自己活动，每一根羽毛都是真正的几何体。作者还写，鸟和 Blender 栖枝用 Fable 5.2 完成，场景、后期和粘合用 Opus 5.5。这些制作过程是作者自述，本页没有对照会话记录或参考影像 ⚠️。</p>
+<p>它属于仓库 <a href="https://github.com/ttillberg/codevember-2026">ttillberg/codevember-2026</a>：2026 年十一月里，尽量一天做一个小实验，词表来自 <a href="https://x.com/thespite/status/2116974998212772095">@thespite</a> 分享的提示清单。README 写明：「不是每天都做，这样也没关系。」2026-11-15 看到的系列首页写着「6 of 30 days」，已经上线的是第 5 天 Moss、第 6 天 Orrery、第 7 天 Hollow、第 8 天 Tesseract、第 9 天 Membrane，以及这一天的 Feather。其他日子在表里还是空的。本页不展开那五件作品，只把它们当作同一系列里的邻作。</p>
+<p>仓库公开首页在核对当日的内嵌数据里，创建时间是 2026-11-05 22:14（新加坡时间；上游记录 2026-11-05T14:14:19.000Z），star 约为 15，watch 约为 0；这些都会变 ⚠️。GitHub Pages 上这一天的页面 <code>Last-Modified</code> 为 2026-11-15 01:38（新加坡时间；上游 2026-11-14T17:38:41 GMT）。依赖是 three.js <code>^0.187.0</code> 与 Vite，日录 <code>package.json</code> 把这一天标为 2026-11-12。</p>
+
+<h2>怎么看、怎么互动</h2>
+<p>打开页面后，先会看到一张画在方格纸上的墨水线稿，栖枝的 Blender 模型载入后，再淡入成片。你可以拖动镜头，在一个偏前方的范围内绕着看，但不能转到背后或钻到枝下；手机上单指不会拖镜头，而是像鼠标悬停一样被鸟注意到，双指仍可缩放。移动指针时，它常常会把喙转过来跟着看；指针停住后，它很快回到自己的事上。点击会在面前的空中丢下一粒种子，它可能注视、再啄住、用舌头送进去。按空格会吓到它。页面右下角还有动作按钮和设置：丢种子、放进一只小虫、让它唱歌、抖羽、飞走、换一套颜色，以及手持感、景深、曝光和喉斑闪光的强度。</p>
+<p>键盘也暴露了不少内部开关。作者在回复里对 @BlurSpline 说：按 H 就能看出真相。源码里，H 会沿脖子切开，把头以上改成线框。其他调试参数写在这一天的 README 里，例如 <code>?nopost</code> 关掉后期，<code>?procbranch</code> 退回程序化小枝，<code>?bones</code> 和 <code>?wire</code> 查看骨骼与线框。设置里还有一段约半分钟的 Demo 脚本，会依次示范抖羽、捉虫、唱歌和啄种子。</p>
+<p>有一处需要并置来看。这一天的 README 写「它还不会飞」，但当日源码已经有「飞走」：按 F 或动作菜单会让它起飞离开，几秒后再回到枝上。本页把「飞走」写成源码里已经存在的行为，并标明 README 这句可能稍旧 ⚠️。</p>
+
+<h2>它是怎么做出来的</h2>
+<p>实现都在 <code>12/src</code> 里，作者自己的 README 已经把结构写清楚。下面按源码核对后的理解来写，不改写成另一种做法。</p>
+<ul>
+<li><strong>一层层写出姿态，再一次落到骨头上。</strong>呼吸、注视、眨眼、抖羽、尾巴、翅膀、觅食、受惊和离开，各自作为一层去写一个共用的 <code>Pose</code>，再由求解器变成骨骼和羽毛的着色器参数。要加一种新行为，再加一层就行。</li>
+<li><strong>身体是一条放样，羽毛是真的卡片。</strong>身体从尾根放到喙基并蒙皮；喉部有一处牵引，让喉斑跟着头转。体羽、翅羽和尾羽是带蒙皮的几何，不是贴在身上的一张纹理。作者写道大约 1.1 万根体羽，外加翅羽和尾羽，本页没有逐根清点 ⚠️。每根羽毛在顶点着色器里绕根部铰接，所以抖羽是羽毛离皮肤掀起的波浪，而不是身体变胖。羽支、羽轴和边缘在片元着色器里画，并用 alpha to coverage 处理边缘。收拢的翅膀还要和身体做一次间隙求解，免得穿模。</li>
+<li><strong>那一下紫色，不是薄膜公式。</strong>喉斑和头顶的闪光，来自每根羽毛自己的「血小板」法线周围一条收得很紧的瓣：正面看是一种颜色，掠射时滑向另一种。作者明确写：这是按观感引导的，不是薄膜干涉模型。他在「学到的」一节里说，闪光就是一切；给整个身体上色从来都不对。源码里还能用 C 键在几种蜂鸟配色之间转：紫喉山宝石、红喉、安娜、蓝喉、火喉，只是把色相、饱和度和明度做成矩阵，交给同一套羽毛着色器。</li>
+<li><strong>活着的感觉，先来自头，而不是翅膀。</strong>注视是 40 到 95 毫秒的最小加加速度扫视，到达时带一点回振，然后在几乎不动的停顿里加上微颤；头在世界空间里稳住，不跟着身体晃。作者的总结是：停着的蜂鸟，是一个几乎不动的身体，上面顶着一个会瞬移的头——扫视时序做对了，羽毛还没动，它就已经活了。</li>
+<li><strong>枝条会让一下。</strong>默认栖枝是 Blender 里做的毡质嫩茎，带 4K 颜色、法线和 ORM，以及苔藓和会点头的星形小花；程序化小枝留作后备。鸟停在上面时，枝会在顶点着色器里弯曲，鸟跟着走。焦点对着头，鸟离开枝子时，镜头不会把焦立刻甩到空中。</li>
+<li><strong>成片还要经过一层后期。</strong>默认把场景画进 4 倍 MSAA 的半精度目标，对头部做景深，再用 Neutral 色调映射，并对照参考影像做了略微偏冷、阴影里带一点李子色的调色，加上颗粒和暗角。本页封面为了在无硬件加速的环境里稳定出图，关掉了这一层。</li>
+</ul>
+<p>绑定方面，README 写「79 根具名的 <code>THREE.Bone</code>」。按当日 <code>bird/rig.ts</code> 和物种数据清点：中轴和舌骨、两侧眼睛与眼睑瞬膜、每侧肩臂手加 10 根初级飞羽和 6 根次级飞羽、每侧 5 根尾羽，以及脚、跗跖和四趾，一共是 84 根。本页以源码清点为准，并标出与 README 的差异 ⚠️。</p>
+<p>同类可对照的浏览器 three.js 作品，还有 <a href="../blendi-painted-valley/">Painted Valley</a>、<a href="../leonxlnx-casa-ocaso/">Casa Ocaso</a>、<a href="../krisyangdev-yarn-world/">Yarn World</a>、<a href="../humpalumps-ultra-water/">Ultra Water</a>。作者提到 Fable 5.2，也可以对照 <a href="../anthropic-prompting-fable-5-2/">官方的 Fable 5.2 提示词指南导读</a>。那些不是同一件作品，也不并入本页。</p>
+
+<h2>作者怎么介绍它</h2>
+<p>作者在 2026-11-12 23:27（新加坡时间，UTC+8）发了一条短帖，带作品链接和一段视频。帖文只有两行。本页不下载、不转载这段视频，也没有观看它 ⚠️。</p>
+<blockquote>
+<p>vibe #codevember / 12 Feather</p>
+<p>听说你们喜欢鸟</p>
+</blockquote>
+<blockquote lang="en">
+<p>vibe #codevember / 12 Feather</p>
+<p>I heard you liked birds</p>
+</blockquote>
+<p>作者：Theo Tillberg（@theo_t）；发布：2026-11-12 23:27（新加坡时间）。<a href="https://x.com/theo_t/status/2120901393556856980">原帖附视频，点击观看</a>。同一条帖下，他在 2026-11-13 08:17（新加坡时间）回复 @BlurSpline：「按 H 就能看出真相 😂」（hit H key to figure the truth 😂）。另外两条回复分别链到仓库首页，以及一张本页未转载的图片。做法说明主要写在仓库的 <code>12/README.md</code> 里，而不是写在原帖正文中。</p>
+<p>2026-11-15 约 14:57（新加坡时间）经 X 接口读取时，这条帖约 24,035 次浏览、98 个赞、9 次转发、13 条回复、2 次引用、54 次收藏；作者账号当时约 753 名关注者。这些数字会变，只作当时记录。</p>
+
+<h2>许可</h2>
+<p>2026-11-15（新加坡时间）现场核对：根目录 <code>LICENSE</code> 为 MIT License，版权人为 Theo Tillberg，年份 2026；README 的许可一节只写了「MIT」；根目录 <code>package.json</code> 亦为 MIT。GitHub 仓库页标签与之一致。未调用 <code>api.github.com</code>。仓库内的栖枝模型与贴图随源码一起提供，未见另外的素材许可文件。three.js、页面所用的 IBM Plex Sans 与 Inter 字体是独立项目，不因本仓库的 MIT 而改变它们自己的条款。代码许可不能外推到作者原帖里的视频画面；本页因此不转载视频。</p>
+
+<h2>核实边界与署名</h2>
+<ul>
+<li>这是以《Feather》为中心的项目导读，并说明它属于 Codevember 2026 系列。仓库为 MIT，本页附 README 全译与许可证原文。</li>
+<li>本站打开过在线作品页，并用无头 Chrome（SwiftShader）截取封面。这不是在独立显卡上的完整体验，默认后期路径在该环境下几乎停在加载用的方格纸线稿上 ⚠️。</li>
+<li>⚠️ 未下载、未观看原帖视频，也未转载系列首页里各天的预览视频。</li>
+<li>⚠️ 「根据几秒参考影像做成」、以及「鸟和栖枝用 Fable 5.2、场景与后期用 Opus 5.5」，是作者在 README 里的自述，未对照参考影像或会话。</li>
+<li>⚠️ README 写「还不会飞」「79 根骨头」「指针停住 2 秒后回到自己的事上」；当日源码已有飞走，清点为 84 根骨头，指针停止后约 300 毫秒就不再当作兴趣点。本页以源码为准，并保留 README 原文翻译。</li>
+<li>⚠️ 「约 1.1 万根体羽」为作者自报，未逐根清点。星数、浏览和点赞是核对当日的快照，会变。</li>
+<li>物种中文名「紫喉山宝石蜂鸟」是对 purple-throated mountain-gem / <i lang="la">Lampornis calolaemus</i> 的通用译法；本页没有另核分类学来源。</li>
+</ul>
+
+<h2>附录一、第 12 天 README 全文中译</h2>
+<p>译自 <code>12/README.md</code>（2026-11-15 经 raw.githubusercontent.com 抓取），作者 Theo Tillberg，MIT。</p>
+<h3>12 / Feather</h3>
+<p>2026-11-12</p>
+<p>一只停在长满苔藓的小枝上的紫喉山宝石蜂鸟，是根据几秒参考影像做出来的。它有绑定、会按程序自己活动，每一根羽毛都是真正的几何体。它还不会飞。它坐在那里，呼吸，突然转头，眨眼，抖羽，轻弹尾巴；当喙转向你时，喉部的羽斑会从暗栗色一下子亮成一片紫罗兰。拖动可以绕着看，移动指针时它可能会朝那边看，点击或按空格会吓到它。</p>
+<h4>做法</h4>
+<ul>
+<li><strong>绑定</strong>（<code>bird/rig.ts</code>）：79 根具名的 <code>THREE.Bone</code>。脊柱、颈链、头、喙和下颌、眼睛、眼睑和瞬膜，翅膀一直分到每一根初级飞羽和次级飞羽，一把十根羽毛的尾扇，以及缠在栖枝上的腿和脚趾。翅膀已经准备好收拢和展开两套姿态。</li>
+<li><strong>身体</strong>（<code>bird/loft.ts</code>）：一条从尾根到喙基的参数化放样，并做了蒙皮。一处喉部牵引把颈前侧绑到头上，这样喉斑会跟着喙转。</li>
+<li><strong>运动</strong>（<code>bird/motion/*</code>，<code>bird/pose.ts</code>）：各层写入一个 <code>Pose</code>，求解器再把它变成骨骼和羽毛的 uniform。姿态、呼吸、注视、眨眼、抖羽、尾巴、翅膀、受惊。注视是 40 到 95 毫秒的最小加加速度扫视，到达时带一点回振，然后在死一般的停顿里加上微颤；头在世界空间里保持稳定，不跟着身体晃。要加一种新行为，再加一层就行。</li>
+<li><strong>羽毛</strong>（<code>bird/plumageGeometry.ts</code>，<code>bird/plumageMaterial.ts</code>）：大约 1.1 万根体羽，再加上翅羽和尾羽，两套蒙皮网格，一种材质。每根羽毛在顶点着色器里绕根部铰接，所以抖羽是羽毛离皮肤掀起的波浪，而不是身体变胖。羽支、羽轴和梳理过的边缘在片元着色器里画，用 alpha to coverage。喉斑和头顶的闪光，来自每根羽毛自己的血小板法线周围一条很窄的瓣；这是按观感引导的，不是薄膜干涉模型。阴影通道用同样的铰接。每类羽毛有一个 <code>loose</code> 值，从干脆的喉部鳞片，到绒质的面部、羽支张开的松软腹羽和胁羽，再到翅膀上的一簇绒。松软的羽毛会有抖动、结簇和分缝，哑光羽支带裂开的羽片，闪光落在单根羽支上，而不是整根羽毛。收拢的翅膀通过与身体的间隙求解来放置，让它们贴在身上，而不是穿过去。</li>
+<li><strong>觅食</strong>（<code>bird/motion/forage.ts</code>，<code>seeds.ts</code>）：点击会在空中丢下一粒种子。看见的种子会被盯着；够得着的会被取走：先犹豫一下，再稍微蓄力，用 120 到 200 毫秒扑向种子将要到达的位置，途中张喙，碰到时闭上，然后分叉的舌头舔三次，把种子顺喙吞下去，再咀嚼、咽下、甩一下头。舌头（下颌下的三根骨头）偶尔也会自己伸出来；<code>?sing</code> 会做出歌唱的姿态。够到目标的方法是求解器里的解析 IK：头的枢轴沿指向目标的直线滑动，直到喙尖落到上面，这段平移再分给颈部，看起来像脖子伸展开来。</li>
+<li><strong>休息时的翅膀</strong>是身体的一部分：放样上一条隆起的带，被覆羽和飞羽羽区覆盖，像普通体羽一样蒙皮，所以不会松脱。只有外侧初级飞羽的尖是自由的叶片。真正的臂和叶片仍然在，只是收起来，随着 <code>spread</code> 升高再长出来。</li>
+<li><strong>物种</strong>（<code>bird/species.ts</code>）：比例、羽区、颜色和节奏都做成数据，换一只鸟就是换一个对象。</li>
+<li><strong>栖枝</strong>（<code>model/branch.blend</code> → <code>public/branch.glb</code>）：在 Blender 里建模，一根毡质的嫩茎（锈斑、棕褐、一块紫色淤伤，朝梢头渐渐转绿），烘焙成 4K 的颜色、法线和 ORM，并用 Cycles 把上面所有东西的 AO 烘焙进去；上面还有不到十层卷曲的棕色毡毛（在 <code>env/branch.ts</code> 里画了三层，烘焙出来的稻草卡片看起来太直），苔藓簇，以及一侧带着毛、会点头的星形小花。它沿用程序化小枝的约定：半径 0.09，抓握处的上表面经过原点，这样脚趾才能合上。程序化小枝仍作为后备（<code>?procbranch</code>）。</li>
+<li><strong>指针</strong>：移动时，大多数注视会喙朝向它，头会带着扫视之间的滞后跟着滑，再猛地跟上；停住 2 秒，它就回到自己的事上去。</li>
+<li><strong>场景</strong>（<code>main.ts</code>，<code>env/*</code>）：相机周围一个球面，上面是失焦的森林，同样烘焙进环境贴图（饱和度减半），这样羽毛会反射同样的绿，自己却不会变绿。</li>
+<li><strong>后期</strong>（<code>post.ts</code>）：场景画进 4 倍 MSAA 的半精度目标，再做一次对焦在头部的景深收集，然后是 Neutral 色调映射，以及对照参考影像用眼睛和取样颜色对过的调色：更亮一点，略微偏冷，阴影里带一点李子色，还有颗粒和暗角。<code>?nopost</code> 会跳过这些。</li>
+</ul>
+<p>调试：<code>?nopost</code>，<code>?procbranch</code>，<code>?nofuzz</code>，<code>?pose=front|profile|up|back|three</code>，<code>?gaze=yaw,pitch,roll</code>，<code>?quiet</code>，<code>?arousal=0..1</code>，<code>?fluff=</code>，<code>?spread=0..1</code>，<code>?fan=0..1</code>，<code>?bones</code>，<code>?skin</code>，<code>?wire</code>，<code>?noflash</code>。可用 <code>window.__bird</code> 去拨弄。</p>
+<h4>学到的</h4>
+<ul>
+<li>闪光就是一切。按每根羽毛的法线和一条收得很紧的瓣来做，才会读成结构色。给整个身体上色从来都不对。</li>
+<li>停着的蜂鸟，是一个几乎不动的身体，上面顶着一个会瞬移的头。把扫视的时序做对，羽毛还没动，它就已经活了。</li>
+<li>收拢的翅膀是弱项：从正面看，肚子会挡住它们的大半。</li>
+</ul>
+<p>鸟和 Blender 栖枝用 Fable 5.2 完成，场景、后期和粘合用 Opus 5.5。</p>
+<pre><code>pnpm -C 12 dev</code></pre>
+
+<h2>附录二、仓库 README 全文中译</h2>
+<p>译自仓库根目录 <code>README.md</code>（2026-11-15 抓取），作者 Theo Tillberg，MIT。表中的「查看 / 源码」在原文里是指向演示页和仓库目录的链接。</p>
+<h3>Codevember 2026</h3>
+<p>2026 年十一月期间，一天一个小项目。不是每天都做，这样也没关系。</p>
+<p>词表来自 <a href="https://x.com/thespite/status/2116974998212772095">@thespite</a> 分享的提示清单。</p>
+<p>在线：<a href="https://ttillberg.github.io/codevember-2026/">https://ttillberg.github.io/codevember-2026/</a></p>
+<table>
+<tr><th>日</th><th>词</th><th>实验</th><th>源码</th></tr>
+<tr><td>01</td><td>Fold</td><td>—</td><td>—</td></tr>
+<tr><td>02</td><td>Shatter</td><td>—</td><td>—</td></tr>
+<tr><td>03</td><td>Melt</td><td>—</td><td>—</td></tr>
+<tr><td>04</td><td>Tangle</td><td>—</td><td>—</td></tr>
+<tr><td>05</td><td>Moss</td><td>查看</td><td>源码</td></tr>
+<tr><td>06</td><td>Orrery</td><td>查看</td><td>源码</td></tr>
+<tr><td>07</td><td>Hollow</td><td>查看</td><td>源码</td></tr>
+<tr><td>08</td><td>Tesseract</td><td>查看</td><td>源码</td></tr>
+<tr><td>09</td><td>Membrane</td><td>查看</td><td>源码</td></tr>
+<tr><td>10</td><td>Caustic</td><td>—</td><td>—</td></tr>
+<tr><td>11</td><td>Rust</td><td>—</td><td>—</td></tr>
+<tr><td>12</td><td>Feather</td><td>查看</td><td>源码</td></tr>
+<tr><td>13</td><td>Labyrinth</td><td>—</td><td>—</td></tr>
+<tr><td>14</td><td>Tension</td><td>—</td><td>—</td></tr>
+<tr><td>15</td><td>Mirage</td><td>—</td><td>—</td></tr>
+<tr><td>16</td><td>Spore</td><td>—</td><td>—</td></tr>
+<tr><td>17</td><td>Kelp</td><td>—</td><td>—</td></tr>
+<tr><td>18</td><td>Pendulum</td><td>—</td><td>—</td></tr>
+<tr><td>19</td><td>Erosion</td><td>—</td><td>—</td></tr>
+<tr><td>20</td><td>Cocoon</td><td>—</td><td>—</td></tr>
+<tr><td>21</td><td>Bolt</td><td>—</td><td>—</td></tr>
+<tr><td>22</td><td>Echo</td><td>—</td><td>—</td></tr>
+<tr><td>23</td><td>Magma</td><td>—</td><td>—</td></tr>
+<tr><td>24</td><td>Nest</td><td>—</td><td>—</td></tr>
+<tr><td>25</td><td>Veil</td><td>—</td><td>—</td></tr>
+<tr><td>26</td><td>Anamorph</td><td>—</td><td>—</td></tr>
+<tr><td>27</td><td>Burrow</td><td>—</td><td>—</td></tr>
+<tr><td>28</td><td>Hive</td><td>—</td><td>—</td></tr>
+<tr><td>29</td><td>Portal</td><td>—</td><td>—</td></tr>
+<tr><td>30</td><td>Dissolve</td><td>—</td><td>—</td></tr>
+</table>
+<h4>进行中</h4>
+<pre><code>pnpm install
+pnpm new 05          # 从 template/ 搭出第 05 天
+pnpm -C 05 dev       # 某一天的开发服务器
+pnpm build           # 把每天编进 dist/，并重新生成首页和这张表</code></pre>
+<p>见 <a href="https://github.com/ttillberg/codevember-2026">docs/GUIDELINES.md</a>。</p>
+<h4>许可</h4>
+<p>MIT</p>
+
+<h2>附录三、LICENSE 原文</h2>
+<pre><code>MIT License
+
+Copyright (c) 2026 Theo Tillberg
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© 2026 Theo Tillberg（《Feather》与 Codevember 2026 仓库源码、文档，MIT License）。three.js 为独立开源项目。原帖视频未转载。本页为非官方中文导读与翻译，仅供阅读学习；演示、源码与原帖请见原作者页面。作品：<a href="https://ttillberg.github.io/codevember-2026/12/">ttillberg.github.io/codevember-2026/12/</a>。仓库：<a href="https://github.com/ttillberg/codevember-2026">github.com/ttillberg/codevember-2026</a>。原帖：<a href="https://x.com/theo_t/status/2120901393556856980">x.com/theo_t/status/2120901393556856980</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://ttillberg.github.io/codevember-2026/12/" rel="noopener">ttillberg.github.io/codevember-2026/12/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

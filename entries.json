@@ -1,5 +1,20 @@
 [
   {
+    "slug": "ttillberg-codevember-2026-feather",
+    "title": "「Feather」：停在枝上的蜂鸟，转头时喉羽会亮成紫色",
+    "desc": "Theo Tillberg（GitHub ttillberg，X @theo_t）Codevember 2026 第 12 天《Feather》导读：一只停在苔藓枝上、绑好骨骼的紫喉山宝石蜂鸟，每根羽毛都是几何体，喉斑用按羽片法线收紧的瓣做出结构色，而不是薄膜公式。词表来自 @thespite。根目录 LICENSE 于 2026-11-15 现场核为 MIT（Copyright (c) 2026 Theo Tillberg）。导读 + 两份 README 全文中译 + LICENSE 原文。封面为本站在作品页用 ?still&clean&nopost 实时截取的一帧。收录作者短帖全译。未观看原帖视频 ⚠️。README 与源码在能否飞走、骨头数量、指针停滞时间上不完全吻合 ⚠️。约 1.1 万根体羽与 Fable / Opus 分工为作者自报 ⚠️。星数和传播数字会变 ⚠️。",
+    "description": "Codevember 第 12 天《Feather》：停着的虹彩蜂鸟，羽毛是真几何，喉斑按羽片法线闪光。MIT。导读 + README 全译。未看原帖视频 ⚠️。README 与源码有几处不完全吻合 ⚠️。",
+    "source": "GitHub · ttillberg/codevember-2026（MIT）· 第 12 天 Feather",
+    "date": "2026-11-15",
+    "type": "导读 + README 中译",
+    "subtitle": "一只停着的蜂鸟 · 项目导读 + README 全译",
+    "original_url": "https://ttillberg.github.io/codevember-2026/12/",
+    "spine": "会亮起来的喉羽",
+    "summary": "停在苔藓枝上的蜂鸟，每一根羽毛都是几何体，转头时喉羽会亮成紫色",
+    "kind": "演示",
+    "by": "Theo Tillberg @theo_t"
+  },
+  {
     "slug": "setodev-rakuworld",
     "title": "「Rakuworld」：蜡笔练习本当成生存世界，还可以打造自己的小车",
     "desc": "SETO（@Setodev92 / Steam Seto92）的独立游戏 Rakuworld 导读。蜡笔剪纸风的群体生存，可自己画出英雄；作者在 2026-11-15 的帖子里展示可打造、改装的小车，并说正在做木筏和纸板飞机以便在岛间移动。收录作者原帖与两条回复的全文中译。商业抢先体验作品，未见开放许可与公开源码仓库；不转载视频，只用封面静帧，商店文案只用短引。未试玩、未观看视频 ⚠️。小车与舒适模式尚未写入当日所见商店短介 ⚠️。线上合作口径需对照 Remote Play Together ⚠️。标价、评分数和传播数字会变 ⚠️。",
