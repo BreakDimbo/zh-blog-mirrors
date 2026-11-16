@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「All Code Is Slop (Except Mine)」：先把约束写进代码，再加快出活</title>
+<meta name="description" content="Lauren Tan（@poteto）在 AI Engineer Code Summit 的演讲导读：Grok Bot 团队自报一个月约 11,000 个 PR、回退率约 0.5%。作者原帖全译；官方页只做短引导读。本站未看视频。数字为团队自报。">
+<meta property="og:title" content="「All Code Is Slop (Except Mine)」：先把约束写进代码，再加快出活">
+<meta property="og:description" content="Lauren Tan 在 AI Engineer Code Summit 讲如何在不牺牲质量的前提下加快出活。作者原帖全译；演讲内容据官方导读页短引整理。未看视频。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>原帖照录 + 导读</span><time datetime="2026-11-16">2026.11.16</time></p>
+<h1 class="za-title">「All Code Is Slop (Except Mine)」：先把约束写进代码，再加快出活</h1>
+<p class="za-sub" lang="en" data-za-gen>All Code Is Slop (Except Mine)  ·  原帖全译 + 官方页短引导读</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @poteto  ·  AI Engineer Code Summit</span><span>收录 · 2026-11-16</span><span><a href="https://x.com/poteto/status/2121673563489140863" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">演讲：Lauren Tan（<a href="https://x.com/poteto">@poteto</a>），AI Engineer Code Summit 2026，2026-11-11，主舞台，旧金山。官方导读页：<a href="https://ai.engineer/code/2026/talks/lauren-tan">ai.engineer/code/2026/talks/lauren-tan</a>。独立成片：<a href="https://www.youtube.com/watch?v=O_zcc6Xl12g">YouTube（AI Engineer 频道，2026-11-14 首播）</a>。作者宣布帖：<a href="https://x.com/poteto/status/2121673563489140863">https://x.com/poteto/status/2121673563489140863</a>。本页对作者本人的帖子全文中译并附原文；对会议官方页、视频简介和宣传帖只做独立中文导读，只用短引。未转载视频、幻灯片、官方照片或机转文字稿。封面为自绘字体图。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote>
+<p><strong>导读说明。</strong> 抓取前先读 x.com 公开帖（经 X 公开读取工具，未调用 api.x.com 或未公开接口），以及 <a href="https://www.youtube.com/robots.txt">youtube.com/robots.txt</a>（核于 2026-11-16）：<code>/watch</code> 与 <code>/oembed</code> 未列入禁止；禁止 <code>/api/</code>、<code>/youtubei/</code>、<code>/get_video</code>、<code>/timedtext_video</code> 等。随后用普通 HTTPS 读取独立成片的 oEmbed 元数据，并从已打开的 <code>/watch</code> 页读取公开简介与首播日期；未调用 YouTube 的 Innertube 接口，未下载视频或音频，未取字幕接口。ai.engineer 的 robots.txt 为 <code>User-agent: *</code>、<code>Allow: /</code>，禁止项只有 <code>/speakers/search</code>。随后读取官方演讲页、讲者页和 <a href="https://ai.engineer/tos">/tos</a>。未打开演讲页上的讲者照片或官方分享图。本站没有观看视频。</p>
+<p>版权：作者本人在 X 上的帖子按本站规则全文中译。演讲录像、官方导读、机转文字稿、幻灯片和会议摄影属于活动内容。页脚为 <code>© 2026 AI Engineer</code>；组织方为 Software 3.0, INC。条款第 6 节「Content Use and Anti-Piracy」写明，演讲、幻灯片、音频、视频和数字资产是组织方、关联方、许可方或内容提供方的知识产权；未经事先书面同意，不得为商业或非商业目的分发或利用这些内容（核于 2026-11-16）。未见开放许可。因此本页对官方材料只做导读、只用短引，不转载正文、文字稿、幻灯片或图像。</p>
+</blockquote>
+
+<p>Lauren Tan 现在做 Grok Bot，X 简介写着 grok @bot at @SpaceXSI，也是 React Compiler 核心团队成员。2026 年 11 月 11 日，她在旧金山的 AI Engineer Code Summit 主舞台讲了这场《All Code Is Slop (Except Mine)》。11 月 14 日，AI Engineer 频道放出独立成片；当天晚上 18:36 UTC（新加坡时间 11 月 15 日 02:36），她自己把链接发到了 X。官方页写明，这场在第一天主直播里对应 1:01:02 到 1:18:38，大约 17 分 36 秒。独立成片的精确时长本站未另核。</p>
+
+<p>数字很扎眼，但官方导读和她自己的预告都把重点放在另一头：不是多开智能体，而是先让代码库、检查和验证靠得住，再谈加快出活。一个月大约 11,000 个 PR、回退率大约 0.5%，是她的团队自己报的结果，官方页也写了这不是受控实验。本站未复现，一律标 ⚠️。</p>
+
+<h2>作者宣布帖全文中译</h2>
+<p class="source">Lauren Tan（@poteto）· 2026-11-15 02:36（UTC+8）发布于 X</p>
+<blockquote>
+<p>我的 AIE 演讲上线了！来听听 Grok @bot 团队怎样在不牺牲质量的前提下，把活出得这么快。</p>
+<p>［YouTube 链接：All Code Is Slop (Except Mine) — Lauren Tan, SpaceXSI］</p>
+</blockquote>
+<details>
+<summary>英文原文</summary>
+<p lang="en">my AIE talk is up! come hear how the grok @bot team ships so quickly without compromise on quality</p>
+<p lang="en">https://youtu.be/O_zcc6Xl12g</p>
+</details>
+<p>截至 2026-11-16 上午的公开数字：约 98.8 万次展示、7,288 个喜欢、6,562 次收藏、314 条回复、612 次转帖、168 条引用。这些数字会变 ⚠️。作者没有在这条帖子的线程里自己回复。</p>
+
+<h2>会前预告帖全文中译</h2>
+<p>这场演讲的标题和若干数字，其实在开会前就已经公开过。2026-11-04，她发了一组即将使用的幻灯片，并引用了大会对首批讲者的介绍（介绍里称她为 Principal Engineer @ SpaceX）。幻灯片本身是她的作品，本页不转载。</p>
+<p class="source">Lauren Tan（@poteto）· 2026-11-05 00:26（UTC+8）发布于 X</p>
+<blockquote>
+<p>先放几张即将在 @aiDotEngineer 演讲里用的幻灯片。</p>
+<p>很高兴能讲讲我们怎样在不必通读代码的情况下，把出货量做到大约 30 倍，而性能仍然不比刚上线时差，甚至更好。</p>
+<p>当然还有很多要改进，天花板也还远没到。不过以这样不停出活、又把完成度的标准设得这么高来看，我觉得我们在「对智能体友好的架构」上下的那些注，正在起作用，把 slop 管住了。</p>
+<p>有个小事实：10 月至少有大约 230 人向 Grok Bot 合入过至少一个 PR。</p>
+</blockquote>
+<details>
+<summary>英文原文</summary>
+<p lang="en">some fun slides from my upcoming talk @aiDotEngineer</p>
+<p lang="en">very excited to share how we ship crazy amounts of code (30x'd) without reading it, yet perf is as good if not better then when we launched</p>
+<p lang="en">there's a lot more to improve of course, and the ceiling is far from being reached, but given the relentless shipping speed and our high bar for polish, i think that our agent friendly architecture bets are paying off at taming the slop</p>
+<p lang="en">fun fact: ~230 people landed at least 1 PR to grok bot in october!</p>
+</details>
+<p>同一条帖子下面，她自己补了一句：「对了，先说清楚：这张 PR 图是所有合入 Grok Bot 的 PR，不只是我自己的。」有人问幻灯片为什么是这种画风，她回了一条，只附了 <a href="https://www.tldraw.com/">tldraw.com</a> 的官网链接，并不是一份公开的幻灯片文件。</p>
+<p>再早两天，在回应 Matt Pocock 为「软件工厂」这个词做的辩护时，她写过：自己更愿意把它看成软件工程的演进，并不觉得必须用这个词；不否认它有时是方便的简称，但觉得人们常把它说得比实际更玄。她当时说，希望能在这场 AIE 上把这件事讲明白。</p>
+
+<h2>演讲导读</h2>
+<p>下面按官方演讲页的结构整理。官方页有一篇编辑写的导读，并附 441 段机转文字稿，页面写明「识别错误仍在」。本站没有看视频，也没有把机转稿当作措辞依据；事实以官方导读、YouTube 简介和作者自己的帖子为准。引语都很短。</p>
+
+<p>YouTube 简介里的章节是：把 slop 变成金子；信任金字塔与代码库质量；Dune 与可执行的架构；用 lint 规则代替注释；运行时验证与功能地图；形式验证与界面测试；把 token 花在验证上；11,000 个 PR 与 0.5% 的回退率；先打地基，再谈软件工厂。</p>
+
+<h3>开场：数字是结果，题目是信任</h3>
+<p>官方导读的第一句是：「智能体再犯同一个错时，人很容易再往 AGENTS.md 里加一条警告。Lauren Tan 希望纠正落到更难被忽略的地方：代码库、接口，或一次可执行的检查。」</p>
+<p>她从「投入数月改进智能体周围的环境之后，合入了几千个 PR」讲起。官方页写，出货量是惹眼的结果，真正的题目是信任：怎样在增加生成代码的同时，不让人必须事后去抓的缺陷一起变多。</p>
+
+<h3>把最强的约束放进代码</h3>
+<p>她用一座信任金字塔来说明纠正应该往哪移动：代码库设计和静态分析（接口、架构、重构、lint、类型、测试）排在书面说明前面；验证用来提供关于行为的证据；写下来的规则，留给那些还不能被直接编码的判断。</p>
+<p>代码库本身也是智能体最大的输入之一。留在仓库里的权宜之计，会变成下一次改动的样板；过时的写法看上去像「这里就是这么做的」，便会扩散。官方页转述了花园的比喻：以前 PR 一次只有几个，评审还能看清新长出来的东西；当成百上千个智能体不断送出改动，周围的结构就比逐一检查更要紧。清理旧例子，是为了改善以后的输出，而不只是偿还旧债。</p>
+
+<h3>消灭一类错误，而不是永远评审它</h3>
+<p>例子是内部的桌面客户端框架 Dune，约束来自做 Electron 应用的经验。官方页写到两点。</p>
+<p>其一，团队把 React 的 <code>useEffect</code> 限制在选定的框架内部，而不是要求每个智能体都完美使用它。框架提供受支持的路径，检查会拒绝不合适的替代。这是本地的架构选择，并不是说这个 hook 在所有地方都不该用。</p>
+<p>其二，主进程的代码不该进到 renderer 里。他们用 <code>electron-main</code> 和 <code>electron-renderer</code> 目录把边界写进名字，再用依赖分析和 lint 禁止跨错边界的导入。目录说明设计，可执行的检查负责执行。一类无效改动被机械拒绝之后，评审就不必在每个 PR 里重新发现它。</p>
+
+<h3>注释可能把你想删掉的权宜之计保存下来</h3>
+<p>一个不那么显而易见的失败是：智能体写下解释，给快速补丁找理由。官方页举的例子是，用命令式定时器去修补命令式与声明式代码之间的结构错位，然后再用注释说明每处权宜为什么必要。下一次，这段说明会让权宜看起来像是有意为之，等于一张许可证。它也不会像编译错误那样，逼着什么东西必须改掉。</p>
+<p>她在自己的产品里对注释采取了故意收紧的政策。官方页把可迁移的教训写得比「到处禁止文档」更窄：解释一个已知的坏模式，并不能阻止它再出现。她更希望看到的是一条有帮助的 lint 错误，指向真正的修法；或者让错误的操作在接口上根本做不出来。于是纠正时可以先问：这件事能不能变成一次检查？在加检查之前，能不能用更好的设计，把这个无效选项取消掉？</p>
+
+<h3>评审行为和证据，而不只是 diff</h3>
+<p>能写出来的代码被拦住之后，剩下的要证明它做对了。官方页写，她会看录像、截图、图示和形式验证的结果。</p>
+<p>运行时验证从很具体的地方开始：让智能体自己跑起应用，并使用调试工具。功能地图（feature map）用用户的语言给应用命名，这样「改一下侧栏」不必靠智能体去猜指的是哪个控件。可复用的命令行工具和驱动程序，给智能体一条稳定的操作路径，也给团队留下可维护、可测试的东西。</p>
+<p>他们也在试验模型检查、为选定算法做证明，以及基于性质的界面测试。她把这些当成额外的一层，而不是银弹。状态图能让评审看到用户可见的状态有哪些、哪些转换被允许；一张成功状态的截图做不到这一点。她的经济论点是：这些技术从前往往因为手工编写和维护太贵而用得少；智能体把成本压下来之后，就可以在更多产品上做更深的验证。验证并没有消失，只是预算更多地花到了这里。</p>
+
+<h3>先把内循环做好，再自动化外循环</h3>
+<p>官方页转述：她的团队在前一个月合入了大约 11,000 个 PR，相对回退率大约 0.5%，若干客户端性能指标也有改善。这些是团队自报的结果，不是「合并量一上去，任何仓库都会变好」的受控证明。⚠️ 本站未复现。结合她会前的说明，这张 PR 图统计的是所有合入 Grok Bot 的 PR，不是她一个人的。</p>
+<p>真正可带走的是顺序：先改善智能体学习的代码；让约束可执行；给智能体一种有力的方式去测试行为；然后再扩大反复调用它们的自动化。临近结尾，她提到一套发布例程：启动一个项目去 fuzz 应用，为发现的缺陷开出修复，并且可以自动合并。这种自主性，建立在前面已经搭好的环境上。如果内循环不可靠，再给它加外循环，只会生产更多不可靠的工作。</p>
+<p>官方导读的收束是：工厂并不能靠跑得更快，去挽救一套坏掉的流程。在她的讲法里，工厂之所以成为可能，是因为反复出现的错误已经被设计掉、被自动拒绝，或在人再次发现它们之前，就被验证暴露出来。</p>
+
+<h2>和先前那场 2,500 个 PR 分享的关系</h2>
+<p>2026 年 9 月，她曾把原定 Cursor Compile 伦敦场的分享发到 X 上，标题是「上个月我怎么往生产环境发了 2,500 个 PR」。本站已有导读：<a href="../poteto-2500-prs-talk/">一个月 2,500 个 PR</a>。两场不是同一段录像，但主线是连贯的：信任金字塔、Dune、用检查代替口头纠正、功能地图，以及先打地基再加快自动化。这一场把数字更新到了团队一个月约 11,000 个 PR，并把形式验证、状态图和基于性质的界面测试直接放进了演讲；也更明确地限制了 <code>useEffect</code> 的使用范围，以及注释可能怎样把权宜之计保存下来。</p>
+
+<h2>核实与版权</h2>
+<p>抓取前读过 youtube.com 与 youtu.be 的 robots.txt，以及 ai.engineer 的 robots.txt（<code>Allow: /</code>，禁止 <code>/speakers/search</code>）。用普通 HTTPS 读取了官方演讲页、讲者页和条款 <a href="https://ai.engineer/tos">https://ai.engineer/tos</a>，并用 oEmbed 核了对独立成片的标题与频道。未调用 <code>/api/</code> 或未公开接口，未下载视频或音频，未转载幻灯片、官方照片、机转文字稿或会议分享图。作者本人帖子全文中译；官方材料只做导读和短引。</p>
+<p>版权结论：演讲页与讲者页页脚为 <code>© 2026 AI Engineer</code>。条款由 Software 3.0, INC 发布，第 6 节把演讲、幻灯片、音视频和数字资产列为活动内容，并限制在未获书面同意时分发或利用。未见 MIT、CC、Apache 等开放许可。作者在 X 上的原帖可以全文中译；视频、官方导读和图像不转载。</p>
+<p>⚠️ 未核实或未复现（核于 2026-11-16）：一个月大约 11,000 个 PR、回退率大约 0.5%、若干性能指标改善、出货量约 30 倍、10 月至少约 230 人合入过至少一个 PR，均为作者或团队自报，或官方页对自报的转述；本站未看视频，也未对照代码库或发布记录。独立成片的精确时长未在 oEmbed 中给出，故只采用官方页对主直播起止时间的说明。职衔与所属机构在不同来源中写法不一：X 简介为 grok @bot at @SpaceXSI；大会 10 月的讲者介绍写 Principal Engineer @ SpaceX；演讲页写 SpaceXSI Principal Engineer；讲者页写 software engineer at xAI。本页并列记下，不加裁定。传播数字和 YouTube 播放次数会变。tldraw 的回复只指向工具官网，本站未见公开幻灯片文件。</p>
+<p>署名：Lauren Tan（@poteto）。演讲与官方导读：AI Engineer / Software 3.0, INC。原文：<a href="https://x.com/poteto/status/2121673563489140863">X 宣布帖</a> · <a href="https://ai.engineer/code/2026/talks/lauren-tan">官方演讲页</a> · <a href="https://www.youtube.com/watch?v=O_zcc6Xl12g">独立成片</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读，仅供阅读学习。作者原帖中译依据其本人在 X 发布的文本；演讲录像、官方导读、幻灯片与会议摄影的版权归 AI Engineer、Software 3.0, INC、作者或其许可方所有。本页未转载视频、幻灯片或官方图像。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/poteto/status/2121673563489140863" rel="noopener">x.com/poteto/status/2121673563489140863</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

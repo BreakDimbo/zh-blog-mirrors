@@ -1,5 +1,20 @@
 [
   {
+    "slug": "poteto-all-code-is-slop",
+    "title": "「All Code Is Slop (Except Mine)」：先把约束写进代码，再加快出活",
+    "desc": "Lauren Tan（@poteto）在 2026-11-11 AI Engineer Code Summit 主舞台的演讲导读。Grok Bot 团队自报前一个月约 11,000 个 PR、回退率约 0.5%。核心不是多开智能体，而是先把约束写进代码库、lint 和验证，再加快自动化。作者宣布帖与会前预告帖全文中译；官方演讲页、视频简介和宣传帖只做短引导读。未见开放许可；条款限制分发活动内容。未看视频，不转载录像、幻灯片、官方照片或机转文字稿。封面为自绘字体图。数字为团队自报 ⚠️。职衔与所属机构在不同来源中写法不一 ⚠️。传播数字会变 ⚠️。",
+    "description": "Lauren Tan 在 AI Engineer Code Summit 讲如何先把约束写进代码再加快出活。作者原帖全译；官方材料只做短引导读。未看视频。数字为团队自报 ⚠️。",
+    "source": "X · @poteto  ·  AI Engineer Code Summit",
+    "date": "2026-11-16",
+    "type": "原帖照录 + 导读",
+    "subtitle": "All Code Is Slop (Except Mine)  ·  原帖全译 + 官方页短引导读",
+    "original_url": "https://x.com/poteto/status/2121673563489140863",
+    "spine": "先把约束写进代码",
+    "summary": "一个月约 11,000 个 PR 只是结果；先让代码库、检查和验证靠得住，再谈软件工厂",
+    "kind": "长文",
+    "by": "Lauren Tan @poteto"
+  },
+  {
     "slug": "ttillberg-codevember-2026-feather",
     "title": "「Feather」：停在枝上的蜂鸟，转头时喉羽会亮成紫色",
     "desc": "Theo Tillberg（GitHub ttillberg，X @theo_t）Codevember 2026 第 12 天《Feather》导读：一只停在苔藓枝上、绑好骨骼的紫喉山宝石蜂鸟，每根羽毛都是几何体，喉斑用按羽片法线收紧的瓣做出结构色，而不是薄膜公式。词表来自 @thespite。根目录 LICENSE 于 2026-11-15 现场核为 MIT（Copyright (c) 2026 Theo Tillberg）。导读 + 两份 README 全文中译 + LICENSE 原文。封面为本站在作品页用 ?still&clean&nopost 实时截取的一帧。收录作者短帖全译。未观看原帖视频 ⚠️。README 与源码在能否飞走、骨头数量、指针停滞时间上不完全吻合 ⚠️。约 1.1 万根体羽与 Fable / Opus 分工为作者自报 ⚠️。星数和传播数字会变 ⚠️。",
