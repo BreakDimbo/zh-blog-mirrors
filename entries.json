@@ -1,5 +1,20 @@
 [
   {
+    "slug": "qiqileyuan-ziyaogong",
+    "title": "「紫曜宫」：云海上的道观小岛，可以坐在院里听曲、求签",
+    "desc": "kirin_alen（@qiqileyuan）的浏览器作品《紫曜宫》（Chill Taoist Vibe，taoistvibe.com）导读：云海上的道观小岛，可在小院坐着听曲，也可上山求签、许愿、观鲲。地形基于 ssochi/land（MIT License with Attribution Requirement，2026-11-16 现场核，本页保留 “Built with land” 署名）。作者介绍帖与本人回复照录；作品页未见开放许可，只做独立导读，短引致谢。封面为自制字体图。未试玩全程，未看原帖视频，未听音频 ⚠️。Fable 5.2 / Tripo3D / Codex / Suno 为作者自报 ⚠️。关于页与源码对 Ultra Water 是否复用代码的说法不一致，冲突待审 ⚠️。公开分支 kirinzhang/land 与上游 README/LICENSE 哈希相同，maps.js 不含紫曜宫 ⚠️。传播数字会变 ⚠️。",
+    "description": "云海上的道观小岛，可以坐在院里听曲、求签。作者原帖照录；作品页只做导读。未见作品级开放许可。未看视频 ⚠️。",
+    "source": "网站 · taoistvibe.com  ·  X · @qiqileyuan",
+    "date": "2026-11-16",
+    "type": "原帖照录 + 导读",
+    "subtitle": "Chill Taoist Vibe  ·  原帖照录 + 独立导读",
+    "original_url": "https://www.taoistvibe.com/",
+    "spine": "坐下来听一会儿",
+    "summary": "漂在云海上的道观小岛，可以陪老人坐着，也可以上山求签、许愿、观鲲",
+    "kind": "演示",
+    "by": "kirin_alen @qiqileyuan"
+  },
+  {
     "slug": "poteto-all-code-is-slop",
     "title": "「All Code Is Slop (Except Mine)」：先把约束写进代码，再加快出活",
     "desc": "Lauren Tan（@poteto）在 2026-11-11 AI Engineer Code Summit 主舞台的演讲导读。Grok Bot 团队自报前一个月约 11,000 个 PR、回退率约 0.5%。核心不是多开智能体，而是先把约束写进代码库、lint 和验证，再加快自动化。作者宣布帖与会前预告帖全文中译；官方演讲页、视频简介和宣传帖只做短引导读。未见开放许可；条款限制分发活动内容。未看视频，不转载录像、幻灯片、官方照片或机转文字稿。封面为自绘字体图。数字为团队自报 ⚠️。职衔与所属机构在不同来源中写法不一 ⚠️。传播数字会变 ⚠️。",
