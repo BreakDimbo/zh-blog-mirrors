@@ -1,5 +1,20 @@
 [
   {
+    "slug": "anthropic-claude-code-verification",
+    "title": "Claude Code 团队怎么看待验证：官方文章导读",
+    "desc": "Addy Osmani 在 claude.dev 的官方文章《How the Claude Code team thinks about verification》独立中文导读：先给智能体可运行的验证回路，再谈并行；优先端到端、性质测试和差异测试；检查不能被它要评判的改动改写。内部数字均为原文自报，本站未复现 ⚠️。",
+    "description": "Addy Osmani 在 claude.dev 的官方文章《How the Claude Code team thinks about verification》独立中文导读：先给智能体可运行的验证回路，再谈并行；优先端到端、性质测试和差异测试；检查不能被它要评判的改动改写。内部数字均为原文自报，本站未复现 ⚠️。",
+    "source": "claude.dev Blog · Addy Osmani / Anthropic",
+    "date": "2026-11-17",
+    "type": "导读",
+    "subtitle": "How the Claude Code team thinks about verification · 独立中文导读",
+    "original_url": "https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/",
+    "spine": "验证回路",
+    "summary": "先给可运行的验证回路，再谈并行；检查不能改写评判自己的规则",
+    "kind": "长文",
+    "by": "Addy Osmani"
+  },
+  {
     "slug": "qiqileyuan-ziyaogong",
     "title": "「紫曜宫」：云海上的道观小岛，可以坐在院里听曲、求签",
     "desc": "kirin_alen（@qiqileyuan）的浏览器作品《紫曜宫》（Chill Taoist Vibe，taoistvibe.com）导读：云海上的道观小岛，可在小院坐着听曲，也可上山求签、许愿、观鲲。地形基于 ssochi/land（MIT License with Attribution Requirement，2026-11-16 现场核，本页保留 “Built with land” 署名）。作者介绍帖与本人回复照录；作品页未见开放许可，只做独立导读，短引致谢。封面为自制字体图。未试玩全程，未看原帖视频，未听音频 ⚠️。Fable 5.2 / Tripo3D / Codex / Suno 为作者自报 ⚠️。关于页与源码对 Ultra Water 是否复用代码的说法不一致，冲突待审 ⚠️。公开分支 kirinzhang/land 与上游 README/LICENSE 哈希相同，maps.js 不含紫曜宫 ⚠️。传播数字会变 ⚠️。",

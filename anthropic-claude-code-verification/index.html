@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code 团队怎么看待验证：官方文章导读</title>
+<meta name="description" content="Addy Osmani 在 claude.dev 的官方文章《How the Claude Code team thinks about verification》独立中文导读：先给智能体可运行的验证回路，再谈并行；优先端到端、性质测试和差异测试；检查不能被它要评判的改动改写。内部数字均为原文自报，本站未复现。">
+<meta property="og:title" content="Claude Code 团队怎么看待验证：官方文章导读">
+<meta property="og:description" content="独立中文导读：验证回路让人从读每一处 diff，转到定义「做完」并审证据。只用短引，不是全文翻译。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-17">2026.11.17</time></p>
+<h1 class="za-title">Claude Code 团队怎么看待验证：官方文章导读</h1>
+<p class="za-sub" lang="en" data-za-gen>How the Claude Code team thinks about verification · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · claude.dev Blog · Addy Osmani / Anthropic</span><span>收录 · 2026-11-17</span><span><a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原作者：Addy Osmani，发布方 Anthropic，发表于 <a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/">claude.dev Blog</a>（栏目 Engineering），原文标注日期 2026-11-16，自称阅读时间 10 分钟。原文：<a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/">https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/</a>。本页是独立中文导读，只用短引，不是全文翻译。文章、配图与设计版权归 Anthropic 或其许可方所有；本页未转载原图与官方分享图。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote>
+<p><strong>导读说明。</strong> 抓取前先读 <a href="https://claude.dev/robots.txt">claude.dev/robots.txt</a>（核于 2026-11-17）：<code>User-Agent: *</code> 为 <code>Allow: /</code>，本篇路径允许抓取。随后用普通 HTTPS 读取文章页，以及同站 <a href="https://claude.dev/terms">Terms of Use</a>（页面标注最近更新于 2026-09-18）。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未抓取官方配图或 <code>/og.png</code> 分享图，未绕过付费墙。现场核过的条款写明：站点上的代码示例默认 MIT；文章、图片、视频与设计归 Anthropic 或其许可方，只允许阅读、分享链接，以及在署名后引用简短摘录，不得另行复制或转载。因此本页只做导读，只用短引，不照录正文，也不转载官方图。文中关于代码比例、内部评测和清单条目数等数字均为 Anthropic 或作者自报，本站未复现，一律标 ⚠️，并以 2026-11-17 读到的原文为准。</p>
+</blockquote>
+
+<p>这篇 Engineering 文章要回答的是：当大部分代码已经由 Claude 来写、来评的时候，怎样让智能体用证据验证自己的工作，而不是等人去读每一处改动。它和书店里已有的那篇《<a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a>》是姊妹篇，不是同一篇。作者在文中写明，先前已经谈过代码评审，这次要更往下走一层，专门讲验证。</p>
+
+<p>作者给的判断是：没有验证回路，你一次大概只能跑一两个 Claude，因为每件事都得自己检查；有了它，才谈得上并行许多个。原文原句是：</p>
+<blockquote>
+<p>Verification loops are the building block that lets you delegate more work to Claude.</p>
+<p>— Addy Osmani，<cite>How the Claude Code team thinks about verification</cite>（claude.dev，2026-11-16）</p>
+</blockquote>
+
+<p>文中还写，Claude Code 团队「绝大多数」（约 90%）代码由 Claude 编写并评审 ⚠️。这个比例在 2026-10 月那篇代码评审文章里已经出现过，当时的写法是「约 90% 代码由 Claude 写」；本篇补上了「并评审」。两者都是团队自报，本站未独立统计。</p>
+
+<p>作者把验证对质量的作用，写进一次内部测试：在结构化文件生成这项任务上，另设评分器按评分细则检查 Claude 的产出，任务成功率比普通提示词循环最多高出 10 个点，最难的题目受益最大 ⚠️。这个数字链到 Claude Managed Agents 的介绍，本站未打开那篇文章复核，也未复现评测。他同时指出，测试、基准和规格现在可以让智能体很快生成，生成之后就按软件那样反复跑，不必再消耗很多 token。回路还可以合上：如果智能体反复在同一类检查上失败，就在 hook 或 <code>CLAUDE.md</code> 里写进更明确的规则，尽量让同样的问题不再出现。</p>
+
+<h2>三种更值得投入的测试</h2>
+<p>作者认为，测试选哪种都要先避开两种失效方式。不稳定的测试会训练智能体再跑一遍，而不是去修代码；太慢的测试会让智能体在一批改动里少跑几次，问题更难定位。更重的测试，最好放在提交之前。</p>
+<p>如果只能先做一类，他建议做端到端测试。原文原句是：</p>
+<blockquote>
+<p>If you have to focus on one test type, pick end-to-end.</p>
+<p>— Addy Osmani，<cite>How the Claude Code team thinks about verification</cite>（claude.dev，2026-11-16）</p>
+</blockquote>
+<p>这类测试写的是真实用户路径，比如加购、结账、进入确认页。它不容易被「局部通过」骗过：功能要么整体可用，要么不可用，并且能给出明确的完成标准和损坏位置。单元测试更快、也更少抖动，但智能体和测试都可能看不见完整任务，于是测试过了，功能仍然是坏的。文中配了一张对照图（本页不转载）：左边是单元测试只报「30 秒超时」，右边是端到端测试带上步骤轨迹、页面截图，以及「下单按钮一直不可用，是因为支付表单没有加载」这样的说明。</p>
+<p>作者建议给智能体一双「手」和一双「眼」，让它启动、驱动并检查真实跑起来的系统，工具可以是 Chrome DevTools Protocol、模拟器或 API 试验台。功能地图也可以当成指南和评分细则：它通常从用户视角列出路径、快捷键、选择器和预期结果。</p>
+
+<p>第二种是性质测试（property tests）：先写下你认为不能被打破的约束，再用生成库（文中举了 JS/TS 的 fast-check、Python 的 Hypothesis、Rust 的 proptest）造出成千上万组输入，试图证伪。常见性质包括：往返编码（编码再解码应回到原值，解析和序列化也一样）；不变量（例如账户余额不能为负）；幂等（做两次和做一次效果相同）；等价（优化后的代码与朴素但正确的代码结果一致）。这类测试的价值，在于它补的是人容易漏掉、智能体也常在那里失败的边角；并且生成输入的偏差，和当初写代码的智能体不是同一套。规格已经和线上行为脱节、不能再当验证依据时，它也特别有用。</p>
+
+<p>第三种是差异测试（differential tests）：把旧系统当作标准答案。尤其适合功能预期保持不变的大规模迁移。用同一组输入分别跑旧系统和新系统，结果不同，就说明有缺陷或破坏性变更。输入应用随机生成，或抽一段生产流量；空白之类无关差异要先归一化；若新环境本就该和旧环境不同，则维护一份已批准的差异清单。文中链到 Anthropic 另文《AI code migration》，本页未展开。</p>
+
+<h2>Claude Code 团队自己怎么做验证</h2>
+<p>这一节是团队内部做法的转述。本站未查看他们的仓库或流水线，下列流程与数字均为原文自报，标 ⚠️ 的不再逐条重复，但都未经独立核实。</p>
+
+<h3>验证首先是把改动跑起来</h3>
+<p>作者认为，把应用从头到尾跑一遍，比只跑测试更重要。原文原句是：</p>
+<blockquote>
+<p>You wouldn't ship an iOS change without trying it in a simulator, and the same goes for Claude.</p>
+<p>— Addy Osmani，<cite>How the Claude Code team thinks about verification</cite>（claude.dev，2026-11-16）</p>
+</blockquote>
+<p>他建议让 Claude 像人或测试工程师那样测完整应用：网页改动用 Claude Chrome 扩展，移动端用 iOS 或 Android 的 MCP，桌面用 computer use，后端则在本地把服务跑起来。把「如何启动模拟器或运行应用」写成名为 <code>verify</code> 的 skill，放进仓库里靠近相关代码的 <code>.claude/skills/</code>，需要几份就放几份。Claude 在提交前会知道去用它。这份 skill 应当又快又稳，相当于冒烟测试的试验台；作者说，Anthropic 几乎所有改动都是这样测的 ⚠️。</p>
+
+<h3>失败的检查才需要人看</h3>
+<p>没人读得完每一处改动，所以他们用失败来决定哪些事需要人。Claude 会跑检查并尝试修复；同一项检查连续三轮仍然失败，它就停下，把人请来。代码的负责人自己写检查，并改到能标出负责人也会标出的问题。检查一旦把人拉进来，应当说明原因，避免对方再从 diff 里重新推断。</p>
+
+<h3>可靠性清单只检查对得上的项</h3>
+<p>他们维护一份 39 项的可靠性清单 ⚠️，每一项都有可从 diff 里读出的触发条件、对应检查，以及背后的事故或 PR。文中举的例子是「<code>--resume</code> 能加载旧的对话记录」：会话存储或消息类型一变，就要问新字段能否安全加载，因为旧记录里不会有它。Claude 先读 diff，只检查触发条件匹配的项，通常是 3 到 10 项 ⚠️，这样就不必把过往故障记在心里。</p>
+
+<h3>一个评审者，多轮进行</h3>
+<p>他们不靠再叠一个更贵的评审者来提高质量，而是把主要评审者调准。仓库里有一份 <code>REVIEW.md</code>，说明这份代码该注意什么。后续轮次应接着上一轮的上下文和过去的失败来看，而不是每次从头查一遍：这样更省，也更能找到问题。官方文档里有自定义代码评审的说明，本页未另核那些文档的当前文本。</p>
+
+<h3>改动不能改写评判自己的检查</h3>
+<p>这是全文里最硬的一条约束。原文原句是：</p>
+<blockquote>
+<p>If a change can modify the check that judges it, the check is broken.</p>
+<p>— Addy Osmani，<cite>How the Claude Code team thinks about verification</cite>（claude.dev，2026-11-16）</p>
+</blockquote>
+<p>因此 Code Review 读取的是基础分支或默认分支上的 <code>REVIEW.md</code>，而不是拉取请求里被改过的那一份。给改动设闸的规则，必须放在这次改动改不到的分支上。评审也只对特定 commit 有效：评审进行中如果又推了新提交，原先的通过就不再作数。</p>
+<p>便宜的检查要先做。智能体如果还没在本地测试就推送，等于占用共享的评审和 CI 时间。在他们团队里，Claude 会在打开拉取请求之前先跑测试、构建和 linter。可以用完成时触发测试的 hook，或把「测试套件通过」写成 <code>/goal</code> 来强制这一点。</p>
+
+<h3>新闸门先从观察模式开起</h3>
+<p>他们给每次提交盖印，记录它是怎么被验证的，也包括「没有验证」，以便事后查询。另外还有一道提交闸门：如果这一次会话里没有出现 <code>/code-review</code> 或 <code>/verify</code>，就可以拦住提交。闸门有关闭、观察和强制三档。观察模式只记录本来会被拦住的提交，用来检查误报；强制模式会真的拦住。提交说明里可以写这次为什么没做验证。同一会话里如果已经被拦住两次，下一次会放行，免得 Claude 卡死——作者补了一句，Claude Code 并不是完美的。</p>
+
+<h3>用真正要紧的缺陷来考检查本身</h3>
+<p>评审器也要被定期评审。他们跟踪：已合并的改动有多少被回退，维护者在合并前拒绝了多少，以及一组规模相当、之后一直保持干净的改动。更正式的做法，在先前那篇代码评审文章里已经写过：按当时的仓库状态复原历史事故或回退，只给正确描述该缺陷的发现计分，并用已合并且稳定的改动做对照组，避免过度报警；调参集和固定测试集分开。召回率还要拆开看：原始发现、验证之后、最终评审，三者分别统计，以免已经找到的缺陷在后段丢失。端到端只给一个总分，看不出这种损失。</p>
+<p>除了「说得对不对」，他们还看这件事重不重要。好的评审者大多能抓住技术上成立的问题，但人真正在意的是：必须修、应当修，还是只是吹毛求疵。Code Review 会把意见标成 Important、Nit 或 Pre-existing；「原先就有」的意思是，不该让这次改动的作者为已经存在的缺陷负责。召回率会调到再往上就只是在拟合评测、而不能真的抓住更多缺陷为止。</p>
+
+<h3>漏掉的问题要写成规则</h3>
+<p>在 Claude Code 的仓库里，漏检变成规则有两种办法。第一种：从人工评审意见和 PR 回退里抽常见模式；至少在两个 PR 里出现过、并且能从 diff 里识别，才有资格成为候选规则。随后由三个智能体尝试证伪，再由人在 PR 里审批。第二种：针对与已知事故相关的 PR，重放三个缺陷查找器；至少两个找到，就视为可检出的缺陷；如果在很小的 diff 上仍然漏掉，就值得写进 <code>REVIEW.md</code>。</p>
+<p>不稳定的测试按同样标准处理。Claude 不能跳过它们，也不能加睡眠或重试到通过为止。若找不到根因，就删掉这条测试，并写下原因。测试套件、验证步骤和各类 <code>.md</code> 文件只会不断变长，所以他们也会定期清理，让这些规则仍然值得跑。</p>
+
+<h2>工作会转到哪一侧</h2>
+<p>收束时，作者把验证层当成和其他系统一样需要维护的东西：它必须放在自己所评判的改动够不到的地方；要用对你真正重要的缺陷来给它打分；漏掉一次就把教训写下来，避免再漏；也要修剪这些教训，别让它们失去效用。做到这些之后，人的工作会从读每一处 diff，转到定义「做完」长什么样，并审阅证据。这也是一次能跑许多个 Claude 的前提。</p>
+
+<p>⚠️ 未核实或未复现（核于 2026-11-17，依据原文，非独立测量）：「约 90% 的代码由 Claude 编写并评审」；没有验证回路就「只能同时跑一两个」、有了就可以「并行几十乃至上百个」；结构化文件生成的内部测试「最多高出 10 个点」（所链 Managed Agents 文章本次未打开）；「几乎所有改动」都用 <code>verify</code> skill 来测；可靠性清单为 39 项、每次通常匹配 3 到 10 项；三轮失败后才叫人、观察模式与强制模式的闸门细节、漏检转规则的具体门槛，均为对内部流程的转述，本站未查看其仓库。阅读时间 10 分钟为页面自报。作者职衔未在本文写明。</p>
+<p>署名：Addy Osmani / Anthropic。原文：<a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/">https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读，仅供阅读学习；原文、配图与设计版权归 Anthropic 或其许可方所有。原文：<a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/">claude.dev/blog/how-the-claude-code-team-thinks-about-verification</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/" rel="noopener">claude.dev/blog/how-the-claude-code-team-thinks-about-verifi</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
