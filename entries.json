@@ -1,5 +1,20 @@
 [
   {
+    "slug": "xikhar-papertrails",
+    "title": "「Papertrails」：一本会在你身边展开的无尽纸世界",
+    "desc": "Shikhar（@xikhar）的浏览器作品 Papertrails 导读：纸人旅者走在一本会弹起来的无尽立体书里。作者称用 Fable 5.2 与 Opus 5.5 做成，在 three.js 里运行。2026-11-18 现场核仓库 xikhar/papertrails 为 MIT（Copyright (c) 2026 Shikhar）。导读 + 作者帖串与实质性回复全文中译 + README 全文中译 + LICENSE 原文。封面和文内截图来自仓库 README。未完整试玩、未看视频 ⚠️。用量为自报 ⚠️。「15 种生物群系」与公开构建中的名称需对照 ⚠️。作者称「只是平面素材」，公开构建同时引用约 6.1 MB 的 tiles.glb ⚠️。",
+    "description": "一本会在你身边折起来的无尽纸世界，可在浏览器里走。仓库 MIT。导读 + 原帖全译 + README 中译。未完整试玩、未看视频 ⚠️。用量与生物群系数为自报，需对照公开构建 ⚠️。",
+    "source": "X · @xikhar（仓库 xikhar/papertrails，MIT）",
+    "date": "2026-11-17",
+    "type": "原帖照录 + 导读 + README 中译",
+    "subtitle": "无尽纸艺世界 · 原帖全译 + 项目导读",
+    "original_url": "https://x.com/xikhar/status/2122682962647122403",
+    "spine": "会展开的纸世界",
+    "summary": "一个纸人旅者走在会弹起来的无尽立体书上，作者把提示词和工作步骤一并公开了",
+    "kind": "项目",
+    "by": "Shikhar @xikhar"
+  },
+  {
     "slug": "anthropic-alignment-worse-together",
     "title": "Worse Together：多用户多智能体为何一起变差：官方文章导读",
     "desc": "Anthropic Alignment Science Blog 文章《Worse Together》独立中文导读：各人把任务交给自己的智能体、去共享一份不够分的资源时，团体结果往往不如一个智能体同时服务所有人。公开页只用短引；评测数字均为原文自报，本站未复现 ⚠️。",
