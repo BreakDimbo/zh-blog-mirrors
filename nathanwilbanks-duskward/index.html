@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「Duskward」：一个 HTML 文件里的奥尼尔圆柱花园</title>
+<meta name="description" content="Nathan Wilbanks（@NathanWilbanks_）的浏览器作品 Duskward 导读：可交互的奥尼尔圆柱三维花园，自称只用一个 HTML 文件做成。收录作者原帖与回复的全文中译。作品页可试玩、可查看源码，但未见作品级开放许可；不转载源码、视频或音频。未试玩、未看视频 ⚠️。文件体积与「完全没有用到图片」的自报，与公开文件不完全一致 ⚠️。">
+<meta property="og:title" content="「Duskward」：一个 HTML 文件里的奥尼尔圆柱花园">
+<meta property="og:description" content="可交互的奥尼尔圆柱花园，装在一个 HTML 文件里。作者原帖全译；未见作品级开放许可，不转载源码与视频。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>原帖照录 + 导读</span><time datetime="2026-11-17">2026.11.17</time></p>
+<h1 class="za-title">「Duskward」：一个 HTML 文件里的奥尼尔圆柱花园</h1>
+<p class="za-sub" lang="en" data-za-gen>浏览器交互世界 · 原帖全译 + 项目导读</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @NathanWilbanks_（作品发布在 AGNT；未见作品级开放许可）</span><span>收录 · 2026-11-17</span><span><a href="https://x.com/NathanWilbanks_/status/2122359334290313441" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作品：<a href="https://agnt.gg/creation?id=DmDSpPYm">Duskward - An Interactive World</a>（AGNT） · 作者：Nathan Wilbanks（<a href="https://x.com/NathanWilbanks_">@NathanWilbanks_</a>） · 原帖：<a href="https://x.com/NathanWilbanks_/status/2122359334290313441">x.com/NathanWilbanks_/status/2122359334290313441</a> · 工具：<a href="https://agnt.gg/">AGNT</a> · 核对：2026-11-17（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">镜头贴着草地。近处是带白花的树，远处一道环形石拱水道绕着鼓壁向上弯去；水道中央立着一根细长的日晷针，针尖对着轴心那边的夜窗。这是 Nathan Wilbanks（@NathanWilbanks_）在 2026-11-17 0:01（新加坡时间，UTC+8）发出的一段约 77 秒、1920×1080 演示视频的封面静帧。作品名叫 Duskward，可以在浏览器里飞：太阳在圆柱的一头，夜在另一头，地面向墙上卷过去，飞得离太阳越远，天色就越晚。按本站规则，下面以这件作品为中心。作者本人的原帖与回复全文中译；作品本身未见开放许可，所以只做独立导读，引用都很短。不转载源码、视频或音频。</p>
+
+<div class="notice"><strong>版权说明：</strong>抓取前先核 <a href="https://agnt.gg/robots.txt">agnt.gg/robots.txt</a>（<code>User-agent: *</code> 为 <code>Allow: /</code>，禁止 <code>/analytics/</code>、<code>/login</code>、<code>/api/analytics/</code>）。随后只读取公开的作品页、<a href="https://agnt.gg/LICENSE.md">/LICENSE.md</a>、<a href="https://agnt.gg/terms">/terms</a>、作者页，以及作品页 meta 里写明的 embed 地址（重定向到 <code>/creations/DmDSpPYm/assets/</code>）。未调用 <code>/api/</code> 或未公开接口，包括 <code>/api/previews/</code>，也未调用 api.github.com。作者本人在 X 上的帖子和回复按本站规则全文中译并附原文。作品文件里未见 SPDX、MIT 或其他开放许可声明。AGNT 的条款写明用户保留自己产出的所有权，这不是把 Duskward 本身许可为开放作品。因此本页不转载 HTML 源码、内嵌字体、海报图或音效。封面只用作者发布的预览静帧，并指向原帖。灵感配图是第三方概念画，本页不转载。</div>
+
+<figure>
+<a href="https://x.com/NathanWilbanks_/status/2122359334290313441"><img src="images/cover.webp" alt="原视频封面帧：贴地看一片程序化草地，右侧一棵开白花的树，环形石拱水道沿圆柱内壁向上弯曲，中央立着一根指向轴心的日晷针。这是三维场景画面，不是真人照片。" width="1200" height="675"></a>
+<figcaption>原视频封面帧（作者发布的预览静帧，1200×675）。附件为约 77 秒、1920×1080 的视频；本页不下载、不重新托管，也未观看视频。点击图片可到原帖观看。</figcaption>
+</figure>
+
+<h2>这是一件什么作品</h2>
+<p>Duskward 是一件可以在浏览器里打开的交互世界。作品页标题是「Duskward - An Interactive World」，标明由 nathan 制作。加载画面上的短句是：「A garden inside a turning drum. The sun is at one end and the night is at the other.」（一座转动的鼓里的花园。太阳在一头，夜在另一头。）进入菜单后还有一句说明：从正午飞到黄昏；地面向墙上卷过去，再越过你的头顶；离太阳越远，天色就越晚。试玩地址是 <a href="https://agnt.gg/creation?id=DmDSpPYm">agnt.gg/creation?id=DmDSpPYm</a>，页面写着「有链接即可打开，不必注册」。</p>
+<p>作者在原帖里说，这里完全没有用到图片、3D 模型或程序库，整个可交互的奥尼尔圆柱世界装在一个 1064 KB 的 HTML 文件里，并用 AGNT，配合 Claude Fable 5.2 与 Opus 5.5 做成。模型与工具链都是作者自报 ⚠️。公开文件里的页脚写得更具体一些：「The world, its light and its music are made by code. Nature sounds made with ElevenLabs. WebGPU · one HTML file · made with AGNT.」（世界、光线和音乐由代码生成。自然音效用 ElevenLabs 制作。WebGPU · 一个 HTML 文件 · 用 AGNT 做成。）它明确要求 WebGPU，并提示在桌面版 Chrome 或 Edge 中打开。</p>
+<p>我们对公开的 embed/assets 文档做了只读核对，没有进入世界里飞一遍。去掉平台注入的存储垫片之后，这份 HTML 为 1,108,427 字节（约 1,082 KiB，或按十进制约 1,108 KB），与作者自报的 1064 KB 不完全一致 ⚠️。文件里没有找到 three.js、Babylon 等常见三维库的标识，也没有 <code>.glb</code> / <code>.gltf</code> 模型引用，渲染走的是 WebGPU。但文件并非「完全没有图片」：加载层用一张 1280×720 的 WebP 海报做背景，看起来就是这个世界自己的俯视截帧；另外还内嵌了 League Spartan 与 Fira Code 两种字体，以及名为 meadow、wind、stream、dusk、bird-a、bird-b、frog、owl 的自然音效样本。页脚已写这些自然音效来自 ElevenLabs。也就是说，「没有外部三维库、没有模型文件、场景由代码生成」可以和公开文件对上；「完全没有用到图片」如果按字面理解，并不成立 ⚠️。本页不提取、不转载这些内嵌素材。</p>
+
+<h2>可以在里面做什么</h2>
+<p>菜单把操作写得很清楚。鼠标或拖拽用来环视；W A S D 飞行；E / Q 沿轴向升起或落到地面；G 在地面行走与飞行之间切换；Shift 加速；1 到 6 是固定视点，T 是引导游览；P 打开光线、颜色和声音等设置；M、H、Esc 分别管声音、统计和这张菜单。触控是按住飞行、滑动转向，两指加速。画质可在 Low / Medium / High 之间切换。</p>
+<p>六个视点各自有一句短说明，这里按出现顺序短引：正午，果园在太阳底下；环形水道绕着鼓壁走一圈；日晷针的影子总是指向黄昏那边；离太阳越远，天色越晚；黄昏，夜窗下的灯已经亮了；一整天，收进同一眼。设置里还有几种现成的外观预设，名称是 Duskward、Long golden hour、Crystal air、Morning mist、Starlight、Storybook、Silver screen，也可以自己改，再复制链接。</p>
+<p>有人问物理是否也模拟了科里奥利效应。作者回：其实有，但完全是无意的；飞到地图中心附近还会被吸住，出不来。这是作者自述，本库未复现 ⚠️。另有人问能否在保留署名的前提下，把作品改成一款太空游戏；作者说可以，做完后告诉他，他会帮忙转发。这是写给提问者的口头许可，不能当成对所有人有效的开放许可证 ⚠️。</p>
+
+<h2>原帖全文</h2>
+<p>以下为作者英文原帖的中文译文。原帖不是长文，附件是视频。作者随后立刻补上了试玩链接、灵感图和其它截图。</p>
+<blockquote>
+<p>这里完全没有用到图片、3D 模型或程序库</p>
+<p>只是一个可交互的奥尼尔圆柱三维世界，全部装在一个 1064 KB 的 HTML 文件里</p>
+<p>用 @agnt_gg，配合 Fable 5.2 和 Opus 5.5 做成</p>
+<p>完整源码在下面 👇</p>
+</blockquote>
+<p>作者：Nathan Wilbanks（@NathanWilbanks_）；发布：2026-11-17 00:01（新加坡时间，UTC+8）。<a href="https://x.com/NathanWilbanks_/status/2122359334290313441">原帖附视频，点击观看</a>。</p>
+
+<h2>英文原文</h2>
+<blockquote lang="en">
+<p>no imgs, 3D models, or libraries were used here at all</p>
+<p>just an interactive o'neill cylinder 3D world in one single 1064 KB HTML file</p>
+<p>built using @agnt_gg with fable 5.2 &amp; opus 5.5</p>
+<p>full source below 👇</p>
+</blockquote>
+
+<h2>作者在同一线程里的回复</h2>
+<p>试玩链接（2026-11-17 00:01，新加坡时间）：</p>
+<blockquote>
+<p>自己来试试 👇</p>
+<p><a href="https://agnt.gg/creation?id=DmDSpPYm">https://agnt.gg/creation?id=DmDSpPYm</a></p>
+</blockquote>
+<blockquote lang="en">
+<p>try it yourself here 👇</p>
+<p>https://agnt.gg/creation?id=DmDSpPYm</p>
+</blockquote>
+<p>紧接着两条是「my inspo:」和「some other cool shots」。前者附的是一张奥尼尔圆柱内侧田园与镜面采光带的概念画，很像 1970 年代 NASA 空间殖民地设想图；具体画作作者与许可本次未在图上核出，本页不转载 ⚠️。后者是作者自己的场景截图拼贴：环形水道、日晷针、农舍、鹳鸟，以及夜窗一侧能看见的气态巨行星。这些是作者发布的作品截图，本页也不另托管。</p>
+<p>有人问做了多久。作者在 2026-11-17 01:16（新加坡时间）回复：</p>
+<blockquote>
+<p>智能体时间 12 小时 38 分</p>
+<p>这已经包括全部构思、游戏开发、迭代，以及视频渲染等等</p>
+<p>总共 3.98 亿 token</p>
+</blockquote>
+<blockquote lang="en">
+<p>12h38m agent time</p>
+<p>that included all ideation and game dev and iterations and video rendering and all that</p>
+<p>398M tokens in total</p>
+</blockquote>
+<p>这些数字为作者自报，未见会话记录或账单，本库未复核 ⚠️。</p>
+<p>对 @jasonkneen 能否在署名后改成太空游戏的问题（2026-11-17 01:53，新加坡时间）：</p>
+<blockquote>
+<p>当然可以，去做吧!! 做完后告诉我，我会帮忙转发 🔥</p>
+</blockquote>
+<blockquote lang="en">
+<p>hell yea, do it!! ping me when you do and I'll share it 🔥</p>
+</blockquote>
+<p>对 @LearnOpenGLES 关于科里奥利效应的问题（2026-11-17 08:00，新加坡时间）：</p>
+<blockquote>
+<p>其实有，但完全是无意的</p>
+<p>飞到地图中心附近时，你真的会把自己「卡住」，它会把你吸进去 😆</p>
+</blockquote>
+<blockquote lang="en">
+<p>yes actually, but all unintentionally</p>
+<p>you can actually get yourself "stuck" when flying near the center of the map, it sucks you in 😆</p>
+</blockquote>
+<p>同一线程里还有多条只致谢的回复，这里不逐条全录。</p>
+
+<h2>许可</h2>
+<p>2026-11-17 现场核对：作品页、公开 HTML 和作者原帖均未见 MIT、Apache、GPL 或同类开放许可证，也没有 SPDX 声明。AGNT 平台页提供「查看源码」和「下载 .html」，并写有链接即可打开。这解决的是访问方式，不是把作品放到开放许可下。</p>
+<p><a href="https://agnt.gg/LICENSE.md">AGNT Community Core License 2.0</a>（2026-09-24 生效）第 7 节写：许可方不主张对用户产出的所有权，用户可以出于任何目的使用、出售和分发这些产出，但仍须遵守所用 AI 模型或服务的条款，也不得把 AGNT 软件本身作为产出的一部分分发。<a href="https://agnt.gg/terms">AGNT 条款</a>第 4 节同样写：用户对自己用 AGNT 创建的提示词、代码、文件、工作流、生成结果和执行回执保留全部所有权。这两条说明 Duskward 的权利在作者这边，而不是 AGNT 把它开放授权给公众。作者对单条「署名后改成太空游戏」的提问给了口头同意，也要求做完后知会他，这不能外推成一般许可 ⚠️。</p>
+<p>页脚已保留 “made with AGNT” 的署名，与该许可证第 10 节关于公开场合应注明 “built with AGNT” 或 “Powered by AGNT” 的要求相符。内嵌的 League Spartan、Fira Code 以及 ElevenLabs 音效各有自己的许可，不能从「场景由代码生成」或 AGNT 的输出归属条款里一并推出。按版权分级，本页只做项目导读，对作品文案只用短引；作者本人的原帖与回复则全文中译，并附原文。本页不转载源码、视频、音频、字体或第三方概念画。</p>
+
+<h2>传播数据（快照）</h2>
+<p>2026-11-17 约 13:41（新加坡时间，UTC+8）经 X 接口读取时，原帖约 6,904 次浏览、201 个赞、14 次转发、15 条回复、133 次收藏，引用为 2；附件视频播放次数约 3,488。作者账号当时约 9,564 名关注者。这些数字会变，只作当时记录，不是效果评测。</p>
+
+<h2>核实边界与署名</h2>
+<ul>
+<li>这是以 Duskward 为中心的导读，并收录作者本人原帖与实质性回复的全文中译。作品公开发布、可查看源码，但未见作品级开放许可；本页不转载源码、视频或音频。</li>
+<li>⚠️ 未下载或观看约 77 秒的附件视频，也未在浏览器里进入世界试玩，未提取或试听内嵌音效。封面帧只代表其中一帧。</li>
+<li>⚠️ 「用 AGNT，配合 Fable 5.2 与 Opus 5.5」「智能体时间 12 小时 38 分 / 3.98 亿 token」、科里奥利效应「完全是无意的」，均为作者自报，未见会话记录。</li>
+<li>⚠️ 作者自报文件为 1064 KB；公开 assets 文档去掉平台垫片后为 1,108,427 字节，两者不完全一致。</li>
+<li>⚠️ 「完全没有用到图片、3D 模型或程序库」需对照公开文件来读：未见外部三维库和模型文件，但含有海报图、字体和 ElevenLabs 自然音效。</li>
+<li>⚠️ 对单人「署名后改成游戏」的口头同意，不能当成公开的开放许可。</li>
+<li>⚠️ 灵感配图的具体作者与许可未在图上核出，本页不转载。作品页 schema 里的发布时刻 2026-11-16 15:07:23 未标明时区。</li>
+<li>⚠️ 展示、赞、转发和关注者数量是核对当日的快照，会变。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© Nathan Wilbanks（@NathanWilbanks_）。本页为非官方中文导读与翻译，仅供阅读学习；原帖、视频与可玩页请见原作者页面。原帖：<a href="https://x.com/NathanWilbanks_/status/2122359334290313441">x.com/NathanWilbanks_/status/2122359334290313441</a>。作品：<a href="https://agnt.gg/creation?id=DmDSpPYm">agnt.gg/creation?id=DmDSpPYm</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><a href="../">返回录像带书店</a></p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/NathanWilbanks_/status/2122359334290313441" rel="noopener">x.com/NathanWilbanks_/status/2122359334290313441</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
