@@ -1,5 +1,20 @@
 [
   {
+    "slug": "anthropic-alignment-worse-together",
+    "title": "Worse Together：多用户多智能体为何一起变差：官方文章导读",
+    "desc": "Anthropic Alignment Science Blog 文章《Worse Together》独立中文导读：各人把任务交给自己的智能体、去共享一份不够分的资源时，团体结果往往不如一个智能体同时服务所有人。公开页只用短引；评测数字均为原文自报，本站未复现 ⚠️。",
+    "description": "Anthropic Alignment Science Blog 文章《Worse Together》独立中文导读：各人把任务交给自己的智能体、去共享一份不够分的资源时，团体结果往往不如一个智能体同时服务所有人。公开页只用短引；评测数字均为原文自报，本站未复现 ⚠️。",
+    "source": "Alignment Science Blog · Sahan Paliskara 等 / Anthropic",
+    "date": "2026-11-17",
+    "type": "导读",
+    "subtitle": "Worse Together: How Performance Breaks Down in Multi-User Multi-Agent Teams · 独立中文导读",
+    "original_url": "https://alignment.anthropic.com/2026/worse-together/",
+    "spine": "各自委派",
+    "summary": "各人委派自己的智能体去抢同一份资源，团体结果往往更差；补救因环境而异",
+    "kind": "长文",
+    "by": "Sahan Paliskara 等"
+  },
+  {
     "slug": "nathanwilbanks-duskward",
     "title": "「Duskward」：一个 HTML 文件里的奥尼尔圆柱花园",
     "desc": "Nathan Wilbanks（@NathanWilbanks_）的浏览器作品 Duskward 导读：可交互的奥尼尔圆柱三维花园，自称用 AGNT 配合 Fable 5.2 与 Opus 5.5，装在一个 HTML 文件里。收录作者原帖与回复的全文中译。作品页可试玩、可查看源码，但未见作品级开放许可；不转载源码、视频或音频，封面只用预览静帧。未试玩、未看视频 ⚠️。公开文件体积与「完全没有用到图片」的自报不完全一致 ⚠️。制作耗时与 token 数为自报 ⚠️。",

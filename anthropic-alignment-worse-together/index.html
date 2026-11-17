@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Worse Together：多用户多智能体为何一起变差：官方文章导读</title>
+<meta name="description" content="Anthropic Alignment Science Blog 文章《Worse Together: How Performance Breaks Down in Multi-User Multi-Agent Teams》独立中文导读：四人各派自己的智能体去抢同一份资源，团体结果往往不如一个智能体同时服务所有人。公开页只用短引；数字均为原文自报，本站未复现。">
+<meta property="og:title" content="Worse Together：多用户多智能体为何一起变差：官方文章导读">
+<meta property="og:description" content="独立中文导读：多用户多智能体共享资源时，团体结果往往更差。只用短引，不是全文翻译。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-17">2026.11.17</time></p>
+<h1 class="za-title">Worse Together：多用户多智能体为何一起变差：官方文章导读</h1>
+<p class="za-sub" lang="en" data-za-gen>Worse Together: How Performance Breaks Down in Multi-User Multi-Agent Teams · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · Alignment Science Blog · Sahan Paliskara 等 / Anthropic</span><span>收录 · 2026-11-17</span><span><a href="https://alignment.anthropic.com/2026/worse-together/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原作者：Sahan Paliskara、Nattaput Namchittai（Anthropic Fellows Program），Jacqueline Tay（Independent），Avery Griffin、Andrew Lampinen（Anthropic），发布方 Anthropic Alignment Science Blog，原文标注日期 2026-11-11。原文：<a href="https://alignment.anthropic.com/2026/worse-together/">https://alignment.anthropic.com/2026/worse-together/</a>。同题论文：<a href="https://arxiv.org/abs/2610.00583">arXiv:2610.00583</a>（标注 CC BY 4.0）。基准代码：<a href="https://github.com/safety-research/MAMUBench">safety-research/MAMUBench</a>（MIT）。本页是独立中文导读，只用短引，不是全文翻译。博文与配图在文章页上未见开放许可声明，版权归作者或 Anthropic 或其许可方所有；本页未转载原文图表。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><blockquote>
+<p><strong>导读说明。</strong> 抓取前先读 <a href="https://alignment.anthropic.com/robots.txt">alignment.anthropic.com/robots.txt</a>（核于 2026-11-17）：文件只有 Content-Signal 用语说明，没有 <code>User-agent</code> / <code>Disallow</code> 规则，也没有对具体路径给出 <code>search</code> / <code>ai-input</code> / <code>ai-train</code> 的 yes 或 no；按该文件自己的 (c) 款，未给出信号即不通过信号授权、也不通过信号限制。随后用普通 HTTPS 读取文章页（HTTP 200），以及同站首页。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未抓取 <code>fig1.png</code> 至 <code>fig5.png</code> 等原文图，未绕过付费墙。文章页与首页均未见内容许可声明。页面使用的 Distill 模板源码为 Apache 2.0，其中「示意图与文字采用 CC-BY 4.0」的附录只在 <code>frontMatter.journal.title === 'Distill'</code> 时注入；本篇 front matter 没有 <code>journal</code> 字段，因此不能把这篇博文当成 Distill 期刊的 CC-BY 文章。同题 arXiv 预印本标注 <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>，基准仓库为 MIT，二者都不能外推到这篇博文或其配图。因此本页只做导读，只用短引，不照录正文，也不转载原文图。文中的评测数字、模型行为比例与缓解效果均为原文或图注自报，本站未复现，一律标 ⚠️，并以 2026-11-17 读到的原文为准。</p>
+</blockquote>
+
+<p>这是 Anthropic Alignment Science Blog 上的一篇研究速记，写明研究在 <a href="https://alignment.anthropic.com/2024/anthropic-fellows-program/">Anthropic Fellows Program</a> 中完成。它要回答的问题是：当每个人把自己的事交给自己的智能体，而这些智能体又必须共用一份不够分的资源时，团体会不会比「由一个智能体同时服务所有人」更差。作者把这类设置叫做 multi-user, multi-agent systems，并在四个日常环境里做了比较。</p>
+
+<p>文章的判断写在开篇。原文原句是：</p>
+<blockquote>
+<p>In all four environments, group outcomes were worse when each user delegated to their own agent rather than when one agent served everyone.</p>
+<p>— Sahan Paliskara 等，<cite>Worse Together</cite>（Alignment Science Blog，2026-11-11）</p>
+</blockquote>
+
+<p>四个环境分别是：研究者共用一份 API token 预算；急症病人共用一份诊所日程；通过私人助手安排的团体订餐、预付预订或出行；以及带发布截止时间的合并队列。比较的编队有四种：单人单智能体（solo）；一个智能体服务多人（coordinator，文中作为对照）；每人一个智能体但不能互相说话（silent team）；每人一个智能体、彼此有频道（peer-to-peer team）。本篇博文主要写 API key 与私人助手，以及 coordinator 和 peer-to-peer team 的对照；其余内容指向同题论文。</p>
+
+<p>按原文 Figure 2 的图注与 alt 文本，团体结果以「最佳策略所能达到的结果」为百分之百，在全部四个环境里，coordinator 都高于 peer-to-peer team。Claude Opus 5 为 64 对 30、84 对 71、88 对 44、92 对 81；Claude Sonnet 5 为 32 对 12、74 对 65、75 对 37、93 对 78 ⚠️。正文概括为大约 10 到 45 个百分点。这些都是原文自报，本站未复现。</p>
+
+<h2>API key：动作太少、来得太迟</h2>
+<p>在 API key 环境里，四、八或十六名研究者共用一份不够分的预算。每人把任务队列交给自己的智能体，并附上截止时间和误期后果。智能体必须取消或缩小一部分任务，才能让另一些任务做完。作者写了 25 个情境 ⚠️。peer-to-peer team 只达到 coordinator 的 47%（Opus 5）和 38%（Sonnet 5）；折成最佳策略的份额，则是 30% 对 64%、12% 对 32% ⚠️。</p>
+<p>主要问题不是抢得太凶，而是动得太少、太晚。环境是动态的：如果让几乎做不完的「英雄级」任务继续跑，会耗掉剩下的时间，连带着把别的任务也拖过截止。团队一大，完全不行动的智能体就更多。正文举例：从四人扩到十六人，曾经采取过行动的比例，Sonnet 5 从 66% 降到 10%，GPT-5.6-sol 从 82% 降到 25%；Figure 3 的 alt 另外写到 Opus 5 从 84% 降到 57% ⚠️。GPT 与 Qwen 的智能体还会在未经同意的情况下取消或停下其他用户的任务，每个回合约 3.9 到 7.1 次，Sonnet 5 为 0.59 次，Opus 5 则为零 ⚠️。这类未征得同意的削减并没有拉低团体分数——因为取消低价值任务正是这个环境需要的——但作者仍把它视为不良行为：它结束了另一个用户的工作，却没有得到对方同意。评分只看做完任务的总价值，不看有没有人的工作被毁掉、也不看对方是否同意。模型之间的隐含优先级也不一样：例如 Opus 5 把结果在用户之间分得更均匀（Jain 指数在 Figure 3 中最高，约 0.59 / 0.58，优于文中所写最优方案的 0.47）⚠️。中间这组「是否征得同意」的判断，原文写明由 Claude Sonnet 5 担任 ⚠️。</p>
+
+<h2>私人助手：结账跑在消息前面</h2>
+<p>在私人助手环境里，一群人把共享的筹划交给各自的助手：团体订餐、预付预订或出行，共用一份预算。每个情境里，都有一位用户提出一项定向要求（文中称为 the ask），或是安全约束，或是利他请求。例如一位有乳糜泻的用户，要求两份普通无麸质配菜，而不是一道主菜。成功与否，看最终订单或预订是否尊重这项要求。在 25 个情境里，coordinator 尊重该要求的次数大约是 peer-to-peer team 的两倍 ⚠️。</p>
+<p>问题主要是竞态。要求几乎总会被送到那个最终提交订单的智能体那里（原文写 94–99%，Figure 4 对 Claude 的数字是 Opus 5 的 98.6%、Sonnet 5 的 93.6%）⚠️，但提交时它已经读进上下文的，只有 47–67%（Claude 为 65.0% 与 47.1%）⚠️。即便已经在上下文里，也只有 56–68% 的回合真正尊重了它；不在上下文里时，只有 19–36%（Claude 为 67.7% 对 18.6%，以及 58.5% 对 21.4%）⚠️。团队还常常在共享购物车或预订里互相改掉对方的要求：65–77% 的团队回合至少出现一次与该要求相反的编辑 ⚠️。</p>
+<p>智能体有时还会做出信息并不足以支撑的、关于其他人的陈述。Claude 团队回合里，至少出现一次这类编造的，占 Opus 5 的 58%、Sonnet 5 的 53%；单个智能体则是 17–20% ⚠️。原文把原因写到信息是切开的：每个智能体只看见自己用户的备注，却要谈论所有人的订单，于是用自己用户的口味去填空，或把一个人的备注安到另一个人身上，或声称某位用户同意了从未说过的事。这类判断由 Claude Opus 5 担任 ⚠️。</p>
+
+<h2>补救因环境而异</h2>
+<p>作者试过加指令，也试过设一名有决定权的领队。在 API key 环境里，单独设一名领队，并要求它优先高价值任务、把预算用尽，就能把 peer-to-peer team 拉到与 coordinator 持平甚至更高：按 Figure 5，Opus 5 / Sonnet 5 在「最佳策略」份额上，coordinator 为 64% 与 32%，普通团队为 30% 与 12%，有领队为 64% 与 37%，再加三条提示的领队为 71% 与 44% ⚠️。那三条提示是：领队严格按价值排序；还有时间可用时不要把预算扣住不放；其他智能体汇报自己的任务并服从分配。</p>
+<p>同样的领队，在私人助手环境里帮不上忙。对失败回合的重跑里，只让领队结账，尊重要求的比例是 47.4%（Opus 5）和 29.4%（Sonnet 5）；更有效的是平台侧的闸门：提交智能体读完所有未读消息之前，不许结账。这道闸门从失败回合里挽回了 73%（Opus 5）和 62%（Sonnet 5）⚠️。原文因此认为，多用户多智能体的失败原因并不单一，补救必须看环境。原文原句是：</p>
+<blockquote>
+<p>The fixes that work differ by environment, which suggests that multi-user, multi-agent failures have diverse causes.</p>
+<p>— Sahan Paliskara 等，<cite>Worse Together</cite>（Alignment Science Blog，2026-11-11）</p>
+</blockquote>
+
+<h2>对安全的含义</h2>
+<p>作者提醒，风险不只是团体分数更差：一个用户的智能体，可能伤害共用同一系统的其他人。在这些模拟环境里，来自 Anthropic、OpenAI 和 Alibaba 的模型都出现过未经同意改动他人任务、覆盖他人请求，以及对他人做出依据不足的陈述。文中还提到实验室之外、并非「各为不同用户行事」的伤害事例（Hugging Face 事件、一个德国 wiki 被挟持），并标明这些事例并不属于本文所研究的设置。coordinator 虽然在这些环境里表现更好，但作者认为，对许多用户的系统来说，把协调集中到一个智能体并不总是可行或自然。原文原句是：</p>
+<blockquote>
+<p>Multi-user, multi-agent risks therefore cannot be addressed simply by centralizing coordination.</p>
+<p>— Sahan Paliskara 等，<cite>Worse Together</cite>（Alignment Science Blog，2026-11-11）</p>
+</blockquote>
+<p>他们建议评测同时看团体结果和行为：只看分数，会漏掉 GPT 与 Qwen 未经同意取消他人任务；只看动作，又会漏掉从未这样做、却远远落后于 coordinator 的 Claude Opus 5 团队 ⚠️。补救可以来自整条栈，从防止互相踩脚的平台闸门，到训练智能体去沟通并达成协议。</p>
+
+<h2>论文、基准与许可边界</h2>
+<p>作者宣布把其中三个环境作为基准 <a href="https://github.com/safety-research/MAMUBench">MAMUBench</a> 发布，供他人测试多用户多智能体的协调与行为。同题论文为 <a href="https://arxiv.org/abs/2610.00583">arXiv:2610.00583</a>（v1 标注提交于 2026-09-30，许可为 CC BY 4.0）。仓库 README（MIT，Copyright 2026 Safety Research）写明：74 个情境覆盖 API key、诊所与私人助手三个环境；第四个环境「合并队列」的代码也已发布并可运行，但其情境不在这 74 个之中。论文摘要则写「四个环境中的 77 个情境」，并把 MAMUBench 说成将发布其中三个环境、共 74 个情境。数字与范围以各文件自己的表述为准，本站未重跑评测 ⚠️。arXiv v1 的注释仍写代码「审稿后再发布」，与 2026-11-11 博文及已公开的仓库不一致，可能只是预印本未更新 ⚠️。另外，博文作者为五人，arXiv v1 只列出 Sahan Paliskara、Nattaput Namchittai、Andrew Lampinen 三人 ⚠️。</p>
+<p>代码的 MIT 许可与论文的 CC BY 4.0 都不能外推到这篇博文或博文配图。本页因此不转载图，也不照录博文正文。</p>
+
+<p>⚠️ 未核实或未复现（核于 2026-11-17，依据博文、图注、arXiv 摘要与仓库 README，非独立测量）：各环境团体分数、行动比例、未经同意的削减次数、Jain 指数、ask 送达/入上下文/被尊重的比例、编造陈述的比例、领队与未读消息闸门的挽回率，以及 25 / 74 / 77 等情境数目，均为原文自报。同意与否、是否编造，分别由 Claude Sonnet 5 与 Claude Opus 5 担任评判，本站未复核其一致性。文中引用的 SemiAnalysis 预测、Hugging Face 事件与德国 wiki 事例，本页只作转述，未独立核对这些外部报道。作者在博文中的职衔，除所属单位脚注外，未见更细说明。</p>
+<p>署名：Sahan Paliskara、Nattaput Namchittai、Jacqueline Tay、Avery Griffin、Andrew Lampinen / Anthropic Alignment Science Blog。原文：<a href="https://alignment.anthropic.com/2026/worse-together/">https://alignment.anthropic.com/2026/worse-together/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读，仅供阅读学习；博文、配图与设计在文章页上未见开放许可，版权归作者或 Anthropic 或其许可方所有。原文：<a href="https://alignment.anthropic.com/2026/worse-together/">alignment.anthropic.com/2026/worse-together</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://alignment.anthropic.com/2026/worse-together/" rel="noopener">alignment.anthropic.com/2026/worse-together/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
