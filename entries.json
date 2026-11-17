@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kyzo-hidden-layers",
+    "title": "「Hidden Layers」：一只出不去温室的透翅蝶",
+    "desc": "kyzo（GitHub ky-zo，X @ky__zo）的浏览器作品 Hidden Layers 导读：一只关在雾气温室里的透翅蝶，滚动即可飞行，下面还有感知、意义、记忆、学习、注意和自我六层世界。自称用 Fable 5.2 与 three.js 做成，场景代码里未见模型或贴图加载。收录作者宣布帖与实质性回复的全文中译。2026-11-18 现场核：仓库无 LICENSE，package.json 为 private 且无 license 字段；只做独立导读，不转载 README、提示词、源码或视频。封面为自制字体图。未通关试玩、未看视频、未听音频 ⚠️。token、费用与「两次重置」为自报 ⚠️。「不用任何外部工具」需对照仓库对 three.js / Vite 的依赖 ⚠️。公开站 Last-Modified 晚于该次提交 ⚠️。星数和传播数字会变 ⚠️。",
+    "description": "一只关在温室里的透翅蝶，滚动即可飞行，下面还有六层世界。作者原帖全译；仓库未见开放许可，只做导读。未看视频 ⚠️。",
+    "source": "网站 · butterfly.kyzo.io  ·  GitHub · ky-zo/fable-butterfly（未见开放许可）  ·  X · @ky__zo",
+    "date": "2026-11-16",
+    "type": "原帖照录 + 导读",
+    "subtitle": "Hidden Layers  ·  原帖照录 + 独立导读",
+    "original_url": "https://butterfly.kyzo.io/",
+    "spine": "出不去的温室",
+    "summary": "滚动即可飞行：一只关在温室里的透翅蝶，往下还有六层世界",
+    "kind": "演示",
+    "by": "kyzo @ky__zo"
+  },
+  {
     "slug": "nexu-io-openmotion",
     "title": "OpenMotion：开源的 Claude Motion / CapCut 替代方案",
     "desc": "nexu-io/openmotion（Apache-2.0）项目导读：OpenDesign 做的本地动态影像工作室，把参考视频重做成可在 Studio 里编辑的 HTML 工程并导出 MP4，同时引入 Motion.md。附录为官方简体中文 README 与根目录许可证原文。代码许可不外推到第三方模板、媒体、字体和模型。封面为自制字体图，不转载含人物或品牌复刻的宣传图。星标徽章 9.5k（2026-11-09）与现场 10,717 星不一致 ⚠️。Node 版本在 22.18+ 与 26.11.1 之间冲突待审 ⚠️。模型目录写法不一 ⚠️。「300 多份 Motion.md」未清点 ⚠️。未运行 Studio ⚠️。",
