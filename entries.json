@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kuzukumasan-neko-san",
+    "title": "「ネコさんが～！！」：くまさん在猫爬架前，把逗猫棒挥给三只猫",
+    "desc": "クズなくまさん（@kuzukumasan9）的原帖全文中译：一句「ネコさんが～！！」，附约 7 秒、1080×1620 竖版短片。账号专注くまさん这一只熊的 AI 内容。官方预览静帧里，熊在浅米色客厅举起逗猫棒，三只猫在猫爬架前跟着玩。未见开放许可；只做原帖照录与独立导读，不转载视频与插画，封面为自制字体图。本库未观看视频 ⚠️。所用模型作者尚未说明 ⚠️。不要把作者 10-29 另一帖里的 Pollo Recast 说明写成这件作品的工具 ⚠️。简介中的竞赛与联名履历为自报 ⚠️。传播数字会变 ⚠️。",
+    "description": "くまさん举起逗猫棒，和三只猫一起玩。作者原帖照录；不转载视频与插画。未见开放许可。未看视频 ⚠️。",
+    "source": "X · @kuzukumasan9",
+    "date": "2026-11-16",
+    "type": "原帖照录 + 导读",
+    "subtitle": "ネコさんが～！！  ·  原帖照录 + 独立导读",
+    "original_url": "https://x.com/kuzukumasan9/status/2122257868850168182",
+    "spine": "猫来啦——",
+    "summary": "一只熊站在浅米色的客厅里，把逗猫棒挥给三只猫",
+    "kind": "短片",
+    "by": "クズなくまさん @kuzukumasan9"
+  },
+  {
     "slug": "anthropic-claude-code-verification",
     "title": "Claude Code 团队怎么看待验证：官方文章导读",
     "desc": "Addy Osmani 在 claude.dev 的官方文章《How the Claude Code team thinks about verification》独立中文导读：先给智能体可运行的验证回路，再谈并行；优先端到端、性质测试和差异测试；检查不能被它要评判的改动改写。内部数字均为原文自报，本站未复现 ⚠️。",
