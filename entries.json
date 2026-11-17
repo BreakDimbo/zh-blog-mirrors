@@ -1,5 +1,20 @@
 [
   {
+    "slug": "nexu-io-openmotion",
+    "title": "OpenMotion：开源的 Claude Motion / CapCut 替代方案",
+    "desc": "nexu-io/openmotion（Apache-2.0）项目导读：OpenDesign 做的本地动态影像工作室，把参考视频重做成可在 Studio 里编辑的 HTML 工程并导出 MP4，同时引入 Motion.md。附录为官方简体中文 README 与根目录许可证原文。代码许可不外推到第三方模板、媒体、字体和模型。封面为自制字体图，不转载含人物或品牌复刻的宣传图。星标徽章 9.5k（2026-11-09）与现场 10,717 星不一致 ⚠️。Node 版本在 22.18+ 与 26.11.1 之间冲突待审 ⚠️。模型目录写法不一 ⚠️。「300 多份 Motion.md」未清点 ⚠️。未运行 Studio ⚠️。",
+    "description": "OpenDesign 的开源动态影像工作室，用本地智能体把参考视频做成可编辑工程。Apache-2.0。导读 + 官方中文 README。不转载第三方素材。文档内部有 Node 版本与模型目录冲突 ⚠️。",
+    "source": "GitHub · nexu-io/openmotion（Apache-2.0）",
+    "date": "2026-11-18",
+    "type": "导读 + 官方中文 README",
+    "subtitle": "开源的动态影像工作室 · 项目导读 + 官方简体中文 README",
+    "original_url": "https://github.com/nexu-io/openmotion",
+    "spine": "参考片变成可编辑工程",
+    "summary": "用本地智能体把参考视频做成可在 Studio 里修改的 HTML 工程，再导出 MP4",
+    "kind": "项目",
+    "by": "OpenDesign / nexu-io"
+  },
+  {
     "slug": "xikhar-papertrails",
     "title": "「Papertrails」：一本会在你身边展开的无尽纸世界",
     "desc": "Shikhar（@xikhar）的浏览器作品 Papertrails 导读：纸人旅者走在一本会弹起来的无尽立体书里。作者称用 Fable 5.2 与 Opus 5.5 做成，在 three.js 里运行。2026-11-18 现场核仓库 xikhar/papertrails 为 MIT（Copyright (c) 2026 Shikhar）。导读 + 作者帖串与实质性回复全文中译 + README 全文中译 + LICENSE 原文。封面和文内截图来自仓库 README。未完整试玩、未看视频 ⚠️。用量为自报 ⚠️。「15 种生物群系」与公开构建中的名称需对照 ⚠️。作者称「只是平面素材」，公开构建同时引用约 6.1 MB 的 tiles.glb ⚠️。",
