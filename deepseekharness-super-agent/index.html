@@ -27,7 +27,7 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>DeepSeek Harness 团队提出一种“没有会话感”的 Agent 架构——常驻的 Router 只管对人交互与分派、隔离的 Worker 并发干活，事件驱动、异步工具调用、云端持久在线并接入你自己的机器，外加独立 Watchdog 自愈；瓶颈从模型能力转到人的注意力，就让系统替人管理会话。</div>
 <figure><img src="images/cover.webp" alt="封面：深色背景上的标题 Exploring Super-agent Design，右侧一道发光门洞前的人影" loading="lazy"><figcaption>原文封面图（© DeepSeek Harness 团队），压缩为 WebP 转载。</figcaption></figure>
-<p class="caption">发布时间：中文原文 2026-10-31 晚（北京时间 = UTC+8）发于 DeepSeek Harness 官方公众号（据 IT之家、环球网报道）；X Article 版 2026-11-01 19:37 UTC+8。互动数据（2026-11-02 20:35 UTC+8，经 X API 读取）：约 212 万次浏览、1.15 万赞、1,416 转帖、683 引用、397 回复、1.46 万收藏。@deepseek_ai 主账号已转发。</p>
+<p class="caption">发布时间：中文原文 2026-10-31 晚（北京时间 = UTC+8）发于 DeepSeek Harness 官方公众号（据 IT之家、环球网报道）；X Article 版 2026-11-01 19:37 UTC+8。互动数据（2026-11-02 20:35 UTC+8）：约 212 万次浏览、1.15 万赞、1,416 转帖、683 引用、397 回复、1.46 万收藏。@deepseek_ai 主账号已转发。</p>
 
 <h2 id="guide">导读</h2>
 <p><strong>是谁写的。</strong>发帖账号 <a href="https://x.com/DeepSeekHarness" rel="noopener">@DeepSeekHarness</a>（2026-06 注册，蓝标订阅认证而非机构金标）。它的官方身份有三条独立佐证：DeepSeek 主账号 <a href="https://x.com/deepseek_ai/status/2111375640717033777" rel="noopener">@deepseek_ai 在 10-17 的模型发布帖</a>里直接 @ 了它、并转发了本文；文中链接的原型仓库位于 DeepSeek 官方 GitHub 组织 <code>deepseek-ai</code> 下；账号主页链接 deepseek.com/en/harness。作者署名 Yujia Qiao（实现 + 写作），另列 15 位审阅者。</p>
@@ -43,7 +43,7 @@
 </ul></div>
 
 <h2 id="article">全文中译：《Super-agent 设计探索：迈向更自主的 Agent 系统》</h2>
-<p class="caption">英文题 <em lang="en">Exploring Super-agent Design: Towards a More Autonomous Agent System</em>。作者在 X 发布的是官方英译（文首注明“原文为中文，此为机器翻译”）；中文原文首发于 DeepSeek Harness 微信公众号。公众号文章页受 robots.txt 限制，本站没有抓取，下文据 X 上的官方英译<strong>回译</strong>成中文，术语尽量与已公开报道中的中文原文说法对齐（如“连续 / 高效 / 主动 / 持久”“序点”“链式召回”“存算分离”）。⚠️ 措辞与中文原文不会逐字一致，引用请以<a href="https://mp.weixin.qq.com/s/zoS7GlReWPhfCjENGxXCdg" rel="noopener">公众号原文</a>为准。</p>
+<p class="caption">英文题 <em lang="en">Exploring Super-agent Design: Towards a More Autonomous Agent System</em>。作者在 X 发布的是官方英译（文首注明“原文为中文，此为机器翻译”）；中文原文首发于 DeepSeek Harness 微信公众号。下文据 X 上的官方英译<strong>回译</strong>成中文，术语尽量与已公开报道中的中文原文说法对齐（如“连续 / 高效 / 主动 / 持久”“序点”“链式召回”“存算分离”）。⚠️ 措辞与中文原文不会逐字一致，引用请以<a href="https://mp.weixin.qq.com/s/zoS7GlReWPhfCjENGxXCdg" rel="noopener">公众号原文</a>为准。</p>
 
 <blockquote><p>本文是一篇架构思路探讨，并非对 DeepSeek Harness 现有产品功能的介绍。</p></blockquote>
 
@@ -242,7 +242,7 @@
 <li><strong>设计哲学</strong>（docs/000）：“占用尽可能少的人类注意力，给出尽可能多的价值”。只在被要求或有团队写下的规则允许时才行动；只在有人需要行动或能用上结果时才说话；一次只问一个具体问题；按影响而非工作量决定停在哪；如实汇报。</li>
 <li><strong>文档</strong>：000 理念 → 001 领域模型 → 002 授权 → 003 执行 → 004 提示词 → 005 面板 → 006 部署 → 007 架构 → 008 Cookbook（新增 Source），按序阅读。</li>
 </ul>
-<p class="caption">⚠️ 本站未在本地安装或运行该原型，以上行为描述来自其 README、SETUP 与 docs/000。</p>
+<p class="caption">⚠️ 以上行为描述来自原型的 README、SETUP 与 docs/000。</p>
 
 <h2 id="readme-zh">附录一：dsh-superagent README 全文中译（MIT）</h2>
 <blockquote><p><strong>仅供参考的研究原型，不是 DeepSeek 的正式产品。</strong>这些代码产生于我们团队的日常开发工作，其中大量工程由编程 Agent 完成。请把它当作研究代码，而不是可用于生产的软件。它可能仍有 bug，代码风格和工程实践也可能不一致。在你自己的环境中使用前，请先审阅并调整。</p>
@@ -473,7 +473,7 @@ SOFTWARE.
 </details></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>文章《Exploring Super-agent Design: Towards a More Autonomous Agent System》由 DeepSeek Harness 团队发布于 <a href="https://x.com/DeepSeekHarness/status/2116857257245987236" rel="noopener">X</a>（中文原文发于其<a href="https://mp.weixin.qq.com/s/zoS7GlReWPhfCjENGxXCdg" rel="noopener">微信公众号</a>），版权归原作者所有；本页中文为本站据官方英译所作的全文回译，配图为原文插图缩小转 WebP。原型 <a href="https://github.com/deepseek-ai/dsh-superagent-prototype" rel="noopener">deepseek-ai/dsh-superagent-prototype</a> 为 MIT 许可（Copyright (c) 2026 DeepSeek Harness Team），README 译文依 MIT 转载并保留许可声明。导读、⚠️ 标注与原型要点为本站整理。帖文数据经 X API、仓库数据经公开 GitHub API 读取（2026-11-02 UTC+8）；公众号页面受 robots.txt 限制未抓取。</p></div><!-- /za:foot -->
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>文章《Exploring Super-agent Design: Towards a More Autonomous Agent System》由 DeepSeek Harness 团队发布于 <a href="https://x.com/DeepSeekHarness/status/2116857257245987236" rel="noopener">X</a>（中文原文发于其<a href="https://mp.weixin.qq.com/s/zoS7GlReWPhfCjENGxXCdg" rel="noopener">微信公众号</a>），版权归原作者所有；本页中文为本站据官方英译所作的全文回译，配图为原文插图缩小转 WebP。原型 <a href="https://github.com/deepseek-ai/dsh-superagent-prototype" rel="noopener">deepseek-ai/dsh-superagent-prototype</a> 为 MIT 许可（Copyright (c) 2026 DeepSeek Harness Team），README 译文依 MIT 转载并保留许可声明。导读、⚠️ 标注与原型要点为本站整理。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/DeepSeekHarness/status/2116857257245987236" rel="noopener">x.com/DeepSeekHarness/status/2116857257245987236</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
 <p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>

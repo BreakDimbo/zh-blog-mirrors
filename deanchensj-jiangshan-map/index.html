@@ -27,7 +27,7 @@
 <img class="cover" src="images/preview_741_tang_trace.webp" alt="Chronicles of the Realm · jiangshan-map 封面" loading="eager"></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>仓库许可证 2026-11-03 现场核对：<code>LICENSE</code> 为 GNU GPL v3 全文，GitHub API <code>license</code> 字段为 <code>GPL-3.0</code>。按本站规则（R7/R13），本页是<strong>项目导读 + README 全文附录</strong>。作者仓库里已有一份官方中文 README（<code>README_ZH.md</code>，章节与英文版一一对应），所以附录直接<strong>逐字收录作者的中文原文</strong>，不另做翻译。文中 3 张截图取自仓库 <code>assets/</code>（GPL-3.0），已缩小并转成 webp。<strong>注意例外</strong>：README 写明源自 CHGIS V6 与 Hartwell 的府州郡边界和战国疆域数据<em>不适用 GPL-3.0</em>，仍只限学术、非商业用途；截图里可能含有这部分边界 ⚠️。15 秒动图演示（约 6.5 MB）没有转载。相关阅读：<a href="../eianlu-chengdu-rings/">《一座城的年轮》：3,271 年成都</a> · <a href="../open-index-hacker-news/">Hacker News 全量数据集导读</a>。</div>
+<!-- za:content --><main class="za-content"><div class="related-guide"><strong>说明：</strong>项目以 GNU GPL v3 发布，本页是<strong>项目导读 + README 全文附录</strong>。作者仓库里已有一份官方中文 README（<code>README_ZH.md</code>，章节与英文版一一对应），所以附录直接<strong>逐字收录作者的中文原文</strong>，不另做翻译。文中 3 张截图取自仓库 <code>assets/</code>（GPL-3.0），已缩小并转成 webp。<strong>注意例外</strong>：README 写明源自 CHGIS V6 与 Hartwell 的府州郡边界和战国疆域数据<em>不适用 GPL-3.0</em>，仍只限学术、非商业用途；截图里可能含有这部分边界 ⚠️。相关阅读：<a href="../eianlu-chengdu-rings/">《一座城的年轮》：3,271 年成都</a> · <a href="../open-index-hacker-news/">Hacker News 全量数据集导读</a>。</div>
 
 <nav class="toc"><strong>目录</strong><ol>
 <li><a href="#what">是什么</a></li>
@@ -46,7 +46,7 @@
 <h2 id="what">是什么</h2>
 <p><strong>江山时序（Chronicles of the Realm）</strong>是一个纯静态网页，一张宣纸设色风格的中国历史交互地图，时间跨度从公元前 403 年（《资治通鉴》开篇的三家分晋）一直到今天。拖动底部时间轴，疆域、州郡政区、水系、长城运河会跟着年份变化；点任意古城可以看它两千多年的政区沿革和发生过的大事；搜一个历史人物，可以在地图上沿着他的一生走一遍。</p>
 <p>项目本身也很“Agent 友好”：地点和年份写进网址就能直接定位（不需要经纬度），仓库里附带零依赖的本地 MCP Server、一个 Agent Skill 和浏览器端 JS API，可以让大模型把诗词或史料直接“落”到地图上。</p>
-<p>在线版：<a href="https://deanchen.me/jiangshan-map/">deanchen.me/jiangshan-map</a>（GitHub Pages 托管，robots.txt 对所有爬虫 Allow，2026-11-03 核）。作者另写了一篇幕后自述：<a href="https://deanchen.me/history/atlas/2026/10/25/jiangshan-map-story.html">从历史课本里的插图，到 GitHub 1k star</a>（本站未逐段核读 ⚠️）。</p>
+<p>在线版：<a href="https://deanchen.me/jiangshan-map/">deanchen.me/jiangshan-map</a>（GitHub Pages 托管）。作者另写了一篇幕后自述：<a href="https://deanchen.me/history/atlas/2026/10/25/jiangshan-map-story.html">从历史课本里的插图，到 GitHub 1k star</a>。</p>
 
 <h2 id="stats">仓库快照（2026-11-03 12:50 UTC+8 核）</h2>
 <table>
@@ -83,7 +83,7 @@
 <ul>
 <li><a href="https://github.com/DeanChensj/jiangshan-map/blob/main/llms.txt"><code>llms.txt</code></a>：机器可读的说明，包括深链协议和“先定年份、再定地点（同名异地消歧）”的推理步骤。</li>
 <li><strong>本地 MCP Server</strong>（<code>scripts/mcp_server.js</code>，stdio，零依赖），提供 <code>inspect_place</code>、<code>inspect_person</code>、<code>search_atlas</code> 三个工具。本站 2026-11-03 在 Node 24 下实测：<code>inspect_place(year=819, place=蓝关)</code> 返回“唐宪宗·元和十四年”、解析为“蓝田关”、今“陕西西安蓝田”、属关内道 ✅。</li>
-<li><strong>Agent Skill</strong>（<code>skills/jiangshan-atlas/SKILL.md</code>），附一个 CLI 出图脚本 <code>jiangshan.py</code>（本站未实测出图 ⚠️）。</li>
+<li><strong>Agent Skill</strong>（<code>skills/jiangshan-atlas/SKILL.md</code>），附一个 CLI 出图脚本 <code>jiangshan.py</code>。</li>
 <li><strong>浏览器 API</strong>：页面挂载 <code>window.atlasAPI</code>（locate / inspect / resolvePlace / openPerson / search），在支持 WebMCP 的浏览器里通过 <code>navigator.modelContext</code> 注册 3 个工具（未实测 ⚠️）。</li>
 </ul>
 
@@ -114,7 +114,7 @@
 </ul>
 
 <h2 id="appendix">附录 A：作者中文 README 全文（README_ZH.md，逐字收录）</h2>
-<div class="related-guide">以下为仓库 <code>README_ZH.md</code> 原文（提交 68b6db7，2026-11-03 抓取），作者 DeanChensj，GPL-3.0。仅做了这些处理：去掉一级标题和 15 秒动图（改为链接），3 张截图换成本站压缩版，其余截图和仓库内相对链接改为指向 GitHub。</div>
+<div class="related-guide">以下为仓库 <code>README_ZH.md</code> 原文（提交 68b6db7），作者 DeanChensj，GPL-3.0。仅做了这些处理：去掉一级标题和 15 秒动图（改为链接），3 张截图换成本站压缩版，其余截图和仓库内相对链接改为指向 GitHub。</div>
 <p align="left">
   <a href="https://github.com/DeanChensj/jiangshan-map/blob/main/README.md">English</a> · <strong>简体中文</strong>
 </p>

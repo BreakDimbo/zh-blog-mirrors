@@ -30,7 +30,7 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><p class="lede">这是一套给 Claude 用的技能，也是一个很小、没有依赖的 TypeScript 库。它要做的不是一段会播完的片子，而是可以嵌在页面里的线描组件：墨线人物会走路、作出反应，整条街可以从白天走到夜里。所有东西都在 SVG 里当场画出来，放大仍清晰，也能响应指针。本页以这个项目为中心。</p>
 
-<div class="notice"><strong>版权说明：</strong>仓库根目录 LICENSE 于 2026-11-10（新加坡时间）经 <a href="https://raw.githubusercontent.com/JDhruv14/line-art-animation/main/LICENSE">raw.githubusercontent.com</a> 现场核对为 MIT License（Copyright (c) 2026 JDhruv14）；GitHub 仓库页同样标注 MIT。下文对 README 作全文中译，并附许可证原文。正文插图是仓库 <code>media/day.png</code> 与 <code>media/night.png</code> 的压缩静帧（作者自己的线描，非真人照片），按 MIT 使用并保留版权声明。仓库中的 GIF 预览未转载，也未下载视频。</div>
+<div class="notice"><strong>版权说明：</strong>仓库以 MIT License 发布（Copyright (c) 2026 JDhruv14），下文附 README 全文中译与许可证原文。正文插图是仓库 <code>media/day.png</code> 与 <code>media/night.png</code> 的压缩静帧（作者自己的线描，非真人照片），按 MIT 使用并保留版权声明。</div>
 
 <figure>
 <img src="images/cover.webp" alt="正午光线下的线描街道：运河、町屋、茶屋与路上的行人" width="1400" height="700">
@@ -55,7 +55,7 @@
 <h2>三、两个例子：一个行人，和一条会过昼夜的街</h2>
 <p>本地开发页是一个很短的目录，只链到两个例子。Walker 被写成最小完整示例：一个提着公文包、围着红围巾的人走过卡片，点他会摘一下帽子，移动指针可以吹动围巾。README 写它「大约 150 行」；本次读到的 <code>examples/walker/walker.ts</code> 是 109 行（含注释与导入），与「约 150 行」不完全吻合 ⚠️。</p>
 <p>Village 是一场完整的戏。页面标题是「Ink Village」，提示语为 “drag the sun across the sky · click anyone and anything”。源码和无障碍说明写的是一条日本街道：町屋、茶屋、运河边的澡堂，从黎明到夜里。默认情况下，一整天在 180 秒里走完（可用 <code>?day=</code> 改掉）；<code>?start=</code> 只设定起始时刻，<code>?tau=</code> 把时间钉住，<code>?debug</code> 则关掉 <code>requestAnimationFrame</code>，改用 <code>window.__step</code> 精确步进。源码还规定：人物始终按自然步速走，压缩一天时只让路人更勤地出现，而不是把步态加快。</p>
-<p>主文件会拼起天空、街道、运河、着物行人、骑车的人、孩子、船、猫、麻雀、燕子、花瓣和烟。可以点的东西比「十来种」还多一些：灯笼、暖帘、障子窗、风铃、雨搭（会抖落花瓣）、电线上的麻雀、猫、船、柳树、水面，以及路上的人。指针移动会起风。夜里，窗户和灯笼亮起来，并在水里留下倒影。这些都写在 <code>examples/village/main.ts</code> 里；街道和人物还分在 <code>houses.ts</code>、<code>people.ts</code> 等模块中。本站未在浏览器里打开过这场戏 ⚠️。</p>
+<p>主文件会拼起天空、街道、运河、着物行人、骑车的人、孩子、船、猫、麻雀、燕子、花瓣和烟。可以点的东西比「十来种」还多一些：灯笼、暖帘、障子窗、风铃、雨搭（会抖落花瓣）、电线上的麻雀、猫、船、柳树、水面，以及路上的人。指针移动会起风。夜里，窗户和灯笼亮起来，并在水里留下倒影。这些都写在 <code>examples/village/main.ts</code> 里；街道和人物还分在 <code>houses.ts</code>、<code>people.ts</code> 等模块中。</p>
 
 <figure>
 <img src="images/day.webp" alt="白昼的线描街道，纸色偏暖，行人走过运河边的町屋" width="1400" height="700">
@@ -69,20 +69,18 @@
 <h2>四、技能怎么用，以及它在防什么</h2>
 <p>安装方式是把仓库克隆进 Claude Code 的技能目录，例如 <code>~/.claude/skills/line-art-animation</code>，或某个项目的 <code>.claude/skills/</code>。然后用自然语言提要求：一座黎明的面包店、把某段参考片做成循环组件、给场景加上昼夜并导出视频。</p>
 <p>README 对工作顺序写得很清楚：Claude 先读 <code>SKILL.md</code>，把 <code>lib/</code> 拷进项目，先交一个人物请你过目，再画其余部分，并且在交出来之前逐帧检查运动。技能文档把这一点写得更硬：一次把整组组件都做出来，看起来会像同一张脸；先交出一角，是为了把标准定下来。</p>
-<p><code>SKILL.md</code> 和 <code>references/</code> 里还有一组风格规则，本页只作转述，不作全文翻译。其中反复出现的几条是：四肢必须是两道开放笔触；线条要弯曲，不要靠尺；人物在自己的坐标系里画；脚要钉在地上，不要用正弦去「蹦」；组件是卡片，页面背景不要跟着场景变色；互动应当是世界在反应——鞠躬、摘帽、猫伸懒腰、灯笼摆一下、鸟散开——而不是场景里再放按钮；若要求「像这样，但是新的」，只保留媒介、笔触、比例和节奏，人物和道具要另起。本站未安装、也未让 Claude 按这套技能生成过新场景 ⚠️。</p>
+<p><code>SKILL.md</code> 和 <code>references/</code> 里还有一组风格规则，本页只作转述，不作全文翻译。其中反复出现的几条是：四肢必须是两道开放笔触；线条要弯曲，不要靠尺；人物在自己的坐标系里画；脚要钉在地上，不要用正弦去「蹦」；组件是卡片，页面背景不要跟着场景变色；互动应当是世界在反应——鞠躬、摘帽、猫伸懒腰、灯笼摆一下、鸟散开——而不是场景里再放按钮；若要求「像这样，但是新的」，只保留媒介、笔触、比例和节奏，人物和道具要另起。</p>
 
 <h2>五、出视频，以及对照参考片</h2>
 <p>出视频的路径是确定性的。先本地打开开发服务器，再用 <code>scripts/capture.ts</code> 通过 DevTools 协议驱动无头 Chrome，在 <code>?debug</code> 模式下精确步进并截出 PNG，最后交给 ffmpeg。脚本不另装 npm 依赖，截图之间把场景推进整整一帧，所以成片不取决于机器快慢。它会寻找本机的 Chrome 或 Chromium，或使用环境变量 <code>$CHROME</code>。</p>
 <p>若要跟一段参考片对齐，仓库提供 <code>scripts/clip.ts</code> 和 <code>scripts/frames.sh</code>：量一段区域的循环长度，跟踪每帧里的暗斑（例如脚），或导出带测量网格的帧。<code>references/matching.md</code> 还提醒，社交媒体上的片子多为可变帧率，应当先按时间重采样，再用叠加模式检查绘画是否贴合。</p>
 
-<h2>六、核实与注记</h2>
+<h2>六、注记</h2>
 <ul>
-<li>合规：先读 <a href="https://github.com/robots.txt">github.com/robots.txt</a>（User-agent: *）。只打开仓库公开首页与作者公开主页；未请求 github.com 的 <code>/raw/</code>、<code>/tree/</code>、<code>/archive/</code>、<code>/commits/</code>，也未调用 api.github.com。LICENSE、README、SKILL.md、库与示例源码、参考文档及 <code>media/</code> 下的静帧 PNG，经 raw.githubusercontent.com 读取（该主机 robots.txt 为 404）。未下载或转载 <code>village.gif</code>、<code>walker.gif</code>，未导出视频。</li>
-<li>许可证（R13）：2026-11-10 读取 <code>raw.githubusercontent.com/JDhruv14/line-art-animation/main/LICENSE</code>，全文为 MIT License，版权人为 JDhruv14，年份 2026。仓库页与 <code>package.json</code> 的 license 字段一致。</li>
 <li>仓库页内嵌的 star 数约为 4（2026-11-10 所见）⚠️，会变。创建当日仅 1 次提交，亦以当时页面为准。</li>
 <li>README 写 Walker「大约 150 行」；本次读到的 <code>walker.ts</code> 为 109 行 ⚠️。</li>
-<li>本站未安装技能，未运行 <code>npm run dev</code>，未做 typecheck 或抓帧，也未在真实标签页里核对 60 帧。互动与昼夜效果按源码和 README 转述 ⚠️。</li>
-<li>README 未给出已托管的在线演示。作者个人站点存在，本次未把它当作本项目的演示页来抓取。</li>
+<li>互动、昼夜效果与 60 帧表现按源码和 README 转述 ⚠️。</li>
+<li>README 未给出已托管的在线演示。</li>
 </ul>
 
 <h2>附录一：README 全文中译</h2>
@@ -166,7 +164,7 @@ scripts/frames.sh clip.mp4 X Y W H out/               # frames with a measuring 
 <p>MIT</p>
 
 <h2>附录二：许可证原文</h2>
-<p>以下为 2026-11-10 自 <a href="https://raw.githubusercontent.com/JDhruv14/line-art-animation/main/LICENSE">上游 LICENSE</a> 读取的全文。这不是法律意见。</p>
+<p>以下为 <a href="https://github.com/JDhruv14/line-art-animation/blob/main/LICENSE">上游 LICENSE</a> 全文。</p>
 <pre><code>MIT License
 
 Copyright (c) 2026 JDhruv14

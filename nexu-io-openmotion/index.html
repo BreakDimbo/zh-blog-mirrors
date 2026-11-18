@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>OpenMotion：开源的 Claude Motion / CapCut 替代方案</title>
-<meta name="description" content="nexu-io/openmotion（Apache-2.0）项目导读：OpenDesign 做的本地动态影像工作室，用 HTML 重做参考视频，在 Studio 里编辑并导出 MP4。附录为官方简体中文 README 与许可证原文。代码许可不外推到第三方素材。星标徽章与现场数字不一致 ⚠️。Node 版本在 22.18+ 与 26.11.1 之间冲突待审 ⚠️。模型目录写法不一 ⚠️。未运行、未清点模板份数 ⚠️。">
+<meta name="description" content="nexu-io/openmotion（Apache-2.0）项目导读：OpenDesign 做的本地动态影像工作室，用 HTML 重做参考视频，在 Studio 里编辑并导出 MP4。附录为官方简体中文 README 与许可证原文。第三方素材各属其权利人。星标徽章与现场数字不一致 ⚠️。Node 版本在 22.18+ 与 26.11.1 之间冲突待审 ⚠️。模型目录写法不一 ⚠️。未运行、未清点模板份数 ⚠️。">
 <meta property="og:title" content="OpenMotion：开源的 Claude Motion / CapCut 替代方案">
 <meta property="og:description" content="OpenDesign 的开源动态影像工作室。导读 + 官方简体中文 README + Apache 2.0 原文。不转载第三方素材与人物图。">
 <meta property="og:image" content="images/cover.webp">
@@ -25,7 +25,7 @@
 <h1 class="za-title">OpenMotion：开源的 Claude Motion / CapCut 替代方案</h1>
 <p class="za-sub" lang="en" data-za-gen>开源的动态影像工作室 · 项目导读 + 官方简体中文 README</p>
 <p class="za-meta" data-za-gen><span>来源 · GitHub · nexu-io/openmotion（Apache-2.0）</span><span>收录 · 2026-11-18</span><span><a href="https://github.com/nexu-io/openmotion" rel="noopener">查看原文 ↗</a></span></p>
-<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/nexu-io/openmotion">nexu-io/openmotion</a> · 制作：OpenDesign（GitHub 组织 nexu-io） · 站点：<a href="https://open-design.ai/motion/">open-design.ai/motion/</a> · 许可：根目录 <a href="https://github.com/nexu-io/openmotion/blob/main/LICENSE">Apache License 2.0</a>（2026-11-18 现场核；附录版权行为占位符）· Studio / Hyperframes：Apache-2.0，Copyright 2026 HeyGen, Inc. · 核对：2026-11-18（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/nexu-io/openmotion">nexu-io/openmotion</a> · 制作：OpenDesign（GitHub 组织 nexu-io） · 站点：<a href="https://open-design.ai/motion/">open-design.ai/motion/</a> · 许可：根目录 <a href="https://github.com/nexu-io/openmotion/blob/main/LICENSE">Apache License 2.0</a> · Studio / Hyperframes：Apache-2.0，Copyright 2026 HeyGen, Inc. · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><figure>
@@ -35,7 +35,7 @@
 
 <p class="lede">OpenMotion 是 OpenDesign（GitHub 组织 <a href="https://github.com/nexu-io">nexu-io</a>）做的一套本地动态影像工作室。仓库给自己的定位是「Claude Motion 和 CapCut 的开源替代」：你可以上传参考视频，或贴一条社交视频链接，让本地智能体按你的品牌和文案重做一条片子，再在 Studio 里改时间轴，导出 MP4。工程本身用 HTML、CSS 和 JavaScript 来写画面、字、转场和时间；另外引入了一种叫 Motion.md 的 Markdown 格式，用来记下镜头顺序、时长和转场。本页以这个项目为中心。</p>
 
-<div class="notice"><strong>版权说明：</strong>2026-11-18（新加坡时间，UTC+8）现场核过仓库根目录 <a href="https://raw.githubusercontent.com/nexu-io/openmotion/main/LICENSE">LICENSE</a>，文本为 Apache License 2.0。GitHub 仓库页侧栏同样标为 Apache-2.0（<code>spdxId: Apache-2.0</code>）。<code>studio/LICENSE</code> 也是 Apache 2.0，文末版权行为 Copyright 2026 HeyGen, Inc.；同日核到上游 <a href="https://raw.githubusercontent.com/heygen-com/hyperframes/main/LICENSE">heygen-com/hyperframes</a> 的 LICENSE 同文、同一版权行。根目录 LICENSE 附录仍是占位符「Copyright [yyyy] [name of copyright owner]」，没有填写 OpenDesign 或 nexu-io 的版权人姓名。<code>package.json</code> 没有 <code>license</code> 字段。按本站规则，本页为项目导读，并附录官方简体中文 README 与根目录许可证原文。代码许可不能外推到第三方模板、媒体、字体、模型，以及 README 里的品牌复刻示例。本页不转载仓库中的演示图、GIF、口播素材或含真人的封面；也不下载视频或音频。移除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">Removal request</a>。</div>
+<div class="notice"><strong>版权说明：</strong>代码以 Apache License 2.0 发布（<code>studio/</code> 与上游 Hyperframes 为 Copyright 2026 HeyGen, Inc.），本页附官方简体中文 README 与许可证原文；第三方模板、媒体、字体、模型与品牌示例各属其权利人。移除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">Removal request</a>。</div>
 
 <h2>它是什么</h2>
 <p>公开仓库在 <a href="https://github.com/nexu-io/openmotion">github.com/nexu-io/openmotion</a>。项目站点写的是 <a href="https://open-design.ai/motion/">open-design.ai/motion/</a>。GitHub 仓库页的创建时间是 2026-05-11 09:40:38 UTC（新加坡时间 17:40:38）。README 写明，这个仓库是从 <code>nexu-io/html-anything</code> 改名而来；旧应用留在 <code>legacy</code> 分支。</p>
@@ -75,7 +75,7 @@
 <p>官网、ChatGPT 插件页和 Discord / 飞书邀请没有在本日逐页复核，只按 README 中的链接列出。</p>
 
 <h2>附录一、官方简体中文 README</h2>
-<p>以下为仓库 <a href="https://github.com/nexu-io/openmotion/blob/main/docs/README.zh-CN.md">docs/README.zh-CN.md</a> 的官方简体中文文本，于 2026-11-18（新加坡时间）自 <a href="https://raw.githubusercontent.com/nexu-io/openmotion/main/docs/README.zh-CN.md">raw.githubusercontent.com</a> 抓取，按 Apache-2.0 附录于此。插图、徽章、演示 GIF、星标趋势图，以及含人物或第三方品牌复刻的预览，均未转载，只在必要时注明。相对链接已改为指向 GitHub 仓库。若与英文 README 或现场核对有出入，以英文稿和核对记录为准。</p>
+<p>以下为仓库 <a href="https://github.com/nexu-io/openmotion/blob/main/docs/README.zh-CN.md">docs/README.zh-CN.md</a> 的官方简体中文文本，按 Apache-2.0 附录于此。插图与演示 GIF 请见原仓库，相对链接已改为指向 GitHub 仓库。如与英文 README 有出入，以英文稿为准。</p>
 <div class="appendix official-readme">
 <p><strong>Claude Motion 与 CapCut 的开源替代方案</strong></p>
 <p><a href="https://github.com/nexu-io/openmotion/blob/main/README.md">English</a> · <strong>简体中文</strong> · <a href="https://github.com/nexu-io/openmotion/blob/main/docs/README.ja.md">日本語</a></p>

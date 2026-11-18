@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>该用哪个 Claude 模型来构建：Fable、Opus、Sonnet 还是 Haiku</title>
-<meta name="description" content="Addy Osmani 在 claude.dev 的选型指南导读：多数工作从 Opus 5.5、medium 起步；按任务下探 Sonnet / Haiku，或上探 Fable 5.2；先调 effort，再换模型。价格与基准数字均为原文自报，本站未复现。">
+<meta name="description" content="Addy Osmani 在 claude.dev 的选型指南导读：多数工作从 Opus 5.5、medium 起步；按任务下探 Sonnet / Haiku，或上探 Fable 5.2；先调 effort，再换模型。价格与基准数字均为原文自报。">
 <meta property="og:title" content="该用哪个 Claude 模型来构建：Fable、Opus、Sonnet 还是 Haiku">
 <meta property="og:description" content="多数工作从 Opus 5.5、medium 起步；按任务下探或上探，先调 effort。独立中文导读，短引原文。">
 <meta property="og:image" content="images/cover.webp">
@@ -28,11 +28,7 @@
 <!-- za:origin --><div class="za-origin"><p class="source">原作者：Addy Osmani（Anthropic，Member of Technical Staff），发表于 <a href="https://claude.dev/blog/which-claude-model-should-you-build-with/">claude.dev Blog</a>，2026-11-09。原文：<a href="https://claude.dev/blog/which-claude-model-should-you-build-with/">https://claude.dev/blog/which-claude-model-should-you-build-with/</a>。本页是独立中文导读，只用短引，不是全文翻译。文章、配图、演示视频与设计版权归 Anthropic 或其许可方所有；本页未转载原图与视频。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><blockquote>
-<p><strong>导读说明。</strong> 现场核过 <a href="https://claude.dev/terms">claude.dev Terms of Use</a>（2026-09-18 更新，核于 2026-11-10）：站点上的代码示例默认 MIT；文章、图片、视频与设计归 Anthropic 或其许可方，只允许阅读、分享链接，以及在署名后引用简短摘录，不得另行复制或转载。文中价格、基准分数与内部评测均为 Anthropic 在原文中的自报，本站未对照价目表或复现评测，一律标 ⚠️，并以 2026-11-10 读到的原文为准。模型名、价码与数字按原文照录。</p>
-</blockquote>
-
-<p>这篇 Playbooks 要回答的是一个很具体的问题：在 Claude 平台或 Claude Code 里做日常开发，该从哪一个模型起步，又该在什么时候换。当前一般可用的四个模型是 Claude Haiku 5.5、Claude Sonnet 5.5、Claude Opus 5.5 和 Claude Fable 5.2。另有一个 Claude Mythos 5.2，原文称它是网络安全与生命科学研究上「最强」的模型，但只通过验证项目提供，不在这篇的日常选型里。</p>
+<!-- za:content --><main class="za-content"><p>这篇 Playbooks 要回答的是一个很具体的问题：在 Claude 平台或 Claude Code 里做日常开发，该从哪一个模型起步，又该在什么时候换。当前一般可用的四个模型是 Claude Haiku 5.5、Claude Sonnet 5.5、Claude Opus 5.5 和 Claude Fable 5.2。另有一个 Claude Mythos 5.2，原文称它是网络安全与生命科学研究上「最强」的模型，但只通过验证项目提供，不在这篇的日常选型里。</p>
 
 <p>原文配了几段演示视频：用四个模型把同一张巷子照片写成绘画程序、并排搭同一个作品集站点、用 Fable 5.2 把一个场景画成十六种渲染风格，以及四个模型同时改一家网店。演示分别署名 Lance Martin、Addy Osmani、Dan Fein。按版权条款与本站惯例，这些视频和原图都没有下载或转载。</p>
 
@@ -74,7 +70,7 @@
 </table>
 
 <h2>四个模型并排</h2>
-<p>下表数字均来自原文「Claude API list prices」，⚠️ 未对照官方价目表，核于 2026-11-10。基准成绩原文指向 <a href="https://www.anthropic.com/claude/fable">Fable 5.2 产品页</a>，本页不转载那些成绩。</p>
+<p>下表数字均来自原文「Claude API list prices」，⚠️ 以官方价目表为准。基准成绩原文指向 <a href="https://www.anthropic.com/claude/fable">Fable 5.2 产品页</a>，本页不转载那些成绩。</p>
 <table>
 <thead>
 <tr><th></th><th>Haiku 5.5</th><th>Sonnet 5.5</th><th>Opus 5.5</th><th>Fable 5.2</th></tr>
@@ -96,7 +92,7 @@
 <h2>三组权衡</h2>
 <h3>能力，以及「做完一件事」的成本</h3>
 <p>更大的模型通常每 token 更贵、也更强，但放到具体任务上并不总是如此。作者的原句是：「A higher price per token doesn't always mean a higher cost per task, or a better result.」</p>
-<p>原文举了几组 Anthropic 自己跑的基准，均为自报 ⚠️（核于 2026-11-10），本站未复现：</p>
+<p>原文举了几组 Anthropic 自己跑的基准，均为自报 ⚠️：</p>
 <ul>
 <li>在 Terminal-Bench 3.0 上，上一档 Fable 5.1 开到 <code>max</code> 得 58.0%；Opus 5.5 开到 <code>high</code> 得 58.9%，而且用了一半的 token。出处是姊妹篇 <a href="https://claude.dev/blog/spending-your-effort/">Spending your effort</a>。</li>
 <li>在更难的 FrontierCode 2.0 上，Fable 5.2 开到 <code>high</code>，与 Opus 5.5 开到 <code>max</code> 大致持平（45.3% 对 45.5%），但每项任务成本大约只有一半。所以：难题上先不要把 Opus 5.5 推过 <code>high</code>，先拿 Fable 5.2 比一比。日常工作仍从 Opus 5.5 的 <code>medium</code> 起。更完整的成绩见 <a href="https://www.anthropic.com/claude-fable-and-mythos-5-2">Fable 与 Mythos 5.2 发布文</a>。</li>
@@ -180,10 +176,9 @@ Read the logs you're given. For each failure, report the file, the test name and
 <li>文档：<a href="https://platform.claude.com/docs/en/about-claude/models/choosing-a-model">Choosing a model</a>、<a href="https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence">Optimizing for cost and intelligence</a>、<a href="https://platform.claude.com/docs/en/build-with-claude/effort">Effort</a>，以及 Claude Code 的 <a href="https://code.claude.com/docs/en/model-config">model configuration</a> 与 <a href="https://code.claude.com/docs/en/sub-agents">subagents</a>。</li>
 </ul>
 
-<h2>核实与版权</h2>
-<p>抓取前先读 <code>https://claude.dev/robots.txt</code>，内容为 <code>User-Agent: *</code>、<code>Allow: /</code>。随后用普通 HTTPS 读取原文 HTML、页面提供的 markdown 副本，以及 <a href="https://claude.dev/terms">claude.dev Terms of Use</a>。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未转载原图或人物照片。</p>
-<p>版权结论：文章本身未声明开放许可。条款第 2 节保留文章、图片、视频与设计的权利，只允许带署名的短引。因此本页只做导读。文中那个 <code>log-reader</code> 代码示例按条款第 1 节以 MIT 收录，并保留署名。尽管本库对 Anthropic 博文另有「公开导读 + 私有全译」的惯例，这次因条款只允许短引，未另写私有全文译本。</p>
-<p>⚠️ 未核实或未复现（核于 2026-11-10，依据原文，非独立测量）：全部 API 标价与缓存价；Terminal-Bench 3.0、FrontierCode 2.0、SWE-bench Pro 及「失败再重跑」的分数与每项成本；20 题搜索基准里两题占 43% 花费；内部顾问配对 90.1% / $2.92；内部缺陷搜索「约低三分之一、得分相当」；Fable 5.2 / Sonnet 5.5 相对上一代「最多快 30%」；各云上 <code>haiku</code> 别名仍指向 Haiku 4.5 的说法（可能随后已变）；Mythos 5.2 的提供范围。演示视频未见，效果不作判断。</p>
+<h2>注记与版权</h2>
+<p>原文版权归 Anthropic 所有，本页为中文导读，引文仅为短引；文中 <code>log-reader</code> 代码示例按 claude.dev 条款以 MIT 收录。</p>
+<p>⚠️ 以下均为原文自报：全部 API 标价与缓存价；Terminal-Bench 3.0、FrontierCode 2.0、SWE-bench Pro 及「失败再重跑」的分数与每项成本；20 题搜索基准里两题占 43% 花费；内部顾问配对 90.1% / $2.92；内部缺陷搜索「约低三分之一、得分相当」；Fable 5.2 / Sonnet 5.5 相对上一代「最多快 30%」；各云上 <code>haiku</code> 别名仍指向 Haiku 4.5 的说法（可能随后已变）；Mythos 5.2 的提供范围。</p>
 <p>署名：Anthropic；作者 Addy Osmani。原文：<a href="https://claude.dev/blog/which-claude-model-should-you-build-with/">https://claude.dev/blog/which-claude-model-should-you-build-with/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
 </div>
 <footer class="za-foot">

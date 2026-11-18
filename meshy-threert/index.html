@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>「ThreeRT」：用你熟悉的 three.js 写法，在 GPU 上实时追光</title>
-<meta name="description" content="Meshy（meshy-dev / Meshy LLC）的 ThreeRT 项目导读：一套放在 three.js 风格接口后面的实时路径追踪引擎，引擎用 Rust 与 wgpu 写成。根目录 LICENSE 于 2026-11-14 现场核为 MIT，但 macOS / iOS 客户端闭源，素材也不在仓库里。附 README 全文中译与许可证原文。未编译、未运行、未下载客户端 ⚠️。对照数字为仓库自报 ⚠️。星数会变 ⚠️。">
+<meta name="description" content="Meshy（meshy-dev / Meshy LLC）的 ThreeRT 项目导读：一套放在 three.js 风格接口后面的实时路径追踪引擎，引擎用 Rust 与 wgpu 写成。代码为 MIT，但 macOS / iOS 客户端闭源，素材也不在仓库里。附 README 全文中译与许可证原文。对照数字为仓库自报 ⚠️。星数会变 ⚠️。">
 <meta property="og:title" content="「ThreeRT」：用你熟悉的 three.js 写法，在 GPU 上实时追光">
 <meta property="og:description" content="硬件光线追踪的 three.js：同一份场景文件，可在引擎里追光，也可在浏览器里当普通 three.js 来跑。MIT 管源码，不管闭源客户端与第三方素材。附 README 全译。未运行 ⚠️。">
 <meta property="og:image" content="images/cover.webp">
@@ -30,7 +30,7 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><p class="lede">ThreeRT 是一套实时路径追踪引擎，接口写成你熟悉的 three.js 样子。按 README 的说法，你用写 three.js 的方式写场景，场景里的光会在 GPU 的光线追踪硬件上被追踪。它不只是渲染器，也是游戏运行时：同一份场景文件，可以在引擎里跑，也可以作为普通 three.js，在任何浏览器里打开。引擎本体是 Rust 和 <a href="https://wgpu.rs">wgpu</a>，场景和玩法包是 TypeScript。本页以这个项目为中心。根目录许可证在 2026-11-14（新加坡时间）核到是 MIT，所以下面有导读、README 全文中译，以及许可证原文。macOS 与 iOS 客户端是闭源的；演示用的第三方场景和地图也不随这份 MIT 授权。本页没有编译引擎，没有运行演示，也没有下载客户端。</p>
 
-<div class="notice"><strong>版权说明：</strong>仓库根目录 <code>LICENSE</code> 于 2026-11-14（新加坡时间）经 <a href="https://raw.githubusercontent.com/meshy-dev/ThreeRT/main/LICENSE">raw.githubusercontent.com</a> 现场核对为 MIT License（Copyright (c) 2026 Meshy LLC）；GitHub 仓库页同样标注 MIT（<code>spdxId: MIT</code>）。根目录 <code>package.json</code> 的 <code>license</code> 字段也是 MIT。README 同时写明：macOS 和 iOS 客户端可免费使用，但是闭源；素材不进仓库，由安装脚本另行拉取，第三方内容保留各自条款，详见 <a href="https://github.com/meshy-dev/ThreeRT/blob/main/docs/ASSETS.md">docs/ASSETS.md</a>。Amazon Lumberyard Bistro 与 Beeple / Kate Anderson 的 Zero-Day 来自 NVIDIA ORCA，CC BY 4.0；东京数据来自 Project PLATEAU、国土地理院与 OpenStreetMap（ODbL），编译后的瓦片按文档不得再发布；OpenStrike 演示里的 cs_assault、de_inferno、de_dust2 是《反恐精英》地图，© Valve，不属于本项目。three.js 是独立开源项目，ThreeRT 与它没有从属关系。下文对 README 作全文中译，并附许可证原文。正文插图只取仓库里作者自己的入门场景静帧（<code>scenes/sun-room.ts</code> 的渲染图），不转载 Bistro、Zero-Day、东京模型，也不转载含 Valve 地图的总览图或任何视频、音频。</div>
+<div class="notice"><strong>版权说明：</strong>代码以 MIT License 发布（Copyright (c) 2026 Meshy LLC）。README 同时写明：macOS 和 iOS 客户端可免费使用，但是闭源；素材不进仓库，由安装脚本另行拉取，第三方内容保留各自条款，详见 <a href="https://github.com/meshy-dev/ThreeRT/blob/main/docs/ASSETS.md">docs/ASSETS.md</a>。Amazon Lumberyard Bistro 与 Beeple / Kate Anderson 的 Zero-Day 来自 NVIDIA ORCA，CC BY 4.0；东京数据来自 Project PLATEAU、国土地理院与 OpenStreetMap（ODbL），编译后的瓦片按文档不得再发布；OpenStrike 演示里的 cs_assault、de_inferno、de_dust2 是《反恐精英》地图，© Valve，不属于本项目。three.js 是独立开源项目，ThreeRT 与它没有从属关系。下文附 README 全文中译与许可证原文；正文插图是仓库入门场景（<code>scenes/sun-room.ts</code>）的渲染图。</div>
 
 <figure>
 <img src="images/cover.webp" alt="一间米色灰泥墙的房间。阳光从右侧窗口照进来，在棕色地板上投下一块明亮的方形光斑；窗框的影子很清楚。窗玻璃下半是暗的。房间左侧有一张深蓝色双人沙发，中间是一张浅色木桌，桌上有一个白色圆球，桌腿投下柔软的影子。墙面和天花板带着从地板反弹上来的暖光。没有人物。" width="1280" height="720">
@@ -46,7 +46,7 @@
 <p>README 把名字拆成 Two 部分：Three 是你已经熟悉的接口；RT 是它要补上的三件事。</p>
 <ul>
 <li><strong>Ray tracing（光线追踪）。</strong>每一盏灯都会被追踪：阴影、间接光、反射，以及会把房间照亮的发光表面。没有阴影贴图，没有探针，没有光照贴图，也不用烘焙。</li>
-<li><strong>Real time（实时）。</strong>按仓库的说法，在制作级场景里、相机还在动的时候，也能跑到 60 fps，例子是 Amazon Lumberyard 的 Bistro 和 Beeple 的 Zero-Day，而且是在笔记本电脑上；不是停下相机之后才慢慢收敛的静帧。帧率与场景规模均为自报，本页未复现 ⚠️。</li>
+<li><strong>Real time（实时）。</strong>按仓库的说法，在制作级场景里、相机还在动的时候，也能跑到 60 fps，例子是 Amazon Lumberyard 的 Bistro 和 Beeple 的 Zero-Day，而且是在笔记本电脑上；不是停下相机之后才慢慢收敛的静帧。帧率与场景规模均为自报 ⚠️。</li>
 <li><strong>Runtime（运行时）。</strong>这是一套游戏运行时，不只是渲染器。场景代码和游戏逻辑在引擎里运行；同一份文件也可以作为普通 three.js，在任何浏览器里跑。</li>
 </ul>
 <p>这和本站收过的浏览器演示不是同一类东西。<a href="https://breakdimbo.github.io/zh-blog-mirrors/blendi-painted-valley/">Painted Valley</a> 和 <a href="https://breakdimbo.github.io/zh-blog-mirrors/mxvdl-paris-freestyle/">Paris Freestyle</a> 是在浏览器里直接跑的 three.js 小品；ThreeRT 的路径追踪发生在原生引擎里，浏览器路径走的是「同一份文件的普通 three.js 预览」。本页没有把这两种预览并排跑过 ⚠️。</p>

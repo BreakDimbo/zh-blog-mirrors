@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Claude Code 团队怎么看待验证：官方文章导读</title>
-<meta name="description" content="Addy Osmani 在 claude.dev 的官方文章《How the Claude Code team thinks about verification》独立中文导读：先给智能体可运行的验证回路，再谈并行；优先端到端、性质测试和差异测试；检查不能被它要评判的改动改写。内部数字均为原文自报，本站未复现。">
+<meta name="description" content="Addy Osmani 在 claude.dev 的官方文章《How the Claude Code team thinks about verification》独立中文导读：先给智能体可运行的验证回路，再谈并行；优先端到端、性质测试和差异测试；检查不能被它要评判的改动改写。内部数字均为原文自报。">
 <meta property="og:title" content="Claude Code 团队怎么看待验证：官方文章导读">
 <meta property="og:description" content="独立中文导读：验证回路让人从读每一处 diff，转到定义「做完」并审证据。只用短引，不是全文翻译。">
 <meta property="og:image" content="images/cover.webp">
@@ -28,11 +28,7 @@
 <!-- za:origin --><div class="za-origin"><p class="source">原作者：Addy Osmani，发布方 Anthropic，发表于 <a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/">claude.dev Blog</a>（栏目 Engineering），原文标注日期 2026-11-16，自称阅读时间 10 分钟。原文：<a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/">https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/</a>。本页是独立中文导读，只用短引，不是全文翻译。文章、配图与设计版权归 Anthropic 或其许可方所有；本页未转载原图与官方分享图。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><blockquote>
-<p><strong>导读说明。</strong> 抓取前先读 <a href="https://claude.dev/robots.txt">claude.dev/robots.txt</a>（核于 2026-11-17）：<code>User-Agent: *</code> 为 <code>Allow: /</code>，本篇路径允许抓取。随后用普通 HTTPS 读取文章页，以及同站 <a href="https://claude.dev/terms">Terms of Use</a>（页面标注最近更新于 2026-09-18）。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未抓取官方配图或 <code>/og.png</code> 分享图，未绕过付费墙。现场核过的条款写明：站点上的代码示例默认 MIT；文章、图片、视频与设计归 Anthropic 或其许可方，只允许阅读、分享链接，以及在署名后引用简短摘录，不得另行复制或转载。因此本页只做导读，只用短引，不照录正文，也不转载官方图。文中关于代码比例、内部评测和清单条目数等数字均为 Anthropic 或作者自报，本站未复现，一律标 ⚠️，并以 2026-11-17 读到的原文为准。</p>
-</blockquote>
-
-<p>这篇 Engineering 文章要回答的是：当大部分代码已经由 Claude 来写、来评的时候，怎样让智能体用证据验证自己的工作，而不是等人去读每一处改动。它和书店里已有的那篇《<a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a>》是姊妹篇，不是同一篇。作者在文中写明，先前已经谈过代码评审，这次要更往下走一层，专门讲验证。</p>
+<!-- za:content --><main class="za-content"><p>这篇 Engineering 文章要回答的是：当大部分代码已经由 Claude 来写、来评的时候，怎样让智能体用证据验证自己的工作，而不是等人去读每一处改动。它和书店里已有的那篇《<a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a>》是姊妹篇，不是同一篇。作者在文中写明，先前已经谈过代码评审，这次要更往下走一层，专门讲验证。</p>
 
 <p>作者给的判断是：没有验证回路，你一次大概只能跑一两个 Claude，因为每件事都得自己检查；有了它，才谈得上并行许多个。原文原句是：</p>
 <blockquote>
@@ -40,9 +36,9 @@
 <p>— Addy Osmani，<cite>How the Claude Code team thinks about verification</cite>（claude.dev，2026-11-16）</p>
 </blockquote>
 
-<p>文中还写，Claude Code 团队「绝大多数」（约 90%）代码由 Claude 编写并评审 ⚠️。这个比例在 2026-10 月那篇代码评审文章里已经出现过，当时的写法是「约 90% 代码由 Claude 写」；本篇补上了「并评审」。两者都是团队自报，本站未独立统计。</p>
+<p>文中还写，Claude Code 团队「绝大多数」（约 90%）代码由 Claude 编写并评审 ⚠️。这个比例在 2026-10 月那篇代码评审文章里已经出现过，当时的写法是「约 90% 代码由 Claude 写」；本篇补上了「并评审」。两者都是团队自报。</p>
 
-<p>作者把验证对质量的作用，写进一次内部测试：在结构化文件生成这项任务上，另设评分器按评分细则检查 Claude 的产出，任务成功率比普通提示词循环最多高出 10 个点，最难的题目受益最大 ⚠️。这个数字链到 Claude Managed Agents 的介绍，本站未打开那篇文章复核，也未复现评测。他同时指出，测试、基准和规格现在可以让智能体很快生成，生成之后就按软件那样反复跑，不必再消耗很多 token。回路还可以合上：如果智能体反复在同一类检查上失败，就在 hook 或 <code>CLAUDE.md</code> 里写进更明确的规则，尽量让同样的问题不再出现。</p>
+<p>作者把验证对质量的作用，写进一次内部测试：在结构化文件生成这项任务上，另设评分器按评分细则检查 Claude 的产出，任务成功率比普通提示词循环最多高出 10 个点，最难的题目受益最大 ⚠️。这个数字出自 Claude Managed Agents 的介绍。他同时指出，测试、基准和规格现在可以让智能体很快生成，生成之后就按软件那样反复跑，不必再消耗很多 token。回路还可以合上：如果智能体反复在同一类检查上失败，就在 hook 或 <code>CLAUDE.md</code> 里写进更明确的规则，尽量让同样的问题不再出现。</p>
 
 <h2>三种更值得投入的测试</h2>
 <p>作者认为，测试选哪种都要先避开两种失效方式。不稳定的测试会训练智能体再跑一遍，而不是去修代码；太慢的测试会让智能体在一批改动里少跑几次，问题更难定位。更重的测试，最好放在提交之前。</p>
@@ -59,7 +55,7 @@
 <p>第三种是差异测试（differential tests）：把旧系统当作标准答案。尤其适合功能预期保持不变的大规模迁移。用同一组输入分别跑旧系统和新系统，结果不同，就说明有缺陷或破坏性变更。输入应用随机生成，或抽一段生产流量；空白之类无关差异要先归一化；若新环境本就该和旧环境不同，则维护一份已批准的差异清单。文中链到 Anthropic 另文《AI code migration》，本页未展开。</p>
 
 <h2>Claude Code 团队自己怎么做验证</h2>
-<p>这一节是团队内部做法的转述。本站未查看他们的仓库或流水线，下列流程与数字均为原文自报，标 ⚠️ 的不再逐条重复，但都未经独立核实。</p>
+<p>这一节是团队内部做法的转述，下列流程与数字均为原文自报 ⚠️。</p>
 
 <h3>验证首先是把改动跑起来</h3>
 <p>作者认为，把应用从头到尾跑一遍，比只跑测试更重要。原文原句是：</p>
@@ -101,7 +97,7 @@
 <h2>工作会转到哪一侧</h2>
 <p>收束时，作者把验证层当成和其他系统一样需要维护的东西：它必须放在自己所评判的改动够不到的地方；要用对你真正重要的缺陷来给它打分；漏掉一次就把教训写下来，避免再漏；也要修剪这些教训，别让它们失去效用。做到这些之后，人的工作会从读每一处 diff，转到定义「做完」长什么样，并审阅证据。这也是一次能跑许多个 Claude 的前提。</p>
 
-<p>⚠️ 未核实或未复现（核于 2026-11-17，依据原文，非独立测量）：「约 90% 的代码由 Claude 编写并评审」；没有验证回路就「只能同时跑一两个」、有了就可以「并行几十乃至上百个」；结构化文件生成的内部测试「最多高出 10 个点」（所链 Managed Agents 文章本次未打开）；「几乎所有改动」都用 <code>verify</code> skill 来测；可靠性清单为 39 项、每次通常匹配 3 到 10 项；三轮失败后才叫人、观察模式与强制模式的闸门细节、漏检转规则的具体门槛，均为对内部流程的转述，本站未查看其仓库。阅读时间 10 分钟为页面自报。作者职衔未在本文写明。</p>
+<p>⚠️ 以下均为原文自报：「约 90% 的代码由 Claude 编写并评审」；没有验证回路就「只能同时跑一两个」、有了就可以「并行几十乃至上百个」；结构化文件生成的内部测试「最多高出 10 个点」；「几乎所有改动」都用 <code>verify</code> skill 来测；可靠性清单为 39 项、每次通常匹配 3 到 10 项；三轮失败后才叫人、观察模式与强制模式的闸门细节、漏检转规则的具体门槛，均为对内部流程的转述。</p>
 <p>署名：Addy Osmani / Anthropic。原文：<a href="https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/">https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
 </div>
 <footer class="za-foot">

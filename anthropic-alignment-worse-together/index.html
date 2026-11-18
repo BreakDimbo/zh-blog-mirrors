@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Worse Together：多用户多智能体为何一起变差：官方文章导读</title>
-<meta name="description" content="Anthropic Alignment Science Blog 文章《Worse Together: How Performance Breaks Down in Multi-User Multi-Agent Teams》独立中文导读：四人各派自己的智能体去抢同一份资源，团体结果往往不如一个智能体同时服务所有人。公开页只用短引；数字均为原文自报，本站未复现。">
+<meta name="description" content="Anthropic Alignment Science Blog 文章《Worse Together: How Performance Breaks Down in Multi-User Multi-Agent Teams》独立中文导读：四人各派自己的智能体去抢同一份资源，团体结果往往不如一个智能体同时服务所有人。公开页只用短引；数字均为原文自报。">
 <meta property="og:title" content="Worse Together：多用户多智能体为何一起变差：官方文章导读">
 <meta property="og:description" content="独立中文导读：多用户多智能体共享资源时，团体结果往往更差。只用短引，不是全文翻译。">
 <meta property="og:image" content="images/cover.webp">
@@ -28,11 +28,7 @@
 <!-- za:origin --><div class="za-origin"><p class="source">原作者：Sahan Paliskara、Nattaput Namchittai（Anthropic Fellows Program），Jacqueline Tay（Independent），Avery Griffin、Andrew Lampinen（Anthropic），发布方 Anthropic Alignment Science Blog，原文标注日期 2026-11-11。原文：<a href="https://alignment.anthropic.com/2026/worse-together/">https://alignment.anthropic.com/2026/worse-together/</a>。同题论文：<a href="https://arxiv.org/abs/2610.00583">arXiv:2610.00583</a>（标注 CC BY 4.0）。基准代码：<a href="https://github.com/safety-research/MAMUBench">safety-research/MAMUBench</a>（MIT）。本页是独立中文导读，只用短引，不是全文翻译。博文与配图在文章页上未见开放许可声明，版权归作者或 Anthropic 或其许可方所有；本页未转载原文图表。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><blockquote>
-<p><strong>导读说明。</strong> 抓取前先读 <a href="https://alignment.anthropic.com/robots.txt">alignment.anthropic.com/robots.txt</a>（核于 2026-11-17）：文件只有 Content-Signal 用语说明，没有 <code>User-agent</code> / <code>Disallow</code> 规则，也没有对具体路径给出 <code>search</code> / <code>ai-input</code> / <code>ai-train</code> 的 yes 或 no；按该文件自己的 (c) 款，未给出信号即不通过信号授权、也不通过信号限制。随后用普通 HTTPS 读取文章页（HTTP 200），以及同站首页。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未抓取 <code>fig1.png</code> 至 <code>fig5.png</code> 等原文图，未绕过付费墙。文章页与首页均未见内容许可声明。页面使用的 Distill 模板源码为 Apache 2.0，其中「示意图与文字采用 CC-BY 4.0」的附录只在 <code>frontMatter.journal.title === 'Distill'</code> 时注入；本篇 front matter 没有 <code>journal</code> 字段，因此不能把这篇博文当成 Distill 期刊的 CC-BY 文章。同题 arXiv 预印本标注 <a href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>，基准仓库为 MIT，二者都不能外推到这篇博文或其配图。因此本页只做导读，只用短引，不照录正文，也不转载原文图。文中的评测数字、模型行为比例与缓解效果均为原文或图注自报，本站未复现，一律标 ⚠️，并以 2026-11-17 读到的原文为准。</p>
-</blockquote>
-
-<p>这是 Anthropic Alignment Science Blog 上的一篇研究速记，写明研究在 <a href="https://alignment.anthropic.com/2024/anthropic-fellows-program/">Anthropic Fellows Program</a> 中完成。它要回答的问题是：当每个人把自己的事交给自己的智能体，而这些智能体又必须共用一份不够分的资源时，团体会不会比「由一个智能体同时服务所有人」更差。作者把这类设置叫做 multi-user, multi-agent systems，并在四个日常环境里做了比较。</p>
+<!-- za:content --><main class="za-content"><p>这是 Anthropic Alignment Science Blog 上的一篇研究速记，写明研究在 <a href="https://alignment.anthropic.com/2024/anthropic-fellows-program/">Anthropic Fellows Program</a> 中完成。它要回答的问题是：当每个人把自己的事交给自己的智能体，而这些智能体又必须共用一份不够分的资源时，团体会不会比「由一个智能体同时服务所有人」更差。作者把这类设置叫做 multi-user, multi-agent systems，并在四个日常环境里做了比较。</p>
 
 <p>文章的判断写在开篇。原文原句是：</p>
 <blockquote>
@@ -42,7 +38,7 @@
 
 <p>四个环境分别是：研究者共用一份 API token 预算；急症病人共用一份诊所日程；通过私人助手安排的团体订餐、预付预订或出行；以及带发布截止时间的合并队列。比较的编队有四种：单人单智能体（solo）；一个智能体服务多人（coordinator，文中作为对照）；每人一个智能体但不能互相说话（silent team）；每人一个智能体、彼此有频道（peer-to-peer team）。本篇博文主要写 API key 与私人助手，以及 coordinator 和 peer-to-peer team 的对照；其余内容指向同题论文。</p>
 
-<p>按原文 Figure 2 的图注与 alt 文本，团体结果以「最佳策略所能达到的结果」为百分之百，在全部四个环境里，coordinator 都高于 peer-to-peer team。Claude Opus 5 为 64 对 30、84 对 71、88 对 44、92 对 81；Claude Sonnet 5 为 32 对 12、74 对 65、75 对 37、93 对 78 ⚠️。正文概括为大约 10 到 45 个百分点。这些都是原文自报，本站未复现。</p>
+<p>按原文 Figure 2 的图注与 alt 文本，团体结果以「最佳策略所能达到的结果」为百分之百，在全部四个环境里，coordinator 都高于 peer-to-peer team。Claude Opus 5 为 64 对 30、84 对 71、88 对 44、92 对 81；Claude Sonnet 5 为 32 对 12、74 对 65、75 对 37、93 对 78 ⚠️。正文概括为大约 10 到 45 个百分点。这些都是原文自报。</p>
 
 <h2>API key：动作太少、来得太迟</h2>
 <p>在 API key 环境里，四、八或十六名研究者共用一份不够分的预算。每人把任务队列交给自己的智能体，并附上截止时间和误期后果。智能体必须取消或缩小一部分任务，才能让另一些任务做完。作者写了 25 个情境 ⚠️。peer-to-peer team 只达到 coordinator 的 47%（Opus 5）和 38%（Sonnet 5）；折成最佳策略的份额，则是 30% 对 64%、12% 对 32% ⚠️。</p>
@@ -69,11 +65,10 @@
 </blockquote>
 <p>他们建议评测同时看团体结果和行为：只看分数，会漏掉 GPT 与 Qwen 未经同意取消他人任务；只看动作，又会漏掉从未这样做、却远远落后于 coordinator 的 Claude Opus 5 团队 ⚠️。补救可以来自整条栈，从防止互相踩脚的平台闸门，到训练智能体去沟通并达成协议。</p>
 
-<h2>论文、基准与许可边界</h2>
-<p>作者宣布把其中三个环境作为基准 <a href="https://github.com/safety-research/MAMUBench">MAMUBench</a> 发布，供他人测试多用户多智能体的协调与行为。同题论文为 <a href="https://arxiv.org/abs/2610.00583">arXiv:2610.00583</a>（v1 标注提交于 2026-09-30，许可为 CC BY 4.0）。仓库 README（MIT，Copyright 2026 Safety Research）写明：74 个情境覆盖 API key、诊所与私人助手三个环境；第四个环境「合并队列」的代码也已发布并可运行，但其情境不在这 74 个之中。论文摘要则写「四个环境中的 77 个情境」，并把 MAMUBench 说成将发布其中三个环境、共 74 个情境。数字与范围以各文件自己的表述为准，本站未重跑评测 ⚠️。arXiv v1 的注释仍写代码「审稿后再发布」，与 2026-11-11 博文及已公开的仓库不一致，可能只是预印本未更新 ⚠️。另外，博文作者为五人，arXiv v1 只列出 Sahan Paliskara、Nattaput Namchittai、Andrew Lampinen 三人 ⚠️。</p>
-<p>代码的 MIT 许可与论文的 CC BY 4.0 都不能外推到这篇博文或博文配图。本页因此不转载图，也不照录博文正文。</p>
+<h2>论文与基准</h2>
+<p>作者宣布把其中三个环境作为基准 <a href="https://github.com/safety-research/MAMUBench">MAMUBench</a> 发布，供他人测试多用户多智能体的协调与行为。同题论文为 <a href="https://arxiv.org/abs/2610.00583">arXiv:2610.00583</a>（v1 标注提交于 2026-09-30，许可为 CC BY 4.0）。仓库 README（MIT，Copyright 2026 Safety Research）写明：74 个情境覆盖 API key、诊所与私人助手三个环境；第四个环境「合并队列」的代码也已发布并可运行，但其情境不在这 74 个之中。论文摘要则写「四个环境中的 77 个情境」，并把 MAMUBench 说成将发布其中三个环境、共 74 个情境。数字与范围以各文件自己的表述为准 ⚠️。arXiv v1 的注释仍写代码「审稿后再发布」，与 2026-11-11 博文及已公开的仓库不一致，可能只是预印本未更新 ⚠️。另外，博文作者为五人，arXiv v1 只列出 Sahan Paliskara、Nattaput Namchittai、Andrew Lampinen 三人 ⚠️。</p>
 
-<p>⚠️ 未核实或未复现（核于 2026-11-17，依据博文、图注、arXiv 摘要与仓库 README，非独立测量）：各环境团体分数、行动比例、未经同意的削减次数、Jain 指数、ask 送达/入上下文/被尊重的比例、编造陈述的比例、领队与未读消息闸门的挽回率，以及 25 / 74 / 77 等情境数目，均为原文自报。同意与否、是否编造，分别由 Claude Sonnet 5 与 Claude Opus 5 担任评判，本站未复核其一致性。文中引用的 SemiAnalysis 预测、Hugging Face 事件与德国 wiki 事例，本页只作转述，未独立核对这些外部报道。作者在博文中的职衔，除所属单位脚注外，未见更细说明。</p>
+<p>⚠️ 以下均为原文自报：各环境团体分数、行动比例、未经同意的削减次数、Jain 指数、ask 送达/入上下文/被尊重的比例、编造陈述的比例、领队与未读消息闸门的挽回率，以及 25 / 74 / 77 等情境数目。同意与否、是否编造，分别由 Claude Sonnet 5 与 Claude Opus 5 担任评判。文中引用的 SemiAnalysis 预测、Hugging Face 事件与德国 wiki 事例，均为原文转述的外部报道。</p>
 <p>署名：Sahan Paliskara、Nattaput Namchittai、Jacqueline Tay、Avery Griffin、Andrew Lampinen / Anthropic Alignment Science Blog。原文：<a href="https://alignment.anthropic.com/2026/worse-together/">https://alignment.anthropic.com/2026/worse-together/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
 </div>
 <footer class="za-foot">

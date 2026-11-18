@@ -29,7 +29,7 @@
 <!-- za:content --><main class="za-content"><article>
 <figure><img src="images/cover.webp" alt="MiniMax H3 本地部署保姆级教程封面" loading="lazy"><figcaption>原文封面</figcaption></figure>
 <h2>编者按</h2>
-<p>本页为作者中文原文的<strong>全文逐字镜像</strong>（原文即中文，未改写）；配图为原文配图（转为 webp），代码块按原文内容还原到对应位置，原文中的「引用」角标统一收在文末链接列表。原帖发布于 2026-08-06（新加坡时间 14:28），截至收录时约 57 万次浏览、2,600+ 收藏。文中所有耗时、显存数据均为作者在 RTX 4090 48GB（魔改）上的实测，本站未复现。</p>
+<p>本页为作者中文原文的<strong>全文逐字镜像</strong>（原文即中文，未改写）；配图为原文配图（转为 webp），代码块按原文内容还原到对应位置，原文中的「引用」角标统一收在文末链接列表。原帖发布于 2026-08-06（新加坡时间 14:28），截至收录时约 57 万次浏览、2,600+ 收藏。文中所有耗时、显存数据均为作者在 RTX 4090 48GB（魔改）上的实测。</p>
 <p>要点速览：① 官方只开源了 33B 的 H3-Base（768p 级音视频），Context-IR 提示词改写与 2K 重生成仍是闭源 API；② ComfyUI ≥ 0.30.0 才有原生节点，T2V/I2V 只需 4 个文件约 39.6 GB，地板配置 3060 12GB + 32GB 内存；③ 帧数会静默吸附到 17k+5 网格（单次上限 362 帧 ≈ 15.08 秒），原生画布短边 768；④ 提示词用官方三字段（T2V）/六段式（R2V）结构化格式，对白放 &lt;d&gt; 标签；⑤ SageAttention 省约 24%，再叠 TeaCache 可再省 58%，但会改变成片、画面更“发呆”。</p>
 <p>本站相关：<a href="../minimax-h3-director/">MiniMax H3 Director 工作流</a> · <a href="../minimax-h3-prompt-rewriter/">MiniMax-H3 Prompt Rewriter</a> · <a href="../h3-motion-context/">ComfyUI-H3-Motion-Context</a></p>
 <h2>原文全文</h2>

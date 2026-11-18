@@ -143,7 +143,7 @@ colab exec -s work -c &quot;nvidia-smi&quot;  # 3. 远程执行任意 Shell / Py
 <p>算一笔明账：在 G4 显存常驻热调模式下（0 秒加载模型），跑完一部 20 秒、4 个连续分镜、1344×768 超清音画同生的双人电影级短剧，纯渲染耗时仅 <code>12 分 30 秒</code>（约 <code>1.65 CCU</code>）；哪怕算上首次开机冷启动拉取 42GB 模型到关机销毁的全流程，也只需 <code>~2.0 ~ 2.6 CCU</code>！ 每月 1,000 CCU 足够你整整跑 400 ~ 500 部 这样的 20 秒多镜头短片！</p>
 <h2>三、33B MiniMax-H3 多段文戏攻关实录：从 V1 翻车到 V9 最终定稿</h2>
 <p>先放我们经过多轮迭代调优后，在 G4 上直出并由本地声学对齐管线自动压制 电影级中文字幕 + 首段错峰呼吸滑入人物铭牌 的 20 秒（4 段式一镜到底无缝续接）现代职场审讯对手戏《底牌》最终定稿成片（同时提供带字幕版与纯净无字母带）。注意看首段男女主角的动态人物铭牌、林薇在第 8 秒至第 15 秒全程纹丝不动的 90° 标准正侧脸对峙、以及后两段拍桌暴怒吼叫时的音色一致性与画面通透度：</p>
-<figure><img src="images/final-film-poster.webp" alt="《底牌》20 秒四段式成片（原文为视频，本站只取封面帧，未下载视频；请到原帖观看）" loading="lazy"><figcaption>《底牌》20 秒四段式成片（原文为视频，本站只取封面帧，未下载视频；请到原帖观看）</figcaption></figure>
+<figure><img src="images/final-film-poster.webp" alt="《底牌》20 秒四段式成片（原文为视频，请到原帖观看）" loading="lazy"><figcaption>《底牌》20 秒四段式成片（原文为视频，请到原帖观看）</figcaption></figure>
 <p>这短短 20 秒的双人飙戏，背后其实浓缩了 AI 视频短剧最核心的 6 个致命深坑。下面把我从 V1 一路调试到最终定稿 V9 的真实踩坑与攻关过程毫无保留地摊开讲透：</p>
 <figure><img src="images/audio-ab.webp" alt="MiniMax-H3 多段文戏：三路音频实测与跨段情绪爆发协议（原文配图）" loading="lazy"><figcaption>MiniMax-H3 多段文戏：三路音频实测与跨段情绪爆发协议（原文配图）</figcaption></figure>
 <h3>1. 第一关：如何去掉人物的“AI 塑料网红脸”？（定妆照 + 双写实 LoRA）</h3>

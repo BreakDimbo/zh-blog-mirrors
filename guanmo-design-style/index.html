@@ -35,14 +35,14 @@
 <figcaption>本页封面为自制题头，未使用仓库图片。版权说明见文末。</figcaption>
 </figure>
 
-<div class="notice"><strong>版权说明：</strong>2026-11-10（新加坡时间）现场核验：仓库根目录的 <code>LICENSE</code>、<code>LICENSE.md</code>、<code>LICENSE.txt</code>、<code>COPYING</code>、<code>LICENCE</code> 以及 <code>NOTICE.md</code> 均返回 404；<code>package.json</code> 写明 <code>"private": true</code>，且没有 <code>license</code> 字段；GitHub 仓库页未见 “View license”。根 README「授权」一节的原句是：「代码欢迎学习和改造；转发视频和图片请注明出处 观默 @guanmo_ai」。这不是一份 OSI 意义上的开源许可证。只有 <code>gallery/</code> 子目录的画廊代码带 <a href="https://raw.githubusercontent.com/guanmo-ai/design-style/main/gallery/LICENSE">MIT License</a>（Copyright (c) 2026 观默 / @guanmo_ai），并写明视频、音频、封面和原有风格素材不在该许可范围内，使用规则以仓库 README 为准。字体另有 SIL OFL 1.1、GUST Font License 与 Apache License 2.0。因此本页<strong>不是 README 全文翻译</strong>，只用我们自己的话做导读，并保留少量短引。文中沿用 2026-10-23 已上站的缩略图（包豪斯、瑞士、构成主义与两种布局的封面、过程图，以及当时的画廊首页截图），版权归观默 @guanmo_ai；本次不新增仓库图像，也不下载或转载视频。原作者如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</div>
+<div class="notice"><strong>版权说明：</strong>仓库未附开源许可证。根 README「授权」一节写：「代码欢迎学习和改造；转发视频和图片请注明出处 观默 @guanmo_ai」。只有 <code>gallery/</code> 子目录的画廊代码带 <a href="https://raw.githubusercontent.com/guanmo-ai/design-style/main/gallery/LICENSE">MIT License</a>（Copyright (c) 2026 观默 / @guanmo_ai），并写明视频、音频、封面和原有风格素材不在该许可范围内，使用规则以仓库 README 为准。字体另有 SIL OFL 1.1、GUST Font License 与 Apache License 2.0。本页为中文导读，引文仅为短引，缩略图版权归观默 @guanmo_ai。原作者如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</div>
 
 <h2 id="update">2026-11-10 复查：从五期到十九部短片</h2>
 <p>与 10 月那一版相比，变化主要在规模和管线，而不是定位。画廊目录 <code>gallery/data/works.json</code> 在此次核对时共有 <strong>19</strong> 条已发布作品：<strong>17 种设计风格</strong>加<strong>2 种布局</strong>。最早一条仍是 2026-10-20 的包豪斯；最晚一条是 2026-11-09 23:19（新加坡时间）写入的「水墨」。时长不再一律是 15 秒、900 帧：根 README 开篇已改成「15—20 秒动效短片」，规格表同时写了 30 / 60fps。已上线的短片里，波普、字符画、生成艺术、液态金属是 18 秒，点云 19.5 秒，水墨 18.75 秒，新粗野主义、装饰艺术、液态玻璃、微缩景观、低多边形是 20 秒。</p>
 <p>制作路径也分开了。早期仍是 Remotion（根目录依赖现为 4.0.538）加 numpy 合成配乐。液态玻璃用到 WebGL；微缩景观在目录数据里标明 <code>videoDir: video3d</code>，标签里有 three.js；字符画与生成艺术的渲染脚本是各期目录下的 <code>video/make.sh</code>，不再走统一的 <code>npm run render:00x</code>。本地运行说明现要求 Node.js 22.12+（旧导读写的是 18+），安装改为 <code>npm ci</code>，并提到浏览器解压安全补丁与 <code>docs/SECURITY.md</code>。本站没有在本地跑渲染或画廊，这些只是对文档的转述。</p>
 <p>根 README 的风格目录表没有跟上画廊。表里写到了 021 生成艺术，却没有点云、液态金属和水墨；「计划中」仍列着装饰艺术、新粗野主义、Y2K，而这三样里前两样已经发布，Y2K 则是另一种状态。判断「现在有哪几期」，这次以 <code>works.json</code> 为准，README 目录只作对照。</p>
 <p>还有两期写了指南、但没有进入画廊。006 千禧未来主义（Y2K）的风格 README 链到 Release <code>day-06</code>，根 README 却写「视频待补齐，暂未上线」；我们打开该 Release 页，得到 404。015 未来主义（1909—1944）的 README 写「成片审过后发布」，<code>day-15</code> 同样是 404，<code>package.json</code> 里已有对应渲染脚本。两者都未计入上面的 19 部。</p>
-<p>公开仓库页 HTML 里嵌入的 <code>stargazerCount</code>，在 2026-11-10（新加坡时间）读到 <strong>210</strong>；2026-10-23 的笔记是 83。⚠️ 这是页面观察值，未调用 GitHub API，也可能随缓存变化。仓库创建时间仍为 2026-10-20 12:27（新加坡时间）。</p>
+<p>公开仓库页 HTML 里嵌入的 <code>stargazerCount</code>，在 2026-11-10（新加坡时间）读到 <strong>210</strong>；2026-10-23 的笔记是 83。⚠️ 星数会变。仓库创建时间仍为 2026-10-20 12:27（新加坡时间）。</p>
 
 <h2 id="what">这是什么项目</h2>
 <p>它把内容分成两条线。<strong>设计风格</strong>用三位期号（如 001 包豪斯、024 水墨），讲一种视觉语言；<strong>布局方式</strong>用两位期号（01 便当盒、02 瀑布流），讲信息怎么排。作者的原句是：「每天拆解一种设计风格：15 秒动效短片、风格图、设计规则、AI 提示词与完整源码。」现在短片时长已经放宽，但这句话里的结构没有变：给人看的参考，也给模型用的约束。</p>

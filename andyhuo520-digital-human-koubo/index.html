@@ -141,7 +141,7 @@ skills/finance-explainer/  风格 A 引擎（episode.json 拍表、检索与对�
 <p>结论：<strong>所有“生成画面 / 声音”的环节都在云端付费</strong>，本机只做检查、对齐、剪辑。仓库没有本地视频生成方案。想把声音这一环换成本地，可以参考本站的 <a href="../debpalash-voicestudio/">VoiceStudio</a>；想要本地生成音视频，可以参考 <a href="../servasyy-minimax-h3-local-deploy/">MiniMax H3 本地部署</a>（需要大显存，效果与本项目没有可比的公开测试 ⚠️）。</p>
 
 <h3>两条“开口”路线：G 与 W</h3>
-<p>finance-explainer 的制作手册把“让数字人说话”拆成两种方案，并给了作者的对比（⚠️ 作者自报，本站未测）：</p>
+<p>finance-explainer 的制作手册把“让数字人说话”拆成两种方案，并给了作者的对比（⚠️ 作者自报）：</p>
 <table>
 <thead><tr><th></th><th>G：Grok Video 1.5 原生说话</th><th>W：Wan 3.0 音频驱动</th></tr></thead>
 <tbody>
@@ -156,7 +156,7 @@ skills/finance-explainer/  风格 A 引擎（episode.json 拍表、检索与对�
 <p>细节上的小出入：README 说 OmniHuman 的写法“Skill 里有”，但本站在 <code>SKILL.md</code> 和 <code>references/</code> 里只找到 Wan 3.0 的写法，OmniHuman 只出现在教程模板的台词和画面里。</p>
 
 <h3>finance-explainer：把“小Lin说式”解说写成流水线</h3>
-<figure><img src="images/posters/xiaolin-style-explainer.webp" alt="风格 A 财经解说示例的封面帧：数字人主播在书房场景中讲解，旁边是图表" loading="lazy"><figcaption>风格 A 示例（2 分 21 秒）的封面帧，<code>docs/posters/xiaolin-style-explainer.jpg</code>（© Berryxia），本站压缩为 WebP，未下载视频。</figcaption></figure>
+<figure><img src="images/posters/xiaolin-style-explainer.webp" alt="风格 A 财经解说示例的封面帧：数字人主播在书房场景中讲解，旁边是图表" loading="lazy"><figcaption>风格 A 示例（2 分 21 秒）的封面帧，<code>docs/posters/xiaolin-style-explainer.jpg</code>（© Berryxia）。</figcaption></figure>
 <p>上次只简单提了这个副 Skill。读完 <code>SKILL.md</code> 和 6 份参考文档后，可以确定它是整个仓库里流程最严的一部分：</p>
 <ul>
 <li><strong>先查事实再写稿。</strong><code>research.py</code> 找线索、打开原文核对，写成 <code>facts.md</code>：每条都是“事实 — 日期 — 来源 URL”；剧本里的数字必须能在清单里找到，查不到的标 ⚠ 且不进剧本，主播可以直接说“这个我没查到”。</li>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>给 Claude Fable 5.2 写提示词：官方文档导读</title>
-<meta name="description" content="Anthropic 官方文档《Prompting Claude Fable 5.2》独立中文导读：先校准 effort，再按提前结束、代码归属、长回合沉默、子智能体与拒绝等行为改提示词和 harness。内部评测数字均为原文自报，本站未复现。">
+<meta name="description" content="Anthropic 官方文档《Prompting Claude Fable 5.2》独立中文导读：先校准 effort，再按提前结束、代码归属、长回合沉默、子智能体与拒绝等行为改提示词和 harness。内部评测数字均为原文自报。">
 <meta property="og:title" content="给 Claude Fable 5.2 写提示词：官方文档导读">
 <meta property="og:description" content="官方文档导读：先校准 effort，再按观察到的行为改提示词与 harness。只用短引，不是全文翻译。">
 <meta property="og:image" content="images/cover.webp">
@@ -28,11 +28,7 @@
 <!-- za:origin --><div class="za-origin"><p class="source">发布方：Anthropic，发表于 <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2">Claude Platform Docs</a>。原文：<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2">https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2</a>。页面未署作者，也未标明发布或更新日期。本页是独立中文导读，只用短引，不是全文翻译。文档与设计版权归 Anthropic 或其许可方所有。封面为自绘字体图，不含官方标志，也未使用文档的官方分享图。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><blockquote>
-<p><strong>导读说明。</strong> 抓取前先读 <a href="https://platform.claude.com/robots.txt">platform.claude.com/robots.txt</a>（核于 2026-11-12）：<code>User-Agent: *</code> 只禁止 <code>/api/</code>，本文档路径允许抓取。随后用普通 HTTPS 读取文档页，以及页脚所链的 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>（生效于 2025-06-17，核于 2026-11-12）。未调用任何 <code>/api/</code> 或未公开接口，未抓取 <code>/web-api/og/…</code> 官方分享图，未绕过付费墙。现场核过的条款把 documentation 列入 Services；第 F 节写明，除条款另有规定外，不授予对方内容或知识产权。文档页与页脚未见开放许可（MIT、CC、Apache 等）。<a href="https://claude.dev/terms">claude.dev Terms of Use</a>（2026-09-18 更新，同日核过）只适用于 claude.dev，不能外推到 platform.claude.com。因此本页只做导读，建议写入系统提示的长段文字只用短引，不照录。文中内部评测、早期测试者评价与 token 增减均为 Anthropic 自报，本站未复现，一律标 ⚠️，并以 2026-11-12 读到的原文为准。</p>
-</blockquote>
-
-<p>这是一份专门讲 Claude Fable 5.2 行为差异的官方提示词指南，不是通用的提示词手册。文档把能力介绍和接口变更留给《What’s new in Claude Fable 5.2》与 Fable / Mythos 5.2 的迁移指南，把各模型通用的写法留给《Prompting best practices》。元描述里也提到 Claude Mythos 5.2；正文在拒绝一节说明，Mythos 5.2 提供与 Fable 5.2 相同的能力，但只向通过网络安全或生命科学验证项目的组织开放。</p>
+<!-- za:content --><main class="za-content"><p>这是一份专门讲 Claude Fable 5.2 行为差异的官方提示词指南，不是通用的提示词手册。文档把能力介绍和接口变更留给《What’s new in Claude Fable 5.2》与 Fable / Mythos 5.2 的迁移指南，把各模型通用的写法留给《Prompting best practices》。元描述里也提到 Claude Mythos 5.2；正文在拒绝一节说明，Mythos 5.2 提供与 Fable 5.2 相同的能力，但只向通过网络安全或生命科学验证项目的组织开放。</p>
 
 <p>读这篇之前，本站已经收过 Addy Osmani 的选型指南<a href="../anthropic-which-claude-model/">《该用哪个 Claude 模型来构建》</a>，以及两篇用 Fable 5.2 在代码里画画的对照：<a href="../kickingkeys-fable-52-painting/">kickingkeys 的三模型对照</a>，和 <a href="../jkeatn-fable-52-personas/">jkeatn 的画家人设</a>。那几篇讲的是「选哪个模型、它画出什么」；本篇讲的是：一旦用上 Fable 5.2，提示词和 harness 要怎样改。</p>
 
@@ -113,10 +109,9 @@
 <h2>迁移时从哪里开始</h2>
 <p>文档给的顺序是：先把 <code>effort</code> 显式设为 <code>high</code>，并同时在 <code>medium</code> 和 <code>xhigh</code> 上跑自己的评测；重读将要带过来的系统提示、技能、agent 文件、记忆、笔记和 harness 文本，删掉或测过上文列出的那些旧写法；跑自己最长的智能体任务，记下它在哪里提前停下、征求并不需要的批准、陷入沉默、委派过多，或在你希望重构时只往现有代码上添补；然后针对每一种观察到的行为，一次只加一处对应的文本或做法，并在自己的任务上测量效果和 token 成本。</p>
 
-<h2>核实与版权</h2>
-<p>抓取前先读 <code>https://platform.claude.com/robots.txt</code>，内容为 <code>User-Agent: *</code>、<code>Disallow: /api/</code>，以及两条 sitemap。文档路径不在禁止之列。随后用普通 HTTPS 读取原文 HTML，以及 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>。anthropic.com 与 claude.dev 的 robots.txt 均为 <code>Allow: /</code>。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未使用官方分享图或商标。</p>
-<p>版权结论：文档本身未声明开放许可。Commercial Terms（生效于 2025-06-17，核于 2026-11-12）覆盖相关 documentation；第 F 节未另授转载或复制权。claude.dev 的条款只覆盖 claude.dev，其中「代码示例默认 MIT、其他内容只允许短引」的规定不能套用到本页。本库对 anthropic.com / claude.dev 博文另有「公开导读 + 私有全译」的惯例（R8），但本页是 platform.claude.com 上的官方文档，不是博文，且条款未授予转载权，故只做导读，未另写私有全文译本，也不照录文档中的长段建议提示词。</p>
-<p>⚠️ 未核实或未复现（核于 2026-11-12，依据原文，非独立测量）：Fable 5.2 在 <code>low</code> 上接近 Fable 5.1 更高档位的编码分数；从 <code>medium</code> 升到 <code>high</code> 在多数编码与知识工作评测上提高分数；<code>xhigh</code> 在内部编码评测上分数略升、token 明显增加；「把任务做完」那段文字使未完成会话大约减半、输出 token 约增 30%；把对外发消息列入批准项后，约一半常规请求被扣下；归属句使合并重复代码从不到 10% 升到约 75%，输出 token 约增 70%–80%，并可能改动未被要求的行为；即使写了「不要顺便重构」，仍有一半以上轮次会合并重复代码；长回合提醒大约把最长沉默减半且 token 与时间没有明显增加；开场与回顾使每轮都在首次工具调用前发消息，输出 token 约增 20%；「每隔几次工具调用更新一行」去掉了多数很长的沉默；在 <code>xhigh</code> / <code>max</code> 上 Fable 5.2 会派子智能体自查，而 5.1 不会；更长的成本导向工具说明在 <code>high</code> 大约使子智能体减半；去掉提示词里的大额 token 预算会降低成本且表现相当（未覆盖接口级 task budgets）；Opus 5.5 的「把先前回答当作完成」在 <code>high</code> 会减少追问时的思考，并更少指出先前错误；早期测试者对文笔与清晰度的评价；「写清楚」那段文字使报告不那么密、分号减少、句子变短。页面未标明发布或更新日期。接口头与 beta 功能以当时文档为准，随后可能变化。</p>
+<h2>注记与版权</h2>
+<p>原文版权归 Anthropic 所有，本页为中文导读，引文仅为短引。</p>
+<p>⚠️ 以下均为原文自报：Fable 5.2 在 <code>low</code> 上接近 Fable 5.1 更高档位的编码分数；从 <code>medium</code> 升到 <code>high</code> 在多数编码与知识工作评测上提高分数；<code>xhigh</code> 在内部编码评测上分数略升、token 明显增加；「把任务做完」那段文字使未完成会话大约减半、输出 token 约增 30%；把对外发消息列入批准项后，约一半常规请求被扣下；归属句使合并重复代码从不到 10% 升到约 75%，输出 token 约增 70%–80%，并可能改动未被要求的行为；即使写了「不要顺便重构」，仍有一半以上轮次会合并重复代码；长回合提醒大约把最长沉默减半且 token 与时间没有明显增加；开场与回顾使每轮都在首次工具调用前发消息，输出 token 约增 20%；「每隔几次工具调用更新一行」去掉了多数很长的沉默；在 <code>xhigh</code> / <code>max</code> 上 Fable 5.2 会派子智能体自查，而 5.1 不会；更长的成本导向工具说明在 <code>high</code> 大约使子智能体减半；去掉提示词里的大额 token 预算会降低成本且表现相当（未覆盖接口级 task budgets）；Opus 5.5 的「把先前回答当作完成」在 <code>high</code> 会减少追问时的思考，并更少指出先前错误；早期测试者对文笔与清晰度的评价；「写清楚」那段文字使报告不那么密、分号减少、句子变短。页面未标明发布或更新日期。接口头与 beta 功能以当时文档为准，随后可能变化。</p>
 <p>署名：Anthropic（Claude Platform Docs）。原文：<a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2">https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
 </div>
 <footer class="za-foot">

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>「Painted Valley」：走进一片用代码画成的夏日山谷</title>
-<meta name="description" content="Blendi（@BlendiByl）在 Patch 上发布的可玩 three.js 演示《Painted Valley》：一片手绘动画背景味道的夏日山谷，可以走进村里、沿河走到小湖。自称用 Claude Fable 5.2 做成。代码 MIT，美术 CC0 1.0。本页为导读，附 README 与许可说明全文中译，以及许可证原文。未游玩、未看视频 ⚠️。">
+<meta name="description" content="Blendi（@BlendiByl）在 Patch 上发布的可玩 three.js 演示《Painted Valley》：一片手绘动画背景味道的夏日山谷，可以走进村里、沿河走到小湖。自称用 Claude Fable 5.2 做成。代码 MIT，美术 CC0 1.0。本页为导读，附 README 与许可说明全文中译，以及许可证原文。">
 <meta property="og:title" content="「Painted Valley」：走进一片用代码画成的夏日山谷">
 <meta property="og:description" content="可走的 three.js 手绘夏日山谷中文导读；代码 MIT，美术 CC0。未游玩 ⚠️。">
 <meta property="og:image" content="images/cover.webp">
@@ -31,7 +31,7 @@
 <!-- za:content --><main class="za-content"><p class="lede">《Painted Valley》（画出来的山谷）是 Blendi 发布在 <a href="https://patch.gg/blendi/painted-valley">patch.gg/blendi/painted-valley</a> 上的一篇可玩演示：一片夏天的山谷，画成手绘动画背景的样子，有堆起来的白云、画过的远山、瓦屋顶的村子，还有脚下不会碎成噪点的草甸笔触。一个戴草帽、披蓝斗篷的行人走在里面，平涂加墨线。土地和天空都是用代码在 three.js 里做出来的。作者在 2026-11-12 的帖子里说，这是用 Claude Fable 5.2 做成的、「吉卜力味道」的场景，可以玩，而且开源。本页以这件作品为中心。代码许可证在仓库里核到是 MIT（Copyright (c) 2026 Patch），美术是 CC0 1.0；所以下面有导读、README 与许可说明的全文中译，以及许可证原文。本页没有打开演示去走，也没有观看原帖里约 23 秒的视频，封面只用了视频静帧。</p>
 <figure>
 <a href="https://patch.gg/blendi/painted-valley"><img src="images/cover.webp" alt="作者预告视频的封面帧：一片手绘动画片背景味道的夏日谷地。近处草坡上，一个戴草帽、披蓝斗篷的小人背对着我们；远处是红瓦小屋、风车、堆叠的白云和青绿色的山。是平涂和干净色块的插画，不是真人照片。" width="1200" height="675"></a>
-<figcaption>作者原帖所附约 23 秒、2560×1440 视频的封面静帧。本页不下载、不重新托管，也未观看视频。仓库 README 里的静帧存在 Git LFS 指针里，本次没有拉取，因此没有转载那些照片。画面是风格化的行人，不是真人照片。点击图片可打开可玩页。</figcaption>
+<figcaption>作者原帖所附约 23 秒、2560×1440 视频的封面静帧。画面是风格化的行人，不是真人照片。点击图片可打开可玩页。</figcaption>
 </figure>
 <h2>这是一件什么作品</h2>
 <p>公开页面把它标成一个 Effect（特效区块），引擎是 three.js。README 写得更清楚：这不是一张滤镜，不能罩在已经做好的游戏上；这种样子来自山谷里每一部分是怎么被画出来的。你可以从这片山谷出发去改它，再把你自己的游戏放进去。</p>
@@ -52,18 +52,17 @@
 </blockquote>
 <h2>不要和前一天那条更热的帖弄混</h2>
 <p>2026-11-11，同一作者另有一条传播更广的帖，正文是：用 Fable 5.2 在不到一小时里做了这个「手绘」游戏；每一帧大约 150 万笔触，在浏览器标签页里跑到 200 fps，也是开源的。紧接着的试用链接指向的是 <a href="https://patch.gg/blendi/oil-paint">blendi/oil-paint</a>（《Oil paint》），不是《Painted Valley》。那条里的耗时、笔触数和帧率，都是对另一件作品的自报，不能写到本页这件山谷上。⚠️《Painted Valley》的仓库是次日建立的。两者有继承关系：README 写明，行人的移动、相机和斗篷是从 Oil paint 那一块拷过来的；许可说明也把山谷的样子，和手绘动画背景放在一起比较，并写明没有描摹或复制任何一部影片里的地点、建筑或人物。</p>
-<h2>许可与可复现性</h2>
-<p>2026-11-12 经公开页和公开的 git 克隆（<code>https://git.patch.gg/blendi/painted-valley.git</code>，HEAD 为 e523a37）现场核对：页面标签写「mit, cc0」；根目录 <a href="https://patch.gg/blendi/painted-valley/files/LICENSE">LICENSE</a> 是 MIT License，版权行为「Copyright (c) 2026 Patch」；同文件写明，仓库里的图片与脚步声、以及 <code>shots/</code> 下的静帧为 CC0 1.0；完整对照表在 <a href="https://patch.gg/blendi/painted-valley/files/LICENCE-NOTES.md">LICENCE-NOTES.md</a>，注明核对于 2026-11-11。three.js 0.186.1 为 MIT；物理引擎 Rapier 0.21.0 为 Apache-2.0。行人是 Patch 的 starter man（MakeHuman 系统资产，CC0），动画片段来自 Quaternius 的 Universal Animation Library 以及 Patch 自己的片段（均为 CC0）；小路地面是两张 ambientCG 贴图（CC0），脚步声是 Kenney 的（CC0）。</p>
+<h2>许可</h2>
+<p>页面标签写「mit, cc0」；根目录 <a href="https://patch.gg/blendi/painted-valley/files/LICENSE">LICENSE</a> 是 MIT License，版权行为「Copyright (c) 2026 Patch」；同文件写明，仓库里的图片与脚步声、以及 <code>shots/</code> 下的静帧为 CC0 1.0；完整对照表在 <a href="https://patch.gg/blendi/painted-valley/files/LICENCE-NOTES.md">LICENCE-NOTES.md</a>，注明核对于 2026-11-11。three.js 0.186.1 为 MIT；物理引擎 Rapier 0.21.0 为 Apache-2.0。行人是 Patch 的 starter man（MakeHuman 系统资产，CC0），动画片段来自 Quaternius 的 Universal Animation Library 以及 Patch 自己的片段（均为 CC0）；小路地面是两张 ambientCG 贴图（CC0），脚步声是 Kenney 的（CC0）。</p>
 <p>有两处边界需要单独说。第一，发行版演示里还有风、叶、鸟虫、湖水和黄昏蟋蟀五段环境录音，来自 Sonniss 的 GDC 合集：许可允许用在游戏里，但不允许把文件再传出去，所以<strong>不在这个仓库里</strong>。只从仓库构建，就只有脚步声。第二，<code>lib/patch-block.js</code> 在许可说明里写成「Patch 的区块辅助脚本，随每个区块一起提供」，没有写成 MIT。这不影响仓库其余代码的 MIT 声明，只是这块辅助脚本的许可与主体不完全相同。</p>
 <p>Patch 的条款（<a href="https://patch.gg/terms">patch.gg/terms</a>，页面写更新于 2026-11-11）规定：新仓库默认使用「Patch licence」，未经作者允许，他人不能把默认许可下的作品拿到站外；但作者可以改选开放许可，例如 MIT，「然后任何人都可以按该许可的条款，把作品带到任何地方」。条款也写：不要把 Patch 上的内容大批抓取、镜像后拿到别处发表；同时又写明，这针对的是从 Patch 上批量收集，开放许可仍然允许你挑选作品，并按许可使用你的副本。本页只处理这一件已改为 MIT / CC0 的作品，不是对 Patch 的批量镜像。按版权分级，本页做导读，附录收 README 与许可说明的全文中译，以及 MIT 与 CC0 原文；不转载视频，不转载仓库里未拉取的 LFS 静帧，也不收录那些不在仓库里的环境录音。</p>
 <h2>传播数据（快照）</h2>
 <p>2026-11-12 读取公开页时，页面统计为约 1673 次浏览、7 个赞、0 次游玩、0 次remix、71 次克隆。同日经 X 接口读取作者介绍帖时，约 11803 次浏览、424 个赞、22 次转发、21 条回复、235 次收藏，引用 1 次；所附视频播放次数当时约 5452。这些数字会变，只作当时记录，不是效果评测。⚠️</p>
-<h2>核实边界与署名</h2>
+<h2>注记与署名</h2>
 <ul>
 <li>这是以《Painted Valley》为中心的导读。用户投递的是可玩页。作者是 Blendi @BlendiByl，Patch 上的账号是 @blendi。版权行写的是 Patch。</li>
 <li>「用 Fable 5.2 做成」「吉卜力味道」是作者在介绍帖里的自报。本页没有重做这片山谷，也不能证明它是由哪个模型写成的。⚠️ 最新提交说明里出现 Claude Opus 5.5 的共同作者行，只覆盖全屏修复这一处，不能外推到整件作品。</li>
 <li>操作键、昼夜分档、WebGL2、three.js 0.186.1、版本 1.1.1、以及「土地和天空由代码生成」等，来自 2026-11-12 打开的公开页和仓库文档，可以核对。本页没有在浏览器里游玩，也没有测量帧率或首次加载时间。README 所写「仅在 RTX 4090、1080p 下测过，首次访问约 8 秒，下载约 13 MB」，是文档自报。⚠️</li>
-<li>⚠️ 未下载或观看约 23 秒的附件视频。封面帧只代表其中一帧，不能代替演示，也不能证明笔触、布料或声音的效果。仓库 <code>shots/</code> 下的静帧是 Git LFS 指针，本次没有拉取，也没有转载。</li>
 <li>前一日「150 万笔触 / 200 fps / 不到一小时」那条热帖，试用链接指向的是《Oil paint》，不是本作品。不要把那些数字写到这片山谷上。⚠️</li>
 <li>作者简介中的联合创始人、任职与学校信息，均为资料上的自称，未独立核实。⚠️</li>
 </ul>

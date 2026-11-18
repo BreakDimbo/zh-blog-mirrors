@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>建造始终在线的智能体：官方文章导读</title>
-<meta name="description" content="Anthropic 官方文章《Building always-on agents》独立中文导读：始终在线只是体验，实际是睡了再醒；外围靠事件收件箱、计时器、记忆、权限和发件箱五个原语拼起来。成本数字为原文自报，本站未复现。">
+<meta name="description" content="Anthropic 官方文章《Building always-on agents》独立中文导读：始终在线只是体验，实际是睡了再醒；外围靠事件收件箱、计时器、记忆、权限和发件箱五个原语拼起来。成本数字为原文自报。">
 <meta property="og:title" content="建造始终在线的智能体：官方文章导读">
 <meta property="og:description" content="独立中文导读：始终在线只是体验。五个原语如何让智能体跨多次运行自己决定何时行动。只用短引，不是全文翻译。">
 <meta property="og:image" content="images/cover.webp">
@@ -28,11 +28,7 @@
 <!-- za:origin --><div class="za-origin"><p class="source">原作者：William Hu，发布方 Anthropic，发表于 <a href="https://claude.com/resources/articles/building-always-on-agents">claude.com Resources</a>（Best practices · Claude Platform），原文标注日期 2026-11-13，自称阅读时间 14 分钟。原文：<a href="https://claude.com/resources/articles/building-always-on-agents">https://claude.com/resources/articles/building-always-on-agents</a>。致谢 Rodrigo Olivares、Michael Segner。本页是独立中文导读，只用短引，不是全文翻译。文章、示意图、动图与设计版权归 Anthropic 或其许可方所有；本页未转载原图、动图或官方分享图。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><blockquote>
-<p><strong>导读说明。</strong> 抓取前先读 <a href="https://claude.com/robots.txt">claude.com/robots.txt</a>（核于 2026-11-15）：<code>User-Agent: *</code> 为 <code>Allow: /</code>，本篇路径允许抓取。随后用普通 HTTPS 读取文章页，以及页脚所链的 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a>（生效于 2025-06-17）和 <a href="https://www.anthropic.com/legal/consumer-terms">Consumer Terms of Service</a>（页面标注日期 2025-10-08），两份条款均在确认 <a href="https://www.anthropic.com/robots.txt">anthropic.com/robots.txt</a> 为 <code>Allow: /</code> 之后读取。未调用任何 <code>/api/</code> 或未公开接口，未下载视频或音频，未抓取官方配图、动图或 <code>/opengraph-image/og</code> 分享图，未绕过付费墙。文章页与页脚未见开放许可（MIT、CC、Apache 等），页脚署 <code>© 2026 Anthropic PBC</code>。现场核过的商业条款把相关 documentation 列入 Services，第 F 节写明除条款另有规定外，不授予对方内容或知识产权；消费者条款第 10 节写明，除明示授予的访问与使用权外，不授予对 Services 的任何权利、所有权或利益。claude.com 本身未见单独的站点条款（<code>/terms</code> 会转到 claude.ai，本次收到 403，未绕过）。因此本页只做导读，只用短引，不照录正文，也不转载官方图。文中关于模型判断力、成本下降的数字均为 Anthropic 自报，本站未复现，一律标 ⚠️，并以 2026-11-15 读到的原文为准。</p>
-</blockquote>
-
-<p>这是一篇写给要把「始终在线」体验做进自己产品里的人看的实践指南，不是一篇评测，也不是某一款托管产品的说明书。作者把 always-on agents 定义为：有状态、会主动做事，能在多次会话之间保存上下文，并且不必等人盯着才会行动。它们仍然跑在和其他智能体相同的<a href="https://www.anthropic.com/research/building-effective-agents">核心循环</a>上；真正不同的，是外面那一层决定它何时醒来、两次运行之间留下什么、以及结果怎样交到用户手里的架构。</p>
+<!-- za:content --><main class="za-content"><p>这是一篇写给要把「始终在线」体验做进自己产品里的人看的实践指南，不是一篇评测，也不是某一款托管产品的说明书。作者把 always-on agents 定义为：有状态、会主动做事，能在多次会话之间保存上下文，并且不必等人盯着才会行动。它们仍然跑在和其他智能体相同的<a href="https://www.anthropic.com/research/building-effective-agents">核心循环</a>上；真正不同的，是外面那一层决定它何时醒来、两次运行之间留下什么、以及结果怎样交到用户手里的架构。</p>
 
 <p>文章把最近的回潮归因于模型本身的变化：判断力更好，也更知道何时该向人确认；同时智力在变便宜，长程任务受益更大。Anthropic 自报：在某一项长程编码基准上，Opus 5.5 每完成一项任务的成本比 Opus 5 低 78%，而在常规工作负载上大约低 40% ⚠️。数字链到官方的成本与智力优化文档，本站未打开该文档核对，也未复现评测。客户向他们问的，是怎样把这种体验接进已有产品，或从零做起。</p>
 
@@ -94,10 +90,9 @@
 <p>每次 run 都从收件箱里的一个事件开始，无论它来自用户消息、webhook 还是计时器。worker 取到事件后，在新的或已有的 session 里叫醒智能体。智能体先读记忆作为基线，在权限范围内行动，再把学到的写回记忆。run 结束后把一行写入发件箱，由调度员交给用户。</p>
 <p>它们构成一个循环：一次 run 可以给自己设一枚计时器，稍后再把自己叫醒；用户对消息的答复，会作为事件回到收件箱。单次 run 很短，循环本身可以一直转，这才让人觉得它始终在线。官方另有一张把五个原语接在一起的动图，本页不转载。</p>
 
-<h2>核实与版权</h2>
-<p>抓取前先读 <code>https://claude.com/robots.txt</code>，内容为 <code>User-Agent: *</code>、<code>Allow: /</code>，以及两条 sitemap。文章路径不在禁止之列。随后用普通 HTTPS 读取原文 HTML，以及页脚所链的 <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms of Service</a> 与 <a href="https://www.anthropic.com/legal/consumer-terms">Consumer Terms of Service</a>。anthropic.com 的 robots.txt 为 <code>Allow: /</code>。未调用任何 <code>/api/</code> 或未公开接口，未下载视频、音频、官方配图或分享图，未使用商标。</p>
-<p>版权结论：文章本身未声明开放许可，页脚为 <code>© 2026 Anthropic PBC</code>。Commercial Terms（生效于 2025-06-17，核于 2026-11-15）覆盖相关 documentation；第 F 节未另授转载或复制权。Consumer Terms（页面标注 2025-10-08，同日核过）把相关网站列入 Services，第 10 节除明示授予的访问与使用权外，不授予对 Services 的权利。claude.com 未见可读取的单独站点条款。本库对 anthropic.com / claude.dev 博文另有「公开导读 + 私有全译」的惯例（R8）；本篇是 claude.com Resources 上的实践文章，精神相近，因此私有全文中译只留在本库 wiki，不上站。公开页只做导读，只用短引，不转载正文与官方图。</p>
-<p>⚠️ 未核实或未复现（核于 2026-11-15，依据原文，非独立测量）：「最新模型判断力更好、更知道何时该确认」；「智力在变便宜，长程任务受益最大」；在某一项长程编码基准上，Opus 5.5 每完成一项任务的成本比 Opus 5 低 78%，常规工作负载大约低 40%（本站未打开所链成本文档核对）。原文把 auto memory、memory tool、auto mode 和推迟工具调用的 hook 作为其产品中的既有机制来引用，本页未独立对照那些文档的当前文本。作者职衔与所属团队未在文中写明。示意图中的文件名只是示例。阅读时间 14 分钟为页面自报。</p>
+<h2>注记与版权</h2>
+<p>原文版权归 Anthropic 所有，本页为中文导读，引文仅为短引。</p>
+<p>⚠️ 以下为原文自报：「最新模型判断力更好、更知道何时该确认」；「智力在变便宜，长程任务受益最大」；在某一项长程编码基准上，Opus 5.5 每完成一项任务的成本比 Opus 5 低 78%，常规工作负载大约低 40%。原文把 auto memory、memory tool、auto mode 和推迟工具调用的 hook 作为其产品中的既有机制来引用，具体以官方文档为准。示意图中的文件名只是示例。阅读时间 14 分钟为页面自报。</p>
 <p>署名：William Hu / Anthropic。原文：<a href="https://claude.com/resources/articles/building-always-on-agents">https://claude.com/resources/articles/building-always-on-agents</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
 </div>
 <footer class="za-foot">

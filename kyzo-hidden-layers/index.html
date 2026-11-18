@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>「Hidden Layers」：一只出不去温室的透翅蝶</title>
-<meta name="description" content="kyzo（@ky__zo）的浏览器作品 Hidden Layers 导读：一只关在雾气温室里的透翅蝶，滚动即可飞行，下面还有六层世界。收录作者宣布帖与实质性回复的全文中译。仓库未见开放许可，只做独立导读。封面为自制字体图。未通关试玩、未看视频、未听音频 ⚠️。token 与费用为自报 ⚠️。">
+<meta name="description" content="kyzo（@ky__zo）的浏览器作品 Hidden Layers 导读：一只关在雾气温室里的透翅蝶，滚动即可飞行，下面还有六层世界。收录作者宣布帖与实质性回复的全文中译。仓库未见开放许可，只做独立导读。封面为自制字体图。token 与费用为自报 ⚠️。">
 <meta property="og:title" content="「Hidden Layers」：一只出不去温室的透翅蝶">
-<meta property="og:description" content="滚动即可飞行：一只关在温室里的透翅蝶，往下还有六层世界。作者原帖全译；仓库未见开放许可，只做导读。未看视频 ⚠️。">
+<meta property="og:description" content="滚动即可飞行：一只关在温室里的透翅蝶，往下还有六层世界。作者原帖全译；仓库未见开放许可，只做导读。">
 <meta property="og:image" content="images/cover.webp">
 <meta property="og:type" content="article">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,7 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><p class="lede">开场卡片上，一行英文标题 Hidden Layers，下面是一句很轻的说明：一只玻璃后面的蝴蝶，六个小世界。提示写着：滚动即可飞行，用鼠标左右移动。这是 kyzo（X <a href="https://x.com/ky__zo">@ky__zo</a>，GitHub <a href="https://github.com/ky-zo">ky-zo</a>）做的浏览器作品，在线地址是 <a href="https://butterfly.kyzo.io/">butterfly.kyzo.io</a>。按本站规则，下面以这件作品为中心。作者本人的宣布帖和实质性回复全文中译；仓库和作品页都没有开放许可，所以只做独立导读，引用都很短。封面是自制字体图，不是作品截帧，也不是原帖视频里的画面。</p>
 
-<div class="notice"><strong>版权说明：</strong>抓取前先核 <a href="https://github.com/robots.txt">github.com/robots.txt</a>（允许仓库根页与 <code>/blob/</code>，禁止 <code>/*/tree/</code>、<code>/*/raw/</code>、<code>/*/archive/</code> 等）。未请求这些禁止路径，也未调用 api.github.com 或任何 <code>/api/</code>。仓库文件来自 <code>git clone --depth 1</code> 到本机临时目录。作品站 <a href="https://butterfly.kyzo.io/robots.txt">butterfly.kyzo.io/robots.txt</a> 返回 404，没有禁止规则，随后只读取了公开首页 HTML。作者站点 www.kyzo.io 的 robots.txt 是一份没有 User-agent 或 Disallow 规则的内容信号前言（响应头写着匹配了 <code>/404</code>），本页只用来核对公开署名。作者本人在 X 上的宣布帖和实质性回复按本站规则全文中译并附原文。2026-11-18（新加坡时间）现场核：仓库根目录没有 LICENSE，源码里没有版权头，<code>package.json</code> 为 <code>"private": true</code> 且无 <code>license</code> 字段，GitHub 仓库页也没有许可证图标。因此本页不转载 README 全文、提示词全文、源码、分享图或视频。封面为自制字体图。three.js 0.187.0（MIT）与 Geist / Newsreader 字体（OFL-1.1）是依赖项目自己的许可，不能外推到这件作品。</div>
+<div class="notice"><strong>版权说明：</strong>仓库未附许可证，作品版权归作者 kyzo 所有；本页为中文导读，引文仅为短引，作者本人的宣布帖与回复全文中译并附原文。</div>
 
 <figure>
 <img src="images/cover.webp" alt="深色底上居中写着衬线英文 Hidden Layers，下面一行中文「一只出不去温室的透翅蝶」，再下面是六层世界的英文名 Conservatory、Latent、Corpus、Descent、Loom、Mirror，底部是 butterfly.kyzo.io。画面里没有蝴蝶、风景或作品截图。" width="1280" height="720">
@@ -66,8 +66,7 @@
 <p>技术栈可以在仓库里直接看到：three.js 锁在 0.187.0，构建工具是 Vite 8，截图工具需要本机 Chrome。引擎部分包括行程与加载、输入、后期（景深、bloom、调色、转场）、镜头轨和声音。同一只蝴蝶在各层里换一套材质来画，轮廓和翅脉保持一致。本页不转载这些源码。</p>
 
 <h2>许可</h2>
-<p>2026-11-18（新加坡时间）现场核：仓库根目录没有 LICENSE 文件，源码与文档没有版权声明或 SPDX 标识，<code>package.json</code> 为 <code>"private": true</code> 且没有 <code>license</code> 字段，GitHub 仓库页也没有许可证图标。作者把源码和提示词公开在 GitHub 上，这是访问方式，不是开放许可。three.js 的 MIT，以及 Geist / Newsreader 的 OFL-1.1，只约束这些依赖，不能覆盖 Hidden Layers 自己的场景、文案、分享图和视频。</p>
-<p>因此本页只做导读，并照录作者本人的宣布帖与实质性回复，不把这件作品当作可全文转载的开源项目，也不翻译 README 或提示词全文。</p>
+<p>仓库没有 LICENSE，源码与提示词公开可读，但未以开放许可发布。three.js（MIT）与 Geist / Newsreader 字体（OFL-1.1）各按其自身许可。</p>
 
 <h2>原帖全文</h2>
 <p>以下为作者英文宣布帖（长帖全文，不只是 280 字摘要）的中文译文。附件是一段约 28 秒、2082×1080 的视频。本站没有下载，也没有观看 ⚠️。</p>
@@ -115,7 +114,7 @@ it's insane.</p>
 <p>用量、费用、订阅和「两次重置」均为作者自报，本库未复核 ⚠️。另有人问 Fable 做了多少个小时，同一线程里未见作者回复。</p>
 <p>传播快照（约 2026-11-18 01:43，新加坡时间）：展示约 19,757，赞 227，转发 12，回复 51，收藏 161，引用 4；视频播放约 11,643 次。作者关注者约 20,186。这些数字会变 ⚠️。</p>
 
-<h2>核实边界与署名</h2>
+<h2>注记与署名</h2>
 <ul>
 <li>这是以 Hidden Layers 为中心的项目导读。用户发来的是 GitHub 仓库；作者宣布帖一并收录。</li>
 <li>本站阅读了仓库说明、公开首页 HTML，以及作者原帖和实质性回复，没有在浏览器里把六层走完，也没有观看约 28 秒的原帖视频，或试听声音 ⚠️。</li>
