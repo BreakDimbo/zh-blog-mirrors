@@ -429,7 +429,15 @@ function itemsOf(u) {
   const walk = (node, chain) => {
     for (const c of node.childNodes) {
       if (c.nodeType === 3) { const t = c.textContent.replace(/[\t\n\r ]+/g, ' '); if (t) segs[segs.length - 1].push({ text: t, chain }); }
-      else if (c.nodeType === 1) { if (c.tagName === 'BR') segs.push([]); else walk(c, chain.concat(c)); }
+      else if (c.nodeType === 1) {
+        if (c.tagName === 'BR') { segs.push([]); continue; }
+        // <q> draws its marks with ::before/::after, which pretext cannot see: set them as real text instead
+        // (the generated ones are switched off inside set lines, see .re-l q in the CSS)
+        const ch = chain.concat(c), q = c.tagName === 'Q', deep = q && chain.some(e => e.tagName === 'Q');
+        if (q) segs[segs.length - 1].push({ text: deep ? '‘' : '“', chain: ch });
+        walk(c, ch);
+        if (q) segs[segs.length - 1].push({ text: deep ? '’' : '”', chain: ch });
+      }
     }
   };
   walk(u.orig, []);
@@ -492,52 +500,113 @@ function freeSegs(x0, x1, y0, y1, obs, min) {
 }
 
 /* ---------- band layout ---------- */
+// pretext narrows some CJK punctuation pairs (its model of Chrome's text-spacing-trim) that the browser,
+// with the webfont split across unicode-range faces, then draws full width, so a "full" line can come out a
+// few pixels wider than its slot and hang past the column (past the band's edge it is clipped). Each line is
+// therefore checked against the canvas width of exactly what will be drawn, and set again a little narrower
+// until it fits. Results are cached per start position and width (the band fitting repeats them many times).
+function fitLine(prep, list, width, cur) {
+  const cache = prep._fit || (prep._fit = new Map());
+  const key = (cur ? cur.itemIndex + '.' + cur.segmentIndex + '.' + cur.graphemeIndex : '-') + '|' + width.toFixed(2);
+  if (cache.has(key)) return cache.get(key);
+  let r = layoutNextRichInlineLineRange(prep, width, cur), w = width;
+  for (let k = 0; r && k < 4; k++) {
+    const real = drawnWidth(prep, list, r);
+    if (real <= width) break;
+    w = Math.min(w - (real - width) - 1, width - (real - r.width) - 0.5); // what pretext must think it fits in
+    const r2 = w > 0 ? layoutNextRichInlineLineRange(prep, w, cur) : null;
+    if (!r2 || (r2.end.itemIndex === cur?.itemIndex && r2.end.segmentIndex === cur?.segmentIndex && r2.end.graphemeIndex === cur?.graphemeIndex)) break;
+    r = r2;
+  }
+  cache.set(key, r);
+  return r;
+}
+function drawnWidth(prep, list, r) {
+  let w = 0;
+  for (const fr of materializeRichInlineLineRange(prep, r).fragments) {
+    const it = list[fr.itemIndex];
+    w += (fr.gapBefore > 0 ? fr.gapBefore : 0) + measureW(fr.text, it.font) + (it.extra || 0);
+  }
+  return w;
+}
 function layBand(band, H, render) {
   const { cols, colW, gutter } = band;
   const obs = band.obstacles.slice();
   let c = 0, y = 0, maxY = 0; const out = [];
+  // set one hard-broken sub-paragraph of unit u, adding each row's column to `rows` (shared by the unit's
+  // sub-paragraphs); a column break is forced before unit row `breakAt`. Returns -2 when it does not fit
+  const setPara = (u, li, list, breakAt, rows) => {
+    const T = u.T, lh = T.lh, em = T.size, padL = T.pad ? T.pad * em : 0;
+    const prep = u.prep[li]; let cur; let first = li === 0; let lastLine = null; let guard = 0;
+    const isDC = first && u.dcChar;
+    while (guard++ < 4000) {
+      if (!layoutNextRichInlineLineRange(prep, colW, cur)) break; // paragraph finished
+      if (y + lh > H || (rows.length === breakAt && y > 0)) { c++; y = 0; }
+      // asked to keep the whole paragraph in one column but it already starts a column: it needs a taller band
+      else if (breakAt === 0 && !rows.length) return -2;
+      // a line taller than the band can never be set in it (it would hang out of the band and be clipped)
+      if (c >= cols || lh > H) return -2;
+      const colX = c * (colW + gutter);
+      if (isDC && first && !u.dcRect) {
+        const m = dropCapMetrics(u.dcChar, T);
+        u.dcRect = { x: colX + padL, y, w: m.w, h: lh * 3, pad: 0, shape: 'rect', dc: 1, m };
+        obs.push(u.dcRect);
+      }
+      const segs = freeSegs(colX + padL, colX + colW, y, y + lh, obs, em * 3);
+      if (!segs.length) { y += lh; continue; }
+      let produced = false, ended = false;
+      for (let si = 0; si < segs.length; si++) {
+        let [sx, ex] = segs[si];
+        if (first && si === 0 && T.indent && !u.dcChar && !u.noIndent && Math.abs(sx - (colX + padL)) < 1) sx += T.indent * em;
+        const r = fitLine(prep, list, ex - sx, cur);
+        if (!r) { ended = true; break; }
+        if (render) { lastLine = { u, prep, list, r, x: sx, y, w: ex - sx, lh, colX, padL, first, li, loose: r.width < (ex - sx) * 0.8 }; out.push(lastLine); }
+        cur = r.end; produced = true;
+        if (first && u.marker && render) lastLine.marker = u.marker;
+        first = false;
+      }
+      if (produced) rows.push(c);
+      y += lh; maxY = Math.max(maxY, y);
+      if (ended) break;
+    }
+    if (lastLine) lastLine.last = 1;
+    return -1;
+  };
+  // widows and orphans: a paragraph that runs on into the next column keeps at least two of its lines on each
+  // side of the break (a lone first line at a column's foot, or a lone last line at the head of the next one,
+  // reads as text gone missing). Returns the row to break the column before, or -1 when the setting is fine
+  const keepTogether = rows => {
+    const n = rows.length; if (n < 2 || rows[0] === rows[n - 1]) return -1;
+    const run = k => rows.filter(x => x === rows[k]).length;
+    if (run(0) === 1) return 0; // orphan: start the paragraph in the next column
+    if (run(n - 1) === 1) { // widow: take a line along, or the whole paragraph if that would leave one behind
+      if (run(n - 2) >= 3) return n - 2;
+      if (rows[n - 2] === rows[0]) return 0;
+    }
+    return -1;
+  };
   for (const blk of band.blocks) {
     if (blk.kind !== 'prose') continue;
     blk.units.forEach((u, ui) => {
       if (out.fail) return;
-      const T = u.T, lh = T.lh, em = T.size;
+      const T = u.T, lh = T.lh;
       const gapB = ui === 0 ? Math.max(T.gap, blk.gapTop || 0) : T.gap;
       if (y > 0) y += gapB;
       if (T.head && y > 0 && y + lh + 3 * BODY.lh > H) { c++; y = 0; }
-      const padL = T.pad ? T.pad * em : 0;
-      u.lines.forEach((list, li) => {
-        const prep = u.prep[li]; let cur; let first = li === 0; let lastLine = null; let guard = 0;
-        const isDC = first && u.dcChar;
-        while (guard++ < 4000) {
-          if (!layoutNextRichInlineLineRange(prep, colW, cur)) break; // paragraph finished
-          if (y + lh > H) { c++; y = 0; }
-          if (c >= cols) { out.fail = 1; return; }
-          const colX = c * (colW + gutter);
-          if (isDC && first && !u.dcRect) {
-            const m = dropCapMetrics(u.dcChar, T);
-            u.dcRect = { x: colX + padL, y, w: m.w, h: lh * 3, pad: 0, shape: 'rect', dc: 1, m };
-            obs.push(u.dcRect);
-          }
-          const segs = freeSegs(colX + padL, colX + colW, y, y + lh, obs, em * 3);
-          if (!segs.length) { y += lh; continue; }
-          let produced = false, ended = false;
-          for (let si = 0; si < segs.length; si++) {
-            let [sx, ex] = segs[si];
-            if (first && si === 0 && T.indent && !u.dcChar && !u.noIndent && Math.abs(sx - (colX + padL)) < 1) sx += T.indent * em;
-            const r = layoutNextRichInlineLineRange(prep, ex - sx, cur);
-            if (!r) { ended = true; break; }
-            if (render) { lastLine = { u, prep, list, r, x: sx, y, w: ex - sx, lh, colX, padL, first, li, loose: r.width < (ex - sx) * 0.8 }; out.push(lastLine); }
-            cur = r.end; produced = true;
-            if (first && u.marker && render) lastLine.marker = u.marker;
-            first = false;
-          }
-          y += lh; maxY = Math.max(maxY, y);
-          if (ended) break;
-        }
-        if (lastLine) lastLine.last = 1;
-      });
+      // set the unit; if a column break left a single line of it on either side, roll back and set it again
+      // with the break moved
+      const snap = { c, y, maxY, n: out.length, obs: obs.length, dc: u.dcRect };
+      let breakAt = -1;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const rows = [];
+        for (let li = 0; li < u.lines.length; li++) if (setPara(u, li, u.lines[li], breakAt, rows) === -2) { out.fail = 1; u.dcRect = null; return; }
+        const fix = attempt < 2 ? keepTogether(rows) : -1;
+        if (fix < 0) break;
+        c = snap.c; y = snap.y; maxY = snap.maxY; out.length = snap.n; obs.length = snap.obs; u.dcRect = snap.dc;
+        breakAt = fix;
+      }
       if (u.dcRect) { maxY = Math.max(maxY, u.dcRect.y + u.dcRect.h); if (render) out.dcs = (out.dcs || []).concat([{ u, rect: u.dcRect }]); }
-      if (!render) u.dcRect = null; else u.dcRect = null;
+      u.dcRect = null; // (layout state of this pass only)
     });
     if (out.fail) break;
   }
@@ -618,6 +687,8 @@ function renderBand(band, live) {
     dc.style.cssText = `left:${(d.rect.x + m.left).toFixed(2)}px;top:${(d.rect.y + m.top).toFixed(2)}px;font-size:${m.size.toFixed(2)}px;line-height:${m.size.toFixed(2)}px`;
     d.u.el.prepend(dc);
   }
+  // (a band whose text all fits one column, e.g. a lone source line, gets no rule beside the empty one)
+  band.usedCols = res.out.reduce((m, L) => Math.max(m, Math.round(L.colX / (band.colW + band.gutter)) + 1), 0);
   drawRules(band, H);
   band.el.style.height = H + 'px'; band.el.classList.remove('re-pending'); band.estH = H;
   band.lines = n;
@@ -631,7 +702,8 @@ function drawRules(band, H) {
   let box = band.rules; if (!box) { box = band.rules = h('div', 're-rules', { 'aria-hidden': 'true' }); }
   if (box.parentNode !== band.el) band.el.prepend(box);
   const segs = [];
-  for (let c = 1; c < band.cols; c++) {
+  const nc = band.obstacles.length ? band.cols : Math.min(band.cols, band.usedCols || band.cols);
+  for (let c = 1; c < nc; c++) {
     const x = c * (band.colW + band.gutter) - band.gutter / 2;
     let parts = [[0, H]];
     for (const ob of band.obstacles) {

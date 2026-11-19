@@ -134,7 +134,7 @@ html.re-on .za-toc { display: none !important; }
   margin: 0 !important; padding: 0 !important; border: 0 !important; background: none !important; text-indent: 0 !important; position: static; list-style: none; }
 .re-band > h3::before, .re-band > h3::after, .re-band > blockquote::before, .re-band li::before, .re-band li::marker { content: none !important; }
 .re-band h3, .re-band h4 { scroll-margin-top: 90px; }
-.re-l { position: absolute; white-space: nowrap; overflow: visible; text-align: left; color: var(--re-ink); font-synthesis: none; letter-spacing: 0; } /* pretext measures without tracking */
+.re-l { position: absolute; white-space: nowrap; overflow: visible; text-align: left; color: var(--re-ink); font-synthesis: none; letter-spacing: 0; text-autospace: no-autospace; } /* pretext measures without tracking, and without the CJK–Latin autospace Chrome adds */
 .re-l.j { text-align: start; } /* lines are set ragged-right: justified CJK lines opened gaps */
 .re-rules { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
 .re-rules i { position: absolute; width: 0; border-left: .5px solid var(--re-hair); }
@@ -146,6 +146,10 @@ html.re-on .za-toc { display: none !important; }
 .re-l a:hover { color: var(--re-blue); }
 .re-l .c { background: color-mix(in srgb, var(--re-ink) 6%, transparent); border-radius: 1.5px; padding: 0 3px; }
 .re-l sup { vertical-align: .55em; line-height: 0; } .re-l sub { vertical-align: -.2em; line-height: 0; }
+/* the line's own spans carry the measured font and box (.c); the article's inline styling on the wrapping
+   elements (code padding and tint, <q>'s generated marks) would add width pretext never measured */
+.re-l :is(code, kbd, samp) { padding: 0; margin: 0; border: 0; border-radius: 0; background: none; font-size: inherit; letter-spacing: 0; }
+.re-l q::before, .re-l q::after { content: none; }
 .re-mk { position: absolute; color: var(--re-blue); font: 400 13px var(--re-mono); font-variant-numeric: tabular-nums; }
 .re-dc { position: absolute; font-family: var(--re-serif); font-weight: 400; color: var(--re-ink); text-align: left; white-space: nowrap; font-feature-settings: "kern"; }
 .re-flow > p { margin: 0 0 .75em; text-indent: 2em; text-align: start; text-wrap: pretty; line-height: 1.82; font-size: 17px; }
