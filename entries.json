@@ -1,5 +1,20 @@
 [
   {
+    "slug": "poteto-automate-anything",
+    "title": "「Automate Anything with Grok Bot」：先想清楚目标，再让 Bot 接手过程",
+    "desc": "Lauren Tan（@poteto）于 2026-11-19 05:00（新加坡时间，UTC+8）在 X 发布长文《Automate Anything with Grok Bot》。核心是：自动化由目标和过程组成，先不要把填表、发邮件误认成目标本身；用语音把做法倒给 Bot，让它复述，再把那些几乎不假思索就会做的判断也教给它，并用例程让它自己开工。宣布帖、长文与跟帖全文中译并附原文。跟帖发布 Dr Eggbot v2 模板。插图为作者原文所附，并非真人照片。未见开放许可。文中关于产品能力与效果的说法，均为原文自述 ⚠️。公开传播数字会变 ⚠️。",
+    "description": "Lauren Tan 拆解她如何用 Grok Bot 自动化任何事情：先要目标，再谈过程。作者长文与跟帖全文中译。能力与效果为原文自述 ⚠️。",
+    "source": "X · @poteto",
+    "date": "2026-11-19",
+    "type": "全文",
+    "subtitle": "Automate Anything with Grok Bot  ·  长文全文中译",
+    "original_url": "https://x.com/poteto/status/2123159537016533493",
+    "spine": "先想清楚目标",
+    "summary": "自动化是目标加过程；先别把填表、发邮件当成目标本身",
+    "kind": "长文",
+    "by": "Lauren Tan @poteto"
+  },
+  {
     "slug": "kyzo-hidden-layers",
     "title": "「Hidden Layers」：一只出不去温室的透翅蝶",
     "desc": "kyzo（GitHub ky-zo，X @ky__zo）的浏览器作品 Hidden Layers 导读：一只关在雾气温室里的透翅蝶，滚动即可飞行，下面还有感知、意义、记忆、学习、注意和自我六层世界。自称用 Fable 5.2 与 three.js 做成，场景代码里未见模型或贴图加载。收录作者宣布帖与实质性回复的全文中译。2026-11-18 现场核：仓库无 LICENSE，package.json 为 private 且无 license 字段；只做独立导读，不转载 README、提示词、源码或视频。封面为自制字体图。未通关试玩、未看视频、未听音频 ⚠️。token、费用与「两次重置」为自报 ⚠️。「不用任何外部工具」需对照仓库对 three.js / Vite 的依赖 ⚠️。公开站 Last-Modified 晚于该次提交 ⚠️。星数和传播数字会变 ⚠️。",
