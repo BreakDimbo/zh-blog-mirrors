@@ -24,7 +24,7 @@
 <!-- za:origin --><div class="za-origin"><p class="source">原作者：Sergii Makarevych（<a href="https://x.com/sermakarevich">@sermakarevich</a>），X 长文，2026-10-04（新加坡时间）发布。原文：<a href="https://x.com/sermakarevich/status/2106453816757354947">https://x.com/sermakarevich/status/2106453816757354947</a>。本页为作者本人帖子的全文中译，版权归原作者；译文仅供学习交流，未转载原文配图。若作者希望下架，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交下架请求</a>。</p></div><!-- /za:origin -->
 </header>
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
-<!-- za:content --><main class="za-content"><blockquote><p><strong>译者按</strong>：文中所有数字均为作者自述，来自他们自己的可运行教程（一个虚构自行车与露营用品网店的小型客服助手）或所引论文；本站没有复现。⚠️ 文中引用了大量 2026 年的 arXiv 论文与厂商说法，本站未逐篇核对。论文、工具名保留英文原名。</p></blockquote>
+<!-- za:content --><main class="za-content"><blockquote><p><strong>译者按</strong>：文中所有数字均为作者自述，来自他们自己的可运行教程（一个虚构自行车与露营用品网店的小型客服助手）或所引论文；均为原文自报。⚠️ 文中引用了大量 2026 年的 arXiv 论文与厂商说法，均为原文转述。论文、工具名保留英文原名。</p></blockquote>
 
 <p>这篇文章写给所有交付、采购或拍板基于大语言模型（LLM）的软件的人：工程师、产品经理，还有 CEO。用大白话写，从全局一直讲到细节。每个数字都来自文末列出的来源：要么是我们自己那份可运行的教程（围绕一个小型客服助手），要么是已发表的论文。</p>
 
@@ -323,7 +323,7 @@
 <ul>
 <li><strong>Inspect AI</strong>（英国 AI 安全研究所，MIT）。擅长：一条连贯的流水线——数据集、求解器、评分器、日志查看器；支持智能体与沙箱；用于前沿安全评测。留意：代码优先；最完整，要学的也最多。</li>
 <li><strong>lm-evaluation-harness</strong>（EleutherAI，MIT）。擅长：针对任意模型可复现地运行公开基准（GSM8K、MMLU、IFEval）。留意：只做基准；那篇框架论文就是它存在的理由。</li>
-<li><strong>promptfoo</strong>（MIT，Node.js）。擅长：声明式 YAML 测试套件、红队测试、CI 回归。留意：不是 Python 包；2026 年被 OpenAI 收购。⚠️ 收购一事本站未核实。</li>
+<li><strong>promptfoo</strong>（MIT，Node.js）。擅长：声明式 YAML 测试套件、红队测试、CI 回归。留意：不是 Python 包；2026 年被 OpenAI 收购。⚠️ 收购一事为原文说法。</li>
 <li><strong>DeepEval</strong>（Apache-2.0）。擅长：pytest 风格的单元测试，自带现成指标（忠实度、相关性）。留意：头条指标是混合值；信任之前先看看里面。</li>
 <li><strong>RAGAS</strong>（Apache-2.0）。擅长：标准的 RAG 三元组，无需参考答案。留意：配合本地模型时不稳定（NaN、执行器报错）；数字是混合值。</li>
 <li><strong>Langfuse</strong>（MIT，可自托管）。擅长：在一个自托管栈里做链路追踪、数据集、实验运行、评委评估器。留意：第 4 版改变了评估器语义；提前规划迁移。</li>
@@ -382,7 +382,7 @@
 </ol>
 
 <h2>参考文献</h2>
-<p>（按原文保留英文条目。⚠️ 其中大量 2026 年 arXiv 编号与厂商说法本站未逐一核对。）</p>
+<p>（按原文保留英文条目。⚠️ 其中大量 2026 年 arXiv 编号与厂商说法均为原文转述。）</p>
 <h3>来自作者的知识库（摘要在相邻文件夹中）</h3>
 <ul>
 <li>Acharya, Pan, Verkhovsky (2026). RoPoLL: Robust Panel of LLM Judges. arXiv:2606.30931.</li>

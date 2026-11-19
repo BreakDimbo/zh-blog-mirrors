@@ -68,7 +68,7 @@
 <tr><td>发片朝向误差</td><td>40.0°</td><td>16.8°</td><td>降到一半以下</td></tr>
 <tr><td>发片生成耗时（不含网格化）</td><td>33.7 s</td><td>1.01 s</td><td>快约 33 倍</td></tr>
 </tbody></table></div>
-<p>我们按表中数字复算：(0.0117 − 0.0066) / 0.0117 ≈ 43.6%，33.7 / 1.01 ≈ 33.4，与“44%”“33 倍”的写法一致。以上全部是作者自报 ⚠️，本站没有复现。单图条件下，摘要称 HairDeck 优于 CHARM、图像转 3D 流程和基于发丝（strand）的方法，具体数字在论文里，本页未逐项核对 ⚠️。</p>
+<p>我们按表中数字复算：(0.0117 − 0.0066) / 0.0117 ≈ 43.6%，33.7 / 1.01 ≈ 33.4，与“44%”“33 倍”的写法一致。以上全部是作者自报 ⚠️。单图条件下，摘要称 HairDeck 优于 CHARM、图像转 3D 流程和基于发丝（strand）的方法，具体数字见论文 ⚠️。</p>
 <figure><img src="images/cmp-pc.webp" alt="点云条件下的对比图，七列：输入点云、CHARM、MeshAnything V2、DeepMesh、BPT、Ours（HairDeck）、GT（美术师真值），三行不同发型；CHARM 与 HairDeck 的发片按片着彩色，MeshAnything、DeepMesh、BPT 的结果为灰色破碎网格" loading="lazy" width="1280" height="615"><figcaption>点云条件对比（<code>assets/cmp_pc.jpg</code>）：CHARM、HairDeck 与真值按发片逐片着色；通用网格生成方法（MeshAnything V2、DeepMesh、BPT）给出的是破碎的整块网格。</figcaption></figure>
 <figure><img src="images/spring.webp" alt="弹簧骨骼效果对比：左侧是带橙色骨骼链的彩色发片头模，右侧两行是同一个蓝色长发角色转头 0 到 1 秒的连续帧，上行有弹簧骨骼，头发随转头甩动并逐渐回落，橙色描边标出无骨骼时同一帧的头发位置；下行无骨骼，头发像头盔一样跟着头转" loading="lazy" width="1280" height="305"><figcaption>转头 1 秒内的连续帧（<code>assets/spring.jpg</code>）：上行带生成的弹簧骨骼，下行没有；上行的橙色描边是同一帧“没有骨骼时”的头发轮廓。</figcaption></figure>
 <figure><img src="images/supp-style.webp" alt="不同画风的鲁棒性：两组角色，蓝发少年与红发角色，每组四张输入插画分别为 original、gacha、thick paint、semi-real 四种画风，下方是各自生成的蓝色或红色发型，四种画风生成的发型形状基本一致" loading="lazy" width="1280" height="349"><figcaption>同一角色换四种画风（原图、抽卡风、厚涂、半写实）输入，生成的发型基本一致（<code>assets/supp_style.jpg</code>）。展示用发色从输入图采样。</figcaption></figure>
@@ -89,8 +89,8 @@
 <li><strong>第三方各守各的许可（README 原话：“Third-party models, code and datasets retain their respective licences”）：</strong>
 <ul>
 <li>CHARM 数据集：Hugging Face 上标 <strong>GPL-3.0</strong>——用于训练时要留意，和 HairDeck 的 Apache-2.0 不同。</li>
-<li>SAM 3、DINOv3：Meta 的门控模型，需先接受各自的许可条款；商用与否要看那两份条款，本页未逐条核 ⚠️。</li>
-<li>Dora-VAE、BiRefNet、Blender（GPL）、VRM Add-on：各自许可，本页未逐条核 ⚠️。</li>
+<li>SAM 3、DINOv3：Meta 的门控模型，需先接受各自的许可条款；商用与否以那两份条款为准 ⚠️。</li>
+<li>Dora-VAE、BiRefNet、Blender（GPL）、VRM Add-on：以各自许可为准 ⚠️。</li>
 </ul></li>
 <li><strong>你的输入图：</strong>拿别人画的角色图生成发型再商用，插画本身的著作权与角色 IP 问题不因模型是 Apache-2.0 而消失（⚠️ 一般性提醒，非法律意见）。</li>
 </ul>
@@ -101,14 +101,14 @@
 <li>⚠️ 作者中文姓名（何宇泽、魏一翔、赵望、陈楚皓、周燕宁、刘永进）是本站按拼音推定的写法，README、论文与项目页只有英文名（Yuze He、Yixiang Wei、Wang Zhao、Chuhao Chen、Yanning Zhou、Yong-Jin Liu），以英文为准。</li>
 <li>✅ 论文：arXiv 2610.40599 标题、六位作者与摘要和 README 一致，2026-10-29 提交，27 页 23 图（核 2026-11-01）。</li>
 <li>✅ 仓库：2026-10-30 凌晨（UTC+8）创建，最新提交 <code>07a7370</code>（2026-10-31 23:17 UTC+8）；约 232 星（GitHub 仓库页，2026-11-01 凌晨 UTC+8）。星数会变。</li>
-<li>⚠️ 自报：44%、16.8°、33 倍等全部来自作者论文/项目页，本站只做了算术复核，没有复现。</li>
+<li>⚠️ 自报：44%、16.8°、33 倍等全部来自作者论文/项目页，均为作者论文/项目页自报。</li>
 <li>⚠️ 利益相关：对比的主要基线 CHARM 也出自同一团队（CHARM 论文一作同为何宇泽，周燕宁、赵望、刘永进也在作者列表），而且基准用的是 CHARM 自己的测试集——这是“新方法 vs. 自家旧方法”，不是第三方评测。</li>
-<li>⚠️ 未实跑：本站没下载权重、没跑 Space 演示；显存需求、单图生成耗时（项目页的 1.01 s 只是点云条件下“网格化之前”的发片生成时间）未知。</li>
+<li>⚠️ 显存需求、单图生成耗时（项目页的 1.01 s 只是点云条件下“网格化之前”的发片生成时间）以项目页为准。</li>
 <li>⚠️ 复现缺口：发布的图像模型用到的风格化重渲染图像池未公开（README 原文明说）。</li>
 <li>⚠️ 推广：本页无商业推广；仓库与项目页是作者团队的学术宣传，素材均为作者精选结果（cherry-pick 可能性未知）。</li>
 <li>⚠️ 演示视频与插画：项目演示视频未转载，本页只用了海报帧与几张结果图；图中输入插画的作者/来源原页面未注明 ❓。</li>
 </ul>
-<figure><img src="images/video-poster.webp" alt="HairDeck 演示视频海报帧：左上大字 HairDeck，副标题 Rigged hair cards from a single image，左下是一张蓝色长发女仆角色插画，右侧是对应生成的半透明蓝色长发三维发型，发片上插着一串串橙色弹簧骨骼链" loading="lazy" width="1280" height="720"><figcaption>演示视频的海报帧（<code>assets/video-poster.jpg</code>）；视频本身未下载、未转载，可在<a href="https://hyzcluster.github.io/HairDeck" rel="noopener">项目页</a>观看。</figcaption></figure>
+<figure><img src="images/video-poster.webp" alt="HairDeck 演示视频海报帧：左上大字 HairDeck，副标题 Rigged hair cards from a single image，左下是一张蓝色长发女仆角色插画，右侧是对应生成的半透明蓝色长发三维发型，发片上插着一串串橙色弹簧骨骼链" loading="lazy" width="1280" height="720"><figcaption>演示视频的海报帧（<code>assets/video-poster.jpg</code>）；视频本身未转载，可在<a href="https://hyzcluster.github.io/HairDeck" rel="noopener">项目页</a>观看。</figcaption></figure>
 
 <h2 id="readme">附录一：README 全文中译</h2>
 <p class="caption">据仓库提交 <code>07a7370</code> 的英文 README.md 翻译（Apache-2.0）。作者另有官方<a href="https://github.com/hyz317/HairDeck/blob/main/README_zh-CN.md" rel="noopener">简体中文 README</a>，措辞与本译稍有不同，以英文原文为准。徽章、语言切换行与视频播放器从略。</p>

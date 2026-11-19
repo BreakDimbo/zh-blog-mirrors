@@ -29,14 +29,14 @@
 <!-- za:content --><main class="za-content"><article>
 <figure><img src="images/cover.webp" alt="Google AI Ultra · Colab 云端 AI 视频生成指南 第二弹 封面" loading="lazy"><figcaption>原文封面</figcaption></figure>
 <h2>编者按</h2>
-<p>本页是作者中文原文的<strong>全文逐字镜像</strong>（原文即中文，未改写），是作者 Colab 系列第二篇。配图来自原文，已转成 webp；代码块按原文内容放回对应段落。原文的成片是视频，本站只取了封面帧，没有下载视频。插图位置是本站按上下文还原的，原文接口不返回插图位置 ⚠️。文末「赛博领鸡蛋」微信群二维码属于引流内容，本站不转载。</p>
-<p>收录时（2026-10-31 11:45，UTC+8）主帖约 5.55 万次浏览、198 赞、463 收藏、26 转发。文中的耗时、CCU 账单、音量 dB 都是作者<strong>自报</strong>，本站没有复现。</p>
+<p>本页是作者中文原文的<strong>全文逐字镜像</strong>（原文即中文，未改写），是作者 Colab 系列第二篇。配图来自原文，已转成 webp；代码块按原文内容放回对应段落。原文的成片是视频，本站只取了封面帧，未转载视频。插图位置是本站按上下文还原的，原文接口不返回插图位置 ⚠️。文末「赛博领鸡蛋」微信群二维码属于引流内容，本站不转载。</p>
+<p>收录时（2026-10-31 11:45，UTC+8）主帖约 5.55 万次浏览、198 赞、463 收藏、26 转发。文中的耗时、CCU 账单、音量 dB 都是作者<strong>自报</strong>，均为原文自报。</p>
 <p>要点速览：① 底座从第一篇的网页版 <code>colab-mcp</code> 换成 <code>google-colab-cli</code> + <code>colab-dfs-ext</code>，全程不开浏览器就能开 G4、挂载 Google Drive、跑完关机；② 42 GB 权重先从 Drive API 和 Hugging Face CDN 两路下载到本地 NVMe，再加载进显存，不要用软链接直读 Drive（FUSE 随机读很慢）；③ 声音的做法：先截取 H3 自己生成的人声当声纹种子，每段只传当段说话人那一路，情绪靠副语言前缀和拍桌这类瞬态音效拉起来；④ 续接段画面发雾，原因是 <code>MiniMaxH3JoinMatch</code> 默认参数压低了对比度和细节，改成手动温和模式就好；单段只写一个运镜，屏幕左右坐标写死，段尾留静音；⑤ 人物转头看镜头的四个原因，以及 <code>MiniMaxH3AddGuide</code> 首尾双端夹具；⑥ 每段存约 5 MB 的潜变量断点，可以用 <code>--only-seg</code> 单独重跑一段。</p>
 <p>本站相关：<a href="../h3-motion-context/">ComfyUI-H3-Motion-Context</a>（本文续接与 JoinMatch 节点所在项目）· <a href="../servasyy-minimax-h3-local-deploy/">MiniMax H3 本地部署保姆级教程</a> · <a href="../minimax-h3-director/">MiniMax H3 Director 工作流</a> · <a href="../minimax-h3-prompt-rewriter/">MiniMax-H3 Prompt Rewriter</a></p>
 
 <h2>本站核对与提示</h2>
 <ul>
-<li>✅ Google AI Ultra 5x 每月含 1,000 Colab 计算单元和 20 TB 存储，20x 是 2,000 单元和 30 TB（Google One 方案页、帮助页，核于 2026-10-31）。</li>
+<li>✅ Google AI Ultra 5x 每月含 1,000 Colab 计算单元和 20 TB 存储，20x 是 2,000 单元和 30 TB（Google One 方案页、帮助页，2026-10-31）。</li>
 <li>✅ Colab G4 就是 NVIDIA RTX PRO 6000 Blackwell Server Edition，96 GB 显存（Google Colab 官方公告）。⚠️ 作者给的 8.71 CCU/h 是他自己账户的读数；其他用户报过约 6.7 和约 8.9 CCU/h，Google 没有公布固定费率，以 <code>colab usage</code> 为准。</li>
 <li>✅ 仓库里有文中提到的文件：<code>scripts/launch_g4_comfyui_fast.py</code>、<code>colab_meter.py</code>、<code>run_g4_v25_4seg_drama.py</code>、<code>auto_subtitle_video.py</code>，<code>workflows/01_dialogue_2p_photorealistic/</code>（含 <code>drama_config.json</code>、<code>workflow_v9_final.json</code>、<code>run_drama.py</code>、<code>auto_subtitle.py</code>），以及 <code>templates/minimax_h3_v25_4seg_v9_final_workflow.json</code>；02 格斗、03 舞蹈两个目录目前只有 README（HEAD d9ae719，2026-10-26 21:55 UTC+8）。</li>
 <li>✅ 白皮书的「175 KB」大致相符：<code>references/minimax_h3_industrial_workflow_whitepaper.md</code> 实为 167,818 字节，约 11.5 万字符，其中汉字约 2.3 万；「超 5 万字」取决于怎么数（中英混排）⚠️。</li>
@@ -45,13 +45,13 @@
 <li>⚠️ 角色设定前后不一：正文说林薇是 30 岁审计总监、陈默是 42 岁集团副总；铭牌写的是「律所高级合伙人」「集团执行董事」；仓库 <code>drama_config.json</code> 里又是 35 岁法律合伙人、40 岁执行副总裁。不影响方法，只是提醒一下。</li>
 <li>⚠️ 「首创」「100% 必中」「0% AI 播音腔」「彻底终结」这些是作者自己的说法，没有第三方评测；拿 H3 和 Wan2.1、HunyuanVideo 比较也是作者个人观点。</li>
 <li>⚠️ 文中用的视觉编码器 <code>Qwen3-VL-32B-Heretic</code> 是社区去审核微调版（「无审核」），主干 <code>Singularity v1.3</code> 也是社区融合版，都不是 MiniMax 官方发布的。用的时候要自己评估内容合规，以及 Colab 和各模型的使用条款。</li>
-<li>⚠️ 利益相关与推广：文末号召关注、转推、收藏，并放了微信群二维码（本站已略去）；作者 X 主页的链接指向 starlens.520ai.xin，与本文的关系未核实。全文没有发现 utm 或返利链接。作者 GitHub 账号 <code>yuanyang749</code> 的提交署名是 delroy749，本站推断与 @Delroy715 是同一人（原文自称「我已经…更新到了 GitHub 仓库」）⚠️。</li>
+<li>⚠️ 利益相关与推广：文末号召关注、转推、收藏，并放了微信群二维码（本站已略去）；作者 X 主页的链接指向 starlens.520ai.xin，与本文的关系，原文未说明。全文没有发现 utm 或返利链接。作者 GitHub 账号 <code>yuanyang749</code> 的提交署名是 delroy749，本站推断与 @Delroy715 是同一人（原文自称「我已经…更新到了 GitHub 仓库」）⚠️。</li>
 </ul>
 
 <h2>原文全文</h2>
 <p>上一篇《把 Google AI Ultra 1000 CCU 榨出双倍价值：Colab MCP + 选卡指南 + Agent 智能调度 实战》发出后，拿到了 3 万+ 阅读和 125+ 收藏。很多订了 Google AI Ultra（每月 1,000 CCU + 20TB 云盘） 的朋友在群里催更我们在文末留下的坑：</p>
 <p>“上期只用 0 CCU 的免费 CPU 跑了雪总的 1.5B 小模型热身，手里的王炸 G4 (96GB RTX PRO 6000 Blackwell) 还没真正出鞘！到底怎么在 G4 上把开源满血音视频大模型跑起来？”</p>
-<blockquote class="xpost-ref"><p>（原文此处嵌入作者上一篇 X 长文）《把 Google AI Ultra 1000 CCU 榨出双倍价值：Colab MCP + 选卡指南+Agent 智能调度 实战》——<a href="https://x.com/Delroy715/status/2111091086349533244" rel="noopener">x.com/Delroy715/status/2111091086349533244</a>（2026-10-16 发布；本站未镜像该篇）</p></blockquote>
+<blockquote class="xpost-ref"><p>（原文此处嵌入作者上一篇 X 长文）《把 Google AI Ultra 1000 CCU 榨出双倍价值：Colab MCP + 选卡指南+Agent 智能调度 实战》——<a href="https://x.com/Delroy715/status/2111091086349533244" rel="noopener">x.com/Delroy715/status/2111091086349533244</a>（2026-10-16 发布；本页未收录该篇）</p></blockquote>
 <p>过去这一周，我带着本地 AI Agent 在 96GB 的 G4 上死磕目前最强开源 33B 原生音视频联合大模型 <code>MiniMax-H3</code>（<code>Singularity v1.3</code> + <code>Qwen3-VL-32B-Heretic NVFP4</code> 无审核视觉编码器），不仅把底座从第一代的网页 colab-mcp 升级到了全自动零浏览器的 <code>colab-cli</code>，还把多镜头 AI 短剧最让人头疼的 「FUSE 软链读盘卡死、跨片段人物变声、外部 TTS 朗读 AI 味重、多段续接画面发雾发灰、一镜到底人物向镜头错误转头、改单段被迫重跑全片」 六大深坑全部踩透并攻克了。</p>
 <p>今天这篇硬核续集，不讲虚的，聚焦 全链路省时提速 + 真实翻车与调试避坑。在展开细节之前，先放一张我们实测整理的 「96GB G4 × 33B MiniMax-H3 全链路省时提速与 768P 纯视频生成耗时总表」，让大家一眼看清这套无头极速工作流到底能帮你省下多少时间与真金白银的 CCU：</p>
 <figure><img src="images/time-table.webp" alt="96GB G4 × 33B MiniMax-H3 全链路省时提速与 768P 纯视频生成耗时总表（原文配图）" loading="lazy"><figcaption>96GB G4 × 33B MiniMax-H3 全链路省时提速与 768P 纯视频生成耗时总表（原文配图）</figcaption></figure>

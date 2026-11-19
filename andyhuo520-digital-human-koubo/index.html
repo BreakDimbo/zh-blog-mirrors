@@ -35,7 +35,7 @@
 <!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>这是一个装进 AI 编程 Agent（Claude Code、Codex 等）的“数字人口播”技能包。你给它一张照片和一句需求，它会写稿、报价、通过 Renoise MCP 调用 Grok Video 1.5 分段生成会对口型的数字人片段，再在本机用 ffmpeg、whisper 和 Remotion 做质检、修音、字幕和头部博主风格的包装，最后输出 MP4 成片。</div>
 
 <p class="hero-tags"><span class="tag">★ 805 stars</span> <span class="tag">202 forks</span> <span class="tag">TypeScript · Python · Shell</span> <span class="tag">MIT</span> <span class="tag">Agent Skill（SKILL.md）</span> <span class="tag">Renoise MCP</span> <span class="tag">Remotion 4</span></p>
-<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-27 12:15（UTC+8）。仓库建于 2026-10-26 12:34（UTC+8），最后推送 2026-10-26 19:52（UTC+8），最新提交 <code>5fa9b19</code>。（10-28 复核：★ 1,269 / 295 forks，代码未更新，见文末“2026-10-28 复核与增补”。）一天之内拿到八百多颗星，说明这类“Agent 一条龙做口播”的需求相当旺盛。</p>
+<p class="caption">数据截至 2026-10-27 12:15（UTC+8）。仓库建于 2026-10-26 12:34（UTC+8），最后推送 2026-10-26 19:52（UTC+8），最新提交 <code>5fa9b19</code>。（10-28 复核：★ 1,269 / 295 forks，代码未更新，见文末“2026-10-28 复核与增补”。）一天之内拿到八百多颗星，说明这类“Agent 一条龙做口播”的需求相当旺盛。</p>
 
 <figure><img src="images/cover.webp" alt="封面：左侧大字“一张照片 + 一句话 / 27 秒直播带货广告”，右侧三张 9:16 竖屏截图，AI 女主播在直播间讲课程促销，画面带价格花字和画中画" loading="lazy"><figcaption>仓库封面图 <code>docs/images/cover.jpg</code>（© Berryxia），本站压缩为 WebP。画面中的主播是作者自己的 AI 数字人；依仓库 NOTICE，人物形象仅作演示，请勿在自己的内容中使用。</figcaption></figure>
 
@@ -104,20 +104,20 @@ skills/finance-explainer/  风格 A 引擎（episode.json 拍表、检索与对�
 <li><strong>依赖付费云服务。</strong>核心的视频生成走 Renoise（按积分计费）；没有本地生成路线。README 中的 Renoise 链接都带推广追踪参数（utm），<code>SKILL.md</code> 还要求 Agent 原样给出带 utm 的注册链接——读者可自行判断其商业关联。</li>
 <li><strong>口型绑定生成的声音。</strong>Grok 的口型跟它自己生成的声音走；事后换成 MiMo 克隆声或别的声音，口型会差约 100 毫秒，全屏特写看得出。要用自己录音又要口型准，需换 OmniHuman 等音频驱动模型。</li>
 <li><strong>生成模型的不稳定性。</strong>Grok 横屏偶尔自己烧字幕、偶尔漏念语气词；whisper 会把中文数字写成阿拉伯数字导致“误判”；美国 CDN 并行下载会断——这些都要靠质检脚本兜底和重拍，重拍也要花积分。</li>
-<li><strong>平台限制。</strong>景深字依赖 Apple Vision，仅 macOS；Claude 桌面端 / 网页只有沙盒，无法完成本机剪辑。除 Claude Code 外，其他 Agent 多为“预期 / 应可用”，未逐一实测。</li>
+<li><strong>平台限制。</strong>景深字依赖 Apple Vision，仅 macOS；Claude 桌面端 / 网页只有沙盒，无法完成本机剪辑。除 Claude Code 外，其他 Agent 多为文档中的“预期 / 应可用”。</li>
 <li><strong>许可分层。</strong>MIT 只覆盖代码和文档；示例视频、主播形象图、风格预览和图鉴里的人物是作者的 AI 数字人，NOTICE 明确不得当成自己的作品上传、不得使用其形象。Remotion 对 3 人以上公司需购买授权；Noto 动态表情为 CC BY 4.0，需署名。</li>
 <li><strong>伦理红线。</strong>作者要求只用本人或明确授权的脸和声音、每条片子标注“内容由 AI 数字人演绎”、不编造价格与评价。“小林式”风格只学结构与剪辑语法，不得使用真实创作者的脸、声音和原话。数字人带货广告在各平台的标注规定需自行核对。</li>
 </ul>
 <figure><img src="images/burned-subtitles.webp" alt="Grok 生成的横屏口播画面中出现了模型自行烧入的字幕" loading="lazy"><figcaption>“踩过的坑”之一：Grok 横屏口播偶尔自己烧字幕，提示词写了也挡不住，只能抽帧发现后重拍（<code>docs/images/burned-subtitles.jpg</code>，© Berryxia）。</figcaption></figure>
 
 <h2 id="update-1028">2026-10-28 复核与增补</h2>
-<div class="related-guide"><strong>本节说明：</strong>10 月 28 日本站重新浅克隆了仓库，并通读了上次没有展开的 <code>SKILL.md</code>、<code>persona.json</code>、<code>references/</code>（含 finance-explainer 的制作手册）、<code>NOTICE.md</code> 与 <code>THIRD_PARTY.md</code>，结果补在这一节。前文保持不变。凡是本站<strong>没有亲自跑过</strong>的数字（价格、准确率、效果），都按作者自报处理，标 ⚠️；本站自己的推断也标 ⚠️ 推断。</div>
+<div class="related-guide"><strong>本节说明：</strong>10 月 28 日增补：通读了先前未展开的 <code>SKILL.md</code>、<code>persona.json</code>、<code>references/</code>（含 finance-explainer 的制作手册）、<code>NOTICE.md</code> 与 <code>THIRD_PARTY.md</code>，结果补在这一节。前文保持不变。价格、准确率、效果等数字均为作者自报，标 ⚠️；本站推断也标 ⚠️ 推断。</div>
 
 <h3>仓库现状</h3>
 <ul>
 <li><strong>代码没有更新。</strong>最新提交仍是 <code>5fa9b19</code>（2026-10-26 17:03，UTC+8），与 10-27 收录时相同；最后两次提交只是把 Renoise 注册链接改成带 utm 追踪参数的版本。</li>
-<li><strong>热度：</strong>★ 1,269 / 295 forks（公开 GitHub API，2026-10-28 23:50 UTC+8；10-27 收录时 ★ 805 / 202）。</li>
-<li><strong>演示视频：</strong>Issue #1 曾报告 README 里 8 个演示 MP4 链接全部 404（10-26 14:50 UTC+8），现已关闭；<code>v1.0.0</code> Release 已于 10-26 19:52（UTC+8）发布，8 个视频都在。本站依规则不下载视频，只用仓库自带的封面帧。</li>
+<li><strong>热度：</strong>★ 1,269 / 295 forks（截至 2026-10-28 23:50 UTC+8；10-27 收录时 ★ 805 / 202）。</li>
+<li><strong>演示视频：</strong>Issue #1 曾报告 README 里 8 个演示 MP4 链接全部 404（10-26 14:50 UTC+8），现已关闭；<code>v1.0.0</code> Release 已于 10-26 19:52（UTC+8）发布，8 个视频都在。本页只用仓库自带的封面帧，视频未转载。</li>
 <li><strong>社区补丁：</strong>PR #3（未合并）把抽帧拼图脚本里写死的 macOS 字体路径改成跨平台查找。这说明部分辅助脚本默认只在作者的 Mac 上测过，Linux / Windows 用户可能踩到同类问题。⚠️ 推断</li>
 </ul>
 
@@ -177,9 +177,9 @@ skills/finance-explainer/  风格 A 引擎（episode.json 拍表、检索与对�
 <li><strong>利益关联：</strong>README、THIRD_PARTY 与 SKILL.md 中的 Renoise 链接都带 <code>utm_source=official</code>，最后两次提交专门加上这个参数；SKILL.md 还要求 Agent 原样给出这条链接。演示片“产品推荐口播”的文件名是 <code>renoise-koubo-huazi</code>。作者和 Renoise 有没有合作或分成，仓库里没有说明 ⚠️ 推断，读者可自行判断。</li>
 </ul>
 
-<h3>未核实与推断清单</h3>
+<h3>原文自报与推断</h3>
 <ul>
-<li>⚠️ 成本（482 / ~3,250 / ~3,409 积分）、单价、语言准确率、齿音段间差 13.2 → 5.9 dB、“省约 40%”：都是作者自报，本站没有 Renoise 账号，也没有跑过生成。</li>
+<li>⚠️ 成本（482 / ~3,250 / ~3,409 积分）、单价、语言准确率、齿音段间差 13.2 → 5.9 dB、“省约 40%”：都是作者自报。</li>
 <li>⚠️ 成片效果：本站只看了仓库自带的封面帧和 GIF 静帧，没有看完整视频，无法评价口型和画质。</li>
 <li>⚠️ 除 Claude Code 外的 Agent（Codex、OpenClaw、WorkBuddy 等）兼容性是作者写的“预期可用 / 应可用”。</li>
 <li>⚠️ 推断：Renoise 的商业关联、<code>promo-video</code> / <code>ai-teardown</code> 的来源、部分脚本仅在 macOS 测过。</li>
@@ -727,7 +727,7 @@ SOFTWARE.
 </div></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/andyhuo520/digital-human-koubo" rel="noopener">andyhuo520/digital-human-koubo</a>，作者 <a href="https://github.com/andyhuo520" rel="noopener">Berryxia（andyhuo520）</a>，MIT 许可，Copyright (c) 2026 Berryxia (andyhuo520)。中文 README 依 MIT 许可逐字转载并保留版权与许可声明。配图均来自仓库 <code>docs/</code>（© Berryxia），仅为介绍项目而引用，已转为 WebP；依仓库 NOTICE，图中 AI 数字人形象不得挪作他用。本站未下载或转载任何视频，示例视频仅外链至原仓库 Release。统计数据取自公开 GitHub API（2026-10-27）。导读、要点与小结为本站整理。</p>
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/andyhuo520/digital-human-koubo" rel="noopener">andyhuo520/digital-human-koubo</a>，作者 <a href="https://github.com/andyhuo520" rel="noopener">Berryxia（andyhuo520）</a>，MIT 许可，Copyright (c) 2026 Berryxia (andyhuo520)。中文 README 依 MIT 许可逐字转载并保留版权与许可声明。配图均来自仓库 <code>docs/</code>（© Berryxia），仅为介绍项目而引用，已转为 WebP；依仓库 NOTICE，图中 AI 数字人形象不得挪作他用。示例视频仅外链至原仓库 Release，本页未转载视频。统计截至 2026-10-27。导读、要点与小结为本站整理。</p>
 <p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/andyhuo520/digital-human-koubo" rel="noopener">github.com/andyhuo520/digital-human-koubo</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>

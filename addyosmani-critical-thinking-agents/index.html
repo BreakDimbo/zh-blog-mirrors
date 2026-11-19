@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>智能体替你干活时，怎样保住批判性思维 · Addy Osmani</title>
-<meta name="description" content="Addy Osmani（Claude Code @Anthropic）X 长文全文中译：认知卸载 → 顺从 → 认知投降的三档光谱；认知债与理解债；先写假设、请模型做盲点扫描；每个绿勾说清查了什么、没查什么，先看命令与输出再看总结；让智能体列出替你做的决定、读后自测；编排税、意图债、自己写需求说明；“不愿署名就不发”；监督悖论与每周不用智能体写一点代码。观点文无新数据；“理解债由 Jeremy Twei 提出”未核实 ⚠️，Pangram 检测图仅作自我声明 ⚠️。">
+<meta name="description" content="Addy Osmani（Claude Code @Anthropic）X 长文全文中译：认知卸载 → 顺从 → 认知投降的三档光谱；认知债与理解债；先写假设、请模型做盲点扫描；每个绿勾说清查了什么、没查什么，先看命令与输出再看总结；让智能体列出替你做的决定、读后自测；编排税、意图债、自己写需求说明；“不愿署名就不发”；监督悖论与每周不用智能体写一点代码。观点文无新数据；“理解债由 Jeremy Twei 提出”为作者说法 ⚠️，Pangram 检测图仅作自我声明 ⚠️。">
 <meta property="og:title" content="Critical thinking when agents do the work · Addy Osmani 中译">
 <meta property="og:image" content="images/cover.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,10 +63,10 @@
 
 <h2 id="notes">核对与 ⚠️ 注记</h2>
 <ul>
-<li>✅ “认知投降”出自沃顿 Steven Shaw 与 Gideon Nave 的论文《Thinking — Fast, Slow, and Artificial》，与作者博客 <a href="https://addyosmani.com/blog/cognitive-surrender/" rel="noopener">Cognitive surrender</a> 的说法一致（2026-11-03 核）。</li>
-<li>✅ “监督悖论”原话确在 Anthropic 研究页 <a href="https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic" rel="noopener">How AI is transforming work at Anthropic</a>：“supervising Claude requires the very coding skills that may atrophy from AI overuse”（2026-11-03 核）。</li>
-<li>⚠️ “理解债（comprehension debt）一词由 Jeremy Twei 提出”——作者的说法，本站在其《Comprehension debt》博文页面中未找到这个名字，未核实。</li>
-<li>⚠️ “Claude Code 团队按需重建理解”“用 Claude Code 以全新上下文子智能体自我批评”等为作者（Anthropic 员工）对自家团队与产品的描述，未独立核实；本文也有替 Claude Code 工作方式背书的成分。</li>
+<li>✅ “认知投降”出自沃顿 Steven Shaw 与 Gideon Nave 的论文《Thinking — Fast, Slow, and Artificial》，与作者博客 <a href="https://addyosmani.com/blog/cognitive-surrender/" rel="noopener">Cognitive surrender</a> 的说法一致（2026-11-03）。</li>
+<li>✅ “监督悖论”原话确在 Anthropic 研究页 <a href="https://www.anthropic.com/research/how-ai-is-transforming-work-at-anthropic" rel="noopener">How AI is transforming work at Anthropic</a>：“supervising Claude requires the very coding skills that may atrophy from AI overuse”（2026-11-03）。</li>
+<li>⚠️ “理解债（comprehension debt）一词由 Jeremy Twei 提出”——作者的说法；在其《Comprehension debt》博文页面中未见这个名字。</li>
+<li>⚠️ “Claude Code 团队按需重建理解”“用 Claude Code 以全新上下文子智能体自我批评”等为作者（Anthropic 员工）对自家团队与产品的描述，均为作者（Anthropic 员工）对自家团队与产品的描述；本文也有替 Claude Code 工作方式背书的成分。</li>
 <li>⚠️ 文末附图是 Pangram 的 AI 文本检测结果（AI 10% / 人写 90%）。AI 检测器本身误判率不低，只能当作者的自我声明看。</li>
 <li>“问一句‘我漏了什么’常能再挖出两三件事”是作者个人经验，非实验结论。</li>
 </ul>
@@ -157,7 +157,7 @@
 <figure><img src="images/pangram.webp" alt="Pangram 检测卡片：Human-Written，AI 10%，AI-assisted 0%，Human 90%" loading="lazy"><figcaption>原文附图：Pangram 的 AI 文本检测结果（AI 10% / 人写 90%）。⚠️ AI 检测器存在误判，仅作作者自我声明。</figcaption></figure>
 
 <h2 id="links">原文引用链接</h2>
-<p class="caption">按原文中的出现顺序整理（去重），本站未逐一打开核对，标 ✅ 的除外。</p>
+<p class="caption">按原文中的出现顺序整理（去重），标 ✅ 的为文中可对上的引用。</p>
 <ul>
 <li>沃顿 Shaw &amp; Nave 认知投降论文：<a href="https://ssrn.com/abstract_id=6097646" rel="noopener">SSRN 6097646</a>；作者博文 <a href="https://addyosmani.com/blog/cognitive-surrender/" rel="noopener">Cognitive surrender</a> ✅</li>
 <li>Margaret-Anne Storey：<a href="https://margaretstorey.com/blog/2026/02/09/cognitive-debt/" rel="noopener">Cognitive debt</a>；作者：<a href="https://addyosmani.com/blog/comprehension-debt/" rel="noopener">Comprehension debt</a></li>

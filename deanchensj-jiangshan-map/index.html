@@ -31,7 +31,7 @@
 
 <nav class="toc"><strong>目录</strong><ol>
 <li><a href="#what">是什么</a></li>
-<li><a href="#stats">仓库快照（2026-11-03 核）</a></li>
+<li><a href="#stats">仓库快照（2026-11-03）</a></li>
 <li><a href="#play">四种玩法</a></li>
 <li><a href="#share">深链、嵌入与快捷键</a></li>
 <li><a href="#agent">给 AI Agent 用：MCP、Skill、浏览器 API</a></li>
@@ -48,7 +48,7 @@
 <p>项目本身也很“Agent 友好”：地点和年份写进网址就能直接定位（不需要经纬度），仓库里附带零依赖的本地 MCP Server、一个 Agent Skill 和浏览器端 JS API，可以让大模型把诗词或史料直接“落”到地图上。</p>
 <p>在线版：<a href="https://deanchen.me/jiangshan-map/">deanchen.me/jiangshan-map</a>（GitHub Pages 托管）。作者另写了一篇幕后自述：<a href="https://deanchen.me/history/atlas/2026/10/25/jiangshan-map-story.html">从历史课本里的插图，到 GitHub 1k star</a>。</p>
 
-<h2 id="stats">仓库快照（2026-11-03 12:50 UTC+8 核）</h2>
+<h2 id="stats">仓库快照（2026-11-03 12:50 UTC+8）</h2>
 <table>
 <tr><th>项</th><th>值</th></tr>
 <tr><td>Star / Fork</td><td>3,618 / 431</td></tr>
@@ -84,11 +84,11 @@
 <li><a href="https://github.com/DeanChensj/jiangshan-map/blob/main/llms.txt"><code>llms.txt</code></a>：机器可读的说明，包括深链协议和“先定年份、再定地点（同名异地消歧）”的推理步骤。</li>
 <li><strong>本地 MCP Server</strong>（<code>scripts/mcp_server.js</code>，stdio，零依赖），提供 <code>inspect_place</code>、<code>inspect_person</code>、<code>search_atlas</code> 三个工具。本站 2026-11-03 在 Node 24 下实测：<code>inspect_place(year=819, place=蓝关)</code> 返回“唐宪宗·元和十四年”、解析为“蓝田关”、今“陕西西安蓝田”、属关内道 ✅。</li>
 <li><strong>Agent Skill</strong>（<code>skills/jiangshan-atlas/SKILL.md</code>），附一个 CLI 出图脚本 <code>jiangshan.py</code>。</li>
-<li><strong>浏览器 API</strong>：页面挂载 <code>window.atlasAPI</code>（locate / inspect / resolvePlace / openPerson / search），在支持 WebMCP 的浏览器里通过 <code>navigator.modelContext</code> 注册 3 个工具（未实测 ⚠️）。</li>
+<li><strong>浏览器 API</strong>：页面挂载 <code>window.atlasAPI</code>（locate / inspect / resolvePlace / openPerson / search），在支持 WebMCP 的浏览器里通过 <code>navigator.modelContext</code> 注册 3 个工具（效果为作者自述 ⚠️）。</li>
 </ul>
 
 <h2 id="data">本地运行与 GeoJSON 导出</h2>
-<p>纯静态网页，克隆后 <code>python3 -m http.server</code> 就能跑。几何数据是拓扑去重后的紧凑编码；<code>node scripts/export_geojson.js</code> 可以导出标准 GeoJSON（EPSG:4326），范围是公元前 403 年至 1948 年，不含之后年份和现代省界。本站实测导出 195 个文件，其中疆域阶段快照 187 个 ✅；另有一个按坐标和年份查询“当时属于哪个政权、哪个政区”的小工具 <code>jiangshan-locate.js</code>，以及 Leaflet 示例页。</p>
+<p>纯静态网页，克隆后 <code>python3 -m http.server</code> 就能跑。几何数据是拓扑去重后的紧凑编码；<code>node scripts/export_geojson.js</code> 可以导出标准 GeoJSON（EPSG:4326），范围是公元前 403 年至 1948 年，不含之后年份和现代省界。导出得到 195 个文件，其中疆域阶段快照 187 个 ✅；另有一个按坐标和年份查询“当时属于哪个政权、哪个政区”的小工具 <code>jiangshan-locate.js</code>，以及 Leaflet 示例页。</p>
 
 <h2 id="license">数据来源与许可</h2>
 <ul>
@@ -101,8 +101,8 @@
 <h2 id="notes">核对与 ⚠️ 注记</h2>
 <ul>
 <li><strong>数字对不上</strong>：GitHub 仓库简介写“164 个疆域快照”，<code>llms.txt</code> 写“188 幅快照、485 条编年大事、694 处城池地标”，本站导出（截至 1948 年）得到 187 个快照。项目更新很快，简介应该是旧数字 ⚠️。</li>
-<li>“单次查询 &lt;5ms”、“百余位历史人物行迹”等说法未逐项核实 ⚠️。</li>
-<li>史实准确性（疆域、事件年份、人物行迹）本站没有逐条校勘；作者说边界是示意，并有史料校勘规范（CONTRIBUTING） ⚠️。</li>
+<li>“单次查询 &lt;5ms”、“百余位历史人物行迹”等说法为原文自报 ⚠️。</li>
+<li>史实准确性（疆域、事件年份、人物行迹）以作者说明为准；作者说边界是示意，并有史料校勘规范（CONTRIBUTING） ⚠️。</li>
 <li>仓库主要由作者一人提交（268/272），社区贡献很少。</li>
 </ul>
 

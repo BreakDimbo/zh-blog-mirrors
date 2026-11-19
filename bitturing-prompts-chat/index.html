@@ -62,10 +62,10 @@
 <h2 id="verify">帖子里的说法，逐条核对</h2>
 <div class="table-wrap"><table><thead><tr><th>帖子说</th><th>本站核对（2026-10-30）</th></tr></thead><tbody>
 <tr><td>GitHub 超过 173K 星标</td><td>✅ 属实，而且偏保守。仓库页当时显示 175,117 星、22,346 fork。README 里还写着“143k+ stars”，是没更新的旧数。</td></tr>
-<tr><td>被哈佛和哥伦比亚大学引用过</td><td>⚠️ 未核实。README 给了哈佛 HUIT 和哥伦比亚 CUIT 两个新闻页链接，但本站请求这两个页面都返回 403，没能打开确认原文怎么写。“引用”在 README 里是 Referenced by，可能只是在学校的资源页里被提到，不等于学术引用。README 另称“40+ 学术引用”，同样未核实。</td></tr>
+<tr><td>被哈佛和哥伦比亚大学引用过</td><td>⚠️ 原文自报。README 给了哈佛 HUIT 和哥伦比亚 CUIT 两个新闻页链接，但本站请求这两个页面都返回 403，没能打开确认原文怎么写。“引用”在 README 里是 Referenced by，可能只是在学校的资源页里被提到，不等于学术引用。README 另称“40+ 学术引用”，同样为原文自报。</td></tr>
 <tr><td>“全球最大的免费提示词库”</td><td>⚠️ 这是项目自己的口号（The world's largest open-source prompt library），没有第三方比较数据支持。</td></tr>
 <tr><td>兼容几乎所有模型</td><td>提示词是纯文本，确实不绑定模型。但同一句提示词在不同模型上效果不同，这里说的“兼容”只是能用。</td></tr>
-<tr><td>CLI、MCP、Claude Code 插件、CSV</td><td>✅ README 与 <code>CLAUDE-PLUGIN.md</code> 都写了，命令见下方附录。本站没有实际安装试用。</td></tr>
+<tr><td>CLI、MCP、Claude Code 插件、CSV</td><td>✅ README 与 <code>CLAUDE-PLUGIN.md</code> 都写了，命令见下方附录。以下为文档转述。</td></tr>
 <tr><td>可部署私有版本，带品牌和登录</td><td>✅ README 写明安装向导配置品牌、主题和 GitHub / Google / Azure AD 登录。</td></tr>
 <tr><td>所有提示词都是公共领域，可商用、无需同意</td><td>✅ 基本属实。<code>LICENSE</code> 写明提示词内容与数据（<code>prompts.csv</code>、<code>PROMPTS.md</code>、用户投稿）以 CC0 1.0 发布；网站代码与站方内容（含互动教程）是 MIT。要注意：CC0 只是投稿人的声明，平台没法保证每条投稿真的是投稿人原创 ⚠️。</td></tr>
 <tr><td>完全免费，代码开源</td><td>✅ 代码 MIT，数据 CC0，网站可免费浏览。但项目靠赞助运营，见下方“利益相关”。</td></tr>
@@ -75,7 +75,7 @@
 <ul>
 <li>⚠️ <strong>推荐帖不是原创（推断）：</strong>演示视频右下角水印是 <strong>@silvanrec</strong>。本站在 X 上搜到 2026-10-21 22:51 UTC+8 <a href="https://x.com/nikosolenne/status/2112919683770843455" rel="noopener">@nikosolenne 的一条西班牙语帖</a>，开头几句（“世界最大的提示词库、100% 免费、超过 173K 星、哈佛和哥伦比亚引用、兼容 ChatGPT/Claude/Gemini”）和本帖逐句对得上，配的视频也是 16.6 秒。Bitturing 的帖子很可能是那条帖子的中文转述，帖里没注明出处。Bitturing 简介自称“大自然的搬运工”。原始视频是不是 @silvanrec 做的，本站没查到原帖 ❓。</li>
 <li>⚠️ <strong>投稿质量参差：</strong>任何人都能提交提示词，本站截图里最新几条就有测试性质、内容很少的投稿。用之前要自己筛。</li>
-<li>⚠️ <strong>远程 MCP 会把查询发给第三方：</strong>README 推荐的远程 MCP 地址是 <code>https://prompts.chat/api/mcp</code>，你的搜索词会发到 prompts.chat 的服务器。介意的话用本地模式（<code>npx -y prompts.chat mcp</code>）或自建。本站没有调用这个接口。</li>
+<li>⚠️ <strong>远程 MCP 会把查询发给第三方：</strong>README 推荐的远程 MCP 地址是 <code>https://prompts.chat/api/mcp</code>，你的搜索词会发到 prompts.chat 的服务器。介意的话用本地模式（<code>npx -y prompts.chat mcp</code>）或自建。接口效果以项目说明为准。</li>
 <li><strong>利益相关：</strong>推荐帖本身没有带 utm 或返利的链接，也没有合作标注；Bitturing 简介里有 Crypto / BTC / Web3，但这条帖子和加密货币无关。项目方面：网站和 README 有一排赞助商（Neon、Clemta、Wiro、Cognition、CodeRabbit、Sentry、Each Labs、CommandCode），README 里的 Neon 链接是推荐链接（<code>get.neon.com/VqfnMo4</code>），CodeRabbit 是 <code>coderabbit.link/fatih</code>，其余多带 <code>utm_source=prompts.chat</code>；列表页里夹有标“Sponsored”的赞助卡片。README 里“Read the Book”指向作者的 Gumroad 页面（本站看到的标价为 0 美元 ⚠️ 可能是自愿付费），教程源码本身在仓库里，MIT 免费。</li>
 </ul>
 

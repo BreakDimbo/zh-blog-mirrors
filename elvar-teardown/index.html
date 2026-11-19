@@ -84,15 +84,14 @@ node sims/build.mjs strandbeest-live</code></pre>
 
 <h2 id="notes">核实与注记</h2>
 <ul>
-<li>✅ <strong>许可：</strong>MIT（LICENSE 原文；版权人 elvarofficial 与 whaleyxbt；GitHub API 亦识别为 MIT）。本页转载的 README/SKILL.md 中译与三张示例图均在 MIT 范围内。长文是作者本人的 X 文章，按本站惯例全文中译并附英文原文。</li>
+<li>✅ <strong>许可：</strong>MIT（LICENSE 原文；版权人 elvarofficial 与 whaleyxbt；GitHub 亦识别为 MIT）。本页转载的 README/SKILL.md 中译与三张示例图均在 MIT 范围内。长文是作者本人的 X 文章，按本站惯例全文中译并附英文原文。</li>
 <li>✅ <strong>代码与文中数字一致：</strong><code>cessna-shared/gear.js</code> 里写着 <code>pinionR: 0.064 // 32 teeth, 4 mm module</code>、<code>stroke: 0.201</code>；32 × 4 mm = 128 mm 节圆直径，π × 128 / 2 ≈ 201.06 mm，确是半圈。<code>jansen.js</code> 共 67 行，内含的 13 个长度（a=38 … k=61.9，另 l=7.8、m=15）与公开流传的 Jansen “神圣数字”一致。V8 点火顺序 1-8-4-3-6-5-7-2 也写在 <code>kin.js</code>。</li>
-<li>⚠️ <strong>“真实数字”只核了自洽：</strong>201 mm / 32 齿 / 4 mm 模数在数学上互相吻合，但它们是否就是真实塞斯纳 337 起落架的设计参数，本站未找到手册核对，⚠️ 未核实。Skill 自己也要求“不确定是不是真实数字就说出来、给出处”。</li>
-<li>⚠️ <strong>“3,790,000 浏览的 V8 模拟器”</strong>没给链接，本站一次搜索未找到原帖，⚠️ 未核实。“野火工具 1,640,000” 对得上：Dilum Sanjaya 10-08 的帖子（“Made with Opus 5.5”）抓取时约 165.3 万浏览。</li>
+<li>⚠️ <strong>“真实数字”只核了自洽：</strong>201 mm / 32 齿 / 4 mm 模数在数学上互相吻合，但它们是否就是真实塞斯纳 337 起落架的设计参数，原文未给出与手册的对照 ⚠️。Skill 自己也要求“不确定是不是真实数字就说出来、给出处”。</li>
+<li>⚠️ <strong>“3,790,000 浏览的 V8 模拟器”</strong>文中没给链接，原帖出处不明 ⚠️。“野火工具 1,640,000” 对得上：Dilum Sanjaya 10-08 的帖子（“Made with Opus 5.5”）抓取时约 165.3 万浏览。</li>
 <li>⚠️ <strong>数量小冲突：</strong>文中先说“2 天做了 7 台”，结尾说“6 台都能在浏览器里免费玩”；visual-learning.app 目前列出 7 台模拟器（多了机器蜜蜂），⚠️ 推断是发文后补上的。</li>
-<li>⚠️ <strong>参数小冲突：</strong>长文第 8 步配乐提示词写“真峰值低于 −1 dB”，而 SKILL.md 写自动母带“真峰值 ≤ −2 dBFS”。两边都照录，以仓库实际代码为准（本站未运行音效引擎）。</li>
+<li>⚠️ <strong>参数小冲突：</strong>长文第 8 步配乐提示词写“真峰值低于 −1 dB”，而 SKILL.md 写自动母带“真峰值 ≤ −2 dBFS”。两边都照录，以仓库实际代码为准。</li>
 <li>⚠️ <strong>利益相关：</strong>长文末尾导流到作者自己的 visual-learning.app（页面署名“Made by @elvar_official”，有 Vercel 统计脚本）。Skill 免费开源，未见付费内容或推广标注。</li>
-<li>⚠️ <strong>性能与时长为作者自报：</strong>“六足机器人集成显卡 15 fps → 75 fps”“V8 影片 26 秒、189 个音效”“兔子页 15.9 MB → 967 KB 后链接卡片出现”等，本站均未复现。</li>
-<li>⚠️ <strong>未实测：</strong>受磁盘空间所限，本站只浅克隆了仓库并读了代码，<strong>没有</strong>执行 <code>npm install</code>、没有在 Claude Code 里驱动这个 Skill，也没有构建示例页或录视频。</li>
+<li>⚠️ <strong>性能与时长为作者自报：</strong>“六足机器人集成显卡 15 fps → 75 fps”“V8 影片 26 秒、189 个音效”“兔子页 15.9 MB → 967 KB 后链接卡片出现”等，均为作者自报。</li>
 <li>“Opus 5.5”是作者所写的模型名，照录。</li>
 </ul>
 <figure><img src="images/strandbeest.webp" alt="Strandbeest SB-10 模拟器：沙色背景上一台白色管材、红色关节的多腿风力行走机，顶部一排三角帆；左侧是规格表和“十一个神圣数字”连杆长度条形图，右侧是单腿连杆示意、风速 6.3 m/s 与曲轴 26.2 rpm 读数，底部是 20 条腿的触地时序图、曲轴相位盘和抬脚高度曲线" loading="lazy" width="960" height="540"><figcaption>Strandbeest SB-10（仓库 <code>docs/strandbeest.jpg</code>，MIT）。左侧“The eleven holy numbers”即 Jansen 的连杆长度，机位放在沿脊梁的 3/4 角度，避免 20 条腿正面看叠成一道栅栏。</figcaption></figure>

@@ -36,7 +36,7 @@
 <div class="related-guide"><strong>一句话：</strong>一个运行时只依赖 three.js 和 lil-gui（开发用 Vite）的开源海洋渲染器：在浏览器的 WebGL2 里，用四层 FFT 海浪、按真实水深推进的近岸破浪、会老化的泡沫、焦散、水下斯涅尔窗和会漂的木箱小船，拼出一座有日出日落的小岛。作者 Ian（GitHub @Humpalumps）与 Claude Opus 5.5 在一个晚上里提交完成，MIT 许可。</div>
 
 <p class="hero-tags"><span class="tag">★ 197</span> <span class="tag">28 forks</span> <span class="tag">JavaScript</span> <span class="tag">three.js 0.186 · WebGL2</span> <span class="tag">MIT</span> <span class="tag">12 个提交</span> <span class="tag">无在线 Demo</span></p>
-<p class="caption">数据通过公开 GitHub API 获取，时间 2026-10-29 17:57（UTC+8）。仓库建于 2026-10-29 00:27（UTC+8）；12 个提交集中在 2026-10-28 21:58 到 10-29 07:03（UTC+8）之间，<strong>每一个都带 <code>Co-Authored-By: Claude Opus 5.5</code></strong>。<code>src/</code> 共 23 个 JS 文件，约 4,500 行。仓库没有设置主页，也没有在线演示，下文截图是本站在本地跑起来后截的。</p>
+<p class="caption">数据截至 2026-10-29 17:57（UTC+8）。仓库建于 2026-10-29 00:27（UTC+8）；12 个提交集中在 2026-10-28 21:58 到 10-29 07:03（UTC+8）之间，<strong>每一个都带 <code>Co-Authored-By: Claude Opus 5.5</code></strong>。<code>src/</code> 共 23 个 JS 文件，约 4,500 行。仓库没有设置主页，也没有在线演示，下文截图是本站在本地跑起来后截的。</p>
 
 <figure><img src="images/cover.webp" alt="黄金时刻：太阳贴近海平线，金色光柱铺在起伏的海面上，近处浪面上闪着细碎的高光，远处是被夕照染暖的卷云" loading="lazy"><figcaption>默认镜头「Golden hour」，太阳高度角 3.5°。本站于 2026-10-29 在本地 <code>npm run dev</code> 后，用系统 Chrome 无头模式（SwiftShader 软件 WebGL2，无 GPU）打开 <code>?desktop</code>，隐藏性能面板与设置面板后截图，压缩为 WebP。</figcaption></figure>
 
@@ -111,12 +111,12 @@ npm run dev     # Vite 开发服务器，打开终端打印的 localhost 地址<
 <li>鼠标（或手指）环绕；右上角 <code>camera</code> 下拉切换七个镜头；Sun &amp; sky / Waves / Shore waves / Water / Floaters &amp; underwater / Post / Quality 七个文件夹可以调风速、风向、风区、涌浪、浪高、颜色预设、泡沫、焦散强度、分辨率、MSAA、反射等。</li>
 <li>左上角性能面板：<code>Uncap FPS</code> 让帧背靠背渲染，看机器上限；<code>Run benchmark</code> 暂停场景、渲染 300 帧并用 fence 计时到 GPU 完成。</li>
 <li>手机和平板会自动用轻量配置（分辨率 0.6、2× MSAA、反射 0.35、无泛光，加自动降分辨率）；URL 加 <code>?mobile</code> / <code>?desktop</code> 可强制切换。</li>
-<li>需要支持 WebGL2 的浏览器和像样的 GPU。本站在没有 GPU 的云主机上用软件渲染也能出画面，但约 9 秒一帧。</li>
+<li>需要支持 WebGL2 的浏览器和像样的 GPU。在无 GPU 的软件渲染环境下也能出画面，约 9 秒一帧。</li>
 </ul>
 
 <h2 id="perf">性能：作者自测</h2>
 <p>README 给的数字是：RTX 3060、Chrome（ANGLE/D3D11）、4× MSAA、全部特性开启、3.3 MP（1954×1692），七个镜头 3.30–4.80 ms/帧，约 208–303 fps；Breakers 镜头里水面 1.66 ms、不透明物体 1.21、后期 0.37、焦散 0.24、FFT 约 0.45。一加 Nord 4 竖屏 424×782 用手机配置，七个镜头都是 60 fps 不丢帧，不锁帧 95–142 fps。</p>
-<p>⚠️ <strong>这些都是作者自报，本站没有 GPU，无法复测。</strong>作者自己也写了几个保留：浪尖泡沫升级是在测量之后合入的，“还没有干净地重测”；早期 README 的数字因为同步方式错误低了 2–4 倍；手机数字受温度影响，是充电、温热状态下测的。仓库描述里的“200+ fps”指的是 RTX 3060、3.3 MP 这个条件。</p>
+<p>⚠️ <strong>这些都是作者自报。</strong>作者自己也写了几个保留：浪尖泡沫升级是在测量之后合入的，“还没有干净地重测”；早期 README 的数字因为同步方式错误低了 2–4 倍；手机数字受温度影响，是充电、温热状态下测的。仓库描述里的“200+ fps”指的是 RTX 3060、3.3 MP 这个条件。</p>
 
 <h2 id="limits">局限与注意</h2>
 <ul>
@@ -141,8 +141,8 @@ npm run dev     # Vite 开发服务器，打开终端打印的 localhost 地址<
 <li>✅ MIT 许可、三处第三方 MIT 代码、12 个提交均带 Claude Opus 5.5 共同作者、★197 / 28 forks（2026-10-29 17:57 UTC+8 公开 API）。</li>
 <li>✅ 代码里的关键参数与 README 一致：四个级联 600/85/12/2.1 m、N = 256、300 秒循环、σ/ρ = 7.4×10⁻⁵、默认风速 9 m/s、风区 120 km、六个颜色预设、七个镜头。</li>
 <li>✅ 本站实跑：<code>npm install</code> + <code>npm run dev</code> 可以启动，七个镜头里的六个已截图（Open ocean 未截），画面与 README 描述相符：黄金时刻光柱与闪光、破浪泡沫与水花、潟湖浅水色、航拍岛屿、漂浮物、水下焦散；水下光束在软件渲染截图里不明显。</li>
-<li>⚠️ 未核实：所有 fps / 毫秒数（RTX 3060 与一加 Nord 4）均为作者自报，本站无 GPU 无法复测；泡沫升级后的开销“未干净重测”是作者原话。</li>
-<li>⚠️ 未核实：“设计与另一个智能体争论”的过程没有公开记录。</li>
+<li>⚠️ 所有 fps / 毫秒数（RTX 3060 与一加 Nord 4）均为作者自报；泡沫升级后的开销“未干净重测”是作者原话。</li>
+<li>⚠️ “设计与另一个智能体争论”的过程没有公开记录。</li>
 <li>⚠️ 推断：“AAA foam”（提交说明用语）是作者自评，不是第三方评价。</li>
 <li>⚠️ 推断：项目是从更大的 “Gelatin” 引擎里剥出来的，迁移进其他 three.js 项目需要拆分改造。</li>
 </ul>
@@ -387,7 +387,7 @@ SOFTWARE.
 </main></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/Humpalumps/Ultra-Water" rel="noopener">Humpalumps/Ultra-Water</a>，作者 Ian（<a href="https://github.com/Humpalumps" rel="noopener">GitHub @Humpalumps</a>），MIT 许可，Copyright (c) 2026 Humpalumps。README 译文依 MIT 许可转载并保留版权与许可声明；第三方改编代码（three.js、Dave Hoskins、Sébastien Hillaire / Epic Games，均 MIT）见附录二。统计数据取自公开 GitHub API（2026-10-29 17:57 UTC+8）。截图为本站在本地运行该项目后自行截取（2026-10-29，软件渲染）。导读、原理讲解、核实与风险为本站整理；性能数字为作者自报，本站未复测。</p>
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/Humpalumps/Ultra-Water" rel="noopener">Humpalumps/Ultra-Water</a>，作者 Ian（<a href="https://github.com/Humpalumps" rel="noopener">GitHub @Humpalumps</a>），MIT 许可，Copyright (c) 2026 Humpalumps。README 译文依 MIT 许可转载并保留版权与许可声明；第三方改编代码（three.js、Dave Hoskins、Sébastien Hillaire / Epic Games，均 MIT）见附录二。统计截至 2026-10-29 17:57 UTC+8。截图为本站在本地运行该项目后自行截取（2026-10-29，软件渲染）。导读、原理讲解、核实与风险为本站整理；性能数字为作者自报。</p>
 <p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/Humpalumps/Ultra-Water" rel="noopener">github.com/Humpalumps/Ultra-Water</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>

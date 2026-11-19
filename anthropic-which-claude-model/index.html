@@ -30,7 +30,7 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><p>这篇 Playbooks 要回答的是一个很具体的问题：在 Claude 平台或 Claude Code 里做日常开发，该从哪一个模型起步，又该在什么时候换。当前一般可用的四个模型是 Claude Haiku 5.5、Claude Sonnet 5.5、Claude Opus 5.5 和 Claude Fable 5.2。另有一个 Claude Mythos 5.2，原文称它是网络安全与生命科学研究上「最强」的模型，但只通过验证项目提供，不在这篇的日常选型里。</p>
 
-<p>原文配了几段演示视频：用四个模型把同一张巷子照片写成绘画程序、并排搭同一个作品集站点、用 Fable 5.2 把一个场景画成十六种渲染风格，以及四个模型同时改一家网店。演示分别署名 Lance Martin、Addy Osmani、Dan Fein。按版权条款与本站惯例，这些视频和原图都没有下载或转载。</p>
+<p>原文配了几段演示视频：用四个模型把同一张巷子照片写成绘画程序、并排搭同一个作品集站点、用 Fable 5.2 把一个场景画成十六种渲染风格，以及四个模型同时改一家网店。演示分别署名 Lance Martin、Addy Osmani、Dan Fein。这些视频和原图都没有转载。</p>
 
 <h2>先记住的结论</h2>
 <p>作者给的快答是：多数工作从 Opus 5.5、默认的 <code>medium</code> effort 开始。原文原句是：</p>
@@ -102,7 +102,7 @@
 
 <h3>延迟对准确</h3>
 <p>更快的配置更早结束，也可能错过更多。人选模型和 effort 之前，先想清楚人能等多久。等人看着的回复，从 Sonnet 5.5 的 <code>low</code> 或 <code>medium</code> 起。</p>
-<p>原文称新生代往往比前辈更快：Fable 5.2 的输出速度最多比 Fable 5.1 快 30%；Sonnet 5.5 比 Sonnet 5 快 30%。⚠️ 厂商自报，未独立测速。</p>
+<p>原文称新生代往往比前辈更快：Fable 5.2 的输出速度最多比 Fable 5.1 快 30%；Sonnet 5.5 比 Sonnet 5 快 30%。⚠️ 厂商自报。</p>
 <p>effort 与延迟大致同向。要以多出来的准确，值不值得多等那一段时间。原文在 SWE-bench Pro 上的对照（⚠️ 自报）：Opus 5.5 的 <code>medium</code> 比 <code>high</code> 大约低 2.5 分，成本约是其 70%；<code>low</code> 大约低 8 分，成本约是三分之一；<code>xhigh</code> 大约高 1.4 分，成本是 <code>high</code> 的 2.5 倍。</p>
 <p>作者更看重的一步是：先给模型一种自我核验的办法（测试、构建，或调用接口的脚本），这往往比改 effort 更省钱、也少增延迟。模型不够用时，按这个顺序试：先确认它能核验自己的工作；再把 effort 升一档；再换更大的模型，并且从比刚才更低的 effort 起测。</p>
 <p>如果结果可以自动检查，就先全部用低档跑，只把失败的再用高档重跑。同一份 SWE-bench Pro 子集上，Opus 5.5 以 <code>low</code> 起步、失败项再以 <code>high</code> 重跑，约通过 97%，每项约 $0.17；全部直接 <code>high</code> 则是 95.3%、每项约 $0.29。⚠️ 自报。</p>
@@ -139,10 +139,10 @@ Read the logs you're given. For each failure, report the file, the test name and
 <h3>把难题交给顾问</h3>
 <p><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool">advisor tool</a>（beta）让一个更快、更便宜的执行模型，在中途向更强的顾问模型请教。大部分 token 按执行模型计费。顾问只在执行模型缺某种能力、并且主动来问的时候才出手；effort 低时，请教也会更少。</p>
 <p>可能划算的场景：大多数回合都例行公事的智能体工作。平台的成本指南本身很谨慎：其顾问表里的四种配对，没有一种明显优于执行模型单干；顾问只有在被请教时才帮得上忙。先测量执行模型的请教率，并核对它接受哪些顾问。举例：Sonnet 5.5 执行模型可以请教 Fable 5.2、Opus 5.5、Opus 5 和 Sonnet 5.5；Fable 5.2 执行模型只接受 Fable 5.2 或 Mythos 5.2。</p>
-<p>帮助有限的例子：内部编码基准上，Opus 5.5 执行模型开 <code>high</code>、配 Fable 5.1 顾问，得分 90.1%，每次尝试 $2.92。这比 Opus 5.5 单独开 <code>high</code> 高 1.7 分，花费大约是 2.1 倍。作者认为这点增益已接近多次运行之间的噪声，也大约相当于只把 effort 再升一档能买到的东西。⚠️ 内部评测，未复现。</p>
+<p>帮助有限的例子：内部编码基准上，Opus 5.5 执行模型开 <code>high</code>、配 Fable 5.1 顾问，得分 90.1%，每次尝试 $2.92。这比 Opus 5.5 单独开 <code>high</code> 高 1.7 分，花费大约是 2.1 倍。作者认为这点增益已接近多次运行之间的噪声，也大约相当于只把 effort 再升一档能买到的东西。⚠️ 内部评测，均为原文自报。</p>
 
 <h3>把大宗工作交给更便宜的工人</h3>
-<p>上面的子智能体，是在主模型保住一条主线的同时处理边角。下面这种模式针对的是大过单个上下文窗口的工作：由顶层模型牵头，把任务拆开，并行交给许多更便宜的工人，再把结果合并回来。原文称，在一份覆盖约 2200 万 token 源代码的内部缺陷搜索基准上，以 Opus 5.5 带领最多 25 个并行的 Sonnet 5.5 工人，成本大约比单独用默认 effort 的 Opus 5.5 低三分之一，得分大致相当。⚠️ 内部评测，未复现。</p>
+<p>上面的子智能体，是在主模型保住一条主线的同时处理边角。下面这种模式针对的是大过单个上下文窗口的工作：由顶层模型牵头，把任务拆开，并行交给许多更便宜的工人，再把结果合并回来。原文称，在一份覆盖约 2200 万 token 源代码的内部缺陷搜索基准上，以 Opus 5.5 带领最多 25 个并行的 Sonnet 5.5 工人，成本大约比单独用默认 effort 的 Opus 5.5 低三分之一，得分大致相当。⚠️ 内部评测，均为原文自报。</p>
 <p>在 Claude 平台上，Claude Managed Agents 的 <a href="https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration">multiagent orchestration</a> 提供协调者与一组工人。一条必须依次依赖的步骤链，或本来就装得进一个上下文窗口的工作，不必用它——这时规划和合并的开销会高于节省。何时该把子智能体折回主循环，见 <a href="https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop">When to fold subagents into your main agent loop</a>。</p>
 
 <h2>迁移前先看兼容性</h2>

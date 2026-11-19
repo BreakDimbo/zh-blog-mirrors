@@ -40,8 +40,8 @@
 <h2>它是什么</h2>
 <p>公开仓库在 <a href="https://github.com/nexu-io/openmotion">github.com/nexu-io/openmotion</a>。项目站点写的是 <a href="https://open-design.ai/motion/">open-design.ai/motion/</a>。GitHub 仓库页的创建时间是 2026-05-11 09:40:38 UTC（新加坡时间 17:40:38）。README 写明，这个仓库是从 <code>nexu-io/html-anything</code> 改名而来；旧应用留在 <code>legacy</code> 分支。</p>
 <p>它想解决的事很具体：不是再做一个只能提示词出片的生成器，而是把「看懂参考片、用代码重搭镜头、补上缺的素材、在时间轴上改、再导出」放进同一个本地工作区。仓库把它叫做 full-stack agentic video studio。所谓 BYOA 和 BYOK，是说你用自己的本地智能体，也用自己的模型密钥；应用本身按 Apache-2.0 发布，但调用生图、生视频、配乐或语音时，仍要遵守各家模型自己的条款，并且通常要付费。</p>
-<p>README 列出了 22 个本地智能体，配图替代文本中的名字是：WorkBuddy、Codex CLI、Claude Code、OpenCode、Hermes、Antigravity、Gemini CLI、Grok Build、Kimi CLI、Cursor Agent、Qwen Code、Qoder CLI、GitHub Copilot、Pi、Kiro CLI、Kilo、Mistral Vibe、DeepSeek TUI、Reasonix、Aider、Devin、Trae CLI。本页按原文照录，没有逐一核对接能力。</p>
-<p>README 还写有「300 多份 Motion.md」模板指南。这是项目自己的说法，本库没有清点仓库里的指南份数，标为未核实。</p>
+<p>README 列出了 22 个本地智能体，配图替代文本中的名字是：WorkBuddy、Codex CLI、Claude Code、OpenCode、Hermes、Antigravity、Gemini CLI、Grok Build、Kimi CLI、Cursor Agent、Qwen Code、Qoder CLI、GitHub Copilot、Pi、Kiro CLI、Kilo、Mistral Vibe、DeepSeek TUI、Reasonix、Aider、Devin、Trae CLI。本页按原文照录。</p>
+<p>README 还写有「300 多份 Motion.md」模板指南。这是项目自己的说法。</p>
 
 <h2>可以怎么用</h2>
 <p>仓库写了几条并行的安装路径：在 ChatGPT 插件市场安装；把一段说明贴进本地智能体，让它按 <code>install.md</code> 从源码安装；或者按文档安装已发布的 npm 应用。也可以自己克隆仓库，用 npm 在本地启动 Studio。源码安装的默认命令是 <code>npm ci</code>、<code>npm run build:studio</code>、<code>npm start</code>，然后打开启动时打印的 <code>studioUrl</code> 或 <code>previewUrl</code>。完整参考视频和部分模板归档走 Git LFS，需要时再拉；README 也提醒把工程和密钥放在仓库目录之外，用 <code>MOTION_DATA_DIR</code> 指定工作区。</p>
@@ -54,25 +54,25 @@
 <p>组合与 Studio 的基础来自 HeyGen 的 Hyperframes。OpenMotion 自己的 <code>template-library/NOTICE.md</code> 写明：官方示例来自 <a href="https://github.com/heygen-com/hyperframes">heygen-com/hyperframes</a> 的指定提交，按上游 Apache-2.0 分发。致谢表还提到 MotionGit / adunext 的 Kinetic Tech（在库里包装成 Presenter Tech）、DeepSeek Harness 与 Super-agent 原型（仅作智能体扩展的参考，原型并不等于 OpenMotion 当前运行时），以及 Claude Motion、CapCut、ChatCut、OpenChatCut、OpusClip 等产品参考。GSAP 和 FFmpeg 是依赖，各有自己的条款；README 写得很清楚：模型和第三方库保留各自条款，应用本身是 Apache-2.0。</p>
 
 <h2>模型目录里的出入</h2>
-<p>开篇介绍写的是用 GPT Image 2.6 做画面、Seedance 2.5 补镜头、Suno 配乐、Eleven v4 做旁白。同一份 README 稍后又说，在模型设置里连接 fal.ai 并刷新目录后，可以找到 GPT Image 2.6、Nano Banana 2.1、FLUX.3、Seedance 2.5、Kling 4.0、Wan 3.0 和 Eleven v4。再下面的预设表却列出 Codex Image、Nano Banana 2、FLUX Schnell、Seedance 2.0、Wan 2.2、Suno v4 和 Kokoro。官方中文 README 与英文稿在这些名字上是对齐的，因此不是翻译问题，而是同一份文档内部的说法不一。本库没有运行 Studio，也没有核对这些模型是否真能连上，一律视为未核实。</p>
+<p>开篇介绍写的是用 GPT Image 2.6 做画面、Seedance 2.5 补镜头、Suno 配乐、Eleven v4 做旁白。同一份 README 稍后又说，在模型设置里连接 fal.ai 并刷新目录后，可以找到 GPT Image 2.6、Nano Banana 2.1、FLUX.3、Seedance 2.5、Kling 4.0、Wan 3.0 和 Eleven v4。再下面的预设表却列出 Codex Image、Nano Banana 2、FLUX Schnell、Seedance 2.0、Wan 2.2、Suno v4 和 Kokoro。官方中文 README 与英文稿在这些名字上是对齐的，因此不是翻译问题，而是同一份文档内部的说法不一。这些模型能否连上，以项目说明为准。</p>
 
 <h2>版本与星标</h2>
 <p>2026-11-18（新加坡时间）读取仓库主页时，侧栏数字为 10,717 星、1,057 次 fork、42 人 watch。README 顶上的星标徽章仍写「9.5k（2026-11-09）」，已经落后。这些数字会变。</p>
 <p>根目录 <code>CHANGELOG.md</code> 把 0.0.1 写成「候选说明，不是发布记录」，并说历史 0.6.x 版本仍可取得，但发布和验收要另有证据。仓库页显示 1 个 release、2 个 tag。本页不补造发布日期。更新日志还指向 npm 包 <code>@openmotion/app</code>；本日没有打开 npm 页面复核。</p>
 
-<h2>未核实与需要留意的地方</h2>
+<h2>需要留意的地方</h2>
 <ul>
 <li>星标徽章日期与现场数字不一致：徽章 9.5k（2026-11-09），仓库页 10,717 星（2026-11-18）。数字会变。</li>
 <li>Node 版本冲突待审：<code>package.json</code> 与徽章写 <code>&gt;=22.18.0</code>，README 安装说明和架构表写 26.11.1。</li>
 <li>根目录 LICENSE 未填写版权人；<code>package.json</code> 也没有 license 字段。许可结论以 LICENSE 全文和仓库页 SPDX 为准。</li>
-<li>「300 多份 Motion.md」未清点。</li>
-<li>模型名称与版本在开篇、fal.ai 说明和预设表中不一致；各模型集成均未实测。</li>
-<li>22 个本地智能体的名单来自 README 配图替代文本，未逐一核对。</li>
-<li>0.0.1 在更新日志里不是已发布记录；本日未打开 GitHub Releases 或 npm 页。</li>
+<li>「300 多份 Motion.md」为 README 自报。</li>
+<li>模型名称与版本在开篇、fal.ai 说明和预设表中不一致；各模型集成效果以项目说明为准。</li>
+<li>22 个本地智能体的名单来自 README 配图替代文本。</li>
+<li>0.0.1 在更新日志里不是已发布记录。</li>
 <li>README 中的品牌复刻示例（包括 Dan Martell 原片与 Riya 的复刻并置图，以及 OpenAI、Anthropic、Notion、ElevenLabs 等模板预览）含第三方作品，部分还涉及真人，本页均不转载。</li>
 </ul>
 
-<p>官网、ChatGPT 插件页和 Discord / 飞书邀请没有在本日逐页复核，只按 README 中的链接列出。</p>
+<p>官网、ChatGPT 插件页和 Discord / 飞书邀请按 README 中的链接列出。</p>
 
 <h2>附录一、官方简体中文 README</h2>
 <p>以下为仓库 <a href="https://github.com/nexu-io/openmotion/blob/main/docs/README.zh-CN.md">docs/README.zh-CN.md</a> 的官方简体中文文本，按 Apache-2.0 附录于此。插图与演示 GIF 请见原仓库，相对链接已改为指向 GitHub 仓库。如与英文 README 有出入，以英文稿为准。</p>

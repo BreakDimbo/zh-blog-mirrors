@@ -37,7 +37,7 @@
 <h2>一、它是什么</h2>
 <p>仓库自述：这是一部由 Claude Code（Opus 5.5）写 Python、驱动无头 Blender 5.2，在一台集成显卡笔记本（AMD Radeon 780M）上做出来的电影感短片。作者在 README 里把故事串成一条不断「逃逸」的梦：黑暗里亮起的微距齿轮，六辐齿轮对切成跑车轮毂，超跑在黑色影棚里按节拍自行装配，影棚碎成黄昏峡谷，汽车一路疾驰（跟拍、后视镜、漂移、俯拍、从镜头上方轧过、一线天峡谷追逐），扬尘化成云海，露出一座钟表神庙，最后一帧对切成书桌上的照片，镜头低伏掠过桌面，再潜入怀表，落到标题。</p>
 <p>生产圣经 <code>BRIEF.md</code> 把标题写得很清楚：擒纵机构是「让时间一拍一拍往前走的心脏」。它也写明：片中没有真人；构图为 2.39:1 的中间带宽（剪辑时加黑边），但完整的 16:9 也要站得住。</p>
-<p>公开的镜头表 <code>shotlist.json</code> 按 24 帧/秒列出 30 个镜头。后来作者把云层揭示（4A）和两段神庙特写（4D、4E）从成片里剪掉了——更好的云在这块集成显卡上会把 GPU 卡死。X 上那支视频时长约 36.5 秒，与 README 所说的「36 秒」相符。镜头表把后来被剪掉的镜头也算进去，总长约 45 秒；声音时间线里的终点约 41 秒。本站没有重新剪片子去对账，只能同时记下这几组数字。</p>
+<p>公开的镜头表 <code>shotlist.json</code> 按 24 帧/秒列出 30 个镜头。后来作者把云层揭示（4A）和两段神庙特写（4D、4E）从成片里剪掉了——更好的云在这块集成显卡上会把 GPU 卡死。X 上那支视频时长约 36.5 秒，与 README 所说的「36 秒」相符。镜头表把后来被剪掉的镜头也算进去，总长约 45 秒；声音时间线里的终点约 41 秒。文中同时记下这几组数字，未见逐镜对账说明。</p>
 
 <figure>
 <img src="images/contact_sheet.webp" alt="整部短片的接触印样：从上到下依次是微距齿轮、跑车装配、黄昏峡谷追逐、云海与钟表神庙、书桌上的神庙照片与怀表，最后是 ESCAPEMENT 标题" width="1600" height="1200">
@@ -66,7 +66,7 @@
 <figcaption>片名字幕（<code>docs/still_10.jpg</code>）</figcaption>
 </figure>
 </div>
-<p class="caption">以上静帧均来自作者仓库 <code>docs/</code>，依 MIT 许可转载、缩小并转为 WebP。成片视频未下载、未转载；可在 <a href="https://github.com/Leonxlnx/escapement/releases/latest">GitHub Releases</a> 或 <a href="https://x.com/LexnLin/status/2119558994352304202">原帖</a> 观看。</p>
+<p class="caption">以上静帧均来自作者仓库 <code>docs/</code>，依 MIT 许可转载、缩小并转为 WebP。成片视频未转载；可在 <a href="https://github.com/Leonxlnx/escapement/releases/latest">GitHub Releases</a> 或 <a href="https://x.com/LexnLin/status/2119558994352304202">原帖</a> 观看。</p>
 
 <h2>二、它是怎么做出来的</h2>
 <p>作者在介绍帖里先写「每一帧都是 Python，没有用任何三维资产」，第二天自己更正了措辞：Python 负责搭出每一场戏，没有人打开过 Blender 的图形界面；真正渲染的是 EEVEE。仍然没有使用现成的模型或纹理。这个更正很重要，本页以更正后的说法为准。</p>
@@ -85,10 +85,10 @@
 <ul>
 <li>仓库创建于 2026-11-08T22:29:13Z（新加坡时间 2026-11-09 06:29:13），介绍主帖在约四分钟后发出。2026-11-10 读取 GitHub 仓库公开页时为 94 星、11 个 fork，有 1 个 Release（提供 1080p 成片和一版更小的手机拷贝）。这些数字会变。</li>
 <li>主帖发出时（本站 2026-11-10 上午读取）约 11.5 万次浏览、2,340 次喜欢、1,718 次收藏。互动数字同样会变。</li>
-<li>作者说：Opus 5.5 的「xhigh ultracode」，一条提示词，再加一点轻微把控；被问到把控几次时，回答「大约 5 次」。仓库里的圣经却留下多条制作中途补上的客户规则（效果要看起来真实、千万不要过亮、还要再加疯狂的驾驶镜头），分幕日志里也能看到多轮返工。本站把「一条提示词」理解为作者对自己起点的概括，并不等于中途没有改过要求。⚠️「xhigh ultracode」具体对应哪一档官方设置，未独立核实。</li>
-<li>被问到渲染多久时，作者说：在 2GB 的集成显卡上，「我想大概 3 小时」。这是他的估计。日志里能看到单帧大约十几到三十秒的记录，但本站没有重跑渲染去核对总时长。⚠️</li>
+<li>作者说：Opus 5.5 的「xhigh ultracode」，一条提示词，再加一点轻微把控；被问到把控几次时，回答「大约 5 次」。仓库里的圣经却留下多条制作中途补上的客户规则（效果要看起来真实、千万不要过亮、还要再加疯狂的驾驶镜头），分幕日志里也能看到多轮返工。本站把「一条提示词」理解为作者对自己起点的概括，并不等于中途没有改过要求。⚠️「xhigh ultracode」具体对应哪一档官方设置，原文未说明。</li>
+<li>被问到渲染多久时，作者说：在 2GB 的集成显卡上，「我想大概 3 小时」。这是他的估计。日志里能看到单帧大约十几到三十秒的记录，总时长未见单独的重跑核对说明。⚠️</li>
 <li>README 的再现步骤要求 Windows、Blender 5.2，以及 PATH 上的 ffmpeg，并用 Blender 自带的 Python（已含 numpy）。本站在 Linux 环境，没有安装或运行这条管线。⚠️</li>
-<li>音效许可要分开看。原帖写「Mixkit + Freesound CC0」；README 写明音乐是 Grigoriy Nuzhny 的 <cite>Epical Drums 02</cite>（Mixkit 库存音乐免费许可），音效来自 Mixkit 与 Freesound CC0，且 Mixkit 不允许把这些声音当作独立文件再分发，所以音频不在仓库里。仓库中的 <code>audio/manifest.json</code> 统计为：Mixkit 音效 103、CC0 48、numpy 合成 13、派生 3、Mixkit 音乐 3。圣经里有一条客户规则是「只用下载来的免费素材，绝不自己合成音效或音乐」，与清单里的 13 条 numpy 合成存在出入。⚠️ 本站未去 Mixkit 或 Freesound 逐条打开源页面复核。</li>
+<li>音效许可要分开看。原帖写「Mixkit + Freesound CC0」；README 写明音乐是 Grigoriy Nuzhny 的 <cite>Epical Drums 02</cite>（Mixkit 库存音乐免费许可），音效来自 Mixkit 与 Freesound CC0，且 Mixkit 不允许把这些声音当作独立文件再分发，所以音频不在仓库里。仓库中的 <code>audio/manifest.json</code> 统计为：Mixkit 音效 103、CC0 48、numpy 合成 13、派生 3、Mixkit 音乐 3。圣经里有一条客户规则是「只用下载来的免费素材，绝不自己合成音效或音乐」，与清单里的 13 条 numpy 合成存在出入。⚠️ 各条素材许可以 Mixkit 或 Freesound 源页为准。</li>
 </ul>
 
 <h2>四、许可</h2>

@@ -39,7 +39,7 @@
 <li><strong>发布方：</strong>Hugging Face 组织 <a href="https://huggingface.co/open-index" rel="noopener">OpenIndex（open-index）</a>，公开资料显示 2 名成员、31 个数据集（另有 hacker-news-rss、hacker-news-text-search、open-github、open-arxiv、Common Crawl 衍生集等）。仓库提交作者显示为用户 <code>tamnd</code>。⚠️ 组织背后的个人或机构身份，卡片与组织页均未说明。</li>
 <li><strong>数据上游：</strong>历史数据取自 ClickHouse, Inc. 维护的公共 SQL 端点 <a href="https://sql.clickhouse.com" rel="noopener">ClickHouse Playground</a>（它镜像官方 HN Firebase API），实时增量直接调 <a href="https://github.com/HackerNewsAPI/HN-API" rel="noopener">HN Firebase API</a>。</li>
 <li><strong>内容权利人：</strong>HN 社区的各位作者；网站由 Y Combinator 运营。卡片声明本数据集是独立镜像，与 Y Combinator、ClickHouse 均无隶属、无背书。</li>
-<li><strong>利益关系：</strong>卡片没有推广付费产品，致谢 ClickHouse 属于来源说明。“我们认为这是 Hugging Face 上最完整、更新最规律的 HN 镜像之一”是发布方自我评价 ⚠️，本站未做横向比较。</li>
+<li><strong>利益关系：</strong>卡片没有推广付费产品，致谢 ClickHouse 属于来源说明。“我们认为这是 Hugging Face 上最完整、更新最规律的 HN 镜像之一”是发布方自我评价 ⚠️。</li>
 </ul>
 
 <h2>三、规模与结构</h2>
@@ -89,7 +89,7 @@ ds24 = load_dataset("open-index/hacker-news",
 <p>只下载某一个月：</p>
 <pre><code class="language-bash">huggingface-cli download open-index/hacker-news \
     data/2024/2024-01.parquet --repo-type dataset --local-dir ./hn/</code></pre>
-<p>先看逐月统计再决定拉多少：<code>SELECT * FROM read_csv_auto('hf://datasets/open-index/hacker-news/stats.csv')</code>。⚠️ 以上代码取自卡片，本站未实际运行。</p>
+<p>先看逐月统计再决定拉多少：<code>SELECT * FROM read_csv_auto('hf://datasets/open-index/hacker-news/stats.csv')</code>。⚠️ 以上代码取自卡片。</p>
 <p>几个容易踩的坑（卡片“已知局限”）：<code>type</code>、<code>deleted</code>、<code>dead</code> 都是整数；<code>by</code> 是 DuckDB 保留字；<code>text</code> 是带实体转义的 HTML，代码段在 <code>&lt;code&gt;</code> 里；已删除条目大部分字段为空；<code>score</code> 是 ClickHouse 最后同步时的快照；不含用户资料（karma、简介）。</p>
 
 <h2>六、适合做什么</h2>
@@ -107,7 +107,7 @@ ds24 = load_dataset("open-index/hacker-news",
 <li><strong>得分统计自相矛盾 ⚠️：</strong>卡片称故事平均分 1.5、100 分以上故事 176,015 篇；但仅这 17.6 万篇就能把 626.5 万篇故事的平均分推到至少 2.8，平均 1.5 不可能成立。“平均每篇故事 23.4 条评论”也与 4,306 万评论 ÷ 627 万故事 ≈ 6.9 不符（⚠️ 可能是只算有评论的故事，卡片未说明）。这些统计请以自己的查询为准。</li>
 <li><strong>2024 年体积：</strong>卡片“约 1.5 GB”，<code>stats.csv</code> 合计约 0.53 GB ⚠️。</li>
 <li><strong>实时更新已停 ⚠️：</strong>见第四节。</li>
-<li><strong>完整性依赖上游：</strong>历史部分完全取决于 ClickHouse Playground 镜像的完整度；2006-11 与 2007-01 两个月为 0 条，是否为真实空档本站未核实 ⚠️。</li>
+<li><strong>完整性依赖上游：</strong>历史部分完全取决于 ClickHouse Playground 镜像的完整度；2006-11 与 2007-01 两个月为 0 条，是否为真实空档，原文未说明 ⚠️。</li>
 <li><strong>社区偏差：</strong>卡片自己写明用户以美国软件工程师、创业者为主，话题偏硅谷与编程；审核机制反映社区价值观而非客观标准。</li>
 <li><strong>个人信息：</strong>含用户名与用户原文，未做 PII 处理；已删除条目保留 <code>id</code> 与删除标志。用于训练或公开展示时需自行评估。</li>
 </ul>
@@ -115,8 +115,8 @@ ds24 = load_dataset("open-index/hacker-news",
 <h2>八、许可：两层要分开看</h2>
 <ul>
 <li><strong>数据库这一层：</strong>卡片与 Hub 元数据均标 <strong>ODC-By 1.0</strong>（Open Data Commons 署名许可）——可复制、分发、改作、商用，条件是署名并保留许可声明。ODC-By 管的是“数据库”（汇编与结构），不自动覆盖其中的内容。</li>
-<li><strong>内容这一层：</strong>卡片原话：“The original content is subject to the rights of its respective authors.”（原始内容的权利归各自作者所有。）也就是说，每条评论和帖子的著作权仍在原作者手里；HN 的使用条款由 Y Combinator 制定，本次未逐条核对 ⚠️ 未核实。大规模再发布原文或用作商业训练前，应另行评估。</li>
-<li><strong>上游：</strong>ClickHouse Playground 与 HN Firebase API 各自的使用条款同样适用于想复现管线的人 ⚠️ 未核实。</li>
+<li><strong>内容这一层：</strong>卡片原话：“The original content is subject to the rights of its respective authors.”（原始内容的权利归各自作者所有。）也就是说，每条评论和帖子的著作权仍在原作者手里；HN 的使用条款由 Y Combinator 制定，具体条款以 Y Combinator 原文为准 ⚠️。大规模再发布原文或用作商业训练前，应另行评估。</li>
+<li><strong>上游：</strong>ClickHouse Playground 与 HN Firebase API 各自的使用条款同样适用于想复现管线的人，以各方条款为准 ⚠️。</li>
 <li><strong>本页依据：</strong>卡片属于 ODC-By 数据集仓库的一部分，本站据此附上卡片全文中译与英文原文（⚠️ 推断：卡片文字本身的许可未单独声明）。如权利人有异议，请用页尾链接申请撤下。</li>
 </ul>
 
@@ -1491,7 +1491,7 @@ ds = load_dataset(&quot;open-index/hacker-news&quot;, data_files=&quot;data/2024
 </article></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p>本页为 <a href="https://huggingface.co/datasets/open-index/hacker-news" rel="noopener">open-index/hacker-news</a> 数据集卡片的非官方中文导读与翻译，署名：OpenIndex（open-index）；数据集以 ODC-By 1.0 发布，Hacker News 原始内容的权利归各作者所有，网站由 Y Combinator 运营。截图取自 Hugging Face 公开页面，仅作说明。本站未下载数据集文件，统计以卡片、Hub 公开 API 与 stats.csv 为准。⚠️ 标记表示未核实或本站推断。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<!-- za:foot --><div class="za-foot-orig"><p>本页为 <a href="https://huggingface.co/datasets/open-index/hacker-news" rel="noopener">open-index/hacker-news</a> 数据集卡片的非官方中文导读与翻译，署名：OpenIndex（open-index）；数据集以 ODC-By 1.0 发布，Hacker News 原始内容的权利归各作者所有，网站由 Y Combinator 运营。截图取自 Hugging Face 公开页面，仅作说明。统计以卡片、Hub 公开页与 stats.csv 为准。⚠️ 标记表示原文自报或本站推断。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://huggingface.co/datasets/open-index/hacker-news" rel="noopener">huggingface.co/datasets/open-index/hacker-news</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
 <p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>

@@ -39,7 +39,7 @@
 
 <h2 id="update">2026-11-10 复查：从五期到十九部短片</h2>
 <p>与 10 月那一版相比，变化主要在规模和管线，而不是定位。画廊目录 <code>gallery/data/works.json</code> 在此次核对时共有 <strong>19</strong> 条已发布作品：<strong>17 种设计风格</strong>加<strong>2 种布局</strong>。最早一条仍是 2026-10-20 的包豪斯；最晚一条是 2026-11-09 23:19（新加坡时间）写入的「水墨」。时长不再一律是 15 秒、900 帧：根 README 开篇已改成「15—20 秒动效短片」，规格表同时写了 30 / 60fps。已上线的短片里，波普、字符画、生成艺术、液态金属是 18 秒，点云 19.5 秒，水墨 18.75 秒，新粗野主义、装饰艺术、液态玻璃、微缩景观、低多边形是 20 秒。</p>
-<p>制作路径也分开了。早期仍是 Remotion（根目录依赖现为 4.0.538）加 numpy 合成配乐。液态玻璃用到 WebGL；微缩景观在目录数据里标明 <code>videoDir: video3d</code>，标签里有 three.js；字符画与生成艺术的渲染脚本是各期目录下的 <code>video/make.sh</code>，不再走统一的 <code>npm run render:00x</code>。本地运行说明现要求 Node.js 22.12+（旧导读写的是 18+），安装改为 <code>npm ci</code>，并提到浏览器解压安全补丁与 <code>docs/SECURITY.md</code>。本站没有在本地跑渲染或画廊，这些只是对文档的转述。</p>
+<p>制作路径也分开了。早期仍是 Remotion（根目录依赖现为 4.0.538）加 numpy 合成配乐。液态玻璃用到 WebGL；微缩景观在目录数据里标明 <code>videoDir: video3d</code>，标签里有 three.js；字符画与生成艺术的渲染脚本是各期目录下的 <code>video/make.sh</code>，不再走统一的 <code>npm run render:00x</code>。本地运行说明现要求 Node.js 22.12+（旧导读写的是 18+），安装改为 <code>npm ci</code>，并提到浏览器解压安全补丁与 <code>docs/SECURITY.md</code>。这些只是对文档的转述。</p>
 <p>根 README 的风格目录表没有跟上画廊。表里写到了 021 生成艺术，却没有点云、液态金属和水墨；「计划中」仍列着装饰艺术、新粗野主义、Y2K，而这三样里前两样已经发布，Y2K 则是另一种状态。判断「现在有哪几期」，这次以 <code>works.json</code> 为准，README 目录只作对照。</p>
 <p>还有两期写了指南、但没有进入画廊。006 千禧未来主义（Y2K）的风格 README 链到 Release <code>day-06</code>，根 README 却写「视频待补齐，暂未上线」；我们打开该 Release 页，得到 404。015 未来主义（1909—1944）的 README 写「成片审过后发布」，<code>day-15</code> 同样是 404，<code>package.json</code> 里已有对应渲染脚本。两者都未计入上面的 19 部。</p>
 <p>公开仓库页 HTML 里嵌入的 <code>stargazerCount</code>，在 2026-11-10（新加坡时间）读到 <strong>210</strong>；2026-10-23 的笔记是 83。⚠️ 星数会变。仓库创建时间仍为 2026-10-20 12:27（新加坡时间）。</p>
@@ -58,7 +58,7 @@
 </ul>
 
 <h2 id="catalog">画廊现在有哪几期</h2>
-<p>下表按 <code>works.json</code> 的记录整理，期号用仓库目录名，避免和画廊里的显示序号混淆——例如孔版印刷的目录是 008，画廊序号却是 006。成片都在 GitHub Releases，本页只给标签链接，不下载视频。时长来自根 README 画廊预览或目录简介，未逐帧测量 ⚠️。</p>
+<p>下表按 <code>works.json</code> 的记录整理，期号用仓库目录名，避免和画廊里的显示序号混淆——例如孔版印刷的目录是 008，画廊序号却是 006。成片都在 GitHub Releases，本页只给标签链接，不转载视频。时长来自根 README 画廊预览或目录简介 ⚠️。</p>
 <div class="table-wrap"><table>
 <thead><tr><th>目录</th><th>名称</th><th>年代（条目所写）</th><th>时长</th><th>Release</th></tr></thead>
 <tbody>
@@ -82,9 +82,9 @@
 <tr><td>L01</td><td>便当盒布局 Bento Grid</td><td>2020s—</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/layout-01">layout-01</a></td></tr>
 <tr><td>L02</td><td>瀑布流布局 Masonry</td><td>2009—</td><td>15 秒</td><td><a href="https://github.com/guanmo-ai/design-style/releases/tag/layout-02">layout-02</a></td></tr>
 </tbody></table></div>
-<p>后三期的「年代」在目录里写成 2026，更像条目写入年，而不是风格本身的历史区间，表中已标出。点云一条的简介还写「80 万个点构成文字、兔子、街道与盆景」，这是目录自述，本站未数点 ⚠️。</p>
+<p>后三期的「年代」在目录里写成 2026，更像条目写入年，而不是风格本身的历史区间，表中已标出。点云一条的简介还写「80 万个点构成文字、兔子、街道与盆景」，这是目录自述 ⚠️。</p>
 <p>未进画廊、但仓库里已有指南的两期：<strong>006 千禧未来主义 Y2K</strong>（1997—2004），根 README 标明视频待补；风格 README 的 Release 链接在此次核对中打不开。<strong>015 未来主义 Futurism</strong>（1909—1944），一句话是「动的东西，留下它刚才的样子」；成片尚未发布。日式极简等，根 README 仍写在「计划中」，顺序可能调整。</p>
-<p>下面五张图是 2026-10-23 导读里用过的早期封面，便于对照当时的规模。本次没有为后来各期另配图。</p>
+<p>下面五张图是 2026-10-23 导读里用过的早期封面，便于对照当时的规模。后来各期未另配图。</p>
 <div class="ds-covers">
 <figure><img src="images/cover-001-bauhaus.webp" alt="001 包豪斯短片封面：几何形与红黄蓝" width="960" height="540" loading="lazy"><figcaption>001 包豪斯 · 1919—1933</figcaption></figure>
 <figure><img src="images/cover-002-swiss.webp" alt="002 瑞士国际主义短片封面：网格与红色块" width="960" height="540" loading="lazy"><figcaption>002 瑞士国际主义 · 1950—1970</figcaption></figure>
@@ -109,7 +109,7 @@
 <figure><img src="images/poster-003.webp" alt="构成主义风格海报缩略" width="720" height="900" loading="lazy"><figcaption>003 构成主义 · 风格海报（2026-10-23 已上站缩略）</figcaption></figure>
 <figure><img src="images/cheatsheet-001.webp" alt="包豪斯速查卡缩略：颜色、字体与规则" width="720" height="900" loading="lazy"><figcaption>001 包豪斯 · 速查卡（同上）</figcaption></figure>
 </div>
-<p>以构成主义的 <code>tokens.json</code> 为例（初版导读已核对）：它不只给色值，还给出面积比例（旧纸约占 50%、印刷黑 30%、构成红 15%、网点灰 5%），以及这一期最关键的轴令牌：主轴 −30°、副轴 60°。后来各期是否都维持同样的令牌密度，本次没有逐份重开。</p>
+<p>以构成主义的 <code>tokens.json</code> 为例（初版导读已核对）：它不只给色值，还给出面积比例（旧纸约占 50%、印刷黑 30%、构成红 15%、网点灰 5%），以及这一期最关键的轴令牌：主轴 −30°、副轴 60°。后来各期是否都维持同样的令牌密度，各期文档未再逐份对照。</p>
 
 <h2 id="how">它是怎么做出来的</h2>
 <figure><img src="images/workflow-003.webp" alt="构成主义从 0 到 1 的十步工作流图" width="1440" height="900" loading="lazy"><figcaption>003 的 MAKING.md 配图：十步工作流（2026-10-23 已上站缩略）</figcaption></figure>
@@ -117,7 +117,7 @@
 <figure><img src="images/timeline-001.webp" alt="包豪斯节拍与章节时间轴" width="1440" height="465" loading="lazy"><figcaption>001 包豪斯 · 节拍时间轴（由脚本生成；2026-10-23 已上站缩略）</figcaption></figure>
 
 <h2 id="use">怎么用</h2>
-<p>若只是看，打开<a href="https://guanmo-ai.github.io/design-style/">网页画廊</a>即可。若要当设计参考或给智能体当约束，可以把某期 README 里的规则、误区和 AI 提示词，连同 <code>tokens.json</code> 一起交给模型；<code>tokens.css</code> 也可以在网页项目里引用。本地重出成片的命令以仓库当前 README 为准，需要 Node 22.12+、Python 3.10+、ffmpeg；本站未实际运行。003 起的 <code>MAKING.md</code> 还附有「开工提示词」，让智能体按研究 → 令牌 → 风格图 → 时间轴 → 动画 → 声音 → 质检的顺序推进。转载视频和图片，按作者要求注明出处观默 @guanmo_ai；商用边界仍需向作者确认，因为根目录没有许可证。</p>
+<p>若只是看，打开<a href="https://guanmo-ai.github.io/design-style/">网页画廊</a>即可。若要当设计参考或给智能体当约束，可以把某期 README 里的规则、误区和 AI 提示词，连同 <code>tokens.json</code> 一起交给模型；<code>tokens.css</code> 也可以在网页项目里引用。本地重出成片的命令以仓库当前 README 为准，需要 Node 22.12+、Python 3.10+、ffmpeg；以下为文档转述。003 起的 <code>MAKING.md</code> 还附有「开工提示词」，让智能体按研究 → 令牌 → 风格图 → 时间轴 → 动画 → 声音 → 质检的顺序推进。转载视频和图片，按作者要求注明出处观默 @guanmo_ai；商用边界仍需向作者确认，因为根目录没有许可证。</p>
 
 <h2 id="tree">仓库结构（据 README 转述）</h2>
 <pre><code>design-style/
@@ -131,7 +131,7 @@
 
 <h2 id="gallery">网页画廊</h2>
 <p>画廊是独立的静态站：构建时读取本仓库 Releases，下载视频并校验 SHA-256，再把每期指南转成站内阅读页。GitHub Actions 在推送 main 时跑测试、核验和部署，失败就不发布。视觉上沿用了作者另一个项目 Awesome AI Motion 的暖纸色样式；<code>gallery/NOTICE.md</code> 说明沿用的是样式与字体，不含那边的作品数据。仓库首页 README 顶部的预览表由脚本按 <code>works.json</code> 生成，所以它比正文里的目录表更接近「现在上线了什么」。下图是 2026-10-23 的画廊首页截图，不能代表今天的目录。</p>
-<figure><img src="images/gallery-preview.webp" alt="2026-10-23 时的 Design Style 网页画廊首页截图" width="1440" height="1000" loading="lazy"><figcaption>画廊首页（2026-10-23 截图，仅作当时记录；本次未新截）。</figcaption></figure>
+<figure><img src="images/gallery-preview.webp" alt="2026-10-23 时的 Design Style 网页画廊首页截图" width="1440" height="1000" loading="lazy"><figcaption>画廊首页（2026-10-23 截图，仅作当时记录）。</figcaption></figure>
 
 <h2 id="comment">评论</h2>
 <ul>
@@ -154,7 +154,7 @@
 <h2 id="license">来源与授权</h2>
 <ul>
 <li>原项目：<a href="https://github.com/guanmo-ai/design-style">https://github.com/guanmo-ai/design-style</a>（作者 观默 @guanmo_ai）；网页画廊：<a href="https://guanmo-ai.github.io/design-style/">https://guanmo-ai.github.io/design-style/</a></li>
-<li>许可状态（2026-11-10 新加坡时间重核）：<strong>根目录无开源许可证</strong>；README 声明「代码欢迎学习和改造，转发视频和图片请注明出处 观默 @guanmo_ai」；<code>gallery/</code> 目录代码为 MIT，不含视频与风格素材；字体为 SIL OFL 1.1 / GUST Font License / Apache License 2.0（Tinos）。</li>
+<li>许可状态（截至 2026-11-10，新加坡时间）：<strong>根目录无开源许可证</strong>；README 声明「代码欢迎学习和改造，转发视频和图片请注明出处 观默 @guanmo_ai」；<code>gallery/</code> 目录代码为 MIT，不含视频与风格素材；字体为 SIL OFL 1.1 / GUST Font License / Apache License 2.0（Tinos）。</li>
 <li>本页处理方式：中文导读（非翻译），仅短摘引；沿用 2026-10-23 已上站的缩略图，并自制题头封面；不新增仓库图像，不转载视频。</li>
 <li>删除请求：<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request</a></li>
 </ul></main><!-- /za:content -->

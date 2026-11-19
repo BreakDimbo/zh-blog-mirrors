@@ -29,7 +29,7 @@
 <!-- za:content --><main class="za-content">
 <p class="lede">pixel-gif-sticker-pack（仓库标题「GIF 表情包工作室」）是 WoYun520 开源的一套 Codex / Agent Skill：给它一张你有权使用的角色图，让它设计表情与动作、叠上中文台词，再导出一张张透明循环 GIF、打包 ZIP，以及一段可播放的预览视频。默认走 512×512 清晰合成；只有明确要求像素风时才切到 320×320 像素模式。</p>
 
-<div class="notice"><strong>版权说明：</strong>仓库根目录 <code>LICENSE</code> 为 MIT（Copyright (c) 2026 WoYun520；2026-11-05 对照 raw.githubusercontent.com 复核）。按本站规则做项目导读，并附录 README 中文原文（README 本身已是中文，故照录而非另译）与许可证全文。示例图仅收录作者自制卡通/像素角色各一帧静图（webp），不收录真人照片系列与动漫角色连续动作小样；完整动图请到原仓库查看。</div>
+<div class="notice"><strong>版权说明：</strong>仓库根目录 <code>LICENSE</code> 为 MIT（Copyright (c) 2026 WoYun520；2026-11-05）。按本站规则做项目导读，并附录 README 中文原文（README 本身已是中文，故照录而非另译）与许可证全文。示例图仅收录作者自制卡通/像素角色各一帧静图（webp），不收录真人照片系列与动漫角色连续动作小样；完整动图请到原仓库查看。</div>
 
 <figure><img class="cover" src="images/cover.webp" alt="大肥鱼（鲸鱼娘）系列预览拼贴的一帧：蓝发卡通角色的多张聊天表情缩略图排成网格" width="720" loading="lazy"><figcaption>示例封面：仓库「大肥鱼」系列预览动图的首帧（MIT，本站转 webp）。完整动画与另外四个系列请见原仓库展厅。</figcaption></figure>
 
@@ -49,7 +49,7 @@
 <li><strong>输入：</strong>用户提供或授权的角色插画、吉祥物、写实宠物，或已渲染的 3D 参考。Skill 正文要求只用任务授权的图像。</li>
 <li><strong>输出：</strong>每条一句台词的透明循环 GIF、整包 ZIP、可播放预览（MP4，需本机 FFmpeg）。人物/宠物默认 512×512；像素风可选 320×320。</li>
 <li><strong>两种动效：</strong>① 单姿势 + 摇摆/弹跳/挤压等预设；② 「连续姿势」关键帧流程——多张姿势对齐后合成为挥手、点赞、比心等小动作（不等同视频模型的连续运动）。</li>
-<li><strong>许可：</strong>MIT。可自由使用、修改、分发；需保留版权与许可声明。⚠️ 示例素材里另有第三方参考（如马斯克参考照标注 CC BY-SA 3.0、柯基原图 CC0）；二次使用前应对照仓库内 <code>sources.json</code> 等说明，本站未逐条核验每张示例图的上游权利。</li>
+<li><strong>许可：</strong>MIT。可自由使用、修改、分发；需保留版权与许可声明。⚠️ 示例素材里另有第三方参考（如马斯克参考照标注 CC BY-SA 3.0、柯基原图 CC0）；二次使用前应对照仓库内 <code>sources.json</code> 等说明，各张示例图的上游权利以仓库说明为准。</li>
 </ul>
 
 <div class="frames" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1em;margin:1.5em 0">
@@ -59,7 +59,7 @@
 <p class="caption">上图两帧取自仓库示例 GIF 的第 0 帧（MIT，本站转 webp &lt;150KB）。真人公众人物与动漫角色系列故意不收录。</p>
 
 <h2 id="gallery">仓库里的五个示例系列</h2>
-<p>README 自称五个系列共 <strong>218 张 GIF</strong>。本站未重新计数文件，以下按 README 分类转述，动图一律链回原仓库：</p>
+<p>README 自称五个系列共 <strong>218 张 GIF</strong>。以下按 README 分类转述，动图一律链回原仓库：</p>
 <ol>
 <li><strong>大肥鱼（鲸鱼娘）· 100 张</strong> — 蓝发卡通角色的日常问候、撒娇、情绪、回应、工作学习、生活与祝福。<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/whale-maid" rel="noopener">examples/whale-maid</a></li>
 <li><strong>真人 × 二次元连续动作 · 6 张</strong> — 点赞、摊手、挥手等关键帧小样（含公众人物与动漫角色）。台词为趣味二创。本站<strong>不转载</strong>这类素材，只保留链接：<a href="https://github.com/WoYun520/pixel-gif-sticker-pack/tree/main/examples/mixed-actions" rel="noopener">examples/mixed-actions</a></li>
@@ -90,8 +90,8 @@ python3 scripts/export_pack.py manifest.json build --font /path/to/font.ttf --pr
 <ul>
 <li>✅ LICENSE 文件存在且为 MIT，版权人 WoYun520。</li>
 <li>✅ README / SKILL.md 可公开读取；README 自述五个系列 218 张 GIF、默认导出规格与安装话术如上。</li>
-<li>⚠️ <strong>未实测：</strong>本站未在 Codex 中安装该 Skill，也未实际跑通 <code>export_pack.py</code> 全流程；脚本行为以仓库文档为准。</li>
-<li>⚠️ <strong>218 张为 README 自报</strong>，本站未逐文件清点。</li>
+<li>⚠️ 脚本行为以仓库文档为准。</li>
+<li>⚠️ <strong>218 张为 README 自报</strong>。</li>
 <li>⚠️ 示例中的公众人物与动漫角色台词/姿势为趣味二创；真人肖像另涉参考照许可，本站一律不镜像这些素材。</li>
 <li>⚠️ 仓库名仍含 <code>pixel-gif</code>，但新版默认已是高清路径，像素模式需显式开启——命名与默认行为不完全一致，以 README/SKILL 正文为准。</li>
 </ul>

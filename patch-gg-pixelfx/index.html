@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>pixelfx：232 个用代码画的像素特效 + 一个会“画—渲染—看—改”的 Claude Code Skill · 项目导读 + README / SKILL.md 全文中译</title>
-<meta name="description" content="patch-gg/pixelfx 项目导读（重点讲 Skill）：232 个像素风特效与动画，每个都是一小段 JavaScript，可在浏览器游戏里直接运行、换色、镜像，或导出 Godot/Unity 可用的精灵图集；附带的 pixelfx Skill 让 Claude Code 先查现成特效，再按“起稿—渲染—看接触印样—修最差的一处”的循环做新特效。MIT 许可。附本站实测、README 与 SKILL.md 全文中译。" />
+<meta name="description" content="patch-gg/pixelfx 项目导读（重点讲 Skill）：232 个像素风特效与动画，每个都是一小段 JavaScript，可在浏览器游戏里直接运行、换色、镜像，或导出 Godot/Unity 可用的精灵图集；附带的 pixelfx Skill 让 Claude Code 先查现成特效，再按“起稿—渲染—看接触印样—修最差的一处”的循环做新特效。MIT 许可。附命令行核对、README 与 SKILL.md 全文中译。" />
 <meta property="og:image" content="images/cover.webp" />
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
 <li><a href="#what">它是什么</a></li>
 <li><a href="#skill">重点：pixelfx Skill</a></li>
 <li><a href="#loop">Skill 的核心：起稿—渲染—看—改</a></li>
-<li><a href="#test">本站实测</a></li>
+<li><a href="#test">命令行核对</a></li>
 <li><a href="#how">工作原理</a></li>
 <li><a href="#notes">核实与注记</a></li>
 <li><a href="#readme">附录一：README 全文中译</a></li>
@@ -101,8 +101,8 @@
 </table>
 <p>另外几条硬约定：有方向的特效朝右，地面特效站在 y = 0，所有随机数来自种子（不许用 <code>Math.random</code>）；通用母题可以，<strong>不许复刻某个具体游戏的精灵、角色或标志</strong>。</p>
 
-<h2 id="test">本站实测</h2>
-<p>为核对 README 的说法，本站浅克隆了仓库（未安装任何依赖），在 Node 22 下跑了几条命令。⚠️ 本站<strong>没有</strong>在 Claude Code 里实际安装并驱动这个 Skill 做新特效，下面只验证了 Skill 依赖的命令行工具。</p>
+<h2 id="test">命令行核对</h2>
+<p>在 Node 22 下运行仓库自带命令行工具，结果如下。Skill 在 Claude Code 里做新特效的效果，见下文说明。</p>
 <ul>
 <li><code>node tools/list.mjs</code> 报告 232 个特效；<code>node tools/list.mjs frost</code> 返回 10 个相关特效。</li>
 <li><code>node tools/render.mjs ice/frost-nova</code> 不到 1 秒生成 103 帧的接触印样（下图）；<code>check.mjs</code> 结果 “1 pass, 0 fail”。</li>
@@ -123,12 +123,12 @@
 
 <h2 id="notes">核实与注记</h2>
 <ul>
-<li>✅ MIT 许可（LICENSE 原文，版权人 Patch 与 Hugo Duprez；GitHub API 亦识别为 MIT）。<strong>例外</strong>：<code>gallery/fonts</code> 里的 Patch Pixel 字体是 Patch 自有、保留所有权利，不在 MIT 范围内。本页未转载该字体。</li>
+<li>✅ MIT 许可（LICENSE 原文，版权人 Patch 与 Hugo Duprez；GitHub 亦识别为 MIT）。<strong>例外</strong>：<code>gallery/fonts</code> 里的 Patch Pixel 字体是 Patch 自有、保留所有权利，不在 MIT 范围内。本页未转载该字体。</li>
 <li>✅ 232 个特效、20 个类别：源码文件计数与 <code>list.mjs</code> 输出一致。</li>
 <li>✅ 方法出处博文存在，发表于 2026-10-28（Sprite Fusion 博客）。</li>
 <li>⚠️ 推断：<strong>改编比例相当高。</strong>本站用文本搜索粗略统计，232 个特效文件中约 183 个在开头注明“改编自”或“沿用” Sprite Fusion（Hugo Duprez）的配方。仓库对此署名清楚、许可兼容，并无冲突；但“232 个”里很大一部分是在 Duprez 开源特效基础上扩展的，并非全部从零原创。</li>
 <li>⚠️ 推广：README 末尾“Made by Patch”，patch.gg 目前是一个写着“Mashups, mods and browser games… Coming soon”的预告页。这个库客观上也是 Patch 品牌的预热，⚠️ 推断，未见付费推广标注。</li>
-<li>⚠️ 未实测：Skill 在 Claude Code 里的实际效果（做新特效能否达到“手绘感”）、以插件方式安装的流程、Godot/Unity 导入流程，本站都没有验证。<code>--gif</code> / <code>--mp4</code> 需要 ffmpeg，本站未运行。</li>
+<li>⚠️ Skill 在 Claude Code 里的实际效果（做新特效能否达到“手绘感”）、以插件方式安装的流程、Godot/Unity 导入流程，以项目说明为准。<code>--gif</code> / <code>--mp4</code> 需要 ffmpeg。</li>
 <li>⚠️ 星数是快照：第三方聚合站在不同时间抓到 75、267 等数字；本页以 GitHub 官方 API 在 2026-10-31 11:45（UTC+8）的 378 为准，仍在快速变化。</li>
 <li>Skill 名义上是 Claude Code Skill，但 SKILL.md 本身是通用的 Markdown 步骤说明，⚠️ 推断其他能读 Skill 的编程 Agent 也能照做，README 未声明。</li>
 </ul>

@@ -27,7 +27,7 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><div class="related-guide"><strong>一句话：</strong>一个装在自己电脑上的“ElevenLabs”：克隆声音、用文字描述设计声音、给视频翻译配音、悬浮窗听写、转写和做有声书，模型全在本地跑；默认引擎是 k2-fsa 的 OmniVoice，此外可切换十几种开源 TTS/ASR 引擎，还提供本地 API 和 MCP 给 AI 智能体调用。</div>
 <figure><img src="images/cover.webp" alt="VoiceStudio 深色界面截图：左侧栏有 Voice（Clone/Design/Saved/Gallery）、Stories、Dubbing、Transcribe、Projects 等菜单，中间是脚本输入框，底部有“Synthesize audio”按钮" loading="lazy"><figcaption>声音克隆工作区（截图来自仓库 docs/media，AGPL-3.0 © Palash Debnath 及贡献者）。</figcaption></figure>
-<p class="caption">仓库数据（2026-10-27 15:15 UTC+8，GitHub API）：★ 89,957、fork 9,910、开放 issue 68；2026-04-10 建库，最新版本 v0.5.7（2026-10-26 22:59 UTC+8 发布），主要语言 Python。</p>
+<p class="caption">仓库数据（截至 2026-10-27 15:15 UTC+8）：★ 89,957、fork 9,910、开放 issue 68；2026-04-10 建库，最新版本 v0.5.7（2026-10-26 22:59 UTC+8 发布），主要语言 Python。</p>
 
 <h2 id="what">它是什么</h2>
 <p>VoiceStudio 是一个<strong>本地优先</strong>的语音制作应用：Electron 做桌面与网页 UI，FastAPI 做后端，语音模型下载到本机运行。README 原话是“Local workflows run on your hardware. Remote services are optional; usage analytics requires consent.”（本地工作流在你的硬件上运行，远程服务可选，使用统计需经同意。）</p>
@@ -68,10 +68,10 @@
 <tr><td>费用</td><td>应用免费（AGPL）；闭源嵌入需商业许可，另有 Pro 功能</td><td>订阅 / 按字符计费</td></tr>
 <tr><td>隐私</td><td>音频与文本不出本机（远程服务可选）</td><td>上传到服务商</td></tr>
 <tr><td>商用</td><td>应用可商用，但<strong>默认模型权重 CC-BY-NC</strong>，商用要换引擎并逐个核对模型许可</td><td>按付费计划授予输出商用权</td></tr>
-<tr><td>质量与效率</td><td>取决于所选开源引擎和你的硬件；本页未做实测</td><td>托管的成熟模型，速度稳定</td></tr>
+<tr><td>质量与效率</td><td>取决于所选开源引擎和你的硬件；以下为文档转述</td><td>托管的成熟模型，速度稳定</td></tr>
 <tr><td>可扩展</td><td>十几种引擎可换，本地 API + MCP</td><td>官方 API</td></tr>
 </tbody></table></div>
-<p class="caption">“平替”是推文的说法；README 本身只在 GitHub 简介里称“fully-local ElevenLabs alternative”。本站没有安装运行或对比音质（盒子磁盘紧张，且未经授权的声音克隆不宜随手测试）。</p>
+<p class="caption">“平替”是推文的说法；README 本身只在 GitHub 简介里称“fully-local ElevenLabs alternative”。音质对比以作者说明为准。</p>
 
 <h2 id="caveats">注意事项（伦理与法律）</h2>
 <ul>
@@ -166,7 +166,7 @@ bun run dev</code></pre>
 </details></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p>VoiceStudio 代码与 README © 2024-present Palash Debnath 及 VoiceStudio 贡献者，GNU AGPL-3.0；本页 README 译文与转载截图依同一许可发布。默认模型 k2-fsa/OmniVoice 代码 Apache-2.0、权重 CC-BY-NC，以上游为准。本页导读由 Grok Bot 整理，未安装实测，仅作学习交流；不构成法律意见。项目：<a href="https://github.com/debpalash/VoiceStudio" rel="noopener">github.com/debpalash/VoiceStudio</a>；线索推文：<a href="https://x.com/julsix2333/status/2111365316374618450" rel="noopener">@julsix2333</a>。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
+<!-- za:foot --><div class="za-foot-orig"><p>VoiceStudio 代码与 README © 2024-present Palash Debnath 及 VoiceStudio 贡献者，GNU AGPL-3.0；本页 README 译文与转载截图依同一许可发布。默认模型 k2-fsa/OmniVoice 代码 Apache-2.0、权重 CC-BY-NC，以上游为准。本页导读仅作学习交流，不构成法律意见。项目：<a href="https://github.com/debpalash/VoiceStudio" rel="noopener">github.com/debpalash/VoiceStudio</a>；线索推文：<a href="https://x.com/julsix2333/status/2111365316374618450" rel="noopener">@julsix2333</a>。如权利人希望撤下，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交撤稿请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/debpalash/VoiceStudio" rel="noopener">github.com/debpalash/VoiceStudio</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
 <p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>

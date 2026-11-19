@@ -33,7 +33,7 @@
 <div class="related-guide"><strong>一句话：</strong>被淹没、长满植物的东京，一台警用劳动机器人齐腰站在水里，手上停着一只翠鸟。太阳雨落下，它抬起另一只手替小鸟挡雨；雨停，彩虹升起。这部 42 秒的动画短片没有用视频模型、图像模型或手绘帧——每一帧都是 three.js 代码渲染出来的，最后连同配乐打包成一个能离线打开的 HTML 文件。</div>
 
 <p class="hero-tags"><span class="tag">★ 12</span> <span class="tag">2 forks</span> <span class="tag">JavaScript</span> <span class="tag">MIT（代码）</span> <span class="tag">three.js r170 / WebGL2</span> <span class="tag">v1.0</span> <span class="tag">1 个提交</span></p>
-<p class="caption">数据通过公开 GitHub API 获取，时间 2026-11-04 21:45（UTC+8）。仓库建于 2026-11-04 00:46（UTC+8），只有 1 个整体提交（01e1eed）；Release v1.0 附 <code>sunshower.html</code>（约 78 MB）与 <code>sunshower.mp4</code>（约 30 MB）。仓库内 <code>dist/sunshower_lite.html</code> 约 26 MB；<code>src/</code> 下 41 个 JS 模块，本站计数约 1.47 万行。</p>
+<p class="caption">数据截至 2026-11-04 21:45（UTC+8）。仓库建于 2026-11-04 00:46（UTC+8），只有 1 个整体提交（01e1eed）；Release v1.0 附 <code>sunshower.html</code>（约 78 MB）与 <code>sunshower.mp4</code>（约 30 MB）。仓库内 <code>dist/sunshower_lite.html</code> 约 26 MB；<code>src/</code> 下 41 个 JS 模块，本站计数约 1.47 万行。</p>
 
 <figure><img src="images/shelter.webp" alt="动画截图：白色警用机器人的巨大右手悬在左手上方，像一把伞，手掌下的翠鸟蓬起羽毛，雨水从指尖成串落下，背景是阳光下的绿色废墟" loading="lazy"><figcaption>第 7 镜「shelter」：手掌当伞（作者仓库 <code>docs/shelter.jpg</code>，缩小转为 WebP）</figcaption></figure>
 
@@ -46,7 +46,7 @@
 <figure><img src="images/umbrella.webp" alt="中景：机器人从水中抬起右手，慢慢盖到停着翠鸟的左手上方" loading="lazy"><figcaption>第 6 镜「umbrella」：右手出水</figcaption></figure>
 <figure><img src="images/rainbow.webp" alt="从机器人背后仰拍：雨停，被淹没的城市上空升起一道大彩虹" loading="lazy"><figcaption>第 8 镜「rainbow」：雨停虹起</figcaption></figure>
 </div>
-<p class="caption">以上为作者仓库 <code>docs/</code> 中的成片截图，依 MIT 许可转载代码仓库附带的图像并缩小压缩为 WebP；画面中的机器人造型属 HEADGEAR / Sunrise，不在 MIT 范围内，本站仅作介绍性引用。成片视频未下载、未转载。</p>
+<p class="caption">以上为作者仓库 <code>docs/</code> 中的成片截图，依 MIT 许可转载代码仓库附带的图像并缩小压缩为 WebP；画面中的机器人造型属 HEADGEAR / Sunrise，不在 MIT 范围内，本站仅作介绍性引用。成片视频未转载。</p>
 
 <h2 id="how">它是怎么做出来的</h2>
 <h3>1. 一条模仿动画制作的渲染管线</h3>
@@ -93,10 +93,9 @@ npm run build        # 配乐 → 分段渲染（可续跑）→ dist/ 单文件
 
 <h2 id="notes">⚠️ 核实与说明</h2>
 <ul>
-<li>⚠️ “没有视频模型、图像模型或手绘帧”是作者自述；本站读了源码结构（场景、通道、贴图均为代码生成），未逐文件排查是否混入外部图像素材。</li>
+<li>⚠️ “没有视频模型、图像模型或手绘帧”是作者自述；源码结构显示场景、通道、贴图均为代码生成；仓库未说明是否混入外部图像素材。</li>
 <li>⚠️ 制作耗时、智能体数量、使用的具体模型与成本，仓库均未说明。<code>CONTRACT.md</code> 提到并行“部门（智能体）”，但没有过程记录。</li>
-<li>⚠️ 本站未在本地完整运行 <code>npm run build</code>，也未逐帧比对成片。</li>
-<li>许可：<code>LICENSE</code> 为 MIT（Copyright (c) 2026 Beyond Dev），附加说明称机器人设计与标记不在许可内、<code>vendor/</code> 中的 three.js 为 MIT；因附加文字，GitHub API 将其识别为 “Other”（2026-11-04 实时核对）。</li>
+<li>许可：<code>LICENSE</code> 为 MIT（Copyright (c) 2026 Beyond Dev），附加说明称机器人设计与标记不在许可内、<code>vendor/</code> 中的 three.js 为 MIT；因附加文字，GitHub 将许可识别为 “Other”。</li>
 <li>作者 GitHub 资料显示名称 Beyond Dev，关联 X 账号 @0xMovez；与本站此前收录的 X 作者 @0xCodila 名字相近，但没有证据表明是同一人。</li>
 </ul>
 
@@ -180,7 +179,7 @@ not covered by this license. three.js in vendor/ is MIT, see vendor/THREE-LICENS
 </main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/0xCodez/sunshower" rel="noopener">0xCodez/sunshower</a>，作者 Beyond Dev（<a href="https://github.com/0xCodez" rel="noopener">GitHub @0xCodez</a>），代码 MIT 许可，Copyright (c) 2026 Beyond Dev。README 译文与成片截图（<code>docs/</code>，已缩小并转为 WebP）依 MIT 许可转载并保留版权与许可声明；机器人设计 © HEADGEAR / Sunrise。短片视频未转载。统计取自公开 GitHub API（2026-11-04 21:45 UTC+8）。导读与“启发”为本站整理。</p>
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/0xCodez/sunshower" rel="noopener">0xCodez/sunshower</a>，作者 Beyond Dev（<a href="https://github.com/0xCodez" rel="noopener">GitHub @0xCodez</a>），代码 MIT 许可，Copyright (c) 2026 Beyond Dev。README 译文与成片截图（<code>docs/</code>，已缩小并转为 WebP）依 MIT 许可转载并保留版权与许可声明；机器人设计 © HEADGEAR / Sunrise。短片视频未转载。统计截至 2026-11-04 21:45 UTC+8。导读与“启发”为本站整理。</p>
 <p>如果你是作者或权利人并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/0xCodez/sunshower" rel="noopener">github.com/0xCodez/sunshower</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>

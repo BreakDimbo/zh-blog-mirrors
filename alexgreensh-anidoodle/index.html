@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>anidoodle：把手绘、动画和配乐写成可重复运行的代码</title><meta content="代码绘制插画、逐笔动画、互动网页和配乐；Apache-2.0 导读与全文中文 README，能力与成本为作者自述，未实测。" name="description"/>
+<title>anidoodle：把手绘、动画和配乐写成可重复运行的代码</title><meta content="代码绘制插画、逐笔动画、互动网页和配乐；Apache-2.0 导读与全文中文 README，能力与成本为作者自述。" name="description"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="../assets/article.css" rel="stylesheet"/><script defer="" src="../assets/article.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,22 +31,22 @@
 <p>在这里，风格不只是一句形容词，而是落笔、纸张、边缘、配色与作画顺序的具体配方。先确认一张静帧，再沿同一条时间线扩展成片；画面、配乐、字幕和导出检查尽量共用可追溯的程序描述。它适合需要反复改尺寸、保持一组插画统一、精确修改某一帧或某个音乐事件的工作。</p>
 <h2 id="_2">画面、声音与交互</h2>
 <ul>
-<li>⚠️ README 自报提供 32 种画风、21 种音乐词汇及 14 种分层音效；本站未逐项运行核对。</li>
+<li>⚠️ README 自报提供 32 种画风、21 种音乐词汇及 14 种分层音效；以下为文档转述。</li>
 <li>静帧、逐笔绘制影片与角色动画共用绘制核心。作者声称纯函数与带种子的随机数可保证重复渲染一致；⚠️ 跨机器逐字节一致未验证，不能视作本站保证。</li>
-<li>音符以数据表达，声音由引擎演奏；当前英文 README 另有可选真实乐器采样包，⚠️ 自报约 373 MB，本站未下载。不要把它概括成“所有模式永远不使用录音”。</li>
+<li>音符以数据表达，声音由引擎演奏；当前英文 README 另有可选真实乐器采样包，⚠️ 自报约 373 MB。不要把它概括成“所有模式永远不使用录音”。</li>
 <li>网页插画使用小型 ES 模块与 <code>&lt;ani-doodle&gt;</code> 元素；可对光标、滚动及表单状态作出反应，作者称包含减少动画和键盘路径。</li>
 <li>产品发布片工具按节拍组织聊天、产品界面、标题与结尾卡，输出多种画幅、封面和字幕；检查是否截字、音画同步与峰值。</li>
 </ul>
 <h2 id="_3">如何开始</h2>
-<p>README 给出 Claude Code、Codex 与 Grok Build 的插件安装命令，也允许复制标准 skill 目录给其他兼容智能体。运行引擎需要 Node 20 或更新版本，静态图依赖浏览器，动态导出还需要 ffmpeg。下方附录保留原命令供查阅；本次仅阅读文档，未安装插件、未执行任何命令或创作流程。</p>
+<p>README 给出 Claude Code、Codex 与 Grok Build 的插件安装命令，也允许复制标准 skill 目录给其他兼容智能体。运行引擎需要 Node 20 或更新版本，静态图依赖浏览器，动态导出还需要 ffmpeg。下方附录保留原命令供查阅；以下为文档转述。</p>
 <h2 id="_4">成本与证据边界</h2>
 <p>⚠️ “写一次、之后零 token”指复用既有程序时不必逐帧再调用生成模型，不代表本地渲染没有算力、电力、存储和维护成本，也不意味着首次写代码或后续修改免费。47 秒、1,410 帧、每帧约 60 tokens、约 100 KB 离线 HTML 都是作者示例的说法，不是通用性能承诺。</p>
 <p>当前英文 README 风格标题为 32 种，但 craft 小节写 31 套配方；⚠️ 数字口径不一致，未替作者消除差异。官方中文 README 也落后于英文，遗漏可选采样包、3D、旁白及较新的品牌适配说明；本站附录以官方中文为底稿，按本次英文逐节补齐与修订，图片改外链，不删正文信息。</p>
 <h2 id="_5">许可与素材</h2>
-<p>项目以 Apache License 2.0 发布，README 署名 Copyright 2026 Alex Greenshpun。本页提供项目导读、完整中文 README 文本附录和许可证原文；两张静态样图来自仓库 assets/styles.jpg 和 assets/readme/lesson.jpg，转为 webp；演示与试听请见原仓库。</p><figure><img alt="仓库自带的多种代码插画风格对照" height="888" loading="lazy" src="images/styles.webp" width="1600"/><figcaption>仓库 assets/styles.jpg，Apache-2.0；本站转换为 webp。</figcaption></figure><figure><img alt="猫头鹰九步绘画教学图" height="1600" loading="lazy" src="images/lesson.webp" width="858"/><figcaption>仓库 assets/readme/lesson.jpg，Apache-2.0；本站转换为 webp。</figcaption></figure><h2 id="readme">附录一：README 全文中文译本</h2><p class="notice">⚠️ 下文保留作者自述口吻，所有能力、数字、成本和确定性主张均未独立实测。以官方中文为底稿，按 2026-11-07 英文 README 补齐修订。原图与音视频仅外链；非本站验证报告。</p><p align="center">
+<p>项目以 Apache License 2.0 发布，README 署名 Copyright 2026 Alex Greenshpun。本页提供项目导读、完整中文 README 文本附录和许可证原文；两张静态样图来自仓库 assets/styles.jpg 和 assets/readme/lesson.jpg，转为 webp；演示与试听请见原仓库。</p><figure><img alt="仓库自带的多种代码插画风格对照" height="888" loading="lazy" src="images/styles.webp" width="1600"/><figcaption>仓库 assets/styles.jpg，Apache-2.0；本站转换为 webp。</figcaption></figure><figure><img alt="猫头鹰九步绘画教学图" height="1600" loading="lazy" src="images/lesson.webp" width="858"/><figcaption>仓库 assets/readme/lesson.jpg，Apache-2.0；本站转换为 webp。</figcaption></figure><h2 id="readme">附录一：README 全文中文译本</h2><p class="notice">⚠️ 下文保留作者自述口吻，所有能力、数字、成本和确定性主张均为作者自述。以官方中文为底稿，按 2026-11-07 英文 README 补齐修订。原图与音视频仅外链；非本站验证报告。</p><p align="center">
 <a href="https://github.com/alexgreensh/anidoodle/blob/main/assets/banner.gif">〔原图 / 动图链接：anidoodle：一张画满代码手绘涂鸦的画桌，anidoodle 这个名字正以书法字体自己写出自己〕</a>
 </p>
-<p><a href="https://github.com/user-attachments/assets/1cf7f75c-b040-4c00-bf0c-cf1885f8b8da">原仓库演示影片（仅外链，不下载）</a></p>
+<p><a href="https://github.com/user-attachments/assets/1cf7f75c-b040-4c00-bf0c-cf1885f8b8da">原仓库演示影片（仅外链）</a></p>
 <p align="center"><sub>发布短片，77 秒。每一帧画面、每一个声音，都是用 anidoodle 以代码制作的。</sub></p>
 <h1 align="center">anidoodle</h1>
 <p align="center"><strong>手绘的艺术，用代码写成。</strong></p>
@@ -377,7 +377,7 @@ node &lt;skill&gt;/engine/tools/soundfetch.mjs get all # 下载 373 MB，校验�
 </tr>
 </table>
 <p><strong>▶ 完整的 47 秒短片</strong>，记得开声音。1080×1080，配有原创配乐，每一帧与每个采样均由代码生成（作者对该示例的说明）：</p>
-<p><a href="https://github.com/user-attachments/assets/019d46d3-536a-4843-9f68-8e8f5f5c3401">原仓库演示影片（仅外链，不下载）</a></p>
+<p><a href="https://github.com/user-attachments/assets/019d46d3-536a-4843-9f68-8e8f5f5c3401">原仓库演示影片（仅外链）</a></p>
 <p>一个纯函数负责画出每一帧，所以一张成品插画，就是这个函数被调用了一次；一枚贴纸，是同一个函数循环调用；一部短片，则是这个函数配上一个故事和一段配乐。三者背后，是同一套保证。</p>
 <h2 id="_10">画一次，管一辈子</h2>
 <p>图像模型每渲染一帧都要烧掉 token 和算力，而且每次画出来的都不一样。代码只花这份钱一次。这部 47 秒的短片就是一个程序：写一次，就能在任何机器、任何尺寸下渲染出全部 1,410 帧画面和一整段立体声配乐，而且每次运行都是免费的。折算下来，第一遍大约每帧只花六十个 token 的代码量，之后每一遍都是零成本。一张静态插画不过几百行代码，一整个系列的图像，也不过是一份种子列表。</p>

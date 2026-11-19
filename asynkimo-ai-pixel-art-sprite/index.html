@@ -61,7 +61,7 @@ img.pixel{image-rendering:pixelated}
 <li><strong>AI 画的“像素画”通常是假的。</strong>图像模型一般输出 1024×1024 这样的大图，看起来是一格一格的，但这些“像素”并没有对齐到统一的网格上：有的 6 像素宽，有的 7 像素宽，边缘还有半透明的过渡色和细小噪点。业内把这种东西叫 mixels（混合尺寸的伪像素）。</li>
 <li><strong>放进游戏引擎就会糊。</strong>引擎不知道每个“逻辑像素”的边界在哪，缩到目标分辨率时会在边界上插值，结果是一团糊。一位评论者说得很直白：放大看还行，一缩放进引擎就花了。</li>
 <li><strong>修法是先把网格找回来，再逐格取色。</strong>找到“这张 1024 的图其实是一张约 64×64 的像素画放大了 16 倍”这样的事实之后，每个格子只留一种颜色，图就变回真正的像素画。后面三步——硬阈值去背景、补描边、锁调色板——是让它能和游戏里其他素材放在一起。</li>
-<li><strong>“选 Nano Banana，不选 GPT Image”是作者的经验之谈。</strong>帖子没给对比数据，视频看起来是在做这组对比（我们没有下载视频，只看了封面帧）。博客里也说这套修法对 Midjourney、DALL·E、Stable Diffusion、Flux 一样适用。</li>
+<li><strong>“选 Nano Banana，不选 GPT Image”是作者的经验之谈。</strong>帖子没给对比数据，视频看起来是在做这组对比（本页只收录了封面帧）。博客里也说这套修法对 Midjourney、DALL·E、Stable Diffusion、Flux 一样适用。</li>
 </ul>
 
 <h2 id="steps">六步拆开看</h2>

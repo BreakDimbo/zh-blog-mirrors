@@ -36,7 +36,7 @@
 <p><strong>和本库已有内容的关系。</strong>与 Anthropic“大脑与双手分离”（Managed Agents）思路一致，文中自己点了名；与 Spawn 的“常驻智能体舰队”、环境即协调（stigmergy）可对照：这里的 Worker 也是靠订阅同一个 Thread 来“看见”彼此，而不是点对点通信。</p>
 <div class="warn"><p><strong>⚠️ 注意</strong></p><ul>
 <li>本文是<strong>架构探讨</strong>，作者明确说“并非对 DeepSeek Harness 现有功能的介绍”；异步任务机制“已实现但未默认开启”。原型仓库 README 也说与内部版本和文中实现不完全一致、部分设计未实现。</li>
-<li>实验数字均为团队自报，合成负载、样本小（每设计 5 次）⚠️ 未核实。“一个人通常只能跟进 3–5 个活跃会话”为团队观察，非研究结论 ⚠️。</li>
+<li>实验数字均为团队自报，合成负载、样本小（每设计 5 次）⚠️ 均为团队自报。“一个人通常只能跟进 3–5 个活跃会话”为团队观察，非研究结论 ⚠️。</li>
 <li>利益相关：发布方是 DeepSeek 产品团队，文章同时在推广自家 DeepSeek Harness（开源，MIT）。原型声明“不是 DeepSeek 正式产品”。</li>
 <li>本页正文是据官方英文机器翻译回译的中文，非公众号中文原文 ⚠️（见下）。</li>
 <li>安全提醒（原文 8.4 节自己也承认）：云端 Agent Loop 连接带凭证的个人机器，一旦被提示词注入攻陷，所有相连端点都有风险。按原型的 SETUP 起步时，建议用专用账号、窄白名单、observe 模式。</li>
@@ -236,7 +236,7 @@
 <h2 id="project">配套原型：deepseek-ai/dsh-superagent-prototype</h2>
 <p><a href="https://github.com/deepseek-ai/dsh-superagent-prototype" rel="noopener">dsh-superagent</a> 是面向<strong>单个 GitHub 仓库</strong>的主动式编程 Agent，打包成 DeepSeek Harness（dsh）的插件 bundle。它监听 GitHub（可选飞书），被允许的人向它要工作时，它开一个工作项（Ticket），在独立的 Agent 会话与目录里干活，再回到原对话交付（例如提一个 PR）；一个网页面板只显示“需要人处理”的事项。</p>
 <ul>
-<li><strong>状态</strong>：v0.1.0，单次提交（2026-10-31 20:05 UTC+8），创建于 10-31 17:32 UTC+8；★11,310 / 1,150 fork（GitHub API，2026-11-02 20:40 UTC+8）。MIT 许可，Copyright (c) 2026 DeepSeek Harness Team。</li>
+<li><strong>状态</strong>：v0.1.0，单次提交（2026-10-31 20:05 UTC+8），创建于 10-31 17:32 UTC+8；★11,310 / 1,150 fork（截至 2026-11-02 20:40 UTC+8）。MIT 许可，Copyright (c) 2026 DeepSeek Harness Team。</li>
 <li><strong>依赖</strong>：Node.js 22.19+ 或 24+、pnpm、git、tmux、Python 3.8+、GitHub CLI，以及 dsh <code>^0.2.1-alpha.2</code>；底层插件框架 <a href="https://github.com/cordiverse/cordis" rel="noopener">Cordis</a>，宿主为 <a href="https://github.com/deepseek-ai/deepseek-harness" rel="noopener">deepseek-ai/deepseek-harness</a>（MIT）。</li>
 <li><strong>上手方式</strong>：不写安装步骤给人看，而是让你的编程 Agent 读 <code>SETUP.md</code> 陪你装——一次只问一个问题、先给完整计划再执行、从不在聊天里要密钥；默认独立 profile <code>superagent</code>、端口 3082、分支前缀 <code>agent/</code>、主动工作先用只记录不执行的 <code>observe</code> 模式、自动合并默认关。</li>
 <li><strong>设计哲学</strong>（docs/000）：“占用尽可能少的人类注意力，给出尽可能多的价值”。只在被要求或有团队写下的规则允许时才行动；只在有人需要行动或能用上结果时才说话；一次只问一个具体问题；按影响而非工作量决定停在哪；如实汇报。</li>

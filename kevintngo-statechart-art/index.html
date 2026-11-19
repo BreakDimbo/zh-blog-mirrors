@@ -595,10 +595,10 @@ stateDiagram-v2
 <li><strong>时间与热度</strong>：仓库建于 2026-10-31 04:00（UTC+8），最后推送 2026-10-31 15:08（UTC+8）；本站核对时（约 15:45 UTC+8）★41、6 个 fork，无 issue。</li>
 <li><strong>AI 协作 ✅</strong>：每一次提交信息都带 <code>Co-Authored-By: Claude Opus 5.5</code>。也就是说，这套“用代码手绘”的工具链是作者和编码智能体一起写的，原页没有特别说明这一点。</li>
 <li><strong><code>/statechart</code> 从哪来 ⚠️</strong>：原页和 README 都没写出处。经核，它是 <a href="https://github.com/cursor/plugins/tree/main/pstack" rel="noopener">cursor/plugins 里的 pstack 插件</a>中的一个 Skill（作者 Lauren Tan / poteto，MIT，v0.15.36），说明为“检查一个 TLA+ 模型，把用户看到的东西画成 Mermaid 状态图，标出每个违反规则的状态，并给出通往每一个的最短路径”。README 里的命令路径是 <code>~/.claude/skills/statechart/…</code>，说明作者把它当 Claude Code Skill 安装 ⚠️ 推断。另一处旁证：April Zhu 的 Field Notes 页写着“Rules checked with /statechart by poteto”。</li>
-<li><strong>pele</strong>：pele.run 自述为零依赖的 Mermaid→SVG 渲染器，“为 Obsidian 开发”，支持 Mermaid 12.1.0 的全部图种，体积和速度对比数字为官方自报 ⚠️ 未核实。</li>
+<li><strong>pele</strong>：pele.run 自述为零依赖的 Mermaid→SVG 渲染器，“为 Obsidian 开发”，支持 Mermaid 12.1.0 的全部图种，体积和速度对比数字为官方自报 ⚠️。</li>
 <li><strong>本站复算 ✅（不是跑 TLC）</strong>：本机没有 Java，所以没有运行 TLC 本身。本站把四个 TLA+ 模型逐条改写成 Python，从初始状态做广度优先穷举：可达状态数 13 / 8 / 7 / 36 与原页完全一致；“步数”在把自环也计入时（订单图里终态的 <code>Done</code> 停顿、珍珠 bug 里重复端出鲜杯）为 17 / 9 / 11 / 90，也一致；<code>NeverServeOldPearls</code> 的最短反例正好 6 步，路径与原页相同；其余规则在全部可达状态里都成立。</li>
-<li><strong>一个小细节</strong>：Order 模型里还定义了第三条规则 <code>NoDrinkWithoutPearls</code>（在做的饮料要么还有珍珠、要么是重做），但原页只列了两条。本站复算它同样成立；它是否写进了 TLC 的配置（<code>.cfg</code>），本站没有核对 ⚠️。</li>
-<li><strong>同仓库新作</strong>：2026-10-31 14:35（UTC+8）提交了姊妹页 <a href="https://kevintngo.github.io/statechart-art/one-becomes-two/" rel="noopener">One becomes two</a>：把一个细胞的分裂周期画成一面竖向滚动的状态图墙（提交信息称 61 个状态、77 步，本站未核 ⚠️）；最后一次提交还加了配乐和“方形滚动视频”渲染器（本站未下载任何视频）。本页以《The business of boba》为中心。</li>
+<li><strong>一个小细节</strong>：Order 模型里还定义了第三条规则 <code>NoDrinkWithoutPearls</code>（在做的饮料要么还有珍珠、要么是重做），但原页只列了两条。本站复算它同样成立；它是否写进了 TLC 的配置（<code>.cfg</code>），原文未说明 ⚠️。</li>
+<li><strong>同仓库新作</strong>：2026-10-31 14:35（UTC+8）提交了姊妹页 <a href="https://kevintngo.github.io/statechart-art/one-becomes-two/" rel="noopener">One becomes two</a>：把一个细胞的分裂周期画成一面竖向滚动的状态图墙（提交信息称 61 个状态、77 步 ⚠️）；最后一次提交还加了配乐和“方形滚动视频”渲染器（视频请到原仓库观看）。本页以《The business of boba》为中心。</li>
 <li><strong>下游</strong>：April Zhu 的 Field Notes 页注明其“钢笔、铅笔和小人”改编自 statechart-art——本站收录过她的 <a href="../april-zhu-openhouse-skill/">Open House skill</a>。</li>
 <li><strong>推广</strong>：未见付费、联盟链接或 utm；纯个人作品页。</li>
 </ul>

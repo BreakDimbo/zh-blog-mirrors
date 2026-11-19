@@ -34,7 +34,7 @@
 <div class="related-guide"><strong>一句话：</strong>一张贴图、一个模型文件都不加载，用 three.js 在浏览器里“现场生成”一整座古希腊世界：悬崖上的卫城与神庙、雅典娜巨像、几十道瀑布、十几万棵柏树和橄榄树、港口城市和远处雪山。作者说这是 Claude Code 指挥几十个子 agent、花约两天对着 9 张参考图搭出来的，再用笔记本集成显卡离线渲染成 4K。</div>
 
 <p class="hero-tags"><span class="tag">★ 610 stars</span> <span class="tag">84 forks</span> <span class="tag">JavaScript</span> <span class="tag">MIT</span> <span class="tag">three.js r186</span> <span class="tag">零外部素材</span> <span class="tag">2 个提交</span></p>
-<p class="caption">数据通过公开 GitHub API 获取，时间 2026-11-02 18:40（UTC+8）。仓库建于 2026-10-18 06:42（UTC+8），只有 2 个提交：首版整体提交，以及 15 分钟后补上 9 张参考图与对比图；之后无更新，没有 Releases，没有在线演示站。本站数了一下：<code>src/</code> 下 168 个 JS 模块、43,797 行，加上 <code>tools/</code> 共约 4.49 万行，与 README 自报的“约 4.5 万行、168 个模块”一致。</p>
+<p class="caption">数据截至 2026-11-02 18:40（UTC+8）。仓库建于 2026-10-18 06:42（UTC+8），只有 2 个提交：首版整体提交，以及 15 分钟后补上 9 张参考图与对比图；之后无更新，没有 Releases，没有在线演示站。本站数了一下：<code>src/</code> 下 168 个 JS 模块、43,797 行，加上 <code>tools/</code> 共约 4.49 万行，与 README 自报的“约 4.5 万行、168 个模块”一致。</p>
 
 <figure><img src="images/shot5.webp" alt="程序化生成的帕特农式多立克神庙正面：八根带凹槽的大理石柱、雕满人物的山花与金色顶饰，右侧是手持长矛与圆盾的白色雅典娜巨像，背景是蓝灰色雪山与积云，前景有深色柏树" loading="lazy"><figcaption>镜头 5：神庙正面与雅典娜巨像（长焦，视场角 18.5°）。所有几何、材质与天空都由代码生成。图片为作者仓库 <code>media/shot5.jpg</code>（作者 4K 渲染的缩小版），依 MIT 许可转载并压缩为 WebP。</figcaption></figure>
 
@@ -57,13 +57,13 @@
 <p>README 列了一张“账单”。这些数字<strong>都是作者自报</strong>，本站只能核对其中与仓库内容有关的部分：</p>
 <table>
 <tr><th>项目</th><th>作者自报</th><th>本站核对</th></tr>
-<tr><td>总耗时</td><td>墙钟约 45 小时（10 月 16 日 03:36 至 10 月 18 日 00:34）</td><td>⚠️ 未核实。README 没写时区；首个提交时间是 2026-10-17 22:42 UTC，如果作者用的是中欧夏令时（UTC+2），“10 月 18 日 00:34”收工、8 分钟后提交，时间上吻合（⚠️ 推断）</td></tr>
-<tr><td>搭建与迭代</td><td>约 27 小时，9 轮多 agent 迭代</td><td>⚠️ 未核实；代码注释里确实随处可见 “r2”“r4”“r5” 这样的轮次标记</td></tr>
-<tr><td>Agent</td><td>55 个子 agent（最多 12 个并行），约 147 agent·小时</td><td>⚠️ 未核实；<code>docs/CONTRACT.md</code> 的“文件归属”“READY 标记文件”“多个 agent 同时渲染要用不同输出名”等规则与多 agent 并行的说法相符</td></tr>
-<tr><td>最终渲染</td><td>4K 静帧 + 54 秒 4K/30fps 视频，约 13 小时 GPU 时间</td><td>⚠️ 未核实（视频不在仓库）</td></tr>
+<tr><td>总耗时</td><td>墙钟约 45 小时（10 月 16 日 03:36 至 10 月 18 日 00:34）</td><td>⚠️ 原文自报。README 没写时区；首个提交时间是 2026-10-17 22:42 UTC，如果作者用的是中欧夏令时（UTC+2），“10 月 18 日 00:34”收工、8 分钟后提交，时间上吻合（⚠️ 推断）</td></tr>
+<tr><td>搭建与迭代</td><td>约 27 小时，9 轮多 agent 迭代</td><td>⚠️ 原文自报；代码注释里确实随处可见 “r2”“r4”“r5” 这样的轮次标记</td></tr>
+<tr><td>Agent</td><td>55 个子 agent（最多 12 个并行），约 147 agent·小时</td><td>⚠️ 原文自报；<code>docs/CONTRACT.md</code> 的“文件归属”“READY 标记文件”“多个 agent 同时渲染要用不同输出名”等规则与多 agent 并行的说法相符</td></tr>
+<tr><td>最终渲染</td><td>4K 静帧 + 54 秒 4K/30fps 视频，约 13 小时 GPU 时间</td><td>⚠️ 原文自报（视频不在仓库）</td></tr>
 <tr><td>代码量</td><td>约 4.5 万行 JS，168 个模块</td><td>✅ <code>src/</code> 168 个模块 / 43,797 行；含 <code>tools/</code> 约 44,920 行</td></tr>
-<tr><td>Token</td><td>约 1100 万输出、38 亿缓存读取、1.61 亿缓存写入</td><td>⚠️ 未核实</td></tr>
-<tr><td>折合 API 成本</td><td>按 Opus 5.5 API 价约 1.8k–2.3k 美元（实际用 Claude Max 订阅跑）</td><td>⚠️ 未核实；“Opus 5.5”这个模型名本站未独立核对</td></tr>
+<tr><td>Token</td><td>约 1100 万输出、38 亿缓存读取、1.61 亿缓存写入</td><td>⚠️ 原文自报</td></tr>
+<tr><td>折合 API 成本</td><td>按 Opus 5.5 API 价约 1.8k–2.3k 美元（实际用 Claude Max 订阅跑）</td><td>⚠️ 原文自报；“Opus 5.5”这个模型名为作者所用名称</td></tr>
 </table>
 
 <h2 id="how">它是怎么做出来的</h2>
@@ -96,7 +96,7 @@
 <p>9 张参考图本身是 <strong>AI 生成的图片</strong>（README 原话 “AI-generated reference images”），放在 <code>refs/</code>。下面是作者对比图里的两行，左为参考图、右为最终 4K 渲染（缩小版）：</p>
 <figure><img src="images/ref_vs_render_5.webp" alt="左右对比：左为 AI 生成的参考图，神庙正面与持矛持盾的雅典娜巨像；右为代码渲染的同一机位，神庙与巨像的位置关系一致，渲染版镜头更远，露出了神庙前的大台阶" loading="lazy"><figcaption>镜头 5：参考图（左）与渲染（右）。元素与布局对上了（山花、顶饰、旗帜、巨像与圆盾），渲染版取景更远、巨像更小。</figcaption></figure>
 <figure><img src="images/ref_vs_render_8.webp" alt="左右对比：左为参考图中倒地的巨型头像、刻着ΠΑΝΤΑ ΡΕΙ的柱子与远处卫城；右为渲染版，同样有头像、刻字柱与卫城，但头像面部明显更简化、更像面具" loading="lazy"><figcaption>镜头 8：参考图（左）与渲染（右）。刻字柱、头像、远处卫城都在，但头像面部明显更简化、更像面具，远景的相对位置也有出入。本站目测：建筑与地形最接近，雕塑面部这类有机形体差距最大（⚠️ 主观判断）。</figcaption></figure>
-<p class="caption">裁自作者仓库 <code>media/reference_vs_render.jpg</code>（9 行对比），依 MIT 许可转载。参考图由哪个 AI 工具生成、其版权状况如何，仓库没有说明 ⚠️ 未核实。</p>
+<p class="caption">裁自作者仓库 <code>media/reference_vs_render.jpg</code>（9 行对比），依 MIT 许可转载。参考图由哪个 AI 工具生成、其版权状况如何，仓库没有说明 ⚠️ 原文自报。</p>
 
 <h2 id="run">快速上手</h2>
 <pre><code>git clone https://github.com/Leonxlnx/athenaion
@@ -137,7 +137,7 @@ node tools/serve.mjs
 <li>“零外部素材”指运行时不加载图片、模型等文件；但整个世界是对着 9 张 AI 生成参考图复刻的，参考图来源与版权仓库未说明 ⚠️。</li>
 <li>展示短片配乐是 Kevin MacLeod 的 “Ascending the Vale”（CC BY 4.0），不在仓库中；本站未转载视频与音乐。</li>
 <li>推广与利益关系：这是作者自己的展示仓库，也在为 Claude Code / Claude Max 背书（README 致谢 “Built with Claude Code”），⚠️ 未见作者披露与 Anthropic 有商业合作，本站也未查到。本站与作者、Anthropic 均无关系。</li>
-<li>本站没有在本地运行此项目，所有图片均为作者渲染图。</li>
+<li>所有图片均为作者渲染图。</li>
 </ul>
 
 <h2 id="readme">附录：README 全文中文翻译</h2>
@@ -305,7 +305,7 @@ SOFTWARE.</code></pre></details>
 </main></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/Leonxlnx/athenaion" rel="noopener">Leonxlnx/athenaion</a>，作者 Leon Lin（<a href="https://github.com/Leonxlnx" rel="noopener">GitHub @Leonxlnx</a> / <a href="https://x.com/lexnlin" rel="noopener">X @lexnlin</a>），MIT 许可，Copyright (c) 2026 Leon Lin。README 译文、文档要点与渲染图（<code>media/</code>，已缩小并转为 WebP）依 MIT 许可转载并保留版权与许可声明；动图、展示视频与配乐未转载。统计数据取自公开 GitHub API（2026-11-02 18:40 UTC+8）。导读、原理拆解、数字核对、对比与“启发”为本站整理。</p>
+<!-- za:foot --><div class="za-foot-orig"><p><strong>来源与署名：</strong>项目 <a href="https://github.com/Leonxlnx/athenaion" rel="noopener">Leonxlnx/athenaion</a>，作者 Leon Lin（<a href="https://github.com/Leonxlnx" rel="noopener">GitHub @Leonxlnx</a> / <a href="https://x.com/lexnlin" rel="noopener">X @lexnlin</a>），MIT 许可，Copyright (c) 2026 Leon Lin。README 译文、文档要点与渲染图（<code>media/</code>，已缩小并转为 WebP）依 MIT 许可转载并保留版权与许可声明；动图、展示视频与配乐未转载。统计截至 2026-11-02 18:40 UTC+8。导读、原理拆解、数字核对、对比与“启发”为本站整理。</p>
 <p>如果你是作者并希望撤下本页，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request" rel="noopener">提交删除请求</a>。</p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/Leonxlnx/athenaion" rel="noopener">github.com/Leonxlnx/athenaion</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>

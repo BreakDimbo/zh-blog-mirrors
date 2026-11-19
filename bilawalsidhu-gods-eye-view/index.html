@@ -60,9 +60,9 @@
 <ul>
 <li>✅ 2026-11-10 通过连接器读取仓库元数据、根 LICENSE、<code>docs/media/README.md</code>、README，以及 main 最新提交 <code>78c5b6c</code>（新加坡时间 09:38:26，Sameh Khamis 合并 PR #1641）。创建于 2026-06-22T23:37:22Z（新加坡时间 2026-06-23 07:37:22）。当时 ★ 63,953、fork 12,602、未关闭 issue 402——这些数字会变。</li>
 <li>✅ 官方站点 <a href="https://godseyeview.ai/">godseyeview.ai</a> 在 robots 允许下只读了文字：确认是官方站，托管版仍为即将推出 / 等候名单，并给出商标与“许可覆盖代码、不覆盖名称或内容”的说明。</li>
-<li>⚠️ README 与官网中的社交数据为项目自报，本站未独立核验：YouTube 5M+ / 全网 25M+ 观看、2026 年 8 月 GitHub Trending 日榜与周榜第一（官网还写 9 月 12 日再上榜、10 月 13 日第二）、Product Hunt 当日第八、Brendan Eich 的短评（README 附了 X 链接，本次未打开核对）。冷启动中位 1.86 秒是某次 M5/Chrome 对照基线，不是对你机器的保证。</li>
+<li>⚠️ README 与官网中的社交数据为项目自报，均为项目自报：YouTube 5M+ / 全网 25M+ 观看、2026 年 8 月 GitHub Trending 日榜与周榜第一（官网还写 9 月 12 日再上榜、10 月 13 日第二）、Product Hunt 当日第八、Brendan Eich 的短评（README 附了 X 链接）。冷启动中位 1.86 秒是某次 M5/Chrome 对照基线，不是对你机器的保证。</li>
 <li>⚠️ 图层数量、11,000+ 航班、约 7,350 个摄像头位点、数据中心 4,352 / 水坝 704 / 海缆 712 等，均为 README 当时的陈述。同一 README 在“三峡”任务里写“再找到 703 座水坝”，与 704 不一致，未在运行中核对。</li>
-<li>⚠️ 本站未安装、未运行该应用，也未下载或观看演示视频与 GIF。交通模拟、摄像头姿态、发射轨迹等，作者已标明为估计或重建；官方站点另提到 Sentinel-2 近期影像，README 通读中未展开，未核实其当前开关与条款。源码树中存在 <code>src/sdr/</code>，与官网所述 SDR 能力相符，但未实跑。</li>
+<li>⚠️ 应用效果、演示视频与 GIF 均以项目说明为准；本页未转载演示视频与 GIF。交通模拟、摄像头姿态、发射轨迹等，作者已标明为估计或重建；官方站点另提到 Sentinel-2 近期影像，README 通读中未展开，当前开关与条款以官网为准。源码树中存在 <code>src/sdr/</code>，与官网所述 SDR 能力相符，均为项目说明。</li>
 <li>⚠️ 官网自述 Bilawal 曾担任 Google 三维世界模型产品负责人、参与 Immersive View 与 3D Tiles API，未做独立背景核实。</li>
 <li>ChatGPT / Codex OAuth 语音被作者标为实验性；成功签发令牌不等于计费或支持条款已经明确。</li>
 </ul>
@@ -87,7 +87,7 @@
 <p>先从附带的数据源开始，再加入你自己的。每一层都是单独的模块。</p>
 <h3>它能做什么</h3>
 <ul><li><strong>驾驶舱视角：</strong>坐进被跟踪的航班里——相机会一路把下方地形保持在你脚下。</li><li><strong>近距目标名单：</strong>目标周围 250 公里内的名册——可逐步浏览实时飞机，并进入任一驾驶舱。</li><li><strong>点击即跟踪：</strong>相机锁定、画出渐隐尾迹、显示完整元数据；被跟踪的火点或船只可一键交给最近的实时摄像头。</li><li><strong>语音白板：</strong>对着世界说话做标注——真正的边界多边形、标记和路线。</li><li><strong>三维机库：</strong>按机型的真实三维模型——787、ATR-72、Citation、Bell 206、MQ-9——被跟踪目标在靠近时会从符号换成三维模型。</li><li><strong>重绘现实：</strong>在普通地球上叠加 GLSL 传感器外观——CRT、夜视、FLIR/热成像、Noir。</li><li><strong>探测叠加：</strong>视口里每一目标的屏幕空间包围盒与编号。</li><li><strong>军用抬头显示：</strong>带情报风格遥测的战术 HUD。</li><li><strong>全球上下文：</strong>一键铺开完整态势，离开时回到你原来的精确视角。</li><li><strong>场景导演：</strong>为短片和演示捕捉电影感相机巡游。</li><li><strong>分享链接：</strong>相机、风格、图层，甚至一个被跟踪目标，都可以序列化进 URL——实时目标是交接，不是书签。</li><li><strong>重置地球：</strong>一个控件——或一句话——回到完整地球。</li><li><strong>天气：</strong>播放 GFS 或 ECMWF 预报风场，回放实测雷达、卫星云图和闪电，并跟随 NHC/CPHC 气旋路径。无需密钥。</li><li><strong>已标注的车牌识别摄像头：</strong>OpenStreetMap 中标记的车牌识别摄像头位置，一次一座城市。只有位置和标签；无需密钥。</li><li><strong>卫星过境：</strong>用语音询问任一已加载卫星下次从你所在地上空升起的时间：升起、最高点和落下，以及是否可见。</li><li><strong>分析师问答：</strong>用语音统计、筛选和排序卫星、数据中心和水坝，也可问航班、船舶、火灾和地震；答案会说明源是否过时或已回退。</li><li><strong>倾斜与北朝上：</strong>在正射和下俯 35° 斜视之间切换，或把北方放到上方，被跟踪目标保持居中。</li><li><strong>无需密钥的搜索：</strong>输入十进制坐标、二维 WGS84 的 geo: URI（例如 geo:39.7392,-104.9903），或附带的城市、地标，即可飞过去，不必请求地理编码器；其他名称在已配置时走 Google，再回退到 Photon 和 Nominatim。</li><li><strong>可分享场景：</strong>把导演场景作为文件或包导入、预览和分享，含相机锚点、编写的运镜和数据包。</li><li><strong>尼泊尔洪水场景：</strong>回放 Bhote Koshi 洪水：洪水路径、目击者来源和前后影像（捆绑数据不可商用；见 DATA_SOURCES.md）。</li></ul>
-<p>完整演示见作者 YouTube 视频：<a href="https://www.youtube.com/watch?v=GRJaKcXZS94">https://www.youtube.com/watch?v=GRJaKcXZS94</a>（本页未嵌入、未下载该视频）。</p>
+<p>完整演示见作者 YouTube 视频：<a href="https://www.youtube.com/watch?v=GRJaKcXZS94">https://www.youtube.com/watch?v=GRJaKcXZS94</a>（本页未嵌入该视频）。</p>
 <h3 id="readme-quick-start">快速开始</h3>
 <p>本地安装不需要账号或 API 密钥。应用打开时使用 Esri 卫星影像和无需密钥的地形。若 Esri 无法访问，则回退到 OSM。航班、军用交通、卫星、地震、公共摄像头、广播和发射任务均可在无密钥时使用。</p>
 <p>若要摄影级三维，可为符合条件的个人非商业用途添加 <strong>Cesium ion 令牌</strong>，或使用 <strong>Google Maps 密钥</strong>走直接、计量的路线并使用 Google 地点搜索。须遵守提供方条款与配额。密钥通过应用内的 <strong>POWER UP</strong> 面板添加；<a href="#readme-keys">密钥与费用</a>一节说明选项。</p>

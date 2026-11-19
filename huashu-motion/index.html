@@ -57,7 +57,7 @@
 <h3>对标科技巨头的发布片</h3>
 <p>这个项目的起点是Claude Motion。10月8号Anthropic发布了它，让Claude用代码把报告、图表、产品讲解做成短动画，可以指着画面改，不过我查到的是，现在也还只在Team和Enterprise上beta。今年4月Claude Design出来的时候，我把它的核心能力逆向成了skill，就是后来的huashu-design，所以这次我也让Claude Code直接开工了，要求就一句：</p>
 <blockquote><p>我们的skill需要能够完整复刻claude motion的能力，并且要强很多！</p></blockquote>
-<p>结果第一天做出来的东西，我看着都很无聊。编辑器、版本管理、一百多项测试都有了，一个19秒的3D城市样片，但。。。就是很稀烂。运镜上缺乏节奏，很平稳，也就代表着很平庸……这也不是为了这次的动画调整。</p>
+<p>结果第一天做出来的东西，我看着都很无聊。编辑器、版本管理、一百多项测试都有了，一个19秒的3D城市样片，但。。就是很稀烂。运镜上缺乏节奏，很平稳，也就代表着很平庸……这也不是为了这次的动画调整。</p>
 <p>所以我后面给agent，定了个目标，跟他画个饼表示希望我们的skill能帮助用户做出顶级的东西，想做出视觉效果、动效、音效、配乐，传达都是百万美元产品发布广告片级别的产品！</p>
 <p>所以我们测试的，以及制作的目标，就是让你也能做出Apple、Google、Anthropic这些科技巨头那种商业级的宣传片。</p>
 <p>标准定在那儿，就得先弄清楚那些片子到底是怎么做的。于是它去YouTube下了21支真实的发布片和开场片（Apple、Nothing、GoPro、Google、Vercel、Linear，还有Anthropic自己的），用ffmpeg一支一支地量切点、节拍、响度、能量曲线和颜色，又拆了142支高互动的发布片和动效片，按产品类型整理出各自用了什么手法。</p>
@@ -129,7 +129,7 @@
 <ul>
 <li><strong>Claude Motion</strong>：Anthropic 2026-10-08 发布，beta 仅限 Team 与 Enterprise（Team 默认开、Enterprise 需管理员开启），不用视频生成模型——<a href="https://claude.com/resources/articles/dashboards-and-motion">官方公告</a>、<a href="https://support.claude.com/en/articles/17454997-get-started-with-claude-motion">帮助中心</a>与 Reuters 报道一致。✅</li>
 <li><strong>DeepSeek-V4.1-Flash-1017</strong>：@deepseek_ai 于 10-17 16:35（UTC+8）发帖发布，与“昨天发布”相符。✅</li>
-<li><strong>仓库内容数量</strong>（GitHub 公开 API 读取文件树）：<code>references/library/languages/</code> 下 20 个运动语言文件 ✅；<code>templates/</code> 10 个模板（blank、finance-chart、keynote-ui、kinetic-type、kurzgesagt、math-3b1b、storytime、talking-head、vox-collage、whiteboard）✅；<code>cli/lib/sound.js</code> 定义 23 种音效（pop、tick、click、whoosh … shutter）✅；示范谱 3 份（first-light、four-rooms、signal .abc）✅；方法文档含 director / rhythm / colour / sound / talking-head 等 13 份 ✅；<code>test/</code> 21 个测试文件（“一百多项测试”未逐条计数）。</li>
+<li><strong>仓库内容数量</strong>（GitHub 公开 API 读取文件树）：<code>references/library/languages/</code> 下 20 个运动语言文件 ✅；<code>templates/</code> 10 个模板（blank、finance-chart、keynote-ui、kinetic-type、kurzgesagt、math-3b1b、storytime、talking-head、vox-collage、whiteboard）✅；<code>cli/lib/sound.js</code> 定义 23 种音效（pop、tick、click、whoosh … shutter）✅；示范谱 3 份（first-light、four-rooms、signal .abc）✅；方法文档含 director / rhythm / colour / sound / talking-head 等 13 份 ✅；<code>test/</code> 21 个测试文件（“一百多项测试”为原文自报）。</li>
 <li><strong>仓库状态</strong>：MIT，版本 0.1.0，创建于 10-18 20:19（UTC+8），抓取时 69★ / 14 fork。</li>
 <li><strong>无法核实</strong>：“不少人以为是 DeepSeek 官方宣传片”、1.95 元/缓存命中率 99.4%、一夜五支/一天二十支、21 支与 142 支片子的测量过程、小猫补光灯 Pro 预览视频已提交审核——均为作者自述。另：“去 YouTube 下了 21 支发布片”涉及 YouTube 条款，README 称仓库只记录测量参数、不含画面。</li>
 </ul>

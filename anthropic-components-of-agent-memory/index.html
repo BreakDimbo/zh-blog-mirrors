@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>智能体记忆的组成：从即时笔记到后台整理</title><meta name="description" content="从任务现场的显著性判断，到 dreaming 回查纠错、wiki 表示和分层注入；作者内部评估未复现，本库映射为自行解读。">
+<title>智能体记忆的组成：从即时笔记到后台整理</title><meta name="description" content="从任务现场的显著性判断，到 dreaming 回查纠错、wiki 表示和分层注入；作者内部评估为原文自报；本库映射为自行解读。">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
@@ -42,7 +42,7 @@
 <li>持续维护：在即时可用性与离线算力、时效性之间权衡。</li>
 </ul>
 <h3 id="4-wiki-wiki">4. wiki + 搜索，而不是 wiki 取代来源</h3>
-<p>Anthropic 自报的 Stainless 内部文档实验涵盖约 35 万文件、4.2 亿 tokens 和 25 道问题。增加整理轮次后，wiki 单独回答的评分从 13% 升至 48%；wiki 加搜索从 54% 升至 61%，仅搜索为 53%，并报告每问节约约两万 tokens。⚠️ 这是作者的内部评估，本文未复现；这些数字不是任意资料库的保证。</p>
+<p>Anthropic 自报的 Stainless 内部文档实验涵盖约 35 万文件、4.2 亿 tokens 和 25 道问题。增加整理轮次后，wiki 单独回答的评分从 13% 升至 48%；wiki 加搜索从 54% 升至 61%，仅搜索为 53%，并报告每问节约约两万 tokens。⚠️ 这是作者的内部评估，均为原文自报；这些数字不是任意资料库的保证。</p>
 <h3 id="5">5. 有些任务需要精确保留，不宜概括</h3>
 <p>涉及多文档合并和推理时，wiki 的关系整理更有价值；单文档文字检索可解决的任务未出现明确优势。法律合同案例中，共享汇总表产生遗漏与并发覆盖；调整为每份合同由单一 agent 负责一页并准确保留条款后，作者报告覆盖事实从 41/57 提升至 57/57。⚠️ 这是任务特定结果，不能解释为“所有 wiki 都该逐字引用”。文中也展示 wiki 膨胀到超过原始资料、没有产生抽象价值的失败例。</p>
 <h2 id="obsidian-llm-wiki">对我们的 Obsidian + LLM wiki 的映射（⚠️ 自行解读）</h2>

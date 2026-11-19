@@ -31,7 +31,7 @@
 
 <nav class="toc"><strong>目录</strong><ol>
 <li><a href="#what">这是什么</a></li>
-<li><a href="#stats">仓库快照（2026-11-04 核）</a></li>
+<li><a href="#stats">仓库快照（2026-11-04）</a></li>
 <li><a href="#who">适合谁</a></li>
 <li><a href="#tour">看一眼：桌面、区块与贴纸</a></li>
 <li><a href="#how">它是怎么画出来的</a></li>
@@ -48,10 +48,10 @@
 <p>关键是“换皮不换骨”。Looseleaf 沿用 shadcn/ui 的部件划分、props 和 <code>data-slot</code> 名称，底层仍是 Radix，所以原本用 shadcn 写的 JSX 不用改，换掉组件文件就能换上这身手绘风。作者的原话是：<em>“The charm is decoration; the semantics are ordinary Radix.”</em>（好看的是装饰，语义还是普通的 Radix。）</p>
 <p>规模上，README 列了 <strong>123 个组件</strong>（shadcn/ui 全部部件，外加纸张物件、标记、贴纸、画板和聊天组件）、<strong>61 个区块</strong>（侧栏、登录注册、仪表盘、设置、定价、聊天、笔记和落地页段落）、一套代码绘制的美术素材（160 个图标、48 个涂鸦、88 张贴纸，以及吉祥物铅笔头 Stubby 的 15 种姿势），还有作者自制的手写字体 <strong>Kevin Sans</strong>。</p>
 
-<h2 id="stats">仓库快照（2026-11-04 00:50 UTC+8 核）</h2>
+<h2 id="stats">仓库快照（2026-11-04 00:50 UTC+8）</h2>
 <table>
 <tr><th>项</th><th>值</th></tr>
-<tr><td>Star / Fork</td><td>270 / 0（GitHub API）</td></tr>
+<tr><td>Star / Fork</td><td>270 / 0</td></tr>
 <tr><td>创建 / 最近推送</td><td>2026-11-01 13:16 / 2026-11-02 02:25（UTC+8）</td></tr>
 <tr><td>提交</td><td>9 个，均由 Kevin T. Ngo 提交；首个提交 <code>41e6ad9</code>“Looseleaf: shadcn/ui, drawn by hand”，附 <code>Co-Authored-By: Claude Opus 5.5</code>；最新 <code>4bdb647</code>（让文档在手机上能给长单词断行）</td></tr>
 <tr><td>技术栈</td><td>TypeScript；React 19、Tailwind CSS v4、radix-ui、cmdk、vaul、sonner、react-day-picker、embla-carousel、react-hook-form + zod；Vite 构建文档站，Vitest 测试</td></tr>
@@ -128,9 +128,9 @@ export function App() {
 
 <h2 id="notes">核对与 ⚠️ 注记</h2>
 <ul>
-<li><strong>数字是作者自报</strong>：123 个组件、61 个区块与 <code>registry.json</code> 的计数一致 ✅（本站自数）。160 个图标、48 个涂鸦、88 张贴纸、Stubby 15 种姿势，以及首页“6,500+ 个测试、每页跑 axe”，本站没有逐项清点或运行 ⚠️ 未核实。</li>
-<li><strong>无障碍承诺未实测</strong>：README 列了键盘、可见焦点、AA 对比度、24 px 点击区、减少动效、强制颜色（forced colors）、RTL 和三档密度。文档站的无障碍页自己注明：强制颜色模式的规则已写进样式表，但“还没有在真实浏览器里看过”。本站没有跑任何无障碍测试 ⚠️。</li>
-<li><strong>与 shadcn/ui 的兼容程度</strong>：“换文件、不改 JSX”是作者的说法。仓库带有 <code>.upstream/shadcn</code> 目录和 <code>tests/_official-parity-2</code>，看起来是拿 shadcn 官方源码做对照测试 ⚠️ 推断；本站没有在真实项目里安装验证 ⚠️ 未实测。registry 的 <code>button.json</code> 和字体 CSS 地址线上可访问（200）。</li>
+<li><strong>数字是作者自报</strong>：123 个组件、61 个区块与 <code>registry.json</code> 的计数一致 ✅（本站自数）。160 个图标、48 个涂鸦、88 张贴纸、Stubby 15 种姿势，以及首页“6,500+ 个测试、每页跑 axe”，均为页面自报 ⚠️。</li>
+<li><strong>无障碍承诺为作者自述</strong>：README 列了键盘、可见焦点、AA 对比度、24 px 点击区、减少动效、强制颜色（forced colors）、RTL 和三档密度。文档站的无障碍页自己注明：强制颜色模式的规则已写进样式表，但“还没有在真实浏览器里看过”。无障碍相关表述为作者自述 ⚠️。</li>
+<li><strong>与 shadcn/ui 的兼容程度</strong>：“换文件、不改 JSX”是作者的说法。仓库带有 <code>.upstream/shadcn</code> 目录和 <code>tests/_official-parity-2</code>，看起来是拿 shadcn 官方源码做对照测试 ⚠️ 推断；安装与集成效果为作者自述 ⚠️。registry 的 <code>button.json</code> 和字体 CSS 地址线上可访问（200）。</li>
 <li><strong>非 shadcn 官方</strong>：这是个人作品，与 shadcn/ui 及其作者没有关联迹象；只是用了 shadcn 的 registry 机制。</li>
 <li><strong>项目很新</strong>：2026-11-01 才公开，版本号 0.1.0，3 天内 9 个提交；API 和样式可能还会变 ⚠️。</li>
 <li><strong>字体与依赖</strong>：README 说 Kevin Sans 为 MIT、IBM Plex Mono 为 SIL OFL 1.1；<code>package.json</code> 里另有 Caveat、Kalam、Special Elite 等 @fontsource 字体包，各自有自己的许可，用于文档站还是组件、发布时是否随包分发，本站没细查 ⚠️。</li>

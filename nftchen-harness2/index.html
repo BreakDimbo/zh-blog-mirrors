@@ -57,7 +57,7 @@
 <figure><img src="shot1.webp" alt="推文配图：Harness² README 机翻截图，高亮“系统框架”“即插即用”“任务级递归”" loading="lazy"><figcaption>配图 1：README 开头的机翻截图（作者加了高亮）</figcaption></figure>
 <figure><img src="shot2.webp" alt="推文配图：流程图与 8 个组件图，高亮 WorkBuddy-Bench 最高提升 11.5 分" loading="lazy"><figcaption>配图 2：流程图、成绩段落与“8 个组件”</figcaption></figure>
 </div>
-<figure><img src="shot3.webp" alt="推文配图：GitHub 仓库 google-research/harness2 页面，Apache-2.0，约 4.8k star、432 fork" loading="lazy" style="max-width:420px"><figcaption>配图 3：仓库页截图（截图时约 4.8k star、432 fork，我们未独立核对）</figcaption></figure>
+<figure><img src="shot3.webp" alt="推文配图：GitHub 仓库 google-research/harness2 页面，Apache-2.0，约 4.8k star、432 fork" loading="lazy" style="max-width:420px"><figcaption>配图 3：仓库页截图（截图时约 4.8k star、432 fork，截图时所示）</figcaption></figure>
 <p>帖子下面作者只回了一条评论：“对，来个自我进化🧬”，没有补充自回复。</p>
 
 <h2 id="quoted">引用的前一条推文（Terminal-RSI）</h2>
@@ -104,7 +104,7 @@
 <p><strong>“性能评分拉升 11.5 分”：</strong>数字对得上，但有条件：是 WorkBuddy-Bench 上、某一模型-harness 配置下的<strong>最高</strong>涨幅，而且是<strong>单步</strong>（<a href="https://arxiv.org/abs/2610.14224">arXiv:2610.14224</a> 摘要：“a single step consistently improves … yielding gains of up to 11.5 points on WorkBuddy-Bench”）。推文“多轮后最高涨 11.5 分”的说法与原文不符。项目站展示的 Gemini 3.5 Flash / OpenCode 在 k=5 时三个子域分别 +7.4（代码）、+8.4（网页）、+9.4（办公）。</p>
 <p><strong>“不需要标准答案，也不需要人工打分”：</strong>前半句是论文的核心卖点（“without ground-truth verifiers”）。后半句 README 没有直接写，但流程里的编辑、组合、反思都由模型完成，确实不需要人工逐条打分；评测阶段仍有 <code>harness2-judge</code> 按基准评分标准打分。</p>
 <p><strong>“办公、法律等真实任务”：</strong>成立，对应 WorkBuddy-Bench 的 office 子集和 LAB（法律）。注意它们仍是基准任务，不是线上生产。</p>
-<p><strong>三步上手命令：</strong>与 README 的 Install 一节一致；<code>harness2-demo</code> 在 <code>pyproject.toml</code> 中注册为命令行入口。我们没有实际运行 demo。</p>
+<p><strong>三步上手命令：</strong>与 README 的 Install 一节一致；<code>harness2-demo</code> 在 <code>pyproject.toml</code> 中注册为命令行入口。demo 效果以项目说明为准。</p>
 <p><strong>安全提示（README 原文要点）：</strong>执行器网络访问不受限，Codex 运行时关闭沙箱；公开基准的评分标准可能在网上搜得到，评测前需要自己限制网络。推文没提这一点。</p>
 <p><strong>配图里的 star/fork 数</strong>（约 4.8k / 432）来自作者截图，我们没有独立核对。</p>
 </div>

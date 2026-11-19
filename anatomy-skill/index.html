@@ -137,14 +137,14 @@
 <hr>
 <section id="elvar-2026-10-29">
 <h2 id="elvar">2026-10-29 增补：Elvar《把任何问题变成一台能运行的机器》（X 长文全文中译）</h2>
-<div class="related-guide"><strong>增补说明（2026-10-29，UTC+8）：</strong>以下是 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）2026-10-18 22:45（UTC+8）发布的 X 长文 <a href="https://x.com/elvar_official/status/2111831136171151589">How I Turn Any Question Into a Machine You Can Run</a> 的全文中译。这是作者本人的原创长文，按本站规则全文翻译，10 条提示词保留英文原文，并附中文对照；英文全文放在本节末尾的折叠附录里。Elvar <b>不是</b> Anatomy 的作者，他是用这个 Skill 做东西的第三方创作者。按 R6 规则，同一项目的内容并入本页，不另建新页。封面与两张视频海报帧取自原帖（只取海报帧，没有下载视频），网站截图由本站用 Chrome 截取。</div>
+<div class="related-guide"><strong>增补说明（2026-10-29，UTC+8）：</strong>以下是 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）2026-10-18 22:45（UTC+8）发布的 X 长文 <a href="https://x.com/elvar_official/status/2111831136171151589">How I Turn Any Question Into a Machine You Can Run</a> 的全文中译。这是作者本人的原创长文，按本站规则全文翻译，10 条提示词保留英文原文，并附中文对照；英文全文放在本节末尾的折叠附录里。Elvar <b>不是</b> Anatomy 的作者，他是用这个 Skill 做东西的第三方创作者。按 R6 规则，同一项目的内容并入本页，不另建新页。封面与两张视频海报帧取自原帖（只取海报帧，未转载视频），网站截图由本站用 Chrome 截取。</div>
 <figure><img src="images/cover.webp" alt="Elvar 长文封面：Claude Code × anatomy / Visual learning" loading="lazy"><figcaption>原文封面图（Elvar）。图里的 Claude Code 和 anatomy 字标是作者自己做的拼贴，不代表 Anthropic 或 Anatomy 作者官方背书。</figcaption></figure>
 
 <div class="related-guide"><p><strong>先读这几条（本站注记）</strong></p><ul>
 <li>⚠️ <b>利益相关：</b>文末推荐的 <a href="https://visual-learning.app/">visual-learning.app</a> 是 Elvar 自己的网站，页面标着 “Made by @elvar_official”。网站目前免费、没看到收费入口，但这篇文章本身也在给他的网站引流。文中没有提到他和 Anatomy 作者 Ryan 有合作或报酬关系，这一点本站无法核实。</li>
 <li>⚠️ <b>付费依赖：</b>文中路线依赖 Claude Code，需要包含 Claude Code 的付费 Claude 套餐（或 API 计费）。Skill 本身免费，MIT 许可。仓库 README 现在也写明支持 Antigravity、OpenCode、Codex 和 MiniMax Code，不只是 Claude Code。</li>
 <li>⚠️ <b>“10 分钟”与仓库说法不一致：</b>作者说 10 分钟就做出了咖啡机，但 Anatomy README 的“局限”一节写的是“它故意很慢，一张图要一个很长的会话”。CHANGELOG 也提到，因为 30–90 分钟的预估常常比实际构建长得多，已经去掉了耗时预估（#41）。耗时因模型、机器和图的复杂度差异很大，“10 分钟”是作者自报。</li>
-<li>⚠️ <b>未核实的自报数据：</b>打气筒课 122,818 次浏览、洗衣机 110,691 次浏览、像素跳变统计（900–1,400 / 95,245 像素、612 帧）、视频 2,160 帧 / 4.5 MB，都是作者自报，本站没有复现。文末说“目前做了 12 台”，但 2026-10-29 本站访问该网站时，导航显示 “all 40”，应该是发文后陆续增加的（⚠️ 推断）。</li>
+<li>⚠️ <b>原文自报数据：</b>打气筒课 122,818 次浏览、洗衣机 110,691 次浏览、像素跳变统计（900–1,400 / 95,245 像素、612 帧）、视频 2,160 帧 / 4.5 MB，都是作者自报。文末说“目前做了 12 台”，但 2026-10-29 本站访问该网站时，导航显示 “all 40”，应该是发文后陆续增加的（⚠️ 推断）。</li>
 <li><b>本站做过的数字核对：</b>微波炉 6.12 cm：2.45 GHz 微波的波长约 12.24 cm，驻波相邻热点间距是半个波长，约 6.12 cm，用 2 × 6.12 cm × 2.45 GHz 算出约 3.0×10⁸ m/s，自洽。咖啡机参数（18 g 粉出 36 g 液，约 1:2；27 s；弹簧拉杆机 9 bar 降到 6 bar；锅炉约 1.1 bar）都在常见范围内，但属于典型值，不是某台具体机器的实测（⚠️ 推断）。“Node.js 22.20 或更新”与 README 一致：这是 skills CLI 1.7.1 的要求，Skill 本身只要 Node 20.10+。“8 个示例”与 README 表格一致。</li>
 </ul></div>
 
@@ -357,7 +357,7 @@ Each agent works in its own folder, never edits the shared files and checks its 
 <p>到目前为止我做了 12 台。想亲手按按钮的话，它们都免费放在 <a href="https://visual-learning.app/">visual-learning.app</a>。</p>
 
 <h3>本站补充：自 2026-10-11 镜像以来，仓库有什么变化</h3>
-<p>本站 2026-10-29 重新浅克隆了 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a>（HEAD <code>1482e84</code>，2026-10-19 04:20 UTC+8；上文 README 译文对应的是 <code>dbf697a</code>）。CHANGELOG 中与本页相关的更新：</p>
+<p>截至 2026-10-29，仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a>（HEAD <code>1482e84</code>，2026-10-19 04:20 UTC+8；上文 README 译文对应的是 <code>dbf697a</code>）。CHANGELOG 中与本页相关的更新：</p>
 <ul>
 <li><b>1.1.0（2026-10-12）：</b>新增 <code>scripts/publish.mjs</code>，可以把做好的图提交到社区画廊（见 <a href="../anatomy-community/">Anatomy 社区作品展</a>），并记录耗时和 token 用量；新增 OpenCode、Codex 支持；Linux 上的无头 Chrome 加了 <code>--no-sandbox</code>。</li>
 <li><b>未发布（Unreleased）：</b>新增可打印的 A4/Letter PDF 图纸（<code>scripts/print.mjs</code>，海报、工程图、详解三种版式）；新增 Antigravity、MiniMax Code 支持；不再向用户报预计耗时（#41）；修了一批审计、截图和驱动脚本的问题。</li>
@@ -488,7 +488,7 @@ Each agent works in its own folder, never edits the shared files and checks its 
 <hr>
 <section id="kaero-2026-10-30">
 <h2 id="kaero">2026-10-30 增补：Kaero《用 Claude 把任何问题造成一台能运转的机器》（X 长文全文中译）</h2>
-<div class="related-guide"><strong>增补说明（2026-10-30，UTC+8）：</strong>以下是 Kaero（<a href="https://x.com/0x_kaero">@0x_kaero</a>）2026-10-22 20:05（UTC+8）发布的 X 长文 <a href="https://x.com/0x_kaero/status/2113240274394562698">How to Build a Working Machine From Any Question with Claude</a> 的全文中译。这是作者本人发布的长文，按本站规则全文翻译；12 段提示词保留英文原文并附中文对照，英文全文放在本节末尾的折叠附录里。Kaero <b>不是</b> Anatomy 的作者。按 R6 规则，同一项目的内容并入本页，不另建新页。封面和两张视频海报帧取自原帖（只取海报帧，没有下载视频）。API 没有给出代码块和视频在正文里的位置，本节按上下文放回（⚠️ 推断）。</div>
+<div class="related-guide"><strong>增补说明（2026-10-30，UTC+8）：</strong>以下是 Kaero（<a href="https://x.com/0x_kaero">@0x_kaero</a>）2026-10-22 20:05（UTC+8）发布的 X 长文 <a href="https://x.com/0x_kaero/status/2113240274394562698">How to Build a Working Machine From Any Question with Claude</a> 的全文中译。这是作者本人发布的长文，按本站规则全文翻译；12 段提示词保留英文原文并附中文对照，英文全文放在本节末尾的折叠附录里。Kaero <b>不是</b> Anatomy 的作者。按 R6 规则，同一项目的内容并入本页，不另建新页。封面和两张视频海报帧取自原帖（只取海报帧，未转载视频）。API 没有给出代码块和视频在正文里的位置，本节按上下文放回（⚠️ 推断）。</div>
 <figure><img src="images/kaero-cover.webp" alt="Kaero 长文封面：Claude Code × Any Question / Visual Learning" loading="lazy"><figcaption>原文封面（Kaero）。图中写着 “Claude Code /Visual Learning”，Claude Code 字标是作者的拼贴，不代表 Anthropic 背书。</figcaption></figure>
 
 <div class="related-guide"><p><strong>先读这几条（本站注记）</strong></p><ul>
@@ -497,7 +497,7 @@ Each agent works in its own folder, never edits the shared files and checks its 
 <li>⚠️ <b>没有可核实的自报数据：</b>本文没有给出浏览量、耗时或实测数字；作者回复里的“你绝对不会后悔”属于推荐语气。文中没有 affiliate / utm 链接，没有付费课程或加密货币推广。</li>
 <li>⚠️ <b>付费依赖：</b>路线依赖 Claude Code，需要包含 Claude Code 的付费 Claude 套餐（或 API 计费）。Skill 本身免费，MIT 许可；仓库 README 也支持 Codex、OpenCode、Antigravity、MiniMax Code。</li>
 <li>⚠️ <b>提示词原文不完整：</b>“附加：让他们把它玩坏”一节的 “Add an experiment mode” 提示词在 X API 返回的原文里停在 “what stops working,”，后半句缺失，本站照原样保留，没有补写。</li>
-<li><b>本站核对：</b>安装命令 <code>npx skills add wheresryan22/anatomy -g -a claude-code</code> 和 <code>git clone … ~/.claude/skills/anatomy</code> 与仓库 README 一致 ✅；2026-10-30 重新浅克隆仓库，HEAD 仍是 <code>1482e84</code>（2026-10-19 04:20 UTC+8），10-29 之后没有新提交。</li>
+<li><b>本站核对：</b>安装命令 <code>npx skills add wheresryan22/anatomy -g -a claude-code</code> 和 <code>git clone … ~/.claude/skills/anatomy</code> 与仓库 README 一致 ✅；截至 2026-10-30，HEAD 仍是 <code>1482e84</code>（2026-10-19 04:20 UTC+8），10-29 之后没有新提交。</li>
 </ul></div>
 
 <h3>正文（中译）</h3>
@@ -1039,7 +1039,7 @@ Show what changes, what stops working,</code></pre>
 </article></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
-<!-- za:foot --><div class="za-foot-orig"><p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。本页没有实际运行这个 Skill，性能和效果描述都出自作者本人。2026-10-29 增补的长文版权归 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）所有，visual-learning.app 是他本人的网站。2026-10-30 增补的长文版权归 Kaero（<a href="https://x.com/0x_kaero">@0x_kaero</a>）所有，其演示画面中的机器出自 visual-learning.app。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文翻译镜像。原文版权归 Ryan（<a href="https://x.com/wheresryan22">@wheresryan22</a>）所有；仓库 <a href="https://github.com/wheresryan22/anatomy">wheresryan22/anatomy</a> 以 MIT 许可发布。性能和效果描述都出自作者本人。2026-10-29 增补的长文版权归 Elvar（<a href="https://x.com/elvar_official">@elvar_official</a>）所有，visual-learning.app 是他本人的网站。2026-10-30 增补的长文版权归 Kaero（<a href="https://x.com/0x_kaero">@0x_kaero</a>）所有，其演示画面中的机器出自 visual-learning.app。<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">删除请求</a> · Hub：<a href="../">中文博文镜像</a>。</p>
   <p>Repository：<a href="https://github.com/BreakDimbo/zh-blog-mirrors">BreakDimbo/zh-blog-mirrors</a></p></div><!-- /za:foot -->
 <div class="za-foot-std" data-za-gen>
 <p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/wheresryan22/status/2108948624004526516" rel="noopener">x.com/wheresryan22/status/2108948624004526516</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>

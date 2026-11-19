@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Claude Code / Codex + Seedance：从一个想法到 AI 视频成片的全流程（Eian）</title>
-<meta name="description" content="Eian @EianLu X 长文照录：Claude Code 当总导演、Codex 画首尾帧、Seedance 出片，把错误挡在花钱之前；附完整提示词与四线程协作。约 61.7 万浏览 / 1.54 万收藏（抓取快照）。">
+<meta name="description" content="Eian @EianLu X 长文照录：Claude Code 当总导演、Codex 画首尾帧、Seedance 出片，把错误挡在花钱之前；附完整提示词与四线程协作。约 61.7 万浏览 / 1.54 万收藏（截至 2026-11-06）。">
 <meta property="og:image" content="images/cover.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
@@ -28,11 +28,11 @@
 <!-- za:content --><main class="za-content">
 <p class="lede">Eian（@EianLu）这篇 X Article 只回答一件事：怎样用多模型工作流，以尽量少的钱、尽量低的抽卡率，做出自己满意的 AI 视频。工具层是 Claude Code（总导演）调用 Codex（画师）与 Seedance（动画师），外加 ffmpeg / Python；操作层从想法、分镜、首尾帧到提交前审核与后期拼接，并附可直接粘贴的完整提示词。</p>
 
-<div class="notice"><strong>版权说明：</strong>正文为作者本人中文长文，按本站规则<strong>逐字照录</strong>（附录提示词同）。配图为作者文章插图（示意插画，非真人照片），转 webp。文中 Seedance 价格、额度体验与抽卡结论为作者自述 ⚠️；本站未实测该工作流。成片视频不下载、不转载。</div>
+<div class="notice"><strong>版权说明：</strong>正文为作者本人中文长文，按本站规则<strong>逐字照录</strong>（附录提示词同）。配图为作者文章插图（示意插画，非真人照片），转 webp。文中 Seedance 价格、额度体验、抽卡结论与工作流均为作者自述 ⚠️。成片视频不转载。</div>
 
 <figure><img class="cover" src="images/cover.webp" alt="文章封面：插画风格的老虎机吐出胶片，旁标 Claude+Codex+Seedance" width="960" loading="lazy"><figcaption>原文封面（作者插图，本站转 webp）。</figcaption></figure>
 
-<p class="meta-line">抓取快照（2026-11-06，经 X MCP）：约 <strong>61.7 万</strong>浏览 · <strong>7,363</strong> 赞 · <strong>15,393</strong> 收藏 · <strong>1,121</strong> 转发 · <strong>128</strong> 回复 · <strong>100</strong> 引用。粉丝约 1.15 万。</p>
+<p class="meta-line">截至 2026-11-06：约 <strong>61.7 万</strong>浏览 · <strong>7,363</strong> 赞 · <strong>15,393</strong> 收藏 · <strong>1,121</strong> 转发 · <strong>128</strong> 回复 · <strong>100</strong> 引用。粉丝约 1.15 万。</p>
 
 <nav class="toc"><ol>
 <li><a href="#guide">导读：流程骨架</a></li>
@@ -264,9 +264,9 @@ key 在环境变量 ARK_API_KEY 里，不要打印出来。请求格式查火山
 <ul>
 <li>✅ 全文经 X MCP <code>get_posts_by_id</code>（含 article）读取；未刮 x.com HTML。</li>
 <li>✅ 与既有 <a href="../eianlu-grok-bot-resources/">Grok Bot 资源四站</a>（status 211639…）主题不同 → <strong>新建页</strong>，未做 R6 合并。</li>
-<li>⚠️ Seedance 单价（约 ¥1.5/秒 vs ¥0.5/秒）、OpenAI 合并额度后「画不了几张」等为作者体验，未核实账单。</li>
+<li>⚠️ Seedance 单价（约 ¥1.5/秒 vs ¥0.5/秒）、OpenAI 合并额度后「画不了几张」等为作者体验。</li>
 <li>⚠️ 火山方舟模型 ID、API 路径以官方文档为准；文中给出的型号字符串可能随产品更名。</li>
-<li>⚠️ 本站未跑通 Claude→Codex→Seedance 全流程，也未下载任何成片视频。</li>
+<li>⚠️ 全流程效果为作者自述；成片视频请到原帖观看，本页未转载。</li>
 </ul>
 <p>相关阅读（本站）：同作者 <a href="../eianlu-code-miniature-animation-collection/">孟菲斯微缩世界合集</a>、<a href="../eianlu-chengdu-rings/">一座城的年轮</a>；工作流对照 <a href="../chrishkai-video/">ChrisHKAI-Video</a>、<a href="../andyhuo520-digital-human-koubo/">digital-human-koubo</a>、<a href="../beamnxw-opus-launch-clip/">Opus Launch Clip</a>。</p>
 </main><!-- /za:content -->

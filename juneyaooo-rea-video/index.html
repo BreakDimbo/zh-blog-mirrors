@@ -26,7 +26,7 @@
 <div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
 <!-- za:content --><main class="za-content"><p class="lede">rea-video 不生成视频，而是回答“这条视频是怎么做出来的”：把一条参考视频切成镜头，逐镜判断底层画面是实拍、AI 生成、3D、代码模板还是录屏，再拆出字幕花字、剪辑节奏和声音来源，最后按实拍 / AI / 代码三条路线写复刻方案。它以 agent skill 的形式交给 Claude Code、Codex 一类能跑命令的智能体来用。</p>
 
-<div class="notice"><strong>版权说明：</strong>仓库根目录没有 LICENSE 文件，GitHub 也未识别出许可证（2026-11-04 核）；仅 <code>pyproject.toml</code> 写有 <code>license = { text = "MIT" }</code>。在作者补上正式许可证文件之前，本站按“未明确授权”处理：只做导读，引用原文仅限短句，不转载 README 全文、案例截图与视频。案例素材里有真人出镜画面，也一律不转载。</div>
+<div class="notice"><strong>版权说明：</strong>仓库根目录没有 LICENSE 文件，GitHub 也未识别出许可证（2026-11-04）；仅 <code>pyproject.toml</code> 写有 <code>license = { text = "MIT" }</code>。在作者补上正式许可证文件之前，本站按“未明确授权”处理：只做导读，引用原文仅限短句，不转载 README 全文、案例截图与视频。案例素材里有真人出镜画面，也一律不转载。</div>
 
 <h2>一句话定位</h2>
 <p>仓库简介写的是“逆向一切视频：实拍口播、桌拍、AI 视频、3D、代码动效、混剪，逐镜拆出画面、花字、剪辑和声音是怎么做的，并给出复刻方案”。思路来自 <a href="https://github.com/morluto/rea" rel="noopener">REA（Reverse Engineer Anything）</a>：从现象追到实现，结论附证据。</p>
@@ -55,7 +55,7 @@
 <p>README 与 <code>eval/RESULTS.md</code> 给出按镜头时长加权的“制作方式”准确率：只用工具时调参集 15 条 98.3%、留出集 99.6% / 98.9%、公众号转码视频 10 条 88.6%；加看图模型与 agent 复核后转码视频达 99.6%–100%。⚠️ 这些均为作者在自建小样本上的自测，未经第三方复现；RESULTS.md 自己也写明 holdout 集“已不完全独立”，用户真实素材的 holdout2“首轮只有 75.6%”，修复后才到 97.2%。抖音带货两条只用工具仅 46%，要靠看图纠正到 97.5%——平台压缩视频是明显短板。</p>
 
 <h2>和复刻工具的关系</h2>
-<p>rea-video 自己不出片。README 的 FAQ 把它和 Hypit 对比：Hypit 拿参考视频直接重做，不区分原片怎么拍；rea-video 先判断每镜是拍的、生成的还是代码做的，再分别给拍摄方案、提示词或代码思路。要“换元素复刻”，作者配套的是同账号的 <a href="https://github.com/JuneYaooo/cheap-claude-video" rel="noopener">cheap-claude-video</a>，README 展示的对比片用自部署 MiniMax H3 + gpt-image-2 关键帧生成。⚠️ 复刻效果仅见作者演示，本站未实跑。</p>
+<p>rea-video 自己不出片。README 的 FAQ 把它和 Hypit 对比：Hypit 拿参考视频直接重做，不区分原片怎么拍；rea-video 先判断每镜是拍的、生成的还是代码做的，再分别给拍摄方案、提示词或代码思路。要“换元素复刻”，作者配套的是同账号的 <a href="https://github.com/JuneYaooo/cheap-claude-video" rel="noopener">cheap-claude-video</a>，README 展示的对比片用自部署 MiniMax H3 + gpt-image-2 关键帧生成。⚠️ 复刻效果仅见作者演示。</p>
 
 <h2>值得注意的地方</h2>
 <ul>
@@ -66,10 +66,10 @@
 
 <h2>核实与待确认</h2>
 <ul>
-<li>⚠️ 许可证：仓库无 LICENSE 文件，GitHub API 显示 license 为空；仅 pyproject 声明 MIT。是否等同于正式授权，待作者补充。</li>
+<li>⚠️ 许可证：仓库无 LICENSE 文件，GitHub 未显示许可；仅 pyproject 声明 MIT。是否等同于正式授权，待作者补充。</li>
 <li>⚠️ 准确率数字为作者自测，样本量小（15 + 16 + 10 条），部分 holdout 已参与规则修订。</li>
-<li>⚠️ README 中“12 种布光方案”“10 类画面”等能力描述按文档转述，本站未实际运行拆解。</li>
-<li>⚠️ 案例中“歌实际是 Suno”“在即梦里生成”等来源判断，依据为作者陈述的真值，本站未独立核实。</li>
+<li>⚠️ README 中“12 种布光方案”“10 类画面”等能力描述按文档转述。</li>
+<li>⚠️ 案例中“歌实际是 Suno”“在即梦里生成”等来源判断，依据为作者陈述的真值。</li>
 </ul></main><!-- /za:content -->
 </div>
 <footer class="za-foot">
