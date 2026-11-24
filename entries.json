@@ -1,5 +1,20 @@
 [
   {
+    "slug": "xikhar-papercraft",
+    "title": "「Papercraft」：把立体书手艺写成一套可安装的智能体技能",
+    "desc": "Shikhar（@xikhar）的智能体技能 papercraft 导读：把游戏、可交互场景、网页、动画和视频做成手作弹出式纸艺风格。仓库 xikhar/papercraft 为 MIT（Copyright (c) 2026 Shikhar）。导读 + README 全文中译 + LICENSE 原文。封面和文内静帧来自仓库画廊。星标会变 ⚠️。源游戏在 README 里未点名，与同作者 Papertrails 的五个世界高度重合，本页只作互见 ⚠️。",
+    "description": "把立体书手艺写成可安装的智能体技能。仓库 MIT。导读 + README 中译 + 许可证原文。源游戏在 README 里未点名 ⚠️。",
+    "source": "GitHub · xikhar/papercraft（MIT）",
+    "date": "2026-11-21",
+    "type": "导读 + README 中译",
+    "subtitle": "弹出式纸艺技能 · 项目导读 + README 中译",
+    "original_url": "https://github.com/xikhar/papercraft",
+    "spine": "立体书手艺技能",
+    "summary": "从已上线的纸艺游戏里提炼方法，用来做游戏、网页和动画",
+    "kind": "项目",
+    "by": "Shikhar @xikhar"
+  },
+  {
     "slug": "alexandr-wang-superintelligence-is-arriving",
     "title": "「Superintelligence is Arriving」：超级智能正在到来",
     "desc": "Alexandr Wang（@alexandr_wang）于 2026-11-23 06:50（新加坡时间，UTC+8）在 X 发布长文《Superintelligence is Arriving》。他把刚发生的黎曼猜想证明视为超级智能正在到来的标志，认为原始智力已不再是瓶颈，并反对行业把「安全地实现 ASI」当成唯一问题，也不应安于把社会「移交」给人工智能。作者本人长文全文中译并附原文。封面为自制字体图。未见开放许可。文中关于证明分量、模型能力与行业路径的判断，均为原文自述 ⚠️。公开传播数字会变 ⚠️。",
