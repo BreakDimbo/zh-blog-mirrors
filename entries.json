@@ -1,5 +1,20 @@
 [
   {
+    "slug": "alexandr-wang-superintelligence-is-arriving",
+    "title": "「Superintelligence is Arriving」：超级智能正在到来",
+    "desc": "Alexandr Wang（@alexandr_wang）于 2026-11-23 06:50（新加坡时间，UTC+8）在 X 发布长文《Superintelligence is Arriving》。他把刚发生的黎曼猜想证明视为超级智能正在到来的标志，认为原始智力已不再是瓶颈，并反对行业把「安全地实现 ASI」当成唯一问题，也不应安于把社会「移交」给人工智能。作者本人长文全文中译并附原文。封面为自制字体图。未见开放许可。文中关于证明分量、模型能力与行业路径的判断，均为原文自述 ⚠️。公开传播数字会变 ⚠️。",
+    "description": "Alexandr Wang 的 X 长文全文中译：黎曼猜想证明之后，他认为超级智能正在到来，并反对把社会移交出去。文中判断均为原文自述 ⚠️。",
+    "source": "X · @alexandr_wang",
+    "date": "2026-11-23",
+    "type": "全文",
+    "subtitle": "Superintelligence is Arriving  ·  长文全文中译",
+    "original_url": "https://x.com/alexandr_wang/status/2124636606959345776",
+    "spine": "不应移交社会",
+    "summary": "黎曼猜想证明之后，他认为超级智能正在到来；不应安于把社会移交出去",
+    "kind": "长文",
+    "by": "Alexandr Wang @alexandr_wang"
+  },
+  {
     "slug": "poteto-automate-anything",
     "title": "「Automate Anything with Grok Bot」：先想清楚目标，再让 Bot 接手过程",
     "desc": "Lauren Tan（@poteto）于 2026-11-19 05:00（新加坡时间，UTC+8）在 X 发布长文《Automate Anything with Grok Bot》。核心是：自动化由目标和过程组成，先不要把填表、发邮件误认成目标本身；用语音把做法倒给 Bot，让它复述，再把那些几乎不假思索就会做的判断也教给它，并用例程让它自己开工。宣布帖、长文与跟帖全文中译并附原文。跟帖发布 Dr Eggbot v2 模板。插图为作者原文所附，并非真人照片。未见开放许可。文中关于产品能力与效果的说法，均为原文自述 ⚠️。公开传播数字会变 ⚠️。",
