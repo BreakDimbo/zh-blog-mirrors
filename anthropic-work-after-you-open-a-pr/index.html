@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>打开 PR 之后的工作：官方文章导读</title>
+<meta name="description" content="Addy Osmani 在 claude.dev 的官方文章《A practical guide to shipping with Claude Code》独立中文导读：打开拉取请求之后，用 /code-review、/ship 和 /steward 把后续工作交给 Claude Code；先在自己的 PR 上试，再把规矩写进仓库。PR Steward 与 Claude Approvals 为原文标注的测试版。">
+<meta property="og:title" content="打开 PR 之后的工作：官方文章导读">
+<meta property="og:description" content="独立中文导读：打开拉取请求之后，怎样用 Claude Ship 把后续工作交出去。只用短引，不是全文翻译。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-25">2026.11.25</time></p>
+<h1 class="za-title">打开 PR 之后的工作：官方文章导读</h1>
+<p class="za-sub" lang="en" data-za-gen>A practical guide to shipping with Claude Code · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · claude.dev Blog · Addy Osmani / Anthropic</span><span>收录 · 2026-11-25</span><span><a href="https://claude.dev/blog/the-work-after-you-open-a-pr/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">原作者：Addy Osmani，发布方 Anthropic，发表于 <a href="https://claude.dev/blog/the-work-after-you-open-a-pr/">claude.dev Blog</a>（栏目 Playbooks），原文标注日期 2026-11-24，自称阅读时间 16 分钟。原文：<a href="https://claude.dev/blog/the-work-after-you-open-a-pr/">https://claude.dev/blog/the-work-after-you-open-a-pr/</a>。本页是独立中文导读，只用短引，不是全文翻译。文章、配图与设计版权归 Anthropic 或其许可方所有；本页未转载原图与官方分享图。封面为自绘字体图，不含官方标志。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p>这篇 Playbooks 文章要回答的是：拉取请求打开之后，那些让人从正事里被拉开的小任务，怎样交给 Claude Code 接着做。作者举的例子包括持续集成失败、评审回来六条意见、以及把主分支合进来时出现冲突。他写，在 Claude Code 团队里，这类收尾工作常常由智能体先做一轮，作者回来时，拉取请求往往已经被更新过一次。</p>
+
+<p>它和书店里已有的两篇是姊妹篇，不是同一篇。先前已经谈过 Claude Code 团队的<a href="../anthropic-code-review/">代码评审</a>，以及底下那一层<a href="../anthropic-claude-code-verification/">验证</a>。这篇要讲的是：怎样把你自己的仓库配到也能这样工作，用的是随 Claude Ship 一起新加的功能。面向的读者是在 GitHub 上协作、但没有管理员权限的开发者或技术负责人：可以先在自己的拉取请求上跑几条命令，再把学到的规矩写成仓库里的文件，交给团队审阅。只有当团队希望智能体在大家的拉取请求上自动做这些事时，才需要管理员介入。</p>
+
+<p>作者强调，人仍然是这套流程的设计者，要自己决定做什么、怎么做、以及什么标准才算能合并。原文原句是：</p>
+<blockquote>
+<p>You're still the architect of the process, so you're defining what to build, how to build it, and what the bar for merging is.</p>
+</blockquote>
+
+<h2>打开拉取请求之后要做的事</h2>
+
+<p>作者把打开拉取请求之后的工作拆成三步：找出问题、处理问题、再决定能不能合并。Claude Ship 对应三个智能体：Code Review（一般可用）、PR Steward（原文标注为测试版）和 Claude Approvals（原文标注为测试版）。</p>
+
+<p><code>/ship</code> 是在 Claude Code 里自己运行的命令，用来在自己的拉取请求上试用 Claude Ship。它随最新版 Claude Code 提供，即使管理员还没有打开任何云端智能体，也可以用。前两步今天就可以部分自动化；最后一步是合并与否的决定，要写在分支保护规则里，如果团队采用了策略文件，也写在那份文件里。</p>
+
+<p>按作者的对照表：想在别人看之前先找缺陷，在自己的会话里跑 <code>/code-review</code>；想打开拉取请求、评审它，并继续处理随后出现的问题，跑 <code>/ship</code>；想照看一个已经打开的拉取请求，跑 <code>/steward</code>。这三条都在你自己的会话里运行。若要在团队的拉取请求上自动做这些事，则使用 Claude Ship，默认跑在 Anthropic 的云上，由团队配置。</p>
+
+<h2>先在自己的拉取请求上试</h2>
+
+<h3>先跑 <code>/code-review</code></h3>
+
+<p>作者说，如果这篇只做一件事，就在推送之前先评审当前分支。这里抓住的缺陷，不太会再变成把你从下一件事里拉开的评审意见或失败检查。这条命令会评审分支上的提交，以及尚未提交的改动，找正确性方面的缺陷。力度从 low 到 max：低档只显示它最有把握的发现，调高就会看到更多、也包括不那么确定的项。Claude 会记住你上次用的档位，风险变化时要重新设定。</p>
+
+<p>文中还列出几条常用变化：指定拉取请求编号并提高力度、用 <code>--fix</code> 把发现应用到工作区、用 <code>--comment</code> 把发现发到拉取请求上，以及 <code>ultra</code> 在云端做更深入的评审。关于 <code>ultra</code>，作者提醒要格外小心：它在云端运行，需要登录 claude.ai，费用可能与当前方案分开计算，使用前应阅读官方 ultrareview 文档。另外，后台评审期间由 <code>--fix</code> 做的修改，不一定能被 <code>/rewind</code> 捕捉到，若想容易撤回，应先提交；本地 <code>/code-review</code> 会读 <code>CLAUDE.md</code>，但不读 <code>REVIEW.md</code>，后文会解释这为什么重要。</p>
+
+<p>作者建议先多跑几次 <code>/code-review</code>，弄清它能抓住什么、又会在哪里判断错，后面还会用到这些观察。</p>
+
+<h3>下一次用 <code>/ship</code></h3>
+
+<p>如果当前分支还没有拉取请求，<code>/ship</code> 会先提交未提交的改动（行为相当于 <code>git add -A</code>，会遵守 <code>.gitignore</code>，必要时建分支，并用当前会话写提交说明；提交前会通知你，按 Esc 可中止），再以你的身份推送并创建拉取请求，然后用 <code>/code-review</code> 做一次评审（若该提交已被 Code Review 评审过则跳过），并把它判断为成立的问题修好，最后最多盯着这份拉取请求七天：处理失败的检查、冲突和评审意见，直到它被合并或关闭才退出。</p>
+
+<p>作者特别提醒：第一步会提交所有未提交改动，有人会因此措手不及，所以跑 <code>/ship</code> 之前先看 <code>git status</code>。它不会提交看起来像密钥的文件，也不会提交规则类文件，例如 <code>CLAUDE.md</code>、<code>REVIEW.md</code>，以及 <code>.claude/</code> 或 <code>.github/</code> 目录里的内容，这些需要事先手工提交。若是在公共仓库里工作，这条命令也不会替你提交，未提交的改动要自己先提交；若拉取请求已经存在，它也不会把这些未提交改动带进去。</p>
+
+<p>默认情况下，它会阅读你本人、有写入权限的人，以及 Claude GitHub App 的评论；也可以用 <code>+名称</code> 加上其他机器人，那些评论会被当成要对代码核验的主张。可以用力度档位、拉取请求编号或 <code>/ship stop</code> 结束盯梢。</p>
+
+<p>盯梢是以你的身份、在你的机器上、占用你的配额进行的。合上笔记本它就会停，所以要保持会话开着、机器不休眠。还需要先登录 GitHub CLI（<code>gh auth login</code>），而且只盯你自己打开的拉取请求。除自动权限模式外，盯梢在每个提示处都会停下等你回应；它不会在 bypass-permissions 模式下盯梢。原文还写：在 Windows 上，<code>/ship</code> 会打开拉取请求并做评审，但盯梢不会启动。</p>
+
+<p>盯梢需要独占一次检出，分支要保持检出状态。如果马上要做下一件事，其中一个应放在单独的 worktree 里。若盯梢没能启动，Claude 会说明原因，但仍会评审这份拉取请求。例如，仓库的 <code>.claude/settings.json</code> 里若对 Bash 设了 <code>PreToolUse</code> 或 <code>PermissionRequest</code> hook，就不能启动盯梢。盯梢在你离开时仍会消耗模型回合，计入方案用量或 API 账单；第一次用时，作者建议留在机器附近，确认用量符合预期。</p>
+
+<p>更关键的是信任边界。盯梢会在需要时把基础分支合并进你的分支，然后运行测试等命令。也就是说，能把改动落到基础分支的人，也就能在盯梢期间在你的机器上跑命令。原文把这条写得很硬：</p>
+<blockquote>
+<p>Only run the watch locally on a repo where you trust everyone who can land changes on the base branch.</p>
+</blockquote>
+
+<p>Claude 被要求不要合并拉取请求；Claude Code 也会限制它在无人值守回合里能跑的 <code>gh</code> 和 <code>git</code> 命令，防止直接合并或强制推送。盯梢自己的提交也会略过设定规则的文件，例如 <code>.github/</code>、<code>CODEOWNERS</code>、<code>CLAUDE.md</code>、<code>.claude/</code> 和 git hooks。作者同时写明，这并不能挡住所有途径：测试脚本仍以你的凭证运行；如果你在某个回合中输入消息，该回合的限制可能被解除；若启用了自动合并，盯梢提交的一次修复，也可能恰好让 GitHub 完成合并。此外，盯梢期间的提交和推送不受仓库 git hooks 影响，因此必须出现的检查应放进持续集成和分支规则。完整条款可在产品里运行 <code>/ship terms</code> 查看；本页不转述那份条款的细节。</p>
+
+<h3>已有的拉取请求用 <code>/steward</code></h3>
+
+<p>许多拉取请求并不需要再评一次，只需要有人把它送到能合并为止。这时检出该分支，运行 <code>/steward</code>（可带拉取请求编号）。它只运行 <code>/ship</code> 里的盯梢部分：照看你打开的拉取请求，修复失败的检查、解决冲突、回应意见，但不会先做一轮评审。不写编号时，它盯当前分支对应的拉取请求；同样接受 <code>+名称</code>，先前的注意事项也适用。</p>
+
+<p>若拉取请求已经被标上 Steward，本地盯梢不会运行；若无法启动盯梢，<code>/steward</code> 什么也不做。停止盯梢可用 <code>/steward stop</code> 或 <code>/ship stop</code>。一个会话同时只能跑一个盯梢，新的会结束旧的。</p>
+
+<p>不要把 <code>/steward</code> 和 PR Steward 混为一谈。后者是管理员打开后、以 <code>claude[bot]</code> 身份运行的团队服务；<code>/steward</code> 则是以你的身份、在你的会话里运行。作者建议从检查已经变红、或卡在冲突循环里的拉取请求开始；正在进行设计争论的则不适合，因为那是要由人来裁定的争论。</p>
+
+<h3>大的决定会交给你</h3>
+
+<p>盯梢时，Claude 被要求只做小改动，把更大的事情升级给你，例如要求重新设计（新的 API 或更大的范围），或它没能解决的安全问题。同一问题最多推送三次，然后汇报尝试过的方案。作者写，这大致相当于验证那篇文章里的说法：同一项检查连续三轮仍失败，做法多半就不对了，这时应升级给代码的作者。</p>
+
+<h2>把反复出现的事写进仓库</h2>
+
+<p>跑过几次之后，你会开始看到重复的模式：同一位评审者反复提同一条意见、Claude 每次都要重新摸索的启动步骤、不稳定的检查。可以把它们写下来，按谁需要阅读，放进不同文件：</p>
+<ul>
+<li>代码应遵守的约定，放进 <code>CLAUDE.md</code>，供 Claude Code、本地 <code>/code-review</code>、Code Review 和 PR Steward 阅读。</li>
+<li>关于拉取请求该怎样被评审的规则，放进 <code>REVIEW.md</code>，供 Code Review 和 PR Steward 阅读；本地 <code>/code-review</code> 不读这份文件。</li>
+<li>如何启动并走一遍应用，放进 <code>.claude/skills/verify/SKILL.md</code>，供 Claude Code 验证改动时使用。</li>
+<li>这里的拉取请求该怎样被照看，放进 <code>.claude/skills/steward/SKILL.md</code>，供 <code>/ship</code>、<code>/steward</code> 和 PR Steward 阅读。</li>
+</ul>
+
+<h3>反复出现的评论写成评审规则</h3>
+
+<p>作者举的例子是：同事两次提醒新查询必须带租户检查。若只用本地评审，可以写进 <code>CLAUDE.md</code>，因为 <code>/ship</code> 会调用 <code>/code-review</code>；若仓库已打开 Code Review，则评审专用的规则可以写在根目录的 <code>REVIEW.md</code>。文中的示例包括：如何定义 Important（错误结果、数据泄漏、或会挡住回滚的事；风格和命名最多算 Nit）、每次必查的项，以及限制 Nit 数量、跳过生成文件与锁文件、行为主张必须带文件和行号等「少说话」的规则。</p>
+
+<p>Code Review 不会读取正在被评审的那份拉取请求里的 <code>REVIEW.md</code>。排除路径、限制 Nit 这类指令，也只有在默认分支受保护时才会被遵守。并非每条评论都该升格成规则。Claude Code 团队的原则是：一种模式至少在两个拉取请求上重复出现，才考虑写成规则，并且由人批准加入该规则的拉取请求。作者认为这是一条值得采用的门槛，规则也要按需要删除。</p>
+
+<h3>反复出现的启动步骤写成验证技能</h3>
+
+<p>如果总是要告诉 Claude 怎样启动应用、怎样走到特定页面，就应写成 <code>.claude/skills/verify/SKILL.md</code>，可以放在仓库根目录，也可以放在相关代码旁边。文中的示例是：启动开发栈、等到健康检查返回成功、用预置测试账号登录、在浏览器里走一遍被改过的流程并截图，然后汇报实际跑过的步骤和看到的结果，没有这些就不报告成功。作者提醒要按自己的项目改写这些命令；让 Claude 多跑几次，并修掉不稳定的行为——人们不会信任自己信不过的验证。</p>
+
+<h3>看护拉取请求的规矩写成 steward 规则</h3>
+
+<p>这一项容易被忽略。本地盯梢读取的是工作目录里的 <code>.claude/skills/steward/SKILL.md</code>；跑在 Anthropic 云上的 PR Steward 则读取默认分支上的那一份。示例里包括：用安装命令重新生成锁文件、对不稳定的夜间端到端检查先重跑一次再查原因、推送修复前跑测试和 linter、以及把 API 设计方面的评论留给作者。示例中的两项设置，是为了让它不出现在斜杠菜单里，也不被 Claude 自行挑选为技能。</p>
+
+<p>这份 steward 文件不能改写盯梢本身的限制。但任何能向仓库合并的人都可以改它，所以审阅对它的改动，应像审阅持续集成的改动一样谨慎。若团队稍后打开 PR Steward，这些指南一旦进入默认分支，就会在云端生效。</p>
+
+<h2>推广到团队的拉取请求</h2>
+
+<h3>先标准化流程</h3>
+
+<p>在自己的拉取请求上跑过几次 <code>/ship</code> 之后，就可以和管理员谈：怎样在团队的拉取请求上安全地铺开。作者建议先申请一个仓库、几位志愿者和一段有限的试验时间，并按这一顺序起步：事先谈妥预算约束；保护默认分支（更新必须经过带批准的拉取请求，且最新推送需要批准，Claude GitHub App 不在绕过名单上）；由组织里的 Owner 打开该仓库的 Code Review；以 Manual 模式打开 PR Steward（有写入权限的人评论 <code>@claude steward</code> 时启动，作者也可以选择自动启动，评论 <code>@claude stop</code> 可停止）；再写一份观察模式的批准策略。这份文件可以放在你自己的拉取请求里，但合并它就等于为仓库启用 Approvals，应先与 Owner 说清楚。</p>
+
+<p>PR Steward 被设计为不批准、不合并拉取请求，因此仍要用分支保护来要求你希望在合并前看到的批准。它会阅读评审意见并据此行动。和任何解析文本的智能体一样，它可能被人们写下的话带偏，所以只应在协作者可信的仓库里使用，并对来自不可信用户的评论所引发的改动加以检查。</p>
+
+<h3>先写一份观察模式的批准策略</h3>
+
+<p>Claude Approvals 读取的是默认分支上的 <code>.claude/approvals.yml</code>。作者给的第一份简单策略是观察模式：普通改动需要两个席位，Claude 只发表评论、不批准，并指定 Code Review 作为顾问评审；对评审规则本身的改动（<code>.claude/</code>、<code>REVIEW.md</code>、<code>CLAUDE.md</code>、<code>CODEOWNERS</code>、<code>.github/</code>）同样需要两个人，并继承嵌套策略。席位是必须批准的人数，作者可以占用其中一个席位。</p>
+
+<p>有一个容易忽略的细节：盯梢把基础分支合并进来之后，最新提交会变成合并提交，这时没有人坐在作者席上，因此拉取请求的作者应评论 <code>@claude approve</code>。当规则的裁决是 <code>claude: comments</code> 时，Claude 不会批准。多条规则同时匹配时，最严的一条生效。观察模式下，检查只告诉你它本来会如何决定，Claude 并不会真正批准任何东西。</p>
+
+<p>不要删掉顾问评审那一行。策略文件进入默认分支之后，Code Review 只会在匹配到点名它的规则的拉取请求上自动启动；没有这一行，自动评审就会停掉。顾问评审不改变裁决，并沿用你已有的设置。一份点名 Code Review 的策略，即使在 Code Review 已关闭的地方，也可能启动计费的评审。</p>
+
+<p>若希望在 Claude 的评审通过时降低某条路径所需的批准，可以把顾问行换成覆盖规则，例如：评审通过时只需一个席位，并由 Claude 批准。作者写得很明确：拉取请求里的文本可能影响 Claude 的评审，一旦如此，这条覆盖就会降低该拉取请求所需的门槛。在合并之前，应告知预算负责人——以这种方式使用 Claude 评审的策略，即使仍在观察模式，也会开始为 Code Review 计费，而且可能在每次推送时计费，不受你现有的 Code Review 设置限制。也可以自建分类器（例如判断这份拉取请求是否与迁移有关），它们放在默认分支的 <code>.claude/classifiers/</code> 下，每次运行都会计费，包括观察模式。作者建议先从路径和 Code Review 结果开始。</p>
+
+<h3>观察一段时间，再考虑强制执行</h3>
+
+<p>作者说，他们团队自己的内部提交闸门也使用同一套观察模式：先记录它本来会做出的决定，分析误报，再考虑强制执行。这些决定会出现在 Claude Approvals 检查和相关评论里。观察模式只有在你真的去看时才有价值。运行一两周后，应回头看已合并的拉取请求，把系统的决定和评审者的实际行为对照一下。</p>
+
+<p>文中给了一张对照表，前两行适用于已经加上覆盖规则的情况：若策略本会批准，而评审者也没有补充意见，就保留该规则；若策略本会批准，评审者却要求修改，就应增加一条需要人来看的路径规则，或在评审本应抓住时修正 <code>REVIEW.md</code>；若策略要求两个人，而评审者每次都只是扫一眼就批准，可在看过足够例子后考虑收窄规则；若策略要求两个人，评审者确实提出了实质问题，则保留该规则。作者建议最优先处理第二行，先修好这些，再放松任何规则。</p>
+
+<p>强制执行之前还有一件事要清楚：Claude 的批准在 GitHub 上算作真正的批准。若规则集只要求一次批准，Claude 的批准单独就可能够用，所以要把策略和分支规则放在一起读。若还启用了自动合并，再加上只有作者才能满足的策略（例如上面的覆盖），就可能出现没有任何人动手、拉取请求也被合并的情况。每条路径是否允许这样，应明确决定并写下来。</p>
+
+<p>然后按这个顺序收紧：对始终需要第二双眼睛的路径，使用没有条件、也没有覆盖的规则（任何分类器结果都不能覆盖它，<code>nested: inherit</code> 会把它带进拥有自己策略的子目录）；去掉 <code>mode: observe</code> 并合并，此后 Claude 就可以在规则允许的地方批准；大约五分钟后，在仍打开的拉取请求上评论 <code>@claude approvals rerun</code>，清掉过期结果（重跑可能再次为分类器计费）；请仓库管理员把 Claude Approvals 检查设为必需，并选择 Claude 应用作为来源。在此之前，无论检查怎么说，拉取请求都仍可能被合并。</p>
+
+<p>作者最后提醒：Claude Ship 和这些本地命令都使用人工智能，可能漏掉缺陷、安全问题和其他事项，因此原有的测试、扫描器和评审者都要保留。</p>
+
+<h2>这周可以先做的三件事</h2>
+
+<p>对 Claude Code 团队来说，调用智能体的人要对改动负责，就像是自己亲手打出来的一样。原文原句是：</p>
+<blockquote>
+<p>I'd like to make it clear that for the Claude Code team, the person who called the agent is responsible for a change. It's as if they typed it themselves.</p>
+</blockquote>
+
+<p>团队仍应对拉取请求的范围、设计、证据，以及何时可以合并的规则负责。在这些原则下，作者建议的起点是：今天就对当前分支跑 <code>/code-review</code>，记下它哪里判断错、又漏了什么；下一份拉取请求，在你信任所有能合并的人的仓库里试用 <code>/ship</code>，并留在旁边；对已有的拉取请求，在另一个终端和另一次 git 检出里试用 <code>/steward</code>；到周五，把你最常重复的那条规则写成小的拉取请求，放进 <code>CLAUDE.md</code>、<code>REVIEW.md</code> 或一项技能——提交要自己做，因为 <code>/ship</code> 不会提交规则文件——并把这份拉取请求，连同观察模式策略的例子，分享给团队。</p>
+
+<p>作者说，若你这样做了，他很想知道哪一份规则文件最有用，以及哪些任务你选择继续自己做。</p>
+
+<p>⚠️ 以下均为原文自报或对产品行为的转述，本站未在 Claude Code 中复现，也未打开文中所链的 Claude Ship 介绍、ultrareview 文档、盯梢条款或批准分类器文档：PR Steward 与 Claude Approvals 为测试版；盯梢最多七天、同一问题最多推送三次；Windows 上盯梢不启动；公共仓库不代为提交；规则文件与疑似密钥不会被自动提交；观察模式与强制执行的计费、以及「每次推送都可能计费」的说明；阅读时间 16 分钟为页面自报。作者职衔未在本文写明。</p>
+<p>署名：Addy Osmani / Anthropic。原文：<a href="https://claude.dev/blog/the-work-after-you-open-a-pr/">https://claude.dev/blog/the-work-after-you-open-a-pr/</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>非官方中文导读，仅供阅读学习；原文、配图与设计版权归 Anthropic 或其许可方所有。原文：<a href="https://claude.dev/blog/the-work-after-you-open-a-pr/">claude.dev/blog/the-work-after-you-open-a-pr</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://claude.dev/blog/the-work-after-you-open-a-pr/" rel="noopener">claude.dev/blog/the-work-after-you-open-a-pr/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
