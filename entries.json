@@ -1,5 +1,20 @@
 [
   {
+    "slug": "jawestenberg-assume-entropy",
+    "title": "「Assume Entropy.」：假定熵会发生",
+    "desc": "JA Westenberg（@jawestenberg）于 2026-11-24 05:08（新加坡时间，UTC+8）在 X 发布长文《Assume Entropy.》。宣布帖写：大多数人五年后再回头看，会纳闷友谊、体能或生意为什么散掉；不是因为失败，而是因为无视了物理定律。长文主张：衰败是默认状态，生活的大部分是维护；为真正重要的东西留出维护预算，并有意识地选择让什么腐烂。作者本人宣布帖与长文全文中译并附原文。插画为作者原文所附，不是真人照片。作者同日在个人通讯 WESTENBERG 发布了措辞略有不同的同名文章；本页按 X 长文翻译。未见开放许可。文中方法与效果均为原文自述 ⚠️。公开传播数字会变 ⚠️。",
+    "description": "JA Westenberg 的 X 长文全文中译：衰败是默认状态，生活的大部分是维护；为真正重要的东西留出维护预算，并选择让什么腐烂。文中方法与效果均为原文自述 ⚠️。",
+    "source": "X · @jawestenberg",
+    "date": "2026-11-24",
+    "type": "全文",
+    "subtitle": "Assume Entropy.  ·  长文全文中译",
+    "original_url": "https://x.com/jawestenberg/status/2124973478927642760",
+    "spine": "衰败是默认状态",
+    "summary": "凡是你在意的东西都会衰败，除非持续投入；把维护当作正事，并选择让什么腐烂",
+    "kind": "长文",
+    "by": "JA Westenberg @jawestenberg"
+  },
+  {
     "slug": "anthropic-work-after-you-open-a-pr",
     "title": "打开 PR 之后的工作：官方文章导读",
     "desc": "Addy Osmani 在 claude.dev 的官方文章《A practical guide to shipping with Claude Code》独立中文导读：打开拉取请求之后，用 /code-review、/ship 和 /steward 把后续工作交给 Claude Code；先在自己的 PR 上试，再把规矩写进仓库。PR Steward 与 Claude Approvals 为原文标注的测试版 ⚠️。",
