@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kevintngo-procedural-rpg",
+    "title": "「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG",
+    "desc": "Kevin T. Ngo 的浏览器开放世界动作 RPG Brushwild 导读：画面由着色器画成圆珠笔和彩铅，不附带贴图或模型；四职业、技能树、五档掉落、城镇与地牢，土地随走随生成。仓库 kevintngo/procedural-rpg 为 MIT（Copyright (c) 2026 kevintngo）。导读 + README 全文中译 + LICENSE 原文。插图来自仓库官方截图与分享图。字体 Alegreya、Patrick Hand、Atkinson Hyperlegible 按 README 所述为 SIL Open Font License。",
+    "description": "用着色器把开放世界画在奶油色的纸上。四职业、技能树、程序化大地。仓库 MIT。导读 + README 中译 + 许可证原文。",
+    "source": "GitHub · kevintngo/procedural-rpg（Kevin T. Ngo，MIT）",
+    "date": "2026-11-26",
+    "type": "导读 + README 中译",
+    "subtitle": "An action RPG drawn in ballpoint and coloured pencil · 导读 + README 全文中译",
+    "original_url": "https://kevintngo.github.io/procedural-rpg/",
+    "spine": "着色器画的开放世界",
+    "summary": "不带贴图的浏览器开放世界 RPG，土地随走随生成，画风像圆珠笔和彩铅",
+    "kind": "项目",
+    "by": "Kevin T. Ngo"
+  },
+  {
     "slug": "dankoe-deep-work-routine",
     "title": "「The deep work routine that changed my life」：改变我人生的深度工作例程",
     "desc": "Dan Koe（@thedankoe）于 2026-11-26 01:32（新加坡时间，UTC+8）在 X 发布长文《The deep work routine that changed my life (1 hour every morning)》。主张把每天早晨一小时投进毕生事业；不忙碌是新的地位标志，朝九晚五是历史上一段短暂的故障；用内容和产品做无需许可的杠杆。作者本人长文全文中译并附原文。封面插画为作者原文所附，不是真人照片。作者几乎同时在个人通讯发布了同名公开文章；本页按 X 长文翻译。文中粉丝量、收入、日常工时和推算数字均为原文自报 ⚠️。Eden、「毕生事业发现器」和 5 美元冲刺是作者自家产品 ⚠️。",

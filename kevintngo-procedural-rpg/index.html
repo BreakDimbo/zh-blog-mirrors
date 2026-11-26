@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG</title>
+<meta name="description" content="Kevin T. Ngo 的浏览器开放世界动作 RPG Brushwild 导读：画面由着色器画成圆珠笔和彩铅，不附带贴图或模型；四职业、技能树、五档掉落、城镇与地牢，土地随走随生成。仓库 MIT。导读 + README 全文中译 + 许可证原文。插图来自仓库官方截图。">
+<meta property="og:title" content="「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG">
+<meta property="og:description" content="用着色器把开放世界画在奶油色的纸上。仓库 MIT。导读 + README 中译 + 许可证原文。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-26">2026.11.26</time></p>
+<h1 class="za-title">「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG</h1>
+<p class="za-sub" lang="en" data-za-gen>An action RPG drawn in ballpoint and coloured pencil · 导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · kevintngo/procedural-rpg（Kevin T. Ngo，MIT）</span><span>收录 · 2026-11-26</span><span><a href="https://kevintngo.github.io/procedural-rpg/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/kevintngo/procedural-rpg" rel="noopener">kevintngo/procedural-rpg</a>（<a href="https://github.com/kevintngo/procedural-rpg/blob/main/LICENSE" rel="noopener">MIT License</a>，Copyright (c) 2026 kevintngo） · 作者：Kevin T. Ngo（<a href="https://github.com/kevintngo" rel="noopener">GitHub</a> · <a href="https://x.com/kevin_t_ngo" rel="noopener">X @kevin_t_ngo</a>） · 可玩演示：<a href="https://kevintngo.github.io/procedural-rpg/" rel="noopener">kevintngo.github.io/procedural-rpg</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">奶油色的纸上，铅笔排线铺开一片草地，橙黄的树投下淡影。一个穿红衣的小人在林间挥剑，一头刚鬃兽被红圈标出即将落地的位置，旁边还蹦着一朵粉红色的孢子帽。这不是把插画扫描进游戏，而是着色器在浏览器里当场画出来的世界。<strong>Brushwild</strong> 是 Kevin T. Ngo 的开放世界动作角色扮演游戏，可以在电脑、手机或手柄上打开，土地随走随生成，不附带任何贴图、模型或精灵表。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库以 MIT 许可发布（Copyright (c) 2026 kevintngo）。本页为项目导读，附录为 README 全文中译、英文原文与 LICENSE 原文。插图来自仓库 <code>docs/</code> 与官方分享图，作者提供。字体 Alegreya、Patrick Hand、Atkinson Hyperlegible 按 README 所述为 SIL Open Font License。</div>
+
+<figure>
+<a href="https://kevintngo.github.io/procedural-rpg/"><img class="cover" src="images/cover.webp" width="1120" height="700" alt="林间战斗画面：奶油色纸上铺着铅笔排线，红衣小英雄正在挥剑；一头条纹刚鬃兽被红色落点圈标出，旁边是粉色孢子帽怪和带叶芽灵；左上是角色面板，右上是小地图，底部是技能栏。地点标签写着 Hearthmere。"></a>
+<figcaption>林间的一场战斗（仓库 <code>docs/fight.jpg</code>，作者提供，MIT）。点击图片可打开可玩演示。</figcaption>
+</figure>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#play">能做什么</a></li>
+<li><a href="#look">画面怎么画出来</a></li>
+<li><a href="#world">世界如何生成</a></li>
+<li><a href="#stack">技术结构</a></li>
+<li><a href="#run">怎么运行</a></li>
+<li><a href="#controls">操作</a></li>
+<li><a href="#a11y">界面与无障碍</a></li>
+<li><a href="#limits">已知限制与下一步</a></li>
+<li><a href="#license-note">许可</a></li>
+<li><a href="#related">相关阅读</a></li>
+<li><a href="#appendix">附录 A：README 全文中译</a></li>
+<li><a href="#readme-en">附录 B：README 英文原文</a></li>
+<li><a href="#license">附录 C：LICENSE（MIT）原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p><strong>Brushwild</strong> 是一款可在浏览器里玩的开放世界动作 RPG。仓库在 <a href="https://github.com/kevintngo/procedural-rpg" rel="noopener">github.com/kevintngo/procedural-rpg</a>，可玩演示在 <a href="https://kevintngo.github.io/procedural-rpg/" rel="noopener">kevintngo.github.io/procedural-rpg</a>。作者是 Kevin T. Ngo（<a href="https://x.com/kevin_t_ngo" rel="noopener">@kevin_t_ngo</a>）。<code>package.json</code> 里的版本是 0.2.0，需要 Node 20.19 或更高才能在本地跑。</p>
+<p>README 的第一句把画风说得很清楚：像用圆珠笔和彩色铅笔描在奶油色的纸上。整页共用一个排线方向，笔触是看得见的，纸会从缝隙里透出来；暗部是更深一层的铅笔，亮部就是裸着的纸；风景用褐色钢笔，人物用大胆的深色轮廓；每头野兽身上都有一块芥末黄——那是会痛的部位。作者写道，这套画法继承自他的 2D 游戏 Valsera，只是从烘焙好的精灵图，变成了实时的三维世界。</p>
+<p>它要你做的事也很完整：选职业、点技能树、在五种稀有度的装备里换更好的掉落、清理地牢、接守望官的委托，并且一直向外走。土地是边走边生成的，没有边界。</p>
+
+<figure>
+<img src="images/og.webp" width="1200" height="630" alt="官方分享图：蓝顶小屋前，红衣英雄持剑站着，一头刚鬃兽被红圈标出；周围有芽灵、红蘑菇、灰岩灵和摊位；左下角一张纸牌写着 Brushwild，An open world drawn in pen and pencil。">
+<figcaption>官方分享图（演示站 <code>static/og.jpg</code>）。左下角的纸牌写着：「An open world drawn in pen and pencil。」</figcaption>
+</figure>
+
+<h2 id="play">能做什么</h2>
+<p>当前 README 列出四个职业：</p>
+<ul>
+<li><strong>守望者（Warden）</strong>：剑与盾的近战，打出或挨到的每一击都积攒决心（Resolve）。</li>
+<li><strong>余烬匠（Emberwright）</strong>：持杖施放火焰、寒霜与风暴，消耗专注（Focus）。</li>
+<li><strong>巡路者（Strider）</strong>：弓、匕首和陷阱，消耗气息（Breath）。</li>
+<li><strong>赛博格（Cyborg）</strong>：以 99 级登场，技能全满，臂炮里有激光、轨道打击和一枚袖珍奇点，消耗算力（Compute）；头部是烘焙进着色器的三维模型。</li>
+</ul>
+<p>创建英雄时可选择外衣、袍子或铠甲的颜色，以及发型。技能树有七个分支，从基础一路开到终极技能和关键被动，上层花掉的点数会打开下层。每项技能有五个等级、一次强化，以及二选一的升级。升到 99 级都会获得点数，之后退点要花货币 glint。</p>
+<p>装备分普通、魔法、稀有、传奇和独特五档，十个栏位，带随机词缀、传奇能力和具名独特装。每件物品都有自己的画，提示框会用精确数字和你正穿着的装备对比，掉落会偏向当前职业。铁匠负责拆解、附魔和出售，炼金师酿更强的补剂，仓库由所有英雄共用。</p>
+<p>战斗必须挪步。每种生物都有自己的招式，落地前会画在地面上：芽灵（Sproutlings）跳跃，孢子帽（Puffcaps）留下孢子，刚鬃兽（Bristlehogs）沿一条直线冲锋，鬼火（Wisps）保持距离并抛出光点，岩灵（Craglings）砸地，壳咬（Shellsnaps）缩进去再咬出来。踏出标记，这一击就会打空。精英会掷出词缀；地牢首领在半血时变招。命中会让世界停顿一瞬，暴击或击杀时更长。箭是真正沿弧线飞出的箭，没中就会插在地上。</p>
+<p>集市城镇沿路而建，有路石、铁匠、炼金师、守望官和仓库。墓穴和洞穴从路边岔开，最远的房间里是首领，安静的一间里是窖藏。路上还能找到藏匿处、暂时赐福的立石、标出周围地点的信标，以及用于传送的路石。守望官会派清剿、采集、侦察、击杀长者或清理地牢的委托；「长路」（The Long Walk）会为你踏足的每一片新土地付酬。天黑之后，生物从更远处就能察觉你，打得更重，报酬也更好。倒下会把一部分 glint 掉在原地，并标在地图上，直到你回去取回。难度分故事、普通、老兵和噩梦，可在城镇里更换。</p>
+
+<div class="grid2">
+<figure>
+<img src="images/title.webp" width="1200" height="750" alt="Hearthmere 的标题画面：一圈彩铅小屋、石板路和木摊围着一张奶油色纸牌，上面用手写衬线体写着 Brushwild，中间是黄色的 Begin 按钮。">
+<figcaption>起始城镇 Hearthmere 的标题画面（<code>docs/title.jpg</code>）。</figcaption>
+</figure>
+<figure>
+<img src="images/night.webp" width="960" height="600" alt="夜晚的 Hearthmere：地面被靛青铅笔铺满，路灯下露出一滩裸纸般的亮光，红衣英雄持剑站在灯旁，两座小屋的屋顶仍是浅色排线。">
+<figcaption>夜晚：亮处就是纸本身（<code>docs/night.jpg</code>）。</figcaption>
+</figure>
+</div>
+
+<h2 id="look">画面怎么画出来</h2>
+<p>没有贴图，也没有模型文件。README 把绘制分成四趟：</p>
+<ol>
+<li><strong>世界趟</strong>：对地形高度场、所有道具（树、石、房屋和地牢墙都是符号距离形状）以及海面做一次全屏光线步进。每个像素决定用哪支铅笔、力道多大、怎么铺暗部、上面再落哪些钢笔记号。内部分辨率会随测得的 GPU 耗时调整。</li>
+<li><strong>墨线趟</strong>：从深度台阶、物体轮廓和褶皱里找出轮廓。</li>
+<li><strong>角色趟</strong>：每个形象都是一小块距离场模型，在朝向镜头的四边形里做光线步进。英雄带着职业套装和正穿着的装备，生物、沿飞行方向倾斜的箭也是这样画出来的。轮廓加粗，排线跟着形象走，并且每秒重铺六次；姿势按两帧一拍来步进。</li>
+<li><strong>最终趟</strong>：带齿的纸，铅笔按笔触铺上，更深的铅笔做暗部，钢笔涂鸦（草丛、水纹），再沿轮廓勾线，最后把人物叠上去。被景物挡住的英雄会显示成钢笔轮廓。小地图也在这一趟画。</li>
+</ol>
+<p>排线落在<strong>纸面坐标</strong>里，沿一个被固定住的视线方向的右轴和上轴投影，所以镜头移动时笔触仍粘在世界上；转向足够远之后，才会淡入一个新的方向。笔触大小按深度从嵌套的层级里选取，远近看起来一样粗。没有Bloom、模糊或色调映射：没有什么能比纸更亮。夜晚用靛青铅笔来画，灯是一滩裸纸，远景则是少铺一些。</p>
+<p>界面用的是同一只手。<code>src/ui/art.ts</code> 在画布上用彩色铅笔排线和略微晃动的褐色钢笔勾线，按每件物品的种子来画，所以两把同一种剑的刃、护手和染色仍会不同，并带一圈稀有度颜色的铅笔光晕。英雄和镇民的表情会随处境变化：歇着时微笑，施法时专注，挨打时皱眉，升级或拿到传奇时高兴，血低时担心。</p>
+
+<div class="grid2">
+<figure>
+<img src="images/zoo.webp" width="1080" height="675" alt="英雄站在草地中央，周围围着红蘑菇、灰黑小兽、带光环的蓝色鬼火、灰色岩灵、横行的壳咬和带叶子的绿色芽灵，全部是铅笔勾线、彩铅填色的造型。">
+<figcaption>一圈野兽（<code>docs/zoo.jpg</code>）。</figcaption>
+</figure>
+<figure>
+<img src="images/biomes.webp" width="800" height="1000" alt="八格不同国度：绿色草地、红蓝蘑菇林、落雪的冷杉林、稀疏荒原、沙地、枯枝与蓝水晶的褐色土地、黄绿秋林，以及红叶树林。">
+<figcaption>其他国度（<code>docs/biomes.jpg</code>）。</figcaption>
+</figure>
+</div>
+
+<h2 id="world">世界如何生成</h2>
+<p>起始城镇以外的一切都来自种子。地形生成大陆、丘陵、山脉、河流、湖泊、沼泽和水路边的道路网格。十三种生物群系由五张变化缓慢的场决定：温度、湿度、魔力、野性，以及离家的距离；每种群系有自己的地面铅笔、石、植物和野兽。道路交叉处会出现神龛、有补锅匠的营地、住着长者野兽的废墟、农庄、集市城镇和地牢门口，并带一个编出来的名字。地牢是网格上的房间与走廊，写成和开放世界相同的区块格式，所以由同一套着色器来画。路边还能找到藏匿处、立石和信标。野兽会随国度变形：六种身形会变成霜岩灵、沼壳咬、花瓣鬼火之类，等级由离镇距离决定。云量会漂移；白昼、黄昏和夜晚会换铅笔。</p>
+<p>没有边界。土地按区块进入视野时生成，README 写生成一个区块大约要 3 毫秒。生物每 95 个单位升一级。画面用单精度浮点来画，作者写道在约 20 公里处看起来仍正常，到约 200 公里才会出现台阶状的边缘。</p>
+
+<h2 id="stack">技术结构</h2>
+<p>这是一个 TypeScript（<code>strict</code>）项目，用 Vite 7 开发与打包，Vitest 3 跑规则和存档测试，界面是 Preact 10 加 <code>@preact/signals</code>。渲染是自研的 WebGL2 管线，没有用 Three.js 或 Babylon：架构说明里写，现成引擎给不出这套纸面排线，反而会增加体积、和画法打架。字体通过 <code>@fontsource</code> 自托管，不向第三方请求。音频是合成的，发行构建时单独成块。</p>
+<p>目录按单向依赖分层：<code>engine/</code> 与 <code>core/</code> 不含游戏知识，<code>world/</code> 生成地形和地牢（不碰 GL，可在 Node 里跑），<code>gfx/</code> 负责渲染，<code>game/</code> 放内容、纯规则、存档和系统，<code>ui/</code> 与 <code>audio/</code> 只监听事件总线。系统之间不互相调用，而是在类型化的总线上公布事实。内容数据自带着色器代码。</p>
+<p>规则层是纯函数。一套「构筑编译器」会把技能树、装备、赐福和增益上的全部效果收拢，算出属性和每项技能的有效数字；换装或点技能时算一次，不会每一击都算。物品对比就是把「穿上」和「没穿」各编译一遍。所有伤害走同一个公式。物品在存档里只记下掷出的基础、稀有度、物品等级和词缀编号，数字在读取时查表，所以改平衡会落到已经在背包里的装备上。</p>
+<p>推送到 <code>main</code> 时，GitHub Actions 会测试、构建并发布到 <code>gh-pages</code> 分支，也就是演示站。</p>
+
+<h2 id="run">怎么运行</h2>
+<p>需要 Node 20.19 或更高：</p>
+<pre><code>npm install
+npm run dev</code></pre>
+<p>然后打开它打印的地址（<code>http://localhost:5173</code>）。地址后加 <code>?new</code> 会打开创建英雄的界面，加 <code>?touch</code> 可在桌面上预览手机界面。进度存在浏览器的本地存储里；「设置 › 存档」可以导出和导入文件。</p>
+<table>
+<tr><th>脚本</th><th>作用</th></tr>
+<tr><td><code>npm run dev</code></td><td>带模块热更新的开发服务器</td></tr>
+<tr><td><code>npm test</code></td><td>规则与存档测试（Vitest）</td></tr>
+<tr><td><code>npm run typecheck</code></td><td>严格 TypeScript 检查</td></tr>
+<tr><td><code>npm run check</code></td><td>类型检查加测试</td></tr>
+<tr><td><code>npm run build</code></td><td>先类型检查，再把发行版打进 <code>dist/</code></td></tr>
+<tr><td><code>npm run preview</code></td><td>预览 <code>dist/</code></td></tr>
+</table>
+
+<h2 id="controls">操作</h2>
+<p>所有动作都可以在「设置 › 操作」里重绑，每个动作可以绑两枚键和一个手柄键。</p>
+<table>
+<tr><th>键鼠</th><th>作用</th></tr>
+<tr><td>左键</td><td>行走、攻击、交谈、拾取。按住可继续走或打</td></tr>
+<tr><td>右键，1 2 3 4</td><td>技能</td></tr>
+<tr><td>W A S D</td><td>行走</td></tr>
+<tr><td>空格</td><td>闪避</td></tr>
+<tr><td>F</td><td>攻击最近的生物、交谈、开门</td></tr>
+<tr><td>R</td><td>喝补剂</td></tr>
+<tr><td>Tab</td><td>下一个目标</td></tr>
+<tr><td>Shift</td><td>站住原地攻击</td></tr>
+<tr><td>Q / E、右键拖、滚轮</td><td>旋转视角、俯仰、缩放</td></tr>
+<tr><td>I 或 B / C / K / J / M / V</td><td>背包 / 角色 / 技能树 / 日志 / 地图 / 视野</td></tr>
+<tr><td>Alt（按住）</td><td>显示所有物品标签；在提示框里显示每条词缀可掷出的范围</td></tr>
+<tr><td>Esc</td><td>菜单，或关掉当前打开的界面</td></tr>
+</table>
+<p>手柄用左摇杆走、右摇杆转视野；A 攻击最近的生物、交谈或使用；X、Y、B、RB、RT 是技能；LT 闪避，LB 喝补剂。方向键右是下一个目标，左是技能树，上下缩放。Back / Start / 右摇杆按下分别是背包、菜单和显示所有物品标签。菜单用摇杆和 A 来操作。</p>
+<p>触屏时，左拇指下会出现摇杆，技能沿右拇指下的弧排列，大按钮攻击最近的生物（按住可连续打），点画面则走路。横握时画面铺满屏幕；竖握时画面是顶部一条，其余控件排在下面。</p>
+
+<div class="grid2">
+<figure>
+<img src="images/phone-upright.webp" width="600" height="1298" alt="手机竖屏：上部是林间战斗，刚鬃兽被红圈标出；下部是角色状态、委托进度、战斗日志、虚拟摇杆和环形技能键。">
+<figcaption>竖握（<code>docs/phone-upright.jpg</code>）。</figcaption>
+</figure>
+<figure>
+<img src="images/phone-sideways.webp" width="1298" height="600" alt="手机横屏：战斗画面铺满，左下是摇杆，右下是技能弧和攻击键，左上是角色面板，顶部有刚鬃兽的生命条。">
+<figcaption>横握（<code>docs/phone-sideways.jpg</code>）。</figcaption>
+</figure>
+</div>
+
+<h2 id="a11y">界面与无障碍</h2>
+<p>界面也是那张纸：奶油色底板、钢笔边线、手写字，条里填的是铅笔排线。作者写道界面按 WCAG 2.2 AA 来要求，并给出在底板色 <code>#f1ebdc</code> 上测得的对比度：正文 <code>#4a2e18</code> 为 10.4:1，弱化文字 5.0:1，红 / 蓝 / 绿字分别为 5.2 / 5.3 / 4.8:1，钢笔边线 8.1:1，条的填充至少 3.3:1，焦点环 5.9:1。这些是 README 里的自报测量。</p>
+<p>每个控件都是真正的按钮，有供屏幕阅读器使用的名字，至少 30 像素见方（触屏上 40 像素或更大），键盘焦点时带蓝色钢笔环。条是带数值的 meter，消息会被朗读。键鼠和手柄都能到达背包、技能树和设置。稀有度不只靠颜色，条上也有图标和数字。设置里可以改界面和文字大小、换更易读的 Atkinson Hyperlegible、高对比、色觉调色板和警告色、减少动态效果、关掉屏幕震动、命中停顿和闪白、让铅笔线条保持稳定、让形象逐帧平滑、为重要声音加上方向字幕、显示屏外威胁箭头、单声道、游戏速度、更长的预警、自动攻击、瞄准辅助，以及全部重绑。</p>
+<p>作者也写明：游戏本身是一幅要用鼠标、键盘、手柄或拇指来玩的活动画面，除上面这些角色与标记外，还没有在屏幕阅读器上做过完整测试。</p>
+
+<h2 id="limits">已知限制与下一步</h2>
+<p>README 列出的限制包括：目前是单人，输入经由 <code>player.intent</code> 和事件流动，这是以后若要加网络层会接上的缝。移动会转向并贴着障碍滑过，没有远距寻路。世界大约画到 108 个单位（<code>WORLD.VIEW</code>），更远的一圈地形更粗。着色器里的位置是单精度浮点，离起点数十公里后细节会变粗，浮动的渲染原点可以缓解这一点。触屏界面是在桌面 Chrome 里按手机尺寸测的，还没有在真机上测过。</p>
+<p>架构说明把当前这一轮称作骨架，后面还计划在 50 级之后加入类巅峰的成长、插槽与宝石、更多职业、主线任务、带战争迷雾的世界地图、可安装的 PWA、以及把同一套 <code>player.intent</code> 接到合作多人。这些是作者写下的方向，不是已经做完的功能。</p>
+
+<h2 id="license-note">许可</h2>
+<p>根目录 <code>LICENSE</code> 为 MIT License，Copyright (c) 2026 kevintngo。README 末尾同样写 MIT，并说明字样使用 Alegreya、Patrick Hand 和 Atkinson Hyperlegible（SIL Open Font License），由游戏通过 <code>@fontsource</code> 打包。许可证原文见附录 C。</p>
+
+<h2 id="related">相关阅读</h2>
+<ul>
+<li>同一作者，同一支钢笔彩铅：<a href="../kevintngo-looseleaf/">Looseleaf：把 shadcn/ui 画在纸上</a>，以及 <a href="../kevintngo-statechart-art/">珍珠奶茶店的生意：四张过了模型检查的手绘状态图</a>。</li>
+<li>同一作者的其他浏览器世界：<a href="../kevintngo-what-the-water-keeps/">What the water keeps：乘船穿过八个梦境</a>，以及 <a href="../kevintngo-animated-show-intro/">动画剧集片头：所见都是代码</a>。</li>
+<li>另一件用代码画成的可走入世界：<a href="../blendi-painted-valley/">Painted Valley：走进一片用代码画成的夏日山谷</a>。</li>
+</ul>
+
+<h2 id="appendix">附录 A：README 全文中译</h2>
+<div class="related-guide">译自仓库根目录 README.md（分支 <code>main</code>，2026-11-26 核对）。原作 Copyright (c) 2026 kevintngo，MIT 许可；本译文为本站非官方翻译。插图位置改用本页已收录的同一批官方图。</div>
+
+<h3>Brushwild</h3>
+<p>这是一款动作角色扮演游戏，画面像用圆珠笔和彩色铅笔描在奶油色的纸上，可以在浏览器里玩，电脑、手机或手柄都行。选一个职业，点亮技能树，在五种稀有度的装备里追更好的掉落，清理地牢，乐意走多远就走多远：土地会随着你的脚步生成。整个世界都由着色器画出来，每件物品和职业铭牌也是代码绘制的，所以游戏不附带贴图、模型或精灵表。</p>
+<p><strong>游玩地址：<a href="https://kevintngo.github.io/procedural-rpg/" rel="noopener">https://kevintngo.github.io/procedural-rpg/</a></strong></p>
+<p>画风继承自 Valsera，一款用同样手法画成的 2D 游戏，只是从烘焙好的精灵图，变成了实时的三维世界：整页共用一个排线方向；笔触清晰可见，纸面从缝隙里透出来；暗部是更深一层的铅笔，亮部就是裸着的纸；风景用褐色钢笔，人物用大胆的深色轮廓；每头野兽都有一块芥末黄：那是会痛的部位。</p>
+<figure>
+<img src="images/cover.webp" alt="林间战斗：红衣英雄挥剑，刚鬃兽被红圈标出落点。">
+<figcaption>林间的一场战斗</figcaption>
+</figure>
+<div class="grid2">
+<figure>
+<img src="images/title.webp" alt="起始城镇 Hearthmere 的标题画面。">
+<figcaption>Hearthmere</figcaption>
+</figure>
+<figure>
+<img src="images/night.webp" alt="夜晚的 Hearthmere，灯下是一滩裸纸般的亮光。">
+<figcaption>夜晚：亮处就是纸</figcaption>
+</figure>
+<figure>
+<img src="images/zoo.webp" alt="英雄被一圈野兽围在草地上。">
+<figcaption>这些野兽</figcaption>
+</figure>
+<figure>
+<img src="images/biomes.webp" alt="八片不同国度的拼图。">
+<figcaption>其他国度</figcaption>
+</figure>
+</div>
+
+<h4>能做什么</h4>
+<ul>
+<li><strong>四个职业。</strong>守望者持剑与盾近战，打出或挨到的每一击都积攒决心。余烬匠持杖施放火焰、寒霜与风暴，消耗专注。巡路者用弓、匕首和陷阱看护道路，消耗气息。赛博格以 99 级登场，技能全满，臂炮里装着激光、轨道打击和一枚袖珍奇点，全部消耗算力；他的头是烘焙进着色器的三维模型。每个职业有自己的技能、被动和关键被动，也有自己的外形（创建英雄时选择外衣、袍子或铠甲的颜色，以及发型）。</li>
+<li><strong>一棵技能树。</strong>七个分支，从基础一直到终极技能和关键被动，上层花掉的点数会打开下层。每项技能有五个等级、一次强化，以及二选一的升级。升到 99 级都会获得点数；之后退点要花 glint。</li>
+<li><strong>值得读完的掉落。</strong>普通、魔法、稀有、传奇和独特，十个装备栏，带随机词缀、传奇能力和具名独特装。每件物品都有自己的画，提示框会用精确数字和你正穿着的装备对比，掉落会偏向你的职业。铁匠拆解、附魔和出售；炼金师酿造更强的补剂；仓库由所有英雄共用。</li>
+<li><strong>必须挪步的战斗。</strong>每种生物都有自己的招式，落地前会画在地面上：芽灵跳跃，孢子帽留下孢子，刚鬃兽沿一条直线冲锋，鬼火保持距离并抛出光点，岩灵砸地，壳咬缩进去再咬出来。踏出标记，这一击就会打空。精英会掷出词缀；地牢首领在半血时会变招。</li>
+<li><strong>城镇与地牢。</strong>集市城镇沿路而建，有路石、铁匠、炼金师、守望官和仓库。墓穴和洞穴从路边岔开：要清理的厅堂，最远的房间里有首领，安静的一间里有窖藏。</li>
+<li><strong>可以找到的东西。</strong>藏匿处、能暂时赐福的立石、会标出周围地点的信标，以及用于旅行的路石。</li>
+<li><strong>守望官派的活。</strong>清剿、采集、侦察、击杀长者或清理地牢。长路会为你踏足的每一片新土地付酬。</li>
+<li><strong>夜晚与倒下。</strong>天黑之后，生物会从更远处察觉你，打得更重，报酬也更好。倒下会把一部分 glint 掉在倒下的地方，并标在地图上，直到你回去取回。</li>
+<li><strong>有分量的打击。</strong>命中会让世界停顿一瞬，暴击或击杀时更长。箭是真正沿弧线飞出的箭，没中就会插在地上。</li>
+<li><strong>四个难度。</strong>故事、普通、老兵和噩梦，可在城镇里更换。</li>
+</ul>
+
+<h4>运行</h4>
+<p>需要 Node 20.19 或更高版本。</p>
+<pre><code>npm install</code></pre>
+<pre><code>npm run dev</code></pre>
+<p>然后打开它打印的地址（<code>http://localhost:5173</code>）。加上 <code>?new</code> 会打开创建英雄的界面，加上 <code>?touch</code> 可在桌面上看到手机界面。进度存在浏览器的本地存储里；「设置 › 存档」可以导出和导入文件。</p>
+<table>
+<tr><th>脚本</th><th>作用</th></tr>
+<tr><td><code>npm run dev</code></td><td>带模块热更新的开发服务器</td></tr>
+<tr><td><code>npm test</code></td><td>规则与存档测试（Vitest）</td></tr>
+<tr><td><code>npm run typecheck</code></td><td>严格的 TypeScript 检查</td></tr>
+<tr><td><code>npm run check</code></td><td>类型检查加测试</td></tr>
+<tr><td><code>npm run build</code></td><td>先类型检查，再把发行版打进 <code>dist/</code></td></tr>
+<tr><td><code>npm run preview</code></td><td>提供 <code>dist/</code> 的预览服务</td></tr>
+</table>
+<p>每次推送到 <code>main</code>，GitHub Actions（<code>.github/workflows/deploy.yml</code>）都会测试、构建并发布，把构建结果写到 GitHub Pages 所服务的 <code>gh-pages</code> 分支。也可以在 Actions 页手动运行。</p>
+
+<h4>操作</h4>
+<p>所有动作都可以在「设置 › 操作」里重绑（每个动作可以绑两枚键和一个手柄键）。</p>
+<table>
+<tr><th>键鼠</th><th>作用</th></tr>
+<tr><td>左键</td><td>行走、攻击、交谈、拾取。按住可继续走或打。</td></tr>
+<tr><td>右键，1 2 3 4</td><td>技能</td></tr>
+<tr><td>W A S D</td><td>行走</td></tr>
+<tr><td>空格</td><td>闪避</td></tr>
+<tr><td>F</td><td>攻击最近的生物、交谈、开门</td></tr>
+<tr><td>R</td><td>喝补剂</td></tr>
+<tr><td>Tab</td><td>下一个目标</td></tr>
+<tr><td>Shift</td><td>站住原地攻击</td></tr>
+<tr><td>Q / E、右键拖、滚轮</td><td>旋转视角、俯仰、缩放</td></tr>
+<tr><td>I 或 B / C / K / J / M / V</td><td>背包 / 角色 / 技能树 / 日志 / 地图 / 视野</td></tr>
+<tr><td>Alt（按住）</td><td>显示所有物品标签；在提示框里，显示每条词缀可掷出的范围</td></tr>
+<tr><td>Esc</td><td>菜单，或关掉当前打开的界面</td></tr>
+</table>
+<table>
+<tr><th>手柄</th><th>作用</th></tr>
+<tr><td>左摇杆 / 右摇杆</td><td>行走 / 旋转视角</td></tr>
+<tr><td>A</td><td>攻击最近的生物、交谈、使用</td></tr>
+<tr><td>X、Y、B、RB、RT</td><td>技能</td></tr>
+<tr><td>LT / LB</td><td>闪避 / 补剂</td></tr>
+<tr><td>方向键</td><td>下一个目标（右）、技能树（左）、缩放（上下）</td></tr>
+<tr><td>Back / Start / 右摇杆按下</td><td>背包 / 菜单 / 显示所有物品标签。菜单用摇杆和 A 来操作。</td></tr>
+</table>
+<p>在触屏上，左拇指下会出现摇杆，技能沿右拇指下的弧排列，大按钮攻击最近的生物（按住可把战斗持续下去），点画面则走路。横握时画面铺满屏幕；竖握时画面是顶部一条，其余都排在下面。</p>
+<div class="grid2">
+<figure>
+<img src="images/phone-upright.webp" alt="手机竖屏界面。">
+<figcaption>手机竖握</figcaption>
+</figure>
+<figure>
+<img src="images/phone-sideways.webp" alt="手机横屏界面。">
+<figcaption>手机横握</figcaption>
+</figure>
+</div>
+<p>新的旅程会以几步入门开始，做完一步才算完成；可以跳过，菜单里还能把它们找回来。</p>
+
+<h4>它是怎么画的</h4>
+<ol>
+<li><strong>世界趟</strong>——对地形高度场、所有道具（树、石、房屋和地牢墙都是符号距离形状）以及海面做一次全屏光线步进。每个像素决定<em>要画出什么</em>：哪支铅笔、力道多大、怎么铺暗部、上面再落哪些钢笔记号。它按测得的 GPU 耗时，在一个会自适应的内部分辨率上运行。</li>
+<li><strong>墨线趟</strong>——从深度台阶、物体轮廓和褶皱里找出轮廓。</li>
+<li><strong>角色趟</strong>——每个形象都是一小块距离场模型，在朝向镜头的四边形里做光线步进：英雄带着他们的职业套装和正穿着的装备，还有生物，以及沿飞行方向倾斜的箭。轮廓加粗，排线跟着形象走，并且每秒重铺六次；姿势按两帧一拍来步进。</li>
+<li><strong>最终趟</strong>——带齿的纸，铅笔按笔触铺上，更深的铅笔做暗部，钢笔涂鸦（草丛、水纹），再沿轮廓勾线，最后把人物叠上去。被景物挡住的英雄会显示成钢笔轮廓。小地图也在这里画。</li>
+</ol>
+<p>排线落在<em>纸面坐标</em>里，沿一个被固定住的视线方向的右轴和上轴投影，所以镜头移动时笔触仍粘在世界上；转向足够远之后，才会淡入一个新的方向。笔触大小按深度从嵌套的层级里选取，远近看起来一样粗。没有光晕、模糊或色调映射：没有什么能比纸更亮，夜晚用靛青铅笔来画，灯是一滩裸纸，远景则是少铺一些。</p>
+<p>界面用的是同一只手：物品和职业的画由 <code>src/ui/art.ts</code> 在画布上用彩色铅笔排线和略微晃动的褐色钢笔勾出来，按每件物品的种子绘制，所以两把同一种剑在刃、护手和染色上仍会不同，并带一圈稀有度颜色的铅笔光晕。英雄和镇民的表情会随发生的事改变：歇着时微笑，施法时专注，挨打时皱眉，升级或拿到传奇时高兴，血低时担心。</p>
+
+<h4>生成了什么</h4>
+<p>起始城镇以外的一切都来自种子：</p>
+<ul>
+<li><strong>地形</strong>——大陆、丘陵、山脉、河流、湖泊和沼泽水塘，以及蜿蜒网格上的道路。</li>
+<li><strong>十三种生物群系</strong>，由五张变化缓慢的场选定（温度、湿度、魔力、野性、离家的距离），各自有地面铅笔、石、植物和野兽。</li>
+<li><strong>地点</strong>出现在道路交叉处：神龛、有补锅匠的营地、住着长者野兽的废墟、农庄、集市城镇，以及地牢门口，每一处都有一个编出来的名字。</li>
+<li><strong>地牢</strong>——网格上的房间与走廊，写成和开放世界相同的区块格式，所以由同一套着色器来画。</li>
+<li><strong>发现</strong>在道路之外：藏匿处、立石和信标。</li>
+<li><strong>随国度变形的野兽</strong>——六种身形会变成霜岩灵、沼壳咬、花瓣鬼火之类；离镇距离决定等级。</li>
+<li><strong>天气与时辰</strong>——云量会漂移；白昼、黄昏和夜晚会各自换铅笔。</li>
+</ul>
+<p>没有边界。土地按区块进入视野时生成；一个区块大约要 3 毫秒。生物每 95 个单位升一级。画面用单精度来画，所以在 20 公里外看起来仍正常，到 200 公里会开始出现台阶状的边缘。</p>
+
+<h4>目录</h4>
+<pre><code>.github/workflows/      每次推送到 main 时的发布流程
+index.html              页面
+public/static/          图标、应用图标、分享图、web app manifest
+tools/                  发行构建时对着色器的精简
+src/
+  main.ts               入口：设置、存档、游戏、界面、声音
+  config.js             共享的可调参数（也会作为 #defines 交给着色器）
+  engine/               事件、带种子的随机数、带动作映射和手柄的输入
+  core/                 数学、噪声、设备
+  world/                地形、生物群系、道具、地点、发现、地牢   （不碰 GL；可在 Node 里跑）
+  gfx/                  渲染器、相机、各趟、着色器片段、形象与箭的模型
+  game/
+    content/            职业与技能、效果、状态、物品、怪物、赐福、外观
+    rules/              纯规则：属性、伤害、物品、技能树、构筑编译器、背包、掉落
+    state/  save/       被保存的角色；存储、版本、迁移
+    systems/            操作、玩家、技能、战斗、AI、生成、掉落、区域、商人，……
+    game.ts  view.ts  fx.ts
+  settings/             设置、默认值、以及如何生效
+  ui/                   Preact 界面：HUD、面板、技能树、设置、屏幕、美术
+  audio/                合成的声音与音乐
+docs/ARCHITECTURE.md    各部分如何拼在一起，以及后续方向</code></pre>
+<p>各层单向指向（<code>engine/core ← world ← gfx ← game ← ui/audio</code>），系统在类型化的事件总线上公布事实，而不是互相调用，内容自带着色器代码。细节见 <a href="https://github.com/kevintngo/procedural-rpg/blob/main/docs/ARCHITECTURE.md" rel="noopener">docs/ARCHITECTURE.md</a>。</p>
+
+<h4>怎么加东西</h4>
+<table>
+<tr><th>要加</th><th>做这些</th></tr>
+<tr><td>一个职业</td><td>在 <code>src/game/content/classes/</code> 里写一个 <code>ClassDef</code>（技能、被动、关键被动、资源、起始装备），并在 <code>classes/index.ts</code> 登记。</td></tr>
+<tr><td>一项技能</td><td>在所属职业里加一行：来自 <code>game/systems/behaviors.ts</code> 的一种行为，加上 <code>params</code>、等级、强化和作为效果的升级。</td></tr>
+<tr><td>一件物品基底、词缀、传奇能力或独特装</td><td>在 <code>game/content/items.ts</code> 里加一行。它的画来自 <code>ui/art.ts</code> 里对应的栏位或武器类型。</td></tr>
+<tr><td>一只怪物</td><td>在 <code>game/content/monsters.ts</code> 里加一行，并写进某个生物群系的 <code>monsters</code>。新的身形：在 <code>gfx/archetypes/</code> 里 <code>registerArchetype({...})</code>。</td></tr>
+<tr><td>一个生物招式</td><td>在 <code>game/systems/specials.ts</code> 里加一项，用怪物的 <code>special</code> 来点名。</td></tr>
+<tr><td>一种生物群系</td><td>在 <code>world/biomes.js</code> 里 <code>registerBiome({...})</code>。</td></tr>
+<tr><td>一件道具</td><td>在 <code>world/props.js</code> 里 <code>registerProp({...})</code>，带上形状和铅笔，再写进某个群系或地点。</td></tr>
+<tr><td>一处地点</td><td>在 <code>world/sites.js</code> 里 <code>registerSiteKind(id, build)</code>。</td></tr>
+<tr><td>一种委托</td><td>在 <code>game/systems/bounties.ts</code> 的 <code>KINDS</code> 里加一项。</td></tr>
+<tr><td>一种效果</td><td>在 <code>gfx/passes/fx.js</code> 里 <code>registerFx(id, glsl)</code>，再由 <code>game/fx.ts</code> 里的配方生成。</td></tr>
+<tr><td>一个系统</td><td>写一个带 <code>update(dt)</code> 的类，加进 <code>game/game.ts</code> 的列表。</td></tr>
+<tr><td>一项设置</td><td>在 <code>settings/settings.ts</code> 里加字段，在 <code>ui/settings.tsx</code> 里加控件，在 <code>settings/apply.ts</code> 里写它如何生效。</td></tr>
+<tr><td>一种声音</td><td>在 <code>audio/audio.js</code> 的事件表里加一项。</td></tr>
+</table>
+<p>着色器代码写在 <code>glsl</code> 标记的模板字符串里；发行构建会去掉它们的缩进。</p>
+
+<h4>界面与无障碍</h4>
+<p>界面也是那张纸：带钢笔边线的奶油色底板、手写字，条里填的是铅笔排线。它按 WCAG 2.2 AA 来要求。在底板色 <code>#f1ebdc</code> 上测得的对比度：</p>
+<table>
+<tr><th>部分</th><th>颜色</th><th>对比度</th></tr>
+<tr><td>文字</td><td><code>#4a2e18</code></td><td>10.4:1</td></tr>
+<tr><td>弱化文字</td><td><code>#7a5f48</code></td><td>5.0:1</td></tr>
+<tr><td>红 / 蓝 / 绿字</td><td><code>#b3341f</code> / <code>#48608f</code> / <code>#3d7332</code></td><td>5.2 / 5.3 / 4.8:1</td></tr>
+<tr><td>钢笔边线</td><td><code>#623c1e</code></td><td>8.1:1</td></tr>
+<tr><td>条的填充</td><td></td><td>3.3:1 或更高</td></tr>
+<tr><td>焦点环</td><td></td><td>5.9:1</td></tr>
+</table>
+<ul>
+<li>每个控件都是真正的按钮，有供屏幕阅读器使用的名字，至少 30 像素见方（触屏上 40 像素或更大），键盘焦点时带蓝色钢笔环。条是带数值的 meter；消息会被朗读。</li>
+<li>键盘和手柄能到达所有地方，包括背包、技能树和设置。</li>
+<li>没有什么只靠颜色来区分：稀有度总是写出来的，条上带图标和数字。</li>
+<li>设置覆盖界面和文字大小、更易读的字体（Atkinson Hyperlegible）、高对比、色觉调色板和可选的警告色、减少动态效果、屏幕震动、命中停顿、闪白、稳定的铅笔线条、平滑的形象、带方向的字幕、屏外威胁箭头、单声道、游戏速度、更长的预警、自动攻击、瞄准辅助，以及全部重绑。</li>
+</ul>
+<p>游戏本身是一幅要用鼠标、键盘、手柄或拇指来玩的活动画面；除上面这些角色外，它还没有在屏幕阅读器上做过测试。</p>
+
+<h4>已知限制</h4>
+<ul>
+<li>单人。输入经由 <code>player.intent</code> 和事件流动，这是网络层将会接上的那道缝。</li>
+<li>移动会转向并贴着障碍滑过；没有远距寻路。</li>
+<li>世界大约画到 108 个单位（<code>WORLD.VIEW</code>）；更粗的第二圈地形是看向更远处的办法。</li>
+<li>着色器里的位置是单精度浮点，所以离起点数十公里后细节会变粗；浮动的渲染原点可以缓解这一点。</li>
+<li>触屏界面是在桌面 Chrome 里按手机尺寸测的，还没有在真机上测过。</li>
+</ul>
+
+<h4>许可证</h4>
+<p>MIT——见 <a href="https://github.com/kevintngo/procedural-rpg/blob/main/LICENSE" rel="noopener">LICENSE</a>。字样使用 Alegreya、Patrick Hand 和 Atkinson Hyperlegible（SIL Open Font License），由游戏通过 <code>@fontsource</code> 打包。</p>
+
+
+<h2 id="readme-en">附录 B：README 英文原文</h2>
+<div class="related-guide">仓库根目录 README.md（分支 <code>main</code>，2026-11-26 核对）。Copyright (c) 2026 kevintngo，MIT。插图改为指向本页已收录的同一批官方图。</div>
+<h3>Brushwild</h3>
+<p>An action RPG drawn in ballpoint and coloured pencil on cream paper, played in a browser on a desktop, a phone or with a gamepad. Pick a class, grow a skill tree, chase loot through five rarities, clear dungeons, and wander as far as you like: the land is generated as you go. The world is drawn entirely by shaders, and every item and class plate is drawn in code, so the game ships no textures, models or sprite sheets.</p>
+<p><strong>Play it: <a href="https://kevintngo.github.io/procedural-rpg/" rel="noopener">https://kevintngo.github.io/procedural-rpg/</a></strong></p>
+<p>The art style is carried over from Valsera, a 2D game drawn the same way, from baked sprites to a live 3D world: one hatch slant for the whole page, visible strokes with paper showing through, shade as a second lay of a deeper pencil, light as bare paper, a sepia pen on scenery and a bold dark contour on figures, and one mustard part on every beast: the part that hurts.</p>
+<p><img src="images/cover.webp" alt="林间战斗：红衣小英雄挥剑，刚鬃兽被红圈标出落点，旁边是孢子帽怪与芽灵；奶油色纸上铺着铅笔排线。"></p>
+<div class="grid2">
+<figure><img src="images/title.webp" alt="起始城镇 Hearthmere 的标题画面：彩铅小屋围着一张写着 Brushwild 的奶油色纸牌。"></figure>
+<figure><img src="images/night.webp" alt="夜晚的 Hearthmere：靛青铅笔铺满地面，路灯下露出一滩裸纸的亮光，英雄站在灯旁。"></figure>
+<figure><img src="images/zoo.webp" alt="英雄被一圈代码画出的野兽围在草地上：孢子帽、蟹形壳咬、鬼火、岩灵和芽灵。"></figure>
+<figure><img src="images/biomes.webp" alt="八片不同国度的拼图：草地、蘑菇林、雪地、荒原、沙地、枯林与两片秋色树林。"></figure>
+</div>
+<h4>What there is to do</h4>
+<ul>
+<li><strong>Four classes.</strong> The Warden fights close with sword and shield and earns Resolve from every blow given or taken. The Emberwright casts fire, frost and storm from a staff on Focus. The Strider keeps the roads with bow, daggers and traps on Breath. The Cyborg arrives at level 99 with every skill maxed and an arm cannon full of lasers, orbital strikes and a pocket singularity, all on Compute; his head is a 3D model baked into the shader. Each has its own skills, passives and key passives, and its own look (tunic, robe or armour colour, and hair, are chosen when the hero is made).</li>
+<li><strong>A skill tree.</strong> Seven branches, from Basic down to Ultimate and the Key Passives, each opened by points spent above it. A skill has five ranks, an enhancement and a choice of two upgrades. Points come with every level up to 99; refunds cost glint later on.</li>
+<li><strong>Loot worth reading.</strong> Common, Magic, Rare, Legendary and Unique gear across ten slots, with rolled affixes, legendary powers and named uniques. Every item has its own drawing, tooltips compare it with what you wear in exact numbers, and drops lean toward your class. Smiths salvage, enchant and sell; alchemists brew stronger tonics; a stash is shared by every hero.</li>
+<li><strong>Fights you have to move in.</strong> Every creature has a move of its own, drawn on the ground before it lands: Sproutlings leap, Puffcaps leave spores, Bristlehogs charge down a lane, Wisps keep their distance and throw motes, Craglings slam the ground, Shellsnaps tuck in and snap out. Step out of the mark and it misses. Elites roll affixes; dungeon bosses change at half health.</li>
+<li><strong>Towns and dungeons.</strong> Market towns sit along the roads with a waystone, smith, alchemist, warden and stash. Crypts and caves open off the road: halls to clear, a boss in the farthest room, a hoard in a quiet one.</li>
+<li><strong>Things to find.</strong> Caches, standing stones that lend a boon for a while, beacons that mark the places around them, and waystones to travel between.</li>
+<li><strong>Work from the warden.</strong> Bounties to cull, gather, scout, slay an elder or clear a dungeon. The Long Walk pays for every new country you set foot in.</li>
+<li><strong>Night and falling.</strong> After dark creatures notice you from farther off and hit harder, and pay better. Falling drops part of your glint where you fell, marked on the map, until you go back for it.</li>
+<li><strong>Blows with weight.</strong> A hit that lands holds the world still for an instant, longer for a critical hit or a kill. Arrows fly as real arrows on an arc and stick where they miss.</li>
+<li><strong>Four difficulties.</strong> Story, Normal, Veteran and Nightmare, changeable in town.</li>
+</ul>
+<h4>Run it</h4>
+<p>Needs Node 20.19 or later.</p>
+<pre><code>npm install</code></pre>
+<pre><code>npm run dev</code></pre>
+<p>Then open the address it prints (<code>http://localhost:5173</code>). Add <code>?new</code> to open the new-hero screen, and <code>?touch</code> to see the phone interface on a desktop. Progress is kept in the browser's local storage; Settings › Saves exports and imports it as a file.</p>
+<table>
+<tr><td>Script</td><td>Does</td></tr>
+<tr><td><code>npm run dev</code></td><td>Dev server with module reload</td></tr>
+<tr><td><code>npm test</code></td><td>Rules and save tests (Vitest)</td></tr>
+<tr><td><code>npm run typecheck</code></td><td>TypeScript, strict</td></tr>
+<tr><td><code>npm run check</code></td><td>Type-check and tests</td></tr>
+<tr><td><code>npm run build</code></td><td>Type-check, then a release build in <code>dist/</code></td></tr>
+<tr><td><code>npm run preview</code></td><td>Serves <code>dist/</code></td></tr>
+</table>
+<p>Every push to <code>main</code> is tested, built and published by GitHub Actions (<code>.github/workflows/deploy.yml</code>), which writes the build to the <code>gh-pages</code> branch that GitHub Pages serves. It can also be run by hand from the Actions tab.</p>
+<h4>Controls</h4>
+<p>Every action can be rebound in Settings › Controls (two keys and a pad button each).</p>
+<table>
+<tr><td>Keyboard and mouse</td><td>Action</td></tr>
+<tr><td>Left click</td><td>Walk, attack, talk, pick up. Hold to keep walking or attacking.</td></tr>
+<tr><td>Right click, 1 2 3 4</td><td>Skills</td></tr>
+<tr><td>W A S D</td><td>Walk</td></tr>
+<tr><td>Space</td><td>Evade</td></tr>
+<tr><td>F</td><td>Attack the nearest creature, talk, use a door</td></tr>
+<tr><td>R</td><td>Drink a tonic</td></tr>
+<tr><td>Tab</td><td>Next target</td></tr>
+<tr><td>Shift</td><td>Stand still and attack in place</td></tr>
+<tr><td>Q / E, right drag, wheel</td><td>Turn the view, tilt it, zoom</td></tr>
+<tr><td>I or B / C / K / J / M / V</td><td>Inventory / character / skill tree / journal / map / view</td></tr>
+<tr><td>Alt (hold)</td><td>Show every item label; in a tooltip, the range each line can roll</td></tr>
+<tr><td>Esc</td><td>Menu, or close what is open</td></tr>
+</table>
+<table>
+<tr><td>Gamepad</td><td>Action</td></tr>
+<tr><td>Left stick / right stick</td><td>Walk / turn the view</td></tr>
+<tr><td>A</td><td>Attack the nearest creature, talk, use</td></tr>
+<tr><td>X, Y, B, RB, RT</td><td>Skills</td></tr>
+<tr><td>LT / LB</td><td>Evade / tonic</td></tr>
+<tr><td>D-pad</td><td>Next target (right), skill tree (left), zoom (up and down)</td></tr>
+<tr><td>Back / Start / right stick click</td><td>Inventory / menu / show every item label. Menus are driven with the stick and A.</td></tr>
+</table>
+<p>On a touch screen a stick appears under the left thumb, the skills sit in an arc under the right, the big button attacks the nearest creature (hold it to carry the fight on), and tapping the picture walks. Held sideways the picture fills the screen; held upright it is a strip across the top with everything else laid out below.</p>
+<div class="grid2">
+<figure><img src="images/phone-upright.webp" alt="手机竖屏界面：上半是游戏画面，下半是状态、日志、虚拟摇杆和技能弧。"></figure>
+<figure><img src="images/phone-sideways.webp" alt="手机横屏界面：画面铺满屏幕，左手摇杆，右手技能弧。"></figure>
+</div>
+<p>A new journey opens with a few first steps, each finished by doing it; they can be skipped, and the menu brings them back.</p>
+<h4>How it is drawn</h4>
+<p>1. <strong>World pass</strong> — one full-screen raymarch of the terrain heightfield, every prop (trees, rocks, houses and dungeon walls are signed-distance shapes) and the sea. For every pixel it decides <em>what is to be drawn</em>: which pencil, how firmly, how much shading, and what pen marks sit on it. It runs at an internal resolution that adapts to measured GPU time. 2. <strong>Ink pass</strong> — finds the contours from depth steps, object silhouettes and folds. 3. <strong>Entity pass</strong> — each figure is a small distance-field model raymarched inside a camera-facing quad: heroes with their class kit and the gear they wear, creatures, arrows tilted along their flight. Bold contour, hatching that rides with the figure and is re-laid six times a second, poses stepped on twos. 4. <strong>Final pass</strong> — paper with tooth, the pencil lay in strokes, a deeper pencil for shade, pen doodles (grass tufts, ripples), the pen along the contours, then the figures on top. A hero hidden behind scenery is shown as a pen outline. The minimap is drawn here too.</p>
+<p>Hatching is laid in <em>paper coordinates</em>, projected on the right and up axes of a held view direction, so strokes stay glued to the world while the camera moves and a fresh direction fades in once the view has turned far enough. Stroke size is chosen per depth from nested levels, so hatching is the same width near and far. There is no bloom, blur or tone mapping: nothing is lighter than the paper, night is drawn with indigo pencils, a lamp is a pool of bare paper, and distance is drawn by laying less.</p>
+<p>The interface uses the same hand: item and class pictures are drawn on canvas by <code>src/ui/art.ts</code> in coloured-pencil hatching under a wobbling sepia pen, seeded by each item, so two swords of the same kind still differ in blade, guard and dye, with a pencil halo in the rarity's colour. Heroes and townsfolk change expression with what happens to them: a smile at rest, focus while casting, a wince when struck, joy at a level or a legendary, worry at low health.</p>
+<h4>What is generated</h4>
+<p>Everything outside the starting town comes from the seed:</p>
+<ul>
+<li><strong>Terrain</strong> — continents, hills, mountain ranges, rivers, lakes and marsh pools, roads on a wandering lattice.</li>
+<li><strong>Thirteen biomes</strong> chosen from five slow fields (warmth, wet, enchantment, wildness, distance from home), each with its own ground pencils, stone, plants and beasts.</li>
+<li><strong>Places</strong> at road crossings: shrines, camps with a tinker, ruins with an elder beast, farms, market towns, and dungeon doors, each with a made-up name.</li>
+<li><strong>Dungeons</strong> — rooms and corridors on a grid, written in the same chunk format as the open world, so they are drawn by the same shaders.</li>
+<li><strong>Finds</strong> off the roads: caches, standing stones and beacons.</li>
+<li><strong>Beasts that take after their country</strong> — six body plans become Frost Craglings, Marsh Shellsnaps, Petal Wisps and so on; distance from town sets the level.</li>
+<li><strong>Weather and hours</strong> — cloud cover drifts; day, dusk and night each change the pencils.</li>
+</ul>
+<p>There is no edge. Land is generated chunk by chunk as it comes into view; a chunk takes about 3 ms. Creatures gain a level every 95 units. The picture is drawn in single precision, so it looks right 20 km out and starts to show stepped edges at 200 km.</p>
+<h4>Layout</h4>
+<pre><code>.github/workflows/      the deploy on every push to main
+index.html              the page
+public/static/          favicon, app icons, share picture, web app manifest
+tools/                  the release build&#x27;s shader trimming
+src/
+  main.ts               entry: settings, saves, the game, the interface, sound
+  config.js             shared tunables (also handed to shaders as #defines)
+  engine/               events, seeded RNG, input with an action map and gamepads
+  core/                 maths, noise, device
+  world/                terrain, biomes, props, places, finds, dungeons   (no GL; runs in Node)
+  gfx/                  renderer, camera, passes, shader chunks, figure and arrow models
+  game/
+    content/            classes and skills, effects, statuses, items, monsters, boons, looks
+    rules/              pure rules: stats, damage, items, skill tree, build compiler, inventory, loot
+    state/  save/       the saved character; storage, versions, migrations
+    systems/            controls, player, skills, combat, ai, spawner, loot, zones, vendors, …
+    game.ts  view.ts  fx.ts
+  settings/             settings, defaults, applying them
+  ui/                   Preact interface: HUD, panels, skill tree, settings, screens, art
+  audio/                synthesized sound and music
+docs/ARCHITECTURE.md    how it fits together, and the roadmap</code></pre>
+<p>Layers point one way (<code>engine/core ← world ← gfx ← game ← ui/audio</code>), systems announce facts on a typed event bus instead of calling each other, and content carries its own shader code. <a href="docs/ARCHITECTURE.md" rel="noopener">docs/ARCHITECTURE.md</a> has the details.</p>
+<h4>Adding things</h4>
+<table>
+<tr><td>To add</td><td>Do this</td></tr>
+<tr><td>A class</td><td>A <code>ClassDef</code> in <code>src/game/content/classes/</code> (skills, passives, key passives, resource, start gear) and its entry in <code>classes/index.ts</code>.</td></tr>
+<tr><td>A skill</td><td>A row in its class: a behaviour from <code>game/systems/behaviors.ts</code> plus <code>params</code>, ranks, enhancement and upgrades as effects.</td></tr>
+<tr><td>An item base, affix, legendary power or unique</td><td>A row in <code>game/content/items.ts</code>. Its drawing comes from its slot or weapon type in <code>ui/art.ts</code>.</td></tr>
+<tr><td>A monster</td><td>A row in <code>game/content/monsters.ts</code> and an entry in a biome's <code>monsters</code>. A new body: <code>registerArchetype({...})</code> in <code>gfx/archetypes/</code>.</td></tr>
+<tr><td>A creature move</td><td>An entry in <code>game/systems/specials.ts</code>, named by a monster's <code>special</code>.</td></tr>
+<tr><td>A biome</td><td><code>registerBiome({...})</code> in <code>world/biomes.js</code>.</td></tr>
+<tr><td>A prop</td><td><code>registerProp({...})</code> in <code>world/props.js</code> with its shape and its pencils, then list it in a biome or a place.</td></tr>
+<tr><td>A place</td><td><code>registerSiteKind(id, build)</code> in <code>world/sites.js</code>.</td></tr>
+<tr><td>A bounty kind</td><td>An entry in <code>KINDS</code> in <code>game/systems/bounties.ts</code>.</td></tr>
+<tr><td>An effect</td><td><code>registerFx(id, glsl)</code> in <code>gfx/passes/fx.js</code>, spawned from a recipe in <code>game/fx.ts</code>.</td></tr>
+<tr><td>A system</td><td>A class with <code>update(dt)</code>, added to the list in <code>game/game.ts</code>.</td></tr>
+<tr><td>A setting</td><td>A field in <code>settings/settings.ts</code>, a control in <code>ui/settings.tsx</code>, and where it applies in <code>settings/apply.ts</code>.</td></tr>
+<tr><td>A sound</td><td>An entry in the event table in <code>audio/audio.js</code>.</td></tr>
+</table>
+<p>Shader code is written in <code>glsl</code>-tagged template strings; the release build trims their indentation.</p>
+<h4>Interface and accessibility</h4>
+<p>The interface is the same paper: cream plates with a pen border, hand lettering, bars filled with pencil hatching. It is held to WCAG 2.2 AA. Measured contrast on the plate colour <code>#f1ebdc</code>:</p>
+<table>
+<tr><td>Part</td><td>Colour</td><td>Contrast</td></tr>
+<tr><td>Lettering</td><td><code>#4a2e18</code></td><td>10.4:1</td></tr>
+<tr><td>Dim lettering</td><td><code>#7a5f48</code></td><td>5.0:1</td></tr>
+<tr><td>Red / blue / green lettering</td><td><code>#b3341f</code> / <code>#48608f</code> / <code>#3d7332</code></td><td>5.2 / 5.3 / 4.8:1</td></tr>
+<tr><td>Pen borders</td><td><code>#623c1e</code></td><td>8.1:1</td></tr>
+<tr><td>Bar fills</td><td></td><td>3.3:1 or more</td></tr>
+<tr><td>Focus ring</td><td></td><td>5.9:1</td></tr>
+</table>
+<ul>
+<li>Every control is a real button with a name for screen readers, at least 30 px square (40 px or more on a touch screen), with a blue pen ring when it has keyboard focus. Bars are meters with values; messages are announced.</li>
+<li>Keyboard and gamepad reach everything, including the bag, the skill tree and the settings.</li>
+<li>Nothing relies on colour alone: rarity is always written, bars carry icons and numbers.</li>
+<li>Settings cover interface and text size, a legible font (Atkinson Hyperlegible), high contrast, colour-vision palettes and a choice of warning colour, reduced motion, screen shake, hit-stop, flashes, steady pencil lines, smooth figures, captions with direction, off-screen threat arrows, mono sound, game speed, longer warnings, auto-attack, aim assist and full rebinding.</li>
+</ul>
+<p>The game itself is a moving picture played with a mouse, keys, a pad or thumbs; it has not been tested with a screen reader beyond the roles above.</p>
+<h4>Known limits</h4>
+<ul>
+<li>Single player. Input flows through <code>player.intent</code> and events, the seam where a network layer would attach.</li>
+<li>Movement steers and slides around obstacles; there is no long-range pathfinding.</li>
+<li>The world is drawn out to about 108 units (<code>WORLD.VIEW</code>); a coarser second ring of terrain is the way to see farther.</li>
+<li>Positions are single-precision floats in shaders, so detail coarsens tens of kilometres from the start; a floating render origin would lift that.</li>
+<li>The touch interface is tested in desktop Chrome at phone sizes, not yet on real phones.</li>
+</ul>
+<h4>License</h4>
+<p>MIT — see <a href="LICENSE" rel="noopener">LICENSE</a>. The lettering uses Alegreya, Patrick Hand and Atkinson Hyperlegible (SIL Open Font License), bundled with the game through <code>@fontsource</code>.</p>
+
+<h2 id="license">附录 C：LICENSE（MIT）原文</h2>
+<details><summary>展开 LICENSE</summary><pre><code>MIT License
+
+Copyright (c) 2026 kevintngo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre></details>
+
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>作者：Kevin T. Ngo（<a href="https://github.com/kevintngo" rel="noopener">GitHub kevintngo</a> · <a href="https://x.com/kevin_t_ngo" rel="noopener">X @kevin_t_ngo</a>）；Copyright (c) 2026 kevintngo，MIT License。仓库：<a href="https://github.com/kevintngo/procedural-rpg" rel="noopener">github.com/kevintngo/procedural-rpg</a>；可玩演示：<a href="https://kevintngo.github.io/procedural-rpg/" rel="noopener">kevintngo.github.io/procedural-rpg</a>。本页为项目导读，以及 README 的中文翻译、英文原文与许可证原文。插图来自仓库 docs/ 与官方分享图。如需移除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://kevintngo.github.io/procedural-rpg/" rel="noopener">kevintngo.github.io/procedural-rpg/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
