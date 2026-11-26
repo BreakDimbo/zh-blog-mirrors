@@ -1,5 +1,20 @@
 [
   {
+    "slug": "timdenning-outthinking-yourself",
+    "title": "「The Art of Outthinking Yourself」：看穿自己的思维，安静地成功",
+    "desc": "Tim Denning（@Tim_Denning）于 2026-11-25 19:02（新加坡时间，UTC+8）在 X 发布长文《The Art of Outthinking Yourself (How to Become Quietly Successful)》。主张成功从思考方式开始；元认知是看穿自己念头的可训练技能，通向一种更安静的成功。作者本人长文全文中译并附原文。封面插画为作者原文所附，不是真人照片。作者也在个人通讯发布了同名公开文章；本页按 X 长文翻译。文中「99%」的判断、牛顿与托马斯·盖伊的金额等细节，以及作者提到的十二年复利和个人经历，均为原文所述 ⚠️。未见开放许可。",
+    "description": "Tim Denning 的 X 长文全文中译：成功从思考方式开始；元认知是看穿自己念头的可训练技能，通向一种更安静的成功。文中比例、金额和个人经历均为原文所述 ⚠️。",
+    "source": "X · @Tim_Denning",
+    "date": "2026-11-25",
+    "type": "全文",
+    "subtitle": "The Art of Outthinking Yourself (How to Become Quietly Successful)  ·  长文全文中译",
+    "original_url": "https://x.com/Tim_Denning/status/2125545764298604687",
+    "spine": "看穿自己的思维",
+    "summary": "用元认知看穿自己的念头，走向一种更安静的成功",
+    "kind": "长文",
+    "by": "Tim Denning @Tim_Denning"
+  },
+  {
     "slug": "kevintngo-procedural-rpg",
     "title": "「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG",
     "desc": "Kevin T. Ngo 的浏览器开放世界动作 RPG Brushwild 导读：画面由着色器画成圆珠笔和彩铅，不附带贴图或模型；四职业、技能树、五档掉落、城镇与地牢，土地随走随生成。仓库 kevintngo/procedural-rpg 为 MIT（Copyright (c) 2026 kevintngo）。导读 + README 全文中译 + LICENSE 原文。插图来自仓库官方截图与分享图。字体 Alegreya、Patrick Hand、Atkinson Hyperlegible 按 README 所述为 SIL Open Font License。",
