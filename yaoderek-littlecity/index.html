@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「Little City」：浏览器里的手绘微缩小镇</title>
+<meta name="description" content="Derek Yao 的浏览器手绘城市建造游戏 Little City 导读：放下几块，它们会变成一座会生活的小镇；镇上每一笔都由代码画成。仓库 yaoderek/littlecity.io 为 MIT。导读 + README 全文中译 + 许可证原文。">
+<meta property="og:title" content="「Little City」：浏览器里的手绘微缩小镇">
+<meta property="og:description" content="放下几块，看它们变成一座会生活的手绘小镇。仓库 MIT。导读 + README 中译 + 许可证原文。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-26">2026.11.26</time></p>
+<h1 class="za-title">「Little City」：浏览器里的手绘微缩小镇</h1>
+<p class="za-sub" lang="en" data-za-gen>A tiny hand-drawn sandbox city builder · 导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · yaoderek/littlecity.io（Derek Yao，MIT）</span><span>收录 · 2026-11-26</span><span><a href="https://littlecity.io/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/yaoderek/littlecity.io" rel="noopener">yaoderek/littlecity.io</a>（Derek Yao，与 <a href="https://github.com/Nano-AI" rel="noopener">Nano-AI</a>；MIT）· 可玩：<a href="https://littlecity.io/" rel="noopener">littlecity.io</a> · 官方中文：<a href="https://littlecity.io/zh/" rel="noopener">littlecity.io/zh/</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">奶油色的纸上，一座小岛浮在浅海里。城堡、港口、小教堂和灯塔沿着岸线挤在一起，墨线有一点点手抖，铅笔在屋瓦和草坡上排着细线。这不是扫描进去的插画。<strong>Little City</strong> 是 Derek Yao 做的浏览器沙盒城市建造游戏：你放下几个方块，它们会变成一座小镇，然后居民搬进来，开始在里面生活。小镇本身没有美术文件，每一笔都是代码画出来的。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库以 MIT 许可发布（Copyright (c) 2026 Derek Yao and contributors）。本页为项目导读，附录为 README 全文中译、英文原文与 LICENSE 原文。插图来自仓库 <code>docs/readme/</code>，作者提供。</div>
+
+<figure>
+<a href="https://littlecity.io/"><img class="cover" src="images/cover.webp" width="1280" height="720" alt="一座手绘的海岛小镇：奶油色纸面上有城堡、港口、小教堂和灯塔，墨线略带手抖，浅海围在岛的四周。"></a>
+<figcaption>官方欢迎图（仓库 <code>docs/readme/welcome.jpg</code>，作者提供，MIT）。点击图片可打开游戏。</figcaption>
+</figure>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#play">能做什么</a></li>
+<li><a href="#guide">特殊建筑和图鉴</a></li>
+<li><a href="#look">画面怎么画出来</a></li>
+<li><a href="#stack">技术结构</a></li>
+<li><a href="#run">怎么运行</a></li>
+<li><a href="#license-note">许可</a></li>
+<li><a href="#related">相关阅读</a></li>
+<li><a href="#appendix">附录 A：README 全文中译</a></li>
+<li><a href="#readme-en">附录 B：README 英文原文</a></li>
+<li><a href="#license">附录 C：LICENSE（MIT）原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p><strong>Little City</strong> 是一款可以在浏览器里免费玩的手绘微缩小镇建造游戏，电脑、iPhone、iPad 和安卓手机都能打开，不用下载，也不用注册。官方介绍把它比作「一个你亲手搭起来的雪花水晶球」：放下几个方块，看它们变成一座小镇，再看它慢慢活起来。</p>
+<p>每一块会变成什么，要看你把它放在哪儿。官方的说法是：高塔楼旁边的房子会变成小教堂；在海边叠起四块，就成了灯塔；小路会变成街道，两旁立起路灯，摆上长椅。接着，居民搬进来。磨坊主把面粉送到面包房，面包师再把面包送到广场上的摊位；船早上出海，带着鱼回来；晾衣绳上挂起衣服。有些日子会赶集，有时还会办一场婚礼。四季会轮转，天会下雪，黄昏时路灯亮起。</p>
+<p>仓库里的设计说明还写到，作者喜欢 Townscaper 那种「放下一块，它就变成好看的东西」的感觉，又希望小镇会自己活动起来。游戏被写成一件纯玩具：没有钱、没有目标、也没有失败条件。这些是仓库设计稿里的意图说明，不是官网页上的介绍。</p>
+<p>代码在 <a href="https://github.com/yaoderek/littlecity.io" rel="noopener">github.com/yaoderek/littlecity.io</a> 的 <code>main</code> 分支，成品站点从 <code>gh-pages</code> 分支发布到 <a href="https://littlecity.io/" rel="noopener">littlecity.io</a>。站点带有官方中文，以及其他多种语言。README 的署名是 Derek Yao，并写明与 <a href="https://github.com/Nano-AI" rel="noopener">Nano-AI</a> 一同完成。仓库最初提交于 2026-11-19（新加坡时间）。</p>
+
+<h2 id="play">能做什么</h2>
+<p>玩法很轻。你在一座小岛上放置方块，也可以先按「长出小镇」，让它在一座新岛上自己长出一整座城，然后只是看着。</p>
+<p>「长出小镇」会按地形长出不同性格的聚落。游戏内的名称是：港口小镇、大理石之城、城堡小镇、集市小镇、河边小镇、农家小村、山丘小镇、花园小镇。</p>
+<p>你还可以飞进镇里四处看。快捷键是 F：W A S D 飞行，空格上升，Shift 下降，滚轮调速度，拖动来环顾，Esc 降落。官方 README 也写了另一件更猛的事：你可以给它一枚核弹，居民会把镇子重新建起来。</p>
+<p>小镇会自动保存在浏览器里。你还可以把它做成分享链接，或者存成一张明信片。界面里有撤销，设计说明强调：只有玩家的操作才会改动已保存的世界，规则只在上面派生出外观和生活，不会偷偷改掉你放下的东西。</p>
+<div class="grid2">
+<figure>
+<img src="images/fly.webp" width="800" height="450" alt="以飞行视角穿过广场上的一场婚礼，宾客聚在手绘的房屋中间。">
+<figcaption>飞过广场上的婚礼（<code>docs/readme/fly.jpg</code>）。</figcaption>
+</figure>
+<figure>
+<img src="images/nuke.webp" width="800" height="450" alt="蘑菇云从手绘小镇上升起，墨线和铅笔排线仍清晰可见。">
+<figcaption>给它一枚核弹（<code>docs/readme/nuke.jpg</code>）。</figcaption>
+</figure>
+<figure>
+<img src="images/grow.webp" width="800" height="450" alt="一座由游戏自己长出来的新手绘小镇，沿岸排着房屋、塔楼和码头。">
+<figcaption>自己长出来的一座小镇（<code>docs/readme/grow.jpg</code>）。</figcaption>
+</figure>
+</div>
+<p>可放置的结构包括自动块、房子、塔楼、灯塔、拱门、码头、大理石、柱子、台阶、风车、树、喷泉、摊位、篱笆和矮墙；地面上还可以铺小路、广场和花园。自动块会依四周的环境决定自己成为哪一种结构，并在你锁定之前继续适应。</p>
+
+<h2 id="guide">特殊建筑和图鉴</h2>
+<p>在 Little City 里，建筑不是从菜单里点选的。你只管放方块，小镇自己决定它们变成什么。官方中文图鉴页的标题写的是「全部 102 种特殊建筑和事件」；同一天的 README、介绍页和 <code>llms.txt</code> 仍写「80 多样」或「over 80」。以下类别名称采用官方中文图鉴。</p>
+<ul>
+<li><strong>房子</strong>：小教堂、商店、客栈、市政厅、庄园、谷仓、铁匠铺、学堂、临街楼、排屋、高脚屋、船屋、水磨坊、崖边屋、温室、磨坊小屋、守塔人小屋、瞭望小屋。</li>
+<li><strong>塔楼</strong>：尖塔、钟楼、城堡角楼、钟塔、天文台、鸽舍、灯塔、观景塔。</li>
+<li><strong>石造</strong>：神庙、主堡、门楼、大台阶、石驳岸、底座和雕像、音乐亭、柱廊、方尖碑或纪念柱、高台、剧场、墙中小店。</li>
+<li><strong>桥</strong>：石桥、桥上商铺、天桥、高架桥、门洞、凉廊、飞扶壁。</li>
+<li><strong>滨水</strong>：栈桥、挖出的河和驳船、长码头、木栈道、仓库，以及柯克商船等船只。</li>
+<li><strong>绿地、小镇与运动场</strong>：麦田、公园、围墙花园、果园、口袋公园等绿地；路灯、晾衣绳、驻军、骑手、集市十字碑；还有篮球场、网球场、足球场等一批运动场。</li>
+<li><strong>日子与日常</strong>：赶集日、婚礼、海盗来袭、冬日节庆；海滩日、野餐、下雪天、丰收晚宴、报佳音、麦收；卸货、挥手迎船、渔获上岸；磨坊面包、打水、洗衣日、上学和跳房子、铁匠干活、点灯人和守夜等。</li>
+</ul>
+<p>完整的获得方法在官方图鉴里：<a href="https://littlecity.io/zh/guide/" rel="noopener">littlecity.io/zh/guide/</a>。本页不转载各条目的详细做法。</p>
+
+<h2 id="look">画面怎么画出来</h2>
+<p>README 写得很干脆：镇上没有美术文件，每一笔都在代码里画。纸色是奶油色 <code>#f2ede3</code>，墨色是暖褐 <code>#3a2f2a</code>。着色器把光照收成三到四档扁平的阶调，来自一个固定的光线方向，没有场景里的真实灯源；草、瓦、石缝、木板和大理石纹理是表面着色器里的铅笔图案；墨线在屏幕空间里寻找深度跳变、表面折痕或墨线编号的变化，再给线的位置和粗细加上固定的笔锋抖动。纸的颗粒加在色彩转换之后。镜头默认是正交的，所以整座岛看起来像摆在桌上的模型。</p>
+<p>几何由生成器按结构吐出，再拼进区块网格。相同结构和部件共用一个墨线编号，连在一起的墙和屋顶会画成一整块表面，中间不出现接缝。旗帜、晾衣、人物、船和鸟是单独的实例，不会被烘焙进房屋网格。全镇共用一场会缓慢转向的风，阵风像一波波走过小镇，帆、旗、衣服、烟和树都去采同一阵风。</p>
+<p>一天按大约八分钟循环：白天、黄昏、夜晚和黎明依次到来，整帧会套上暖桃或蓝紫的调色，窗户和路灯在夜里亮起来，灯塔也会放出光柱。后来的版本还加入了四季和天气，以及三首用作背景的钢琴曲。本页不转载这些音频。</p>
+
+<h2 id="stack">技术结构</h2>
+<p>仓库是 TypeScript 项目，用 Vite 8 构建，画面由 <a href="https://threejs.org" rel="noopener">three.js</a> 0.187 渲染，测试是 Vitest 和 Playwright，没有单独的界面框架。需要 Node 22.12 或更新版本。<code>package.json</code> 版本号仍是 <code>0.0.0</code>。</p>
+<p>世界被保存之后，会先经过一段纯逻辑的 <code>resolve()</code>，得到一张小镇计划，再由生成器 <code>build()</code> 变成几何；生活系统每帧读取这张计划和风、时间，交给渲染器。解析分成两段：先即时决定形状，再在随后几帧补上装饰、人物和步行网络。城镇逻辑是确定的：同样的输入会得到同样的结果，解析和生成里不用 <code>Math.random()</code> 或墙上的时钟。</p>
+<p>结构不是为每种邻接关系准备一张手做砌块，而是「生成器加上许多小部件」。规则只产出逻辑记录（角色、门窗、装饰、生活），真正的网格由部件库去画。新增一种特殊建筑，通常是加一条规则，有时再加一个部件，而不必改生成器。规则、生成和解析层不引用 three.js 的场景对象、DOM 或时钟，可以在 Node 里做单元测试。</p>
+<p>站点除英语外，还带有简体中文、西班牙语、法语、巴西葡萄牙语、日语、韩语、德语和土耳其语。分析使用 PostHog；README 请自行托管的人保留 <code>.env.production</code> 里的分析密钥，并链回 <a href="https://littlecity.io/" rel="noopener">littlecity.io</a>。仓库里还有开发用的部件陈列页，官方站点的 <code>/gallery/</code> 不对外开放抓取，本页也不收录。</p>
+
+<h2 id="run">怎么运行</h2>
+<pre><code>git clone https://github.com/yaoderek/littlecity.io.git
+cd littlecity.io
+npm install
+npm run dev</code></pre>
+<p><code>npm run check</code> 会跑类型检查、lint 和测试。官方还写了截图、图鉴生成和翻译等辅助命令。最省事的办法，是直接打开 <a href="https://littlecity.io/" rel="noopener">littlecity.io</a>。</p>
+
+<h2 id="license-note">许可</h2>
+<p>仓库根目录的 LICENSE 为 MIT License，版权行是 <code>Copyright (c) 2026 Derek Yao and contributors</code>。<code>package.json</code> 的 <code>license</code> 字段同样是 MIT。附录 C 收录许可证原文。</p>
+
+<h2 id="related">相关阅读</h2>
+<ul>
+<li>另一座用代码画在纸上的可玩世界：<a href="../kevintngo-procedural-rpg/">「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG</a>。</li>
+<li>同样在浏览器里用 three.js 长出一座岛：<a href="../krisyangdev-yarn-world/">Yarn World：在浏览器里“织”出一座毛线小岛</a>，以及 <a href="../voidjan-haiyu-threejs-island/">「海屿」：纯代码搓出的小岛海洋游戏</a>。</li>
+<li>走进一片用代码画成的风景：<a href="../blendi-painted-valley/">Painted Valley：走进一片用代码画成的夏日山谷</a>。</li>
+</ul>
+
+<h2 id="appendix">附录 A：README 全文中译</h2>
+<p class="related-guide">译自仓库根目录 README.md（分支 <code>main</code>，提交 <code>8e736d3</code>，2026-11-26 核对）。原作 Copyright (c) 2026 Derek Yao and contributors，MIT 许可；本译文为本站非官方翻译。插图位置改用本页已收录的同一批官方图。</p>
+
+<h3>little city</h3>
+<p>一个小小的手绘城市建造游戏。你放下几个方块，它们会变成一座小镇，然后人们搬进来，开始在那里生活。</p>
+<p>它是免费的，在浏览器里运行，手机上也能玩。</p>
+<p><strong><a href="https://littlecity.io/?utm_source=github" rel="noopener">去玩 → littlecity.io</a></strong></p>
+<figure>
+<a href="https://littlecity.io/?utm_source=github"><img src="images/cover.webp" width="1280" height="720" alt="一座手绘的海岛小镇，有城堡、港口和灯塔。"></a>
+<figcaption>一座手绘的海岛小镇，有城堡、港口和灯塔。</figcaption>
+</figure>
+<p>你可以飞进去，只是四处看看。对，你也可以给它一枚核弹，他们会把它重建起来。或者点「长出小镇」，它会替你建好一整座。</p>
+<div class="grid2">
+<figure>
+<img src="images/fly.webp" width="800" height="450" alt="飞过广场上的一场婚礼。">
+<figcaption>飞过广场上的婚礼</figcaption>
+</figure>
+<figure>
+<img src="images/nuke.webp" width="800" height="450" alt="蘑菇云罩在小镇上方。">
+<figcaption>蘑菇云罩在小镇上方</figcaption>
+</figure>
+<figure>
+<img src="images/grow.webp" width="800" height="450" alt="一座自己长出来的全新小镇。">
+<figcaption>一座自己长出来的全新小镇</figcaption>
+</figure>
+</div>
+<p>有 80 多种特殊建筑和事件等你发现：<a href="https://littlecity.io/guide/" rel="noopener">图鉴</a>里全都有。镇上没有美术文件，每一笔都是用代码画的。</p>
+
+<h4>运行</h4>
+<p>代码在 <a href="https://github.com/yaoderek/littlecity.io" rel="noopener">yaoderek/littlecity.io</a> 的 <code>main</code> 分支；构建好的站点从它的 <code>gh-pages</code> 分支提供。需要 Node 22.12 或更新版本。</p>
+<pre><code>git clone https://github.com/yaoderek/littlecity.io.git
+cd littlecity.io
+npm install
+npm run dev</code></pre>
+<p><code>npm run check</code> 会运行类型检查、lint 和测试。项目使用 TypeScript 和 <a href="https://threejs.org" rel="noopener">three.js</a>。</p>
+<p>要自己托管一份吗？请保留 <code>.env.production</code> 里的分析密钥，以便统计游玩次数，并链回 <a href="https://littlecity.io/" rel="noopener">littlecity.io</a>。</p>
+
+<h4>许可</h4>
+<p><a href="https://github.com/yaoderek/littlecity.io/blob/main/LICENSE" rel="noopener">MIT</a>。由 <a href="https://github.com/yaoderek" rel="noopener">Derek Yao</a> 制作，并与 <a href="https://github.com/Nano-AI" rel="noopener">Nano-AI</a> 一同完成。</p>
+
+<h2 id="readme-en">附录 B：README 英文原文</h2>
+<p class="related-guide">仓库根目录 README.md 原文（分支 <code>main</code>，提交 <code>8e736d3</code>，2026-11-26 核对）。插图改用本页已收录的同一批官方图。</p>
+<pre><code># little city
+
+a little hand-drawn city builder. you place a few blocks, they turn into a town, and then people move in and start living there.
+
+it&#39;s free, runs in your browser, works on your phone too.
+
+**[play it → littlecity.io](https://littlecity.io/?utm_source=github)**
+
+[![a hand-drawn island town with a castle, a harbour and a lighthouse](docs/readme/welcome.jpg)](https://littlecity.io/?utm_source=github)
+
+you can fly down into it and just look around. yes, you can nuke it, they&#39;ll build it back. or hit &quot;grow a town&quot; and it builds a whole one for you.
+
+| ![flying through a wedding on the square](docs/readme/fly.jpg) | ![a mushroom cloud over the town](docs/readme/nuke.jpg) | ![a whole new town, grown by itself](docs/readme/grow.jpg) |
+| --- | --- | --- |
+
+there are over 80 special buildings and events to find: [the guide](https://littlecity.io/guide/) has them all. no art files for the town, every line is drawn in code.
+
+## run it
+
+the code is here, on the `main` branch of [yaoderek/littlecity.io](https://github.com/yaoderek/littlecity.io); the built site is served from its `gh-pages` branch. needs node 22.12 or newer.
+
+```sh
+git clone https://github.com/yaoderek/littlecity.io.git
+cd littlecity.io
+npm install
+npm run dev
+```
+
+`npm run check` runs the types, the lint and the tests. it&#39;s typescript and [three.js](https://threejs.org).
+
+hosting your own copy? keep the analytics key in `.env.production` so plays get counted, and link back to [littlecity.io](https://littlecity.io/).
+
+## license
+
+[MIT](LICENSE). made by [Derek Yao](https://github.com/yaoderek), with [Nano-AI](https://github.com/Nano-AI).
+</code></pre>
+
+<h2 id="license">附录 C：LICENSE（MIT）原文</h2>
+<details><summary>展开 LICENSE</summary><pre><code>MIT License
+
+Copyright (c) 2026 Derek Yao and contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre></details></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>作者：Derek Yao（<a href="https://github.com/yaoderek" rel="noopener">GitHub yaoderek</a>）；README 同时署名 <a href="https://github.com/Nano-AI" rel="noopener">Nano-AI</a>。Copyright (c) 2026 Derek Yao and contributors，MIT License。仓库：<a href="https://github.com/yaoderek/littlecity.io" rel="noopener">github.com/yaoderek/littlecity.io</a>；可玩：<a href="https://littlecity.io/" rel="noopener">littlecity.io</a>；官方中文：<a href="https://littlecity.io/zh/" rel="noopener">littlecity.io/zh/</a>。本页为项目导读，以及 README 的中文翻译、英文原文与许可证原文。插图来自仓库 <code>docs/readme/</code>，作者提供。如需移除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://littlecity.io/" rel="noopener">littlecity.io/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

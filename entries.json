@@ -1,5 +1,20 @@
 [
   {
+    "slug": "yaoderek-littlecity",
+    "title": "「Little City」：浏览器里的手绘微缩小镇",
+    "desc": "Derek Yao 的浏览器手绘城市建造游戏 Little City 导读：放下几个方块，它们会变成一座会生活的小镇；镇上没有美术文件，每一笔都由代码画成。可在电脑和手机浏览器免费玩，也可让它自己「长出小镇」。仓库 yaoderek/littlecity.io 为 MIT（Copyright (c) 2026 Derek Yao and contributors），README 同时署名 Nano-AI。导读 + README 全文中译 + LICENSE 原文。插图来自仓库官方截图。官方图鉴现列 102 种特殊建筑和事件，README 与介绍页仍写「80 多样」。",
+    "description": "放下几块，看它们变成一座会生活的手绘小镇。仓库 MIT。导读 + README 中译 + 许可证原文。",
+    "source": "GitHub · yaoderek/littlecity.io（Derek Yao，MIT）",
+    "date": "2026-11-26",
+    "type": "导读 + README 中译",
+    "subtitle": "A tiny hand-drawn sandbox city builder · 导读 + README 全文中译",
+    "original_url": "https://littlecity.io/",
+    "spine": "代码画出的手绘小镇",
+    "summary": "放下几块，看它们在浏览器里长成一座会生活的手绘小镇",
+    "kind": "项目",
+    "by": "Derek Yao"
+  },
+  {
     "slug": "timdenning-outthinking-yourself",
     "title": "「The Art of Outthinking Yourself」：看穿自己的思维，安静地成功",
     "desc": "Tim Denning（@Tim_Denning）于 2026-11-25 19:02（新加坡时间，UTC+8）在 X 发布长文《The Art of Outthinking Yourself (How to Become Quietly Successful)》。主张成功从思考方式开始；元认知是看穿自己念头的可训练技能，通向一种更安静的成功。作者本人长文全文中译并附原文。封面插画为作者原文所附，不是真人照片。作者也在个人通讯发布了同名公开文章；本页按 X 长文翻译。文中「99%」的判断、牛顿与托马斯·盖伊的金额等细节，以及作者提到的十二年复利和个人经历，均为原文所述 ⚠️。未见开放许可。",
