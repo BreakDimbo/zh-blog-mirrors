@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「二十项动效工具」：一份写给 Muse 的清单</title>
+<meta name="description" content="Jonny（@Jonnyhlkw）于 2026-11-26 在 X 发布的中文帖原文与导读：列出二十个给 Muse 用的 GitHub 仓库。清单里既有技能包，也有大型软件和框架；许可并不统一。文中「海外大佬实测跑通」「全都在 Muse 验证可用」等均为原文自报。">
+<meta property="og:title" content="「二十项动效工具」：一份写给 Muse 的清单">
+<meta property="og:description" content="Jonny 列出二十个给 Muse 用的仓库。原文 + 导读。许可不统一。「全部验证可用」等为原文自报。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文 + 导读</span><time datetime="2026-11-26">2026.11.26</time></p>
+<h1 class="za-title">「二十项动效工具」：一份写给 Muse 的清单</h1>
+<p class="za-sub" lang="en" data-za-gen>Twenty motion tools  ·  长文原文 + 中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @Jonnyhlkw</span><span>收录 · 2026-11-26</span><span><a href="https://x.com/Jonnyhlkw/status/2125801726603407484" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者 Jonny（<a href="https://x.com/Jonnyhlkw" rel="noopener">@Jonnyhlkw</a>）于 2026-11-26 12:00（新加坡时间，UTC+8）在 X 发布中文帖，列出二十个给 Muse 使用的 GitHub 仓库。本页收录作者本人原文，并配独立中文导读。各仓库的许可并不相同，不能把这份清单统称为开放许可软件。文中「海外大佬刚实测跑通」「好莱坞级动效工作室」「20 个库全都在 Muse 验证可用」「直接复制链接扔给 Muse 就能装」等均为原文自报。原帖附有约 42 秒视频，请到原文观看。封面为 typographic 设计。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">Jonny 在 11 月 26 日中午发了一份二十个 GitHub 仓库的清单。按照他的说法，把这些链接交给 Muse，就能从分镜、三维物理做到踩点配乐。清单里既有可以安装的智能体技能，也有 Blender、FFmpeg、Remotion 这类大型软件或框架。许可并不统一：多数仓库在 GitHub 上标为 MIT，但也有 GPL、LGPL、ISC、BSD，以及 GSAP 和 Remotion 各自的专门条款；其中 remotion-dev/skills 在仓库页上未见 LICENSE 文件。文中关于「全部在 Muse 验证可用」「复制链接就能装」的说法，均为原文自报。</p>
+
+<div class="notice"><strong>版权说明：</strong>本页为 Jonny（@Jonnyhlkw）X 帖的非官方中文导读，并收录作者原文，仅供阅读学习。帖文版权归作者所有。本页不转载这二十个仓库的 README、源码或演示素材。各仓库许可以各自页面为准，不能把它们统称为开放许可。封面为 typographic 设计。原帖所附约 42 秒视频见原文。</div>
+
+<figure>
+<img class="cover" src="images/cover.webp" width="1600" height="900" alt="浅米色字体封面：左侧是很大的衬线体「20」，右侧写着 MUSE MOTION LIST 和中文标题「把动效工具，列成二十项」，下列二十个仓库的简称。底部写着 JONNY、@JONNYHLKW、TWENTY REPOS。">
+<figcaption>本页字体封面。原帖所附视频请到原文观看。</figcaption>
+</figure>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#list">这份清单里有什么</a></li>
+<li><a href="#license-note">许可</a></li>
+<li><a href="#related">相关阅读</a></li>
+<li><a href="#zh">原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p>2026 年 11 月 26 日 12:00（新加坡时间，UTC+8），Jonny（@Jonnyhlkw）在 X 发了一篇中文长帖。帖子开头写：「这才是 Muse 的完全体！」随后列出二十个 GitHub 仓库，并说「海外大佬刚实测跑通 20 个开源神器，直接把 Muse 改造成好莱坞级动效工作室」。结尾又写：「20 个库全都在 Muse 验证可用，直接复制链接扔给 Muse 就能装。」以上均为原文自报。帖里没有点名这位「海外大佬」，本页也没有核对这些仓库是否都已在 Muse 中跑通。</p>
+<p>Muse 在原文里是一个可以被投入 GitHub 链接、用来安装技能或调用工具的智能体。原帖没有写明它属于哪一家产品。本页沿用原文的叫法，不作进一步归属。</p>
+<p>原帖附有一段约 42 秒的视频。本页没有转载这段视频，请到原文观看。</p>
+
+<h2 id="list">这份清单里有什么</h2>
+<p>二十个条目并不是同一类东西。前几项里，有给智能体用的技能包，例如 LottieFiles 的 motion-design-skill、Remotion 官方的 skills、hairline、anatomy 和 anatomy-reveal-skill。后面则更多是动画库、三维引擎、音频工具和导出程序，例如 Motion、Three.js、GSAP、Remotion、Blender 和 FFmpeg。原文把它们写成同一套「复制链接就能装」的流程，没有分开说明大型软件要如何安装。本页也没有在 Muse 里复现。</p>
+<p>下面这张表里的仓库说明，尽量对应原帖的概括；许可一栏是 2026 年 11 月 27 日对照各仓库 GitHub 首页时的记录，不是许可证全文。</p>
+<table>
+<thead>
+<tr><th>#</th><th>仓库</th><th>原帖概括</th><th>许可（收录当日）</th></tr>
+</thead>
+<tbody>
+<tr><td>01</td><td><a href="https://github.com/lottiefiles/motion-design-skill" rel="noopener">LottieFiles/motion-design-skill</a></td><td>迪士尼 12 项动画法则与缓动节奏</td><td>MIT</td></tr>
+<tr><td>02</td><td><a href="https://github.com/motiondivision/motion" rel="noopener">motiondivision/motion</a></td><td>弹簧物理动效与丝滑转场</td><td>MIT</td></tr>
+<tr><td>03</td><td><a href="https://github.com/remotion-dev/skills" rel="noopener">remotion-dev/skills</a></td><td>官方视频生成技能库</td><td>仓库页未见 LICENSE</td></tr>
+<tr><td>04</td><td><a href="https://github.com/lucasmarkes/hairline" rel="noopener">lucasmarkes/hairline</a></td><td>SVG 秒变交互式动态线条艺术</td><td>MIT</td></tr>
+<tr><td>05</td><td><a href="https://github.com/wheresryan22/anatomy" rel="noopener">wheresryan22/anatomy</a></td><td>机械结构自动转 3D 剖面图</td><td>MIT</td></tr>
+<tr><td>06</td><td><a href="https://github.com/annnguyentt/anatomy-reveal-skill" rel="noopener">annnguyentt/anatomy-reveal-skill</a></td><td>产品 3D 爆炸拆解展示视频</td><td>MIT</td></tr>
+<tr><td>07</td><td><a href="https://github.com/blender/blender" rel="noopener">blender/blender</a></td><td>3D 骨骼绑定与角色动画（原文写 Muse 开局自带）</td><td>整体为 GPL-3.0；个别文件可能不同</td></tr>
+<tr><td>08</td><td><a href="https://github.com/mrdoob/three.js" rel="noopener">mrdoob/three.js</a></td><td>3D 空间场景与电影运镜</td><td>MIT</td></tr>
+<tr><td>09</td><td><a href="https://github.com/pmndrs/react-three-rapier" rel="noopener">pmndrs/react-three-rapier</a></td><td>3D 真实物理引擎</td><td>MIT</td></tr>
+<tr><td>10</td><td><a href="https://github.com/pmndrs/react-postprocessing" rel="noopener">pmndrs/react-postprocessing</a></td><td>光晕、景深模糊等电影后期特效</td><td>MIT</td></tr>
+<tr><td>11</td><td><a href="https://github.com/Alchemist0823/three.quarks" rel="noopener">Alchemist0823/three.quarks</a></td><td>粒子轨迹与视觉特效</td><td>MIT</td></tr>
+<tr><td>12</td><td><a href="https://github.com/cocopon/tweakpane" rel="noopener">cocopon/tweakpane</a></td><td>运行中实时拖拽调参面板</td><td>MIT</td></tr>
+<tr><td>13</td><td><a href="https://github.com/greensock/GSAP" rel="noopener">greensock/GSAP</a></td><td>行业标杆动画时间轴（原文写「现已彻底免费」）</td><td>GreenSock standard no-charge license；仓库页未见 SPDX</td></tr>
+<tr><td>14</td><td><a href="https://github.com/remotion-dev/remotion" rel="noopener">remotion-dev/remotion</a></td><td>基于 React 的可编程视频引擎</td><td>特殊许可；部分情形需公司许可</td></tr>
+<tr><td>15</td><td><a href="https://github.com/ManimCommunity/manim" rel="noopener">ManimCommunity/manim</a></td><td>硬核科普、公式与几何动画神器</td><td>MIT</td></tr>
+<tr><td>16</td><td><a href="https://github.com/airbnb/lottie-web" rel="noopener">airbnb/lottie-web</a></td><td>轻量级矢量动画渲染</td><td>MIT</td></tr>
+<tr><td>17</td><td><a href="https://github.com/WordPress/openverse" rel="noopener">WordPress/openverse</a></td><td>免 API Key 直接搜免费音效和音乐（原文表述）</td><td>软件仓库为 MIT；媒体条目各有自己的许可</td></tr>
+<tr><td>18</td><td><a href="https://github.com/librosa/librosa" rel="noopener">librosa/librosa</a></td><td>自动抓取歌曲鼓点，让动画卡点起飞</td><td>ISC</td></tr>
+<tr><td>19</td><td><a href="https://github.com/m-bain/whisperX" rel="noopener">m-bain/whisperX</a></td><td>全自动精准打轴字幕（原文写连日语都支持）</td><td>BSD-2-Clause</td></tr>
+<tr><td>20</td><td><a href="https://github.com/FFmpeg/FFmpeg" rel="noopener">FFmpeg/FFmpeg</a></td><td>全能格式转换与无损导出</td><td>主体为 LGPL；可选组件为 GPL</td></tr>
+</tbody>
+</table>
+<p>第 01 项 motion-design-skill 讲的是给界面用的动效法则、时机和缓动，会提到迪士尼动画十二法则，但和 Dylan Tarre 的 Animation Principles 技能包不是同一套。第 05 项 anatomy 是 Ryan 的等轴测机器图技能，原帖写成「机械结构自动转 3D 剖面图」，是一种概括，细节以仓库说明为准。第 07 项里「Muse 开局自带」Blender，是原文的说法。第 17 项 Openverse 可以检索开放许可的音效和音乐，但每条媒体都有自己的许可和署名要求，并不因为软件仓库是 MIT 就自动免费可用。第 19 项「连日语都支持」是原文的说法。</p>
+
+<h2 id="license-note">许可</h2>
+<p>原帖把这二十个仓库统称为「开源神器」。对照各仓库的 GitHub 首页，情况并不整齐。</p>
+<p>标为 MIT 的包括：motion-design-skill、Motion、hairline、anatomy、anatomy-reveal-skill、Three.js、react-three-rapier、react-postprocessing、three.quarks、Tweakpane、Manim、lottie-web，以及 Openverse 的软件仓库。librosa 为 ISC，WhisperX 为 BSD-2-Clause。Blender 的 README 写明软件整体采用 GNU GPL 第 3 版，个别文件可能使用与之相容的其他许可。FFmpeg 的 README 写明代码主体为 LGPL，可选组件为 GPL。</p>
+<p>GSAP 的仓库页未见 SPDX 许可证文件。它的 README 写到，因 Webflow，全部工具（含原先仅对 Club 成员开放的插件）免费，并包括商业使用；许可一节指向 GreenSock 的 standard no-charge license。原帖写作「现已彻底免费」，应对照这份专门条款来理解，而不是把它看成 MIT 一类常见的开放许可。</p>
+<p>Remotion 的 README 提醒读者：它有特殊许可，在部分情形下需要取得公司许可。官方技能仓库 remotion-dev/skills 在仓库页上未见 LICENSE 文件；技能列表里有一项 <code>/remotion-license</code>，用来查找 Remotion 的许可说明和购买入口。</p>
+<p>本页只转载 Jonny 本人的帖文，不转载上述仓库的 README 或源码。使用其中任何一个项目前，请到对应仓库和许可页查看现行条款。</p>
+
+<h2 id="related">相关阅读</h2>
+<ul>
+<li><a href="../dylantarre-animation-principles/">「动画十二法则」：把迪士尼的手艺写成 144 份技能</a></li>
+<li><a href="../anatomy-skill/">Anatomy：把一个想法造成可交互的机器图</a></li>
+<li><a href="../anatomy-community/">Anatomy 社区画廊</a></li>
+<li><a href="../slashui-17-motion-assets/">17 个动效创作素材站</a></li>
+<li><a href="../voxyz-openverse-sfx/">用 Openverse 给代码视频配开放许可音效</a></li>
+<li><a href="../mengto-cloud-pass/">Cloud Pass：用 Three.js 做成的无尽摩托骑行</a></li>
+</ul>
+
+<h2 id="zh">原文</h2>
+<p class="source">作者 Jonny（@Jonnyhlkw）· 2026-11-26 12:00（新加坡时间，UTC+8）· 原文已是中文，此处按段落整理，短链接已还原为 GitHub 地址。</p>
+
+<p>🚨 这才是 Muse 的完全体！</p>
+<p>海外大佬刚实测跑通 20 个开源神器，直接把 Muse 改造成好莱坞级动效工作室！！！</p>
+<p>从分镜、3D 物理到踩点配乐一条龙全齐：</p>
+<p>01 /motion-design-skill：迪士尼 12 项动画法则与缓动节奏<br>
+<a href="https://github.com/lottiefiles/motion-design-skill" rel="noopener">https://github.com/lottiefiles/motion-design-skill</a></p>
+<p>02 Motion：弹簧物理动效与丝滑转场<br>
+<a href="https://github.com/motiondivision/motion" rel="noopener">https://github.com/motiondivision/motion</a></p>
+<p>03 Remotion Skills：官方视频生成技能库<br>
+<a href="https://github.com/remotion-dev/skills" rel="noopener">https://github.com/remotion-dev/skills</a></p>
+<p>04 /hairline：SVG 秒变交互式动态线条艺术<br>
+<a href="https://github.com/lucasmarkes/hairline" rel="noopener">https://github.com/lucasmarkes/hairline</a></p>
+<p>05 /anatomy：机械结构自动转 3D 剖面图<br>
+<a href="https://github.com/wheresryan22/anatomy" rel="noopener">https://github.com/wheresryan22/anatomy</a></p>
+<p>06 /anatomy-reveal：产品 3D 爆炸拆解展示视频 😱<br>
+<a href="https://github.com/annnguyentt/anatomy-reveal-skill" rel="noopener">https://github.com/annnguyentt/anatomy-reveal-skill</a></p>
+<p>07 Blender：3D 骨骼绑定与角色动画（Muse 开局自带）<br>
+<a href="https://github.com/blender/blender" rel="noopener">https://github.com/blender/blender</a></p>
+<p>08 Three.js：3D 空间场景与电影运镜<br>
+<a href="https://github.com/mrdoob/three.js" rel="noopener">https://github.com/mrdoob/three.js</a></p>
+<p>09 react-three-rapier：3D 真实物理引擎<br>
+<a href="https://github.com/pmndrs/react-three-rapier" rel="noopener">https://github.com/pmndrs/react-three-rapier</a></p>
+<p>10 react-postprocessing：光晕、景深模糊等电影后期特效<br>
+<a href="https://github.com/pmndrs/react-postprocessing" rel="noopener">https://github.com/pmndrs/react-postprocessing</a></p>
+<p>11 three.quarks：粒子轨迹与视觉特效<br>
+<a href="https://github.com/Alchemist0823/three.quarks" rel="noopener">https://github.com/Alchemist0823/three.quarks</a></p>
+<p>12 Tweakpane：运行中实时拖拽调参面板<br>
+<a href="https://github.com/cocopon/tweakpane" rel="noopener">https://github.com/cocopon/tweakpane</a></p>
+<p>13 GSAP：行业标杆动画时间轴（现已彻底免费）<br>
+<a href="https://github.com/greensock/GSAP" rel="noopener">https://github.com/greensock/GSAP</a></p>
+<p>14 Remotion：基于 React 的可编程视频引擎<br>
+<a href="https://github.com/remotion-dev/remotion" rel="noopener">https://github.com/remotion-dev/remotion</a></p>
+<p>15 Manim：硬核科普、公式与几何动画神器<br>
+<a href="https://github.com/ManimCommunity/manim" rel="noopener">https://github.com/ManimCommunity/manim</a></p>
+<p>16 Lottie：轻量级矢量动画渲染<br>
+<a href="https://github.com/airbnb/lottie-web" rel="noopener">https://github.com/airbnb/lottie-web</a></p>
+<p>17 Openverse API：免 API Key 直接搜免费音效和音乐<br>
+<a href="https://github.com/WordPress/openverse" rel="noopener">https://github.com/WordPress/openverse</a></p>
+<p>18 librosa：自动抓取歌曲鼓点，让动画卡点起飞<br>
+<a href="https://github.com/librosa/librosa" rel="noopener">https://github.com/librosa/librosa</a></p>
+<p>19 WhisperX：全自动精准打轴字幕（连日语都支持）<br>
+<a href="https://github.com/m-bain/whisperX" rel="noopener">https://github.com/m-bain/whisperX</a></p>
+<p>20 FFmpeg：全能格式转换与无损导出<br>
+<a href="https://github.com/FFmpeg/FFmpeg" rel="noopener">https://github.com/FFmpeg/FFmpeg</a></p>
+<p>所以，20 个库全都在 Muse 验证可用，直接复制链接扔给 Muse 就能装，赶紧收藏！</p>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：Jonny（<a href="https://x.com/Jonnyhlkw" rel="noopener">@Jonnyhlkw</a>）。本页为非官方中文导读，并收录作者原文，仅供阅读学习；帖文版权归作者所有。本页不转载所列二十个仓库的 README、源码或演示素材。各仓库许可并不统一，不能统称为开放许可。封面为 typographic 设计。原文：<a href="https://x.com/Jonnyhlkw/status/2125801726603407484" rel="noopener">X 帖</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/Jonnyhlkw/status/2125801726603407484" rel="noopener">x.com/Jonnyhlkw/status/2125801726603407484</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

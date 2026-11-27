@@ -1,5 +1,20 @@
 [
   {
+    "slug": "jonnyhlkw-muse-motion-tools",
+    "title": "「二十项动效工具」：一份写给 Muse 的清单",
+    "desc": "Jonny（@Jonnyhlkw）于 2026-11-26 12:00（新加坡时间，UTC+8）在 X 发布中文帖，列出二十个给 Muse 使用的 GitHub 仓库。清单里既有智能体技能，也有 Blender、FFmpeg、Remotion 等大型软件或框架。各仓库许可并不统一：多数为 MIT，另有 ISC、BSD-2-Clause、GPL、LGPL，以及 GSAP 的 standard no-charge license 与 Remotion 的特殊许可；remotion-dev/skills 仓库页未见 LICENSE。本页为作者原文 + 独立中文导读，不转载各仓库 README 与源码。文中「海外大佬实测跑通」「全都在 Muse 验证可用」「复制链接就能装」等均为原文自报。原帖附有约 42 秒视频，请到原文观看。封面为 typographic 设计。",
+    "description": "Jonny 列出二十个给 Muse 用的仓库。原文 + 导读。许可不统一。「全部验证可用」等为原文自报。",
+    "source": "X · @Jonnyhlkw",
+    "date": "2026-11-26",
+    "type": "全文 + 导读",
+    "subtitle": "Twenty motion tools  ·  长文原文 + 中文导读",
+    "original_url": "https://x.com/Jonnyhlkw/status/2125801726603407484",
+    "spine": "把动效工具列成二十项",
+    "summary": "一份写给 Muse 的二十项动效清单。许可并不统一，能否全部安装为原文自报",
+    "kind": "长文",
+    "by": "Jonny @Jonnyhlkw"
+  },
+  {
     "slug": "aiiii498-3d-game-shaders",
     "title": "「3D Game Shaders For Beginners」：把游戏着色器，拆开讲清楚",
     "desc": "Yarry（@aiiii498）于 2026-11-27 11:38（新加坡时间，UTC+8）在 X 发布长文，介绍 David Lettier 的开源教程《3D Game Shaders For Beginners》。仓库 lettier/3d-game-shaders-for-beginners 中，仅 .cxx、.vert、.frag 源码以 BSD 3-Clause 许可发布（Copyright (c) 2019, David Lettier）；文档与配图未授权使用。本页为长文原文 + 独立中文导读，不转载 README、文档与官方演示画面。收录时核对约 20,082 星、1,492 次分叉。文中「30 多套」与「一键生成」等均为原文自报。封面为 typographic 设计。",
