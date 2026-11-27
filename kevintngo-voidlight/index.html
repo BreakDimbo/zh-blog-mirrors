@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「VOIDLIGHT DEPTHS」：提着灯笼坠入一艘会自己往下走的死舰</title>
+<meta name="description" content="Kevin T. Ngo 的浏览器游戏 VOIDLIGHT DEPTHS 导读：等距视角的太空歌剧式下潜，星骑士提着灯笼走入一艘废弃星舰；几何、贴图、关卡、音效和配乐都由代码生成，打包装进一份网页。游戏可以自己玩，也可以随时接手。仓库未见开放许可证。本页为独立中文导读，只引用短句。插图截自官方演示页。">
+<meta property="og:title" content="「VOIDLIGHT DEPTHS」：提着灯笼坠入一艘会自己往下走的死舰">
+<meta property="og:description" content="会自己玩的等距星舰下潜。灯笼、披风和十八种甲板都由代码生成。仓库未见开放许可证。本页为独立中文导读。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读</span><time datetime="2026-11-26">2026.11.26</time></p>
+<h1 class="za-title">「VOIDLIGHT DEPTHS」：提着灯笼坠入一艘会自己往下走的死舰</h1>
+<p class="za-sub" lang="en" data-za-gen>A self-playing isometric space-opera descent · 独立中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · kevintngo/voidlight（Kevin T. Ngo，未见开放许可证）</span><span>收录 · 2026-11-26</span><span><a href="https://kevintngo.github.io/voidlight/" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Kevin T. Ngo（GitHub kevintngo）· 演示：<a href="https://kevintngo.github.io/voidlight/">kevintngo.github.io/voidlight</a> · 仓库：<a href="https://github.com/kevintngo/voidlight">github.com/kevintngo/voidlight</a> · 核对：2026-11-27（新加坡时间，UTC+8）· <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><p class="lede">打开页面，升降台会带着一名星骑士沉进竖井。灯笼从他的左手垂下来，身后是一条会摆动的披风。游戏可以自己玩下去：自动驾驶会替你走完这一层、挥剑、捡补给，再乘电梯沉到下一层；你也可以随时用键盘、手柄或触屏接手。这是 Kevin T. Ngo 的浏览器游戏《VOIDLIGHT DEPTHS》：一趟等距视角的太空歌剧式下潜。几何、贴图、关卡、音效和配乐都由代码生成，最后打包装进一份可以单独打开的网页。</p>
+
+<p>版权说明：仓库与演示页未附带开放许可证。本页为独立中文导读，只引用短句，不转载源码。插图截自官方演示页。</p>
+
+<figure>
+<a href="https://kevintngo.github.io/voidlight/"><img class="cover" src="images/cover.webp" width="1440" height="900" alt="等距俯视的竖井：中央是圆形升降台，四周是嵌着灯带的金属井壁，井外涌着橙金色的火光，右下角隐约有一颗带环的行星。画面中央用像素字写着 DECK 01、REACTOR CATHEDRAL，以及副题 THE FUSION HEARTS STILL BURN。左上角是武器 EMBER EDGE 和灯笼 PLASMA LANTERN，左下角写着 AUTOPILOT。"></a>
+<figcaption>演示打开后的入场画面。这一回沉入的是「反应堆大堂」。点击图片可打开演示。</figcaption>
+</figure>
+
+<h2>这是什么</h2>
+<p>仓库提交说明把这件作品称作「a self-playing isometric space-opera descent」：一趟会自己玩的、等距视角的太空歌剧式下潜，装在一份自包含的 <code>index.html</code> 里。作者是 Kevin T. Ngo（提交邮箱 kevin@kengoworks.com）。同一条提交还写明与 Claude Fable 5.2 合写。提交时间为 2026-11-26 23:48（新加坡时间）。</p>
+<p>你扮演一名星骑士，提着一盏会摆动的等离子灯笼，在一艘已经死去的星舰里一层一层往下走。每一层都是一间被遗弃的甲板：反应堆还在燃烧，花园活过了园丁，冷冻库里睡着一万名不再做梦的人。打完这一层的巨物，拿到指挥钥匙，升降台才会把你送往更深处。</p>
+<p>演示需要支持 WebGL2 的现代浏览器。若浏览器不够新，页面会提示《VOIDLIGHT DEPTHS》无法运行。</p>
+
+<h2>怎么玩</h2>
+<p>默认是自动驾驶。屏幕左下角写着「AUTOPILOT」，并提示用 WASD 或方向键接手。自动驾驶会自己探路、挥剑、捡起升级和医疗舱，并避开还没开启的危险。键位是：WASD 或方向键移动，空格劈砍，Shift 冲刺，E（或 Q）使用医疗舱，M 开关声音。也支持手柄，手机上则有虚拟摇杆和攻击、冲刺、治疗按钮。右下角写着「CLICK FOR SOUND」，声音要在点击之后才会响起。</p>
+<p>武器和灯笼都能升级。刃从「EMBER EDGE」开始，经过「TEMPERED STARSTEEL」「COLDFIRE EDGE」「VOIDGLASS BLADE」，直到「THE DAWNBRAND」。灯笼从「PLASMA LANTERN」开始，经过「STOKED LANTERN」「TWIN-CORE LANTERN」「HALOED LANTERN」，直到「THE STAR IN A CAGE」。层上还有学分、可打碎的货箱，以及打开通往下一层升降台的指挥钥匙。电弧、弹幕一类的远程攻击可以弹开。</p>
+
+<figure>
+<img src="images/play.webp" width="1440" height="900" alt="等距视角的金属甲板：格栅地板，墙边挂着暖色壁灯，左侧是圆形升降台。一名披着蓝紫色斗篷的星骑士提着灯笼、握着发光的短刃站在中央。左上角仍是 EMBER EDGE 与 PLASMA LANTERN，顶部写着 DECK 01 REACTOR CATHEDRAL，右上角有小地图和学分、击倒计数。">
+<figcaption>进入甲板之后。灯笼照亮格栅地板，自动驾驶正带着星骑士往前走。</figcaption>
+</figure>
+
+<h2>十八种甲板</h2>
+<p>源码为整艘船准备了十八种甲板主题。每一种都有自己的建筑、调色、照明、机关、敌人和一只巨物，也有一套与之相配的配乐。主题会放进一只袋子里打乱后依次抽出，用尽后再洗一轮，同一主题不会紧挨着重复。下潜会继续编号。源码注释里没有写明固定的层数上限。</p>
+<p>下面是这十八种甲板的官方英文名称，以及各自的副题、守卫它们的巨物。中文是本页的对照翻译，不是游戏内文本。</p>
+<table>
+<thead>
+<tr><th>甲板</th><th>副题</th><th>巨物</th></tr>
+</thead>
+<tbody>
+<tr><td>REACTOR CATHEDRAL<br>反应堆大堂</td><td>THE FUSION HEARTS STILL BURN<br>聚变的心脏仍在燃烧</td><td>THE UNSHIELDED CORE<br>未屏蔽的堆芯</td></tr>
+<tr><td>THE HANGING GARDENS<br>空中花园</td><td>THE GARDENS OUTLIVED THE GARDENERS<br>园丁已逝，园子还在</td><td>MOTHER THORNROOT<br>棘根之母</td></tr>
+<tr><td>THE CRYO VAULTS<br>冷冻墓库</td><td>TEN THOUSAND SLEEPERS, NONE DREAMING<br>一万名沉睡者，无人做梦</td><td>THE FIRST SLEEPER<br>最初的沉睡者</td></tr>
+<tr><td>THE GILDED CONCOURSE<br>镀金大厅</td><td>THE LAST OPERA NEVER ENDED<br>最后一场歌剧没有散场</td><td>THE HOLLOW REGENT<br>空洞的摄政</td></tr>
+<tr><td>HANGAR BAY SEVEN<br>七号机库</td><td>DERELICT WINGS BEHIND A DYING FIELD<br>力场将熄，残翼还在后面</td><td>WRECK-WARDEN TALON<br>残骸看守者塔隆</td></tr>
+<tr><td>THE HIVE DECK<br>巢舰甲板</td><td>SOMETHING MADE A NEST OF THE DEAD<br>有什么东西把死者筑成了巢</td><td>THE BROOD EMPRESS<br>育巢女皇</td></tr>
+<tr><td>THE CRYSTAL ARCHIVE<br>水晶档案库</td><td>EVERY ORDER EVER GIVEN, STILL GLOWING<br>每一道下达过的命令，仍在发光</td><td>ARCHIVIST PRIME<br>首席档案官</td></tr>
+<tr><td>THE FOUNDRY<br>铸造厂</td><td>THE GREAT PRESSES NEVER STOPPED<br>那些巨压机从未停下</td><td>FORGEMASTER SLAG<br>炉主炉渣</td></tr>
+<tr><td>THE FLOODED BALLAST<br>淹没的压舱</td><td>ANKLE-DEEP AND STILL RISING<br>水深到脚踝，还在上涨</td><td>THE DROWNED LEVIATHAN<br>溺亡的巨兽</td></tr>
+<tr><td>THE STAR CHAPEL<br>星辰礼拜堂</td><td>AN ORRERY TURNS FOR NO ONE<br>一架浑天仪在为谁也不为的人转动</td><td>THE ORRERY SERAPH<br>浑天仪炽天使</td></tr>
+<tr><td>THE BRIG<br>禁闭舱</td><td>THE CELLS HELD. THE WARDENS DID NOT.<br>牢房还在。看守已经不在。</td><td>HIGH WARDEN VEX<br>高阶看守维克斯</td></tr>
+<tr><td>THE BREACHED HULL<br>破开的船体</td><td>TORN OPEN TO THE NEBULA<br>被撕开，对着星云</td><td>THE VOID MAW<br>虚空之喉</td></tr>
+<tr><td>THE ADMIRALS' CRYPT<br>提督墓穴</td><td>THEY WERE BURIED WITH THEIR FLEETS<br>他们与自己的舰队葬在一起</td><td>THE ENTOMBED ADMIRAL<br>入葬的提督</td></tr>
+<tr><td>THE HALL OF MIRRORS<br>镜厅</td><td>EVERY REFLECTION IS ONE STEP BEHIND<br>每一面映像都晚你一步</td><td>THE REFLECTED ONE<br>被映出来的那个</td></tr>
+<tr><td>THE LIBRARY OF ASH<br>灰烬图书馆</td><td>A MILLION VOLUMES, STILL BURNING<br>一百万卷书，仍在燃烧</td><td>THE LAST LIBRARIAN<br>最后的图书管理员</td></tr>
+<tr><td>THE TURBINE NACELLE<br>涡轮舱</td><td>THE GREAT ENGINES STILL DREAM OF FLIGHT<br>那些巨大的引擎仍在梦见飞行</td><td>DYNAMO COLOSSUS<br>发电机巨像</td></tr>
+<tr><td>THE MENAGERIE<br>珍兽馆</td><td>THE SPECIMENS OUTLASTED THE CURATORS<br>标本活过了馆长</td><td>THE APEX SPECIMEN<br>顶点标本</td></tr>
+<tr><td>THE CLOCKWORK DEEP<br>发条深舱</td><td>IT HAS NOT MISSED A SECOND IN A THOUSAND YEARS<br>一千年里，它从未错过一秒</td><td>THE MAINSPRING<br>主发条</td></tr>
+</tbody>
+</table>
+<p>普通敌人在源码里列出了三十种名称，例如残骸躯壳、冷却剂软泥、哨兵无人机、灰烬幽灵、镜中残影、发条哨兵。甲板上还有激光栅、冲压活塞、喷口爆燃、电弧塔和扫射切割梁一类的机关。</p>
+
+<h2>它是怎么做成的</h2>
+<p>源码开头的说明是：几何、纹理、着色器、音效、配乐和关卡，全部在代码里生成。渲染不是 three.js，而是作者手写的 WebGL2 引擎：带立方体阴影的灯笼、聚光灯阴影、实例化绘制，以及一层正向的 PBR 着色。星骑士的披风用Verlet积分来模拟布料，灯笼则像一只受骑士自身加速度带动的阻尼钟摆。刃是一圈白热的薄芯，外面再套一层光鞘。</p>
+<p>每一层甲板由一套布局生成器从种子里长出来：房间、走廊、门和死胡同，并检查除了出口升降台之外，其余地方都走得通。指挥钥匙会被放在远离起点、又不会被锁在出口后面的位置。生成工作被切进乘电梯的那段时间里，源码注释写这样做是为了让乘坐过程不卡顿。</p>
+<p>声音全部用 Web Audio 合成，没有音频文件。混响的脉冲响应也在代码里生成，并按房间大小切换。每一种甲板主题都有一套会随战况起伏的管弦配乐：探索时是疏落的圆号，开战时则是更完整的铜管、弦乐、合唱和定音鼓。</p>
+<p>仓库里同时放着可读的源码和打包工具。<code>build.sh</code> 会把 <code>src/</code> 下的脚本按顺序拼起来，经过压缩，再打进一份会自行解压的 <code>index.html</code>。仓库里这份演示文件是 164,805 字节。可读源码按引擎、纹理、几何、特效、甲板生成、主题、英雄、敌人、巨物、音效、流程和触屏分成多个文件，没有 README。</p>
+
+<h2>和 Brushwild 的关系</h2>
+<p>同一作者在两天前刚公开过 <a href="../kevintngo-procedural-rpg/">Brushwild</a>：一款把开放世界画成圆珠笔和彩铅的动作 RPG，同样不附带贴图或模型，同样使用自研的 WebGL2，仓库以 MIT 许可发布。VOIDLIGHT DEPTHS 走的是另一条路：金属、灯笼和太空歌剧，而不是纸面排线；产物是一份打包好的单页，而不是 TypeScript 加 Vite 的工程。两者不要混成一个项目。更早的 <a href="../kevintngo-what-the-water-keeps/">What the water keeps</a> 则能在页面里见到 three.js 和模型资产，也与这一件不同。</p>
+
+<h2>许可</h2>
+<p>仓库根目录没有 LICENSE 或 README，仓库页上也没有标出开放许可证。因而本页只做独立导读，不转载源码，也不把演示当作可以自由再分发的软件。若要游玩或查看源码，请前往作者的<a href="https://kevintngo.github.io/voidlight/">演示页</a>和<a href="https://github.com/kevintngo/voidlight">仓库</a>。</p>
+
+<h2>相关阅读</h2>
+<ul>
+<li><a href="../kevintngo-procedural-rpg/">「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG</a> — 同一作者，同样是代码生成的可玩世界，画风和许可都不同。</li>
+<li><a href="../kevintngo-what-the-water-keeps/">「What the water keeps」：乘船穿过八个梦境</a> — 同一作者稍早的浏览器行船演示，页面可见 three.js 与模型资产。</li>
+<li><a href="../yaoderek-littlecity/">「Little City」：浏览器里的手绘微缩小镇</a> — 另一件把可走入的三维世界画在纸面上的浏览器游戏，仓库为 MIT。</li>
+<li><a href="../mengto-cloud-pass/">「Cloud Pass」：用鱼眼和视差做出的无尽摩托骑行</a> — 另一件浏览器里的三维骑行，技能仓库为 MIT。</li>
+</ul></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>© Kevin T. Ngo（《VOIDLIGHT DEPTHS》演示与仓库）。本页为非官方独立中文导读，仅供阅读学习，不转载源码；原文与演示版权归原作者所有。演示：<a href="https://kevintngo.github.io/voidlight/">kevintngo.github.io/voidlight</a>。仓库：<a href="https://github.com/kevintngo/voidlight">github.com/kevintngo/voidlight</a>。如需移除，请提交 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://kevintngo.github.io/voidlight/" rel="noopener">kevintngo.github.io/voidlight/</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>

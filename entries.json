@@ -1,5 +1,20 @@
 [
   {
+    "slug": "kevintngo-voidlight",
+    "title": "「VOIDLIGHT DEPTHS」：提着灯笼坠入一艘会自己往下走的死舰",
+    "desc": "Kevin T. Ngo 的浏览器游戏 VOIDLIGHT DEPTHS 导读：等距视角的太空歌剧式下潜，星骑士提着灯笼走入一艘废弃星舰；几何、贴图、关卡、音效和配乐都由代码生成，打包装进一份网页。游戏可以自己玩，也可以随时接手。仓库 kevintngo/voidlight 未见开放许可证。本页为独立中文导读，只引用短句，不转载源码。插图截自官方演示页。提交说明写明与 Claude Fable 5.2 合写。",
+    "description": "会自己玩的等距星舰下潜。灯笼、披风和十八种甲板都由代码生成。仓库未见开放许可证。本页为独立中文导读。",
+    "source": "GitHub · kevintngo/voidlight（Kevin T. Ngo，未见开放许可证）",
+    "date": "2026-11-26",
+    "type": "导读",
+    "subtitle": "A self-playing isometric space-opera descent · 独立中文导读",
+    "original_url": "https://kevintngo.github.io/voidlight/",
+    "spine": "灯笼下的星舰下潜",
+    "summary": "会自己玩的等距星舰下潜，灯笼、剑和十八层甲板",
+    "kind": "项目",
+    "by": "Kevin T. Ngo"
+  },
+  {
     "slug": "nyxera-blueprint",
     "title": "「Blueprint」：把一张草图建成可以走进去的房子",
     "desc": "Nyxera 的 X 长文全文中译：把钢笔草图交给 Claude Code，按木匠的方式在 Blender 里用代码建成可以走进去的房子。仓库 Nyxera0x/blueprint 为 MIT（Copyright (c) 2026 Nyxera0x 与 whaleyxbt）。文中零件数、显卡与渲染耗时等均为原文自报。本页为长文全文中译 + README / SKILL.md 中译 + LICENSE 原文。",
