@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「动画十二法则」：把迪士尼的手艺写成 144 份技能</title>
+<meta name="description" content="Dylan Tarre 的 Animation Principles Skill Marketplace 导读：把迪士尼动画十二法则写成 144 份 Claude Code 技能，分十二组。仓库为 MIT。导读 + README 全文中译 + 三份代表技能中译 + 许可证原文。">
+<meta property="og:title" content="「动画十二法则」：把迪士尼的手艺写成 144 份技能">
+<meta property="og:description" content="十二条法则，十二组共 144 份开源技能，交给 Claude Code 使用。仓库 MIT。导读 + README 中译。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-27">2026.11.27</time></p>
+<h1 class="za-title">「动画十二法则」：把迪士尼的手艺写成 144 份技能</h1>
+<p class="za-sub" lang="en" data-za-gen>Animation Principles Skill Marketplace · 导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · dylantarre/animation-principles（Dylan Tarre，MIT）</span><span>收录 · 2026-11-27</span><span><a href="https://github.com/dylantarre/animation-principles" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Dylan Tarre · 仓库：<a href="https://github.com/dylantarre/animation-principles" rel="noopener">dylantarre/animation-principles</a>（<a href="https://github.com/dylantarre/animation-principles/blob/main/LICENSE" rel="noopener">MIT License</a>，Copyright (c) 2024 Dylan Tarre） · 核对：2026-11-27（新加坡时间） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">迪士尼的动画师在二十世纪三十年代，把「怎样让画出来的东西像活的」总结成十二条法则。Dylan Tarre 把这十二条写成 144 份 Claude Code 技能：按领域、角色、工具、情绪、界面元件和问题类型分成十二组，每组十二份。仓库名叫 <strong>Animation Principles Skill Marketplace</strong>，以 MIT 许可发布。它没有演示页，也没有样片，本身是一套给智能体读的指南。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库以 MIT 许可发布（Copyright (c) 2024 Dylan Tarre）。本页为项目导读，附录为 README 全文中译、英文原文，三份代表技能的全文中译与英文原文，以及 LICENSE 原文。封面为字标，未使用第三方人物照片。</div>
+
+<figure>
+<img class="cover" src="images/cover.webp" width="1280" height="720" alt="浅米色底上的字标封面：左侧一个很大的衬线数字 12，右侧写着「动画十二法则」，下面分两栏列出十二条法则的中文名称。">
+<figcaption>字标封面：十二条法则的名字。本页未使用人物照片。</figcaption>
+</figure>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#principles">十二条法则</a></li>
+<li><a href="#install">怎么安装、怎么用</a></li>
+<li><a href="#how">技能怎样起作用</a></li>
+<li><a href="#catalog">十二组、一百四十四份</a></li>
+<li><a href="#samples">三份代表技能</a></li>
+<li><a href="#license-note">许可与版本</a></li>
+<li><a href="#related">相关阅读</a></li>
+<li><a href="#appendix-zh">附录 A：README 全文中译</a></li>
+<li><a href="#appendix-en">附录 B：README 英文原文</a></li>
+<li><a href="#skills-zh">附录 C：三份代表技能全文中译</a></li>
+<li><a href="#skills-en">附录 D：三份代表技能英文原文</a></li>
+<li><a href="#license">附录 E：LICENSE（MIT）原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p><a href="https://github.com/dylantarre/animation-principles" rel="noopener">dylantarre/animation-principles</a> 是 Dylan Tarre 做的一套 Claude Code 技能合集。README 的第一句是：「把迪士尼动画师的超能力交给 Claude。」它要教的不是某一种软件的操作步骤，而是那十二条被称作「动画原则」的观察：挤压与拉伸、预备动作、演出布局、缓入缓出、弧线，以及其余七条。</p>
+<p>按照 README 的说法，无论你在做网页微交互、游戏动画、加载状态，还是更复杂的运动序列，这些技能都会给出带上下文的指引，根源是「让迪士尼动画成为经典的那些历久不变的法则」。仓库把它们编成十二组，每组十二份，一共 144 份。这个数字与仓库里的 <code>SKILL.md</code> 文件数相符。</p>
+<p>技能写在 <code>skills/</code> 目录，每份都是一篇带 YAML 头信息的 Markdown，说明这份技能什么时候该用、以及怎样把十二条法则用到那个具体场景里。同名的说明还会再生成一份到 <code>docs/</code>，方便人浏览。<code>CLAUDE.md</code> 则告诉 Claude Code 怎样在这个仓库里找技能。</p>
+<p>仓库本身是文档型的，没有构建脚本，也没有附带可运行的演示。CHANGELOG 里把「视频教程与视觉示例」列在未来计划中。首次提交的说明写明，这份合集由 Claude Code 生成，并与 Claude Opus 4.5 合写。</p>
+
+<h2 id="principles">十二条法则</h2>
+<p>README 把十二条法则列成一张表，并写明它们来自迪士尼动画师 Ollie Johnston 与 Frank Thomas，写在 1981 年的《生命的幻象：迪士尼动画》（<span lang="en">The Illusion of Life: Disney Animation</span>）里。法则本身在二十世纪三十年代就已整理成形。下面的中文名称是本页的译法，括号里保留英文原名。</p>
+<table>
+<thead><tr><th>#</th><th>法则</th><th>它做什么</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>挤压与拉伸（Squash &amp; Stretch）</td><td>用形变表现重量和弹性</td></tr>
+<tr><td>2</td><td>预备动作（Anticipation）</td><td>让观者先准备好即将发生的事</td></tr>
+<tr><td>3</td><td>演出布局（Staging）</td><td>把注意引到真正重要的地方</td></tr>
+<tr><td>4</td><td>连续运动与关键姿势（Straight Ahead / Pose to Pose）</td><td>两种创造运动的方法</td></tr>
+<tr><td>5</td><td>跟随与重叠（Follow Through / Overlapping）</td><td>各部分不以同一速度运动</td></tr>
+<tr><td>6</td><td>缓入缓出（Slow In / Slow Out）</td><td>自然的加速与减速</td></tr>
+<tr><td>7</td><td>弧线运动（Arc）</td><td>有机的弧形运动路径</td></tr>
+<tr><td>8</td><td>次要动作（Secondary Action）</td><td>用辅助运动去加强主动作</td></tr>
+<tr><td>9</td><td>时间掌握（Timing）</td><td>速度传达重量和情绪</td></tr>
+<tr><td>10</td><td>夸张（Exaggeration）</td><td>推过现实，换来更清楚的表达</td></tr>
+<tr><td>11</td><td>扎实的绘画（Solid Drawing）</td><td>保持体积和一致性</td></tr>
+<tr><td>12</td><td>吸引力（Appeal）</td><td>让人愿意看下去的魅力</td></tr>
+</tbody>
+</table>
+<p>「快速上手」那份技能还把十二条收成四组：要把运动做对，看时间掌握、弧线、缓入缓出、挤压与拉伸；要让它显得活，看跟随、重叠和次要动作；要让人一眼看懂，看演出布局和预备动作；要让它耐看，看吸引力、夸张和扎实的绘画。它给出的入门练习只有一个：做一只弹跳的球。这一下会同时练到时间、挤压与拉伸、弧线和缓入缓出。</p>
+
+<h2 id="install">怎么安装、怎么用</h2>
+<p>README 提供三种用法。</p>
+<p>一种是作为 Claude Code 插件，写进设置：</p>
+<pre><code>{
+  "plugins": [
+    "animation-principles@github:dylantarre/animation-principles"
+  ]
+}</code></pre>
+<p>一种是手动克隆到 Claude 的插件目录：</p>
+<pre><code>git clone https://github.com/dylantarre/animation-principles.git \
+  ~/.claude/plugins/animation-principles</code></pre>
+<p>也可以在对话里直接点名某份技能，例如：</p>
+<pre><code>Use the animation-principles:joy-delight skill for this celebration animation</code></pre>
+<p>技能的调用格式是 <code>animation-principles:&lt;技能名&gt;</code>。README 给的快速入口包括：刚接触动画时用 <code>absolute-beginner</code>，前端开发用 <code>frontend-developer</code>，指定框架用如 <code>framer-motion</code>，排错用 <code>implementation-debugging</code>。</p>
+<p>每一组里都有一份「通用」技能，作为没有更贴切选项时的退路，例如领域组的 <code>universal-fallback</code>、角色组的 <code>universal-practitioner</code>、工具组的 <code>universal-tool</code>。</p>
+
+<h2 id="how">技能怎样起作用</h2>
+<p>README 说，每份技能都在教 Claude 如何把十二条法则用到一个具体情境里。它举了三个例子：</p>
+<ul>
+<li><code>joy-delight</code> 教的是庆祝时夸张的弹跳、彩纸和粒子的节奏、过冲的缓动曲线，以及什么时候该用俏皮的弹簧物理。</li>
+<li><code>fintech-banking</code> 教的是克制而可信的运动、不要弹跳的专业时长、能传达安全感的转场，以及金融场景里的无障碍要求。</li>
+<li><code>squash-stretch-mastery</code> 教的是这条法则背后的理论、保持体积的方法、何时可以破例，以及跨领域的用法。</li>
+</ul>
+<p>以「挤压与拉伸」那份专攻技能为例：它把这条法则称为十二条里最重要的一条，理由是动画的根本困难在于让刚性的东西显得活着。核心约束是体积守恒——压扁时必须变宽，拉长时必须变窄；破坏这条约束，物体看起来就像在长大或缩小，而不是在变形。它还给出一个弹性谱系：橡皮球和卡通角色可以大幅变形，人脸和布料只需轻微变形，木头和金属也可以保留百分之一到二的微变形，以免显得死板、机械。用在界面上时，它建议按钮按下时高度收到百分之九十五到九十八，列表被拉过边界时稍稍拉长，通知到达时先压一下再弹回静止。</p>
+<p>「网页动效」那份技能则把十二条直接映射到 CSS 和 JavaScript：挤压与拉伸用 <code>transform: scale()</code>，预备动作是动作开始前先反向走一点，缓入缓出写明不要对界面使用 <code>linear</code>，并给出常用的 <code>cubic-bezier</code> 曲线。性能方面，它要求尽量只动画 <code>transform</code> 和 <code>opacity</code>，慎用 <code>will-change</code>，并在低性能设备上检查。</p>
+<p>这些写法是技能文本里的指导，仓库没有附对照样例或成片，本页也没有把它们当作已经验证过的效果。</p>
+
+<h2 id="catalog">十二组、一百四十四份</h2>
+<p>十二组的划分见仓库目录和 <a href="https://github.com/dylantarre/animation-principles/blob/main/docs/index.md" rel="noopener">docs/index.md</a>。下面是全部 144 份技能的中文对照，说明依据目录里的短句翻译。完整正文在仓库的 <code>SKILL.md</code> 里，本页只全文翻译其中三份，见附录 C。</p>
+<h3 id="cat-01-by-domain">1. 按应用领域 <span lang="en">（By Domain）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/3d-spatial/SKILL.md" rel="noopener"><code>3d-spatial</code></a></td><td>三维环境与空间界面</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/accessible-motion/SKILL.md" rel="noopener"><code>accessible-motion</code></a></td><td>照顾无障碍需求的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/brand-marketing/SKILL.md" rel="noopener"><code>brand-marketing</code></a></td><td>用运动表达品牌</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/data-visualization/SKILL.md" rel="noopener"><code>data-visualization</code></a></td><td>图表与数据叙事</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/game-development/SKILL.md" rel="noopener"><code>game-development</code></a></td><td>游戏界面与角色动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/micro-interactions/SKILL.md" rel="noopener"><code>micro-interactions</code></a></td><td>细小而令人愉快的界面瞬间</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/mobile-touch/SKILL.md" rel="noopener"><code>mobile-touch</code></a></td><td>触控手势与移动端模式</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/page-transitions/SKILL.md" rel="noopener"><code>page-transitions</code></a></td><td>导航与视图转场</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/presentations/SKILL.md" rel="noopener"><code>presentations</code></a></td><td>幻灯与演示中的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/video-motion-graphics/SKILL.md" rel="noopener"><code>video-motion-graphics</code></a></td><td>影像与动态图形制作</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/web-motion-design/SKILL.md" rel="noopener"><code>web-motion-design</code></a></td><td>CSS 与 JavaScript 网页动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/universal-fallback/SKILL.md" rel="noopener"><code>universal-fallback</code></a></td><td>通用领域参考</td></tr>
+</tbody></table>
+<h3 id="cat-02-by-thinking-style">2. 按思维方式 <span lang="en">（By Thinking Style）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/anticipation-payoff/SKILL.md" rel="noopener"><code>anticipation-payoff</code></a></td><td>先蓄势，再兑现</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/attention-direction/SKILL.md" rel="noopener"><code>attention-direction</code></a></td><td>引导观者的目光</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/character-appeal/SKILL.md" rel="noopener"><code>character-appeal</code></a></td><td>做出让人想看的性格</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/emotional-narrative/SKILL.md" rel="noopener"><code>emotional-narrative</code></a></td><td>用运动讲故事</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/exaggerated-clarity/SKILL.md" rel="noopener"><code>exaggerated-clarity</code></a></td><td>往更清楚的方向推</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/naturalistic-motion/SKILL.md" rel="noopener"><code>naturalistic-motion</code></a></td><td>贴近真实世界的物理</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/physics-intuition/SKILL.md" rel="noopener"><code>physics-intuition</code></a></td><td>理解重量与力</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/problem-diagnosis/SKILL.md" rel="noopener"><code>problem-diagnosis</code></a></td><td>排查动画问题</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/rhythm-pacing/SKILL.md" rel="noopener"><code>rhythm-pacing</code></a></td><td>控制节奏与流动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/spatial-thinking/SKILL.md" rel="noopener"><code>spatial-thinking</code></a></td><td>在三维空间里想问题</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/timing-mastery/SKILL.md" rel="noopener"><code>timing-mastery</code></a></td><td>掌握时长与速度</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/02-by-thinking-style/universal-mindset/SKILL.md" rel="noopener"><code>universal-mindset</code></a></td><td>通用思考方式</td></tr>
+</tbody></table>
+<h3 id="cat-03-by-role-persona">3. 按角色与身份 <span lang="en">（By Role / Persona）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/accessibility-advocate/SKILL.md" rel="noopener"><code>accessibility-advocate</code></a></td><td>把无障碍作为运动的前提</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/animator-traditional/SKILL.md" rel="noopener"><code>animator-traditional</code></a></td><td>面向传统动画背景的人</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/brand-strategist/SKILL.md" rel="noopener"><code>brand-strategist</code></a></td><td>把运动当作品牌表达</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/creative-director/SKILL.md" rel="noopener"><code>creative-director</code></a></td><td>高层的运动方向</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/educator-teacher/SKILL.md" rel="noopener"><code>educator-teacher</code></a></td><td>如何教授这些法则</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/filmmaker/SKILL.md" rel="noopener"><code>filmmaker</code></a></td><td>电影感的运动设计</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/frontend-developer/SKILL.md" rel="noopener"><code>frontend-developer</code></a></td><td>从代码入手实现</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/game-designer/SKILL.md" rel="noopener"><code>game-designer</code></a></td><td>互动游戏中的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/motion-designer/SKILL.md" rel="noopener"><code>motion-designer</code></a></td><td>专业动效设计</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/product-manager/SKILL.md" rel="noopener"><code>product-manager</code></a></td><td>产品决策里的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/ux-researcher/SKILL.md" rel="noopener"><code>ux-researcher</code></a></td><td>运动对体验的影响</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/03-by-role-persona/universal-practitioner/SKILL.md" rel="noopener"><code>universal-practitioner</code></a></td><td>通用实践指南</td></tr>
+</tbody></table>
+<h3 id="cat-04-by-skill-level">4. 按熟练程度 <span lang="en">（By Skill Level）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/absolute-beginner/SKILL.md" rel="noopener"><code>absolute-beginner</code></a></td><td>第一次接触这些法则</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/novice/SKILL.md" rel="noopener"><code>novice</code></a></td><td>初步理解</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/quick-start/SKILL.md" rel="noopener"><code>quick-start</code></a></td><td>快速上手</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/intermediate/SKILL.md" rel="noopener"><code>intermediate</code></a></td><td>已经能稳定使用</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/advanced/SKILL.md" rel="noopener"><code>advanced</code></a></td><td>较深的理解</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/expert/SKILL.md" rel="noopener"><code>expert</code></a></td><td>专业层面的掌握</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/master/SKILL.md" rel="noopener"><code>master</code></a></td><td>完整掌握</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/deep-dive/SKILL.md" rel="noopener"><code>deep-dive</code></a></td><td>系统深入</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/refresher/SKILL.md" rel="noopener"><code>refresher</code></a></td><td>给已经会的人快速复习</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/teaching-others/SKILL.md" rel="noopener"><code>teaching-others</code></a></td><td>怎样把法则教给别人</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/troubleshooting/SKILL.md" rel="noopener"><code>troubleshooting</code></a></td><td>排查常见问题</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/universal-reference/SKILL.md" rel="noopener"><code>universal-reference</code></a></td><td>适合各水平的总参考</td></tr>
+</tbody></table>
+<h3 id="cat-05-by-animation-type">5. 按动画类型 <span lang="en">（By Animation Type）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/attention-grabbers/SKILL.md" rel="noopener"><code>attention-grabbers</code></a></td><td>抓住注意</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/continuous-loops/SKILL.md" rel="noopener"><code>continuous-loops</code></a></td><td>循环往复的动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/entrance-animations/SKILL.md" rel="noopener"><code>entrance-animations</code></a></td><td>元素出现</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/exit-animations/SKILL.md" rel="noopener"><code>exit-animations</code></a></td><td>元素离开</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/feedback-indicators/SKILL.md" rel="noopener"><code>feedback-indicators</code></a></td><td>对用户操作的回应</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/gesture-responses/SKILL.md" rel="noopener"><code>gesture-responses</code></a></td><td>触控与手势反馈</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/hover-interactions/SKILL.md" rel="noopener"><code>hover-interactions</code></a></td><td>鼠标悬停效果</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/loading-states/SKILL.md" rel="noopener"><code>loading-states</code></a></td><td>进度与加载</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/scroll-animations/SKILL.md" rel="noopener"><code>scroll-animations</code></a></td><td>由滚动触发的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/state-changes/SKILL.md" rel="noopener"><code>state-changes</code></a></td><td>状态之间的过渡</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/transition-sequences/SKILL.md" rel="noopener"><code>transition-sequences</code></a></td><td>多步转场</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/05-by-animation-type/universal-patterns/SKILL.md" rel="noopener"><code>universal-patterns</code></a></td><td>通用动画模式</td></tr>
+</tbody></table>
+<h3 id="cat-06-by-emotional-outcome">6. 按情绪效果 <span lang="en">（By Emotional Outcome）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/calm-relaxation/SKILL.md" rel="noopener"><code>calm-relaxation</code></a></td><td>平静、舒缓的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/comfort-safety/SKILL.md" rel="noopener"><code>comfort-safety</code></a></td><td>让人安心的动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/elegance-sophistication/SKILL.md" rel="noopener"><code>elegance-sophistication</code></a></td><td>精致、偏高端的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/excitement-energy/SKILL.md" rel="noopener"><code>excitement-energy</code></a></td><td>高能量的动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/friendliness-approachability/SKILL.md" rel="noopener"><code>friendliness-approachability</code></a></td><td>温暖、好接近的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/joy-delight/SKILL.md" rel="noopener"><code>joy-delight</code></a></td><td>带来愉快与惊喜</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/playfulness-fun/SKILL.md" rel="noopener"><code>playfulness-fun</code></a></td><td>俏皮、有趣味的动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/power-confidence/SKILL.md" rel="noopener"><code>power-confidence</code></a></td><td>有力而自信的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/professionalism-credibility/SKILL.md" rel="noopener"><code>professionalism-credibility</code></a></td><td>可信、专业的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/trust-reliability/SKILL.md" rel="noopener"><code>trust-reliability</code></a></td><td>建立用户信心</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/urgency-action/SKILL.md" rel="noopener"><code>urgency-action</code></a></td><td>促使立刻行动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/06-by-emotional-outcome/universal-emotion/SKILL.md" rel="noopener"><code>universal-emotion</code></a></td><td>通用的情绪指引</td></tr>
+</tbody></table>
+<h3 id="cat-07-by-ui-element">7. 按界面元素 <span lang="en">（By UI Element）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/accordions-dropdowns/SKILL.md" rel="noopener"><code>accordions-dropdowns</code></a></td><td>展开与收起</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/buttons-ctas/SKILL.md" rel="noopener"><code>buttons-ctas</code></a></td><td>按钮交互</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/cards-containers/SKILL.md" rel="noopener"><code>cards-containers</code></a></td><td>卡片式布局</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/carousels-sliders/SKILL.md" rel="noopener"><code>carousels-sliders</code></a></td><td>滑动内容</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/forms-inputs/SKILL.md" rel="noopener"><code>forms-inputs</code></a></td><td>表单字段动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/icons-badges/SKILL.md" rel="noopener"><code>icons-badges</code></a></td><td>图标与徽章的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/lists-grids/SKILL.md" rel="noopener"><code>lists-grids</code></a></td><td>列表与网格动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/loaders-spinners/SKILL.md" rel="noopener"><code>loaders-spinners</code></a></td><td>加载指示</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/modals-dialogs/SKILL.md" rel="noopener"><code>modals-dialogs</code></a></td><td>模态窗口</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/navigation-menus/SKILL.md" rel="noopener"><code>navigation-menus</code></a></td><td>导航元素</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/notifications-toasts/SKILL.md" rel="noopener"><code>notifications-toasts</code></a></td><td>提醒与通知的运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/07-by-ui-element/universal-elements/SKILL.md" rel="noopener"><code>universal-elements</code></a></td><td>通用元件模式</td></tr>
+</tbody></table>
+<h3 id="cat-08-by-industry">8. 按行业 <span lang="en">（By Industry）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/e-commerce-retail/SKILL.md" rel="noopener"><code>e-commerce-retail</code></a></td><td>购物与零售体验</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/education-learning/SKILL.md" rel="noopener"><code>education-learning</code></a></td><td>教育平台</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/enterprise-b2b/SKILL.md" rel="noopener"><code>enterprise-b2b</code></a></td><td>商务软件</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/fintech-banking/SKILL.md" rel="noopener"><code>fintech-banking</code></a></td><td>金融服务</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/fitness-wellness/SKILL.md" rel="noopener"><code>fitness-wellness</code></a></td><td>健康与健身应用</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/gaming-entertainment/SKILL.md" rel="noopener"><code>gaming-entertainment</code></a></td><td>游戏与娱乐</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/healthcare-medical/SKILL.md" rel="noopener"><code>healthcare-medical</code></a></td><td>医疗应用</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/media-publishing/SKILL.md" rel="noopener"><code>media-publishing</code></a></td><td>新闻与媒体</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/saas-productivity/SKILL.md" rel="noopener"><code>saas-productivity</code></a></td><td>SaaS 与效率工具</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/social-media/SKILL.md" rel="noopener"><code>social-media</code></a></td><td>社交平台</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/travel-hospitality/SKILL.md" rel="noopener"><code>travel-hospitality</code></a></td><td>旅行与预订</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/08-by-industry/universal-industry/SKILL.md" rel="noopener"><code>universal-industry</code></a></td><td>跨行业指引</td></tr>
+</tbody></table>
+<h3 id="cat-09-by-tool-framework">9. 按工具与框架 <span lang="en">（By Tool / Framework）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/after-effects/SKILL.md" rel="noopener"><code>after-effects</code></a></td><td>Adobe After Effects</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/anime-js/SKILL.md" rel="noopener"><code>anime-js</code></a></td><td>Anime.js</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/css-native/SKILL.md" rel="noopener"><code>css-native</code></a></td><td>纯 CSS 动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/figma-prototyping/SKILL.md" rel="noopener"><code>figma-prototyping</code></a></td><td>Figma 原型</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/framer-motion/SKILL.md" rel="noopener"><code>framer-motion</code></a></td><td>Framer Motion（React）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/gsap-greensock/SKILL.md" rel="noopener"><code>gsap-greensock</code></a></td><td>GSAP / GreenSock</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/lottie-bodymovin/SKILL.md" rel="noopener"><code>lottie-bodymovin</code></a></td><td>Lottie 动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/motion-one/SKILL.md" rel="noopener"><code>motion-one</code></a></td><td>Motion One</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/popmotion/SKILL.md" rel="noopener"><code>popmotion</code></a></td><td>Popmotion</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/react-spring/SKILL.md" rel="noopener"><code>react-spring</code></a></td><td>React Spring</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/rive-animations/SKILL.md" rel="noopener"><code>rive-animations</code></a></td><td>Rive 互动动画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/09-by-tool-framework/universal-tool/SKILL.md" rel="noopener"><code>universal-tool</code></a></td><td>不依赖特定工具的指引</td></tr>
+</tbody></table>
+<h3 id="cat-10-by-time-scale">10. 按时长尺度 <span lang="en">（By Time Scale）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/instant-0-100ms/SKILL.md" rel="noopener"><code>instant-0-100ms</code></a></td><td>即时反馈（0–100 毫秒）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/micro-100-200ms/SKILL.md" rel="noopener"><code>micro-100-200ms</code></a></td><td>微交互（100–200 毫秒）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/small-200-300ms/SKILL.md" rel="noopener"><code>small-200-300ms</code></a></td><td>小转场（200–300 毫秒）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/medium-300-500ms/SKILL.md" rel="noopener"><code>medium-300-500ms</code></a></td><td>常规转场（300–500 毫秒）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/large-500-800ms/SKILL.md" rel="noopener"><code>large-500-800ms</code></a></td><td>较大的位移（500–800 毫秒）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/slow-800-1200ms/SKILL.md" rel="noopener"><code>slow-800-1200ms</code></a></td><td>缓慢、从容的运动（800–1200 毫秒）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/deliberate-1200-2000ms/SKILL.md" rel="noopener"><code>deliberate-1200-2000ms</code></a></td><td>非常慢、有分量的运动（1200–2000 毫秒）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/dramatic-2000ms-plus/SKILL.md" rel="noopener"><code>dramatic-2000ms-plus</code></a></td><td>戏剧性、电影感的时长（2000 毫秒以上）</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/continuous-infinite/SKILL.md" rel="noopener"><code>continuous-infinite</code></a></td><td>持续或无限循环</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/orchestrated-sequences/SKILL.md" rel="noopener"><code>orchestrated-sequences</code></a></td><td>编排好的序列</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/responsive-adaptive/SKILL.md" rel="noopener"><code>responsive-adaptive</code></a></td><td>可随情境调整的时长</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/10-by-time-scale/universal-timing/SKILL.md" rel="noopener"><code>universal-timing</code></a></td><td>通用的时间指引</td></tr>
+</tbody></table>
+<h3 id="cat-11-by-principle-focus">11. 按法则专攻 <span lang="en">（By Principle Focus）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/squash-stretch-mastery/SKILL.md" rel="noopener"><code>squash-stretch-mastery</code></a></td><td>挤压与拉伸</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/anticipation-mastery/SKILL.md" rel="noopener"><code>anticipation-mastery</code></a></td><td>预备动作</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/staging-mastery/SKILL.md" rel="noopener"><code>staging-mastery</code></a></td><td>演出布局</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/straight-ahead-pose-mastery/SKILL.md" rel="noopener"><code>straight-ahead-pose-mastery</code></a></td><td>连续运动与关键姿势</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/follow-through-overlapping/SKILL.md" rel="noopener"><code>follow-through-overlapping</code></a></td><td>跟随与重叠</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/slow-in-out-mastery/SKILL.md" rel="noopener"><code>slow-in-out-mastery</code></a></td><td>缓入缓出</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/arc-mastery/SKILL.md" rel="noopener"><code>arc-mastery</code></a></td><td>弧线运动</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/secondary-action-mastery/SKILL.md" rel="noopener"><code>secondary-action-mastery</code></a></td><td>次要动作</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/timing-principle-mastery/SKILL.md" rel="noopener"><code>timing-principle-mastery</code></a></td><td>时间掌握</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/exaggeration-mastery/SKILL.md" rel="noopener"><code>exaggeration-mastery</code></a></td><td>夸张</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/solid-drawing-mastery/SKILL.md" rel="noopener"><code>solid-drawing-mastery</code></a></td><td>扎实的绘画</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/appeal-mastery/SKILL.md" rel="noopener"><code>appeal-mastery</code></a></td><td>吸引力</td></tr>
+</tbody></table>
+<h3 id="cat-12-by-problem-type">12. 按问题类型 <span lang="en">（By Problem Type）</span></h3>
+<table><thead><tr><th>技能</th><th>适合做什么</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/timing-calibration/SKILL.md" rel="noopener"><code>timing-calibration</code></a></td><td>校准时长</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/performance-optimization/SKILL.md" rel="noopener"><code>performance-optimization</code></a></td><td>性能优化</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/accessibility-issues/SKILL.md" rel="noopener"><code>accessibility-issues</code></a></td><td>无障碍问题</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/motion-sickness/SKILL.md" rel="noopener"><code>motion-sickness</code></a></td><td>运动眩晕</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/emotional-disconnect/SKILL.md" rel="noopener"><code>emotional-disconnect</code></a></td><td>情绪对不上</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/brand-consistency/SKILL.md" rel="noopener"><code>brand-consistency</code></a></td><td>品牌一致性</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/user-feedback-clarity/SKILL.md" rel="noopener"><code>user-feedback-clarity</code></a></td><td>反馈是否清楚</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/ux-friction/SKILL.md" rel="noopener"><code>ux-friction</code></a></td><td>体验上的阻力</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/attention-management/SKILL.md" rel="noopener"><code>attention-management</code></a></td><td>注意力管理</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/technical-constraints/SKILL.md" rel="noopener"><code>technical-constraints</code></a></td><td>技术限制</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/implementation-debugging/SKILL.md" rel="noopener"><code>implementation-debugging</code></a></td><td>实现与排错</td></tr>
+<tr><td><a href="https://github.com/dylantarre/animation-principles/blob/main/skills/12-by-problem-type/universal-solutions/SKILL.md" rel="noopener"><code>universal-solutions</code></a></td><td>通用解决办法</td></tr>
+</tbody></table>
+
+<h2 id="samples">三份代表技能</h2>
+<p>144 份技能不宜全部放进一页，本页选了三份作为代表，附录 C 是它们的全文中译，附录 D 是英文原文：</p>
+<ul>
+<li><code>quick-start</code>：五分钟看完十二条，并给出那道弹跳球练习。</li>
+<li><code>squash-stretch-mastery</code>：按法则专攻，把「挤压与拉伸」讲到可以应用到界面、角色、标志和游戏手感。</li>
+<li><code>web-motion-design</code>：按应用领域，把十二条落到 CSS、JavaScript 和前端框架。</li>
+</ul>
+<p>想按情绪来用，可以从 README 举过的 <code>joy-delight</code> 开始；想按行业来用，可以看 <code>fintech-banking</code>。完整列表见上一节。</p>
+
+<h2 id="license-note">许可与版本</h2>
+<p>仓库根目录的 LICENSE 是 MIT License，版权行是 <code>Copyright (c) 2024 Dylan Tarre</code>。README 同样写明 MIT。附录 E 收录许可证原文。</p>
+<p>CHANGELOG 把 1.0.0 的发布日期写作 2024-12-30，并写明这是带 144 份技能的首次发布。仓库里两次提交的作者日期是 2025-12-30（太平洋时间）：第一次是首次发布，第二次是改了 README 里的两处表述。许可证版权行写的是 2024。本页核对的是提交 <code>8359713</code>（2026-11-27）。</p>
+<p>CHANGELOG 的「未来计划」包括面向 Vue、Angular、Svelte 的框架技能、翻译、视频教程与视觉示例，以及社区贡献的行业技能。这些是仓库里写下的计划，不是已经完成的内容。</p>
+<p>CONTRIBUTING.md 里有一处克隆地址仍是占位符 <code>YOUR-USERNAME/animation-principles</code>，真正的仓库地址是 <a href="https://github.com/dylantarre/animation-principles" rel="noopener">dylantarre/animation-principles</a>。</p>
+
+<h2 id="related">相关阅读</h2>
+<ul>
+<li><a href="../aiforui-skills/">给智能体用的界面技艺：Emil Kowalski 的开源 AI Skills</a> — 另一套把动效品味写成可安装技能的开源合集。</li>
+<li><a href="../slashui-motion-prompt/">Motion Prompt：把动画术语整理成喂给 AI 的动效库</a> — 用可动示例给动画术语起名字，再交给智能体实现。</li>
+<li><a href="../mengto-cloud-pass/">「Cloud Pass」：用鱼眼和视差做出的无尽摩托骑行</a> — Meng To 把鱼眼、视差和天空写成三份 MIT 技能。</li>
+<li><a href="../flxrnc-opus-motion-lab/">Opus 5.5 动效实验室</a> — 把形容词换成数字，让 Claude 按工作室的方式做动画。</li>
+<li><a href="../prompt-motion/">Prompt Motion</a> — Claude Opus 5.5 动态视频画廊，附提示词与 Skill。</li>
+<li><a href="../lemo-opuscar/">Lemo-Opuscar</a> — 把电影风格写成技能和样片的开源库。</li>
+</ul>
+
+<h2 id="appendix-zh">附录 A：README 全文中译</h2>
+<p>译文依据 2026-11-27 核对的 <a href="https://github.com/dylantarre/animation-principles/blob/main/README.md" rel="noopener">README.md</a>（提交 <code>8359713</code>，MIT License）。徽章图片未转载。文内链接指向仓库原址。</p>
+
+<h3>动画法则技能市集</h3>
+<p><strong>把迪士尼动画师的超能力交给 Claude。</strong></p>
+<p>这是一套共 144 份 Claude Code 技能的合集，用来讲授迪士尼动画十二法则，以及它们在各种情境、工具和场景里的用法。</p>
+
+<h3>这是什么？</h3>
+<p>这是一个面向 Claude Code 的<strong>技能市集</strong>，目的是让 Claude 成为迪士尼动画方面的专家。无论你在做界面微交互、游戏动画、加载状态，还是更复杂的运动序列，这些技能都会提供带上下文的指引，根基是让迪士尼动画成为经典的那些历久不变的法则。</p>
+<p>一共有 12 组，每组 12 份技能。你可以用它在任何场景里给 Claude 加上动画的本事，也可以自己拿来学习。</p>
+
+<h3>十二条法则</h3>
+<table>
+<thead><tr><th>#</th><th>法则</th><th>它做什么</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><strong>挤压与拉伸</strong></td><td>用形变表现重量和弹性</td></tr>
+<tr><td>2</td><td><strong>预备动作</strong></td><td>让观者先准备好即将发生的事</td></tr>
+<tr><td>3</td><td><strong>演出布局</strong></td><td>把注意引到真正重要的地方</td></tr>
+<tr><td>4</td><td><strong>连续运动与关键姿势</strong></td><td>两种创造运动的方法</td></tr>
+<tr><td>5</td><td><strong>跟随与重叠</strong></td><td>各部分不以同一速度运动</td></tr>
+<tr><td>6</td><td><strong>缓入缓出</strong></td><td>自然的加速与减速</td></tr>
+<tr><td>7</td><td><strong>弧线运动</strong></td><td>有机的弧形运动路径</td></tr>
+<tr><td>8</td><td><strong>次要动作</strong></td><td>用辅助运动去加强主动作</td></tr>
+<tr><td>9</td><td><strong>时间掌握</strong></td><td>速度传达重量和情绪</td></tr>
+<tr><td>10</td><td><strong>夸张</strong></td><td>推过现实，换来更清楚的表达</td></tr>
+<tr><td>11</td><td><strong>扎实的绘画</strong></td><td>保持体积和一致性</td></tr>
+<tr><td>12</td><td><strong>吸引力</strong></td><td>让人愿意看下去的魅力</td></tr>
+</tbody>
+</table>
+
+<h3>安装</h3>
+<h4>Claude Code 插件</h4>
+<p>写进你的 Claude Code 设置：</p>
+<pre><code>{
+  "plugins": [
+    "animation-principles@github:dylantarre/animation-principles"
+  ]
+}</code></pre>
+<h4>手动安装</h4>
+<pre><code># 克隆到你的 Claude 插件目录
+git clone https://github.com/dylantarre/animation-principles.git \
+  ~/.claude/plugins/animation-principles</code></pre>
+<h4>直接使用</h4>
+<p>也可以在对话里直接引用技能：</p>
+<pre><code>Use the animation-principles:joy-delight skill for this celebration animation</code></pre>
+
+<h3>技能分类</h3>
+<h4>按应用领域</h4>
+<table>
+<thead><tr><th>技能</th><th>最适合</th></tr></thead>
+<tbody>
+<tr><td>web-motion-design</td><td>CSS/JS 网页动画</td></tr>
+<tr><td>mobile-touch</td><td>触控手势、移动端模式</td></tr>
+<tr><td>game-development</td><td>游戏界面与角色</td></tr>
+<tr><td>data-visualization</td><td>图表与数据叙事</td></tr>
+<tr><td>micro-interactions</td><td>细小而令人愉快的瞬间</td></tr>
+</tbody>
+</table>
+<h4>按角色</h4>
+<table>
+<thead><tr><th>技能</th><th>最适合</th></tr></thead>
+<tbody>
+<tr><td>frontend-developer</td><td>以代码为先的实现</td></tr>
+<tr><td>motion-designer</td><td>专业动效设计</td></tr>
+<tr><td>game-designer</td><td>互动游戏中的运动</td></tr>
+<tr><td>creative-director</td><td>高层方向</td></tr>
+</tbody>
+</table>
+<h4>按工具 / 框架</h4>
+<table>
+<thead><tr><th>技能</th><th>技术</th></tr></thead>
+<tbody>
+<tr><td>css-native</td><td>纯 CSS 动画</td></tr>
+<tr><td>framer-motion</td><td>Framer Motion（React）</td></tr>
+<tr><td>gsap-greensock</td><td>GSAP / GreenSock</td></tr>
+<tr><td>react-spring</td><td>React Spring</td></tr>
+<tr><td>lottie-bodymovin</td><td>Lottie 动画</td></tr>
+</tbody>
+</table>
+<h4>按情绪效果</h4>
+<table>
+<thead><tr><th>技能</th><th>带来什么</th></tr></thead>
+<tbody>
+<tr><td>joy-delight</td><td>愉快与惊喜</td></tr>
+<tr><td>trust-reliability</td><td>用户信心</td></tr>
+<tr><td>urgency-action</td><td>立刻行动</td></tr>
+<tr><td>elegance-sophistication</td><td>偏高端的感觉</td></tr>
+</tbody>
+</table>
+<h4>按熟练程度</h4>
+<table>
+<thead><tr><th>技能</th><th>水平</th></tr></thead>
+<tbody>
+<tr><td>absolute-beginner</td><td>第一次介绍</td></tr>
+<tr><td>intermediate</td><td>已经能工作的知识</td></tr>
+<tr><td>expert</td><td>专业掌握</td></tr>
+<tr><td>teaching-others</td><td>如何教别人</td></tr>
+</tbody>
+</table>
+<p><a href="https://github.com/dylantarre/animation-principles/blob/main/docs/index.md" rel="noopener"><strong>查看全部 144 份技能 →</strong></a></p>
+
+<h3>快速开始</h3>
+<h4>刚接触动画？</h4>
+<pre><code>Use animation-principles:absolute-beginner</code></pre>
+<h4>前端开发？</h4>
+<pre><code>Use animation-principles:frontend-developer</code></pre>
+<h4>需要某个具体框架？</h4>
+<pre><code>Use animation-principles:framer-motion</code></pre>
+<h4>在排查动画问题？</h4>
+<pre><code>Use animation-principles:implementation-debugging</code></pre>
+
+<h3>技能如何工作</h3>
+<p>每份技能都在教 Claude 如何把十二条法则用到一个具体情境里。例如：</p>
+<p><strong><code>joy-delight</code></strong> 会教：</p>
+<ul>
+<li>庆祝时夸张的弹跳</li>
+<li>彩纸和粒子的节奏</li>
+<li>过冲的缓动曲线</li>
+<li>什么时候该用俏皮的弹簧物理</li>
+</ul>
+<p><strong><code>fintech-banking</code></strong> 会教：</p>
+<ul>
+<li>克制而可信的运动</li>
+<li>专业的时长（不要弹跳）</li>
+<li>能传达安全感的转场</li>
+<li>金融场景的无障碍要求</li>
+</ul>
+<p><strong><code>squash-stretch-mastery</code></strong> 会教：</p>
+<ul>
+<li>这条法则背后的深层理论</li>
+<li>保持体积的方法</li>
+<li>何时可以破例</li>
+<li>跨领域的应用</li>
+</ul>
+
+<h3>目录结构</h3>
+<pre><code>animation-principles/
+├── README.md
+├── CLAUDE.md              # Claude Code 的接入说明
+├── LICENSE
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── skills/                # 技能源文件
+│   ├── 01-by-domain/
+│   ├── 02-by-thinking-style/
+│   ├── 03-by-role-persona/
+│   ├── 04-by-skill-level/
+│   ├── 05-by-animation-type/
+│   ├── 06-by-emotional-outcome/
+│   ├── 07-by-ui-element/
+│   ├── 08-by-industry/
+│   ├── 09-by-tool-framework/
+│   ├── 10-by-time-scale/
+│   ├── 11-by-principle-focus/
+│   └── 12-by-problem-type/
+└── docs/                  # 可供浏览的文档
+    └── index.md           # 完整技能目录
+</code></pre>
+
+<h3>贡献</h3>
+<p>欢迎贡献。指引见 <a href="https://github.com/dylantarre/animation-principles/blob/main/CONTRIBUTING.md" rel="noopener">CONTRIBUTING.md</a>。</p>
+<p><strong>可以贡献的方向：</strong></p>
+<ul>
+<li>新的行业专项技能</li>
+<li>更多框架的实现</li>
+<li>翻译</li>
+<li>缺陷修复与改进</li>
+</ul>
+
+<h3>许可</h3>
+<p>MIT License，详情见 <a href="https://github.com/dylantarre/animation-principles/blob/main/LICENSE" rel="noopener">LICENSE</a>。</p>
+
+<h3>致谢</h3>
+<p>依据迪士尼动画师 Ollie Johnston 与 Frank Thomas 整理的动画十二法则，见《生命的幻象：迪士尼动画》（1981）。</p>
+<p><strong>为动画社区用心做成。</strong></p>
+
+<h2 id="appendix-en">附录 B：README 英文原文</h2>
+<details><summary>展开 README.md</summary>
+<pre><code># Animation Principles Skill Marketplace
+
+**Give Claude the superpower of a Disney animator.**
+
+A comprehensive collection of 144 Claude Code skills that teach Disney&#x27;s 12 Principles of Animation and ways to apply them across every context, tool, and scenario imaginable. 
+
+[![Skills](https://img.shields.io/badge/skills-144-blue)](./docs/index.md)
+[![Categories](https://img.shields.io/badge/categories-12-green)](./docs/index.md)
+[![License](https://img.shields.io/badge/license-MIT-yellow)](./LICENSE)
+
+---
+
+## What is This?
+
+This is a **skill marketplace** for Claude Code that transforms Claude into a Disney animation expert. Whether you&#x27;re building UI micro-interactions, game animations, loading states, or complex motion sequences, these skills provide contextual guidance rooted in the timeless principles that made Disney animation legendary. 
+
+There are 12 sets of 12 skills each. Use this to give Claude animation powers in any scenario or to learn more yourself. 
+
+### The 12 Principles
+
+| # | Principle | What It Does |
+|---|-----------|--------------|
+| 1 | **Squash &amp; Stretch** | Shows weight and flexibility through deformation |
+| 2 | **Anticipation** | Prepares the viewer for what&#x27;s coming |
+| 3 | **Staging** | Directs attention to what matters |
+| 4 | **Straight Ahead / Pose to Pose** | Two approaches to creating movement |
+| 5 | **Follow Through / Overlapping** | Parts move at different rates |
+| 6 | **Slow In / Slow Out** | Natural acceleration and deceleration |
+| 7 | **Arc** | Organic curved motion paths |
+| 8 | **Secondary Action** | Supporting movements that reinforce |
+| 9 | **Timing** | Speed conveys weight and emotion |
+| 10 | **Exaggeration** | Push beyond reality for clarity |
+| 11 | **Solid Drawing** | Maintain volume and consistency |
+| 12 | **Appeal** | Charisma that draws viewers in |
+
+---
+
+## Installation
+
+### Claude Code Plugin
+
+Add to your Claude Code settings:
+
+```json
+{
+  &quot;plugins&quot;: [
+    &quot;animation-principles@github:dylantarre/animation-principles&quot;
+  ]
+}
+```
+
+### Manual Installation
+
+```bash
+# Clone to your Claude plugins directory
+git clone https://github.com/dylantarre/animation-principles.git \
+  ~/.claude/plugins/animation-principles
+```
+
+### Direct Use
+
+You can also reference skills directly in conversations:
+
+```
+Use the animation-principles:joy-delight skill for this celebration animation
+```
+
+---
+
+## Skill Categories
+
+### By Application Domain
+| Skill | Best For |
+|-------|----------|
+| [web-motion-design](docs/01-by-domain/web-motion-design.md) | CSS/JS web animations |
+| [mobile-touch](docs/01-by-domain/mobile-touch.md) | Touch gestures, mobile patterns |
+| [game-development](docs/01-by-domain/game-development.md) | Game UI and characters |
+| [data-visualization](docs/01-by-domain/data-visualization.md) | Charts and data storytelling |
+| [micro-interactions](docs/01-by-domain/micro-interactions.md) | Small, delightful moments |
+
+### By Role
+| Skill | Best For |
+|-------|----------|
+| [frontend-developer](docs/03-by-role-persona/frontend-developer.md) | Code-first implementation |
+| [motion-designer](docs/03-by-role-persona/motion-designer.md) | Professional motion design |
+| [game-designer](docs/03-by-role-persona/game-designer.md) | Interactive game motion |
+| [creative-director](docs/03-by-role-persona/creative-director.md) | High-level direction |
+
+### By Tool/Framework
+| Skill | Technology |
+|-------|------------|
+| [css-native](docs/09-by-tool-framework/css-native.md) | Pure CSS animations |
+| [framer-motion](docs/09-by-tool-framework/framer-motion.md) | Framer Motion (React) |
+| [gsap-greensock](docs/09-by-tool-framework/gsap-greensock.md) | GSAP/GreenSock |
+| [react-spring](docs/09-by-tool-framework/react-spring.md) | React Spring |
+| [lottie-bodymovin](docs/09-by-tool-framework/lottie-bodymovin.md) | Lottie animations |
+
+### By Emotional Outcome
+| Skill | Creates |
+|-------|---------|
+| [joy-delight](docs/06-by-emotional-outcome/joy-delight.md) | Happiness and surprise |
+| [trust-reliability](docs/06-by-emotional-outcome/trust-reliability.md) | User confidence |
+| [urgency-action](docs/06-by-emotional-outcome/urgency-action.md) | Immediate action |
+| [elegance-sophistication](docs/06-by-emotional-outcome/elegance-sophistication.md) | Premium feel |
+
+### By Skill Level
+| Skill | Level |
+|-------|-------|
+| [absolute-beginner](docs/04-by-skill-level/absolute-beginner.md) | First introduction |
+| [intermediate](docs/04-by-skill-level/intermediate.md) | Working knowledge |
+| [expert](docs/04-by-skill-level/expert.md) | Professional mastery |
+| [teaching-others](docs/04-by-skill-level/teaching-others.md) | How to teach |
+
+[**View all 144 skills →**](docs/index.md)
+
+---
+
+## Quick Start
+
+### New to Animation?
+```
+Use animation-principles:absolute-beginner
+```
+
+### Frontend Developer?
+```
+Use animation-principles:frontend-developer
+```
+
+### Need a Specific Framework?
+```
+Use animation-principles:framer-motion
+```
+
+### Debugging Animation Issues?
+```
+Use animation-principles:implementation-debugging
+```
+
+---
+
+## How Skills Work
+
+Each skill teaches Claude how to apply the 12 principles in a specific context. For example:
+
+**`joy-delight`** teaches:
+- Exaggerated bounces for celebrations
+- Confetti and particle timing
+- Overshoot easing curves
+- When to use playful spring physics
+
+**`fintech-banking`** teaches:
+- Subtle, trustworthy motion
+- Professional timing (no bounces)
+- Security-conveying transitions
+- Accessibility requirements for finance
+
+**`squash-stretch-mastery`** teaches:
+- Deep theory behind the principle
+- Volume preservation techniques
+- When to break the rules
+- Cross-domain applications
+
+---
+
+## Directory Structure
+
+```
+animation-principles/
+├── README.md
+├── CLAUDE.md              # Claude Code integration instructions
+├── LICENSE
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── skills/                # Source skill files
+│   ├── 01-by-domain/
+│   ├── 02-by-thinking-style/
+│   ├── 03-by-role-persona/
+│   ├── 04-by-skill-level/
+│   ├── 05-by-animation-type/
+│   ├── 06-by-emotional-outcome/
+│   ├── 07-by-ui-element/
+│   ├── 08-by-industry/
+│   ├── 09-by-tool-framework/
+│   ├── 10-by-time-scale/
+│   ├── 11-by-principle-focus/
+│   └── 12-by-problem-type/
+└── docs/                  # Rendered documentation
+    └── index.md           # Full skill directory
+```
+
+---
+
+## Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+**Ideas for contributions:**
+- New industry-specific skills
+- Additional framework implementations
+- Translations
+- Bug fixes and improvements
+
+---
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+## Credits
+
+Based on the 12 Principles of Animation developed by Disney animators Ollie Johnston and Frank Thomas, as documented in *The Illusion of Life: Disney Animation* (1981).
+
+---
+
+**Made with care for the animation community.**
+</code></pre>
+</details>
+
+<h2 id="skills-zh">附录 C：三份代表技能全文中译</h2>
+<p>译文依据 2026-11-27 核对的三份 <code>SKILL.md</code>（MIT License）。YAML 头信息保留原字段名，说明文字译成中文。</p>
+
+<h3>C.1 <code>quick-start</code>：五分钟看完十二条</h3>
+<p>源文件：<a href="https://github.com/dylantarre/animation-principles/blob/main/skills/04-by-skill-level/quick-start/SKILL.md" rel="noopener">skills/04-by-skill-level/quick-start/SKILL.md</a></p>
+<pre><code>---
+name: Animation Principles - Quick Start
+description: 需要在五分钟内迅速看完动画十二条法则时使用
+---</code></pre>
+<h4>五分钟看完动画十二条法则</h4>
+<p>迪士尼的动画师在二十世纪三十年代整理出这些法则。直到今天，它们仍在定义什么是好的动画。</p>
+<h4>十二条法则（每条三十秒）</h4>
+<p><strong>1. 挤压与拉伸</strong><br>物体在撞击时压紧，在运动中拉长。弹跳的球落到地上会拍扁。它带来生命感和弹性。</p>
+<p><strong>2. 预备动作</strong><br>动作开始前先蓄势。跳之前蹲一下。扔之前把手往后拉。让观者准备好即将发生的事。</p>
+<p><strong>3. 演出布局</strong><br>把想法交代清楚。一个镜头只讲一件事。观者绝不该犹豫该看哪里。</p>
+<p><strong>4. 连续运动与关键姿势</strong><br>两种动画方法。连续运动：一帧一帧地画，得到流畅而即兴的运动。关键姿势：先画关键帧，得到受控而有计划的动作。</p>
+<p><strong>5. 跟随与重叠动作</strong><br>事物不会同时停住。头停了，头发还在动。不同部分以不同速度运动。</p>
+<p><strong>6. 缓入与缓出</strong><br>运动有加速和减速。开头和结尾的画更多，中间更少。这会形成自然的重量感。</p>
+<p><strong>7. 弧线</strong><br>自然的运动走弧线。手臂沿弧线摆动，头沿弧线转动。直线会显得机械。</p>
+<p><strong>8. 次要动作</strong><br>增添层次的辅助运动。边走边吹口哨，边说边做手势。要增强，而不要抢戏。</p>
+<p><strong>9. 时间掌握</strong><br>帧数等于速度和重量。帧越少，越快、越轻；帧越多，越慢、越重。</p>
+<p><strong>10. 夸张</strong><br>把现实再往前推，换来更强的冲击。表情更大，姿势更有力。动画不是现实，而是被加强过的现实。</p>
+<p><strong>11. 扎实的绘画</strong><br>用三维来思考。重量、平衡、解剖。即便是二维角色，也该让人觉得它有体积。</p>
+<p><strong>12. 吸引力</strong><br>设计里的魅力。角色应该让人想看。形状清楚，比例好，特征分明。</p>
+<h4>快速对照分组</h4>
+<p><strong>把运动做对：</strong>时间掌握、弧线、缓入缓出、挤压与拉伸<br>
+<strong>让它显得活：</strong>跟随、重叠、次要动作<br>
+<strong>让人一眼看懂：</strong>演出布局、预备动作<br>
+<strong>让它耐看：</strong>吸引力、夸张、扎实的绘画</p>
+<h4>入门只需要这一道练习</h4>
+<p>做一只弹跳的球。它会同时教你时间掌握、挤压与拉伸、弧线和缓入缓出。</p>
+
+<h3>C.2 <code>squash-stretch-mastery</code>：挤压与拉伸专攻</h3>
+<p>源文件：<a href="https://github.com/dylantarre/animation-principles/blob/main/skills/11-by-principle-focus/squash-stretch-mastery/SKILL.md" rel="noopener">skills/11-by-principle-focus/squash-stretch-mastery/SKILL.md</a></p>
+<pre><code>---
+name: squash-stretch-mastery
+description: 在实现形变效果、弹跳动画、撞击反馈，或任何需要有机弹性和重量感的运动时使用。
+---</code></pre>
+<h4>挤压与拉伸专攻</h4>
+<h4>作为基础的那条法则</h4>
+<p>挤压与拉伸常被看作迪士尼十二条里最重要的一条，因为它解决了动画的根本问题：让刚性的物体显得活着。它在二十世纪三十年代于迪士尼发展起来，来自观察真实的皮肉和橡皮如何在受力时变形，同时保持体积不变。</p>
+<h4>核心理论</h4>
+<p><strong>体积守恒</strong>：物体被压扁时必须变宽，被拉长时必须变窄。这一约束带来可信度——破坏它，物体看起来就会在长大或缩小，而不是在变形。</p>
+<p><strong>把力变成可见的</strong>：挤压与拉伸让看不见的力显形。球在撞击时压扁，让我们看见地面的阻力。角色在跳跃中途被拉长，揭示出速度和动量。</p>
+<h4>弹性谱系</h4>
+<p>不是所有物体都以同样的程度变形：</p>
+<ul>
+<li><strong>高弹性</strong>：橡皮球、卡通角色、果冻（大幅度变形）</li>
+<li><strong>中等弹性</strong>：人脸、布料、肌肉（轻微变形）</li>
+<li><strong>低弹性</strong>：木头、金属、骨骼（极小但仍然存在的微变形）</li>
+</ul>
+<p>即便是「刚性」物体，也能从百分之一到二的变形中受益——它能避免那种死板、机械的感觉。</p>
+<h4>与其他法则的关系</h4>
+<p><strong>时间掌握会放大挤压与拉伸</strong>：快速撞击需要更大幅度的挤压；缓慢的漂浮只需要轻轻拉长。形变的幅度必须与速度相符。</p>
+<p><strong>预备动作会用到拉伸</strong>：角色起跳前蓄力时，常常会先轻轻拉长一点。</p>
+<p><strong>跟随动作会把它延长</strong>：落地之后，挤压会传到次要部分（头发、衣服、皮肉）。</p>
+<h4>各领域的用法</h4>
+<p><strong>界面 / 动效设计</strong></p>
+<ul>
+<li>按钮按下：轻微挤压（高度收到百分之九十五到九十八）</li>
+<li>列表项：被拉过边界时稍稍拉长（橡皮筋式滚动）</li>
+<li>通知：到达时先压一下，再弹回静止</li>
+</ul>
+<p><strong>角色动画</strong></p>
+<ul>
+<li>面部表情：微笑时面颊挤压，惊讶时拉伸</li>
+<li>走路循环：触地时躯干压缩，经过时伸展</li>
+<li>情绪节拍：极度拉伸表示震惊，挤压表示沮丧</li>
+</ul>
+<p><strong>标志动画</strong></p>
+<ul>
+<li>弹跳的标志：夸张的挤压带来俏皮的性格</li>
+<li>轻微的呼吸：微小的挤压与拉伸让静止的标志保持活着</li>
+</ul>
+<p><strong>游戏手感</strong></p>
+<ul>
+<li>跳跃弧线：上升时拉伸，落地时挤压</li>
+<li>受击反应：先短暂挤压，再把撞击感送到击退</li>
+<li>可收集物：用温和的挤压与拉伸做有节奏的脉动</li>
+</ul>
+<h4>常见错误</h4>
+<ol>
+<li><strong>破坏体积</strong>：物体看起来在长大或缩小，而不是在变形</li>
+<li><strong>均匀变形</strong>：真实物体在力作用的地方变形更大</li>
+<li><strong>用得过满</strong>：克制的场合只需要百分之一到五，而不是卡通式的百分之五十</li>
+<li><strong>极端值是静止的</strong>：形变应该缓入缓出，绝不要突然跳到极限</li>
+</ol>
+<h4>实现上的启发</h4>
+<p>有活力的运动从百分之十的形变开始，细微的打磨用百分之二到三。再按材质和语气调整。拿不准的时候，少即是多——挤压与拉伸应该被感觉到，而不是被有意识地看见。</p>
+
+<h3>C.3 <code>web-motion-design</code>：网页动效</h3>
+<p>源文件：<a href="https://github.com/dylantarre/animation-principles/blob/main/skills/01-by-domain/web-motion-design/SKILL.md" rel="noopener">skills/01-by-domain/web-motion-design/SKILL.md</a></p>
+<pre><code>---
+name: web-motion-design
+description: 在编写 CSS 动画、JavaScript 转场、React/Vue 运动，或任何基于浏览器的动画工作时使用。
+---</code></pre>
+<h4>网页动效</h4>
+<p>把迪士尼动画十二条法则应用到 CSS、JavaScript 和前端框架。</p>
+<h4>快速对照</h4>
+<table>
+<thead><tr><th>法则</th><th>网页上的实现</th></tr></thead>
+<tbody>
+<tr><td>挤压与拉伸</td><td>在交互状态上使用 <code>transform: scale()</code></td></tr>
+<tr><td>预备动作</td><td>动作开始前先轻微反向移动</td></tr>
+<tr><td>演出布局</td><td>用运动的层次把注意集中到用户该看的地方</td></tr>
+<tr><td>连续运动与关键姿势</td><td>JavaScript 逐帧，对 CSS 关键帧</td></tr>
+<tr><td>跟随与重叠</td><td>子元素错开动画，带弹性的缓动</td></tr>
+<tr><td>缓入缓出</td><td><code>ease-in-out</code>、三次贝塞尔曲线</td></tr>
+<tr><td>弧线运动</td><td><code>motion-path</code>，或贝塞尔位移变换</td></tr>
+<tr><td>次要动作</td><td>阴影、光晕随主运动响应</td></tr>
+<tr><td>时间掌握</td><td>时长：微交互 100–200 毫秒，常规 200–400 毫秒</td></tr>
+<tr><td>夸张</td><td>缩放到超过 1.0，带过冲的动画</td></tr>
+<tr><td>扎实的绘画</td><td>一致的 <code>transform-origin</code>，三维透视</td></tr>
+<tr><td>吸引力</td><td>流畅的 60 帧，有目的的运动设计</td></tr>
+</tbody>
+</table>
+<h4>法则的应用</h4>
+<p><strong>挤压与拉伸</strong>：按钮按下时用 <code>scaleY</code> 压缩，悬停时用 <code>scaleX</code> 拉伸。保持体积不变——压缩 Y 时，稍微增大 X。</p>
+<p><strong>预备动作</strong>：展开下拉菜单前，先把它缩小百分之二到三。把内容向左滑出前，先向右移 5 像素。</p>
+<p><strong>演出布局</strong>：模态框获得焦点时，把背景元素调暗。用运动引导视线——先让重要的元素动起来。</p>
+<p><strong>连续运动与关键姿势</strong>：可预期、可重复的动画用 CSS <code>@keyframes</code>（关键姿势）。动态的、基于物理的运动用 JavaScript 或 GSAP（连续运动）。</p>
+<p><strong>跟随与重叠</strong>：子元素应在父元素停住之后再完成自己的运动。用递减的 <code>animation-delay</code> 做出自然的错开。</p>
+<p><strong>缓入缓出</strong>：界面运动不要使用 <code>linear</code>。常规缓动：<code>cubic-bezier(0.4, 0, 0.2, 1)</code>。进入：<code>cubic-bezier(0, 0, 0.2, 1)</code>。离开：<code>cubic-bezier(0.4, 0, 1, 1)</code>。</p>
+<p><strong>弧线运动</strong>：自然界的物体沿弧线运动，而不是直线。使用 <code>offset-path</code>，或把 X、Y 变换与不同的缓动组合起来。</p>
+<p><strong>次要动作</strong>：按钮的阴影在悬停时变大、变模糊。按钮缩放时，里面的图标同时旋转。背景粒子响应主元素。</p>
+<p><strong>时间掌握</strong>：微交互：100–200 毫秒。常规转场：200–400 毫秒。复杂序列：400–700 毫秒。页面转场：300–500 毫秒。</p>
+<p><strong>夸张</strong>：悬停缩放到 1.05–1.1，而不是 1.01。错误抖动移动 10–20 像素，而不是 2 像素。让运动可以被察觉，但不要刺眼。</p>
+<p><strong>扎实的绘画</strong>：保持一致的 <code>transform-origin</code>。用 <code>perspective</code> 做三维纵深。避免互相冲突、造成视觉毛刺的变换。</p>
+<p><strong>吸引力</strong>：以 60 帧为目标——尽可能只动画 <code>transform</code> 和 <code>opacity</code>。用自定义缓动曲线加入细微的性格。运动应该让人觉得是有意的。</p>
+<h4>代码模式</h4>
+<pre><code>/* 带挤压与拉伸的弹性按钮 */
+.button:active {
+  transform: scale(0.95, 1.05);
+  transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 展开前的预备动作 */
+.dropdown-enter {
+  animation: dropdown-open 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dropdown-open {
+  0% { transform: scaleY(0.98); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 1; }
+}</code></pre>
+<h4>性能规则</h4>
+<ol>
+<li>为了 GPU 加速，只动画 <code>transform</code> 和 <code>opacity</code></li>
+<li>谨慎使用 <code>will-change</code>，并在动画结束后去掉</li>
+<li>运动可预期时，优先用 CSS 而不是 JavaScript</li>
+<li>在低性能设备上测试</li>
+</ol>
+
+<h2 id="skills-en">附录 D：三份代表技能英文原文</h2>
+<details><summary>展开 quick-start / SKILL.md</summary>
+<pre><code>---
+name: Animation Principles - Quick Start
+description: Use when someone needs a rapid overview of all 12 animation principles in under 5 minutes
+---
+
+# 12 Animation Principles in 5 Minutes
+
+The Disney animators codified these principles in the 1930s. They still define quality animation today.
+
+## The Principles (30 seconds each)
+
+**1. Squash and Stretch**
+Objects compress on impact, elongate in motion. A bouncing ball flattens when it hits ground. Gives life and flexibility.
+
+**2. Anticipation**
+Wind-up before action. Crouch before jump. Arm back before throw. Prepares the viewer for what&#x27;s coming.
+
+**3. Staging**
+Present ideas clearly. One idea per shot. The viewer should never wonder where to look.
+
+**4. Straight Ahead / Pose to Pose**
+Two animation methods. Straight ahead: draw frame by frame for fluid, spontaneous motion. Pose to pose: draw key frames first for controlled, planned action.
+
+**5. Follow Through / Overlapping Action**
+Things don&#x27;t stop all at once. Hair keeps moving after head stops. Different parts move at different rates.
+
+**6. Slow In and Slow Out**
+Movement accelerates and decelerates. More drawings at start and end, fewer in middle. Creates natural weight.
+
+**7. Arc**
+Natural motion follows curved paths. Arms swing in arcs. Heads turn in arcs. Straight lines feel robotic.
+
+**8. Secondary Action**
+Supporting movements that add richness. Walking while whistling. Talking while gesturing. Enhances without distracting.
+
+**9. Timing**
+Number of frames = speed and weight. Fewer frames = faster/lighter. More frames = slower/heavier.
+
+**10. Exaggeration**
+Push reality further for impact. Bigger expressions, more dynamic poses. Animation isn&#x27;t reality - it&#x27;s reality enhanced.
+
+**11. Solid Drawing**
+Three-dimensional thinking. Weight, balance, anatomy. Even 2D characters should feel like they have volume.
+
+**12. Appeal**
+Charisma in design. Characters should be interesting to watch. Clear shapes, good proportions, distinctive features.
+
+## Quick Reference Groups
+
+**Make it move right:** Timing, Arcs, Slow In/Out, Squash/Stretch
+**Make it feel alive:** Follow Through, Overlapping, Secondary Action
+**Make it read clearly:** Staging, Anticipation
+**Make it compelling:** Appeal, Exaggeration, Solid Drawing
+
+## The Only Exercise You Need to Start
+Animate a bouncing ball. It teaches Timing, Squash/Stretch, Arcs, and Slow In/Out simultaneously.
+</code></pre>
+</details>
+<details><summary>展开 squash-stretch-mastery / SKILL.md</summary>
+<pre><code>---
+name: squash-stretch-mastery
+description: Use when implementing deformation effects, bounce animations, impact responses, or any motion requiring organic elasticity and weight expression.
+---
+
+# Squash &amp; Stretch Mastery
+
+## The Foundation Principle
+
+Squash and stretch is considered the most important of Disney&#x27;s 12 principles because it solves animation&#x27;s fundamental problem: making rigid objects feel alive. Developed in the 1930s at Disney, it emerged from observing how real flesh and rubber deform under force while maintaining constant volume.
+
+## Core Theory
+
+**Volume Preservation**: When an object squashes, it must widen. When it stretches, it must narrow. This constraint creates believability—violate it and objects appear to grow or shrink rather than deform.
+
+**Force Visualization**: Squash and stretch makes invisible forces visible. A ball squashing on impact shows us the floor&#x27;s resistance. A character stretching mid-leap reveals velocity and momentum.
+
+## The Elasticity Spectrum
+
+Not all objects deform equally:
+- **High elasticity**: Rubber balls, cartoon characters, jelly (extreme deformation)
+- **Medium elasticity**: Human faces, cloth, muscle (subtle deformation)
+- **Low elasticity**: Wood, metal, bone (minimal but present micro-deformation)
+
+Even &quot;rigid&quot; objects benefit from 1-2% deformation—it prevents the dead, mechanical feel.
+
+## Interaction with Other Principles
+
+**Timing amplifies squash/stretch**: Fast impacts demand more squash; slow floats need gentle stretch. The deformation amount must match velocity.
+
+**Anticipation uses stretch**: A character winding up for a jump often stretches slightly before the motion begins.
+
+**Follow-through extends it**: After landing, the squash ripples through secondary elements (hair, clothing, flesh).
+
+## Domain Applications
+
+### UI/Motion Design
+- Button press: subtle squash (95-98% height) on tap
+- List items: stretch slightly when pulled beyond bounds (rubber-band scroll)
+- Notifications: squash on arrival, bounce to rest
+
+### Character Animation
+- Facial expressions: cheeks squash on smile, stretch on surprise
+- Walk cycles: torso compresses on contact, extends on passing
+- Emotional beats: extreme stretch for shock, squash for dejection
+
+### Logo Animation
+- Bouncing logos: exaggerated squash creates playful personality
+- Subtle breathing: micro-squash/stretch keeps static logos alive
+
+### Game Feel
+- Jump arcs: stretch on ascent, squash on landing
+- Hit reactions: brief squash sells impact before knockback
+- Collectibles: rhythmic pulse using gentle squash/stretch
+
+## Common Mistakes
+
+1. **Breaking volume**: Objects appear to grow/shrink instead of deform
+2. **Uniform deformation**: Real objects deform more where force is applied
+3. **Over-application**: Subtle contexts need 1-5%, not cartoon 50%
+4. **Static extremes**: Deformation should ease in/out, never snap
+
+## Implementation Heuristic
+
+Start with 10% deformation for energetic motions, 2-3% for subtle polish. Adjust based on material and tone. When in doubt, less is more—squash/stretch should be felt, not consciously noticed.
+</code></pre>
+</details>
+<details><summary>展开 web-motion-design / SKILL.md</summary>
+<pre><code>---
+name: web-motion-design
+description: Use when building CSS animations, JavaScript transitions, React/Vue motion, or any browser-based animation work.
+---
+
+# Web Motion Design
+
+Apply Disney&#x27;s 12 animation principles to CSS, JavaScript, and frontend frameworks.
+
+## Quick Reference
+
+| Principle | Web Implementation |
+|-----------|-------------------|
+| Squash &amp; Stretch | `transform: scale()` on interaction states |
+| Anticipation | Slight reverse movement before action |
+| Staging | Focus user attention with motion hierarchy |
+| Straight Ahead / Pose to Pose | JS frame-by-frame vs CSS keyframes |
+| Follow Through / Overlapping | Staggered child animations, elastic easing |
+| Slow In / Slow Out | `ease-in-out`, cubic-bezier curves |
+| Arc | `motion-path` or bezier translate transforms |
+| Secondary Action | Shadows, glows responding to primary motion |
+| Timing | Duration: micro 100-200ms, standard 200-400ms |
+| Exaggeration | Scale beyond 1.0, overshoot animations |
+| Solid Drawing | Consistent transform-origin, 3D perspective |
+| Appeal | Smooth 60fps, purposeful motion design |
+
+## Principle Applications
+
+**Squash &amp; Stretch**: Apply `scaleY` compression on button press, `scaleX` stretch on hover. Keep volume constant—if you compress Y, expand X slightly.
+
+**Anticipation**: Before expanding a dropdown, shrink it 2-3% first. Before sliding content left, move it 5px right.
+
+**Staging**: Dim background elements during modal focus. Use motion to direct eye flow—animate important elements first.
+
+**Straight Ahead vs Pose to Pose**: Use CSS `@keyframes` for predictable, repeatable animations (pose to pose). Use JavaScript/GSAP for dynamic, physics-based motion (straight ahead).
+
+**Follow Through &amp; Overlapping**: Child elements should complete movement after parent stops. Use `animation-delay` with decreasing values for natural stagger.
+
+**Slow In / Slow Out**: Never use `linear` for UI motion. Standard easing: `cubic-bezier(0.4, 0, 0.2, 1)`. Enter: `cubic-bezier(0, 0, 0.2, 1)`. Exit: `cubic-bezier(0.4, 0, 1, 1)`.
+
+**Arc**: Elements in nature move in arcs, not straight lines. Use `offset-path` or combine X/Y transforms with different easings.
+
+**Secondary Action**: Button shadow grows/blurs on hover. Icon inside button rotates while button scales. Background particles respond to primary element.
+
+**Timing**: Micro-interactions: 100-200ms. Standard transitions: 200-400ms. Complex sequences: 400-700ms. Page transitions: 300-500ms.
+
+**Exaggeration**: Hover states scale to 1.05-1.1, not 1.01. Error shakes move 10-20px, not 2px. Make motion noticeable but not jarring.
+
+**Solid Drawing**: Maintain consistent `transform-origin`. Use `perspective` for 3D depth. Avoid conflicting transforms that create visual glitches.
+
+**Appeal**: Target 60fps—use `transform` and `opacity` only when possible. Add subtle personality through custom easing curves. Motion should feel intentional.
+
+## Code Patterns
+
+```css
+/* Elastic button with squash/stretch */
+.button:active {
+  transform: scale(0.95, 1.05);
+  transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Anticipation before expansion */
+.dropdown-enter {
+  animation: dropdown-open 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dropdown-open {
+  0% { transform: scaleY(0.98); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+```
+
+## Performance Rules
+
+1. Animate only `transform` and `opacity` for GPU acceleration
+2. Use `will-change` sparingly and remove after animation
+3. Prefer CSS over JavaScript when animation is predictable
+4. Test on low-powered devices
+</code></pre>
+</details>
+
+<h2 id="license">附录 E：LICENSE（MIT）原文</h2>
+<details><summary>展开 LICENSE</summary>
+<pre><code>MIT License
+
+Copyright (c) 2024 Dylan Tarre
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre>
+</details>
+
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：Dylan Tarre。仓库 <a href="https://github.com/dylantarre/animation-principles" rel="noopener">dylantarre/animation-principles</a> 以 MIT 许可发布（Copyright (c) 2024 Dylan Tarre）。本页为项目导读；附录为 README 全文中译与英文原文、三份代表技能的中译与原文，以及许可证原文。封面为字标。原文：<a href="https://github.com/dylantarre/animation-principles" rel="noopener">github.com/dylantarre/animation-principles</a>。如需移除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/dylantarre/animation-principles" rel="noopener">github.com/dylantarre/animation-principles</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
