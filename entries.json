@@ -1,5 +1,20 @@
 [
   {
+    "slug": "aiiii498-3d-game-shaders",
+    "title": "「3D Game Shaders For Beginners」：把游戏着色器，拆开讲清楚",
+    "desc": "Yarry（@aiiii498）于 2026-11-27 11:38（新加坡时间，UTC+8）在 X 发布长文，介绍 David Lettier 的开源教程《3D Game Shaders For Beginners》。仓库 lettier/3d-game-shaders-for-beginners 中，仅 .cxx、.vert、.frag 源码以 BSD 3-Clause 许可发布（Copyright (c) 2019, David Lettier）；文档与配图未授权使用。本页为长文原文 + 独立中文导读，不转载 README、文档与官方演示画面。收录时核对约 20,082 星、1,492 次分叉。文中「30 多套」与「一键生成」等均为原文自报。封面为 typographic 设计。",
+    "description": "Yarry 介绍 David Lettier 的开源着色器教程。长文原文 + 导读。仅源码为 BSD 3-Clause，文档与配图未授权。",
+    "source": "X · @aiiii498",
+    "date": "2026-11-27",
+    "type": "全文 + 导读",
+    "subtitle": "3D Game Shaders For Beginners  ·  长文原文 + 中文导读",
+    "original_url": "https://x.com/aiiii498/status/2126158675329138965",
+    "spine": "把游戏着色器拆开讲清楚",
+    "summary": "用标准 GLSL 把一条条游戏着色器拆开，源码是 BSD 3-Clause，文档未授权",
+    "kind": "长文",
+    "by": "Yarry @aiiii498"
+  },
+  {
     "slug": "dylantarre-animation-principles",
     "title": "「动画十二法则」：把迪士尼的手艺写成 144 份技能",
     "desc": "Dylan Tarre 的 Animation Principles Skill Marketplace 导读：把迪士尼动画十二法则写成 144 份 Claude Code 技能，按领域、角色、工具、情绪等分成十二组。仓库 dylantarre/animation-principles 为 MIT（Copyright (c) 2024 Dylan Tarre）。本页为项目导读，附录为 README 全文中译与英文原文、三份代表技能的中译与原文，以及 LICENSE 原文。封面为字标。CHANGELOG 将 1.0.0 写作 2024-12-30，提交记录的作者日期是 2025-12-30。首次提交说明写明由 Claude Code 生成，并与 Claude Opus 4.5 合写。",

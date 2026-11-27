@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「3D Game Shaders For Beginners」：把游戏着色器，拆开讲清楚</title>
+<meta name="description" content="Yarry（@aiiii498）的 X 长文原文与中文导读：介绍 David Lettier 的开源教程《3D Game Shaders For Beginners》。仓库里仅 .cxx、.vert、.frag 源码以 BSD 3-Clause 许可发布，文档与配图未授权使用。本页不转载 README、文档与官方演示画面。文中「30 多套」和「一键生成」等均为原文自报。">
+<meta property="og:title" content="「3D Game Shaders For Beginners」：把游戏着色器，拆开讲清楚">
+<meta property="og:description" content="Yarry 介绍 David Lettier 的开源着色器教程。长文原文 + 导读。仅源码为 BSD 3-Clause，文档与配图未授权。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>全文 + 导读</span><time datetime="2026-11-27">2026.11.27</time></p>
+<h1 class="za-title">「3D Game Shaders For Beginners」：把游戏着色器，拆开讲清楚</h1>
+<p class="za-sub" lang="en" data-za-gen>3D Game Shaders For Beginners  ·  长文原文 + 中文导读</p>
+<p class="za-meta" data-za-gen><span>来源 · X · @aiiii498</span><span>收录 · 2026-11-27</span><span><a href="https://x.com/aiiii498/status/2126158675329138965" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者 Yarry（<a href="https://x.com/aiiii498" rel="noopener">@aiiii498</a>）于 2026-11-27 11:38（新加坡时间，UTC+8）在 X 发布长文，介绍 David Lettier 的开源教程《3D Game Shaders For Beginners》。仓库：<a href="https://github.com/lettier/3d-game-shaders-for-beginners" rel="noopener">lettier/3d-game-shaders-for-beginners</a>。官方指南：<a href="https://lettier.github.io/3d-game-shaders-for-beginners/" rel="noopener">lettier.github.io/3d-game-shaders-for-beginners</a>。本页收录作者本人长文原文，并配独立中文导读。仓库中仅 <code>.cxx</code>、<code>.vert</code>、<code>.frag</code> 源码以 BSD 3-Clause 许可发布，文档、配图等其余部分作者未授权使用，故本页不转载 README、文档与官方演示画面。收录时核对仓库约 20,082 星、1,492 次分叉。文中「30 多套」、14 秒混剪的镜头说明，以及「一键生成」等均为原文自报。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+<p class="lede">Yarry 觉得，独立做 HD-2D、卡通渲染或复古像素风游戏时，真正卡住画面上限的，往往不是贴图细不细，而是屏幕空间后处理和表面着色器怎么叠在一起。他把 David Lettier 的开源教程《3D Game Shaders For Beginners》介绍给读者：用标准 GLSL 把一条条常用的表面光照和后处理通道拆开，配上推导和完整源码。仓库在收录时约有 20,082 星、1,492 次分叉。演示用的是 Panda3D。请注意，开放许可只覆盖源码文件，文档和配图并未授权转载。</p>
+
+<div class="notice"><strong>版权说明：</strong>本页为 Yarry（@aiiii498）X 长文的非官方中文导读，并收录作者原文，仅供阅读学习。长文版权归作者所有。仓库 <a href="https://github.com/lettier/3d-game-shaders-for-beginners" rel="noopener">lettier/3d-game-shaders-for-beginners</a> 中，仅 <code>.cxx</code>、<code>.vert</code>、<code>.frag</code> 源码以 BSD 3-Clause 许可发布（Copyright (c) 2019, David Lettier）；文档、配图及其他部分作者写明未授权使用，本页不转载 README、文档与官方演示画面。封面为 typographic 设计。原帖所附 14 秒视频见原文。</div>
+
+<figure>
+<img class="cover" src="images/cover.webp" width="1600" height="900" alt="浅米色字体封面：左侧是很大的衬线体「3D」，右侧写着 3D GAME SHADERS FOR BEGINNERS，中文标题「把游戏着色器，拆开讲清楚」，下列 Cel Shading、Outlining 等八项技术名。底部写着 YARRY、DAVID LETTIER、SOURCE CODE BSD-3。">
+<figcaption>本页字体封面。官方演示画面与教程配图未授权转载，请到原仓库和在线指南查看。</figcaption>
+</figure>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#chapters">仓库里有哪些章节</a></li>
+<li><a href="#license-note">许可</a></li>
+<li><a href="#related">相关阅读</a></li>
+<li><a href="#zh">长文原文</a></li>
+<li><a href="#license">附录：源码部分的 BSD 3-Clause 原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p>2026 年 11 月 27 日上午，Yarry（@aiiii498）在 X 发了一篇长文，推荐 David Lettier 在 2019 年开源的教程仓库 <a href="https://github.com/lettier/3d-game-shaders-for-beginners" rel="noopener">lettier/3d-game-shaders-for-beginners</a>。教程的英文名是《3D Game Shaders For Beginners》。作者在简介里写，这是一组着色技术，读者可以把学到的东西迁到自己使用的技术栈——Godot、Unity、Unreal，或其他环境。演示本身用 Panda3D 做胶水，着色器写成 GLSL。</p>
+<p>Yarry 的重点放在独立游戏的画面质感。他的原话是：最容易卡住美术上限的，「往往不是贴图精度，而是屏幕空间后处理与表面着色器的组合质感」。他觉得这套教程把常用的表面光照和屏幕空间 Pass 拆成了「手把手的数学推导与完整 GLSL 源码」，不绑在某一家商业引擎的黑盒上，因此迁到 Godot 4、Unity URP 或 WebGL「都非常顺滑」。后面这句是他的判断，不是仓库自己的承诺。</p>
+<p>他在帖里附了一段 14 秒视频，并写明是按 1:1 从官方在线指南的实机渲染对比里剪出来的，画面致谢原作者。本页没有转载这段视频。他随后回帖，列出了仓库、在线指南和一份技术名单。</p>
+<p>收录当天，GitHub 仓库页显示约 20,082 星、1,492 次分叉。原帖写的是 20,078 星、1,492 次分叉，星数会随时间变化。仓库创建于 2019 年 5 月 12 日；当前默认分支上能看到的最近一次提交，日期是 2021 年 8 月 29 日。</p>
+
+<h2 id="chapters">仓库里有哪些章节</h2>
+<p>仓库的章节目录共 33 篇。前面 8 篇讲环境搭建、坐标系、GLSL、渲染到纹理、贴图和光照基础；从 Blinn-Phong 到伽马校正的 25 篇，是一条条具体的表面光照与屏幕空间技术。原帖写「30 多套」，是作者的概括。</p>
+<p>下面这 25 篇技术章节的英文名取自仓库目录，中文是本页的对照，不是教程正文的翻译。</p>
+<table>
+<thead>
+<tr><th>章节</th><th>中文对照</th><th>章节</th><th>中文对照</th></tr>
+</thead>
+<tbody>
+<tr><td>Blinn-Phong</td><td>Blinn-Phong 光照</td><td>Screen Space Reflection</td><td>屏幕空间反射</td></tr>
+<tr><td>Fresnel Factor</td><td>菲涅尔因子</td><td>Screen Space Refraction</td><td>屏幕空间折射</td></tr>
+<tr><td>Rim Lighting</td><td>边缘光</td><td>Foam</td><td>泡沫</td></tr>
+<tr><td>Cel Shading</td><td>卡通着色</td><td>Flow Mapping</td><td>流向图</td></tr>
+<tr><td>Normal Mapping</td><td>法线贴图</td><td>Outlining</td><td>描边</td></tr>
+<tr><td>Deferred Rendering</td><td>延迟渲染</td><td>Depth Of Field</td><td>景深</td></tr>
+<tr><td>Fog</td><td>雾</td><td>Posterization</td><td>色调分离</td></tr>
+<tr><td>Blur</td><td>模糊</td><td>Pixelization</td><td>像素化</td></tr>
+<tr><td>Bloom</td><td>泛光</td><td>Sharpen</td><td>锐化</td></tr>
+<tr><td>SSAO</td><td>屏幕空间环境光遮蔽</td><td>Dilation</td><td>膨胀</td></tr>
+<tr><td>Motion Blur</td><td>运动模糊</td><td>Film Grain</td><td>胶片颗粒</td></tr>
+<tr><td>Chromatic Aberration</td><td>色差</td><td>Lookup Table (LUT)</td><td>调色查找表</td></tr>
+<tr><td>Gamma Correction</td><td>伽马校正</td><td></td><td></td></tr>
+</tbody>
+</table>
+<p>官方交互式图文教程在 <a href="https://lettier.github.io/3d-game-shaders-for-beginners/" rel="noopener">lettier.github.io/3d-game-shaders-for-beginners</a>。Yarry 还附了一段给 Claude Code 或 Codex 的提示词，让代理参照这套 GLSL，在 Godot 4 里写一套可挂载的卡通像素风材质和后处理。他说「就能一键生成」，这是原文的说法，本页没有复现。</p>
+
+<h2 id="license-note">许可</h2>
+<p>仓库 README 的 License 一节写明：所附许可证只适用于软件部分，具体是 <code>.cxx</code>、<code>.vert</code> 和 <code>.frag</code> 源码文件；「No other portion of 3D Game Shaders For Beginners has been licensed for use.」演示目录里的两份 LICENSE 文本均为 BSD 3-Clause License，版权行是 <code>Copyright (c) 2019, David Lettier</code>。因此，源码可以按 BSD 3-Clause 使用；教程正文、配图、字体和演示画面并不在该许可范围内。本页只做导读，并收录 Yarry 自己的长文；不转载 README 全文、章节正文，也不使用官方图片。附录仅收录源码部分的许可证原文。</p>
+
+<h2 id="related">相关阅读</h2>
+<ul>
+<li><a href="../dylantarre-animation-principles/">「动画十二法则」：把迪士尼的手艺写成 144 份技能</a>——同样是把一项老手艺拆开，写成可以对照着学的材料。</li>
+<li><a href="../mengto-cloud-pass/">「Cloud Pass」：用鱼眼和视差做出的无尽摩托骑行</a>——浏览器里的镜头和后处理气味，三条开源技能可直接阅读。</li>
+<li><a href="../humpalumps-ultra-water/">Ultra Water：在浏览器里算出一片海</a>——另一种把水面效果写成可运行代码的路子。</li>
+<li><a href="../patch-gg-pixelfx/">pixelfx：232 个代码像素特效</a>——偏像素风的后处理与特效集合。</li>
+<li><a href="../kevintngo-procedural-rpg/">「Brushwild」：用圆珠笔和彩铅画出的开放世界 RPG</a>——同样面向独立游戏画面，走的是程序化画风，不是着色器教程。</li>
+<li><a href="../nyxera-blueprint/">「Blueprint」：把一张草图建成可以走进去的房子</a>——把参考交给 Claude Code，在三维里一件一件搭起来。</li>
+</ul>
+
+<h2 id="zh">长文原文</h2>
+<p class="source">作者 Yarry（@aiiii498）· 2026-11-27 11:38（新加坡时间，UTC+8）· 原文已是中文，此处按段落整理，提示词里的短链接已还原为仓库和指南地址。</p>
+
+<p>⚡ 独立做 HD-2D、卡通渲染或复古像素风游戏时，最容易卡住美术上限的往往不是贴图精度，而是屏幕空间后处理与表面着色器的组合质感。GitHub 上拿下 20,078 Star 的开源着色器实战宝典 3D Game Shaders For Beginners（作者 David Lettier），把 30 多套工业级游戏最常用的表面光照与屏幕空间 Pass 拆成了手把手的数学推导与完整 GLSL 源码，无论你做 2D 像素后处理还是 3D 风格化场景都能直接抄作业。</p>
+
+<p>🎞️ 上面的 14 秒 1:1 实测混剪全部取自官方在线指南的实机渲染对比演示：</p>
+<ul>
+<li>0.0s–5.0s 九宫格同屏展示岸线水花泡沫（Foam）、色阶色调分离（Posterization）、形态学膨胀（Dilation）、镜头色差（Chromatic Aberration）、屏幕像素化采样（Pixelization）、三阶卡通色带光照（Cel Shading）、切线空间法线贴图（Normal Mapping）、深度大气雾（Fog）以及高光泛光（Bloom）。</li>
+<li>5.0s–8.0s 四宫格近景特写聚焦散景景深变焦（Bokeh Depth of Field）、屏幕空间水体折射（Screen Space Refraction）、屏幕空间水面反射（SSR）与深度法线双重边缘墨线勾边（Outlining）。</li>
+<li>8.0s–14.0s 五段全屏快切依次呈现 UV 流向图驱动的瀑布湍流（Flow Mapping）、完整多通道风格化水车村落总览、动态焦点切换、水轮浪花深度交界泡沫以及自适应对比度锐化（Sharpen）。</li>
+</ul>
+
+<p>🛠️ 这套仓库对独立开发者最实用的一点，是它完全不依赖特定商业引擎黑盒，而是用标准 GLSL 讲透每个渲染通道的输入输出与参数边界。从基础的 Blinn-Phong、菲涅尔边缘光（Fresnel &amp; Rim Lighting）、调色查找表（LUT）到进阶的屏幕空间环境光遮蔽（SSAO）与延迟渲染管线（Deferred Rendering），每一章都配有直观的几何向量示意图和逐行注释的顶点/片元着色器代码，移植到 Godot 4（.gdshader）、Unity URP 或 WebGL 都非常顺滑。</p>
+
+<p>🤖 把它接入 Claude Code 或 Codex 的自动化渲染移植工作流也很直接，把下面这段提示词喂给 Agent 就能一键生成对应引擎的多通道风格化材质与后处理栈：</p>
+<blockquote>
+<p>请参考开源项目 <a href="https://github.com/lettier/3d-game-shaders-for-beginners" rel="noopener">https://github.com/lettier/3d-game-shaders-for-beginners</a> 与在线文档 <a href="https://lettier.github.io/3d-game-shaders-for-beginners/" rel="noopener">https://lettier.github.io/3d-game-shaders-for-beginners/</a> 中的 GLSL 实现，帮我在 Godot 4 中编写一套可直接挂载的卡通像素风多通道 Shader 组合：包含 3 阶阶梯漫反射 + 菲涅尔边缘高光的 Cel Shading 表面材质、基于深度与法线边缘检测的 Outlining 描边 Pass，以及带水岸深度交界泡沫与 UV Flow Mapping 的水面 Shader，并暴露调色盘 LUT、像素网格尺寸和泛光阈值 uniform 参数。</p>
+</blockquote>
+
+<p>🐈‍⬛ 实机演示画面引自 David Lettier 官方开源仓库与交互文档，特此致谢原作者。</p>
+
+<p>🔖 正在折腾独立游戏画面质感、HD-2D 光影或风格化 Shader 的朋友建议先收藏，调渲染管线和画面滤镜时随时能翻出来对照。</p>
+
+<p>他在随后的一条回复里补充了仓库和指南的入口，并再次列举了 Cel Shading、Outlining、Pixelization、Posterization、Flow Mapping、Water Foam、Bloom、SSR、SSAO、Depth of Field 等技术。该回复同样写有 20,078 Stars / 1,492 Forks，以及「30+ 套完整游戏着色器算法与 GLSL 实现」。</p>
+
+<h2 id="license">附录：源码部分的 BSD 3-Clause 原文</h2>
+<p>以下文本录自仓库 <code>demonstration/src/LICENSE</code> 与 <code>demonstration/shaders/LICENSE</code>，两份内容相同。它只适用于 <code>.cxx</code>、<code>.vert</code> 和 <code>.frag</code> 源码，不覆盖文档和配图。</p>
+<details><summary>展开 LICENSE</summary><pre><code>BSD 3-Clause License
+
+Copyright (c) 2019, David Lettier
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</code></pre></details>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：Yarry（<a href="https://x.com/aiiii498" rel="noopener">@aiiii498</a>）。本页为非官方中文导读，并收录作者长文原文，仅供阅读学习；长文版权归作者所有。仓库 <a href="https://github.com/lettier/3d-game-shaders-for-beginners" rel="noopener">lettier/3d-game-shaders-for-beginners</a> 中，仅 <code>.cxx</code>、<code>.vert</code>、<code>.frag</code> 源码以 BSD 3-Clause 许可发布（Copyright (c) 2019, David Lettier）；文档与配图未授权使用。封面为 typographic 设计。原文：<a href="https://x.com/aiiii498/status/2126158675329138965" rel="noopener">X 长文</a>。如需删除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://x.com/aiiii498/status/2126158675329138965" rel="noopener">x.com/aiiii498/status/2126158675329138965</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
