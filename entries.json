@@ -1,5 +1,20 @@
 [
   {
+    "slug": "nyxera-blueprint",
+    "title": "「Blueprint」：把一张草图建成可以走进去的房子",
+    "desc": "Nyxera 的 X 长文全文中译：把钢笔草图交给 Claude Code，按木匠的方式在 Blender 里用代码建成可以走进去的房子。仓库 Nyxera0x/blueprint 为 MIT（Copyright (c) 2026 Nyxera0x 与 whaleyxbt）。文中零件数、显卡与渲染耗时等均为原文自报。本页为长文全文中译 + README / SKILL.md 中译 + LICENSE 原文。",
+    "description": "一张钢笔草图，建成可以走进去的房子。仓库 MIT。长文全文中译 + README 中译。",
+    "source": "X · @Nyxera0x",
+    "date": "2026-11-24",
+    "type": "全文 + README 中译",
+    "subtitle": "How I Turn Any Sketch Into a 3D House You Can Walk Through · 长文全文中译 + README 中译",
+    "original_url": "https://x.com/Nyxera0x/status/2125210356238762233",
+    "spine": "草图建成可走的房子",
+    "summary": "把一张草图，在 Blender 里建成可以走进去的房子",
+    "kind": "项目",
+    "by": "Nyxera"
+  },
+  {
     "slug": "mengto-cloud-pass",
     "title": "「Cloud Pass」：用鱼眼和视差做出的无尽摩托骑行",
     "desc": "Meng To 用 Three.js 做的无尽摩托骑行 Cloud Pass 导读：滚轮加宽镜头，近景退得快、远景几乎不动。作者写他用 GPT-6.2 Astra 做成，并把鱼眼、视差、粒子与天空三份技能开源。技能与所属仓库 MengTo/Skills 为 MIT（Copyright (c) 2026 Meng To）。本页为独立中文导读，附录为三份 SKILL.md 的全文中译、英文原文与 LICENSE 原文。封面裁自 ThreeUI 官方预览图。",
