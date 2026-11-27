@@ -1,5 +1,20 @@
 [
   {
+    "slug": "mengto-cloud-pass",
+    "title": "「Cloud Pass」：用鱼眼和视差做出的无尽摩托骑行",
+    "desc": "Meng To 用 Three.js 做的无尽摩托骑行 Cloud Pass 导读：滚轮加宽镜头，近景退得快、远景几乎不动。作者写他用 GPT-6.2 Astra 做成，并把鱼眼、视差、粒子与天空三份技能开源。技能与所属仓库 MengTo/Skills 为 MIT（Copyright (c) 2026 Meng To）。本页为独立中文导读，附录为三份 SKILL.md 的全文中译、英文原文与 LICENSE 原文。封面裁自 ThreeUI 官方预览图。",
+    "description": "一条可以在浏览器里一直骑下去的山路。鱼眼、视差、粒子与天空三份技能以 MIT 开源。",
+    "source": "X · @MengTo",
+    "date": "2026-11-27",
+    "type": "导读 + 技能中译",
+    "subtitle": "An endless three.js motorcycle ride · 导读 + 技能中译",
+    "original_url": "https://x.com/MengTo/status/2125995984400654658",
+    "spine": "无尽摩托骑行",
+    "summary": "用鱼眼和视差，在浏览器里骑过一条不会结束的山路",
+    "kind": "作品",
+    "by": "Meng To"
+  },
+  {
     "slug": "yaoderek-littlecity",
     "title": "「Little City」：浏览器里的手绘微缩小镇",
     "desc": "Derek Yao 的浏览器手绘城市建造游戏 Little City 导读：放下几个方块，它们会变成一座会生活的小镇；镇上没有美术文件，每一笔都由代码画成。可在电脑和手机浏览器免费玩，也可让它自己「长出小镇」。仓库 yaoderek/littlecity.io 为 MIT（Copyright (c) 2026 Derek Yao and contributors），README 同时署名 Nano-AI。导读 + README 全文中译 + LICENSE 原文。插图来自仓库官方截图。官方图鉴现列 102 种特殊建筑和事件，README 与介绍页仍写「80 多样」。",
