@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「OpenGame」：把本地编程智能体变成游戏工作室</title>
+<meta name="description" content="nexu-io/opengame（Apache-2.0）项目导读：OpenDesign 做的本地游戏工作室，把 Claude Code、Codex、DeepSeek 等接到 Game Studio 和 MCP 工具上，从 25 个可玩模板改出 3D 与小游戏。附录为官方简体中文 README、英文原文与根目录许可证。不转载模板封面、社区截图或人物图。仓库简介写「100+ 款游戏」，正文写 25 个内置模板，以正文目录为准。手册份数、质量与变现效果等均为原文自报。">
+<meta property="og:title" content="「OpenGame」：把本地编程智能体变成游戏工作室">
+<meta property="og:description" content="OpenDesign 的开源本地游戏工作室。导读 + 官方简体中文 README + 英文原文 + Apache-2.0 许可证。不转载第三方封面与社区截图。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + 官方中文 README</span><time datetime="2026-11-28">2026.11.28</time></p>
+<h1 class="za-title">「OpenGame」：把本地编程智能体变成游戏工作室</h1>
+<p class="za-sub" lang="en" data-za-gen>把本地编程智能体变成游戏工作室 · 项目导读 + 官方简体中文 README</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · nexu-io/opengame（Apache-2.0）</span><span>收录 · 2026-11-28</span><span><a href="https://github.com/nexu-io/opengame" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">项目：<a href="https://github.com/nexu-io/opengame">nexu-io/opengame</a> · 制作：OpenDesign（GitHub 组织 nexu-io） · 许可：根目录 <a href="https://github.com/nexu-io/opengame/blob/main/LICENSE">Apache License 2.0</a>（2026-11-28 现场核；附录版权行为占位符，未填写版权人）· Studio：<a href="https://github.com/nexu-io/opengame/blob/main/studio/LICENSE">Apache-2.0</a>，Copyright 2026 HeyGen, Inc. · 核对：2026-11-28（新加坡时间，UTC+8） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content"><figure>
+<img src="images/cover.webp" alt="OpenGame：把本地智能体变成游戏工作室。自制字体封面，左侧为数字 25。">
+<figcaption>封面为自制字体图。仓库里的游戏封面、宣传主图、社区作品截图和人物或角色图，本页都不转载。</figcaption>
+</figure>
+
+<p class="lede">OpenGame 是 OpenDesign（GitHub 组织 <a href="https://github.com/nexu-io">nexu-io</a>）做的一套本地游戏工作室。它把 Claude Code、Codex、DeepSeek Harness 这类编程智能体，接到本地的 Game Studio 和一组 MCP 工具上：你可以从一句话想法开始，也可以从仓库里的 25 个可玩模板出发，改画风、改题材，做成 HTML5 或 Three.js 的 3D 游戏，以及 9:16 竖屏小游戏。代码以 Apache-2.0 发布。仓库简介把自己称作「面向智能体的 Unity / Unreal」和「首个 Super Game Agent」，并写有「100+ 款可改的爆款游戏」——这些都是原文的自我表述；正文和模板目录写的是 25 个内置可玩模板。</p>
+
+<p>本页根目录代码按 Apache-2.0 转载官方简体中文 README、英文原文与许可证原文。Studio 目录许可证同为 Apache-2.0，版权行作 Copyright 2026 HeyGen, Inc.。第三方模板封面、社区作品截图、人物或角色图与品牌徽章均不转载。Higgsfield 手册、Three.js、KayKit 角色包以及致谢里的其他组件，各依其原许可。</p>
+
+<h2>这是什么</h2>
+<p>按官方 README 的说法，OpenGame 想解决的是一件很具体的事：让本地编程智能体不只写出一段能跑的代码，而是沿着「做游戏 → 校验 → 试玩 → 截封面 → 录预告片 → 放到本地目录」这条链路走完。游戏本身被写成可检查的工程：<code>index.html</code>、确定性的 <code>logic.js</code>、3D 项目内置 Three.js，再加上 <code>design/plan.md</code>、<code>design/style.md</code>、<code>design/assets.csv</code>、<code>design/verification.md</code> 这类设计文档。所谓 Remix，是在保留已经写好的操控和胜负规则的前提下，派生一份可编辑草稿；所谓 Re-style，是在不改物理和输赢循环的情况下换世界观、角色、画风和配乐。</p>
+<p>素材生成走的是「自备密钥」（BYOK）的模型网关，也可以完全用代码里的 Canvas、SVG、程序纹理和 Web Audio 来做，不调用外部模型。官方还提供可选的 OpenDesign Go 订阅，用来统一接入多家模型；其中的折扣和免费模型清单，均为原文自报，本页不作核对。</p>
+<p>仓库创建时间为 2026-11-25 18:35:45（新加坡时间，由仓库页记录换算）。2026-11-28 读取仓库首页时，星标计数为 2,320，关注者为 8。这些数字会变。</p>
+
+<h2>它和 OpenMotion 的关系</h2>
+<p>OpenGame 不是从零另起的一套编辑器。根目录 <code>package.json</code> 的 <code>name</code> 仍是 <code>openmotion</code>，版本是 <code>0.0.1</code>，并写明 Node.js <code>&gt;=22.18.0</code>；Hyperframes 及相关包钉在 0.9.7，与 OpenDesign 的 <a href="https://github.com/nexu-io/openmotion">OpenMotion</a> 相同。MCP 工具也沿用 <code>openmotion_game_*</code> 这个命名，官方的解释是为了让已有宿主和适配器继续兼容。Studio 目录的许可证与 OpenMotion 一样，是 Apache-2.0，版权行写着 Copyright 2026 HeyGen, Inc.。安装说明里还指向 OpenMotion 的旧版指南，作为兼容参考。</p>
+<p>可以把它看成 OpenMotion 在游戏方向上的展开：同一套本地工作室骨架，把「做片子」换成「做可玩游戏」。</p>
+
+<h2>25 个内置模板</h2>
+<p>官方正文写明内置 25 款可玩游戏，目录在 <code>templates/games/</code>。下面这张表按官方简体中文 README 的目录抄录，简介也来自原文。仓库首页 README 里出现的模板路径，与这 25 个名字一致。本页没有打开每个目录逐一试玩，也没有转载封面图。</p>
+<table>
+<thead>
+<tr><th>游戏</th><th>类型</th><th>画风</th><th>屏幕</th><th>简介（原文）</th><th>目录</th></tr>
+</thead>
+<tbody>
+<tr><td>弹弓攻城（Castle Crush）</td><td>休闲</td><td>动漫</td><td>9:16 竖屏</td><td>弹弓拉弓投石击倒木石城塔，每关三发共四关</td><td><code>templates/games/castle-crush/</code></td></tr>
+<tr><td>彗星守卫（Comet Guard）</td><td>射击</td><td>极简</td><td>16:9 横屏</td><td>驾驶拦截机击碎熔岩彗星，守护轨道空间站</td><td><code>templates/games/comet-guard/</code></td></tr>
+<tr><td>像素漂移冲刺（Drift Dash）</td><td>竞速</td><td>体素</td><td>9:16 竖屏</td><td>单手按住左右漂移，三圈击败三辆 AI 赛车</td><td><code>templates/games/drift-dash/</code></td></tr>
+<tr><td>草原军团（Gate Legion）</td><td>休闲</td><td>像素</td><td>9:16 竖屏</td><td>算术门军团倍增与终点决战</td><td><code>templates/games/gate-legion/</code></td></tr>
+<tr><td>符花庭园（Glyph Garden）</td><td>休闲</td><td>动漫</td><td>16:9 横屏</td><td>奇幻月光花园三消连击解谜</td><td><code>templates/games/glyph-garden/</code></td></tr>
+<tr><td>海港突击（Harbor Skirmish）</td><td>射击</td><td>3D</td><td>16:9 横屏</td><td>手绘风格 3D 第一人称海岛射击，带滑铲与抓钩</td><td><code>templates/games/harbor-skirmish/</code></td></tr>
+<tr><td>景阳冈（Jingyang Ridge）</td><td>休闲</td><td>动漫</td><td>16:9 横屏</td><td>水墨武松打虎 Boss 战：识破招式前摇、闪避反击</td><td><code>templates/games/jingyang-ridge/</code></td></tr>
+<tr><td>星港三线炮台（Lane Turret）</td><td>射击</td><td>像素</td><td>9:16 竖屏</td><td>三线炮台瞄准射击、收集卡牌坚守十波</td><td><code>templates/games/lane-turret/</code></td></tr>
+<tr><td>灯笼跳跃（Lantern Hop）</td><td>平台</td><td>像素</td><td>16:9 横屏</td><td>像素狐狸月夜屋檐无尽二段跳跑酷</td><td><code>templates/games/lantern-hop/</code></td></tr>
+<tr><td>最后的光（Last Light）</td><td>恐怖</td><td>极简</td><td>16:9 横屏</td><td>废弃校园手电筒寻钥逃生</td><td><code>templates/games/last-light/</code></td></tr>
+<tr><td>灯塔手记（Lighthouse Log）</td><td>视觉小说</td><td>动漫</td><td>16:9 横屏</td><td>七个暴风雨夜的燃料分配与电台道德抉择</td><td><code>templates/games/lighthouse-log/</code></td></tr>
+<tr><td>合成小烘焙（Merge Bakery）</td><td>休闲</td><td>动漫</td><td>9:16 竖屏</td><td>烘焙面团、拖拽合成点心并在限时内完成订单</td><td><code>templates/games/merge-bakery/</code></td></tr>
+<tr><td>霓虹漂移（Neon Drift）</td><td>竞速</td><td>3D</td><td>16:9 横屏</td><td>赛博霓虹雨夜高架车流穿梭与氮气加速</td><td><code>templates/games/neon-drift/</code></td></tr>
+<tr><td>夜行列车的信（Night Train Letters）</td><td>视觉小说</td><td>极简</td><td>16:9 横屏</td><td>雨夜海滨列车的温情分支文字冒险</td><td><code>templates/games/night-train/</code></td></tr>
+<tr><td>潜望深渊（Periscope Depth）</td><td>射击</td><td>极简</td><td>16:9 横屏</td><td>潜艇巡航：潜望镜发射鱼雷，下潜躲避声呐深水炸弹</td><td><code>templates/games/periscope-depth/</code></td></tr>
+<tr><td>熔金拔针（Pin Rescue）</td><td>休闲</td><td>极简</td><td>9:16 竖屏</td><td>拔针混合水火、避开岩浆赢取金币的五关解谜</td><td><code>templates/games/pin-rescue/</code></td></tr>
+<tr><td>屋顶咖啡（Rooftop Roast）</td><td>休闲</td><td>极简</td><td>16:9 横屏</td><td>可换品牌的门店营销小游戏（原文称改一个 SHOP 对象即可换皮）</td><td><code>templates/games/rooftop-roast/</code></td></tr>
+<tr><td>霓虹天际跑者（Sky Runner）</td><td>竞速</td><td>3D</td><td>9:16 竖屏</td><td>赛博 3D 悬浮滑板变道跑酷与吃币加速</td><td><code>templates/games/sky-runner/</code></td></tr>
+<tr><td>天际快递员（Skyline Courier）</td><td>平台</td><td>3D</td><td>16:9 横屏</td><td>3D 赛博楼顶蹬墙跳与 90 秒限时派送</td><td><code>templates/games/skyline-courier/</code></td></tr>
+<tr><td>史莱姆膨胀城（Slime Swell）</td><td>休闲</td><td>极简</td><td>9:16 竖屏</td><td>60 秒吞噬城市物品、击败三名对手史莱姆</td><td><code>templates/games/slime-swell/</code></td></tr>
+<tr><td>色环归位（Sort Stack）</td><td>休闲</td><td>极简</td><td>9:16 竖屏</td><td>同色圆环归柱解谜，支持撤销，挑战五关计时</td><td><code>templates/games/sort-stack/</code></td></tr>
+<tr><td>叠叠月（Stack the Moon）</td><td>休闲</td><td>极简</td><td>16:9 横屏</td><td>单指精准叠起月光天文台，连击完美落位</td><td><code>templates/games/stack-the-moon/</code></td></tr>
+<tr><td>星辉堡垒（Starlight Bastion）</td><td>射击</td><td>体素</td><td>16:9 横屏</td><td>五波体素敌人晶核防卫战，局间升级</td><td><code>templates/games/starlight-bastion/</code></td></tr>
+<tr><td>破潮者（Tidebreaker）</td><td>竞速</td><td>3D</td><td>16:9 横屏</td><td>风暴群岛 3D 快艇跳浪与限时过关竞速</td><td><code>templates/games/tidebreaker/</code></td></tr>
+<tr><td>倾斜神庙（Tilt Temple）</td><td>休闲</td><td>3D</td><td>9:16 竖屏</td><td>3D 悬浮迷宫拖动倾斜滚球，拿钥匙闯关</td><td><code>templates/games/tilt-temple/</code></td></tr>
+</tbody>
+</table>
+<p>横屏模板里既有快艇竞速、体素塔防、楼顶跑酷，也有视觉小说和恐怖逃生；竖屏模板则更靠近常见的休闲小游戏和试玩广告，例如算术门、拔针解谜、合成餐饮。官方把一部分竖屏模板标成可直接做 9:16 试玩广告的起点。这些玩法描述都来自模板目录文案，不是试玩记录。</p>
+
+<h2>怎么接到本地智能体</h2>
+<p>官方给出三条起步路径。一是把一段固定指令交给本地 Agent，让它按 <a href="https://github.com/nexu-io/opengame/blob/main/docs/opengame-setup.md">docs/opengame-setup.md</a> 完成接入，并打开 Game Studio 的模板库。二是用 Vercel 的 Skills CLI 安装主技能 <code>opengame</code>（它会引导到 <code>openmotion-game</code> 和一组工程手册）：</p>
+<pre><code>npx skills add https://github.com/nexu-io/opengame/tree/skills --skill opengame</code></pre>
+<p>三是从源码在本地启动 Studio。环境要求写的是 Git、Git LFS、npm，以及 Node.js 22.18+；同一段文字又写 CI 锁定 Node.js 26.11.1。这两处并存于官方文档，本页不作取舍。启动命令在官方 README 里是浅克隆仓库、跳过 LFS smudge、<code>npm ci</code>、<code>npm run build:studio</code>，然后 <code>npm start</code>。原文还说：首次试玩或 Remix 时才下载所选模板的素材，Tidebreaker 可离线试玩。这些运行效果均为原文自报。</p>
+<p>README 配图的说明文字列出了 22 个本地 Agent，与正文「22 个」一致；仓库简介则写作「20+」。名字如下（按原文顺序，未逐一验证接入）：WorkBuddy、Codex CLI、Claude Code、OpenCode、Hermes、Antigravity、Gemini CLI、Grok Build、Kimi CLI、Cursor Agent、Qwen Code、Qoder CLI、GitHub Copilot、Pi、Kiro CLI、Kilo、Mistral Vibe、DeepSeek TUI、Reasonix、Aider、Devin、Trae CLI。</p>
+<p>通用的本地 MCP 配置把服务器命名为 <code>openmotion</code>，用 Node 运行仓库里的 <code>mcp.ts</code>，并把 <code>MOTION_DATA_DIR</code> 指到仓库外面的数据目录，以免游戏、生成素材和密钥跟仓库更新混在一起。Claude Code、Codex、DeepSeek Harness、WorkBuddy 另有各自的接入说明，见 <a href="https://github.com/nexu-io/opengame/blob/main/docs/opengame-setup.md">接入指南</a>。</p>
+
+<h2>12 个游戏 MCP 工具</h2>
+<p>官方列出 12 个以 <code>openmotion_game_*</code> 开头的工具，下面按 README 表格抄录。本页没有实际调用这些工具。</p>
+<table>
+<thead>
+<tr><th>工具</th><th>作用（据原文）</th></tr>
+</thead>
+<tbody>
+<tr><td><code>openmotion_game_create</code></td><td>新建游戏草稿（2D、内置 Three.js 的 3D，或 9:16 试玩广告）并返回完整任务说明</td></tr>
+<tr><td><code>openmotion_game_get</code></td><td>读取游戏卡片、生命周期状态和文件清单</td></tr>
+<tr><td><code>openmotion_game_read_file</code></td><td>读取游戏工程里的源码或设计文件</td></tr>
+<tr><td><code>openmotion_game_write_files</code></td><td>批量写入源码和设计文件（原文：每个自有工程最多 100 个文本文件 / 8 MiB）</td></tr>
+<tr><td><code>openmotion_game_update_meta</code></td><td>合并标题、简介、操控说明、封面路径和本地化元数据</td></tr>
+<tr><td><code>openmotion_game_validate</code></td><td>检查 index.html、CDN 策略、确定性逻辑导出，并做 50 tick 冒烟测试</td></tr>
+<tr><td><code>openmotion_game_simulate</code></td><td>三档无头数值仿真（高手参考路径获胜、弱路径吃力、挂机路径失败）</td></tr>
+<tr><td><code>openmotion_game_playtest</code></td><td>用无头 Chrome 做真实键鼠触控试玩，并检查 390×844 布局与控制台</td></tr>
+<tr><td><code>openmotion_game_capture_cover</code></td><td>从游戏画布截取 1280×720 PNG 封面</td></tr>
+<tr><td><code>openmotion_game_trailer</code></td><td>录下无头实机片段，合成约 19 秒的可编辑 MP4 预告片</td></tr>
+<tr><td><code>openmotion_game_set_status</code></td><td>切换生命周期状态（building / ready / failed）</td></tr>
+<tr><td><code>openmotion_game_publish</code></td><td>再次校验后发布到本地 Game Studio 目录</td></tr>
+</tbody>
+</table>
+<p>此外还有 <code>openmotion_media_use</code>（查看已配置的 BYOK 模型）和 <code>openmotion_assets_use</code>（生成图片、音乐、语音、视频，以及一键发布网页）。官方又写有 18 份游戏工程手册；但 README 的手册表里，实际列出的文件名是 16 个，分别归在游戏设计、3C 与手感、画面与声音、试玩广告与质量门禁四组。本页按表格计为 16 份，没有另开技能目录做清点。</p>
+
+<h2>素材、校验和发布</h2>
+<p>模型网关把「关键插图、立绘、贴图」「背景音乐」「角色和旁白配音」「过场与运动镜头」「3D 场景」分开配置。原文推荐的模型包括 GPT Image 2.6、Seedream 5.5 / 5.0 Flash、Nano Banana 2、FLUX、Codex Image、ElevenLabs Music v2、Suno v4、ElevenLabs v3、BytePlus TTS 2、Kokoro、Wan 2.7、Seedance 2.5 等；没有密钥时，则回退到程序生成的 Canvas / SVG、Web Audio 和 Three.js 几何。音效默认就在游戏代码里用 Web Audio 合成。这些模型能否按文档接通，本页没有实测。</p>
+<p>校验链路是原文着墨最多的部分之一：先做静态检查和 50 tick 冒烟测试，再跑三档确定性仿真，再用无头 Chrome 做真实输入试玩，最后截封面、录预告片。文中出现的「每 tick 少于 5 毫秒」「少于 2500 tick」「约 19 秒预告片」等数字，均为原文自报。</p>
+<p>发布方面，当前可用的路径是：发到本地 Studio 目录、导出可分享的网页包、打出单文件 9:16 试玩广告，以及导出可供人工封装的 HTML5 工程。微信小游戏、抖音小游戏、TikTok、小红书、itch.io、Poki、CrazyGames 的引导式上架，以及「一百个可赚钱的小游戏模板」、多模型对战游戏场，都写在路线图里，属于原文规划，本页没有核对进展。</p>
+
+<h2>技术栈</h2>
+<p>按 README 的源码地图和根目录 <code>package.json</code>，Studio 界面是 React 19、TypeScript 5.9、Vite 6、Tailwind CSS 4 和 Zustand；游戏运行与校验走 Node.js、原生 HTTP、Puppeteer Core / Chrome 和一套确定性仿真器；预告片合成会用到 FFmpeg。包管理清单里还能看到 GSAP 3.15.0、Hyperframes 0.9.7，以及用于小游戏封装的 <code>miniprogram-ci</code>。<code>package.json</code> 没有单独的 <code>license</code> 字段，许可以根目录 LICENSE 为准。</p>
+
+<h2>许可</h2>
+<p>2026-11-28 打开根目录 <a href="https://github.com/nexu-io/opengame/blob/main/LICENSE">LICENSE</a>，文本为标准 Apache License 2.0；附录版权行仍是 <code>Copyright [yyyy] [name of copyright owner]</code> 占位符，没有填写版权人。同一天打开 <a href="https://github.com/nexu-io/opengame/blob/main/studio/LICENSE">studio/LICENSE</a>，同为 Apache-2.0，文末版权行是 Copyright 2026 HeyGen, Inc.。</p>
+<p>仓库还附了几份第三方许可，需要和根目录代码分开看：</p>
+<ul>
+<li><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/LICENSE-HIGGSFIELD">skills/openmotion-game/LICENSE-HIGGSFIELD</a>：MIT，Copyright (c) 2026 Higgsfield AI。配套的 PROVENANCE 写明，部分游戏手册移植自 Higgsfield Websites handbook，另有若干篇是 OpenMotion 一侧后来自己写的。</li>
+<li><a href="https://github.com/nexu-io/opengame/blob/main/templates/game-kits/vendor/LICENSE-three.txt">templates/game-kits/vendor/LICENSE-three.txt</a>：Three.js 的 MIT 许可，Copyright © 2010-2024 three.js authors。</li>
+<li><a href="https://github.com/nexu-io/opengame/blob/main/templates/game-kits/characters/LICENSE-KayKit.txt">templates/game-kits/characters/LICENSE-KayKit.txt</a>：KayKit Adventurers Character Pack，Kay Lousberg，CC0。</li>
+</ul>
+<p>官方致谢里还提到 Cocos Creator / Cocos Engine、MCP SDK、Vercel Skills CLI、FFmpeg、GSAP、DiceBear 的 Micah 头像风格（CC BY 4.0）以及 Albert Sans、IBM Plex Mono、Instrument Serif（SIL OFL 1.1）等。其中 Cocos、MCP SDK 与 Skills CLI 的具体许可证，原文写的是 MIT 或「MIT / Apache-2.0」，本页没有再打开那些上游仓库核对。GSAP 在致谢里只出现名字，没有单独说明许可。社区展示墙里的游戏只外链到作者原帖，官方也写明不复制第三方源码；本页同样不转载那些截图。</p>
+<p>代码开源，不等于用它做出来的游戏、素材或调用的模型可以任意商用。密钥、平台上架和第三方素材，仍要看各自的条款。</p>
+
+<h2>原文里需要留意的地方</h2>
+<p>以下事项按仓库文档整理，不作为实测结论。</p>
+<ul>
+<li>仓库简介写「100+ 款可改的爆款游戏」，官方正文和模板目录写的是 25 个内置可玩模板。本页以正文目录为准。</li>
+<li>正文写有 18 份专业手册，README 表格列出的文件名是 16 个。本页按表格计，没有另做目录清点。</li>
+<li>仓库简介写「20+」个编程智能体，正文写 22 个，配图说明文字也正好列出 22 个名字。未逐一验证接入。</li>
+<li><code>package.json</code> 要求 Node.js 22.18+，安装说明又写 CI 锁定 26.11.1。两处并存，本页未打开工作流文件核对。</li>
+<li>「3A 级 3D 大作」「首个 Super Game Agent」、试玩广告和平台变现效果、校验耗时、Tidebreaker 可离线试玩、以及 OpenDesign Go 的促销与免费模型，均为原文自报。本页没有在本地跑通 Studio，也没有逐一试玩这 25 个模板。</li>
+<li>微信、抖音、TikTok 等上架路径，以及「一百个可赚钱模板」，写在路线图中，属于规划。</li>
+</ul>
+
+<h2>相关阅读</h2>
+<ul>
+<li><a href="https://breakdimbo.github.io/zh-blog-mirrors/nexu-io-openmotion/">OpenMotion：开源的动态影像工作室</a> — 同一制作方、同一套 Studio 骨架在影像方向上的项目。</li>
+<li><a href="https://github.com/nexu-io/open-design">nexu-io/open-design</a> — OpenDesign 主仓库。</li>
+<li><a href="https://github.com/heygen-com/hyperframes">HeyGen Hyperframes</a> — Studio 编辑与预告片合成的上游基础。</li>
+</ul>
+
+<h2>附录 A、官方简体中文 README</h2>
+<p>以下为 2026-11-28 自仓库 <a href="https://github.com/nexu-io/opengame/blob/main/README.zh-CN.md">README.zh-CN.md</a> 抄录的官方简体中文说明。宣传主图、模板封面、社区作品截图、贡献者头像墙和星标趋势图已去掉，只保留文字、表格与代码。文中的定位、数字、模型和促销信息，均为原文自报。</p>
+<div class="appendix official-readme">
+<p align="center"><span class="badge-text">OpenGame</span></p>
+
+<p align="center"><strong>首个 Super Game Agent —— 开源全栈 AI 游戏创作工作台</strong></p>
+
+<p align="center">
+  <span class="badge-text">OpenGame —— 首个 Super Game Agent。用你的 AI Agent 制作、一键复刻并发布 3D 与 9:16 可玩游戏。</span>
+</p>
+
+<p align="center">
+  <a href="https://github.com/nexu-io/opengame/blob/main/package.json"><span class="badge-text">Node.js 22.18+</span></a>
+  <a href="https://github.com/nexu-io/opengame/blob/main/LICENSE"><span class="badge-text">Apache 2.0 许可证</span></a>
+  <a href="https://github.com/nexu-io/open-design"><span class="badge-text">OpenDesign 出品</span></a>
+</p>
+
+<p align="center">
+  <a href="https://go.open-design.ai/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=opengame&amp;utm_content=readme_zh"><span class="badge-text">OpenDesign Go 模型订阅</span></a>
+  <a href="https://discord.com/invite/M7NnHS9gNa"><span class="badge-text">加入 OpenGame Discord 社区</span></a>
+  <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b6cs46dc-acb2-48ed-941d-c45642ead841"><span class="badge-text">加入 OpenGame 飞书群</span></a>
+  <a href="https://x.com/OpenDesignHQ"><span class="badge-text">OpenDesign 官方 X 账号 @OpenDesignHQ</span></a>
+  <a href="https://x.com/OpenDesignDevs"><span class="badge-text">OpenDesign 开发者 X 账号 @OpenDesignDevs</span></a>
+  <a href="https://www.youtube.com/channel/UChtshixMhvtgBWzoD9R_Qfg"><span class="badge-text">OpenDesign 的 YouTube 频道</span></a>
+</p>
+
+<p align="center"><a href="#quick-start">快速开始</a> · <a href="#agent-wall">支持的 Agent</a> · <a href="#showcase">可玩游戏模板</a> · <a href="#features">核心能力</a> · <a href="#publish-monetize">发布与变现</a> · <a href="#technical-guide">接入与 MCP</a> · <a href="#community">社区共建</a></p>
+
+<div align="center">
+
+[English](https://github.com/nexu-io/opengame/blob/main/README.md) · **简体中文** · [日本語](https://github.com/nexu-io/opengame/blob/main/README.ja.md)
+
+</div>
+
+<h1>认识 OpenGame</h1>
+<p>OpenGame 是<strong>首个开源全栈 Super Game Agent</strong>——把 <strong>DeepSeek（DSH）</strong>、<strong>Claude Code</strong>、<strong>Codex</strong> 或任意本地编程 Agent 变成一座开源 AI 版虚幻引擎 / Unity 与全栈游戏工作台，从一句话创意出发，既能打造 <strong>3A 级 3D 大作</strong>，也能跑通 <strong>爆款小游戏上架变现</strong> 全链路。</p>
+<ul>
+<li>🚀 <strong>用你的 Agent 打造 3A 级大作。</strong> 直接用 <strong>DeepSeek（DSH）</strong>、<strong>Claude</strong>、<strong>Codex</strong>、<strong>Gemini</strong> 驱动代码、3D 场景、美术、配乐与配音全栈生产——从一句话想法到可玩的 3D 动作、竞速与大世界体验。</li>
+<li>🎮 <strong>一键复刻 &amp; 风格化任何游戏。</strong> 内置 <strong>25 款可玩游戏模板</strong>（3D、体素、像素、动漫及 9:16 爆款小游戏 / 试玩广告），源码与设计文档全开放；保留成熟核心玩法，几分钟完成换皮与画风重构。</li>
+<li>💰 <strong>做能赚钱的游戏：制作 → 验证 → 上架变现。</strong> 自动完成规则校验、仿真试玩、封面截图与实机预告片；一键生成在线试玩链接或单文件 <strong>9:16 试玩广告</strong>，并打通 <strong>微信小游戏 / 抖音 / TikTok</strong> 等平台上架变现路径。</li>
+<li>🔓 <strong>全栈开源（BYOA + BYOK）。</strong> 代码、美术、视频、音乐、配音与 Three.js 3D 全部开源，支持接入你常用的 <a href="#agent-wall">本地 Agent</a> 与自有 API Key，也可一键连接 <a href="https://go.open-design.ai/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=opengame&amp;utm_content=readme_zh">OpenDesign Go</a>（黑五期间享最低折扣，<strong>DeepSeek V4.1 Flash</strong>、<strong>Seedream</strong> 等模型免费用）。</li>
+</ul>
+<p><a id="quick-start"></a> <a id="快速开始"></a></p>
+<h2>⚡ 快速开始</h2>
+<h3>1. 一句话交给你的本地 Agent</h3>
+<p>把下面这段指令发给 <strong>DeepSeek TUI / Harness</strong>、<strong>Claude Code</strong>、<strong>Codex</strong>、<strong>WorkBuddy</strong>、<strong>Cursor</strong>、<strong>Gemini CLI</strong> 或任意 <a href="#agent-wall">22 个本地 Agent</a>：</p>
+<pre><code class="language-text">请按 https://github.com/nexu-io/opengame/blob/main/docs/opengame-setup.md 把 OpenGame 接入当前 Agent，并打开 Game Studio 模板库。
+</code></pre>
+<h3>2. 通过 Skills CLI 安装 OpenGame 主 Skill</h3>
+<p>使用 <a href="https://github.com/vercel-labs/skills">Skills CLI</a> 安装 OpenGame 主入口 Skill（<code>opengame</code>，自动引导本地接入并路由到 <code>openmotion-game</code> 及 18 份涵盖 3C 手感、2D/3D 动画、试玩广告规范与质量门禁的工程手册）：</p>
+<pre><code class="language-sh">npx skills add https://github.com/nexu-io/opengame/tree/skills --skill opengame
+</code></pre>
+<blockquote>
+<p>Skills CLI 只安装工作流指引（也可按需单独安装 <code>--skill openmotion-game</code>）；请结合下方本地运行与 MCP 配置，让 Agent 能够直接调用 12 个 <code>openmotion_game_*</code> 工具并打开 Game Studio。</p>
+</blockquote>
+<h3>3. 从源码在本地启动 OpenGame Studio</h3>
+<p>环境要求：<strong>Git</strong>、<strong>Git LFS</strong>、<strong>npm</strong>、<strong>Node.js 22.18+</strong>（CI 锁定 Node.js 26.11.1）。启动后即可浏览模板目录，首次试玩或 Remix 时只下载所选模板的素材。Tidebreaker 可直接离线试玩。</p>
+<pre><code class="language-sh">git -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false clone --depth 1 --single-branch --branch main https://github.com/nexu-io/opengame.git
+cd opengame
+git lfs install --local --skip-smudge
+npm ci
+npm run build:studio
+npm start
+</code></pre>
+<p><a id="agent-wall"></a></p>
+<p><strong>支持 22 个本地 Agent（BYOA）</strong> · <a href="#choose-agent">选择你的 Agent</a></p>
+<p align="center"><a href="#choose-agent"><p class="img-note">原文此处是 22 个本地 Agent 的标识图。配图说明文字列出：WorkBuddy, Codex CLI, Claude Code, OpenCode, Hermes, Antigravity, Gemini CLI, Grok Build, Kimi CLI, Cursor Agent, Qwen Code, Qoder CLI, GitHub Copilot, Pi, Kiro CLI, Kilo, Mistral Vibe, DeepSeek TUI, Reasonix, Aider, Devin, Trae CLI。</p></a></p>
+
+<p><a id="showcase"></a></p>
+<h2>🕹️ 内置可玩游戏模板与示例</h2>
+<p>OpenGame 在 <a href="https://github.com/nexu-io/opengame"><code>templates/games/</code></a> 中内置了 <strong>25 款开箱即玩的完整游戏工程</strong>，全部包含 HTML5 / Three.js 源码、封面、操控说明与中英双语元数据。在 Game Studio 里可直接试玩，一键 <strong>Remix 复刻</strong>，或<strong>一键换画风 / 换题材 / 换角色</strong>做成属于你的游戏。</p>
+<h3>3D、体素与动作游戏（16:9 横屏）</h3>
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：破潮者 Tidebreaker — 3D 风暴群岛快艇竞速）</p><br>
+<strong>破潮者 · Tidebreaker</strong> · <code>3D · 竞速 · Three.js</code><br>
+驾驶快艇穿越风暴群岛，跃过浪尖、避开暗礁，在倒计时结束前冲过八个检查点。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码与 DESIGN.md →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：星辉堡垒 Starlight Bastion — 体素太空晶核防御射击）</p><br>
+<strong>星辉堡垒 · Starlight Bastion</strong> · <code>体素 · 射击 · 肉鸽升级</code><br>
+守护发光的星核，击退五波体素入侵者，每波结束后三选一强化技能。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码与 DESIGN.md →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：天际快递员 Skyline Courier — 3D 赛博高楼跑酷）</p><br>
+<strong>天际快递员 · Skyline Courier</strong> · <code>3D · 平台跑酷 · 赛博朋克</code><br>
+在雨夜霓虹摩天楼顶奔跑、二段跳与蹬墙飞跃，90 秒内送达最后三件包裹。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码与 DESIGN.md →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：霓虹漂移 Neon Drift — 3D 赛博夜路高架飙车）</p><br>
+<strong>霓虹漂移 · Neon Drift</strong> · <code>3D · 竞速 · 赛博霓虹</code><br>
+在雨后霓虹高架高速穿梭车流，极限擦车积攒氮气加速，刷新行驶距离纪录。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：彗星守卫 Comet Guard — 轨道空间站太空射击）</p><br>
+<strong>彗星守卫 · Comet Guard</strong> · <code>射击 · 太空防御</code><br>
+驾驶轨道拦截机在手绘星空中击碎熔岩彗星，守护发光空间站撑过递增波次。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：海港突击 Harbor Skirmish — 3D 第一人称海岛射击）</p><br>
+<strong>海港突击 · Harbor Skirmish</strong> · <code>3D FPS · 抓钩与滑铲</code><br>
+风格化 3D 第一人称海岛射击，支持二段跳、滑铲、冲刺与抓钩机动。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+</tr>
+</table>
+
+<h3>风格化、叙事与氛围游戏（16:9 横屏）</h3>
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：符花庭园 Glyph Garden — 二次元奇幻三消）</p><br>
+<strong>符花庭园 · Glyph Garden</strong> · <code>二次元 · 消除 · 奇幻</code><br>
+交换月光花瓣触发连锁绽放，在 24 步内冲刺 2,200 分唤醒失落的庭园。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：灯笼跳跃 Lantern Hop — 像素奇幻屋檐跑酷）</p><br>
+<strong>灯笼跳跃 · Lantern Hop</strong> · <code>像素 · 平台跑酷 · 东方奇幻</code><br>
+操控围着围巾的像素小狐狸跃过月夜飞檐，二段跳收集发光纸灯笼。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：灯塔手记 Lighthouse Log — 动漫风风暴生存叙事）</p><br>
+<strong>灯塔手记 · Lighthouse Log</strong> · <code>动漫 · 视觉小说 · 生存</code><br>
+在连续七个暴风雨夜守护海崖灯塔，分配最后燃料，在电台求救间做出抉择。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：最后的光 Last Light — 手电筒潜行恐怖逃生）</p><br>
+<strong>最后的光 · Last Light</strong> · <code>恐怖 · 氛围逃生</code><br>
+在手电熄灭前于废弃校园找齐三把钥匙，同时用光束压制紧追不舍的暗影。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：夜行列车的信 Night Train Letters — 互动分支叙事）</p><br>
+<strong>夜行列车的信 · Night Train Letters</strong> · <code>视觉小说 · 分支剧情</code><br>
+三封未寄出的信、一列驶向大海的雨夜列车，用纯 HTML 讲述细腻分支故事。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：叠叠月 Stack the Moon — 一键月光叠塔）</p><br>
+<strong>叠叠月 · Stack the Moon</strong> · <code>休闲 · 单指街机</code><br>
+在云海之上精准叠起月光天文台，连续完美落位修复塔身并冲入星空。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+</tr>
+</table>
+
+<h3>9:16 竖屏爆款小游戏与试玩广告模板</h3>
+<p>专为单手触屏、首帧即玩、高留存短局与<strong>小游戏 / 试玩广告商业变现</strong>打造：</p>
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：草原军团 Gate Legion — 9:16 算术门跑酷）</p><br>
+<strong>草原军团 · Gate Legion</strong> · <code>9:16 · 算术门军团跑酷</code><br>
+左右拖动选择 <code>+10</code> / <code>×2</code> 算术门壮大军团，在终点迎战敌军。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：熔金拔针 Pin Rescue — 9:16 拔针解谜）</p><br>
+<strong>熔金拔针 · Pin Rescue</strong> · <code>9:16 · 拔针物理解谜</code><br>
+拔出机关针混合水流与熔岩，化解陷阱并在五道关卡中顺利夺金。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：霓虹天际跑者 Sky Runner — 9:16 3D 滑板跑酷）</p><br>
+<strong>霓虹天际跑者 · Sky Runner</strong> · <code>9:16 · 3D 三道跑酷</code><br>
+切换赛道、拾取金币、躲避无人机，在不断加速的霓虹高空疾驰。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：史莱姆膨胀城 Slime Swell — 9:16 城市吞噬大作战）</p><br>
+<strong>史莱姆膨胀城 · Slime Swell</strong> · <code>9:16 · 吞噬成长 .io</code><br>
+吞噬比自己小的车辆与建筑，60 秒内体积超越三名竞争对手。<br>
+<a href="https://github.com/nexu-io/opengame">查看源码 →</a>
+</td>
+</tr>
+</table>
+
+<details>
+<summary><strong>展开查看全部 25 款内置可玩游戏模板</strong></summary>
+
+| 游戏名称 | 类型 | 画风 | 屏幕方向 | 简介 | 源码目录 |
+| --- | --- | --- | --- | --- | --- |
+| **弹弓攻城 (Castle Crush)** | 休闲 | 动漫 | 9:16 竖屏 | 弹弓拉弓投石击倒木石城塔，每关三发共四关 | [castle-crush](https://github.com/nexu-io/opengame) |
+| **彗星守卫 (Comet Guard)** | 射击 | 极简 | 16:9 横屏 | 驾驶拦截机击碎熔岩彗星，守护轨道空间站 | [comet-guard](https://github.com/nexu-io/opengame) |
+| **像素漂移冲刺 (Drift Dash)** | 竞速 | 体素 | 9:16 竖屏 | 单手按住左右漂移，三圈击败三辆 AI 赛车 | [drift-dash](https://github.com/nexu-io/opengame) |
+| **草原军团 (Gate Legion)** | 休闲 | 像素 | 9:16 竖屏 | 爆款算术门军团倍增与终点决战 | [gate-legion](https://github.com/nexu-io/opengame) |
+| **符花庭园 (Glyph Garden)** | 休闲 | 动漫 | 16:9 横屏 | 奇幻月光花园三消连击解谜 | [glyph-garden](https://github.com/nexu-io/opengame) |
+| **海港突击 (Harbor Skirmish)** | 射击 | 3D | 16:9 横屏 | 手绘风格 3D 第一人称海岛射击，带滑铲与抓钩 | [harbor-skirmish](https://github.com/nexu-io/opengame) |
+| **景阳冈 (Jingyang Ridge)** | 休闲 | 动漫 | 16:9 横屏 | 水墨武松打虎 Boss 战：识破招式前摇、闪避反击 | [jingyang-ridge](https://github.com/nexu-io/opengame) |
+| **星港三线炮台 (Lane Turret)** | 射击 | 像素 | 9:16 竖屏 | 三线炮台瞄准射击、收集卡牌坚守十波 | [lane-turret](https://github.com/nexu-io/opengame) |
+| **灯笼跳跃 (Lantern Hop)** | 平台 | 像素 | 16:9 横屏 | 像素狐狸月夜屋檐无尽二段跳跑酷 | [lantern-hop](https://github.com/nexu-io/opengame) |
+| **最后的光 (Last Light)** | 恐怖 | 极简 | 16:9 横屏 | 废弃校园手电筒寻钥逃生 | [last-light](https://github.com/nexu-io/opengame) |
+| **灯塔手记 (Lighthouse Log)** | 视觉小说 | 动漫 | 16:9 横屏 | 七个暴风雨夜的燃料分配与电台道德抉择 | [lighthouse-log](https://github.com/nexu-io/opengame) |
+| **合成小烘焙 (Merge Bakery)** | 休闲 | 动漫 | 9:16 竖屏 | 烘焙面团、拖拽合成点心并在 90 秒内完成订单 | [merge-bakery](https://github.com/nexu-io/opengame) |
+| **霓虹漂移 (Neon Drift)** | 竞速 | 3D | 16:9 横屏 | 赛博霓虹雨夜高架车流穿梭与氮气加速 | [neon-drift](https://github.com/nexu-io/opengame) |
+| **夜行列车的信 (Night Train Letters)** | 视觉小说 | 极简 | 16:9 横屏 | 雨夜海滨列车的温情分支文字冒险 | [night-train](https://github.com/nexu-io/opengame) |
+| **潜望深渊 (Periscope Depth)** | 射击 | 极简 | 16:9 横屏 | 潜艇巡航：潜望镜发射鱼雷，下潜躲避声呐深水炸弹 | [periscope-depth](https://github.com/nexu-io/opengame) |
+| **熔金拔针 (Pin Rescue)** | 休闲 | 极简 | 9:16 竖屏 | 拔针混合水火、避开岩浆赢取金币的五关解谜 | [pin-rescue](https://github.com/nexu-io/opengame) |
+| **屋顶咖啡 (Rooftop Roast)** | 休闲 | 极简 | 16:9 横屏 | 可一键换品牌的门店营销小游戏（修改一个 `SHOP` 对象即可换皮） | [rooftop-roast](https://github.com/nexu-io/opengame) |
+| **霓虹天际跑者 (Sky Runner)** | 竞速 | 3D | 9:16 竖屏 | 赛博 3D 悬浮滑板变道跑酷与吃币加速 | [sky-runner](https://github.com/nexu-io/opengame) |
+| **天际快递员 (Skyline Courier)** | 平台 | 3D | 16:9 横屏 | 3D 赛博楼顶蹬墙跳与 90 秒限时派送 | [skyline-courier](https://github.com/nexu-io/opengame) |
+| **史莱姆膨胀城 (Slime Swell)** | 休闲 | 极简 | 9:16 竖屏 | 60 秒吞噬城市物品、击败三名对手史莱姆 | [slime-swell](https://github.com/nexu-io/opengame) |
+| **色环归位 (Sort Stack)** | 休闲 | 极简 | 9:16 竖屏 | 同色圆环归柱解谜，支持撤销，挑战五关计时 | [sort-stack](https://github.com/nexu-io/opengame) |
+| **叠叠月 (Stack the Moon)** | 休闲 | 极简 | 16:9 横屏 | 单指精准叠起月光天文台，连击完美落位 | [stack-the-moon](https://github.com/nexu-io/opengame) |
+| **星辉堡垒 (Starlight Bastion)** | 射击 | 体素 | 16:9 横屏 | 五波体素敌人晶核防卫战 + 局间升级 | [starlight-bastion](https://github.com/nexu-io/opengame) |
+| **破潮者 (Tidebreaker)** | 竞速 | 3D | 16:9 横屏 | 风暴群岛 3D 快艇跳浪与限时过关竞速 | [tidebreaker](https://github.com/nexu-io/opengame) |
+| **倾斜神庙 (Tilt Temple)** | 休闲 | 3D | 9:16 竖屏 | 3D 悬浮迷宫拖动倾斜滚球，拿钥匙闯三关 | [tilt-temple](https://github.com/nexu-io/opengame) |
+
+</details>
+
+<p><a id="features"></a></p>
+<h2>✨ 核心能力</h2>
+<h3>1. 一键复刻与一键风格化 —— 游戏即开源工程代码</h3>
+<p>从空白提示词让大模型直接写出好玩、不崩的游戏门槛极高。OpenGame 把<strong>可验证的游戏工程骨架</strong>与<strong>题材、画风、角色和素材</strong>解耦：</p>
+<ul>
+<li><strong>每一款游戏都是清晰可编辑的源码</strong>：<code>index.html</code>、确定性核心逻辑 <code>logic.js</code>、3D 场景内置 Three.js，以及结构化设计文档（<code>design/plan.md</code>、<code>design/style.md</code>、<code>design/assets.csv</code>、<code>design/verification.md</code>）。</li>
+<li><strong>一键 Remix 复刻</strong>：在 Game Studio 点击任意模板的 <strong>Remix</strong>（或在 Agent 对话中指定模板），即可派生独立可编辑草稿，完整继承操控、数值配置表与自动化测试钩子。</li>
+<li><strong>一键 Re-style 风格化</strong>：保留已经验证过的物理手感与胜负循环，自由替换世界观、角色、美术风格与配乐——<strong>DeepSeek</strong> 等低成本模型也能稳定改出高质量成品；<strong>Claude Fable 5.2</strong>、<strong>Opus</strong>、<strong>Codex</strong>、<strong>Gemini</strong> 等顶级模型更可直接从零创作复杂 3D 游戏。</li>
+</ul>
+<p><strong>直接在 Agent 中试试这些提示词：</strong></p>
+<pre><code class="language-text"># 1. 一键复刻 + 换画风（极适合 DeepSeek 等高性价比模型快速出活）
+使用 openmotion-game 复刻「灯笼跳跃 (Lantern Hop)」模板，把它风格化为赛博雨夜猫咪跑酷：保留原有二段跳手感与计分循环，把狐狸和灯笼换成霓虹机械猫与全息电池，生成新的角色立绘和合成波 BGM，最后完成校验、无头试玩并截取新封面。
+</code></pre>
+<pre><code class="language-text"># 2. 制作可直接投放的 9:16 竖屏试玩广告 (Playable Ad)
+使用 openmotion-game 创建一个 9:16 竖屏试玩广告（playableAd: true），题材为中世纪塔防手游：首帧即玩并带手势引导、25 秒爽快波次战斗、结尾展示带 App Store / Google Play 转化按钮的结束页。完成 390x844 试玩验证并打包为单文件 HTML。
+</code></pre>
+<pre><code class="language-text"># 3. 从零制作 3D 原创游戏（适合 Claude Fable 5.2 / Opus / Codex / Gemini）
+使用 openmotion-game 从零制作一款 3D 国风武侠 Boss 决斗游戏（style: &quot;3d&quot;），场景设在黄昏迷雾竹崖，包含弹反判定、闪避无敌帧、体力管理与两阶段 Boss 战。运行三档仿真与无头浏览器试玩，截取 1280x720 封面并自动录制 19 秒实机预告片。
+</code></pre>
+<p><a id="model-wall"></a></p>
+<h3>2. 全栈多模态素材生成（BYOK）</h3>
+<p>一款完整的游戏离不开主视觉、角色立绘、3D 无缝贴图、背景音乐、角色配音和清脆音效。OpenGame 通过内置 <strong>Model Gateway</strong> 将多模态生成直接接入游戏工程，同时让 API Key 留在本地工作区，不写入游戏源码。</p>
+<p>
+  <p class="img-note">（原文插图未转载：GPT Image）</p>
+  <p class="img-note">（原文插图未转载：Seedream）</p>
+  <p class="img-note">（原文插图未转载：Nano Banana 2）</p>
+  <p class="img-note">（原文插图未转载：FLUX）</p>
+  <p class="img-note">（原文插图未转载：Codex Image）</p><br>
+  <p class="img-note">（原文插图未转载：Seedance）</p>
+  <p class="img-note">（原文插图未转载：Wan）</p>
+  <p class="img-note">（原文插图未转载：Suno）</p>
+  <p class="img-note">（原文插图未转载：ElevenLabs）</p>
+  <p class="img-note">（原文插图未转载：BytePlus Voice）</p>
+</p>
+
+<table>
+<thead>
+<tr>
+<th>游戏素材层</th>
+<th>推荐模型（在 Model Settings 配置后自动发现）</th>
+<th>零 Key / 代码内建降级方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>🖼️ 主视觉、角色立绘、精灵与贴图</strong></td>
+<td><code>GPT Image 2.6</code>（支持参考改图与透明底）、<code>Seedream 5.5</code> / <code>5.0 Flash</code>、<code>Nano Banana 2</code>、<code>FLUX</code>、<code>Codex Image</code></td>
+<td>高质量 Canvas / SVG 程序化绘制与程序纹理</td>
+</tr>
+<tr>
+<td><strong>🎵 背景音乐（菜单 / 关卡 / Boss 战）</strong></td>
+<td><code>ElevenLabs Music v2</code>（<code>no vocals</code> 纯音乐循环）、<code>Suno v4</code></td>
+<td>Web Audio API 实时合成配乐循环</td>
+</tr>
+<tr>
+<td><strong>🎙️ 角色语音与旁白播报</strong></td>
+<td><code>ElevenLabs v3</code>（多语种）、<code>BytePlus TTS 2</code>（中文语音）、<code>Kokoro</code></td>
+<td>风格化剧情字幕与对话框</td>
+</tr>
+<tr>
+<td><strong>🎬 开场过场与动效片段</strong></td>
+<td><code>Wan 2.7</code>、<code>Seedance 2.5</code>（短时 I2V 动画片段）</td>
+<td>引擎内实时运镜与开场动画</td>
+</tr>
+<tr>
+<td><strong>🔊 打击、跳跃、金币与 UI 音效</strong></td>
+<td>直接在游戏代码中通过 Web Audio API 实时合成</td>
+<td>同左（零延迟、零外链资源）</td>
+</tr>
+<tr>
+<td><strong>🧊 3D 场景与模型</strong></td>
+<td>内置 <strong>Three.js</strong> + CC0 套件 + 3D 网关预留槽位（接入即自动发现）</td>
+<td>Three.js 程序化建模、光照与着色器</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>本地开源创作栈本身完全免费，不收软件订阅费。你可以在 <strong>Model Settings</strong> 填入自有供应商 Key、接入 <a href="https://go.open-design.ai/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=opengame&amp;utm_content=readme_zh">OpenDesign Go</a> 统一订阅，或完全使用纯代码零成本方案生成游戏。<a href="https://github.com/nexu-io/opengame/blob/main/gateway/catalog.ts">模型目录</a> · <a href="https://github.com/nexu-io/opengame/blob/main/docs/model-gateway.md">供应商配置指南</a></p>
+</blockquote>
+<h3>3. 自动化游戏 QA、三档数值仿真与自动预告片</h3>
+<p>不靠盲猜「代码大概能跑」——OpenGame 在交付可玩成品前内建完整自动化验证闭环：</p>
+<ol>
+<li><strong>静态规范与 50-Tick 逻辑冒烟 (<code>openmotion_game_validate</code>)</strong> —— 校验 <code>index.html</code>、资源策略与确定性核心导出，确保单帧逻辑 <code>&lt; 5 ms</code>。</li>
+<li><strong>三档无头数值仿真 (<code>openmotion_game_simulate</code>)</strong> —— 无需拉起浏览器即可自动验证：标准操作路线能达成真正胜利里程碑、弱操作路线会吃力受挫、挂机路线会在 <code>&lt; 2500</code> tick 内正常失败。</li>
+<li><strong>无头 Chrome 真操作试玩 (<code>openmotion_game_playtest</code>)</strong> —— 启动 1–4 个独立浏览器客户端执行真实键鼠/触屏脚本，核验 3C 操控手感、<code>390×844</code> 移动端适配、生成素材加载状态，以及控制台/网络零报错。</li>
+<li><strong>纯画布高清封面截取 (<code>openmotion_game_capture_cover</code>)</strong> —— 在隔离的无头 Chrome 中自动截取 <code>1280×720</code> 游戏画布 PNG 到 <code>assets/cover.png</code>。</li>
+<li><strong>自动实机预告片 (<code>openmotion_game_trailer</code>)</strong> —— 自动录制 3 段 5 秒 <code>1280×720</code> 实机片段，合成约 19 秒带封面与「立即游玩」尾板的可编辑视频工程并渲染为 MP4，直接用于社媒宣发。</li>
+</ol>
+<p><a id="publish-monetize"></a></p>
+<h2>🚀 端到端分发与变现路径</h2>
+<p>让做出来的游戏不止停留在本地——能玩、能分享、能上架、能赚钱。</p>
+<table>
+<thead>
+<tr>
+<th>环节</th>
+<th>当前已支持</th>
+<th>路线图（推进中）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>本地游玩与模板库</strong></td>
+<td>一键发布到本地 OpenGame Studio 游戏市场（<code>openmotion_game_publish</code>），支持游玩计数、收藏与一键 Remix</td>
+<td><strong>TOP 100 赚钱小游戏模板专栏</strong>，覆盖高变现玩法壳子，拿来即可复刻换皮</td>
+</tr>
+<tr>
+<td><strong>一键公网分享链接</strong></td>
+<td>登录后通过 OpenDesign Cloud（<code>openmotion_assets_use action="web_publish"</code>）自动重写本地素材路径、压缩资源并生成可分享的在线游玩 URL</td>
+<td>自定义域名与可嵌入试玩卡片</td>
+</tr>
+<tr>
+<td><strong>移动端试玩广告</strong></td>
+<td>内置 <strong>9:16 Playable Ad 模式</strong>（<code>playableAd: true</code>）：首帧即玩、手势引导、短关卡、单文件内联 HTML 与 App Store / Google Play 转化卡片</td>
+<td>主流广告平台一键打包预设（AppLovin / Unity Ads / Meta / TikTok）</td>
+</tr>
+<tr>
+<td><strong>小游戏平台上架与变现</strong></td>
+<td>干净自包含的 HTML5 / JS 工程源码 + 自动录制的实机宣传预告片，方便直接封装投稿与买量宣发</td>
+<td><strong>L1–L4 分级平台上架引导页面与打包 Skill</strong>：覆盖<strong>微信小游戏</strong>、<strong>抖音小游戏</strong>、<strong>TikTok</strong>、<strong>小红书小工具市场</strong>以及 <strong>itch.io / CrazyGames / Poki</strong></td>
+</tr>
+<tr>
+<td><strong>AI 模型游乐场</strong></td>
+<td>本地单人试玩与已有联机房间的自动入房测试</td>
+<td><strong>多模型实时游戏对战（AI Arena）</strong>——让多个大模型在游戏里同场实时博弈</td>
+</tr>
+</tbody>
+</table>
+<p><a id="technical-guide"></a></p>
+<h2>🛠️ 接入配置与 12 个游戏 MCP 工具</h2>
+<p><a id="agent-setup"></a> <a id="choose-agent"></a></p>
+<h3>接入你的本地 Agent</h3>
+<p>点击下方图标跳转对应配置，把本地 OpenGame MCP 服务与游戏 Skill 接入你的常用 Agent：</p>
+<p>
+  <a href="#deepseek-setup"><span class="badge-text">DeepSeek TUI / Harness</span></a>
+  <a href="#claude-setup"><span class="badge-text">Claude Code</span></a>
+  <a href="#codex-setup"><span class="badge-text">Codex CLI</span></a>
+  <a href="#workbuddy-setup"><span class="badge-text">WorkBuddy</span></a>
+  <a href="#manual-mcp"><span class="badge-text">OpenCode</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Hermes</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Antigravity</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Gemini CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Grok Build</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Kimi CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Cursor Agent</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Qwen Code</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Qoder CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">GitHub Copilot</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Pi</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Kiro CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Kilo</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Mistral Vibe</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Reasonix</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Aider</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Devin</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Trae CLI</span></a>
+</p>
+
+<ul>
+<li><a id="deepseek-setup"></a><strong>DeepSeek TUI / Harness</strong> · 安装 <code>openmotion-game</code> Skill，并通过 Cordis 配置连接本地 MCP 工具，或在仓库根目录运行 <code>node integrations/dsh/install.ts</code>。<a href="https://github.com/nexu-io/opengame/blob/main/docs/agent-adapters.md">DeepSeek Harness 配置指南</a></li>
+<li><a id="claude-setup"></a><strong>Claude Code</strong> · 添加下方 stdio MCP 配置并安装 <code>openmotion-game</code> Skill，然后执行 <code>/mcp</code> 确认连接就绪。</li>
+<li><a id="codex-setup"></a><strong>Codex CLI</strong> · 在仓库根目录运行 <code>bash scripts/install-motion.command</code>，自动完成本地插件与 MCP 注册。</li>
+<li><a id="workbuddy-setup"></a><strong>WorkBuddy</strong> · 导入 Connector 或将下方 <code>mcp.json</code> 添加为自定义 MCP 服务。<a href="https://github.com/nexu-io/opengame/blob/main/docs/agent-adapters.md">WorkBuddy 接入说明</a></li>
+</ul>
+<p><a id="manual-mcp"></a></p>
+<h4>通用手动 stdio MCP 配置（适用于所有支持 MCP 的客户端）</h4>
+<pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;openmotion&quot;: {
+      &quot;command&quot;: &quot;/absolute/path/to/node&quot;,
+      &quot;args&quot;: [&quot;--experimental-strip-types&quot;, &quot;/absolute/path/to/opengame/mcp.ts&quot;],
+      &quot;env&quot;: {
+        &quot;MOTION_DATA_DIR&quot;: &quot;/absolute/path/to/opengame-data&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>请将 <code>MOTION_DATA_DIR</code> 指向仓库目录之外的绝对路径，确保你的游戏工程、生成素材和 API 密钥与仓库更新完全隔离。完整接入细节见 <a href="https://github.com/nexu-io/opengame/blob/main/docs/opengame-setup.md">部署与配置指南</a> · <a href="https://github.com/nexu-io/opengame/blob/main/docs/opengame-architecture.md">系统架构说明</a>。</p>
+</blockquote>
+<h3>12 个游戏专用 MCP 工具</h3>
+<p>OpenGame 通过本地 stdio MCP 暴露完整的游戏开发与测试工具集（沿用 <code>openmotion_game_*</code> 命名空间，确保所有既有宿主与适配器无缝兼容）：</p>
+<table>
+<thead>
+<tr>
+<th>MCP 工具</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>openmotion_game_create</code></td>
+<td>创建新游戏草稿（支持 2D、内置 Three.js 的 3D，或 9:16 <code>playableAd</code> 试玩广告），返回完整 Agent 指令</td>
+</tr>
+<tr>
+<td><code>openmotion_game_get</code></td>
+<td>读取游戏卡片、当前生命周期状态与全部文件清单</td>
+</tr>
+<tr>
+<td><code>openmotion_game_read_file</code></td>
+<td>读取游戏工程内的任意源码或设计文档</td>
+</tr>
+<tr>
+<td><code>openmotion_game_write_files</code></td>
+<td>批量写入多个游戏源码与设计文件（单次最多 100 个文本文件 / 8 MiB）</td>
+</tr>
+<tr>
+<td><code>openmotion_game_update_meta</code></td>
+<td>合并更新标题、简介、操控说明、封面路径及多语言翻译（如 <code>zh-CN</code>）</td>
+</tr>
+<tr>
+<td><code>openmotion_game_validate</code></td>
+<td>校验 <code>index.html</code>、资源规范、确定性核心导出并执行 50-tick 逻辑冒烟测试</td>
+</tr>
+<tr>
+<td><code>openmotion_game_simulate</code></td>
+<td>无需浏览器运行三档有界确定性仿真（标准路线通关 / 弱操作受挫 / 挂机失败）</td>
+</tr>
+<tr>
+<td><code>openmotion_game_playtest</code></td>
+<td>启动隔离无头 Chrome（1–4 客户端）验证真实操控、390×844 竖屏布局及控制台无报错</td>
+</tr>
+<tr>
+<td><code>openmotion_game_capture_cover</code></td>
+<td>直接截取纯游戏画布的 <code>1280×720</code> 高清 PNG 保存到 <code>assets/cover.png</code></td>
+</tr>
+<tr>
+<td><code>openmotion_game_trailer</code></td>
+<td>后台录制真实玩法片段并合成导出约 19 秒可编辑 MP4 宣传预告片</td>
+</tr>
+<tr>
+<td><code>openmotion_game_set_status</code></td>
+<td>更新游戏构建状态（<code>building</code>、<code>ready</code>、<code>failed</code>）</td>
+</tr>
+<tr>
+<td><code>openmotion_game_publish</code></td>
+<td>重新校验并将游戏发布到本地 Game Studio 市场</td>
+</tr>
+</tbody>
+</table>
+<p>配合 <strong><code>openmotion_media_use</code></strong>（查询已配置的 BYOK 多模态模型）与 <strong><code>openmotion_assets_use</code></strong>（生成图/音/视素材并调用 <code>action: "web_publish"</code> 一键发布在线试玩链接）。<a href="https://github.com/nexu-io/opengame/blob/main/docs/mcp-phase1-tools.md">完整 MCP 工具契约</a></p>
+<h3>游戏工程 Skill 与 18 份专业手册</h3>
+<p>接入的 Agent 可直接读取 <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/SKILL.md"><code>skills/openmotion-game/SKILL.md</code></a>（或通过 MCP Resource 读取 <code>openmotion://workflow/game/start</code>）以及 18 份游戏工程参考文档：</p>
+<table>
+<thead>
+<tr>
+<th>领域</th>
+<th>参考手册</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>立项与玩法设计</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-brief.md">需求简报标准</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-genres.md">类型与核心循环</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-design-system.md">设计体系</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-lookup.md">参考拆解与盲区排查</a></td>
+</tr>
+<tr>
+<td><strong>3C 操控与打击感</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-3c-modules.md">3C 模块规范</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-feel-craft.md">手感与打磨细节</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-flow.md">完整制作流</a></td>
+</tr>
+<tr>
+<td><strong>美术、2D/3D 与音频</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-stylization.md">风格化指南</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-textures.md">贴图规范</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-2d-animation.md">2D 动画</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-3d-animation.md">3D 动画</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-procedural-animation.md">程序化动效</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-audio.md">音频与 Web Audio</a></td>
+</tr>
+<tr>
+<td><strong>试玩广告与质量门禁</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-playable-ad.md">试玩广告完整规范</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-gates.md">分级质量门禁</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/review-rubric.md">验收评分标准</a></td>
+</tr>
+</tbody>
+</table>
+<h3>技术栈与源码导航</h3>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>核心技术</th>
+<th>源码入口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenGame Studio 界面</strong></td>
+<td>React 19, TypeScript 5.9, Vite 6, Tailwind CSS 4, Zustand</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/studio/src/motion/game/GameStudio.tsx">GameStudio.tsx</a> · <a href="https://github.com/nexu-io/opengame/blob/main/studio/src/motion/game/gameCatalog.ts">gameCatalog.ts</a></td>
+</tr>
+<tr>
+<td><strong>游戏运行时与自动 QA</strong></td>
+<td>Node.js, 原生 HTTP, Puppeteer Core / Chrome, 确定性仿真器</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/game-projects.ts">game-projects.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/shared/game-contract.ts">shared/game-contract.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/server.ts">server.ts</a></td>
+</tr>
+<tr>
+<td><strong>MCP 与游戏 Skill</strong></td>
+<td>本地 stdio MCP 服务、<code>opengame</code> 主入口 Skill、<code>openmotion-game</code> 工作流及 18 份手册</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/mcp.ts">mcp.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/opengame/SKILL.md">skills/opengame/SKILL.md</a> · <a href="https://github.com/nexu-io/opengame">skills/openmotion-game/</a></td>
+</tr>
+<tr>
+<td><strong>多模态 Model Gateway</strong></td>
+<td>BYOK 模型发现、异步任务轮询、素材库与在线分享发布</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/gateway/service.ts">gateway/service.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/gateway/catalog.ts">gateway/catalog.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/docs/assets.md">docs/assets.md</a></td>
+</tr>
+<tr>
+<td><strong>内置游戏模板库</strong></td>
+<td>25 款独立可玩 HTML5 / Canvas / Three.js 工程与封面</td>
+<td><a href="https://github.com/nexu-io/opengame">templates/games/</a></td>
+</tr>
+<tr>
+<td><strong>实机预告片管线</strong></td>
+<td>无头实机录屏 + HTML 合成 + FFmpeg MP4 渲染</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/docs/usage.md">docs/usage.md</a> · <a href="https://github.com/nexu-io/opengame/blob/main/scripts/verify-export.ts">scripts/verify-export.ts</a></td>
+</tr>
+</tbody>
+</table>
+<p><a id="community"></a></p>
+<h2>🤝 一起共建 OpenGame</h2>
+<p>欢迎贡献可玩游戏模板、热门小游戏复刻壳子、美术风格指南、微信/抖音/TikTok/itch.io 等平台上架打包脚本，以及 Game Studio 体验优化。</p>
+<table>
+<thead>
+<tr>
+<th>贡献方向</th>
+<th>建议包含内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>可玩游戏模板</strong></td>
+<td>放在 <code>templates/games/&lt;id&gt;/</code> 下的完整独立目录，包含 <code>index.html</code>、<code>game.json</code>、<code>cover.webp</code> 与可选 <code>DESIGN.md</code></td>
+</tr>
+<tr>
+<td><strong>玩法与试玩广告配方</strong></td>
+<td>清晰的 3C 操控约定、数值平衡规则与验证说明</td>
+</tr>
+<tr>
+<td><strong>平台上架与打包适配器</strong></td>
+<td>面向微信小游戏、抖音小游戏、Web 门户的打包脚本与提交清单</td>
+</tr>
+<tr>
+<td><strong>Agent 与模型接入</strong></td>
+<td>更多本地 Agent 适配或 BYOK 多模态供应商集成</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://github.com/nexu-io/opengame/blob/main/CONTRIBUTING.zh-CN.md">贡献指南</a> · <a href="https://github.com/nexu-io/opengame/blob/main/AGENTS.md">仓库开发规范</a> · <a href="https://github.com/nexu-io/opengame/issues">提交 Issue</a></p>
+<p><a id="acknowledgements"></a></p>
+<h2>🙏 开源致谢与版权声明</h2>
+<p>OpenGame 的诞生离不开开源游戏、创作工具与 AI Agent 社区的共同积累。</p>
+<h3>深度借鉴与核心开源底座</h3>
+<table>
+<thead>
+<tr>
+<th>开源项目</th>
+<th>许可证</th>
+<th>借鉴与复用说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="https://github.com/higgsfield-ai/skills">Higgsfield AI Skills</a></strong></td>
+<td>MIT</td>
+<td><a href="https://github.com/nexu-io/opengame">skills/openmotion-game/</a> 中多份游戏美术与工程参考手册移植改编自该仓库（详见 <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/PROVENANCE.md">PROVENANCE.md</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/LICENSE-HIGGSFIELD">LICENSE-HIGGSFIELD</a>）</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/heygen-com/hyperframes">HeyGen Hyperframes</a></strong></td>
+<td>Apache-2.0</td>
+<td>Studio 编辑器前端底座（许可见 <a href="https://github.com/nexu-io/opengame/blob/main/studio/LICENSE">studio/LICENSE</a>）以及自动实机预告片合成与 MP4 渲染引擎</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/ZSeven-W/dsh-game-studio">DSH Game Studio</a></strong> &amp; <strong><a href="https://github.com/finiking/dsh-games">dsh-games</a></strong>（作者 <a href="https://x.com/FiniYang">@FiniYang</a>）</td>
+<td>开源</td>
+<td>深度启发并参考了基于 DeepSeek Harness（DSH）的 AI 原生游戏创作工作坊、自动试玩与可玩游戏墙理念</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/nexu-io/open-design">OpenDesign</a></strong> &amp; <strong><a href="https://github.com/nexu-io/openmotion">OpenMotion</a></strong></td>
+<td>Apache-2.0</td>
+<td>同源开源底座，复用设计系统、多模态 Model Gateway、工作区架构与 MCP 工具契约</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/mrdoob/three.js">Three.js</a></strong></td>
+<td>MIT</td>
+<td>内置离线 3D 渲染引擎与模型/骨骼加载模块，支撑 3D 模板与原创 3D 游戏（<a href="https://github.com/nexu-io/opengame/blob/main/templates/game-kits/vendor/LICENSE-three.txt">LICENSE-three.txt</a>）</td>
+</tr>
+<tr>
+<td><strong><a href="https://www.kaylousberg.com/">KayKit Adventurers Character Pack</a></strong>（作者 Kay Lousberg）</td>
+<td>CC0</td>
+<td>内置离线带骨骼动画 3D 角色包（Mage 与 Knight），位于 <a href="https://github.com/nexu-io/opengame">templates/game-kits/characters/</a>（<a href="https://github.com/nexu-io/opengame/blob/main/templates/game-kits/characters/LICENSE-KayKit.txt">LICENSE-KayKit.txt</a>）</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/cocos/cocos-engine">Cocos Creator / Cocos Engine</a></strong></td>
+<td>MIT</td>
+<td>支撑多款离线可玩小游戏模板的开源游戏引擎运行时</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/modelcontextprotocol/typescript-sdk">Model Context Protocol (MCP) SDK</a></strong> &amp; <strong><a href="https://github.com/vercel-labs/skills">Vercel Skills CLI</a></strong></td>
+<td>MIT / Apache-2.0</td>
+<td>支撑 22 个本地 AI Agent 标准化接入协议与轻量化 Skill 分发</td>
+</tr>
+</tbody>
+</table>
+<p>同时感谢支撑本项目的底层开源生态：<strong>Puppeteer &amp; Chrome for Testing</strong>、<strong>FFmpeg</strong>、<strong>Dockview</strong>、<strong>CodeMirror 6</strong>、<strong>Lexical</strong>、<strong>React</strong>、<strong>Vite</strong>、<strong>Tailwind CSS</strong>、<strong>Zustand</strong>、<strong>Electron</strong>、<strong>GSAP</strong>、<strong>DiceBear</strong>（Micah 头像风格，CC BY 4.0，<a href="https://github.com/nexu-io/opengame/blob/main/studio/skill-cover-attribution.md">归属说明</a>）及开源字体（<strong>Albert Sans</strong>、<strong>IBM Plex Mono</strong>、<strong>Instrument Serif</strong>，SIL OFL 1.1）。</p>
+<h3>社区游戏灵感与案例致谢</h3>
+<p>特别感谢以下在社区公开分享精彩 AI 游戏的创作者，我们在 Game Studio 灵感区以原帖外链形式致敬并展示他们的作品（点击任意图标直达原作者原帖）：</p>
+<p>
+  <a href="https://x.com/felixrieseberg/status/2119925633564463609" title="Saltline by @felixrieseberg"><span class="badge-text">Saltline (@felixrieseberg)</span></a>
+  <a href="https://x.com/Saccc_c/status/2109962425512734739" title="The Little Prince: Star Journey by @Saccc_c"><span class="badge-text">The Little Prince: Star Journey (@Saccc_c)</span></a>
+  <a href="https://x.com/Rubzem/status/2104253584737230926" title="Sky Reach by @jonesiller"><span class="badge-text">Sky Reach (@jonesiller)</span></a>
+  <a href="https://x.com/edwinarbus/status/2102463453176979794" title="Antikythera Dive by @edwinarbus"><span class="badge-text">Antikythera Dive (@edwinarbus)</span></a>
+  <a href="https://x.com/bridgemindai/status/2102451997395866021" title="Turbo Kart Rally by @bridgemindai"><span class="badge-text">Turbo Kart Rally (@bridgemindai)</span></a>
+  <a href="https://x.com/BubuStd/status/2102991290568954264" title="Voxel Musou by @BubuStd"><span class="badge-text">Voxel Musou (@BubuStd)</span></a>
+  <a href="https://x.com/ebbyamir/status/2120284261089673376" title="Starry Nightrider by @ebbyamir"><span class="badge-text">Starry Nightrider (@ebbyamir)</span></a>
+  <a href="https://x.com/ViktorKav/status/2122647483281015155" title="Uno com Escada by @ViktorKav"><span class="badge-text">Uno com Escada (@ViktorKav)</span></a>
+  <a href="https://x.com/kevin_t_ngo/status/2119868968307695818" title="What the Water Keeps by @kevin_t_ngo"><span class="badge-text">What the Water Keeps (@kevin_t_ngo)</span></a>
+  <a href="https://x.com/kevin_t_ngo/status/2120238844754923874" title="Evensong by @kevin_t_ngo"><span class="badge-text">Evensong (@kevin_t_ngo)</span></a>
+  <a href="https://x.com/mattshumer_/status/2119877065701036047" title="Mirror Earth by @mattshumer_"><span class="badge-text">Mirror Earth (@mattshumer_)</span></a>
+  <a href="https://x.com/photonstorm/status/2120330010112434313" title="Tennis (Go Wild) by @photonstorm"><span class="badge-text">Tennis (Go Wild) (@photonstorm)</span></a>
+  <a href="https://x.com/op7418/status/2120694045299327187" title="Mist-Locked Mountain Gate by @op7418"><span class="badge-text">Mist-Locked Mountain Gate (@op7418)</span></a>
+  <a href="https://x.com/__morse/status/2122013410309153042" title="omw: Castle Valley by @__morse"><span class="badge-text">omw: Castle Valley (@__morse)</span></a>
+  <a href="https://x.com/loktar00/status/2120192761542615271" title="LANTERNFALL by @loktar00"><span class="badge-text">LANTERNFALL (@loktar00)</span></a>
+  <a href="https://x.com/Andrew_Blumson/status/2120599812512833557" title="MAAD MAXXING by @Andrew_Blumson"><span class="badge-text">MAAD MAXXING (@Andrew_Blumson)</span></a>
+  <a href="https://x.com/kevin_t_ngo/status/2119900487688622171" title="Gilt &amp; Gutter by @kevin_t_ngo"><span class="badge-text">Gilt &amp; Gutter (@kevin_t_ngo)</span></a>
+  <a href="https://x.com/xikhar/status/2122682962647122403" title="Papertrails by @xikhar"><span class="badge-text">Papertrails (@xikhar)</span></a>
+  <a href="https://x.com/AravSrinivas/status/2122338465648103676" title="VICE '86 by @AravSrinivas"><span class="badge-text">VICE &#x27;86 (@AravSrinivas)</span></a>
+  <a href="https://x.com/FuSheng_0306/status/2121237878097207583" title="Starfall by @FuSheng_0306"><span class="badge-text">Starfall (@FuSheng_0306)</span></a>
+  <a href="https://x.com/aniketjart/status/2121793239175119279" title="Goku: Four-Star Road by @aniketjart"><span class="badge-text">Goku: Four-Star Road (@aniketjart)</span></a>
+  <a href="https://x.com/noclipepe/status/2119728047754547326" title="Rug Racers by @noclipepe"><span class="badge-text">Rug Racers (@noclipepe)</span></a>
+  <a href="https://x.com/noclipepe/status/2119927838321328577" title="Dino Run: Locked In by @noclipepe"><span class="badge-text">Dino Run: Locked In (@noclipepe)</span></a>
+  <a href="https://x.com/AravSrinivas/status/2122713692324384793" title="HADAL by @AravSrinivas"><span class="badge-text">HADAL (@AravSrinivas)</span></a>
+  <a href="https://x.com/emollick/status/2119876449494540554" title="I Would Have Gotten Away With It by @emollick"><span class="badge-text">I Would Have Gotten Away With It (@emollick)</span></a>
+  <a href="https://x.com/petergyang/status/2119901658394358005" title="Turbo Tails by @petergyang"><span class="badge-text">Turbo Tails (@petergyang)</span></a>
+</p>
+
+<blockquote>
+<p><strong>版权声明</strong>：上述社区作品仅作灵感展示与原页面跳转，不拷贝第三方源码，全部版权归原作者所有。如原作者希望调整署名、更新链接或移除展示，欢迎<a href="https://github.com/nexu-io/opengame/issues">提交 Issue</a>，我们将第一时间处理。</p>
+</blockquote>
+<h2>贡献者</h2>
+<p>感谢每一位参与共建的开发者与创作者——代码、游戏模板、Skill、文档、反馈与 Issue。</p>
+<p><a href="https://github.com/nexu-io/opengame/graphs/contributors"><br />
+<br />
+<p class="img-note">（原文此处为贡献者头像墙或星标趋势图，本页不转载。）</p></p>
+<p></a></p>
+<h2>Star History</h2>
+<p><a href="https://www.star-history.com/#nexu-io/opengame&amp;Date"></p>
+<pre><code>&lt;p class="img-note"&gt;（原文此处为贡献者头像墙或星标趋势图，本页不转载。）&lt;/p&gt;
+</code></pre>
+<p></a></p>
+</div>
+
+<h2>附录 B、README 英文原文</h2>
+<p>以下为同一天自仓库 <a href="https://github.com/nexu-io/opengame/blob/main/README.md">README.md</a> 抄录的英文原文，处理方式与附录 A 相同。</p>
+<div class="appendix official-readme">
+<p align="center"><span class="badge-text">OpenGame</span></p>
+
+<p align="center"><strong>The First Super Game Agent — Open-Source Full-Stack AI Game Studio</strong></p>
+
+<p align="center">
+  <span class="badge-text">OpenGame — The First Super Game Agent. Remix, re-style, test, and publish playable 3D, anime, pixel, and 9:16 mini-games from 25 built-in playable templates across 22 local AI agents.</span>
+</p>
+
+<p align="center">
+  <a href="https://github.com/nexu-io/opengame/blob/main/package.json"><span class="badge-text">Node.js 22.18+</span></a>
+  <a href="https://github.com/nexu-io/opengame/blob/main/LICENSE"><span class="badge-text">Apache 2.0 license</span></a>
+  <a href="https://github.com/nexu-io/open-design"><span class="badge-text">Built by OpenDesign</span></a>
+</p>
+
+<p align="center">
+  <a href="https://go.open-design.ai/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=opengame&amp;utm_content=readme_en"><span class="badge-text">OpenDesign Go model subscriptions</span></a>
+  <a href="https://discord.com/invite/M7NnHS9gNa"><span class="badge-text">Join the OpenGame Discord</span></a>
+  <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=b6cs46dc-acb2-48ed-941d-c45642ead841"><span class="badge-text">Join the OpenGame Feishu group</span></a>
+  <a href="https://x.com/OpenDesignHQ"><span class="badge-text">OpenDesign on X (@OpenDesignHQ)</span></a>
+  <a href="https://x.com/OpenDesignDevs"><span class="badge-text">OpenDesign Developers on X (@OpenDesignDevs)</span></a>
+  <a href="https://www.youtube.com/channel/UChtshixMhvtgBWzoD9R_Qfg"><span class="badge-text">OpenDesign on YouTube</span></a>
+</p>
+
+<p align="center"><a href="#quick-start">Quick Start</a> · <a href="#agent-wall">Agents</a> · <a href="#showcase">Playable Templates</a> · <a href="#features">Why OpenGame</a> · <a href="#publish-monetize">Publish &amp; Monetize</a> · <a href="#technical-guide">Setup &amp; MCP</a> · <a href="#community">Community</a></p>
+
+<div align="center">
+
+**English** · [简体中文](https://github.com/nexu-io/opengame/blob/main/README.zh-CN.md) · [日本語](https://github.com/nexu-io/opengame/blob/main/README.ja.md)
+
+</div>
+
+<h1>Introducing OpenGame</h1>
+<p>OpenGame is <strong>the first open-source Super Game Agent</strong> — turning <strong>DeepSeek (DSH)</strong>, <strong>Claude Code</strong>, <strong>Codex</strong>, or any of your local coding agents into an AI Unreal Engine / Unity and full-stack game studio. Go from a single idea to <strong>AAA-grade 3D worlds</strong> or <strong>monetization-ready viral mini-games</strong> in one end-to-end pipeline.</p>
+<ul>
+<li>🚀 <strong>Build AAA-Grade 3D Games with Your Agent.</strong> Drive full-stack 3D gameplay, art, music, and voice straight from <strong>DeepSeek (DSH)</strong>, <strong>Claude</strong>, <strong>Codex</strong>, or <strong>Gemini</strong> — from one prompt to playable 3D action, racing, and open-world games.</li>
+<li>🎮 <strong>One-Click Remix &amp; Re-style Any Game.</strong> Start from <strong>25 built-in playable templates</strong> (3D, voxel, anime, pixel &amp; 9:16 hits) with full editable source — keep proven mechanics while swapping characters, worlds, and art styles in minutes.</li>
+<li>💰 <strong>Build Games That Earn: Create → Verify → Monetize.</strong> Automated logic checks, balance simulation, headless playtesting, covers, and gameplay trailers — ship live web links, export single-file <strong>9:16 Playable Ads</strong>, and connect publishing paths for <strong>WeChat Mini Games</strong>, <strong>TikTok</strong>, and <strong>Douyin</strong>.</li>
+<li>🔓 <strong>Full-Stack Open Source (BYOA + BYOK).</strong> Code, art, video, music, voice, SFX, and Three.js 3D are all open source — plug in your favorite <a href="#agent-wall">local agent</a> and own API keys, or connect <a href="https://go.open-design.ai/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=opengame&amp;utm_content=readme_en">OpenDesign Go</a> (Black Friday lowest-ever discount, with free access to <strong>DeepSeek V4.1 Flash</strong>, <strong>Seedream</strong>, and more).</li>
+</ul>
+<p><a id="quick-start"></a> <a id="快速开始"></a></p>
+<h2>⚡ Quick Start</h2>
+<h3>1. Give one prompt to your local Agent</h3>
+<p>Paste this instruction into <strong>DeepSeek TUI / Harness</strong>, <strong>Claude Code</strong>, <strong>Codex</strong>, <strong>WorkBuddy</strong>, <strong>Cursor</strong>, <strong>Gemini CLI</strong>, or any of the <a href="#agent-wall">22 supported local agents</a>:</p>
+<pre><code class="language-text">Follow https://github.com/nexu-io/opengame/blob/main/docs/opengame-setup.md to connect OpenGame to this agent and open the Game Studio template gallery.
+</code></pre>
+<h3>2. Install the Main OpenGame Skill with Skills CLI</h3>
+<p>Install the main <code>opengame</code> entry Skill (which guides local setup and routes into <code>openmotion-game</code> + 18 game craft, 3C, animation, playable-ad, and QA reference handbooks) with the <a href="https://github.com/vercel-labs/skills">Skills CLI</a>:</p>
+<pre><code class="language-sh">npx skills add https://github.com/nexu-io/opengame/tree/skills --skill opengame
+</code></pre>
+<blockquote>
+<p>Installing the Skill copies the OpenGame entry instructions into your agent (you can also install <code>--skill openmotion-game</code> directly). Complete the local Studio &amp; MCP setup below so your agent can call the 12 <code>openmotion_game_*</code> tools and open Game Studio.</p>
+</blockquote>
+<h3>3. Run OpenGame Studio locally from source</h3>
+<p>Requires <strong>Git</strong>, <strong>Git LFS</strong>, <strong>npm</strong>, and <strong>Node.js 22.18+</strong> (CI pins Node.js 26.11.1). Browse the catalog immediately after startup. Playing or remixing a template downloads its assets on first use. Tidebreaker works offline.</p>
+<pre><code class="language-sh">git -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false clone --depth 1 --single-branch --branch main https://github.com/nexu-io/opengame.git
+cd opengame
+git lfs install --local --skip-smudge
+npm ci
+npm run build:studio
+npm start
+</code></pre>
+<p><a id="agent-wall"></a></p>
+<p><strong>Works with 22 local agents (BYOA)</strong> · <a href="#choose-agent">Choose your agent</a></p>
+<p align="center"><a href="#choose-agent"><p class="img-note">原文此处是 22 个本地 Agent 的标识图。配图说明文字列出：WorkBuddy, Codex CLI, Claude Code, OpenCode, Hermes, Antigravity, Gemini CLI, Grok Build, Kimi CLI, Cursor Agent, Qwen Code, Qoder CLI, GitHub Copilot, Pi, Kiro CLI, Kilo, Mistral Vibe, DeepSeek TUI, Reasonix, Aider, Devin, Trae CLI。</p></a></p>
+
+<p><a id="showcase"></a></p>
+<h2>🕹️ Playable Game Templates &amp; Showcase</h2>
+<p>OpenGame ships with <strong>25 ready-to-play games</strong> right inside <a href="https://github.com/nexu-io/opengame"><code>templates/games/</code></a> — complete with playable HTML5 / Three.js source, artwork, controls, and localization. Play them locally in Game Studio, <strong>Remix</strong> any title with one click, or <strong>Re-style</strong> it into your own IP, theme, or brand.</p>
+<h3>3D, Voxel &amp; Action Games (16:9)</h3>
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Tidebreaker — 3D storm archipelago speedboat racing）</p><br>
+<strong>Tidebreaker</strong> · <code>3D · Racing · Three.js</code><br>
+Race a speedboat through a storm-lashed archipelago, jump wave crests, dodge reefs, and beat the tide across eight checkpoints.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source &amp; DESIGN.md →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Starlight Bastion — Voxel space crystal wave shooter）</p><br>
+<strong>Starlight Bastion</strong> · <code>Voxel · Shooter · Upgrades</code><br>
+Defend a luminous crystal against five escalating waves of voxel invaders, choosing roguelite upgrades between waves.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source &amp; DESIGN.md →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Skyline Courier — 3D cyberpunk rooftop parkour platformer）</p><br>
+<strong>Skyline Courier</strong> · <code>3D · Platformer · Cyberpunk</code><br>
+Run, leap, and wall-kick across rain-soaked cyberpunk skyscrapers to deliver three final parcels in 90 seconds.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source &amp; DESIGN.md →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Neon Drift — 3D synthwave night highway racer）</p><br>
+<strong>Neon Drift</strong> · <code>3D · Racing · Cyberpunk</code><br>
+Weave through rain-slick neon highway traffic, chain near-misses to recharge boost, and chase a new distance record.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Comet Guard — Orbital defense space shooter）</p><br>
+<strong>Comet Guard</strong> · <code>Shooter · Space</code><br>
+Pilot an orbital interceptor in a painted starfield, shatter molten comets, and defend the station through escalating waves.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Harbor Skirmish — 3D first-person island shooter）</p><br>
+<strong>Harbor Skirmish</strong> · <code>3D FPS · Grapple &amp; Slide</code><br>
+A stylized 3D first-person shooter on a curved island with double-jump, slide, dash, and grappling-hook mobility.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+</tr>
+</table>
+
+<h3>Stylized, Narrative &amp; Atmospheric Games (16:9)</h3>
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Glyph Garden — Anime fantasy match-3 puzzle）</p><br>
+<strong>Glyph Garden</strong> · <code>Anime · Puzzle · Fantasy</code><br>
+Trade moonlit petals and trigger cascading combo blooms to reach 2,200 points in 24 moves.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Lantern Hop — Pixel fantasy rooftop platformer）</p><br>
+<strong>Lantern Hop</strong> · <code>Pixel · Platformer · Fantasy</code><br>
+Guide a scarf-wearing pixel fox across layered moonlit rooftops, double-jumping gaps and collecting glowing paper lanterns.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Lighthouse Log — Anime stormy-night narrative survival）</p><br>
+<strong>Lighthouse Log</strong> · <code>Anime · Visual novel · Survival</code><br>
+Keep a coastal lighthouse burning through seven stormy nights, rationing fuel and making impossible radio choices.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Last Light — Torch-beam horror escape）</p><br>
+<strong>Last Light</strong> · <code>Horror · Atmospheric</code><br>
+Search an abandoned school for three keys before your torch dies while keeping the pursuing shade pinned in your beam.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Night Train Letters — Interactive branching story）</p><br>
+<strong>Night Train Letters</strong> · <code>Visual novel · Branching Narrative</code><br>
+Three unsent letters on a rain-soaked night train to the sea — an intimate branching narrative built in pure HTML.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Stack the Moon — One-tap moonlit tower stacker）</p><br>
+<strong>Stack the Moon</strong> · <code>Casual · One-Tap Arcade</code><br>
+Build a moonlit observatory above the clouds one timed stone at a time; chain perfect landings to widen your tower.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+</tr>
+</table>
+
+<h3>Viral Portrait Mini-Games &amp; Playable Ads (9:16)</h3>
+<p>Built for mobile thumbs, instant first-frame engagement, short high-retention loops, and <strong>mini-game / playable-ad monetization</strong>:</p>
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Gate Legion — 9:16 arithmetic gate army runner）</p><br>
+<strong>Gate Legion</strong> · <code>9:16 · Gate Runner</code><br>
+Lead your squad through <code>+10</code> / <code>×2</code> arithmetic gates and clash with the final boss army.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Pin Rescue — 9:16 pull-the-pin puzzle）</p><br>
+<strong>Pin Rescue</strong> · <code>9:16 · Pull-the-Pin Puzzle</code><br>
+Pull pins to mix water and lava into stone, clear hazards, and deliver gold across five stages.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Sky Runner — 9:16 3D neon hoverboard runner）</p><br>
+<strong>Sky Runner</strong> · <code>9:16 · 3D Lane Runner</code><br>
+Swipe lanes, collect coins, dodge drones, and boost through an accelerating neon skyway.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+<td width="50%" valign="top">
+<p class="img-note">（原文此处为模板封面，本页不转载：Slime Swell — 9:16 city-eating arcade arena）</p><br>
+<strong>Slime Swell</strong> · <code>9:16 · Grow &amp; Devour .io</code><br>
+Swallow street objects, grow bigger than buildings, and outrank three rival slimes in 60 seconds.<br>
+<a href="https://github.com/nexu-io/opengame">Inspect source →</a>
+</td>
+</tr>
+</table>
+
+<details>
+<summary><strong>Browse all 25 built-in playable game templates</strong></summary>
+
+| Game | Genre | Style | Format | Summary | Source |
+| --- | --- | --- | --- | --- | --- |
+| **Castle Crush** | Casual | Anime | 9:16 Portrait | Slingshot physics siege across four timber-and-stone stages | [castle-crush](https://github.com/nexu-io/opengame) |
+| **Comet Guard** | Shooter | Minimal | 16:9 Landscape | Orbital interceptor defending a starfield station from molten comets | [comet-guard](https://github.com/nexu-io/opengame) |
+| **Drift Dash** | Racing | Voxel | 9:16 Portrait | One-thumb retro circuit drifting against three AI rivals | [drift-dash](https://github.com/nexu-io/opengame) |
+| **Gate Legion** | Casual | Pixel | 9:16 Portrait | Viral arithmetic-gate squad multiplier & boss clash | [gate-legion](https://github.com/nexu-io/opengame) |
+| **Glyph Garden** | Casual | Anime | 16:9 Landscape | Cascading fantasy match-3 bloom puzzle | [glyph-garden](https://github.com/nexu-io/opengame) |
+| **Harbor Skirmish** | Shooter | 3D | 16:9 Landscape | Stylized 3D FPS with double-jump, slide, dash, and grapple | [harbor-skirmish](https://github.com/nexu-io/opengame) |
+| **Jingyang Ridge** | Casual | Anime | 16:9 Landscape | Ink-wash martial arts boss duel — read tells, dodge lanes, punish | [jingyang-ridge](https://github.com/nexu-io/opengame) |
+| **Lane Turret** | Shooter | Pixel | 9:16 Portrait | Auto-turret wave defense with upgrade cards | [lane-turret](https://github.com/nexu-io/opengame) |
+| **Lantern Hop** | Platformer | Pixel | 16:9 Landscape | Moonlit rooftop fox endless double-jump runner | [lantern-hop](https://github.com/nexu-io/opengame) |
+| **Last Light** | Horror | Minimal | 16:9 Landscape | Flashlight survival escape through an abandoned school | [last-light](https://github.com/nexu-io/opengame) |
+| **Lighthouse Log** | Visual novel | Anime | 16:9 Landscape | Seven stormy nights of fuel rationing & branching radio choices | [lighthouse-log](https://github.com/nexu-io/opengame) |
+| **Merge Bakery** | Casual | Anime | 9:16 Portrait | Bake, merge pastries, and clear timed customer orders | [merge-bakery](https://github.com/nexu-io/opengame) |
+| **Neon Drift** | Racing | 3D | 16:9 Landscape | Rain-slick synthwave highway traffic weaving & boost | [neon-drift](https://github.com/nexu-io/opengame) |
+| **Night Train Letters** | Visual novel | Minimal | 16:9 Landscape | Intimate branching story of three unsent letters on a night train | [night-train](https://github.com/nexu-io/opengame) |
+| **Periscope Depth** | Shooter | Minimal | 16:9 Landscape | Submarine patrol: torpedo carriers on periscope, dodge sonar depth charges | [periscope-depth](https://github.com/nexu-io/opengame) |
+| **Pin Rescue** | Casual | Minimal | 9:16 Portrait | Pull-the-pin lava, water, and gold physics puzzles | [pin-rescue](https://github.com/nexu-io/opengame) |
+| **Rooftop Roast** | Casual | Minimal | 16:9 Landscape | Brandable café promo drone game — edit one `SHOP` object to rebrand | [rooftop-roast](https://github.com/nexu-io/opengame) |
+| **Sky Runner** | Racing | 3D | 9:16 Portrait | Cyberpunk 3D hoverboard lane runner with coins & boost | [sky-runner](https://github.com/nexu-io/opengame) |
+| **Skyline Courier** | Platformer | 3D | 16:9 Landscape | 3D rooftop parkour & wall-kicks against a 90-second timer | [skyline-courier](https://github.com/nexu-io/opengame) |
+| **Slime Swell** | Casual | Minimal | 9:16 Portrait | City-devouring growth arena against three rival slimes | [slime-swell](https://github.com/nexu-io/opengame) |
+| **Sort Stack** | Casual | Minimal | 9:16 Portrait | Five-stage ring-sorting logic puzzle with undo | [sort-stack](https://github.com/nexu-io/opengame) |
+| **Stack the Moon** | Casual | Minimal | 16:9 Landscape | One-tap moonlit observatory tower stacker | [stack-the-moon](https://github.com/nexu-io/opengame) |
+| **Starlight Bastion** | Shooter | Voxel | 16:9 Landscape | Five-wave crystal defense with roguelite upgrades | [starlight-bastion](https://github.com/nexu-io/opengame) |
+| **Tidebreaker** | Racing | 3D | 16:9 Landscape | Storm archipelago 3D speedboat racing & wave jumps | [tidebreaker](https://github.com/nexu-io/opengame) |
+| **Tilt Temple** | Casual | 3D | 9:16 Portrait | 3D floating labyrinth — tilt, collect the key, reach the portal | [tilt-temple](https://github.com/nexu-io/opengame) |
+
+</details>
+
+<p><a id="features"></a></p>
+<h2>✨ Why OpenGame</h2>
+<h3>1. One-Click Remix &amp; Re-style — Powered by Game-as-Code</h3>
+<p>Building a polished game from a blank prompt is hard for any model. OpenGame solves this by separating <strong>verified game engineering</strong> from <strong>theme, art direction, and content</strong>:</p>
+<ul>
+<li><strong>Every game is clean, inspectable source</strong>: <code>index.html</code>, deterministic <code>logic.js</code>, vendored Three.js for 3D titles, plus structured design docs (<code>design/plan.md</code>, <code>design/style.md</code>, <code>design/assets.csv</code>, <code>design/verification.md</code>).</li>
+<li><strong>Remix in one click</strong>: Click <strong>Remix</strong> on any of the 25 templates in Game Studio (or ask your agent to remix it) to fork an owned, editable draft with full controls, tuning knobs, and automated test hooks already wired up.</li>
+<li><strong>Re-style into any universe</strong>: Swap genre dressing, characters, palette, sprites, textures, and music without breaking physics or win/loss rules — ideal for fast iteration with affordable models like <strong>DeepSeek</strong>, or pushing AAA-grade 3D &amp; shader ambition with <strong>Claude Fable 5.2</strong>, <strong>Opus</strong>, <strong>Codex</strong>, and <strong>Gemini</strong>.</li>
+</ul>
+<p><strong>Try these prompts in your connected Agent:</strong></p>
+<pre><code class="language-text"># 1. One-click Remix &amp; Re-style (great for DeepSeek / fast models)
+Use openmotion-game to remix the &quot;Lantern Hop&quot; template into a cyberpunk rain-city cat runner. Keep the double-jump physics and endless scoring loop, replace the fox and lanterns with a neon cyber-cat and holo-batteries, generate new key art and synthwave BGM, then validate, playtest, and capture a fresh cover.
+</code></pre>
+<pre><code class="language-text"># 2. Build a 9:16 Playable Ad ready for mobile campaigns
+Use openmotion-game to create a portrait 9:16 playable ad (playableAd: true) for a medieval tower-defense mobile game: instant first-frame interaction with a hand tutorial, a 25-second escalating wave battle, and an end card with an App Store / Google Play CTA. Validate, simulate, playtest at 390x844, and bundle as a single-file HTML.
+</code></pre>
+<pre><code class="language-text"># 3. Original 3D Game from Scratch (great for Claude Fable 5.2 / Opus / Codex / Gemini)
+Use openmotion-game to create a 3D wuxia boss-duel game (style: &quot;3d&quot;) set on a misty bamboo cliff at dusk. Include parry timing, dodge i-frames, stamina management, and two boss phases. Run 3-tier simulation, headless Chromium playtest, capture a 1280x720 cover, and record a gameplay trailer.
+</code></pre>
+<p><a id="model-wall"></a></p>
+<h3>2. Full-Stack Multimodal Game Creation (BYOK)</h3>
+<p>A real game needs more than code — it needs key art, character sprites, seamless 3D textures, music loops, voice lines, and crisp sound effects. OpenGame's <strong>Model Gateway</strong> wires multimodal generation directly into the game project while keeping your API keys local and separate from game source.</p>
+<p>
+  <p class="img-note">（原文插图未转载：GPT Image）</p>
+  <p class="img-note">（原文插图未转载：Seedream）</p>
+  <p class="img-note">（原文插图未转载：Nano Banana 2）</p>
+  <p class="img-note">（原文插图未转载：FLUX）</p>
+  <p class="img-note">（原文插图未转载：Codex Image）</p><br>
+  <p class="img-note">（原文插图未转载：Seedance）</p>
+  <p class="img-note">（原文插图未转载：Wan）</p>
+  <p class="img-note">（原文插图未转载：Suno）</p>
+  <p class="img-note">（原文插图未转载：ElevenLabs）</p>
+  <p class="img-note">（原文插图未转载：BytePlus Voice）</p>
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Game Asset Layer</th>
+<th>Recommended Models (when configured in Model Gateway)</th>
+<th>Zero-Key / Built-in Fallback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>🖼️ Key art, portraits, sprites &amp; textures</strong></td>
+<td><code>GPT Image 2.6</code> (edits &amp; transparent PNGs), <code>Seedream 5.5</code> / <code>5.0 Flash</code>, <code>Nano Banana 2</code>, <code>FLUX</code>, <code>Codex Image</code></td>
+<td>Crisp procedural Canvas/SVG sprites &amp; procedural textures</td>
+</tr>
+<tr>
+<td><strong>🎵 Background music (menu, stage, boss)</strong></td>
+<td><code>ElevenLabs Music v2</code> (<code>no vocals</code> loops), <code>Suno v4</code></td>
+<td>Procedural Web Audio synthesized soundtrack</td>
+</tr>
+<tr>
+<td><strong>🎙️ Character voice &amp; announcer lines</strong></td>
+<td><code>ElevenLabs v3</code> (English &amp; multilingual), <code>BytePlus TTS 2</code> (Chinese), <code>Kokoro</code></td>
+<td>Styled dialogue captions &amp; subtitle UI</td>
+</tr>
+<tr>
+<td><strong>🎬 Intro cutscenes &amp; motion clips</strong></td>
+<td><code>Wan 2.7</code>, <code>Seedance 2.5</code> (short I2V clips)</td>
+<td>In-engine animated intro camera &amp; title sequence</td>
+</tr>
+<tr>
+<td><strong>🔊 Impact SFX (hits, jumps, coins, UI)</strong></td>
+<td>Synthesized directly in game code via the Web Audio API</td>
+<td>Same (zero latency, zero external files)</td>
+</tr>
+<tr>
+<td><strong>🧊 3D scenes &amp; models</strong></td>
+<td>Vendored <strong>Three.js</strong> + bundled CC0 kits + reserved 3D gateway slot (auto-discovered when connected)</td>
+<td>Procedural Three.js geometry, lighting &amp; shaders</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>OpenGame charges no software subscription for the local open-source stack. Use your own provider keys in <strong>Model Settings</strong>, connect <a href="https://go.open-design.ai/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=opengame&amp;utm_content=readme_en">OpenDesign Go</a> for unified multi-model access, or build 100% code-generated zero-API-cost games. <a href="https://github.com/nexu-io/opengame/blob/main/gateway/catalog.ts">Model catalog</a> · <a href="https://github.com/nexu-io/opengame/blob/main/docs/model-gateway.md">Provider setup</a></p>
+</blockquote>
+<h3>3. Automated Game QA, Balance Simulation &amp; Auto-Trailers</h3>
+<p>Agents shouldn't just output code and hope it runs. OpenGame enforces an automated engineering verification loop before marking any game <strong>ready</strong>:</p>
+<ol>
+<li><strong>Static &amp; 50-Tick Logic Validation (<code>openmotion_game_validate</code>)</strong> — Verifies <code>index.html</code>, allowed asset/CDN policies, required deterministic exports, and runs a 50-tick smoke test (<code>&lt; 5 ms</code> per tick).</li>
+<li><strong>3-Tier Deterministic Balance Simulation (<code>openmotion_game_simulate</code>)</strong> — Executes bounded headless routes without a browser to verify that a skilled <code>reference</code> route reaches a real win milestone, a degraded weak route struggles, and an <code>idle</code> player loses cleanly (<code>&lt; 2500</code> ticks).</li>
+<li><strong>Headless Chromium Playtesting (<code>openmotion_game_playtest</code>)</strong> — Drives real keyboard/mouse/touch controls across 1–4 clients, checking 3C responsiveness, <code>390×844</code> mobile layout integrity, media URL loads, and zero console/network errors.</li>
+<li><strong>Game-Only Cover Capture (<code>openmotion_game_capture_cover</code>)</strong> — Captures a clean <code>1280×720</code> PNG directly from the game canvas in isolated headless Chrome.</li>
+<li><strong>Automated Gameplay Trailer (<code>openmotion_game_trailer</code>)</strong> — Records three real 5-second headless gameplay clips at <code>1280×720</code>, composes an editable ~19-second title + highlights + Play Now trailer, and renders an MP4 ready for social launch.</li>
+</ol>
+<p><a id="publish-monetize"></a></p>
+<h2>🚀 End-to-End Distribution &amp; Monetization</h2>
+<p>Turn playable prototypes into real games people can play, share, and pay for.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Available Today</th>
+<th>Roadmap (In Progress)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Play &amp; Local Catalog</strong></td>
+<td>Publish straight to your local OpenGame Studio market (<code>openmotion_game_publish</code>) with play tracking, favorites, and 1-click Remix</td>
+<td><strong>Top 100 Profitable Mini-Game Templates</strong> curated by genre &amp; revenue mechanics for instant remixing</td>
+</tr>
+<tr>
+<td><strong>Instant Web Share</strong></td>
+<td>One-click static bundle &amp; live web share link via OpenDesign Cloud (<code>openmotion_assets_use action="web_publish"</code>), rewriting local media URLs and compressing assets automatically</td>
+<td>Custom domain &amp; embeddable game widget cards</td>
+</tr>
+<tr>
+<td><strong>Mobile Playable Ads</strong></td>
+<td>Built-in <strong>9:16 Playable Ad mode</strong> (<code>playableAd: true</code>): first-frame instant play, hand tutorial, rich short-level progression, looping BGM, and App Store / Google Play end-card CTA</td>
+<td>Direct ad-network packaging presets (AppLovin, Unity Ads, Meta, TikTok)</td>
+</tr>
+<tr>
+<td><strong>Mini-Game Platforms &amp; Monetization</strong></td>
+<td>Clean self-contained HTML5/JS project exports ready for manual platform wrapping, plus auto-recorded gameplay trailers for launch marketing</td>
+<td><strong>L1–L4 Guided Platform Publishing</strong> (packaging scripts, checklists &amp; Skills) for <strong>WeChat Mini Games (微信小游戏)</strong>, <strong>Douyin Mini Games (抖音小游戏)</strong>, <strong>TikTok</strong>, <strong>Xiaohongshu Mini-Tools</strong>, and <strong>itch.io / Poki / CrazyGames</strong></td>
+</tr>
+<tr>
+<td><strong>AI Game Playground</strong></td>
+<td>Local single-player &amp; existing room-based playtesting</td>
+<td><strong>Multi-Model Live Game Arena</strong> — pit multiple frontier LLMs against each other inside live games in real time</td>
+</tr>
+</tbody>
+</table>
+<p><a id="technical-guide"></a></p>
+<h2>🛠️ Setup &amp; MCP Tools</h2>
+<p><a id="agent-setup"></a> <a id="choose-agent"></a></p>
+<h3>Connect Your Local Agent</h3>
+<p>Choose your agent to connect the local OpenGame MCP server and Skills:</p>
+<p>
+  <a href="#deepseek-setup"><span class="badge-text">DeepSeek TUI / Harness</span></a>
+  <a href="#claude-setup"><span class="badge-text">Claude Code</span></a>
+  <a href="#codex-setup"><span class="badge-text">Codex CLI</span></a>
+  <a href="#workbuddy-setup"><span class="badge-text">WorkBuddy</span></a>
+  <a href="#manual-mcp"><span class="badge-text">OpenCode</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Hermes</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Antigravity</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Gemini CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Grok Build</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Kimi CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Cursor Agent</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Qwen Code</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Qoder CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">GitHub Copilot</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Pi</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Kiro CLI</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Kilo</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Mistral Vibe</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Reasonix</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Aider</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Devin</span></a>
+  <a href="#manual-mcp"><span class="badge-text">Trae CLI</span></a>
+</p>
+
+<ul>
+<li><a id="deepseek-setup"></a><strong>DeepSeek TUI / Harness</strong> · Install the <code>openmotion-game</code> skill and connect the local MCP tools via Cordis configuration, or run <code>node integrations/dsh/install.ts</code> from the checkout. <a href="https://github.com/nexu-io/opengame/blob/main/docs/agent-adapters.md">DeepSeek Harness guide</a></li>
+<li><a id="claude-setup"></a><strong>Claude Code</strong> · Add the stdio MCP entry below, install the <code>openmotion-game</code> skill, and run <code>/mcp</code> to verify the tools are active.</li>
+<li><a id="codex-setup"></a><strong>Codex CLI</strong> · Run <code>bash scripts/install-motion.command</code> from the checkout to register the local plugin and MCP server automatically.</li>
+<li><a id="workbuddy-setup"></a><strong>WorkBuddy</strong> · Import the connector or paste the <code>mcp.json</code> configuration below. <a href="https://github.com/nexu-io/opengame/blob/main/docs/agent-adapters.md">WorkBuddy guide</a></li>
+</ul>
+<p><a id="manual-mcp"></a></p>
+<h4>Manual stdio MCP configuration (works in any MCP client)</h4>
+<pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;openmotion&quot;: {
+      &quot;command&quot;: &quot;/absolute/path/to/node&quot;,
+      &quot;args&quot;: [&quot;--experimental-strip-types&quot;, &quot;/absolute/path/to/opengame/mcp.ts&quot;],
+      &quot;env&quot;: {
+        &quot;MOTION_DATA_DIR&quot;: &quot;/absolute/path/to/opengame-data&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>Keep <code>MOTION_DATA_DIR</code> outside the git checkout so your games, generated assets, and provider keys stay cleanly separated from repository updates. See the <a href="https://github.com/nexu-io/opengame/blob/main/docs/opengame-setup.md">full setup guide</a> and <a href="https://github.com/nexu-io/opengame/blob/main/docs/opengame-architecture.md">architecture reference</a>.</p>
+</blockquote>
+<h3>12 Dedicated Game MCP Tools</h3>
+<p>OpenGame exposes a complete game-engineering tool surface over local stdio MCP (using the shared <code>openmotion_game_*</code> namespace so existing hosts and adapters stay 100% compatible):</p>
+<table>
+<thead>
+<tr>
+<th>MCP Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>openmotion_game_create</code></td>
+<td>Create a new game draft (2D, 3D with vendored Three.js, or 9:16 <code>playableAd</code>) and return the complete agent brief</td>
+</tr>
+<tr>
+<td><code>openmotion_game_get</code></td>
+<td>Read a game card, lifecycle status, and full file inventory</td>
+</tr>
+<tr>
+<td><code>openmotion_game_read_file</code></td>
+<td>Read any source or design file inside a game project</td>
+</tr>
+<tr>
+<td><code>openmotion_game_write_files</code></td>
+<td>Batch-write cohesive game source and design files (up to 100 text files / 8 MiB per owned game)</td>
+</tr>
+<tr>
+<td><code>openmotion_game_update_meta</code></td>
+<td>Merge title, description, controls, cover path, and localized metadata (<code>zh-CN</code>, etc.)</td>
+</tr>
+<tr>
+<td><code>openmotion_game_validate</code></td>
+<td>Check <code>index.html</code>, CDN policy, deterministic logic exports, and run a 50-tick smoke test</td>
+</tr>
+<tr>
+<td><code>openmotion_game_simulate</code></td>
+<td>Run bounded 3-tier deterministic headless simulations (<code>reference</code> win / weak / <code>idle</code> loss)</td>
+</tr>
+<tr>
+<td><code>openmotion_game_playtest</code></td>
+<td>Launch isolated headless Chrome (1–4 clients) to test real input controls, <code>390×844</code> layout, and console cleanliness</td>
+</tr>
+<tr>
+<td><code>openmotion_game_capture_cover</code></td>
+<td>Capture a clean <code>1280×720</code> PNG directly from the game canvas into <code>assets/cover.png</code></td>
+</tr>
+<tr>
+<td><code>openmotion_game_trailer</code></td>
+<td>Record real headless gameplay clips and render an editable ~19-second MP4 trailer</td>
+</tr>
+<tr>
+<td><code>openmotion_game_set_status</code></td>
+<td>Transition lifecycle status (<code>building</code>, <code>ready</code>, <code>failed</code>)</td>
+</tr>
+<tr>
+<td><code>openmotion_game_publish</code></td>
+<td>Revalidate and publish the game into the local Game Studio catalog</td>
+</tr>
+</tbody>
+</table>
+<p>Plus <strong><code>openmotion_media_use</code></strong> (discover &amp; inspect configured BYOK multimodal models) and <strong><code>openmotion_assets_use</code></strong> (generate images/music/voice/video and run <code>action: "web_publish"</code> for one-click cloud share links). <a href="https://github.com/nexu-io/opengame/blob/main/docs/mcp-phase1-tools.md">Full MCP contract</a></p>
+<h3>Game Engineering Skill &amp; 18 Reference Handbooks</h3>
+<p>Every connected agent can read <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/SKILL.md"><code>skills/openmotion-game/SKILL.md</code></a> (or <code>openmotion://workflow/game/start</code> via MCP resources) along with 18 specialized engineering handbooks:</p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Reference Guides</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Game Design &amp; Structure</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-brief.md">Brief Standard</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-genres.md">Genres &amp; Core Loops</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-design-system.md">Design System</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-lookup.md">Reference Lookup</a></td>
+</tr>
+<tr>
+<td><strong>3C, Controls &amp; Game Feel</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-3c-modules.md">3C Modules</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-feel-craft.md">Game Feel &amp; Craft</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-flow.md">Production Flow</a></td>
+</tr>
+<tr>
+<td><strong>Visuals, 2D/3D &amp; Audio</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-stylization.md">Stylization</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-textures.md">Textures</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-2d-animation.md">2D Animation</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-3d-animation.md">3D Animation</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-procedural-animation.md">Procedural Motion</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-audio.md">Audio &amp; Web Audio</a></td>
+</tr>
+<tr>
+<td><strong>Playable Ads &amp; Quality Gates</strong></td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-playable-ad.md">Playable Ad Spec</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/game-gates.md">Quality Gates</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/references/review-rubric.md">Review Rubric</a></td>
+</tr>
+</tbody>
+</table>
+<h3>Tech Stack &amp; Source Map</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Entry Points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenGame Studio UI</strong></td>
+<td>React 19, TypeScript 5.9, Vite 6, Tailwind CSS 4, Zustand</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/studio/src/motion/game/GameStudio.tsx">GameStudio.tsx</a> · <a href="https://github.com/nexu-io/opengame/blob/main/studio/src/motion/game/gameCatalog.ts">gameCatalog.ts</a></td>
+</tr>
+<tr>
+<td><strong>Game Runtime &amp; QA</strong></td>
+<td>Node.js, native HTTP, Puppeteer Core / Chrome, deterministic simulator</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/game-projects.ts">game-projects.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/shared/game-contract.ts">shared/game-contract.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/server.ts">server.ts</a></td>
+</tr>
+<tr>
+<td><strong>MCP &amp; Agent Skills</strong></td>
+<td>Local stdio MCP server, <code>opengame</code> entry Skill, <code>openmotion-game</code> workflow &amp; 18 handbooks</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/mcp.ts">mcp.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/opengame/SKILL.md">skills/opengame/SKILL.md</a> · <a href="https://github.com/nexu-io/opengame">skills/openmotion-game/</a></td>
+</tr>
+<tr>
+<td><strong>Multimodal Gateway</strong></td>
+<td>BYOK model discovery, job polling, asset library &amp; web publish</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/gateway/service.ts">gateway/service.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/gateway/catalog.ts">gateway/catalog.ts</a> · <a href="https://github.com/nexu-io/opengame/blob/main/docs/assets.md">docs/assets.md</a></td>
+</tr>
+<tr>
+<td><strong>Playable Templates</strong></td>
+<td>25 standalone HTML5 / Canvas / Three.js games with covers &amp; metadata</td>
+<td><a href="https://github.com/nexu-io/opengame">templates/games/</a></td>
+</tr>
+<tr>
+<td><strong>Trailer Pipeline</strong></td>
+<td>Headless gameplay capture + HTML composition + FFmpeg MP4 export</td>
+<td><a href="https://github.com/nexu-io/opengame/blob/main/docs/usage.md">docs/usage.md</a> · <a href="https://github.com/nexu-io/opengame/blob/main/scripts/verify-export.ts">scripts/verify-export.ts</a></td>
+</tr>
+</tbody>
+</table>
+<p><a id="community"></a></p>
+<h2>🤝 Build Games Together</h2>
+<p>Share a playable game template, a remixable mini-game genre kit, an art-style guide, a platform publishing script (WeChat / Douyin / TikTok / itch.io), or a Game Studio improvement.</p>
+<table>
+<thead>
+<tr>
+<th>Contribution</th>
+<th>What to include</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A playable game template</strong></td>
+<td>Self-contained folder under <code>templates/games/&lt;id&gt;/</code> with <code>index.html</code>, <code>game.json</code>, <code>cover.webp</code>, and optional <code>DESIGN.md</code></td>
+</tr>
+<tr>
+<td><strong>A genre or playable-ad recipe</strong></td>
+<td>Clear 3C rules, balance invariants, and reference verification notes</td>
+</tr>
+<tr>
+<td><strong>Platform publishing adapters</strong></td>
+<td>Packaging scripts, manifest generators, or submission checklists for mini-game &amp; web portals</td>
+</tr>
+<tr>
+<td><strong>Agent &amp; model integrations</strong></td>
+<td>Host setup adapters or BYOK multimodal provider support</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://github.com/nexu-io/opengame/blob/main/CONTRIBUTING.md">Contribute</a> · <a href="https://github.com/nexu-io/opengame/blob/main/AGENTS.md">Repository Guidelines</a> · <a href="https://github.com/nexu-io/opengame/issues">Report an Issue</a></p>
+<p><a id="acknowledgements"></a></p>
+<h2>🙏 Acknowledgements &amp; Open-Source Attribution</h2>
+<p>OpenGame is built on and inspired by the open-source game, creative tooling, and AI agent community.</p>
+<h3>Core Foundations &amp; Major Inspirations</h3>
+<table>
+<thead>
+<tr>
+<th>Project</th>
+<th>License</th>
+<th>How OpenGame Builds On / References It</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="https://github.com/higgsfield-ai/skills">Higgsfield AI Skills</a></strong></td>
+<td>MIT</td>
+<td>Source of several ported and adapted game craft handbooks under <a href="https://github.com/nexu-io/opengame">skills/openmotion-game/</a> (<a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/PROVENANCE.md">PROVENANCE.md</a> · <a href="https://github.com/nexu-io/opengame/blob/main/skills/openmotion-game/LICENSE-HIGGSFIELD">LICENSE-HIGGSFIELD</a>)</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/heygen-com/hyperframes">HeyGen Hyperframes</a></strong></td>
+<td>Apache-2.0</td>
+<td>Upstream Studio editor foundation (<a href="https://github.com/nexu-io/opengame/blob/main/studio/LICENSE">studio/LICENSE</a>) and automated gameplay trailer composition &amp; MP4 rendering engine</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/ZSeven-W/dsh-game-studio">DSH Game Studio</a></strong> &amp; <strong><a href="https://github.com/finiking/dsh-games">dsh-games</a></strong> (by <a href="https://x.com/FiniYang">@FiniYang</a>)</td>
+<td>Open Source</td>
+<td>Early open-source inspiration and reference for DeepSeek Harness (DSH) AI-native game creation workflows, automated playtesting, and playable game walls</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/nexu-io/open-design">OpenDesign</a></strong> &amp; <strong><a href="https://github.com/nexu-io/openmotion">OpenMotion</a></strong></td>
+<td>Apache-2.0</td>
+<td>Shared open-source design system, multimodal Model Gateway, workspace architecture, and MCP tool contracts</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/mrdoob/three.js">Three.js</a></strong></td>
+<td>MIT</td>
+<td>Vendored offline 3D rendering engine and model/skeleton loaders powering 3D templates and agent-built 3D games (<a href="https://github.com/nexu-io/opengame/blob/main/templates/game-kits/vendor/LICENSE-three.txt">LICENSE-three.txt</a>)</td>
+</tr>
+<tr>
+<td><strong><a href="https://www.kaylousberg.com/">KayKit Adventurers Character Pack</a></strong> (by Kay Lousberg)</td>
+<td>CC0</td>
+<td>Bundled offline rigged 3D characters (Mage &amp; Knight) under <a href="https://github.com/nexu-io/opengame">templates/game-kits/characters/</a> (<a href="https://github.com/nexu-io/opengame/blob/main/templates/game-kits/characters/LICENSE-KayKit.txt">LICENSE-KayKit.txt</a>)</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/cocos/cocos-engine">Cocos Creator / Cocos Engine</a></strong></td>
+<td>MIT</td>
+<td>Open-source game engine runtime powering offline-playable mini-game templates</td>
+</tr>
+<tr>
+<td><strong><a href="https://github.com/modelcontextprotocol/typescript-sdk">Model Context Protocol (MCP) SDK</a></strong> &amp; <strong><a href="https://github.com/vercel-labs/skills">Vercel Skills CLI</a></strong></td>
+<td>MIT / Apache-2.0</td>
+<td>Standard protocol for connecting 22 local AI agents and lightweight Skill distribution</td>
+</tr>
+</tbody>
+</table>
+<p>We also thank the broader open-source ecosystem powering our stack: <strong>Puppeteer &amp; Chrome for Testing</strong>, <strong>FFmpeg</strong>, <strong>Dockview</strong>, <strong>CodeMirror 6</strong>, <strong>Lexical</strong>, <strong>React</strong>, <strong>Vite</strong>, <strong>Tailwind CSS</strong>, <strong>Zustand</strong>, <strong>Electron</strong>, <strong>GSAP</strong>, <strong>DiceBear</strong> (Micah avatar style, CC BY 4.0, <a href="https://github.com/nexu-io/opengame/blob/main/studio/skill-cover-attribution.md">attribution</a>), and open-source fonts (<strong>Albert Sans</strong>, <strong>IBM Plex Mono</strong>, <strong>Instrument Serif</strong>, SIL OFL 1.1).</p>
+<h3>Community Game Showcase Credits</h3>
+<p>Special thanks to the creators whose publicly shared AI browser games are featured as inspiration links in Game Studio (click any tile to visit the creator's original post):</p>
+<p>
+  <a href="https://x.com/felixrieseberg/status/2119925633564463609" title="Saltline by @felixrieseberg"><span class="badge-text">Saltline (@felixrieseberg)</span></a>
+  <a href="https://x.com/Saccc_c/status/2109962425512734739" title="The Little Prince: Star Journey by @Saccc_c"><span class="badge-text">The Little Prince: Star Journey (@Saccc_c)</span></a>
+  <a href="https://x.com/Rubzem/status/2104253584737230926" title="Sky Reach by @jonesiller"><span class="badge-text">Sky Reach (@jonesiller)</span></a>
+  <a href="https://x.com/edwinarbus/status/2102463453176979794" title="Antikythera Dive by @edwinarbus"><span class="badge-text">Antikythera Dive (@edwinarbus)</span></a>
+  <a href="https://x.com/bridgemindai/status/2102451997395866021" title="Turbo Kart Rally by @bridgemindai"><span class="badge-text">Turbo Kart Rally (@bridgemindai)</span></a>
+  <a href="https://x.com/BubuStd/status/2102991290568954264" title="Voxel Musou by @BubuStd"><span class="badge-text">Voxel Musou (@BubuStd)</span></a>
+  <a href="https://x.com/ebbyamir/status/2120284261089673376" title="Starry Nightrider by @ebbyamir"><span class="badge-text">Starry Nightrider (@ebbyamir)</span></a>
+  <a href="https://x.com/ViktorKav/status/2122647483281015155" title="Uno com Escada by @ViktorKav"><span class="badge-text">Uno com Escada (@ViktorKav)</span></a>
+  <a href="https://x.com/kevin_t_ngo/status/2119868968307695818" title="What the Water Keeps by @kevin_t_ngo"><span class="badge-text">What the Water Keeps (@kevin_t_ngo)</span></a>
+  <a href="https://x.com/kevin_t_ngo/status/2120238844754923874" title="Evensong by @kevin_t_ngo"><span class="badge-text">Evensong (@kevin_t_ngo)</span></a>
+  <a href="https://x.com/mattshumer_/status/2119877065701036047" title="Mirror Earth by @mattshumer_"><span class="badge-text">Mirror Earth (@mattshumer_)</span></a>
+  <a href="https://x.com/photonstorm/status/2120330010112434313" title="Tennis (Go Wild) by @photonstorm"><span class="badge-text">Tennis (Go Wild) (@photonstorm)</span></a>
+  <a href="https://x.com/op7418/status/2120694045299327187" title="Mist-Locked Mountain Gate by @op7418"><span class="badge-text">Mist-Locked Mountain Gate (@op7418)</span></a>
+  <a href="https://x.com/__morse/status/2122013410309153042" title="omw: Castle Valley by @__morse"><span class="badge-text">omw: Castle Valley (@__morse)</span></a>
+  <a href="https://x.com/loktar00/status/2120192761542615271" title="LANTERNFALL by @loktar00"><span class="badge-text">LANTERNFALL (@loktar00)</span></a>
+  <a href="https://x.com/Andrew_Blumson/status/2120599812512833557" title="MAAD MAXXING by @Andrew_Blumson"><span class="badge-text">MAAD MAXXING (@Andrew_Blumson)</span></a>
+  <a href="https://x.com/kevin_t_ngo/status/2119900487688622171" title="Gilt &amp; Gutter by @kevin_t_ngo"><span class="badge-text">Gilt &amp; Gutter (@kevin_t_ngo)</span></a>
+  <a href="https://x.com/xikhar/status/2122682962647122403" title="Papertrails by @xikhar"><span class="badge-text">Papertrails (@xikhar)</span></a>
+  <a href="https://x.com/AravSrinivas/status/2122338465648103676" title="VICE '86 by @AravSrinivas"><span class="badge-text">VICE &#x27;86 (@AravSrinivas)</span></a>
+  <a href="https://x.com/FuSheng_0306/status/2121237878097207583" title="Starfall by @FuSheng_0306"><span class="badge-text">Starfall (@FuSheng_0306)</span></a>
+  <a href="https://x.com/aniketjart/status/2121793239175119279" title="Goku: Four-Star Road by @aniketjart"><span class="badge-text">Goku: Four-Star Road (@aniketjart)</span></a>
+  <a href="https://x.com/noclipepe/status/2119728047754547326" title="Rug Racers by @noclipepe"><span class="badge-text">Rug Racers (@noclipepe)</span></a>
+  <a href="https://x.com/noclipepe/status/2119927838321328577" title="Dino Run: Locked In by @noclipepe"><span class="badge-text">Dino Run: Locked In (@noclipepe)</span></a>
+  <a href="https://x.com/AravSrinivas/status/2122713692324384793" title="HADAL by @AravSrinivas"><span class="badge-text">HADAL (@AravSrinivas)</span></a>
+  <a href="https://x.com/emollick/status/2119876449494540554" title="I Would Have Gotten Away With It by @emollick"><span class="badge-text">I Would Have Gotten Away With It (@emollick)</span></a>
+  <a href="https://x.com/petergyang/status/2119901658394358005" title="Turbo Tails by @petergyang"><span class="badge-text">Turbo Tails (@petergyang)</span></a>
+</p>
+
+<blockquote>
+<p><strong>Notice:</strong> Community games link directly to their creators' original pages and remain the sole property of their respective authors — no third-party source code is copied. If you are a creator and would like your work updated, credited differently, or removed, please <a href="https://github.com/nexu-io/opengame/issues">open an issue</a> and we will address it promptly.</p>
+</blockquote>
+<h2>Contributors</h2>
+<p>Thanks to everyone who has taken part — code, game templates, skills, docs, feedback, and issues.</p>
+<p><a href="https://github.com/nexu-io/opengame/graphs/contributors"><br />
+<br />
+<p class="img-note">（原文此处为贡献者头像墙或星标趋势图，本页不转载。）</p></p>
+<p></a></p>
+<h2>Star History</h2>
+<p><a href="https://www.star-history.com/#nexu-io/opengame&amp;Date"></p>
+<pre><code>&lt;p class="img-note"&gt;（原文此处为贡献者头像墙或星标趋势图，本页不转载。）&lt;/p&gt;
+</code></pre>
+<p></a></p>
+</div>
+
+<h2>附录 C、Apache License 2.0 原文</h2>
+<p>根目录 LICENSE 全文。附录中的版权行仍是占位符。Studio 目录的同名许可证未再重复粘贴，差别主要在文末版权行：Copyright 2026 HeyGen, Inc.。</p>
+<pre class="license">
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre></main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/nexu-io/opengame" rel="noopener">github.com/nexu-io/opengame</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
