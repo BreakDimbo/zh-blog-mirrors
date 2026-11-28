@@ -1,5 +1,20 @@
 [
   {
+    "slug": "m-bain-whisperx",
+    "title": "「WhisperX」：词级时间戳的语音转写",
+    "desc": "m-bain/whisperX 项目导读：在 OpenAI Whisper 之上做批量转写、wav2vec2 词级强制对齐和可选的说话人分离，可输出带时间轴的字幕。代码为 BSD 2-Clause License（Copyright (c) 2024, Max Bain）。导读 + README 全文中译 + 许可证原文。依赖模型各有许可；README 写明说话人分离模型为 CC-BY-4.0，并需接受用户协议。文中「比实时快 70 倍」、挑战赛名次等数字均为原文自报。封面为字标。",
+    "description": "本地语音转写，带词级时间戳。代码 BSD-2-Clause。导读 + README 中译。速度等数字为原文自报。",
+    "source": "GitHub · m-bain/whisperX（BSD-2-Clause）",
+    "date": "2026-11-28",
+    "type": "导读 + README 中译",
+    "subtitle": "Time-Accurate Speech Transcription  ·  导读 + README 全文中译",
+    "original_url": "https://github.com/m-bain/whisperX",
+    "spine": "词级时间戳的语音转写",
+    "summary": "本地转写与词级对齐，可输出带时间轴的字幕",
+    "kind": "项目",
+    "by": "Max Bain / VGG"
+  },
+  {
     "slug": "nexu-io-opengame",
     "title": "「OpenGame」：把本地编程智能体变成游戏工作室",
     "desc": "nexu-io/opengame（Apache-2.0）项目导读：OpenDesign 做的本地游戏工作室，把 Claude Code、Codex、DeepSeek 等接到 Game Studio 和 MCP 工具上，从 25 个可玩模板改出 3D 与小游戏。附录为官方简体中文 README、英文原文与根目录许可证。不转载模板封面、社区截图或人物图。仓库简介写「100+ 款游戏」，正文写 25 个内置模板，以正文目录为准。手册份数、质量与变现效果等均为原文自报。",
