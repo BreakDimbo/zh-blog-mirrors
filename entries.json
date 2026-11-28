@@ -1,5 +1,20 @@
 [
   {
+    "slug": "k2-fsa-omnivoice",
+    "title": "「OmniVoice」：六百多种语言的零样本语音合成",
+    "desc": "k2-fsa/OmniVoice 项目导读：大规模多语种零样本文本转语音，可做声音克隆与声音设计。代码为 Apache License 2.0（Copyright 2026 Xiaomi Corp.），预训练权重在 Hugging Face 模型卡上标明为 CC-BY-NC。导读 + README 全文中译 + 许可证原文。文中「当前最好」、实时率等数字均为原文自报。封面为字标。",
+    "description": "本地零样本 TTS。代码 Apache-2.0，权重 CC-BY-NC。导读 + README 中译。质量与速度数字为原文自报。",
+    "source": "GitHub · k2-fsa/OmniVoice",
+    "date": "2026-11-28",
+    "type": "导读 + README 中译",
+    "subtitle": "Towards Omnilingual Zero-Shot TTS  ·  导读 + README 全文中译",
+    "original_url": "https://github.com/k2-fsa/OmniVoice",
+    "spine": "六百多种语言的语音合成",
+    "summary": "本地零样本 TTS，代码 Apache-2.0，权重 CC-BY-NC",
+    "kind": "项目",
+    "by": "Han Zhu / k2-fsa"
+  },
+  {
     "slug": "jonnyhlkw-muse-motion-tools",
     "title": "「二十项动效工具」：一份写给 Muse 的清单",
     "desc": "Jonny（@Jonnyhlkw）于 2026-11-26 12:00（新加坡时间，UTC+8）在 X 发布中文帖，列出二十个给 Muse 使用的 GitHub 仓库。清单里既有智能体技能，也有 Blender、FFmpeg、Remotion 等大型软件或框架。各仓库许可并不统一：多数为 MIT，另有 ISC、BSD-2-Clause、GPL、LGPL，以及 GSAP 的 standard no-charge license 与 Remotion 的特殊许可；remotion-dev/skills 仓库页未见 LICENSE。本页为作者原文 + 独立中文导读，不转载各仓库 README 与源码。文中「海外大佬实测跑通」「全都在 Muse 验证可用」「复制链接就能装」等均为原文自报。原帖附有约 42 秒视频，请到原文观看。封面为 typographic 设计。",

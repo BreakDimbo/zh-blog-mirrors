@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>「OmniVoice」：六百多种语言的零样本语音合成</title>
+<meta name="description" content="k2-fsa/OmniVoice 项目导读：大规模多语种零样本文本转语音，支持声音克隆与声音设计。代码为 Apache-2.0（Copyright 2026 Xiaomi Corp.），预训练权重为 CC-BY-NC。导读 + README 全文中译 + 许可证原文。「当前最好」、实时率等为原文自报。">
+<meta property="og:title" content="「OmniVoice」：六百多种语言的零样本语音合成">
+<meta property="og:description" content="本地零样本 TTS。代码 Apache-2.0，权重 CC-BY-NC。导读 + README 中译 + 许可证原文。质量与速度数字为原文自报。">
+<meta property="og:image" content="images/cover.webp">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/article.css"><script defer src="../assets/article.js"></script>
+
+<!-- zbm-nav:head --><link rel="stylesheet" href="../assets/nav.css"><script defer src="../assets/nav.js"></script><!-- /zbm-nav:head -->
+<!-- re:head --><script>(function(d){var r=d.documentElement,q=location.search,on=/[?&]re=on\b/.test(q),off=/[?&]re=off\b/.test(q);if(!off)on=true;try{var t=localStorage.getItem("zbm-theme");if(t==="light"||t==="dark")r.setAttribute("data-theme",t);localStorage.removeItem("zbm-re");if(/[?&]re=on\b/.test(q))localStorage.removeItem("zbm-re2");else if(off)localStorage.setItem("zbm-re2","off");else on=localStorage.getItem("zbm-re2")!=="off"}catch(e){}if(!("noModule" in d.createElement("script")))on=false;r.setAttribute("data-re",on?"on":"off");if(!on)return;var b="../assets/reading-effect/",l=d.createElement("link");l.rel="stylesheet";l.setAttribute("blocking","render");l.href=b+"reading-effect.css";d.head.appendChild(l);var m=d.createElement("script");m.type="module";m.src=b+"reading-effect.js";d.head.appendChild(m);r.classList.add("re-js");setTimeout(function(){if(!r.classList.contains("re-ready"))r.classList.remove("re-js")},8000)})(document)</script><!-- /re:head -->
+</head>
+<body class="za">
+<!-- zbm-nav --><a class="zbm-nav" data-zbm-nav href="../" aria-label="返回录像带书店首页"><span class="zbm-arrow" aria-hidden="true">←</span><span>录像带书店</span></a><!-- /zbm-nav -->
+<!-- za:article v1 -->
+<div class="za-page">
+<header class="za-head">
+<p class="za-kicker" data-za-gen><span>导读 + README 中译</span><time datetime="2026-11-28">2026.11.28</time></p>
+<h1 class="za-title">「OmniVoice」：六百多种语言的零样本语音合成</h1>
+<p class="za-sub" lang="en" data-za-gen>Towards Omnilingual Zero-Shot TTS  ·  导读 + README 全文中译</p>
+<p class="za-meta" data-za-gen><span>来源 · GitHub · k2-fsa/OmniVoice</span><span>收录 · 2026-11-28</span><span><a href="https://github.com/k2-fsa/OmniVoice" rel="noopener">查看原文 ↗</a></span></p>
+<!-- za:origin --><div class="za-origin"><p class="source">作者：Han Zhu 等 · 仓库：<a href="https://github.com/k2-fsa/OmniVoice" rel="noopener">k2-fsa/OmniVoice</a>（<a href="https://github.com/k2-fsa/OmniVoice/blob/master/LICENSE" rel="noopener">Apache License 2.0</a>，Copyright 2026 Xiaomi Corp.；预训练权重为 CC-BY-NC） · 核对：2026-11-28（新加坡时间） · <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">移除请求</a></p></div><!-- /za:origin -->
+</header>
+<div class="za-layout"><aside class="za-toc" data-za-gen hidden></aside>
+<!-- za:content --><main class="za-content">
+
+<p class="lede">OmniVoice 是 k2-fsa 组织发布的本地文本转语音模型与 Python 工具包。论文第一作者是朱晗（Han Zhu），许可证附录里的版权行写明 <code>Copyright 2026 Xiaomi Corp.</code>。它可以做零样本合成：用一段参考音频克隆声音，或用性别、年龄、口音这类属性来设计声音，也可以让模型自己选一个声音。代码以 Apache-2.0 发布；预训练权重在 Hugging Face 模型卡上标明为 CC-BY-NC，原因是训练数据（例如 Emilia）的限制。文中关于「当前最广」「当前最好」、实时率等数字，均为原文自报。</p>
+
+<div class="notice"><strong>版权说明：</strong>仓库代码以 Apache License 2.0 发布（Copyright 2026 Xiaomi Corp.）。本页为项目导读，附录为 README 全文中译、英文原文，以及 LICENSE 原文。预训练模型权重的许可与代码不同，模型卡写明为 CC-BY-NC；本页不转载权重、样例音频或第三方人物照片。封面为字标。</div>
+
+<figure>
+<img class="cover" src="images/cover.webp" width="1600" height="900" alt="浅米色底上的字标封面：左侧一个很大的衬线数字 646，右侧写着「六百多种语言的零样本合成」，并列出声音克隆、声音设计、许可等条目。">
+<figcaption>字标封面：语言表里列出的 646 种语言。本页未使用人物照片。</figcaption>
+</figure>
+
+<nav class="toc"><strong>目录</strong><ol>
+<li><a href="#what">这是什么</a></li>
+<li><a href="#modes">三种生成方式</a></li>
+<li><a href="#languages">语言与数据</a></li>
+<li><a href="#install">怎么安装、怎么用</a></li>
+<li><a href="#params">生成参数与长文本</a></li>
+<li><a href="#community">社区生态</a></li>
+<li><a href="#license-note">许可与免责声明</a></li>
+<li><a href="#related">相关阅读</a></li>
+<li><a href="#appendix-zh">附录 A：README 全文中译</a></li>
+<li><a href="#appendix-en">附录 B：README 英文原文</a></li>
+<li><a href="#license">附录 C：LICENSE（Apache-2.0）原文</a></li>
+</ol></nav>
+
+<h2 id="what">这是什么</h2>
+<p>OmniVoice 的定位是大规模多语种零样本 TTS。配套论文是 <a href="https://arxiv.org/abs/2604.00688" rel="noopener">arXiv:2604.00688</a>《OmniVoice: Towards Omnilingual Zero-Shot Text-to-Speech with Diffusion Language Models》，2026 年 4 月 1 日首次提交，当前版本为 4 月 21 日的 v3。作者为 Han Zhu、Lingxuan Ye、Wei Kang、Zengwei Yao、Liyong Guo、Fangjun Kuang、Zhifeng Han、Weiji Zhuang、Long Lin、Daniel Povey。仓库属于 <a href="https://github.com/k2-fsa" rel="noopener">k2-fsa</a>，<code>pyproject.toml</code> 里的作者栏写的是 Han Zhu，版本为 0.2.1，需要 Python 3.10 或更高。</p>
+<p>论文摘要的写法是：它采用扩散语言模型风格的离散非自回归架构，把文本直接映射到多码本声学标记，而不是先走到语义标记再走到声学标记的两段式流程。为此用了两项技术：对全部码本做随机掩码以便训练，以及用预训练大语言模型做初始化，以保持可懂度。Hugging Face 模型卡把基础模型写成 <a href="https://huggingface.co/Qwen/Qwen3-0.6B" rel="noopener">Qwen/Qwen3-0.6B</a>。演示页在 <a href="https://zhu-han.github.io/omnivoice" rel="noopener">zhu-han.github.io/omnivoice</a>，模型与在线试用分别在 <a href="https://huggingface.co/k2-fsa/OmniVoice" rel="noopener">Hugging Face 模型页</a> 和 <a href="https://huggingface.co/spaces/k2-fsa/OmniVoice" rel="noopener">Space</a>。样例音频请到官方演示页收听。</p>
+<p>README 把这套系统称为当前最好的大规模多语零样本 TTS，并写实时率可低至 0.025（比实时快 40 倍）。这些评价和速度数字均为原文自报。</p>
+
+<h2 id="modes">三种生成方式</h2>
+<p>三种模式走同一个 <code>model.generate()</code> 接口，命令行工具也都能用。</p>
+<ul>
+<li><strong>声音克隆。</strong>提供一段参考音频 <code>ref_audio</code>，以及对应的转写 <code>ref_text</code>。如果不手写转写，模型会用 Whisper 自动转写；也可以指定本地 Whisper 模型和设备。参考音频建议 3 到 10 秒。编码一次后，可以把提示存成 <code>.pt</code> 文件，下次不必重新加载音频。跨语种克隆时，生成的语音会带上参考音频语种的口音——这是 README 的说明。</li>
+<li><strong>声音设计。</strong>不提供参考音频，只用 <code>instruct</code> 描述说话人：性别、年龄、音高、耳语、英语口音、中文方言等，用逗号组合，中英文都可以写。属性表见官方 <a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/voice-design.md" rel="noopener">docs/voice-design.md</a>。中文方言包括四川话、陕西话、河南话、东北话等；英语口音只对英文文本生效，中文方言只对中文文本生效。README 写明：模型主要在克隆任务上训练，所以克隆更稳；声音设计只在中文和英文数据上训练过，推广到其他语言时可能不稳定。</li>
+<li><strong>自动选声。</strong>既不给参考音频，也不给 instruct，模型自己选一个声音。</li>
+</ul>
+<p>文本里还可以插入非语言标记，例如 <code>[laughter]</code>、<code>[sigh]</code>，以及一批疑问、惊讶、不满的标记。中文可以用带调号的拼音纠正读音，英文可以用 CMU 音素（大写、放在方括号里）区分如 bass 的两种读法。数字可以先正规化成词语，或打开 <code>normalize_text=True</code>（需额外安装 <code>omnivoice[tn]</code>，中英文走 WeTextProcessing）。闽南语在当前版本里只能用台罗拼音作为输入，不能直接用汉字——这是官方提示。</p>
+
+<h2 id="languages">语言与数据</h2>
+<p><a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/languages.md" rel="noopener">docs/languages.md</a> 的标题写着支持 <strong>646 种语言</strong>、合计 <strong>58.1 万小时</strong>训练数据，并给出每种语言的编号、ISO 639-3 和时长。本页按该表逐行清点，得到 646 行，时长合计约 581,489 小时，与「581k hours」相符。分布并不均匀：英语约 20.6 万小时，中文约 11.1 万小时，日语约 3.7 万小时；有 33 种语言达到或超过 1,000 小时，也有 11 种不足 1 小时、265 种不足 10 小时。表是仓库自己公布的训练数据统计，不表示每种语言都经过独立听测，也不表示低时长语言的质量与英语、中文相当。</p>
+<p>论文摘要还写，这 58.1 万小时全部来自开源数据。这是原文陈述。预训练权重为何仍是 CC-BY-NC，模型卡的解释是训练数据本身带有限制，并举 Emilia 为例。</p>
+
+<h2 id="install">怎么安装、怎么用</h2>
+<p>可以用 <code>pip install omnivoice</code>，也可以从 GitHub 安装最新源码，或克隆后用 <code>uv sync</code>。先要按设备装好 PyTorch：NVIDIA CUDA、Apple Silicon，或 Intel Arc 的 XPU 后端。项目称 Intel Arc 已在 Arc A310（4 GB）和 Arc Pro B50（16 GB）上测试；在 XPU 上 <code>flash_attn</code> 不可用，会回退到 SDPA。这些测试情况为原文自报。</p>
+<p>不想写代码时，可以运行 <code>omnivoice-demo --ip 0.0.0.0 --port 8001</code> 打开本地网页，或使用官方 Space、Colab。命令行还有 <code>omnivoice-infer</code>（单条）和 <code>omnivoice-infer-batch</code>（可跨多卡批量）。加载模型时，NVIDIA 用 <code>device_map="cuda:0"</code>，Apple Silicon 用 <code>mps</code>，Intel Arc 用 <code>xpu</code>。默认输出是 24 kHz 的波形。</p>
+<p>如果下载模型时连接 Hugging Face 不顺，README 建议先设置 <code>export HF_ENDPOINT="https://hf-mirror.com"</code>。</p>
+
+<h2 id="params">生成参数与长文本</h2>
+<p>常用参数包括扩散步数 <code>num_step</code>（默认 32，想更快可用 16）、语速 <code>speed</code>、固定时长 <code>duration</code>（会覆盖语速）、以及分类器自由引导 <code>guidance_scale</code>。完整列表见 <a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/generation-parameters.md" rel="noopener">docs/generation-parameters.md</a>。</p>
+<p>长文本会自动切段：估计时长超过 <code>audio_chunk_threshold</code>（默认 30 秒）时，按约 <code>audio_chunk_duration</code>（默认 15 秒）分段生成，以保持显存接近恒定。默认还会做前后处理，例如去掉参考音频里过长的静音，以及裁掉输出末尾的静音；如果必须让输出正好等于指定的 <code>duration</code>，需要关掉 <code>postprocess_output</code>。</p>
+<p>README 还介绍了 FlashInfer 加速，并给出一张在单卡 H100、中文 seed-tts 测试集上的实时率表，batch=8 时 FlashInfer 的平均 RTF 写为 0.0115。表中数字及「无损」「ASR 核验」等表述均为原文自报。</p>
+
+<h2 id="community">社区生态</h2>
+<p>官方文档列出了一批社区项目，并写明它们由社区维护，不由 OmniVoice 团队官方支持。其中与本站已有条目直接相关的是 <a href="https://github.com/debpalash/OmniVoice-Studio" rel="noopener">OmniVoice-Studio</a>：它是 VoiceStudio 的上游引擎方向，VoiceStudio 的默认 TTS 引擎就是 OmniVoice。其他还包括视频翻译配音（pyVideoTrans）、Apple Silicon 上的 MLX 推理、ComfyUI 节点、兼容 OpenAI 接口的 HTTP 服务、有声书工具等。完整名单见附录中的社区项目一节；各仓库许可需自行核对，本页不转载那些仓库的 README 或源码。</p>
+
+<h2 id="license-note">许可与免责声明</h2>
+<p>仓库根目录的 <a href="https://github.com/k2-fsa/OmniVoice/blob/master/LICENSE" rel="noopener">LICENSE</a> 是 Apache License 2.0，附录里的版权行是 <code>Copyright 2026 Xiaomi Corp.</code>。<code>pyproject.toml</code> 的 <code>license</code> 字段同样写着 <code>Apache-2.0</code>。附录 C 收录该许可证原文。</p>
+<p>预训练权重的许可与代码不同。<a href="https://huggingface.co/k2-fsa/OmniVoice" rel="noopener">Hugging Face 模型卡</a>写明：「Our code is released under the Apache 2.0 License. The pre-trained model is licensed under the CC-BY-NC due to constraints from its training data (e.g., Emilia).」模型卡没有另附一份独立的 LICENSE 文件，也没有写明 CC-BY-NC 的版本号。这意味着：源码可以按 Apache-2.0 使用；公开发布的预训练模型按非商业的 CC-BY-NC 条款使用，不能把这两套许可混成一套。应用工具（例如 VoiceStudio）的许可，也不自动覆盖模型权重或生成输出的权利。</p>
+<p>README 的免责声明禁止将模型用于未经授权的声音克隆、声音假冒、欺诈、诈骗或其他非法、不道德的活动，并写明开发者对滥用不承担责任。这是项目自己的条款，不是法律意见。</p>
+
+<h2 id="related">相关阅读</h2>
+<ul>
+<li><a href="../debpalash-voicestudio/">VoiceStudio：完全本地的开源 ElevenLabs 替代</a> — 默认引擎就是 OmniVoice；应用本身是 AGPL-3.0，默认权重仍是 CC-BY-NC。</li>
+<li><a href="../andyhuo520-digital-human-koubo/">Digital Human Koubo：一张照片 + 一句话，让 AI Agent 做出数字人口播成片</a> — 云端换声路线的对照，其中用到小米的语音接口。</li>
+<li><a href="../receptron-avatarscript/">AvatarScript：写一段带“导演批注”的文字，得到会对口型、会演戏的头像视频</a> — 把合成语音接到会演戏的头像上。</li>
+<li><a href="../voxyz-openverse-sfx/">给 Opus 5.5 一个网址，剪视频时就能搜 520 万条免费音频</a> — 另一条给视频配声音的路径：检索开放音效，而不是克隆人声。</li>
+</ul>
+
+
+<h2 id="appendix-zh">附录 A：README 全文中译</h2>
+<p class="related-guide">仓库根目录 README.md 的中文翻译（分支 <code>master</code>，2026-11-28 核对）。徽章、题图和微信二维码未转载，请到原文查看。文中关于质量、覆盖面和速度的表述，保持为项目自述。</p>
+<p>OmniVoice 是一个大规模多语种的零样本文本转语音（TTS）模型，支持六百多种语言。它建立在一种扩散语言模型风格的架构上，生成质量高、推理速度快，并支持声音克隆与声音设计。以上评价均为项目自述。</p>
+<p><strong>目录</strong>：<a href="#主要特点">主要特点</a> | <a href="#安装">安装</a> | <a href="#快速开始">快速开始</a> | <a href="#python-api">Python API</a> | <a href="#命令行工具">命令行工具</a> | <a href="#训练与评测">训练与评测</a> | <a href="#讨论与交流">讨论与交流</a> | <a href="#引用">引用</a></p>
+<h3>主要特点</h3>
+<ul>
+<li><strong>支持六百多种语言</strong>：项目称这是零样本 TTS 模型中最广的语言覆盖（<a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/languages.md">完整列表</a>）。</li>
+<li><strong>声音克隆</strong>：项目自称具有当前最好的克隆质量。</li>
+<li><strong>声音设计</strong>：通过指定说话人属性来控制声音（性别、年龄、音高、方言/口音、耳语等）。</li>
+<li><strong>细粒度控制</strong>：可用非语言符号（例如 <code>[laughter]</code>），也可用拼音或音素纠正发音。</li>
+<li><strong>快速推理</strong>：项目称实时率（RTF）可低至 0.025（比实时快 40 倍）。</li>
+<li><strong>扩散语言模型风格架构</strong>：项目称这是一套干净、精简、可扩展的设计，同时兼顾质量与速度。</li>
+</ul>
+<hr>
+<h3>安装</h3>
+<p>请在 <strong>pip</strong> 与 <strong>uv</strong> 中选择一种。</p>
+<h4>pip</h4>
+<blockquote>
+<p>建议使用全新的虚拟环境（如 <code>conda</code>、<code>venv</code>），以免依赖冲突。</p>
+</blockquote>
+<p><strong>第一步</strong>：安装 PyTorch</p>
+<details>
+<summary>NVIDIA GPU</summary>
+
+
+<pre><code class="language-bash"># 按自己的 CUDA 版本安装 pytorch，例如：
+pip install torch==2.8.0+cu128 torchaudio==2.8.0+cu128 --extra-index-url https://download.pytorch.org/whl/cu128
+</code></pre>
+
+
+其他版本见 [PyTorch 官网](https://pytorch.org/get-started/locally/)。
+
+</details>
+
+<details>
+<summary>Apple Silicon</summary>
+
+
+<pre><code class="language-bash">pip install torch==2.8.0 torchaudio==2.8.0
+</code></pre>
+
+
+</details>
+
+<details>
+<summary>Intel Arc GPU（XPU）</summary>
+
+Intel Arc GPU（Alchemist 与 Battlemage 架构）可通过 PyTorch 的 XPU 后端运行。
+
+- 先为操作系统安装 [Intel GPU 驱动](https://dgpu-docs.intel.com/driver/installation.html)。
+- 再从 Intel 的 wheel 源安装带 XPU 支持的 PyTorch：
+
+
+<pre><code class="language-bash">pip install torch torchaudio --index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/us/
+</code></pre>
+
+
+具体版本说明见 [Intel 的 PyTorch XPU 指南](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/)。
+
+- 验证后端是否可用：
+
+
+<pre><code class="language-bash">python -c &quot;import torch; print(torch.xpu.is_available(), torch.xpu.device_count())&quot;
+</code></pre>
+
+
+说明：
+
+- `flash_attn` 在 XPU 上不可用，模型会自动回退到 SDPA。
+- 使用打包序列（`flex_attention`）的训练对 XPU 只有部分支持；单 GPU 的 SDPA 训练应可工作。
+- 项目称已在 Arc A310（Alchemist，4 GB）和 Arc Pro B50（Battlemage，16 GB）上测试。
+
+</details>
+
+<p><strong>第二步</strong>：安装 OmniVoice（任选一种）</p>
+<pre><code class="language-bash"># 从 PyPI 安装（稳定版）
+pip install omnivoice
+
+# 安装 GitHub 上的最新源码（不必先克隆）
+pip install git+https://github.com/k2-fsa/OmniVoice.git
+
+# 开发安装（先克隆，再以可编辑方式安装）
+git clone https://github.com/k2-fsa/OmniVoice.git
+cd OmniVoice
+pip install -e .
+</code></pre>
+<h4>uv</h4>
+<p>克隆仓库并同步依赖：</p>
+<pre><code class="language-bash">git clone https://github.com/k2-fsa/OmniVoice.git
+cd OmniVoice
+uv sync
+</code></pre>
+<p>提示：可用镜像，例如 <code>uv sync --default-index "https://mirrors.aliyun.com/pypi/simple"</code>。</p>
+<h3>快速开始</h3>
+<p>不必写代码也可以试用 OmniVoice：</p>
+<ul>
+<li>启动本地网页界面：<code>omnivoice-demo --ip 0.0.0.0 --port 8001</code></li>
+<li>或直接打开 <a href="https://huggingface.co/spaces/k2-fsa/OmniVoice">Hugging Face Space</a></li>
+<li>或在 <a href="https://colab.research.google.com/github/k2-fsa/OmniVoice/blob/master/docs/OmniVoice.ipynb">Google Colab</a> 中运行</li>
+</ul>
+<p>如果下载预训练模型时连接 Hugging Face 有困难，可在运行前设置 <code>export HF_ENDPOINT="https://hf-mirror.com"</code>。</p>
+<p>完整用法见下文的 Python API 与命令行工具。</p>
+<h3>Python API</h3>
+<p>OmniVoice 支持三种生成模式。本节的功能在命令行工具里同样可用。</p>
+<h4>声音克隆</h4>
+<p>用一段短的参考音频克隆声音。提供 <code>ref_audio</code> 与 <code>ref_text</code>：</p>
+<pre><code class="language-python">from omnivoice import OmniVoice
+import soundfile as sf
+import torch
+
+model = OmniVoice.from_pretrained(
+    &quot;k2-fsa/OmniVoice&quot;,
+    device_map=&quot;cuda:0&quot;,
+    dtype=torch.float16
+)
+# Apple Silicon 用户请改用 device_map=&quot;mps&quot;
+# Intel Arc GPU 用户请改用 device_map=&quot;xpu&quot;
+
+audio = model.generate(
+    text=&quot;Hello, this is a test of zero-shot voice cloning.&quot;,
+    ref_audio=&quot;ref.wav&quot;,
+    ref_text=&quot;Transcription of the reference audio.&quot;,
+) # audio 是由 `np.ndarray` 组成的列表，形状为 (T,)，采样率 24 kHz。
+
+# 如果不想手工填写 `ref_text`，可以直接省略。
+# 模型会用 Whisper ASR 自动转写。若要使用本地副本
+#（或换一个 Whisper 模型），请向 `from_pretrained` 传入
+# `asr_model_name=&quot;...&quot;`。若要指定 Whisper 加载到哪块设备
+#（例如多 GPU 时的另一块卡，或 CPU），传入
+# `asr_device=&quot;cuda:1&quot;`（或 `&quot;cpu&quot;`）。
+
+sf.write(&quot;out.wav&quot;, audio[0], 24000)
+</code></pre>
+<h4>在多次会话中复用已克隆的声音</h4>
+<p>把参考音频编码一次，保存得到的提示，以后就可以跳过加载音频和自动转写：</p>
+<pre><code class="language-python">prompt = model.create_voice_clone_prompt(
+    ref_audio=&quot;ref.wav&quot;, ref_text=&quot;Transcription of the reference audio.&quot;
+)
+prompt.save(&quot;my_voice.pt&quot;)
+
+# 之后，在新的会话里：
+from omnivoice import VoiceClonePrompt
+
+prompt = VoiceClonePrompt.load(&quot;my_voice.pt&quot;)
+audio = model.generate(text=&quot;Hello again!&quot;, voice_clone_prompt=prompt)
+</code></pre>
+<p><strong>提示</strong></p>
+<ul>
+<li>参考音频建议用 3–10 秒。更长的音频会拖慢推理，也可能降低克隆质量。</li>
+<li>若要标准发音，请使用与目标语音相同语言的参考音频。在跨语种克隆中（参考音频与目标语音不是同一种语言），生成的语音会带上参考音频语种的口音。</li>
+<li>遇到阿拉伯数字时，先把数字正规化成词语，效果通常更好（例如把 &ldquo;123&rdquo; 写成 &ldquo;one hundred twenty-three&rdquo;）。也可以向 <code>generate()</code> 传入 <code>normalize_text=True</code>，让它自动处理（需额外安装：<code>pip install "omnivoice[tn]"</code>，会带上 WeTextProcessing）：</li>
+</ul>
+<pre><code class="language-python"># 「I have 2345 apples.」会按数量读，而不是一个数字一个数字往下念。
+audio = model.generate(text=&quot;I have 2345 apples.&quot;, normalize_text=True)
+</code></pre>
+<p>中文和英文使用 WeTextProcessing；其他语言对整数回退到 <code>num2words</code>。文内控制语法（<code>[laughter]</code>、<code>[B EY1 S]</code>、拼音调号）会保留。在 macOS（Apple Silicon）上，<code>pynini</code> 没有 wheel —— 请先执行 <code>conda install -c conda-forge pynini</code>。</p>
+<p>更多提示见 <a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/tips.md">docs/tips.md</a>。</p>
+<h4>声音设计</h4>
+<p>用说话人属性描述想要的声音，不必提供参考音频。支持的属性包括：<strong>性别</strong>（male/female）、<strong>年龄</strong>（儿童到老年）、<strong>音高</strong>（极低到极高）、<strong>风格</strong>（耳语）、<strong>英语口音</strong>（American、British 等），以及<strong>中文方言</strong>（四川话、陕西话等）。属性用逗号分隔，不同类别可以自由组合。</p>
+<pre><code class="language-python">audio = model.generate(
+    text=&quot;Hello, this is a test of zero-shot voice design.&quot;,
+    instruct=&quot;female, low pitch, british accent&quot;,
+)
+</code></pre>
+<blockquote>
+<p><strong>说明</strong>：模型主要在声音克隆任务上训练，因此克隆是最稳的模式。声音设计只在中文和英文数据上训练过。它可以推广到其他语言，但在某些低资源语言或边界情况下，结果可能不稳定。</p>
+</blockquote>
+<p>完整属性表、中文对应词和用法提示，见 <a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/voice-design.md">docs/voice-design.md</a>。</p>
+<h4>自动选声</h4>
+<p>让模型自己选一个声音：</p>
+<pre><code class="language-python">audio = model.generate(text=&quot;This is a sentence without any voice prompt.&quot;)
+</code></pre>
+<h4>生成参数</h4>
+<p>以上三种模式共用同一个 <code>model.generate()</code> 接口。还可以用关键字参数继续控制生成行为：</p>
+<pre><code class="language-python">audio = model.generate(
+    text=&quot;...&quot;,
+    num_step=32,  # 扩散步数（想更快可用 16）
+    speed=1.0,     # 语速（&gt;1.0 更快，&lt;1.0 更慢）
+    duration=10.0, # 固定输出时长，单位秒（会覆盖 speed）
+    # ... 更多选项
+)
+</code></pre>
+<p>更细的控制见 <a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/generation-parameters.md">docs/generation-parameters.md</a>。</p>
+<h4>非语言符号与发音控制</h4>
+<p>OmniVoice 支持在输入文本里插入<strong>非语言符号</strong>，并用<strong>发音纠正</strong>覆盖默认读法。</p>
+<p><strong>非语言符号</strong>：直接在文本中插入如 <code>[laughter]</code> 这样的标记，加入表达性的非语言声音。</p>
+<pre><code class="language-python">audio = model.generate(text=&quot;[laughter] You really got me. I didn't see that coming at all.&quot;)
+</code></pre>
+<p>支持的标记：<code>[laughter]</code>、<code>[sigh]</code>、<code>[confirmation-en]</code>、<code>[question-en]</code>、<code>[question-ah]</code>、<code>[question-oh]</code>、<code>[question-ei]</code>、<code>[question-yi]</code>、<code>[surprise-ah]</code>、<code>[surprise-oh]</code>、<code>[surprise-wa]</code>、<code>[surprise-yo]</code>、<code>[dissatisfaction-hnn]</code>。</p>
+<p><strong>发音控制（中文）</strong>：用带调号的拼音，纠正特定字的读音。</p>
+<pre><code class="language-python">audio = model.generate(text=&quot;这批货物打ZHE2出售后他严重SHE2本了，再也经不起ZHE1腾了。&quot;)
+</code></pre>
+<p><strong>发音控制（英文）</strong>：用 <a href="https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/cmudict.0.7a">CMU 发音词典</a>（大写，放在方括号里）覆盖默认的英文发音。</p>
+<pre><code class="language-python">audio = model.generate(text=&quot;He plays the [B EY1 S] guitar while catching a [B AE1 S] fish.&quot;)
+</code></pre>
+<hr>
+<h3>命令行工具</h3>
+<p>仓库提供三个命令行入口。命令行工具支持 Python API 里的全部功能（声音克隆、声音设计、自动选声、生成参数等），都通过命令行参数控制。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+<th>源码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>omnivoice-demo</code></td>
+<td>交互式 Gradio 网页演示</td>
+<td><a href="https://github.com/k2-fsa/OmniVoice/blob/master/omnivoice/cli/demo.py">omnivoice/cli/demo.py</a></td>
+</tr>
+<tr>
+<td><code>omnivoice-infer</code></td>
+<td>单条推理</td>
+<td><a href="https://github.com/k2-fsa/OmniVoice/blob/master/omnivoice/cli/infer.py">omnivoice/cli/infer.py</a></td>
+</tr>
+<tr>
+<td><code>omnivoice-infer-batch</code></td>
+<td>跨多块 GPU 的批量推理</td>
+<td><a href="https://github.com/k2-fsa/OmniVoice/blob/master/omnivoice/cli/infer_batch.py">omnivoice/cli/infer_batch.py</a></td>
+</tr>
+</tbody>
+</table>
+<h4>演示</h4>
+<pre><code class="language-bash">omnivoice-demo --ip 0.0.0.0 --port 8001
+</code></pre>
+<p>提供用于声音克隆和声音设计的网页界面。全部选项见 <code>omnivoice-demo --help</code>。</p>
+<h4>单条推理</h4>
+<pre><code class="language-bash"># 声音克隆
+# 可以省略 ref_text（Whisper 会自动转写 ref_audio）。
+omnivoice-infer \
+    --model k2-fsa/OmniVoice \
+    --text &quot;This is a test for text to speech.&quot; \
+    --ref_audio ref.wav \
+    --ref_text &quot;Transcription of the reference audio.&quot; \
+    --output hello.wav
+
+# 声音设计
+omnivoice-infer --model k2-fsa/OmniVoice \
+    --text &quot;This is a test for text to speech.&quot; \
+    --instruct &quot;male, British accent&quot; \
+    --output hello.wav
+
+# 自动选声
+omnivoice-infer \
+    --model k2-fsa/OmniVoice \
+    --text &quot;This is a test for text to speech.&quot;\
+    --output hello.wav
+</code></pre>
+<h4>批量推理</h4>
+<p><code>omnivoice-infer-batch</code> 可以把批量推理分配到多块 GPU 上，面向大规模 TTS 任务。</p>
+<pre><code class="language-bash">omnivoice-infer-batch \
+    --model k2-fsa/OmniVoice \
+    --test_list test.jsonl \
+    --res_dir results/
+</code></pre>
+<p>测试列表是 JSONL 文件，每行一个 JSON 对象：</p>
+<pre><code class="language-json">{&quot;id&quot;: &quot;sample_001&quot;, &quot;text&quot;: &quot;Hello world&quot;, &quot;ref_audio&quot;: &quot;/path/to/ref.wav&quot;, &quot;ref_text&quot;: &quot;Reference transcript&quot;, &quot;instruct&quot;: &quot;female, british accent&quot;, &quot;language_id&quot;: &quot;en&quot;, &quot;duration&quot;: 10.0, &quot;speed&quot;: 1.0}
+</code></pre>
+<p>只有 <code>id</code> 和 <code>text</code> 是必填项。<code>ref_audio</code> 与 <code>ref_text</code> 用于声音克隆模式。<code>instruct</code> 用于声音设计模式。如果既没有参考音频，也没有 instruct，模型会用随机声音来读文本。</p>
+<p><code>language_id</code>、<code>duration</code> 和 <code>speed</code> 是可选的。<code>duration</code>（秒）会固定输出长度；<code>speed</code> 控制语速。如果同时提供 <code>duration</code> 和 <code>speed</code>，<code>speed</code> 会被忽略。</p>
+<h4>FlashInfer 加速</h4>
+<p>项目称，使用 <a href="https://github.com/flashinfer-ai/flashinfer">FlashInfer</a> 内核，可以把推理加速约 2–2.9 倍，且「无损」（为 CFG 的条件/无条件对做序列打包，融合 RMSNorm / RoPE / GEMM 内核，并可选用 CUDA graphs）。</p>
+<p><strong>安装</strong>（NVIDIA GPU；请选择与 CUDA 版本匹配的索引，例如为以 CUDA 12.8 编译的 PyTorch 选用 cu128）：</p>
+<pre><code class="language-bash">pip install flashinfer-python==0.6.15.post1 &quot;flashinfer-jit-cache==0.6.15.post1+cu128&quot; \
+    --extra-index-url https://flashinfer.ai/whl/cu128/
+</code></pre>
+<p><strong>在批量推理命令行中使用</strong>：</p>
+<pre><code class="language-bash">omnivoice-infer-batch \
+    --model k2-fsa/OmniVoice \
+    --test_list test.jsonl \
+    --res_dir results/ \
+    --batch_size 8 \
+    --enable_flashinfer true
+</code></pre>
+<p>或在 Python API 中使用：</p>
+<pre><code class="language-python">from omnivoice.models.omnivoice_flashinfer import apply_flashinfer
+
+model = OmniVoice.from_pretrained(&quot;k2-fsa/OmniVoice&quot;, device_map=&quot;cuda&quot;, dtype=torch.float16)
+apply_flashinfer(model)                          # 吞吐 / 批量推理
+apply_flashinfer(model, enable_cuda_graph=True)  # 推荐用于 batch=1（低延迟）
+</code></pre>
+<p>CUDA graphs 更适合单路（batch=1）使用，因为这时内核启动开销占主导；在 batch &gt;= 4 时，项目称普通的 FlashInfer 路径已经是最快配置。</p>
+<p><strong>基准</strong>（seed-tts 中文测试集，2020 条样本 / 3.3 小时音频，声音克隆，单卡 H100，fp16，<code>num_step=32</code>；平均 RTF 由 <code>omnivoice-infer-batch</code> 报告，输出据称为 ASR 核验无损）。下表数字为原文自报：</p>
+<table>
+<thead>
+<tr>
+<th>batch size</th>
+<th>baseline</th>
+<th>FlashInfer</th>
+<th>speedup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.0899</td>
+<td>0.0430</td>
+<td>2.1x</td>
+</tr>
+<tr>
+<td>1 + CUDA graph</td>
+<td>—</td>
+<td>0.0367</td>
+<td>2.4x</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.0480</td>
+<td>0.0245</td>
+<td>2.0x</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.0331</td>
+<td>0.0152</td>
+<td>2.2x</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.0298</td>
+<td><strong>0.0115</strong></td>
+<td><strong>2.6x</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>训练与评测</h3>
+<p>完整流程——从数据准备到训练、评测和微调——见 <a href="https://github.com/k2-fsa/OmniVoice/tree/master/examples">examples/</a> 目录。</p>
+<hr>
+<h3>讨论与交流</h3>
+<p>可以直接在 <a href="https://github.com/k2-fsa/OmniVoice/issues">GitHub Issues</a> 上讨论。</p>
+<p>官方 README 还提供了微信群和公众号的二维码，请到仓库原文查看。</p>
+<hr>
+<h3>社区项目</h3>
+<p>OmniVoice 周围已有一批社区项目。官方说明这些项目由社区构建和维护，不由 OmniVoice 团队官方支持。完整列表见 <a href="https://github.com/k2-fsa/OmniVoice/blob/master/docs/community-projects.md">Community Projects</a>。收录时列出的项目包括：</p>
+<ul>
+<li><a href="https://github.com/Saganaki22/ComfyUI-OmniVoice-TTS">ComfyUI-OmniVoice-TTS</a> — ComfyUI 自定义节点</li>
+<li><a href="https://github.com/vllm-project/vllm-omni">vLLM-Omni</a> — 全模态推理框架，支持 OmniVoice 服务</li>
+<li><a href="https://github.com/0xShug0/audio.cpp">audio.cpp</a> — 用 GGML 做的纯 C++ 音频推理引擎</li>
+<li><a href="https://github.com/jianchang512/pyvideotrans">pyVideoTrans</a> — 视频翻译与配音，可将 OmniVoice 作为 TTS 引擎</li>
+<li><a href="https://github.com/Blaizzy/mlx-audio">MLX-Audio</a> — 基于 Apple MLX 的语音库</li>
+<li><a href="https://github.com/ailuntx/OmniVoice-MLX">OmniVoice-MLX</a> — Apple Silicon 上的 MLX 推理后端</li>
+<li><a href="https://github.com/KoljaB/RealtimeTTS">RealtimeTTS</a> — 实时文本转语音</li>
+<li><a href="https://github.com/rsxdalv/TTS-WebUI">TTS-WebUI</a> — 多模型 Gradio 网页界面</li>
+<li><a href="https://github.com/debpalash/OmniVoice-Studio">OmniVoice-Studio</a> — 桌面应用</li>
+<li><a href="https://github.com/maemreyo/omnivoice-server">omnivoice-server</a> — 兼容 OpenAI 的 HTTP 服务（<code>/v1/audio/speech</code>）</li>
+<li><a href="https://github.com/FerrisMind/omnivoice-rs">omnivoice-rs</a> — 基于 Candle 的 Rust 推理与 HTTP 服务</li>
+<li><a href="https://github.com/tlitech/omnivoice-trtllm">omnivoice-trtllm</a> — 用 TensorRT-LLM 与 Triton 部署</li>
+<li><a href="https://github.com/nikhilprasanth/Auris">Auris</a> — 离线有声书阅读器</li>
+<li><a href="https://github.com/dduongtrandai/LA-Studio">LA Studio</a> — 离线桌面音频工作站</li>
+<li><a href="https://github.com/zeropointnine/tts-audiobook-tool">tts-audiobook-tool</a> — 有声书制作工具</li>
+<li><a href="https://github.com/estebanstifli/LocalText2Voice">LocalText2Voice</a> — Windows 桌面长音频制作管线</li>
+</ul>
+<p>各社区仓库的许可需自行核对，本页不转载它们的 README 或源码。</p>
+<hr>
+<h3>引用</h3>
+<pre><code class="language-bibtex">@article{zhu2026omnivoice,
+      title={OmniVoice: Towards Omnilingual Zero-Shot Text-to-Speech with Diffusion Language Models},
+      author={Zhu, Han and Ye, Lingxuan and Kang, Wei and Yao, Zengwei and Guo, Liyong and Kuang, Fangjun and Han, Zhifeng and Zhuang, Weiji and Lin, Long and Povey, Daniel},
+      journal={arXiv preprint arXiv:2604.00688},
+      year={2026}
+}
+</code></pre>
+<hr>
+<h3>免责声明</h3>
+<p>严禁将本模型用于未经授权的声音克隆、声音假冒、欺诈、诈骗，或任何其他非法或不道德的活动。所有用户应确保完全遵守适用的当地法律、法规和伦理标准。开发者对任何滥用行为不承担责任，并倡导负责任的人工智能开发与使用，鼓励社区在人工智能研究与应用中坚持安全与伦理原则。</p>
+
+<h2 id="appendix-en">附录 B：README 英文原文</h2>
+<p class="related-guide">仓库根目录 README.md 原文（分支 <code>master</code>，2026-11-28 核对）。</p>
+<pre><code># OmniVoice 🌍
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;img width=&quot;200&quot; height=&quot;200&quot; alt=&quot;OmniVoice&quot; src=&quot;https://zhu-han.github.io/omnivoice/pics/omnivoice.jpg&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+  &lt;a href=&quot;https://huggingface.co/k2-fsa/OmniVoice&quot;&gt;&lt;img src=&quot;https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-FFD21E&quot; alt=&quot;Hugging Face Model&quot;&gt;&lt;/a&gt;
+  &amp;nbsp;
+  &lt;a href=&quot;https://huggingface.co/spaces/k2-fsa/OmniVoice&quot;&gt;&lt;img src=&quot;https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Space-blue&quot; alt=&quot;Hugging Face Space&quot;&gt;&lt;/a&gt;
+  &amp;nbsp;
+  &lt;a href=&quot;https://arxiv.org/abs/2604.00688&quot;&gt;&lt;img src=&quot;https://img.shields.io/badge/arXiv-Paper-B31B1B.svg&quot;&gt;&lt;/a&gt;
+  &amp;nbsp;
+  &lt;a href=&quot;https://zhu-han.github.io/omnivoice&quot;&gt;&lt;img src=&quot;https://img.shields.io/badge/GitHub.io-Demo_Page-blue?logo=GitHub&amp;style=flat-square&quot;&gt;&lt;/a&gt;
+  &amp;nbsp;
+  &lt;a href=&quot;https://colab.research.google.com/github/k2-fsa/OmniVoice/blob/master/docs/OmniVoice.ipynb&quot;&gt;&lt;img src=&quot;https://colab.research.google.com/assets/colab-badge.svg&quot; alt=&quot;Open In Colab&quot;&gt;&lt;/a&gt;
+&lt;/p&gt;
+
+OmniVoice is a state-of-the-art massively multilingual zero-shot text-to-speech (TTS) model supporting over 600 languages. Built on a novel diffusion language model-style architecture, it generates high-quality speech with superior inference speed, supporting voice cloning and voice design.
+
+**Contents**: [Key Features](#key-features) | [Installation](#installation) | [Quick Start](#quick-start) | [Python API](#python-api) | [Command-Line Tools](#command-line-tools) | [Training &amp; Evaluation](#training--evaluation) | [Discussion](#discussion--communication) | [Citation](#citation)
+
+## Key Features
+
+- **600+ Languages Supported**: The broadest language coverage among zero-shot TTS models ([full list](docs/languages.md)).
+- **Voice Cloning**: State-of-the-art voice cloning quality.
+- **Voice Design**: Control voices via assigned speaker attributes (gender, age, pitch, dialect/accent, whisper, etc.).
+- **Fine-grained Control**: Non-verbal symbols (e.g., `[laughter]`) and pronunciation correction via pinyin or phonemes.
+- **Fast Inference**: RTF as low as 0.025 (40x faster than real-time).
+- **Diffusion Language Model-style Architecture**: A clean, streamlined, and scalable design that delivers both quality and speed.
+
+---
+
+## Installation
+
+Choose **one** of the following methods: **pip** or **uv**.
+
+### pip
+
+&gt; We recommend using a fresh virtual environment (e.g., `conda`, `venv`, etc.) to avoid conflicts.
+
+**Step 1**: Install PyTorch
+
+&lt;details&gt;
+&lt;summary&gt;NVIDIA GPU&lt;/summary&gt;
+
+```bash
+# Install pytorch with your CUDA version, e.g.
+pip install torch==2.8.0+cu128 torchaudio==2.8.0+cu128 --extra-index-url https://download.pytorch.org/whl/cu128
+```
+&gt; See [PyTorch official site](https://pytorch.org/get-started/locally/) for other versions installation.
+
+&lt;/details&gt;
+
+&lt;details&gt;
+&lt;summary&gt;Apple Silicon&lt;/summary&gt;
+
+```bash
+pip install torch==2.8.0 torchaudio==2.8.0
+```
+
+&lt;/details&gt;
+
+&lt;details&gt;
+&lt;summary&gt;Intel Arc GPU (XPU)&lt;/summary&gt;
+
+Intel Arc GPUs (Alchemist and Battlemage architectures) are supported via PyTorch&#x27;s XPU backend.
+
+1. Install the [Intel GPU drivers](https://dgpu-docs.intel.com/driver/installation.html) for your OS.
+
+2. Install PyTorch with XPU support from Intel&#x27;s wheel index:
+
+```bash
+pip install torch torchaudio --index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/us/
+```
+
+&gt; See [Intel&#x27;s PyTorch XPU guide](https://intel.github.io/intel-extension-for-pytorch/xpu/latest/) for version-specific instructions.
+
+3. Verify the backend is working:
+
+```bash
+python -c &quot;import torch; print(torch.xpu.is_available(), torch.xpu.device_count())&quot;
+```
+
+**Notes**:
+- `flash_attn` is not available on XPU; the model automatically falls back to SDPA.
+- Training with packed sequences (`flex_attention`) has partial XPU support; single-GPU SDPA training should work.
+- Tested on Arc A310 (Alchemist, 4 GB) and Arc Pro B50 (Battlemage, 16 GB).
+
+&lt;/details&gt;
+
+**Step 2**: Install OmniVoice (choose one)
+
+```bash
+# From PyPI (stable release)
+pip install omnivoice
+
+# From the latest source on GitHub (no need to clone)
+pip install git+https://github.com/k2-fsa/OmniVoice.git
+
+# For development (clone first, editable install)
+git clone https://github.com/k2-fsa/OmniVoice.git
+cd OmniVoice
+pip install -e .
+```
+
+### uv
+
+Clone the repository and sync dependencies:
+
+```bash
+git clone https://github.com/k2-fsa/OmniVoice.git
+cd OmniVoice
+uv sync
+```
+
+&gt; **Tip**: Can use mirror with `uv sync --default-index &quot;https://mirrors.aliyun.com/pypi/simple&quot;`
+
+---
+
+## Quick Start
+
+Try OmniVoice without coding:
+
+- Launch the local web UI: `omnivoice-demo --ip 0.0.0.0 --port 8001`
+
+- Or try it directly on [HuggingFace Space](https://huggingface.co/spaces/k2-fsa/OmniVoice)
+
+- Or run it in Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/k2-fsa/OmniVoice/blob/master/docs/OmniVoice.ipynb)
+
+&gt; If you have trouble connecting to HuggingFace when downloading the pre-trained models, set `export HF_ENDPOINT=&quot;https://hf-mirror.com&quot;` before running.
+
+For full usage, see the [Python API](#python-api) and [Command-Line Tools](#command-line-tools) sections below.
+
+---
+
+## Python API
+
+OmniVoice supports three generation modes. All features in this section are also available via [command-line tools](#command-line-tools).
+
+### Voice Cloning
+
+Clone a voice from a short reference audio. Provide `ref_audio` and `ref_text`:
+
+```python
+from omnivoice import OmniVoice
+import soundfile as sf
+import torch
+
+model = OmniVoice.from_pretrained(
+    &quot;k2-fsa/OmniVoice&quot;,
+    device_map=&quot;cuda:0&quot;,
+    dtype=torch.float16
+)
+# Apple Silicon users: use device_map=&quot;mps&quot; instead
+# Intel Arc GPU users: use device_map=&quot;xpu&quot; instead
+
+audio = model.generate(
+    text=&quot;Hello, this is a test of zero-shot voice cloning.&quot;,
+    ref_audio=&quot;ref.wav&quot;,
+    ref_text=&quot;Transcription of the reference audio.&quot;,
+) # audio is a list of `np.ndarray` with shape (T,) at 24 kHz.
+
+# If you don&#x27;t want to input `ref_text` manually, you can directly omit the `ref_text`.
+# The model will use Whisper ASR to auto-transcribe it. To use a local copy (or
+# a different Whisper model), pass `asr_model_name=&quot;...&quot;` to `from_pretrained`.
+# To control which device Whisper is loaded on (e.g. another GPU in multi-GPU
+# setups, or the CPU), pass `asr_device=&quot;cuda:1&quot;` (or `&quot;cpu&quot;`).
+
+sf.write(&quot;out.wav&quot;, audio[0], 24000)
+```
+
+#### Reusing a cloned voice across sessions
+
+Encode the reference audio once, save the resulting prompt, and skip the
+audio loading / auto-transcription steps in later sessions:
+
+```python
+prompt = model.create_voice_clone_prompt(
+    ref_audio=&quot;ref.wav&quot;, ref_text=&quot;Transcription of the reference audio.&quot;
+)
+prompt.save(&quot;my_voice.pt&quot;)
+
+# Later, in a new session:
+from omnivoice import VoiceClonePrompt
+
+prompt = VoiceClonePrompt.load(&quot;my_voice.pt&quot;)
+audio = model.generate(text=&quot;Hello again!&quot;, voice_clone_prompt=prompt)
+```
+
+&gt; **Tips**
+&gt;
+&gt; - Use a 3–10 seconds reference audio clip. Longer audio slows down inference and may degrade cloning quality.
+&gt; - For standard pronunciation, use a reference audio in the **same language** as the target speech. In cross-lingual voice cloning (i.e., the reference audio and target speech are in different languages), the generated speech will carry an accent from the reference audio&#x27;s language.
+&gt; - For better results with Arabic numerals, normalize them to words first (e.g., &quot;123&quot; → &quot;one hundred twenty-three&quot;). You can pass `normalize_text=True` to `generate()` to do this automatically (opt-in; install the extra with `pip install &quot;omnivoice[tn]&quot;`, which pulls in [WeTextProcessing](https://github.com/wenet-e2e/WeTextProcessing)):
+&gt;
+&gt;   ```python
+&gt;   # &quot;I have 2345 apples.&quot; is read correctly instead of digit-by-digit.
+&gt;   audio = model.generate(text=&quot;I have 2345 apples.&quot;, normalize_text=True)
+&gt;   ```
+&gt;
+&gt;   Chinese and English use WeTextProcessing; other languages fall back to `num2words` for integers. Inline control syntax (`[laughter]`, `[B EY1 S]`, pinyin tone markers) is preserved. On macOS (Apple Silicon), `pynini` has no wheel — install it via `conda install -c conda-forge pynini` first.
+&gt;
+&gt; For more tips, see [docs/tips.md](docs/tips.md).
+
+### Voice Design
+
+Describe the desired voice with speaker attributes — no reference audio needed.
+Supported attributes: **gender** (male/female), **age** (child to elderly),
+**pitch** (very low to very high), **style** (whisper), **English accent**
+(American, British, etc.), and **Chinese dialect** (四川话, 陕西话, etc.).
+Attributes are comma-separated and freely combinable across categories.
+
+```python
+audio = model.generate(
+    text=&quot;Hello, this is a test of zero-shot voice design.&quot;,
+    instruct=&quot;female, low pitch, british accent&quot;,
+)
+```
+
+&gt; **Note**: The model is primarily trained on the voice cloning task, so voice cloning is the most stable mode. Voice design is trained on Chinese and English data only. It can generalize to other languages, but may produce unstable results for some low-resource languages or edge cases.
+
+See [docs/voice-design.md](docs/voice-design.md) for the full attribute
+reference, Chinese equivalents, and usage tips.
+
+### Auto Voice
+
+Let the model choose a voice automatically:
+
+```python
+audio = model.generate(text=&quot;This is a sentence without any voice prompt.&quot;)
+```
+
+### Generation Parameters
+
+All above three modes share the same `model.generate()` API. You can further control the generation behavior via keyword arguments:
+
+```python
+audio = model.generate(
+    text=&quot;...&quot;,
+    num_step=32,  # diffusion steps (or 16 for faster inference)
+    speed=1.0,     # speed factor (&gt;1.0 faster, &lt;1.0 slower)
+    duration=10.0, # fixed output duration in seconds (overrides speed)
+    # ... more options
+)
+```
+See more detailed control in [docs/generation-parameters.md](docs/generation-parameters.md).
+
+### Non-Verbal &amp; Pronunciation Control
+
+OmniVoice supports inline **non-verbal symbols** and **pronunciation correction** within the input text.
+
+**Non-verbal symbols**: Insert tags like `[laughter]` directly in the text to add expressive non-verbal sounds.
+
+```python
+audio = model.generate(text=&quot;[laughter] You really got me. I didn&#x27;t see that coming at all.&quot;)
+```
+
+Supported tags: `[laughter]`, `[sigh]`, `[confirmation-en]`, `[question-en]`, `[question-ah]`, `[question-oh]`, `[question-ei]`, `[question-yi]`, `[surprise-ah]`, `[surprise-oh]`, `[surprise-wa]`, `[surprise-yo]`, `[dissatisfaction-hnn]`.
+
+**Pronunciation control (Chinese)**: Use pinyin with tone numbers to correct specific character pronunciations.
+
+```python
+audio = model.generate(text=&quot;这批货物打ZHE2出售后他严重SHE2本了，再也经不起ZHE1腾了。&quot;)
+```
+
+**Pronunciation control (English)**: Use [CMU pronunciation dictionary](https://svn.code.sf.net/p/cmusphinx/code/trunk/cmudict/cmudict.0.7a)  (uppercase, in brackets) to override default English pronunciations.
+
+```python
+audio = model.generate(text=&quot;He plays the [B EY1 S] guitar while catching a [B AE1 S] fish.&quot;)
+```
+
+---
+
+## Command-Line Tools
+
+Three CLI entry points are provided. The CLI tools support all features available in the Python API (voice cloning, voice design, auto voice, generation parameters, etc.) — all controlled via command-line arguments.
+
+| Command | Description | Source |
+|---|---|---|
+| `omnivoice-demo` | Interactive Gradio web demo | [omnivoice/cli/demo.py](omnivoice/cli/demo.py) |
+| `omnivoice-infer` | Single-item inference | [omnivoice/cli/infer.py](omnivoice/cli/infer.py) |
+| `omnivoice-infer-batch` | Batch inference across multiple GPUs | [omnivoice/cli/infer_batch.py](omnivoice/cli/infer_batch.py) |
+
+### Demo
+
+```bash
+omnivoice-demo --ip 0.0.0.0 --port 8001
+```
+
+Provides a web UI for voice cloning and voice design. See `omnivoice-demo --help` for all options.
+
+### Single Inference
+
+```bash
+# Voice Cloning
+# ref_text can be omitted (Whisper will auto-transcribe ref_audio to get it).
+omnivoice-infer \
+    --model k2-fsa/OmniVoice \
+    --text &quot;This is a test for text to speech.&quot; \
+    --ref_audio ref.wav \
+    --ref_text &quot;Transcription of the reference audio.&quot; \
+    --output hello.wav
+
+# Voice Design
+omnivoice-infer --model k2-fsa/OmniVoice \
+    --text &quot;This is a test for text to speech.&quot; \
+    --instruct &quot;male, British accent&quot; \
+    --output hello.wav
+
+# Auto Voice
+omnivoice-infer \
+    --model k2-fsa/OmniVoice \
+    --text &quot;This is a test for text to speech.&quot;\
+    --output hello.wav
+```
+
+### Batch Inference
+
+`omnivoice-infer-batch` can distribute batch inference across multiple GPUs, designed for large-scale TTS tasks.
+
+```bash
+omnivoice-infer-batch \
+    --model k2-fsa/OmniVoice \
+    --test_list test.jsonl \
+    --res_dir results/
+```
+
+The test list is a JSONL file where each line is a JSON object:
+```json
+{&quot;id&quot;: &quot;sample_001&quot;, &quot;text&quot;: &quot;Hello world&quot;, &quot;ref_audio&quot;: &quot;/path/to/ref.wav&quot;, &quot;ref_text&quot;: &quot;Reference transcript&quot;, &quot;instruct&quot;: &quot;female, british accent&quot;, &quot;language_id&quot;: &quot;en&quot;, &quot;duration&quot;: 10.0, &quot;speed&quot;: 1.0}
+```
+Only `id` and `text` are mandatory fields. `ref_audio` and `ref_text` are used in voice cloning mode. `instruct` is used in voice design mode. If no reference audio or instruct are provided, the model will generate text in a random voice.
+
+`language_id`, `duration`, and `speed` are optional. `duration` (in seconds) fixes the output length; `speed` controls the speaking rate. If `duration` and `speed` are both provided, `speed` will be ignored.
+
+### FlashInfer Acceleration
+
+Inference can be accelerated ~2-2.9x losslessly with [FlashInfer](https://github.com/flashinfer-ai/flashinfer) kernels (sequence packing for the CFG cond/uncond pair, fused RMSNorm/RoPE/GEMM kernels, and optional CUDA graphs).
+
+**Installation** (NVIDIA GPUs; pick the index matching your CUDA version, e.g. cu128 for PyTorch built with CUDA 12.8):
+
+```bash
+pip install flashinfer-python==0.6.15.post1 &quot;flashinfer-jit-cache==0.6.15.post1+cu128&quot; \
+    --extra-index-url https://flashinfer.ai/whl/cu128/
+```
+
+**Usage** with the batch inference CLI:
+
+```bash
+omnivoice-infer-batch \
+    --model k2-fsa/OmniVoice \
+    --test_list test.jsonl \
+    --res_dir results/ \
+    --batch_size 8 \
+    --enable_flashinfer true
+```
+
+or with the Python API:
+
+```python
+from omnivoice.models.omnivoice_flashinfer import apply_flashinfer
+
+model = OmniVoice.from_pretrained(&quot;k2-fsa/OmniVoice&quot;, device_map=&quot;cuda&quot;, dtype=torch.float16)
+apply_flashinfer(model)                          # throughput / batched inference
+apply_flashinfer(model, enable_cuda_graph=True)  # recommended for batch=1 (low latency)
+```
+
+CUDA graphs are recommended for single-stream (batch=1) usage, where kernel-launch overhead dominates; at batch &gt;= 4 the plain FlashInfer path is already the fastest configuration.
+
+**Benchmark** (seed-tts zh testset, 2020 samples / 3.3h audio, voice cloning, single H100, fp16, `num_step=32`; Average RTF as reported by `omnivoice-infer-batch`, outputs ASR-verified lossless):
+
+| batch size | baseline | FlashInfer | speedup |
+|---|---|---|---|
+| 1 | 0.0899 | 0.0430 | 2.1x |
+| 1 + CUDA graph | — | 0.0367 | 2.4x |
+| 2 | 0.0480 | 0.0245 | 2.0x |
+| 4 | 0.0331 | 0.0152 | 2.2x |
+| 8 | 0.0298 | **0.0115** | **2.6x** |
+
+---
+
+## Training &amp; Evaluation
+
+See [examples/](examples/) for the complete pipeline — from data preparation to training, evaluation, and finetuning.
+
+---
+
+## Discussion &amp; Communication
+
+You can directly discuss on [GitHub Issues](https://github.com/k2-fsa/OmniVoice/issues).
+
+You can also scan the QR code to join our wechat group or follow our wechat official account.
+
+| Wechat Group | Wechat Official Account |
+| ------------ | ----------------------- |
+|![wechat](https://k2-fsa.org/zh-CN/assets/pic/wechat_group.jpg) |![wechat](https://k2-fsa.org/zh-CN/assets/pic/wechat_account.jpg) |
+
+---
+
+## Community Projects
+
+OmniVoice is supported by a growing ecosystem of community projects.
+Explore them in [Community Projects](docs/community-projects.md).
+
+---
+
+## Citation
+
+```bibtex
+@article{zhu2026omnivoice,
+      title={OmniVoice: Towards Omnilingual Zero-Shot Text-to-Speech with Diffusion Language Models},
+      author={Zhu, Han and Ye, Lingxuan and Kang, Wei and Yao, Zengwei and Guo, Liyong and Kuang, Fangjun and Han, Zhifeng and Zhuang, Weiji and Lin, Long and Povey, Daniel},
+      journal={arXiv preprint arXiv:2604.00688},
+      year={2026}
+}
+```
+
+---
+
+## Disclaimer
+
+Users are strictly prohibited from using this model for unauthorized voice cloning, voice impersonation, fraud, scams, or any other illegal or unethical activities. All users shall ensure full compliance with applicable local laws, regulations, and ethical standards. The developers assume no liability for any misuse of this model and advocate for responsible AI development and use, encouraging the community to uphold safety and ethical principles in AI research and applications.</code></pre>
+
+<h2 id="license">附录 C：LICENSE（Apache-2.0）原文</h2>
+<p class="related-guide">仓库根目录 LICENSE（分支 <code>master</code>，2026-11-28 核对）。版权行为 <code>Copyright 2026 Xiaomi Corp.</code>。</p>
+<pre><code>                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright 2026 Xiaomi Corp.
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.</code></pre>
+</main><!-- /za:content -->
+</div>
+<footer class="za-foot">
+<!-- za:foot --><div class="za-foot-orig"><p>署名：Han Zhu 等；版权行：Copyright 2026 Xiaomi Corp.。仓库 <a href="https://github.com/k2-fsa/OmniVoice" rel="noopener">k2-fsa/OmniVoice</a> 的代码以 Apache License 2.0 发布；预训练权重在 Hugging Face 模型卡上标明为 CC-BY-NC。本页为项目导读；附录为 README 全文中译与英文原文，以及许可证原文。封面为字标。原文：<a href="https://github.com/k2-fsa/OmniVoice" rel="noopener">github.com/k2-fsa/OmniVoice</a>。如需移除，请<a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p></div><!-- /za:foot -->
+<div class="za-foot-std" data-za-gen>
+<p>非官方中文镜像 / 翻译 / 评述，仅供阅读学习；原文与配图版权归原作者及权利人所有。原文：<a href="https://github.com/k2-fsa/OmniVoice" rel="noopener">github.com/k2-fsa/OmniVoice</a>。如需删除，请 <a href="https://github.com/BreakDimbo/zh-blog-mirrors/issues/new?title=Removal%20request">提交移除请求</a>。</p>
+<p><span class="mark">zh-blog-mirrors</span> · <a href="../">返回文库首页</a> · <a href="https://github.com/BreakDimbo/zh-blog-mirrors">GitHub</a></p>
+</div>
+</footer>
+</div>
+</body>
+</html>
